@@ -87,8 +87,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(aw510k ? Lights(Aw510kLeds, Aw510kGrid, Aw510kCols) : Lights(Aw410kLeds, Aw410kGrid, Aw410kCols),
-                    "OpenRGB AlienwareKeyboardController")
+                Map = new LightMap(aw510k ? Lights(Aw510kLeds, Aw510kGrid, Aw510kCols) : Lights(Aw410kLeds, Aw410kGrid, Aw410kCols))
                 {
                     Product = $"alienware:04F2:{productId:X4}",
                 },

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Deskonosí</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Standard</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Buska…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Sigui</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Para</value></data>
@@ -258,6 +257,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor a para.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Eror: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} no por a wordu kreá.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>No por a habri, lesa òf mapeá un aparato. E log di diagnóstiko ta menshoná ki aparato.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} a haña un eror. E log di diagnóstiko tin e kousa.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>E motor di input a haña un eror. E log di diagnóstiko tin e kousa.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL no por a kuminsá. E log di diagnóstiko tin e kousa.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>No por a instalá HIDMaestro. E log di diagnóstiko tin e kousa.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>E perfil di HIDMaestro di un kontrol virtual ta falta. E log di diagnóstiko ta menshoná kua.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} no por a tuma su identidat i distribushon personalisá i ta usa esun di su perfil.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil kambiá: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil kambiá: Standard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standard</value></data>
@@ -370,8 +376,8 @@
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pòrt di mod di wega</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Ta funshoná ku mods hasí pa DSX, manera esnan pa GTA V, Red Dead Redemption 2, Skyrim i Forza. Miéntras e server ta skucha, PadForge ta skirbi su pòrt kaminda e mods ei ta buské.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Ta skucha riba :{0}. {1} ta manda na kontrol virtual {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ta skucha riba :{0}. {1} ta manda, pero ningun kontrol virtual no tin un kontrol PlayStation riba dje.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ta skucha riba :{0}. {1} ta manda na kontrol number {2}, i no tin ningun kontrol virtual ku un kontrol di PlayStation riba dje ku tin e number ei.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ta skucha riba :{0}. {1} ta manda, pero ningun kontrol virtual no tin un DualSense òf DualShock 4 riba dje.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ta skucha riba :{0}. {1} ta manda na kontrol number {2}, i no tin ningun kontrol virtual ku un DualSense òf DualShock 4 riba dje ku tin e number ei.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pòrt {0} ta na uso dor di otro programa, manera DSX. Sera e programa òf skohe otro pòrt.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod di wega</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa teklanan G di Logitech</value></data>
@@ -788,6 +794,7 @@
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Remplasá e paleta aktual ku e kuater kolornan standard (kòrá, berde, blou, hel).</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalisá</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Krea pa usuario)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -1793,19 +1800,13 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ahuste pa e inputnan di Flick Stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset Flick Stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reset na 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Tempu di flick</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Reset na 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Límite di flick</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Reset na 0.9</value></data>
   <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Solamente padilanti</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 grado</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 grado</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 grado</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 grado</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Reset na 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Reset na 0°</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Reset na outomátiko (-1)</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Koló di lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stür</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Reset stür</value></data>
@@ -1843,9 +1844,6 @@
   <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Miéntras e wega ta vibrá</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Apagá</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Toka háptika di DualSense riba e kontrol aki</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset na standard (apagá)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset na standard (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reset na 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Eksportá…</value></data>
@@ -2139,7 +2137,7 @@
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro di Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Region di kursor</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tene)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (laga bai)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (laga bai)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivá)</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Wardá perfil</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Wardá i apliká</value></data>
@@ -2345,7 +2343,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dividí pa direkshon</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morto di sentro</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reset na stick robes X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reset forsa (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reset zona morto di sentro (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Perfil</value></data>
@@ -2873,6 +2870,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>E kontrol no a aseptá e komando ku ta prepar'é, p'esei nada no a wordu mandá. Kontrolá ku e ta konektá i manda atrobe.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>E manda a stòp pa motibu di un eror den PadForge. E archivo di log tin e detayenan.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Ainda un potrèt ta bayendo pa e kontrol. Stòp e envio?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Sigui manda</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -2892,6 +2890,9 @@
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>No por lesa</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>E perfil “{0}” ta mustra e aparensia di su wega. Bo tema ta bolbe ora otro perfil ta aktivo.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>E archivo ei no ta un tema di PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge no por lesa e archivo ei.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge no por haña e archivo ei.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>No ta un tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>No por a wardá e tema. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema nobo</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ta mustra e tema miéntras bo ta trah'é.</value></data>
@@ -2904,6 +2905,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ta buska e potrèt for di Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam no tin un potrèt hanchu pa e wega aki.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>No por a konektá ku Steam. Kontrolá bo konekshon.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge no por lesa e potrèt di Steam pa e wega aki.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posishon</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ta move e potrèt pa ariba òf pa abou den su bentana.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mustra e logo di e wega</value></data>

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -148,7 +149,7 @@ namespace PadForge.Views
         {
             var s = Strings.Instance;
             var from = _existing ?? ThemeManager.Current;
-            bool dark = from?.Dark ?? Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() != Wpf.Ui.Appearance.ApplicationTheme.Light;
+            bool dark = from?.Dark ?? PadForge.Common.EmberTheme.DarkGround;
             _shades[0].Value = from?.Background ?? ThemeEngine.StockGround(dark);
             _shades[1].Value = from?.Accent ?? ThemeEngine.StockAccent;
             _shades[2].Value = from?.Secondary ?? ThemeEngine.StockSecondary(dark);
@@ -357,8 +358,9 @@ namespace PadForge.Views
             QueuePreview();
         }
 
-        /// <summary>A new source for the picture. The first one also gives
-        /// the theme its colors, unless the user already set some.</summary>
+        /// <summary>A new source for the picture. Each one also gives the
+        /// theme its colors until a color is set by hand or by Match
+        /// Picture. A theme opened for editing keeps its own.</summary>
         internal void TakePicture(BitmapSource photo, BitmapSource logo, string credits)
         {
             _photo = photo;
@@ -457,6 +459,26 @@ namespace PadForge.Views
             _searchTimer.Start();
         }
 
+        /// <summary>Enter searches now, as Get Profiles' Steam search does.
+        /// The dialog's Save button never hears it.</summary>
+        private void GameSearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            _searchTimer.Stop();
+            _ = RunSearchAsync();
+            e.Handled = true;
+        }
+
+        /// <summary>Enter takes the game that has the focus. The dialog's
+        /// Save button never hears it.</summary>
+        private void GameList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            if (e.OriginalSource is ListBoxItem { Content: GameHit game } && !ReferenceEquals(GameList.SelectedItem, game))
+                GameList.SelectedItem = game;
+            e.Handled = true;
+        }
+
         private void Status(string text)
         {
             GameStatus.Text = text ?? string.Empty;
@@ -505,12 +527,17 @@ namespace PadForge.Views
             Status(s.ThemeBuilder_Fetching);
             try
             {
-                var (hero, logo) = await _steam.FetchAsync(game.AppId, cancel.Token);
+                var (hero, logo, unreached) = await _steam.FetchAsync(game.AppId, cancel.Token);
                 if (cancel.IsCancellationRequested) return;
-                BitmapSource photo = hero != null ? ThemePicture.DecodeSource(hero) : null;
+                if (hero == null)
+                {
+                    Status(GameLooks.FaultText(GameLooks.FaultOfNoPicture(_steam.IsOn, unreached)));
+                    return;
+                }
+                BitmapSource photo = ThemePicture.DecodeSource(hero);
                 if (photo == null)
                 {
-                    Status(s.ThemeBuilder_NoArt);
+                    Status(GameLooks.FaultText(GameLookFault.Unreadable));
                     return;
                 }
                 Status(null);

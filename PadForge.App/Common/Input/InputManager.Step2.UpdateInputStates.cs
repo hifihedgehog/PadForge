@@ -52,10 +52,11 @@ namespace PadForge.Common.Input
                 ApplyDetectorSettingsForTick(det);
             }
 
-            // Refresh per-slot post-mix-post-gain rumble before the per-device
-            // FFB loop reads it. One pass per polling tick — every consumer
-            // (SDL physical rumble, DS5/DS4 effect packet, Force Feedback group meter)
-            // reads the same FinalVibrationStates instance.
+            // Fill FinalVibrationStates (the slot-wide rumble the Joy-Con
+            // pair's tone sink reads) and SelectedDeviceVibrationStates (the
+            // Motor Activity bars) once a pass. The device writes scale each
+            // device's rumble themselves (ApplyForceFeedback) and read
+            // neither.
             ComputeFinalVibrationStates();
 
             // Snapshot online devices into pre-allocated buffer (no LINQ allocation).
@@ -203,7 +204,7 @@ namespace PadForge.Common.Input
                 {
                     InvalidateGyroTiltGravity(ud.InstanceGuid);
                     InvalidateGyroSimulation(ud.InstanceGuid);
-                    RaiseError($"Error reading state for device {ud.ResolvedName}", ex);
+                    RaiseDeviceError($"Error reading state for device {ud.ResolvedName}", ex);
                 }
             }
 
@@ -2074,25 +2075,28 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Per-slot pre-pass that fills two parallel meter feeds:
+        /// Per-slot pre-pass that fills two parallel feeds:
         /// <list type="bullet">
-        /// <item><see cref="FinalVibrationStates"/> — strongest per-motor
+        /// <item><see cref="FinalVibrationStates"/>: the strongest per-motor
         ///   output across every device mapped to the slot, each scaled
         ///   by its OWN PadSetting (gain, motor strengths, audio rumble,
-        ///   constant force). Drives the motor meter of Buttons'
-        ///   picture. Device-filter-independent so a force coming through
-        ///   any device on the slot is visible regardless of which device
-        ///   the user is editing.</item>
-        /// <item><see cref="SelectedDeviceVibrationStates"/> — the
+        ///   constant force). The slot-wide "is anything rumbling" value
+        ///   the combined Joy-Con pair's tone sink reads
+        ///   (HapticToneService.SlotRumbleActiveProvider). Device-filter
+        ///   independent, so a force coming through any device on the slot
+        ///   counts whichever device the user is editing. No meter reads
+        ///   it.</item>
+        /// <item><see cref="SelectedDeviceVibrationStates"/>: the
         ///   <see cref="SelectedDeviceGuids"/> device's own scaled output
         ///   (its own gain / audio rumble / constant force applied).
-        ///   Drives the Force Feedback group motor meter. Device-specific so the
-        ///   user editing one device's FFB settings sees what's actually
-        ///   reaching THAT device.</item>
+        ///   Drives the Motor Activity bars of the Force Feedback and
+        ///   Impulse Triggers groups. Device-specific so the user editing
+        ///   one device's settings sees what's actually reaching THAT
+        ///   device.</item>
         /// </list>
         ///
         /// <para>Macro rumble and constant force layering match Step 2's
-        /// per-device ApplyForceFeedback path so both meters track what
+        /// per-device ApplyForceFeedback path so both feeds track what
         /// the firmware actually receives, not just the raw game-driven
         /// values.</para>
         /// </summary>
@@ -2119,12 +2123,12 @@ namespace PadForge.Common.Input
                 var selected = SelectedDeviceVibrationStates[padIndex];
                 if (raw == null || final == null || selected == null) continue;
 
-                // Macro rumble override is slot-level. Apply it once before
-                // the per-device loop so audio rumble / constant force
-                // resolution sees the merged baseline. The slot's persona
-                // haptics join it the way they join each device's rumble
-                // below (discussion #522), so a slot with no device shows
-                // them as it shows the game's rumble.
+                // Macro rumble override is slot-level, and the slot's persona
+                // haptics join it as they join each device's rumble below
+                // (discussion #522). The per-device loop rebuilds the value
+                // for each device from its own row (WithPersonaHaptics, then
+                // ResolveUserRumble), so this merge reaches only the branch
+                // for a slot with no device.
                 if (_macroRumbleScratch == null) _macroRumbleScratch = new Vibration();
                 if (_personaHapticMeterScratch == null) _personaHapticMeterScratch = new Vibration();
                 var withMacro = MacroRumbleOverride.Merge(
@@ -2141,10 +2145,12 @@ namespace PadForge.Common.Input
 
                 if (slotCount == 0)
                 {
-                    // No devices mapped → preview meter mirrors raw (no
-                    // scaling to apply) so the user still sees a test
-                    // rumble in flight. Force Feedback group meter shows zero (no
-                    // device == no per-device output to display).
+                    // No devices mapped → the slot-wide value mirrors the
+                    // merged raw value, since there is no device's scaling to
+                    // apply. Nothing reads it on a slot with no device: the
+                    // tone sinks are built from mapped devices only. The
+                    // Motor Activity bars show zero (no device == no
+                    // per-device output to display).
                     final.LeftMotorSpeed = withMacro.LeftMotorSpeed;
                     final.RightMotorSpeed = withMacro.RightMotorSpeed;
                     final.LeftTriggerMotorSpeed = raw.LeftTriggerMotorSpeed;
@@ -2297,11 +2303,13 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Applies per-device impulse-trigger scaling: per-trigger
         /// strength (<c>ImpulseLeftStrength</c> / <c>ImpulseRightStrength</c>)
-        /// × impulse-tab overall gain (<c>ImpulseOverallGain</c>) +
-        /// <c>ImpulseSwapTriggers</c>. The Impulse Triggers group now owns
+        /// × the Impulse Triggers group's overall gain (<c>ImpulseOverallGain</c>) +
+        /// <c>ImpulseSwapTriggers</c>. The Impulse Triggers group owns
         /// its own overall-gain slider so it doesn't share the main-motor
-        /// gain (<c>ForceOverall</c>). No audio-rumble mix on the trigger
-        /// path — impulse triggers carry game-driven content only.
+        /// gain (<c>ForceOverall</c>). When Audio Rumble on the triggers is
+        /// on (<c>AudioRumbleTriggersEnabled</c>), the detector's trigger
+        /// chain (<c>TriggerMotorValue</c>) is max-combined into each
+        /// trigger before the gains.
         /// </summary>
         public void ScaleTriggerRumbleForDevice(
             ushort rawLeft, ushort rawRight, PadSetting ps,
@@ -2310,12 +2318,11 @@ namespace PadForge.Common.Input
             ushort baseL = rawLeft;
             ushort baseR = rawRight;
 
-            // Audio-trigger rumble: same MotorValue from the shared
-            // AudioBassDetector that the main-motor path consumes,
-            // scaled by the per-trigger AudioRumbleLeftTrigger /
-            // AudioRumbleRightTrigger. Detector params (sensitivity,
-            // cutoff) are set once per tick by ApplyDetectorSettingsForTick
-            // — no work here, just read MotorValue.
+            // Audio-trigger rumble: the shared AudioBassDetector's
+            // TriggerMotorValue, scaled by the per-trigger
+            // AudioRumbleLeftTrigger / AudioRumbleRightTrigger. Detector
+            // params are set once per tick by ApplyDetectorSettingsForTick,
+            // so this only reads the value.
             var detector = AudioBassDetector;
             if (detector != null && ps != null && ps.AudioRumbleTriggersEnabled == "1")
             {

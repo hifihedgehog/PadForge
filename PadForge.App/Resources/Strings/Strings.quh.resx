@@ -1008,11 +1008,6 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick stick yaykuykunapaq allinchay</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick stickta ñawpaqman kutichiy</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400-man kutichiy</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s-man kutichiy</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9-man kutichiy</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0-man kutichiy</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0°-man kutichiy</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbarpa llimp'in</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Volanteta ñawpaqman kutichiy</value></data>
@@ -1021,8 +1016,6 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volumen</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Sapa kuti</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Predeterminadoman kutichiy (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz-man kutichiy</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
@@ -1669,7 +1662,7 @@
   <data name="Common_Apply" xml:space="preserve"><value>Churay</value></data>
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mana riqsisqa dispositivo</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hap'iy)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (kacharpariy)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (kacharpariy)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (qallarichiy)</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Kikiykichasqa web pad sapa qutu kontrolkunataqa aswan hatun pantallapi aswan qayllan patanmanta kaq karullapi waqaychan, RetroArch-pa overlaykunan iskaynin chawpinkunata kuyuchisqanman hina. Documentación hinallam ñawirisqa, mana ima GPL códigotapas apachinchu.</value></data>
@@ -1685,4 +1678,5 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Pukllaypa logonta rikuchiy</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Rikch'aywan tupachiy</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Tawa llimp'ikunata rikch'aymanta hap'in.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kachachkallay</value></data>
 </root>

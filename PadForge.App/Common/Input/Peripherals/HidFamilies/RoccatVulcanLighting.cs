@@ -15,8 +15,8 @@ namespace PadForge.Common.Input.Peripherals
     /// one a detector registration of the family matches on the control
     /// interface and usage page OpenRGB opens for the product, and its LED
     /// collection is the model's sibling: the one of the same product on
-    /// the LED interface and usage page (RoccatControllerDetect.cpp:101-203,
-    /// the interfaces and pages at lines 122-153,
+    /// the LED interface and usage page (RoccatControllerDetect.cpp:104-206,
+    /// the interfaces and pages at lines 125-156,
     /// <see cref="HidLightingModel.Siblings"/>). OpenRGB pairs the first two
     /// it finds that no other keyboard took. The worker pairs the two that
     /// share a container, which is the same pair for one keyboard and the
@@ -143,8 +143,8 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The model at a control collection: the first of the
         /// family's registrations the collection answers to is the Vulcan
         /// detector's, whose interface and usage page are the control
-        /// collection's (RoccatControllerDetect.cpp:392-405 against lines
-        /// 122-153).</summary>
+        /// collection's (RoccatControllerDetect.cpp:413-426 against lines
+        /// 125-156).</summary>
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection?.Path == null) return null;
@@ -170,7 +170,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The LED collection's interface and usage page, and the
         /// control collection's, OpenRGB opens for a product
-        /// (RoccatControllerDetect.cpp:122-153).</summary>
+        /// (RoccatControllerDetect.cpp:125-156).</summary>
         internal static (int LedInterface, int LedPage, int ControlInterface, int ControlPage) Interfaces(ushort pid)
             => pid switch
             {
@@ -208,7 +208,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static LightMap MapOf(string table, int reported, string product)
         {
             var layout = RoccatVulcanLayouts.Find(table, reported);
-            return new LightMap(RoccatVulcanLayouts.Lights(layout), "OpenRGB " + layout.Source) { Product = product };
+            return new LightMap(RoccatVulcanLayouts.Lights(layout)) { Product = product };
         }
 
         // ─────────────────────────────────────────────

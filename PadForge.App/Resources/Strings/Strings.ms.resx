@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Dalam talian</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Luar talian</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tidak diketahui</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Lalai</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Semak imbas…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Teruskan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Henti</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Enjin dihentikan.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Ralat: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} tidak dapat dicipta.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Peranti tidak dapat dibuka, dibaca atau dipetakan. Log diagnostik menamakannya.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} mengalami ralat. Log diagnostik mengandungi puncanya.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Enjin input mengalami ralat. Log diagnostik mengandungi puncanya.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL tidak dapat dimulakan. Log diagnostik mengandungi puncanya.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro tidak dapat disediakan. Log diagnostik mengandungi puncanya.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Profil HIDMaestro bagi sebuah pengawal maya hilang. Log diagnostik menamakannya.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} tidak dapat menerima identiti dan reka letak suaiannya lalu menggunakan yang asal daripada profilnya.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil ditukar: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil ditukar: Lalai</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Lalai</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port Pelayan Gerakan</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Menyediakan data giro dan meter pecutan kepada Cemu, Dolphin, Yuzu, dll.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod Permainan</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Membolehkan mod permainan yang dibuat untuk DSX menetapkan pencetus adaptif, bar cahaya, lampu pemain dan lampu bisu pada pengawal PlayStation anda.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Membolehkan mod permainan yang dibuat untuk DSX menetapkan pencetus adaptif, bar cahaya, lampu pemain dan lampu bisu pada DualSense atau DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Terima Mod Permainan DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port Mod Permainan</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Jalankan Pengganti DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Sesetengah mod, seperti DualSense4GTAV, mematikan diri melainkan program bernama DSX sedang berjalan. Ini menjalankan pengganti kecil dengan nama itu semasa pelayan mendengar.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Berfungsi dengan mod yang dibuat untuk DSX, seperti untuk GTA V, Red Dead Redemption 2, Skyrim dan Forza. Semasa pelayan mendengar, PadForge menulis port-nya di tempat mod itu mencarinya.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Mendengar pada :{0}. {1} sedang menghantar ke pengawal maya {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Mendengar pada :{0}. {1} sedang menghantar, tetapi tiada pengawal maya yang mempunyai pengawal PlayStation padanya.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mendengar pada :{0}. {1} sedang menghantar ke indeks pengawal {2}, dan tiada pengawal maya dengan pengawal PlayStation padanya mempunyai indeks itu.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Mendengar pada :{0}. {1} sedang menghantar, tetapi tiada pengawal maya yang mempunyai DualSense atau DualShock 4 padanya.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mendengar pada :{0}. {1} sedang menghantar ke indeks pengawal {2}, dan tiada pengawal maya dengan DualSense atau DualShock 4 padanya mempunyai indeks itu.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} sedang digunakan oleh program lain, seperti DSX. Tutupnya atau pilih port lain.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Sebuah mod permainan</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Berfungsi dengan OpenTrack dan mana-mana penjejak yang menghantar output UDP-nya atau menulis memori kongsi FreeTrack 2.0, dan dengan masa jalan OpenXR pada mesin ini yang boleh menjalankan sesi di latar belakang.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fail tidak ditemui</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Tidak dapat dibaca</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fail “{0}” hilang atau tidak dapat dibaca. PadForge memaparkan Gelap sehingga fail itu kembali.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fail “{0}” tidak mengandungi tema PadForge. PadForge memaparkan Gelap sehingga ia mengandunginya.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profil “{0}” memakai rupa permainannya. Tema anda kembali apabila profil lain diaktifkan.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Enjin Input</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurasikan tingkah laku pengundian dan pemprosesan latar belakang.</value></data>
@@ -1047,6 +1054,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Pengawal tidak menerima arahan yang menyediakannya, jadi tiada apa yang dihantar. Semak bahawa ia disambungkan dan hantar semula.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Penghantaran terhenti kerana ralat dalam PadForge. Fail log mempunyai butirannya.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Gambar masih sedang dihantar ke pengawal. Hentikan penghantaran?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Terus Hantar</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fail Controller Pak (*.mpk)|*.mpk|Semua Fail (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Pulihkan Controller Pak</value></data>
@@ -1434,6 +1442,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Susutan Denyut</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Pratetap</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Tersuai</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Dijana Pengguna)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Kayu Bedik</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Pencetus</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2414,7 +2423,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Pengawal ini mempunyai magnetometer. Menambat yaw pada utara magnet menghilangkan hanyutan mendatar perlahan daripada bidikan giro. Tentukur dahulu: tekan Tentukur, putarkan pengawal melalui semua orientasi dalam bentuk angka 8 selama beberapa saat, kemudian tekan sekali lagi.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Tambat yaw pada kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Menambah kadar pembetulan kecil yang menarik bidikan mendatar ke arah haluan magnet, supaya hanyutan tidak dapat terkumpul. Memerlukan penentukuran magnetometer yang disimpan. Sampel yang diganggu oleh logam atau magnet berdekatan ditolak secara automatik.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Tetap semula kepada lalai (Mati)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulasi pic dan golek</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pic dan golek dikira daripada pecutan ukur</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Giro pengawal ini hanya mengesan pusingan kiri dan kanan. Dengan simulasi hidup, PadForge memperoleh pic dan golek daripada meter pecutan dan menghantarnya bersama yaw giro ke baris pemetaan dan gerakan pengawal maya. Meter pecutan tidak dapat membezakan tolakan daripada condongan, jadi menggerakkan pengawal ke sisi atau ke hadapan tanpa memusingkannya dibaca sebagai putaran ringkas.</value></data>
@@ -2809,7 +2817,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sapu kayu bedik di sekeliling pinggirnya untuk memetakan sempadan yang boleh dicapai, kemudian bentukkan semula kepada bulatan penuh.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Tetap Semula Penentukuran Sempadan</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Tetap Semula Ofset Tengah Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Tetap Semula ke Jejari Berskala</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Tetap Semula Zon Mati X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Tetap Semula Zon Mati Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Tetap Semula Anti-Zon Mati X</value></data>
@@ -3256,13 +3263,10 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Tetap Semula Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Titik setiap 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Bilangan tetikus untuk satu pusingan kamera penuh 360°. Bergantung pada kepekaan tetikus permainan: naikkan jika flick kurang berputar, turunkan jika terlebih putar.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Tetap Semula kepada 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Masa Flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Berapa lama flick 180° penuh siap, dengan perlahan di hujung. Pusingan yang lebih pendek siap dalam masa yang sama.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Tetap Semula kepada 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Ambang Flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Pesongan kayu bedik yang memulakan flick, sebagai pecahan pesongan penuh. Semasa flick, titik lepas turun kepada 90% daripada ini.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Tetap Semula kepada 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Sudut Tangkap</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Tangkapkan flick kepada sudut tetap untuk pusingan yang lebih konsisten. Hadapan Sahaja menangkap setiap flick tepat ke hadapan.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Tiada Tangkapan</value></data>
@@ -3271,22 +3275,16 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Darjah</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Darjah</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Darjah</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Tetap Semula kepada Tiada Tangkapan</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Kekuatan Tangkapan</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Sekuat mana flick ditarik ke sudut yang ditangkap. 1 menangkap sepenuhnya, 0 mematikan tangkapan, nilai di antara mengadun.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Tetap Semula kepada 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zon Mati Sudut Hadapan</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Flick dalam sudut ini dari tepat ke hadapan tidak memutar apa-apa. Membolehkan anda memulakan sapuan tanpa pusingan flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Tetap Semula kepada 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Pelicinan Sapuan</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Melicinkan hingar sapuan rim. -1 menggunakan tetingkap berperingkat automatik, 0 mematikan pelicinan, nilai yang lebih besar melicinkan putaran setiap tik yang lebih besar.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Tetap Semula kepada Automatik (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Benarkan Flick semasa Diaktifkan</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Ofset Putaran</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Memutar seluruh peta flick sebanyak darjah ini. Positif ialah ikut arah jam. Tangkapan dikenakan selepas ofset.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Tetap Semula Ofset Putaran</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Apabila lapisan yang menjadi hos Flick Stick diaktifkan dengan kayu bedik sudah terpesong, laksanakan flick serta-merta. Mati mengekalkan kamera diam dan menjejak putaran daripada sudut kayu bedik semasa.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Tetap Semula Benarkan Flick semasa Diaktifkan</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Maklum Balas Kunci Stereng</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat pada kunci penuh untuk kayu bedik dalam mod stereng</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Apabila kayu bedik yang ditetapkan kepada mod stereng diputar sepenuhnya ke kunci penuh, mainkan isyarat (getaran, pencetus atau bar cahaya) supaya anda merasai had. Semuanya mati secara lalai.</value></data>
@@ -3476,11 +3474,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Mainkan Haptik DualSense pada Pengawal Ini</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Apabila permainan memacu slot ini sebagai DualSense maya dengan audio haptik yang dikarang, mainkan trek itu pada penggerak pengawal ini. Steam Controller 2026 melalui USB atau dongelnya, dan Flydigi Apex 6 Pro, memainkan trek itu sendiri. Setiap pengawal lain, dan Steam Controller itu melalui Bluetooth, mendapat nada yang diterbitkan daripada audio, yang menghampiri rasa pereka dan bukan menghasilkannya semula.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gandaan Haptik</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Tetap Semula kepada Lalai (Mati)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Tetap Semula kepada Lalai (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Potongan Laluan Rendah Penggerak</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Memastikan penstriman haptik Steam Controller di bawah frekuensi ini supaya pad bergetar dan bukan memainkan bunyi yang boleh didengar. Sekitar 250 Hz penggerak mula kedengaran. Naikkan untuk perincian yang lebih tajam, turunkan untuk permainan yang lebih senyap.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Tetap Semula kepada 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Nada di atas frekuensi ini dipotong atau dilipat. Lalai 800 Hz mengekalkan getaran enjin dan hentaman sambil menangkap bip nada tinggi.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Tetap Semula Nada Tinggi</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tetap Semula Had Nada</value></data>
@@ -4049,8 +4044,59 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kawasan Kursor</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Anjakan {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Senarai roda ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Kawasan kursor ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Tahan tetikus {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klik tetikus {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Togol tetikus {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Denyut haptik ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ekor lepas)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Ketik {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Tembak auto {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Tahan {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Togol {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Tekan dua kali {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Tekan lama {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Detik roda ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Togol roda ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Roda turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Lompat kursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Tetapkan LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Pusatkan semula giro ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Alih kursor sedikit ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Kekunci tangkapan skrin ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Papan kekunci pada skrin ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Tetapkan warna cahaya</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Pusatkan semula kamera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Lompat kursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Alih kursor sedikit</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Tangkapan skrin</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Papan kekunci pada skrin</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Tukar lapisan anjakan</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Hidupkan lapisan anjakan</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Matikan lapisan anjakan</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Tahan lapisan anjakan</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Tukar nombor pemain</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Tidak terikat</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Togol mod desktop</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Kekunci sistem Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Togol pembesar</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Tambah kecerahan</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Kurangkan kecerahan</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Matikan pengawal</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Buka konfigurator Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Buka menu pantas Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Keluar permainan</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Togol haptik</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Togol HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Togol getaran</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Paksa butang Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Putaran penentukuran giro</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Hadap ke arah</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tahan)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lepas)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lepas)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (pelibatan)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk melihat apa yang dibawa.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Apa yang Dibawa</value></data>
@@ -4658,11 +4704,9 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Lapisan</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Pilih lapisan yang membenarkan menu ini. Mana-mana Lapisan dan Asas kedua-duanya membenarkannya di bawah lapisan aktif lain. Lapisan bernama mesti sepadan dengan lapisan yang sedang aktif.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Tetap semula kepada Mana-mana Lapisan dan matikan pembukaan yang ditahan lapisan.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (tidak disenaraikan pada slot ini)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Lapisan Mengekalkan Menu Terbuka</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Pastikan menu ini terbuka semasa lapisan bernamanya aktif. Input fizikal yang dipilih mengemudi sorotan. Mana-mana Lapisan dan Asas menggunakan pembukaan permukaan biasa.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Tetap semula kepada pembukaan melalui sentuhan atau pesongan.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Kemudi Dengan</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Input fizikal yang mengemudi sel tersorot semasa lapisan mengekalkan menu ini terbuka.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Dibaca daripada pengawal fizikal yang diumpukkan kepada slot ini. Lapisan membuka menu, dan input ini mengemudikannya. Sel menu menyatakan apa yang dikeluarkannya.</value></data>
@@ -4742,7 +4786,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Pisah Mengikut Arah</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zon Mati Tengah</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tetap Semula kepada Kayu Bedik Kiri X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tetap Semula Kekuatan (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tetap Semula Zon Mati Tengah (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Tetap Semula Dayakan Getaran Sudut Stereng</value></data>
@@ -5259,6 +5302,9 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_LanguageRefs" xml:space="preserve"><value>Rujukan bahasa Klingon dan Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Perkataan dalam terjemahan Klingon dan Sindarin disemak berdasarkan klingon-assistant-data (Apache-2.0), kamus di sebalik boQwI', dan Eldamo (CC BY 4.0), leksikon Elvish oleh Paul Strack. Data kamus sahaja, tiada yang disertakan.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Fail itu bukan tema PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge tidak dapat membaca fail itu.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge tidak dapat menemui fail itu.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Bukan tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema tidak dapat disimpan. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema Baharu</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge memakai tema itu semasa anda membinanya.</value></data>
@@ -5273,6 +5319,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Mendapatkan gambar daripada Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam tidak mempunyai gambar lebar untuk permainan ini.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Tidak dapat mencapai Steam. Semak sambungan anda.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge tidak dapat membaca gambar Steam untuk permainan ini.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Kedudukan</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Menggerakkan gambar ke atas atau ke bawah dalam tetingkapnya.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Tunjukkan Logo Permainan</value></data>
@@ -5313,4 +5360,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Model yang difilemkan untuk siri Star Trek asal, difoto oleh Smithsonian National Air and Space Museum yang menyimpannya: gambar tema Star Trek LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Gambar Tema: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Sebuah bingkai Star Trek: The Next Generation: gambar tema Star Trek Starfleet. Ditemui di Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Bar cahaya</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bar cahaya {0}</value></data>
 </root>

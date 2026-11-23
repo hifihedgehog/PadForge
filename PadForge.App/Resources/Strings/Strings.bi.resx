@@ -168,6 +168,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Enjin i stop.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Problem: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>PadForge i no save mekem {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Wan divaes i no save open, ridim o mapem. Log blong daeagnostik i talem nem blong hem.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} i kasem wan eror. Log blong daeagnostik i talem from wanem.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Enjin blong input i kasem wan eror. Log blong daeagnostik i talem from wanem.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL i no save stat. Log blong daeagnostik i talem from wanem.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>I no save setemap HIDMaestro. Log blong daeagnostik i talem from wanem.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Profael blong HIDMaestro blong wan virtual kontrola i lus. Log blong daeagnostik i talem nem blong hem.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} i no save tekem kastom aedentiti mo leaot blong hem, ale i yusum hemia blong profael blong hem.</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>I stap rekod…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>taem</value></data>
@@ -213,12 +220,12 @@
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, raet han</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Pot</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod blong gem</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>I letem ol mod blong gem we oli mekem blong DSX oli setem ol adaptive triga, laetba, ol laet blong plea mo laet blong mute blong ol PlayStation kontrola blong yu.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>I letem ol mod blong gem we oli mekem blong DSX oli setem ol adaptive triga, laetba, ol laet blong plea mo laet blong mute blong wan DualSense o DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Akseptem ol mod blong gem blong DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pot blong ol mod blong gem</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Sam mod, olsem DualSense4GTAV, oli stopem olgeta sapos wan program we nem blong hem DSX i no stap ron. Samting ia i ronem wan smol program wetem sem nem ia blong tekem ples blong hem, taem server i stap lesin.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>I wok wetem ol mod we oli mekem blong DSX, olsem olgeta blong GTA V, Red Dead Redemption 2, Skyrim mo Forza. Taem server i stap lesin, PadForge i raetem pot blong hem long ples we ol mod ia oli stap lukaotem.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>I stap lisin long :{0}. {1} i stap sendem i go long kontrola namba {2}, be i no gat wan virtual kontrola wetem wan PlayStation kontrola long hem we i gat namba ia.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>I stap lisin long :{0}. {1} i stap sendem i go long kontrola namba {2}, be i no gat wan virtual kontrola wetem wan DualSense o DualShock 4 long hem we i gat namba ia.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Narafala program, olsem DSX, i yusum pot {0} finis. Klosem hem o jusum narafala pot.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Wan mod blong gem</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>I no faenem wan analog kiboad we PadForge i save ridim.</value></data>
@@ -493,6 +500,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Braet</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kastom</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Yusa i mekem)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Ol stik</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ol triga</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ol POV</value></data>
@@ -765,7 +773,6 @@
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Invert roll (X)</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Putum bak invert yaw</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Putum bak invert roll</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Putum bak long orijinol (of)</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Holem</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>On/of</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Raet stik</value></data>
@@ -1085,17 +1092,12 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Stretem ol input blong Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Putum bak flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Putum bak long 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Taem blong flick</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Putum bak long 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Threshold blong flick</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Putum bak long 0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 digri</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 digri</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 digri</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 digri</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Putum bak long 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Putum bak long 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Kala blong laetba</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Wil</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Putum bak wil</value></data>
@@ -1125,9 +1127,6 @@
   <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Taem yu holem wan input</value></data>
   <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Taem gem i mekem seksek</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Of</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Putum bak long orijinol (Of)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Putum bak long orijinol (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Putum bak long 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>PadForge i no save ridim fael ia olsem wan profael.</value></data>
@@ -1452,7 +1451,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mota</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Seraotem folem daereksen</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dedzon long medel</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Putum bak long lef stik X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Putum bak dedzon long medel (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profael</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Stap tekemaot ol olfala draeva…</value></data>
@@ -1855,6 +1853,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Jenisim stael</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tekemaot long lis. Fael i stap yet long ples blong hem.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fael blong “{0}” i lus o i no save ridim. PadForge i soem Tudak kasem we fael i kambak.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fael blong “{0}” i no gat wan stael blong PadForge insaed. PadForge i soem Tudak kasem we fael i gat.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nem</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Stael blong mi</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Graon</value></data>
@@ -1871,4 +1870,8 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Folem pikja</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>I tekem ol 4 kala long pikja.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ol pikja (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Evri fael (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge i no save ridim fael ia.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no save faenem fael ia.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge i no save ridim pikja blong Steam blong gem ia.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Gohed blong sendem</value></data>
 </root>

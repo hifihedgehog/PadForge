@@ -62,7 +62,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheLights_NameEachKeyByItsUsage()
         {
-            var full = new LightMap(W.Lights(W.KeyboardType.Full), "t");
+            var full = new LightMap(W.Lights(W.KeyboardType.Full));
             // "Key: +" sits between - and Backspace: the = key.
             Assert.Equal(0x2E, full.Lights.Single(l => l.Address == 33).Usage);
             Assert.Equal(0x29, full.Lights.Single(l => l.Address == 0).Usage);
@@ -81,13 +81,13 @@ namespace PadForge.Tests
 
             // The 80HE: four space bar lights beside the space bar's own, and
             // four JIS places no source names.
-            var eighty = new LightMap(W.Lights(W.KeyboardType.Eighty), "t");
+            var eighty = new LightMap(W.Lights(W.KeyboardType.Eighty));
             Assert.Equal(5, eighty.IndexesOf(0x2C).Count);
             Assert.Equal(4, eighty.UnnamedKeyCount);
 
             // The UwU: 14 lightbar lights, OpenRGB calling the first
             // "Lighbar 1", and three keys no source names.
-            var uwu = new LightMap(W.Lights(W.KeyboardType.ThreePad), "t");
+            var uwu = new LightMap(W.Lights(W.KeyboardType.ThreePad));
             Assert.Equal(14, uwu.EdgeCount);
             Assert.Equal(3, uwu.UnnamedKeyCount);
             Assert.Equal(LightKind.Edge, uwu.Lights.Single(l => l.Address == 21).Kind);

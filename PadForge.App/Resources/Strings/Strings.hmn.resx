@@ -84,7 +84,6 @@
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Tab tom khiav ntawm {0}</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Pib tsis tau</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tsis paub</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Neej ntawd</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Nrhiav…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Mus ntxiv</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Nres</value></data>
@@ -400,6 +399,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ntxiv xim</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kho tus kheej</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Tus neeg siv tsim)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Cov stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Cov trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Cov POV</value></data>
@@ -609,7 +609,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Chav ntsuas, ntxeev axis, Kev ntsuas raws tiag</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° rau ib ncig</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Rov qab mus rau neej ntawd (Kaw)</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Nias tuav</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick sab xis</value></data>
@@ -930,11 +929,6 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Kho cov kev nkag rau Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Rov teeb tsa flick stick dua</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Rov teeb tsa dua rau 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Rov teeb tsa dua rau 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Rov teeb tsa dua rau 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Rov teeb tsa dua rau 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Rov teeb tsa dua rau 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Xim ntawm lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Wheel</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Rov teeb tsa wheel dua</value></data>
@@ -955,9 +949,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Suab nrov</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Ib txwm</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Kaw</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Rov teeb tsa dua rau neej ntawd (Kaw)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Rov teeb tsa dua rau neej ntawd (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Rov teeb tsa dua rau 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
@@ -1241,7 +1232,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Faib raws sab</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone nruab nrab</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Rov teeb tsa dua mus rau Stick sab laug X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Rov teeb tsa dua lub zog (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Rov teeb tsa dua deadzone nruab nrab (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
@@ -1611,6 +1601,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Kho theme</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tshem tawm ntawm daim ntawv teev npe. Cov ntaub ntawv tseem nyob qhov chaw qub.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Cov ntaub ntawv ntawm “{0}” ploj lawm los sis nyeem tsis tau. PadForge qhia Tsaus mus txog thaum nws rov muaj.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Cov ntaub ntawv ntawm “{0}” tsis muaj PadForge theme. PadForge qhia Tsaus mus txog thaum nws muaj.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Npe</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Kuv theme</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Hauv paus</value></data>
@@ -1627,4 +1618,8 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ua kom phim duab</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Siv plaub xim los ntawm tus duab.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Duab (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Txhua cov ntaub ntawv (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge nyeem tsis tau cov ntaub ntawv ntawd.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge nrhiav tsis tau cov ntaub ntawv ntawd.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge nyeem tsis tau Steam daim duab rau game no.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Xa mus ntxiv</value></data>
 </root>

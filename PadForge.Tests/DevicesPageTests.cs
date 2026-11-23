@@ -187,6 +187,37 @@ namespace PadForge.Tests
             Assert.Contains("dash.OnlineDevices = CountConnectedDevices(deviceSnapshot);", service);
         }
 
+        /// <summary>The rows the Devices page builds none for are not in
+        /// Home's count either: a row PadForge.xml marks hidden, and a row
+        /// whose name or path names a virtual controller. A WinMM port
+        /// the user named "Virtual 1" is PadForge's own MIDI row, read
+        /// through the MIDI wrapper PadForge built, so it has a row and
+        /// counts on both pages.</summary>
+        [Fact]
+        public void HomesDeviceCount_SkipsTheRowsThePageBuildsNoneFor()
+        {
+            var midi = new PadForge.Engine.Data.UserDevice
+            {
+                DevicePath = "midi://winmm:Virtual 1", InstanceName = "Virtual 1",
+                CapType = InputDeviceType.Midi, IsOnline = true,
+                Device = new PadForge.Common.Input.MidiInputDevice("winmm:Virtual 1", "Virtual 1"),
+            };
+            var hidden = new PadForge.Engine.Data.UserDevice
+            {
+                DevicePath = @"\\?\HID#VID_054C&PID_0CE6&MI_03#8&1&0&0000",
+                CapType = InputDeviceType.Gamepad, IsOnline = true, IsHidden = true,
+            };
+            var virtualPad = new PadForge.Engine.Data.UserDevice
+            {
+                DevicePath = @"\\?\HID#VIRTUAL_GAMEPAD&Col01#1&2&0&0000",
+                CapType = InputDeviceType.Gamepad, IsOnline = true,
+            };
+            Assert.False(PadForge.Services.InputService.IsVirtualOrShadowDevice(midi));
+            Assert.True(PadForge.Services.InputService.IsVirtualOrShadowDevice(hidden));
+            Assert.True(PadForge.Services.InputService.IsVirtualOrShadowDevice(virtualPad));
+            Assert.Equal(1, PadForge.Services.InputService.CountConnectedDevices(new[] { midi, hidden, virtualPad }));
+        }
+
         [Fact]
         public void AListGroupIsRaisedOnlyWhenItChanges()
         {

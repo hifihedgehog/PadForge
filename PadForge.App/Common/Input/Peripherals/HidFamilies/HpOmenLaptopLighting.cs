@@ -108,7 +108,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "Omen 4-Zone Laptop Keyboard",
-                Map = new LightMap(Lights(), "OpenRGB HPOmenLaptopController") { Product = Product },
+                Map = new LightMap(Lights()) { Product = Product },
                 Programs = new[] { VendorPrograms.OmenGamingHub },
                 RepaintMs = RepaintMs,
                 Open = _ => _open(),

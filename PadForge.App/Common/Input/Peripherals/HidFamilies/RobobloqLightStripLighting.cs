@@ -121,7 +121,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(Array.Empty<LightInfo>(), "OpenRGB RobobloqLightStripController, from the device") { Product = product },
+                Map = new LightMap(Array.Empty<LightInfo>()) { Product = product },
                 RepaintMs = RepaintMs,
                 Begin = (io, wait) => Begin(io, wait, product),
             };
@@ -231,7 +231,7 @@ namespace PadForge.Common.Input.Peripherals
                 int zone = perSide == 0 ? 1 : i < perSide ? 1 : i < count - perSide ? 2 : 3;
                 lights[i] = new LightInfo(i, LightKind.Zone, 0, LightKeySource.None) { Zone = zone };
             }
-            return new LightMap(lights, "OpenRGB RGBController_RobobloqLightStrip.cpp, from the device") { Product = product };
+            return new LightMap(lights) { Product = product };
         }
 
         // ─────────────────────────────────────────────

@@ -203,7 +203,7 @@ def main():
     out.append("        {")
     for table, line, entries in tables:
         for layout, grid, size, rows, cols, leds, eline in sorted(entries, key=lambda e: e[0]):
-            out.append("            new(%s, %d, %d, %d, %s, \"RoccatVulcanKeyboardLayouts.h:%d\", new RoccatVulcanLed[]"
+            out.append("            new(%s, %d, %d, %d, %s, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:%d"
                        % (cs(table), layout, rows, cols, cs_name(grid), eline))
             out.append("            {")
             for index, (name, value, token) in enumerate(leds):

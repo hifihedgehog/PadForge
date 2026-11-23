@@ -63,10 +63,10 @@ namespace PadForge.Tests
             Assert.Contains("if (_hmaestroContext != null || HmSetupHeld())", ensure);
             Assert.Contains("bool recovered = _hmaestroSetupFailedTick != 0;", ensure);
             Assert.Contains("Volatile.Write(ref _hmaestroSetupFailedTick, 0);", ensure);
-            Assert.Contains("if (recovered) RaiseErrorResolved(HmSetupFailedMessage);", ensure);
+            Assert.Contains("if (recovered) RaiseErrorResolved(_hmSetupFailedStatus ?? Strings.Instance.Status_HidMaestroSetupFailed, HmSetupFailedLog);", ensure);
             Assert.Contains("try { ctx?.Dispose(); } catch { }", ensure);
             Assert.Contains("Volatile.Write(ref _hmaestroSetupFailedTick, Math.Max(1, Environment.TickCount64));", ensure);
-            Assert.Contains("RaiseError(HmSetupFailedMessage, ex);", ensure);
+            Assert.Contains("RaiseError(_hmSetupFailedStatus, HmSetupFailedLog, ex);", ensure);
 
             string shutdown = Body(step5, "private void DisposeHMaestroContextOnShutdown()", 900);
             Assert.Contains("Volatile.Write(ref _hmaestroSetupFailedTick, 0);", shutdown);
@@ -159,7 +159,7 @@ namespace PadForge.Tests
             Assert.True(publish > 0, "the context is never published");
             Assert.Equal(publish, attempt.LastIndexOf("_hmaestroContext = ctx;", StringComparison.Ordinal));
             Assert.True(publish > attempt.IndexOf("ctx.InstallDriver();", StringComparison.Ordinal));
-            Assert.True(publish > attempt.IndexOf("if (recovered) RaiseErrorResolved(HmSetupFailedMessage);", StringComparison.Ordinal));
+            Assert.True(publish > attempt.IndexOf("if (recovered) RaiseErrorResolved(_hmSetupFailedStatus ?? Strings.Instance.Status_HidMaestroSetupFailed, HmSetupFailedLog);", StringComparison.Ordinal));
             Assert.True(publish > attempt.IndexOf("AppDomain.CurrentDomain.ProcessExit +=", StringComparison.Ordinal));
         }
     }

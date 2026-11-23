@@ -79,7 +79,6 @@
   <data name="Common_Ready" xml:space="preserve"><value>Nakasagana</value></data>
   <data name="Common_Stopped" xml:space="preserve"><value>Nagsardeng</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Di ammo</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Kasisigud</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Ituloy</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Isardeng</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Irugi</value></data>
@@ -347,6 +346,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Agnayon iti maris</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Bukod</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Inaramid ti agus-usar)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Dagiti stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Dagiti trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Dagiti POV</value></data>
@@ -768,15 +768,10 @@
   <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Kannigid</value></data>
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Kanawan</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Agpalikud</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>I-reset iti 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>I-reset iti 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>I-reset iti 0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 a grado</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 a grado</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 a grado</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 a grado</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>I-reset iti 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>I-reset iti 0°</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>I-reset ti wheel</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Iti ngato ti screen</value></data>
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Iti baba ti screen</value></data>
@@ -792,8 +787,6 @@
   <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Isardeng dagiti uni</value></data>
   <data name="Macro_Sound_File_Label" xml:space="preserve"><value>File ti uni</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Kanayon</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset iti kasisigud (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset iti 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Daytoy a file ket saan a mabasa a profile ti PadForge.</value></data>
@@ -1395,6 +1388,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit ti tema</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Ikkaten iti listaan. Agtalinaed ti file iti ayanna.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Awan wenno saan a mabasa ti file ti “{0}”. Ipakita ti PadForge ti Nasipnget agingga a maisubli dayta.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Awan ti tema ti PadForge iti file ti “{0}”. Ipakita ti PadForge ti Nasipnget agingga nga adda tema iti dayta.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nagan</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ti temak</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Batayan</value></data>
@@ -1409,4 +1403,6 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita ti logo ti ay-ayam</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Itunos iti ladawan</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Alaen ti uppat a kolor manipud iti ladawan.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Saan a mabasa ti PadForge ti ladawan ti Steam para iti daytoy nga ay-ayam.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ituloy ti panangipatulod</value></data>
 </root>

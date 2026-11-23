@@ -49,9 +49,7 @@ namespace PadForge.Common.Input.Peripherals
                     lights.Add(new LightInfo(ZoneBase + zone, LightKind.Zone, 0, LightKeySource.None) { Zone = zone + 1 });
                 if (lights.Count < 2) continue;
                 lights.Sort((a, b) => a.Address.CompareTo(b.Address));
-                maps[type] = new LightMap(lights, type == "keyboard"
-                    ? "Logitech LED SDK 9.00 LogitechLEDLib.h, KeyName and keyboard zones"
-                    : "Logitech LED SDK 9.00, " + type + " zones");
+                maps[type] = new LightMap(lights);
             }
             return maps;
         }
@@ -66,8 +64,8 @@ namespace PadForge.Common.Input.Peripherals
             var keys = new List<LightInfo>();
             var zones = new List<LightInfo>();
             foreach (var light in whole.Lights) (IsKey(light) ? keys : zones).Add(light);
-            return (new LightMap(keys, "Logitech LED SDK 9.00 LogitechLEDLib.h, KeyName"),
-                    new LightMap(zones, "Logitech LED SDK 9.00, keyboard zones"));
+            return (new LightMap(keys),
+                    new LightMap(zones));
         });
 
         /// <summary>

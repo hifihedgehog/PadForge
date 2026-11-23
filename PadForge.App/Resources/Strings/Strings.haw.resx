@@ -354,6 +354,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Hoʻohui i ka waihoʻoluʻu</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Hoʻopilikino</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Na ka mea hoʻohana)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Nā stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Nā trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Nā POV</value></data>
@@ -1157,6 +1158,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Hoʻoponopono i ke kumuhana</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Wehe mai ka papa inoa. Noho mau ka faila ma kona wahi.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Nalowale a hiki ʻole ke heluhelu ʻia ka faila o “{0}”. Hōʻike ʻo PadForge i ka Pōʻeleʻele a hiki i kona hoʻi ʻana mai.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>ʻAʻohe kumuhana PadForge i loko o ka faila o “{0}”. Hōʻike ʻo PadForge i ka Pōʻeleʻele a hiki i ka wā e loaʻa ai.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Inoa</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Koʻu kumuhana</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Kahua</value></data>
@@ -1170,4 +1172,12 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Hōʻike i ka hōʻailona o ka pāʻani</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Hoʻohālike i ke kiʻi</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Lawe i nā waihoʻoluʻu ʻehā mai ke kiʻi.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>ʻAʻole i hiki ke wehe, heluhelu a hoʻonohonoho ʻia kekahi hāmeʻa. Aia kona inoa ma ka moʻolelo nānā pilikia.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Ua loaʻa iā {0} kekahi hewa. Aia ke kumu ma ka moʻolelo nānā pilikia.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Ua loaʻa i ka ʻenekini hoʻokomo kekahi hewa. Aia ke kumu ma ka moʻolelo nānā pilikia.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>ʻAʻole i hiki iā SDL ke hoʻomaka. Aia ke kumu ma ka moʻolelo nānā pilikia.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>ʻAʻole i hiki ke hoʻonohonoho iā HIDMaestro. Aia ke kumu ma ka moʻolelo nānā pilikia.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Nalowale ka profile HIDMaestro o kekahi controller virtual. Aia kona inoa ma ka moʻolelo nānā pilikia.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>ʻAʻole i hiki iā {0} ke lawe i kona ʻano a me kona hoʻonohonoho pihi i hoʻopilikino ʻia, a hoʻohana ʻo ia i ko kona profile ponoʻī.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hoʻomau i ka hoʻouna</value></data>
 </root>

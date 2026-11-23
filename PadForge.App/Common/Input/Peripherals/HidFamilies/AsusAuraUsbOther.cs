@@ -77,7 +77,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private HidLightingModel Mousemat(string name, int productId)
             => Model(name, productId,
-                new LightMap(Edges(MousematLeds), "OpenRGB RGBController_AsusAuraMousemat.cpp") { Product = ProductKey(productId) },
+                new LightMap(Edges(MousematLeds)) { Product = ProductKey(productId) },
                 (io, wait) => io == null ? null : new FramesSession(MousematFrames, MousematHandBack(io)));
 
         /// <summary>The seven colors Rainbow takes from byte 10 (Balteus.cs:6).</summary>
@@ -121,7 +121,7 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < HeadsetStandLeds - 1; i++) lights[i] = Edge(i);
             lights[HeadsetStandLeds - 1] = Logo(HeadsetStandLeds - 1);
             return Model(name, productId,
-                new LightMap(lights, "OpenRGB RGBController_AsusAuraHeadsetStand.cpp") { Product = ProductKey(productId) },
+                new LightMap(lights) { Product = ProductKey(productId) },
                 (io, wait) => io == null ? null : new FramesSession(HeadsetStandFrames));
         }
 
@@ -195,7 +195,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = new LightInfo[MonitorLeds];
             for (int i = 0; i < MonitorLeds; i++) lights[i] = Other(i);
             return Model(name, productId,
-                new LightMap(lights, "OpenRGB RGBController_AsusAuraMonitor.cpp") { Product = ProductKey(productId) },
+                new LightMap(lights) { Product = ProductKey(productId) },
                 (io, wait) => io == null ? null : new MonitorSession(productId));
         }
 
@@ -335,12 +335,12 @@ namespace PadForge.Common.Input.Peripherals
                 for (int led = 0; led < leds; led++)
                     lights.Add(new LightInfo(AuraAddress(c, led), LightKind.Edge, 0, LightKeySource.None) { Zone = zone });
             }
-            return new LightMap(lights, "OpenRGB AsusAuraUSBController config table") { Product = product, Strips = strips };
+            return new LightMap(lights) { Product = product, Strips = strips };
         }
 
         private HidLightingModel AuraUsb(string name, int productId, bool mainboard)
             => Model(name, productId,
-                new LightMap(Array.Empty<LightInfo>(), "OpenRGB AsusAuraUSBController") { Product = ProductKey(productId) },
+                new LightMap(Array.Empty<LightInfo>()) { Product = ProductKey(productId) },
                 (io, wait) => BeginAuraUsb(io, productId, mainboard));
 
         /// <summary>GetFirmwareVersion and GetConfigTable
@@ -540,7 +540,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             int leds = name.Contains("Ryujin", StringComparison.Ordinal) ? 5 : 12;
             return Model(name, productId,
-                new LightMap(Edges(leds), "OpenRGB AsusAuraRyuoAIOController.cpp") { Product = ProductKey(productId) },
+                new LightMap(Edges(leds)) { Product = ProductKey(productId) },
                 (io, wait) =>
                 {
                     // SetMode(MODE_DIRECT) with the Direct mode's speed and
@@ -564,7 +564,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private HidLightingModel StrixLc(string name, int productId)
             => Model(name, productId,
-                new LightMap(Edges(StrixLcLeds), "OpenRGB AsusROGStrixLCController.cpp") { Product = ProductKey(productId) },
+                new LightMap(Edges(StrixLcLeds)) { Product = ProductKey(productId) },
                 (io, wait) =>
                 {
                     // SetMode(MODE_DIRECT) (RGBController_AsusROGStrixLC.cpp:195-199).
@@ -594,7 +594,7 @@ namespace PadForge.Common.Input.Peripherals
         /// (RGBController_AsusROGAlly.cpp:125-166).</summary>
         private HidLightingModel Ally(string name, int productId)
             => Model(name, productId,
-                new LightMap(new[] { Zone(0, 1), Zone(1, 1), Zone(2, 2), Zone(3, 2) }, "OpenRGB RGBController_AsusROGAlly.cpp")
+                new LightMap(new[] { Zone(0, 1), Zone(1, 1), Zone(2, 2), Zone(3, 2) })
                 {
                     Product = ProductKey(productId),
                 },

@@ -104,7 +104,7 @@ namespace PadForge.Common.Input
                         }
                         catch (Exception ex)
                         {
-                            RaiseError("Error opening a keyboard screen's row", ex);
+                            RaiseDeviceError("Error opening a keyboard screen's row", ex);
                         }
                     }
                 }

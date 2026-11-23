@@ -97,5 +97,34 @@ namespace PadForge.Tests
                 }
             }, TimeSpan.FromMinutes(2), "the VR picture layout test timed out");
         }
+
+        /// <summary>The room around the art is set when the view is
+        /// measured, from the size it is measured at, and arranging it at
+        /// that size changes nothing. Set in the arrange alone, the measure
+        /// ran with the last arrange's room, and the arrange then took the
+        /// art's measure back and laid the view out a second time.</summary>
+        [Fact]
+        public void TheRoomAroundTheArtIsSetWhenTheViewIsMeasured()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                var pad = new ControllerModel2DView();
+                typeof(ControllerModel2DView).GetMethod("BuildCanvas", BindingFlags.NonPublic | BindingFlags.Instance)!
+                    .Invoke(pad, new object[] { "DS4" });
+                var hands = new VRPreviewView();
+                typeof(VRPreviewView).GetMethod("Build", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(hands, null);
+                foreach (var (view, box) in new[] { ((FrameworkElement)pad, "ModelBox"), (hands, "VrBox") })
+                {
+                    var art = (FrameworkElement)view.FindName(box);
+                    foreach (var (w, h) in s_views)
+                    {
+                        view.Measure(new Size(w, h));
+                        Assert.Equal(ControllerModelFraming.PictureRoom(w, h), art.Margin);
+                        view.Arrange(new Rect(0, 0, w, h));
+                        Assert.True(art.IsMeasureValid, $"{box} in {w} x {h}: arranging the view took its measure back");
+                    }
+                }
+            }, TimeSpan.FromMinutes(2), "the picture room measure test timed out");
+        }
     }
 }

@@ -150,6 +150,45 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
+        public async Task Server_error_is_a_failed_reach_not_a_missing_file()
+        {
+            var (client, handler) = NewClient();
+            handler.Respond = _ => new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+            await Assert.ThrowsAsync<HttpRequestException>(() => client.GetHeroAsync(440));
+
+            // With a stale copy the server error serves it, as a socket failure does.
+            handler.Respond = _ => Ok(JpegA);
+            await client.GetFileAsync(440, "header.jpg");
+            _now = _now.AddDays(8);
+            handler.Respond = _ => new HttpResponseMessage(HttpStatusCode.BadGateway);
+            Assert.Equal(JpegA, (await client.GetFileAsync(440, "header.jpg")).Data);
+        }
+
+        [Fact]
+        public async Task Server_error_on_one_file_goes_on_to_the_next_in_the_chain()
+        {
+            var (client, handler) = NewClient();
+            handler.Respond = req => req.RequestUri.AbsolutePath.EndsWith("/header.jpg", StringComparison.Ordinal)
+                ? Ok(JpegB)
+                : new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+
+            var hero = await client.GetHeroAsync(440);
+            Assert.Equal("header.jpg", hero.File);
+            Assert.Equal(JpegB, hero.Data);
+
+            var portrait = await client.GetPortraitAsync(620);
+            Assert.Equal("header.jpg", portrait.File);
+            Assert.Equal(JpegB, portrait.Data);
+
+            // A server error with a later 404 still reports the failed reach,
+            // since the file the server could not give may exist.
+            handler.Respond = req => req.RequestUri.AbsolutePath.EndsWith("/header.jpg", StringComparison.Ordinal)
+                ? new HttpResponseMessage(HttpStatusCode.NotFound)
+                : new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+            await Assert.ThrowsAsync<HttpRequestException>(() => client.GetHeroAsync(730));
+        }
+
+        [Fact]
         public async Task Definitive_404_falls_through_to_the_chain()
         {
             var (client, handler) = NewClient();

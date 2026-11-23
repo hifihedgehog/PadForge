@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Hindi alam</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Default</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Mag-browse…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Magpatuloy</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ihinto</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Huminto ang engine.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Hindi nagawa ang {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Hindi mabuksan, mabasa o ma-map ang isang device. Nakasaad ang pangalan nito sa diagnostics log.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Nagkaroon ng error ang {0}. Nasa diagnostics log ang sanhi.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Nagkaroon ng error ang input engine. Nasa diagnostics log ang sanhi.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Hindi nakapagsimula ang SDL. Nasa diagnostics log ang sanhi.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Hindi nai-set up ang HIDMaestro. Nasa diagnostics log ang sanhi.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Nawawala ang HIDMaestro profile ng isang virtual controller. Nakasaad ang pangalan nito sa diagnostics log.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Hindi nagamit ng {0} ang na-customize nitong identity at layout, kaya ginagamit nito ang sa profile nito.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Pinalitan ang profile: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Pinalitan ang profile: Default</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Default</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port ng Motion Server</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Nagbibigay ng data ng gyro at accelerometer sa Cemu, Dolphin, Yuzu, at iba pa.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mga Game Mod</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Hinahayaan ang mga game mod na ginawa para sa DSX na itakda ang mga adaptive trigger, lightbar, player light at mute light ng iyong mga PlayStation controller.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Hinahayaan ang mga game mod na ginawa para sa DSX na itakda ang mga adaptive trigger, lightbar, player light at mute light ng isang DualSense o DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Tanggapin ang mga DSX Game Mod</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port ng Game Mod</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Magpatakbo ng DSX.exe Stand-In</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Ang ilang mod, gaya ng DualSense4GTAV, ay kusang nag-o-off kapag walang tumatakbong program na pinangalanang DSX. Nagpapatakbo ito ng maliit na stand-in na may ganoong pangalan habang nakikinig ang server.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Gumagana sa mga mod na ginawa para sa DSX, gaya ng para sa GTA V, Red Dead Redemption 2, Skyrim at Forza. Habang nakikinig ang server, isinusulat ng PadForge ang port nito kung saan hinahanap ng mga mod na iyon.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Nakikinig sa :{0}. Nagpapadala ang {1} sa virtual controller {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Nakikinig sa :{0}. Nagpapadala ang {1}, ngunit walang PlayStation controller sa alinmang virtual controller.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Nakikinig sa :{0}. Nagpapadala ang {1} sa controller index {2}, at walang virtual controller na may PlayStation controller na may index na iyon.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Nakikinig sa :{0}. Nagpapadala ang {1}, ngunit walang DualSense o DualShock 4 sa alinmang virtual controller.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Nakikinig sa :{0}. Nagpapadala ang {1} sa controller index {2}, at walang virtual controller na may DualSense o DualShock 4 na may index na iyon.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ginagamit na ng ibang program ang port {0}, gaya ng DSX. Isara ito o pumili ng ibang port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isang game mod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Gumagana sa OpenTrack at anumang tracker na nagpapadala ng UDP output nito o sumusulat sa FreeTrack 2.0 shared memory, at sa OpenXR runtime sa makinang ito na kayang magpatakbo ng session sa background.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Hindi nakita ang file</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Hindi mabasa</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Nawawala o hindi mabasa ang file ng “{0}”. Ipinapakita ng PadForge ang Madilim hangga’t hindi ito bumabalik.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Walang PadForge na tema ang file ng “{0}”. Ipinapakita ng PadForge ang Madilim hangga’t wala ito.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Suot ng profile na “{0}” ang itsura ng laro nito. Babalik ang tema mo kapag may ibang profile na aktibo.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Input engine</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>I-configure ang polling at ang pagpoproseso sa background.</value></data>
@@ -1047,6 +1054,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Hindi tinanggap ng controller ang command na naghahanda rito, kaya walang naipadala. Tiyaking nakakonekta ito at magpadala ulit.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Huminto ang pagpapadala dahil sa error sa PadForge. Nasa log file ang mga detalye.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>May larawang ipinapadala pa sa controller. Ihinto ang pagpapadala?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ituloy ang Pagpapadala</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Mga File ng Controller Pak (*.mpk)|*.mpk|Lahat ng File (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>I-restore ang Controller Pak</value></data>
@@ -1434,6 +1442,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Ginawa ng User)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Mga Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>
@@ -2414,7 +2423,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>May magnetometer ang controller na ito. Ang pag-anchor ng yaw sa magnetic north ay nag-aalis ng mabagal na pahalang na drift sa gyro aiming. Mag-calibrate muna: pindutin ang Calibrate, paikutin ang controller sa lahat ng oryentasyon na hugis 8 sa loob ng ilang segundo, saka pindutin muli.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>I-anchor ang Yaw sa Compass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Nagdaragdag ng maliit na pamawing rate na humihila sa pahalang na aim papunta sa magnetic heading, kaya hindi maipon ang drift. Nangangailangan ng nakaimbak na calibration ng magnetometer. Awtomatikong tinatanggihan ang mga sample na ginambala ng kalapit na metal o magnet.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>I-reset sa Default (Off)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulation ng Pitch at Roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch at roll na kinuwenta mula sa accelerometer</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Pakaliwa at pakanan lang ang nararamdaman ng gyro ng controller na ito. Kapag naka-on ang simulation, kinukuha ng PadForge ang pitch at roll mula sa accelerometer at ipinapadala ang mga ito kasama ng yaw ng gyro sa mga mapping row at sa motion ng virtual controller. Hindi makilala ng accelerometer ang tulak sa ikiling, kaya ang paggalaw ng controller nang patagilid o pasulong nang hindi umiikot ay nababasa bilang saglit na pag-ikot.</value></data>
@@ -2715,7 +2723,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Iikot ang stick sa gilid nito para mamapa ang maaabot na boundary, saka gawing buong bilog ang hugis.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>I-reset ang Boundary Calibration</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>I-reset ang Center Offset Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>I-reset sa Scaled Radial</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>I-reset ang Deadzone X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>I-reset ang Deadzone Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>I-reset ang Anti-Deadzone X</value></data>
@@ -3055,13 +3062,10 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset ang Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Dots bawat 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Mga mouse count para sa isang buong 360° na ikot ng camera. Depende sa mouse sensitivity ng laro: itaas kung kulang ang ikot ng flick, ibaba kung sobra.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>I-reset sa 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Oras ng Flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Gaano katagal bago matapos ang buong 180° na flick, na may ease-out. Natatapos sa parehong oras ang mas maiikling ikot.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>I-reset sa 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Threshold ng Flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Deflection ng stick na nagsisimula ng flick, bilang bahagi ng buong deflection. Habang nagfi-flick, bumababa sa 90% nito ang release point.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>I-reset sa 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Anggulo ng Snap</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>I-snap ang flick sa mga nakapirming anggulo para sa mas pare-parehong ikot. Ini-snap ng Pasulong Lang ang bawat flick sa harapan mismo.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Walang Snapping</value></data>
@@ -3070,22 +3074,16 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Degrees</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Degrees</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Degrees</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>I-reset sa Walang Snapping</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Lakas ng Snap</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Gaano kalakas hinihila ng flick papunta sa na-snap na anggulo. Ganap na nag-i-snap ang 1, dini-disable ng 0 ang snapping, at humahalo ang mga halagang nasa pagitan.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>I-reset sa 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Deadzone ng Anggulo sa Harap</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Walang iniikot ang flick na nasa loob ng anggulong ito mula sa harapan mismo. Nagagawa mong magsimula ng sweep nang walang flick-turn.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>I-reset sa 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Smoothing ng Sweep</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Pinakikinis ang ingay ng rim-sweep. Ang -1 ay gumagamit ng awtomatikong tiered window, pinapatay ng 0 ang smoothing, at mas pinakikinis ng mas malalaking halaga ang mas malalaking ikot kada tick.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>I-reset sa Awtomatiko (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Payagan ang Flick sa Engage</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Offset ng Pag-ikot</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Iniikot ang buong flick map nang ganito karaming degree. Clockwise ang positibo. Inilalapat ang snapping pagkatapos ng offset.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>I-reset ang Offset ng Pag-ikot</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kapag nag-engage ang layer na may Flick Stick habang naka-deflect na ang stick, agad i-fire ang flick. Kapag naka-off, nananatiling nakatigil ang camera at sinusubaybayan ang pag-ikot mula sa kasalukuyang anggulo ng stick.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>I-reset ang Payagan ang Flick sa Engage</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sa Steering Lock</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Cue sa full lock para sa stick na nasa steering mode</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kapag ang stick na naka-set sa steering mode ay iniikot hanggang full lock, magpapatugtog ng cue (rumble, trigger, o lightbar) para maramdaman mo ang limitasyon. Naka-off lahat bilang default.</value></data>
@@ -3275,11 +3273,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Magpatugtog ng DualSense Haptics sa Controller na Ito</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kapag minamaneho ng laro ang slot na ito bilang virtual DualSense na may authored haptic audio, patugtugin ang track na iyon sa mga actuator ng controller na ito. Ang Steam Controller 2026 sa USB o sa dongle nito, at ang Flydigi Apex 6 Pro, ay mismong nagpapatugtog ng track. Ang bawat ibang controller, at ang Steam Controller na iyon sa Bluetooth, ay nakakakuha ng mga tono na hango sa audio, na lumalapit sa pakiramdam na ginawa ng designer pero hindi ito eksaktong ginagaya.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gain ng Haptics</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>I-reset sa Default (Off)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset sa Default (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Low-Pass Cutoff ng Actuator</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Pinananatili ang haptic streaming ng Steam Controller sa ibaba ng frequency na ito para mag-vibrate ang mga pad sa halip na marinig ang tunog. Sa paligid ng 250 Hz, nagsisimulang marinig ang mga actuator. Itaas para sa mas matalas na detalye, ibaba para sa mas tahimik na laro.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset sa 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Pinuputol o ibinababa ang mga tono na higit sa frequency na ito. Pinapanatili ng default na 800 Hz ang rumble ng makina at impact habang sinasala ang matataas na beep.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>I-reset ang Matataas na Tono</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>I-reset ang Limitasyon ng Tono</value></data>
@@ -3848,8 +3843,59 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profile ng Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro ng Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Rehiyon ng Cursor</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift ng {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Listahan ng wheel ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Rehiyon ng cursor ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Hawakan ang mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>I-click ang mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>I-toggle ang mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptic pulse ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (dulo ng pagbitaw)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>I-tap ang {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Autofire {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Hawakan ang {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>I-toggle ang {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Dobleng pindot sa {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Matagal na pindot sa {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Tick ng wheel ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>I-toggle ang wheel ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo wheel ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>I-warp ang cursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Itakda ang LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>I-recenter ang gyro ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Itulak ang cursor ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Key ng screenshot ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>On screen na keyboard ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Itakda ang kulay ng ilaw</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>I-recenter ang camera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>I-warp ang cursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Itulak ang cursor</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Screenshot</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>On screen na keyboard</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Lumipat ng shift layer</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>I-on ang isang shift layer</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>I-off ang isang shift layer</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Hawakan ang isang shift layer</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Palitan ang numero ng player</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Walang nakatalaga</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>I-toggle ang desktop mode</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>System key ng Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>I-toggle ang magnifier</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Dagdagan ang liwanag</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Bawasan ang liwanag</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Patayin ang controller</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Buksan ang configurator ng Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Buksan ang quick menu ng Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Umalis sa laro</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>I-toggle ang haptics</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>I-toggle ang HUD ng Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>I-toggle ang rumble</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Pilitin ang Guide button</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Pag-ikot para sa kalibrasyon ng gyro</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Humarap sa direksyon</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hold)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (release)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (release)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (engage)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pumili ng config para makita kung ano ang mapupunta.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ano ang Mapupunta</value></data>
@@ -4457,11 +4503,9 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Piliin ang layer na pumapayag sa menu na ito. Pinapayagan ito ng Any Layer at Base sa ilalim ng iba pang aktibong layer. Dapat tumugma ang pinangalanang layer sa kasalukuyang aktibong layer.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>I-reset sa Any Layer at i-off ang pagbubukas na hawak ng layer.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (hindi nakalista sa slot na ito)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Pinananatiling Bukas ng Layer ang Menu</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Panatilihing bukas ang menu na ito habang aktibo ang pinangalanang layer nito. Ang napiling pisikal na input ang nagtuturo sa highlight. Ang Any Layer at Base ay gumagamit ng karaniwang pagbubukas ng surface.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>I-reset sa pagbubukas sa touch o deflection.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Ituro Gamit ang</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Ang pisikal na input na nagtuturo sa naka-highlight na cell habang pinananatiling bukas ng layer ang menu na ito.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Binabasa mula sa mga pisikal na controller na naka-assign sa slot na ito. Binubuksan ng layer ang menu, at ang input na ito ang nagtuturo rito. Sinasabi ng mga cell nito kung ano ang inilalabas ng menu.</value></data>
@@ -4541,7 +4585,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Hatiin ayon sa Direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Center Deadzone</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>I-reset sa Kaliwang Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>I-reset ang Strength (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>I-reset ang Center Deadzone (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>I-reset ang Enable Steering Angle Rumble</value></data>
@@ -5068,6 +5111,9 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_LanguageRefs" xml:space="preserve"><value>Mga sanggunian sa Klingon at Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Ang mga salita ng mga salin sa Klingon at Sindarin, na sinuri laban sa klingon-assistant-data (Apache-2.0), ang diksyunaryo sa likod ng boQwI', at Eldamo (CC BY 4.0), ang leksikon ng Elvish ni Paul Strack. Data ng diksyunaryo lamang, walang kasama sa PadForge.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Hindi theme ng PadForge ang file na iyon.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>Hindi mabasa ng PadForge ang file na iyon.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>Hindi makita ng PadForge ang file na iyon.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Hindi tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Hindi na-save ang tema. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Bagong Tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Suot ng PadForge ang tema habang binubuo mo ito.</value></data>
@@ -5082,6 +5128,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kinukuha ang larawan mula sa Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Walang malapad na larawan ang Steam para sa larong ito.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Hindi maabot ang Steam. Suriin ang koneksyon mo.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Hindi mabasa ng PadForge ang larawan ng Steam para sa larong ito.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisyon</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Inililipat pataas o pababa ang larawan sa bintana nito.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita ang Logo ng Laro</value></data>
@@ -5123,4 +5170,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Ang modelong kinunan para sa orihinal na seryeng Star Trek, kinunan ng larawan ng Smithsonian National Air and Space Museum na nag-iingat nito: ang larawan ng temang LCARS ng Star Trek.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Larawan ng Tema: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Isang frame ng Star Trek: The Next Generation: ang larawan ng temang Starfleet ng Star Trek. Nakita sa Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar ng {0}</value></data>
 </root>

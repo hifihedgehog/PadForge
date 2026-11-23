@@ -147,7 +147,7 @@ def write_cs(commit, kept, table):
         d = table[pid]
         zones = ", ".join("new(%s, RazerHidZoneType.%s, %d, %d)" % (cs_string(n), t.capitalize(), r, c)
                           for n, t, r, c in d["zones"])
-        w("            new(0x%04X, %s, 0x%02X, 0x%02X, %d, %d, new RazerHidZone[] { %s }, \"RazerDevices.cpp:%d\")," % (
+        w("            new(0x%04X, %s, 0x%02X, 0x%02X, %d, %d, new RazerHidZone[] { %s }), // RazerDevices.cpp:%d" % (
             pid, cs_string(d["name"]), d["transaction"], d["led"], d["rows"], d["cols"], zones, d["line"]))
     w("        };")
     w("    }")

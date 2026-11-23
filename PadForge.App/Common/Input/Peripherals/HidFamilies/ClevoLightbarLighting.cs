@@ -69,8 +69,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(new[] { new LightInfo(0, LightKind.Edge, 0, LightKeySource.None) },
-                "OpenRGB RGBController_ClevoLightbar.cpp") { Product = $"clevo:{vendorId:X4}:{productId:X4}:lightbar" },
+            Map = new LightMap(new[] { new LightInfo(0, LightKind.Edge, 0, LightKeySource.None) }) { Product = $"clevo:{vendorId:X4}:{productId:X4}:lightbar" },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(true, 1, colors => Frames(colors[0])),
         };

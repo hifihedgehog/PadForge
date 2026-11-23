@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Onbekannt</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Standard</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Duerchsichen…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Weidermaachen</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestoppt.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Feeler: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} konnt net ugeluecht ginn.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>En Apparat konnt net opgemaach, gelies oder zougeuerdnet ginn. Den Diagnoseprotokoll nennt en.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} huet e Feeler kritt. D'Ursaach steet am Diagnoseprotokoll.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>D'Input-Engine huet e Feeler kritt. D'Ursaach steet am Diagnoseprotokoll.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL konnt net starten. D'Ursaach steet am Diagnoseprotokoll.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro konnt net ageriicht ginn. D'Ursaach steet am Diagnoseprotokoll.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Den HIDMaestro-Profil vun engem virtuelle Controller feelt. Den Diagnoseprotokoll nennt en.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} konnt seng ugepasst Identitéit a säi Layout net iwwerhuelen a benotzt déi vu sengem Profil.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil gewiesselt: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil gewiesselt: Standard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standard</value></data>
@@ -538,15 +544,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Beweegungsserver-Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Liwwert Gyro- a Beschleunegungsdaten u Cemu, Dolphin, Yuzu asw.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Spill-Mods</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Erlaabt Spill-Mods, déi fir DSX gemaach goufen, d'adaptiv Trigger, de Liichtbalken, d'Spillerluuchten an d'Mute-Luucht vun Äre PlayStation-Controlleren ze setzen.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Erlaabt Spill-Mods, déi fir DSX gemaach goufen, d'adaptiv Trigger, de Liichtbalken, d'Spillerluuchten an d'Mute-Luucht vun engem DualSense oder DualShock 4 ze setzen.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX-Spill-Mods akzeptéieren</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Spill-Mod-Port</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>En DSX.exe-Ersatz ausféieren</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Verschidde Mods, wéi DualSense4GTAV, schalte sech aus, wa kee Programm mam Numm DSX leeft. Dës Optioun start e klengen Ersatz mat deem Numm, soulaang de Server lauschtert.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Funktionéiert mat Mods, déi fir DSX gemaach goufen, wéi déi fir GTA V, Red Dead Redemption 2, Skyrim a Forza. Soulaang de Server lauschtert, schreift PadForge säi Port dohin, wou dës Mods en sichen.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Lauschtert op :{0}. {1} schéckt un de virtuelle Controller {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Lauschtert op :{0}. {1} schéckt, mee keen virtuelle Controller huet e PlayStation-Controller drop.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lauschtert op :{0}. {1} schéckt un de Controller-Index {2}, an et gëtt kee virtuelle Controller mat engem PlayStation-Controller drop, deen dësen Index huet.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Lauschtert op :{0}. {1} schéckt, mee keen virtuelle Controller huet en DualSense oder en DualShock 4 drop.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lauschtert op :{0}. {1} schéckt un de Controller-Index {2}, an et gëtt kee virtuelle Controller mat engem DualSense oder DualShock 4 drop, deen dësen Index huet.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} gëtt vun engem anere Programm benotzt, wéi zum Beispill DSX. Maacht en zou oder wielt en anere Port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>E Spill-Mod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funktionéiert mat OpenTrack an all Tracker, deen seng UDP-Ausgab schéckt oder an de gemeinsame Späicher vu FreeTrack 2.0 schreift, a mat enger OpenXR-Runtime op dësem Computer, déi eng Sessioun am Hannergrond lafe loosse kann.</value></data>
@@ -636,6 +642,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fichier net fonnt</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Net liesbar</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>De Fichier vun „{0}“ feelt oder ka net gelies ginn. PadForge weist Donkel, bis e erëm do ass.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>De Fichier vun „{0}“ enthält kee PadForge-Thema. PadForge weist Donkel, bis en eent enthält.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>D'Profil „{0}“ weist d'Ausgesinn vu sengem Spill. Äert Thema kënnt zréck, soubal en anert Profil aktiv ass.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Agab-Engine</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguréiert d'Ofroen an d'Veraarbechtung am Hannergrond.</value></data>
@@ -1035,6 +1042,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>De Controller huet de Befehl, deen en virbereet, net ugeholl, dofir gouf näischt geschéckt. Kontrolléiert, ob e verbonnen ass, a schéckt nach eng Kéier.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>D'Schécken ass wéinst engem Feeler am PadForge gestoppt. D'Logdatei huet d'Detailer.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>E Bild gëtt nach ëmmer un de Controller geschéckt. D'Schécken stoppen?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Weider schécken</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller-Pak-Fichieren (*.mpk)|*.mpk|All Fichieren (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak Port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak erëmhierstellen</value></data>
@@ -1421,6 +1429,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Puls-Ofklang</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Virastellung</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Benotzerdefinéiert</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (vum Benotzer erstallt)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -2401,7 +2410,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Dëse Controller huet e Magnetometer. Wann de Yaw um magneteschen Norden verankert ass, verschwënnt de luesen horizontalen Drift beim Zielen mam Gyro. Fir d'éischt kalibréieren: dréckt op Kalibréieren, dréit de Controller e puer Sekonnen an enger Aacht duerch all Richtungen, an dréckt dann nach eng Kéier.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Yaw um Kompass verankeren</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Setzt eng kleng Korrektur dobäi, déi d'horizontal Zielen Richtung magnetesche Kurs zitt, sou datt sech keen Drift ka sammelen. Brauch eng gespäichert Kalibréierung vum Magnetometer. Moosswäerter, déi vu Metall oder Magnéiten an der Géigend gestéiert sinn, ginn automatesch ignoréiert.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Op Standard zrécksetzen (Aus)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulatioun vu Pitch a Roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch a Roll aus dem Beschleunegungssensor berechent</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>De Gyro vun dësem Controller mierkt nëmmen Dréiunge no lénks a riets. Mat der Simulatioun leet PadForge Pitch a Roll aus dem Beschleunegungssensor of a schéckt se mam Yaw vum Gyro un d'Zouuerdnungen an un d'Beweegung vum virtuelle Controller. E Beschleunegungssensor kann e Stouss net vun enger Neigung ënnerscheeden, dofir gëtt eng Beweegung vum Controller op d'Säit oder no vir ouni Dréien als kuerz Dréiung gelies.</value></data>
@@ -3228,13 +3236,10 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick zrécksetzen</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkte pro 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Mauspunkte fir eng ganz 360°-Dréiung vun der Kamera. Hänkt vun der Mausempfindlechkeet vum Spill of: setzt de Wäert erop, wann e Flick ze wéineg dréint, a setzt en erof, wann e Flick ze vill dréint.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Op 14400 zrécksetzen</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Flick-Zäit</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Wéi laang e ganze 180°-Flick dauert, mat engem mëllen Auslaf. Méi kuerz Dréiunge sinn an der selwechter Zäit fäerdeg.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Op 0.1 s zrécksetzen</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick-Schwell</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Ausschlag vum Stick, deen e Flick ufänkt, als Deel vum vollen Ausschlag. Wärend engem Flick fält de Lassloosspunkt op 90% dovun.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Op 0.9 zrécksetzen</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Wénkelraster</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Setzt de Flick op fix Wénkelen, fir méi gläichméisseg Dréiungen. Nëmme no vir setzt all Flick genee no vir.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Kee Raster</value></data>
@@ -3243,22 +3248,16 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Grad</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Grad</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Grad</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Op „Kee Raster“ zrécksetzen</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Stäerkt vum Raster</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Wéi staark e Flick Richtung gerasterte Wénkel gezu gëtt. 1 rastert ganz, 0 schalt de Raster aus, Wäerter dertëschent mëschen.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Op 1.0 zrécksetzen</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Doudzon vum Frontwénkel</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>E Flick bannent dësem Wénkel ronderëm genee no vir dréint näischt. Sou kënnt Dir eng Randdréiung ufänken ouni Flick-Dréiung.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Op 0° zrécksetzen</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Glättung vun der Randdréiung</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Glätt d'Zidderen beim Fuere laanscht de Rand. -1 benotzt déi automatesch gestaffelt Fënster, 0 schalt d'Glättung aus, méi grouss Wäerter glätte méi grouss Dréiunge pro Tick.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Op Automatesch (-1) zrécksetzen</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Flick beim Aktivéieren erlaben</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotatiounsverschiebung</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Dréint déi ganz Flick-Zouuerdnung ëm sou vill Grad. Positiv ass mat der Auer. De Raster gëtt no der Verschiebung applizéiert.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Rotatiounsverschiebung zrécksetzen</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wann d'Schicht mam Flick Stick aktivéiert gëtt, wärend de Stick schonn ausgeschloen ass, gëtt de Flick direkt ausgeléist. Aus hält d'Kamera roueg a verfollegt d'Dréiung vum aktuelle Stickwénkel aus.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>„Flick beim Aktivéieren erlaben“ zrécksetzen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback um Steieruschlag</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>E Signal beim Uschlag fir e Stick an engem Steiermodus</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wann e Stick an engem Steiermodus bis zum Uschlag gedréint gëtt, spillt e Signal (Vibratioun, Trigger oder Liichtbalken), fir datt Dir d'Limit spiert. Standardméisseg alles aus.</value></data>
@@ -3448,11 +3447,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-Haptik op dësem Controller spillen</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wann e Spill dëse Slot als virtuellen DualSense mat enger gestalter haptescher Audiospuer steiert, gëtt déi Spuer op den Aktuatoren vun dësem Controller gespillt. E Steam Controller 2026 iwwer USB oder säin Dongle an e Flydigi Apex 6 Pro spillen d'Spuer selwer. All anere Controller, an dee Steam Controller iwwer Bluetooth, kritt Téin, déi aus dem Audio ofgeleet sinn an d'Gefill vum Designer nëmmen ongeféier erreechen.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptik-Verstäerkung</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Op Standard zrécksetzen (Aus)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Op Standard zrécksetzen (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Déifpass-Grenz vun den Aktuatoren</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Hält den Haptik-Stream vum Steam Controller ënner dëser Frequenz, fir datt d'Pads vibréieren amplaz héierbar Toun ze spillen. Vun ongeféier 250 Hz u ginn d'Aktuatoren héierbar. Méi héich fir méi schaarf Detailer, méi déif fir méi roueg Spillen.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Op 250 Hz zrécksetzen</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Téin iwwer dëser Frequenz ginn ofgeschnidden oder transposéiert. De Standard vun 800 Hz behält Motor- an Opprallvibratiounen a fänkt héich Piepstéin of.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Héich Téin zrécksetzen</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tounlimit zrécksetzen</value></data>
@@ -4020,8 +4016,59 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-Profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-Makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Cursorberäich</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift mat {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Radlëscht ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Cursorberäich ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Maus {0} halen ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Maus {0} klicken ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Maus {0} ëmschalten ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptesche Puls ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (no dem Lassloossen)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} tippen ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Autofeier {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} halen ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} ëmschalten ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} duebel drécken ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} laang drécken ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Radschrëtt ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Rad ëmschalten ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo-Rad ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Cursor versetzen ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED setzen ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Gyro zentréieren ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Cursor liicht beweegen ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Screenshot-Tast ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Bildschiermtastatur ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Liichtfaarf setzen</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Kamera zentréieren</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Cursor versetzen</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Cursor liicht beweegen</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Screenshot</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Bildschiermtastatur</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Shift-Ebene wiesselen</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Shift-Ebene aschalten</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Shift-Ebene ausschalten</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Shift-Ebene halen</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Spillernummer änneren</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Net zougewisen</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Desktopmodus ëmschalten</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam-Systemtast</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Lupp ëmschalten</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Hellegkeet erop</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Hellegkeet erof</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Controller ausschalten</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam-Konfigurator opmaachen</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam-Schnellmenü opmaachen</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Spill beenden</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Haptik ëmschalten</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam-HUD ëmschalten</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Vibratioun ëmschalten</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide-Knäppchen erzwéngen</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Gyro-Kalibréierung duerch Dréinen</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>An d'Richtung dréinen</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (halen)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (loslossen)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (loslossen)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivéieren)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Wielt eng Konfiguratioun, fir ze gesinn, wat iwwerholl gëtt.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat iwwerholl gëtt</value></data>
@@ -4628,11 +4675,9 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Schicht</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Wielt d'Schicht, déi dëse Menü erlaabt. „Beléiweg Schicht“ a „Basis“ erlaben en och ënner aneren aktive Schichten. Eng benannt Schicht muss mat der aktuell aktiver Schicht iwwereneestëmmen.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Op „Beléiweg Schicht“ zrécksetzen an d'Ophalen duerch d'Schicht ausschalten.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (op dësem Slot net opgelëscht)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Schicht hält de Menü op</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Hält dëse Menü op, soulaang seng benannt Schicht aktiv ass. Déi gewielte physesch Agab steiert d'Markéierung. „Beléiweg Schicht“ a „Basis“ maachen normal iwwer d'Uewerfläch op.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Op Opmaache bei Beréierung oder Ausschlag zrécksetzen.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Steiere mat</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Déi physesch Agab, déi déi markéiert Zell steiert, wärend d'Schicht dëse Menü ophält.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Gëtt vun de physesche Controller gelies, déi dësem Slot zougewise sinn. D'Schicht mécht de Menü op, an dës Agab steiert en. Seng Zelle soen, wat en ausgëtt.</value></data>
@@ -4712,7 +4757,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>No Richtung opgedeelt</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Doudzon an der Mëtt</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Op lénke Stick X zrécksetzen</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Stäerkt zrécksetzen (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Doudzon an der Mëtt zrécksetzen (2 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>„Steierwénkel-Vibratioun aktivéieren“ zrécksetzen</value></data>
@@ -5229,6 +5273,9 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referenze fir Klingonesch a Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>D'Wierder vun der klingonescher an der Sindarin-Iwwersetzung, iwwerpréift mat klingon-assistant-data (Apache-2.0), dem Wierderbuch hannert boQwI', an Eldamo (CC BY 4.0), dem elbesche Lexikon vum Paul Strack. Nëmmen Wierderbuchdaten, näischt dovun gëtt matgeliwwert.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Dëse Fichier ass kee PadForge-Thema.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge kann dëse Fichier net liesen.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge fënnt dëse Fichier net.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Kee Thema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>D'Thema konnt net gespäichert ginn. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Neit Thema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge weist d'Thema, wärend Dir et opbaut.</value></data>
@@ -5243,6 +5290,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Bild gëtt vu Steam geholl…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam huet kee breet Bild fir dëst Spill.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam konnt net erreecht ginn. Iwwerpréift Är Verbindung.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge kann d'Bild vu Steam fir dëst Spill net liesen.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Positioun</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Réckelt d'Bild a senger Fënster erop oder erof.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Logo vum Spill weisen</value></data>
@@ -5273,4 +5321,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Déi véier Wopen vun den Hogwarts-Haiser, gezeechent vun Atomhawk Design fir Pottermore: d'Bild vum Harry-Potter-Thema Four Houses. Am Harry Potter Wiki fonnt.</value></data>
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>De Modell, dee fir déi originell Star-Trek-Serie gefilmt gouf, fotograféiert vum Smithsonian National Air and Space Museum, dat en opbewaart: d'Bild vum Star-Trek-Thema LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>E Standbild aus „Raumschiff Enterprise: Das nächste Jahrhundert“: d'Bild vum Star-Trek-Thema Starfleet. Op Memory Alpha fonnt.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Liichtbalken</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Liichtbalken {0}</value></data>
 </root>

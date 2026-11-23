@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>සබැඳි</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>නොබැඳි</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>නොදන්නා</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>පෙරනිමි</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>පිරික්සන්න…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ඉදිරියට යන්න</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>නවත්වන්න</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>එන්ජිම නැවතිණි.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>දෝෂය: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} සෑදිය නොහැකි විය.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>උපාංගයක් විවෘත කිරීමට, කියවීමට හෝ සිතියම්ගත කිරීමට නොහැකි විය. දෝෂ නිර්ණය ලොගයේ එහි නම ඇත.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} හි දෝෂයක් ඇති විය. හේතුව දෝෂ නිර්ණය ලොගයේ ඇත.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>ආදාන එන්ජිමේ දෝෂයක් ඇති විය. හේතුව දෝෂ නිර්ණය ලොගයේ ඇත.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ආරම්භ කිරීමට නොහැකි විය. හේතුව දෝෂ නිර්ණය ලොගයේ ඇත.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro සැකසීමට නොහැකි විය. හේතුව දෝෂ නිර්ණය ලොගයේ ඇත.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>අතථ්‍ය පාලකයක HIDMaestro පැතිකඩ නැත. දෝෂ නිර්ණය ලොගයේ එහි නම ඇත.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} හට එහි අභිරුචි අනන්‍යතාවය සහ පිරිසැලසුම ගත නොහැකි වූ බැවින් එහි පැතිකඩේ මුල් ඒවා භාවිත කරයි.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>පැතිකඩ මාරු විය: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>පැතිකඩ මාරු විය: පෙරනිමි</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>පෙරනිමි</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>චලන සේවාදායක තොට</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu ආදියට ගයිරෝ සහ ත්වරණමාන දත්ත සපයයි.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>ක්‍රීඩා මොඩ්</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX සඳහා සාදන ලද ක්‍රීඩා මොඩ්වලට ඔබේ PlayStation පාලකවල අනුවර්තී ට්‍රිගර, ලයිට්බාර්, ක්‍රීඩක ආලෝක සහ නිහඬ කිරීමේ ආලෝකය සැකසීමට ඉඩ දෙයි.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX සඳහා සාදන ලද ක්‍රීඩා මොඩ්වලට DualSense හෝ DualShock 4 එකක අනුවර්තී ට්‍රිගර, ලයිට්බාර්, ක්‍රීඩක ආලෝක සහ නිහඬ කිරීමේ ආලෝකය සැකසීමට ඉඩ දෙයි.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX ක්‍රීඩා මොඩ් පිළිගන්න</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>ක්‍රීඩා මොඩ් තොට</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe ආදේශකයක් ධාවනය කරන්න</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV වැනි සමහර මොඩ්, DSX නම් වැඩසටහනක් ධාවනය නොවන්නේ නම් ඉබේම අක්‍රිය වේ. සේවාදායකය සවන් දෙන අතරතුර, මෙය එම නමින් කුඩා ආදේශකයක් ධාවනය කරයි.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>GTA V, Red Dead Redemption 2, Skyrim සහ Forza සඳහා වූ මොඩ් වැනි, DSX සඳහා සාදන ලද මොඩ් සමඟ ක්‍රියා කරයි. සේවාදායකය සවන් දෙන අතරතුර, PadForge සිය තොට එම මොඩ් එය සොයන ස්ථානයේ ලියයි.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්. {1} අතථ්‍ය පාලකය {2} වෙත යවමින් සිටී.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්. {1} යවමින් සිටී, නමුත් කිසිදු අතථ්‍ය පාලකයක PlayStation පාලකයක් නැත.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්. {1} පාලක අංකය {2} වෙත යවමින් සිටින නමුත්, PlayStation පාලකයක් සහිත කිසිදු අතථ්‍ය පාලකයකට එම අංකය නොමැත.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්. {1} යවමින් සිටී, නමුත් කිසිදු අතථ්‍ය පාලකයක DualSense හෝ DualShock 4 එකක් නැත.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්. {1} පාලක අංකය {2} වෙත යවමින් සිටින නමුත්, DualSense හෝ DualShock 4 එකක් සහිත කිසිදු අතථ්‍ය පාලකයකට එම අංකය නොමැත.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>තොට {0} DSX වැනි වෙනත් වැඩසටහනක් භාවිත කරයි. එය වසන්න හෝ වෙනත් තොටක් තෝරන්න.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ක්‍රීඩා මොඩ් එකක්</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack සමඟ සහ එහි UDP ප්‍රතිදානය යවන හෝ FreeTrack 2.0 හවුල් මතකයට ලියන ඕනෑම ට්‍රැකරයක් සමඟ ද, පසුබිමේ සැසියක් ධාවනය කළ හැකි මෙම පරිගණකයේ OpenXR ධාවන කාලයක් සමඟ ද ක්‍රියා කරයි.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ගොනුව හමු නොවීය</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>කියවිය නොහැක</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” හි ගොනුව නැත හෝ කියවිය නොහැක. එය නැවත ලැබෙන තුරු PadForge අඳුරු පෙනුම පෙන්වයි.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” හි ගොනුවේ PadForge තේමාවක් නැත. එහි තේමාවක් ඇති වන තුරු PadForge අඳුරු පෙනුම පෙන්වයි.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” පැතිකඩ එහි ක්‍රීඩාවේ පෙනුම පෙන්වයි. වෙනත් පැතිකඩක් සක්‍රිය වූ විට ඔබේ තේමාව නැවත පැමිණේ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ආදාන එන්ජිම</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>විමසීම් හැසිරීම සහ පසුබිම් සැකසීම වින්‍යාස කරන්න.</value></data>
@@ -1046,6 +1053,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>පාලකය සූදානම් කරන විධානය එය භාර නොගත් බැවින් කිසිවක් යවා නැත. එය සම්බන්ධ වී ඇත්දැයි පරීක්ෂා කර නැවත යවන්න.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge තුළ ඇති වූ දෝෂයක් නිසා යැවීම නතර විය. විස්තර ලොග් ගොනුවේ ඇත.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>පින්තූරයක් තවමත් පාලකය වෙත යමින් පවතී. යැවීම නවත්වන්නද?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>දිගටම යවන්න</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ගොනු (*.mpk)|*.mpk|සියලු ගොනු (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak තොට {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak ප්‍රතිසාධනය කරන්න</value></data>
@@ -1433,6 +1441,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>ස්පන්දන ක්ෂය වීම</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>පෙරසැකසුම</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>අභිරුචි</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (පරිශීලක විසින් සාදන ලද)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>ස්ටික්</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ට්‍රිගර</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2413,7 +2422,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>මෙම පාලකයේ චුම්බකමානයක් ඇත. යෝ චුම්බක උතුරට නැංගුරම් කිරීමෙන් ගයිරෝ ඉලක්ක කිරීමේ සෙමින් සිදුවන තිරස් ඇදීම ඉවත් වේ. පළමුව ක්‍රමාංකනය කරන්න: ක්‍රමාංකනය ඔබා, තත්පර කිහිපයක් 8 හැඩයට සියලු දිශානතීන් හරහා පාලකය කරකවා, නැවත ඔබන්න.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>යෝ මාලිමාවට නැංගුරම් කරන්න</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>තිරස් ඉලක්කය චුම්බක දිශාව දෙසට අදින කුඩා නිවැරදි කිරීමේ අනුපාතයක් එක් කරයි, එබැවින් ඇදීම එකතු විය නොහැක. ගබඩා කළ චුම්බකමාන ක්‍රමාංකනයක් අවශ්‍යයි. අසල ලෝහ හෝ චුම්බක මගින් බාධා වූ නියැදි ස්වයංක්‍රීයව ප්‍රතික්ෂේප වේ.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>පෙරනිමියට යළි සකසන්න (අක්‍රිය)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>පිච් සහ රෝල් අනුකරණය</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ත්වරණමානයෙන් ගණනය කළ පිච් සහ රෝල්</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>මෙම පාලකයේ ගයිරෝව හඳුනාගන්නේ වමට සහ දකුණට හැරීම පමණි. අනුකරණය සක්‍රිය විට, PadForge ත්වරණමානයෙන් පිච් සහ රෝල් ගණනය කර, ගයිරෝවේ යෝ සමඟ ඒවා සිතියම්ගත කිරීමේ පේළිවලට සහ අතථ්‍ය පාලකයේ චලනයට යවයි. ත්වරණමානයකට තල්ලුවක් සහ ඇලවීමක් වෙන්කර හඳුනාගත නොහැකි බැවින්, පාලකය නොහරවා පැත්තට හෝ ඉදිරියට ගෙන යාම කෙටි භ්‍රමණයක් ලෙස කියවේ.</value></data>
@@ -2805,7 +2813,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>ළඟා විය හැකි මායිම සිතියම්ගත කිරීමට ස්ටික් එක එහි වාටිය වටා කරකවන්න, ඉන්පසු එය පූර්ණ වෘත්තයකට නැවත හැඩගස්වන්න.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>මායිම් ක්‍රමාංකනය යළි සකසන්න</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>මධ්‍ය ඕෆ්සෙට් Y යළි සකසන්න</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>පරිමාණිත අරීය ලෙස යළි සකසන්න</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>ඩෙඩ්සෝන් X යළි සකසන්න</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>ඩෙඩ්සෝන් Y යළි සකසන්න</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>ප්‍රති-ඩෙඩ්සෝන් X යළි සකසන්න</value></data>
@@ -3220,13 +3227,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ෆ්ලික් ස්ටික් යළි සකසන්න</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° සඳහා ලක්ෂ්‍ය</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>සම්පූර්ණ 360° කැමරා හැරවීමක් සඳහා මූසික ගණන් කිරීම්. ක්‍රීඩාවේ මූසික සංවේදීතාව මත රඳා පවතී: ෆ්ලික් එකක් අඩුවෙන් හැරේ නම් එය වැඩි කරන්න, වැඩියෙන් හැරේ නම් අඩු කරන්න.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 ට යළි සකසන්න</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ෆ්ලික් කාලය</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>සම්පූර්ණ 180° ෆ්ලික් එකක් අවසන් වීමට ගතවන කාලය, අවසානයේ ක්‍රමයෙන් මන්දගාමී වෙමින්. කෙටි හැරවීම් ද එම කාලය තුළම අවසන් වේ.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s ට යළි සකසන්න</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ෆ්ලික් සීමා අගය</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ෆ්ලික් එකක් ආරම්භ කරන ස්ටික් අපගමනය, සම්පූර්ණ අපගමනයේ භාගයක් ලෙස. ෆ්ලික් කරන අතරතුර, මුදා හැරීමේ ලක්ෂ්‍යය මෙහි 90% දක්වා පහත වැටේ.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 ට යළි සකසන්න</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>ස්නැප් කෝණය</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>වඩාත් ස්ථාවර හැරවීම් සඳහා ෆ්ලික් එක නියත කෝණවලට ස්නැප් කරන්න. ඉදිරියට පමණක් සෑම ෆ්ලික් එකක්ම කෙළින්ම ඉදිරියට ස්නැප් කරයි.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>ස්නැප් කිරීමක් නැත</value></data>
@@ -3235,22 +3239,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>අංශක 90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>අංශක 60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>අංශක 45</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>ස්නැප් කිරීමක් නැත ලෙස යළි සකසන්න</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>ස්නැප් ශක්තිය</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ෆ්ලික් එකක් ස්නැප් කළ කෝණය දෙසට කොතරම් ප්‍රබලව ඇදේද යන්න. 1 සම්පූර්ණයෙන් ස්නැප් කරයි, 0 ස්නැප් කිරීම අක්‍රිය කරයි, අතර අගයන් දෙකම මිශ්‍ර කරයි.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 ට යළි සකසන්න</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>ඉදිරි කෝණ ඩෙඩ්සෝන්</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>කෙළින්ම ඉදිරියේ සිට මෙම කෝණය තුළ ඇති ෆ්ලික් එකක් කිසිවක් හරවන්නේ නැත. ෆ්ලික් හැරවීමකින් තොරව ස්වීප් එකක් ආරම්භ කිරීමට ඉඩ දෙයි.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° ට යළි සකසන්න</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>ස්වීප් සුමටනය</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>දාර ස්වීප් ඝෝෂාව සුමට කරයි. -1 ස්වයංක්‍රීය ස්ථරගත කවුළුව භාවිත කරයි, 0 සුමටනය අක්‍රිය කරයි, විශාල අගයන් එක් ටික් එකක විශාල භ්‍රමණ සුමට කරයි.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>ස්වයංක්‍රීය (-1) ට යළි සකසන්න</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>සක්‍රිය වීමේදී ෆ්ලික් කිරීමට ඉඩ දෙන්න</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>භ්‍රමණ ඕෆ්සෙට්</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>සම්පූර්ණ ෆ්ලික් සිතියම මෙම අංශක ගණනින් හරවයි. ධන අගය දක්ෂිණාවර්ත වේ. ස්නැප් කිරීම ඕෆ්සෙට් එකෙන් පසුව යෙදේ.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>භ්‍රමණ ඕෆ්සෙට් යළි සකසන්න</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ඇති ස්ථරය, ස්ටික් එක දැනටමත් අපගමනය වී තිබියදී සක්‍රිය වූ විට, ෆ්ලික් එක වහාම ක්‍රියාත්මක කරන්න. අක්‍රිය නම් කැමරාව නිශ්චලව තබා, වත්මන් ස්ටික් කෝණයේ සිට භ්‍රමණය අනුගමනය කරයි.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>සක්‍රිය වීමේදී ෆ්ලික් කිරීමට ඉඩ දීම යළි සකසන්න</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>සුක්කානම් අගුළු ප්‍රතිපෝෂණය</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයේ ස්ටික් එකක සම්පූර්ණ අගුලේදී සංඥාවක්</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයකට සැකසූ ස්ටික් එකක් සම්පූර්ණ අගුල දක්වාම හරවන විට, ඔබට සීමාව දැනෙන ලෙස සංඥාවක් (කම්පනය, ට්‍රිගරය හෝ ලයිට්බාර්) ලබා දෙන්න. පෙරනිමියෙන් සියල්ල අක්‍රියයි.</value></data>
@@ -3440,11 +3438,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>මෙම පාලකයේ DualSense හැප්ටික්ස් වාදනය කරන්න</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ක්‍රීඩාවක් මෙම ස්ලොට් එක, සකස් කළ හැප්ටික් ශ්‍රව්‍ය සහිත අතථ්‍ය DualSense එකක් ලෙස ධාවනය කරන විට, එම පථය මෙම පාලකයේ ක්‍රියාකාරක මත වාදනය කරන්න. USB හෝ එහි ඩොංගලය හරහා සම්බන්ධ Steam Controller 2026 එකක් සහ Flydigi Apex 6 Pro එකක් පථය එයම වාදනය කරයි. අනෙක් සෑම පාලකයක්ම, සහ Bluetooth හරහා සම්බන්ධ එම Steam Controller එක, ශ්‍රව්‍යයෙන් ව්‍යුත්පන්න නාද ලබයි. ඒවා නිර්මාණකරුගේ හැඟීම ප්‍රතිනිෂ්පාදනය නොකරයි, දළ වශයෙන් ආසන්න කරයි.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>හැප්ටික්ස් වර්ධනය</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>පෙරනිමියට යළි සකසන්න (අක්‍රිය)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>පෙරනිමියට යළි සකසන්න (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>ක්‍රියාකාරක අඩු-පාස් කැපුම් සංඛ්‍යාතය</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller හැප්ටික් ප්‍රවාහය මෙම සංඛ්‍යාතයට පහළින් තබයි. එවිට පෑඩ ශබ්දය ඇසෙන සේ වාදනය කරනවා වෙනුවට කම්පනය වේ. 250 Hz පමණ දී ක්‍රියාකාරක ඇසීමට පටන් ගනී. වඩා තියුණු විස්තර සඳහා එය වැඩි කරන්න, නිහඬ වාදනයක් සඳහා අඩු කරන්න.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz ට යළි සකසන්න</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>මෙම සංඛ්‍යාතයට ඉහළ නාද කපා හරිනු හෝ නවනු ලැබේ. පෙරනිමි 800 Hz අගය එන්ජින් සහ ගැටුම් කම්පනය රඳවා ගන්නා අතරම ඉහළ තාරතාවයේ බීප් හඬ අල්ලා ගනී.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ඉහළ නාද යළි සකසන්න</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>නාද සීමාව යළි සකසන්න</value></data>
@@ -4013,8 +4008,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop පැතිකඩ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop මැක්‍රෝව</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>කර්සර කලාපය</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} මාරුව</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>රෝද ලැයිස්තුව ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>කර්සර කලාපය ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>මූසික {0} රඳවන්න ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>මූසික {0} ක්ලික් කරන්න ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>මූසික {0} ටොගල් කරන්න ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>හැප්ටික් ස්පන්දනය ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (මුදාහැරීමේ කොටස)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} තට්ටු කරන්න ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} ස්වයං වෙඩි තැබීම ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} රඳවන්න ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} ටොගල් කරන්න ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} ටර්බෝ ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} දෙවරක් ඔබන්න ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} දිගු ඔබන්න ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>රෝද පියවර ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>රෝදය ටොගල් කරන්න ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>ටර්බෝ රෝදය ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>කර්සරය පනවන්න ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED සකසන්න ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ගයිරෝව නැවත කේන්ද්‍රගත කරන්න ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>කර්සරය සුළු වශයෙන් චලනය කරන්න ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>තිර රුව යතුර ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>තිරයේ යතුරුපුවරුව ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ආලෝක වර්ණය සකසන්න</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>කැමරාව නැවත කේන්ද්‍රගත කරන්න</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>කර්සරය පනවන්න</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>කර්සරය සුළු වශයෙන් චලනය කරන්න</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>තිර රුව</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>තිරයේ යතුරුපුවරුව</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>මාරු ස්ථරය මාරු කරන්න</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>මාරු ස්ථරයක් සක්‍රිය කරන්න</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>මාරු ස්ථරයක් අක්‍රිය කරන්න</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>මාරු ස්ථරයක් රඳවන්න</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>ක්‍රීඩක අංකය වෙනස් කරන්න</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>බැඳී නැත</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>ඩෙස්ක්ටොප් ප්‍රකාරය ටොගල් කරන්න</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam පද්ධති යතුර</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>විශාලකය ටොගල් කරන්න</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>දීප්තිය වැඩි කරන්න</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>දීප්තිය අඩු කරන්න</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>පාලකය ක්‍රියාවිරහිත කරන්න</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam වින්‍යාසකය විවෘත කරන්න</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam ඉක්මන් මෙනුව විවෘත කරන්න</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>ක්‍රීඩාවෙන් ඉවත් වන්න</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>හැප්ටික් ටොගල් කරන්න</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD ටොගල් කරන්න</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>කම්පනය ටොගල් කරන්න</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>මාර්ගෝපදේශ බොත්තම බලෙන් ඔබන්න</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>ගයිරෝ ක්‍රමාංකන භ්‍රමණය</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>දිශාවට මුහුණලා හැරෙන්න</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (අල්ලාගැනීම)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (මුදාහැරීම)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (මුදාහැරීම)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (සක්‍රිය කිරීම)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ලැබෙන දේ බැලීමට වින්‍යාසයක් තෝරන්න.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ලැබෙන දේ</value></data>
@@ -4618,11 +4664,9 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>ස්ථරය</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>මෙම මෙනුවට ඉඩ දෙන ස්ථරය තෝරන්න. "ඕනෑම ස්ථරයක්" සහ "මූලික" යන දෙකම වෙනත් සක්‍රිය ස්ථර යටතේ එයට ඉඩ දෙයි. නම් කළ ස්ථරයක් දැනට සක්‍රිය ස්ථරයට ගැළපිය යුතුය.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>"ඕනෑම ස්ථරයක්" වෙත යළි සකසා, ස්ථරය රඳවා ඇති විට විවෘත කිරීම අක්‍රිය කරන්න.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (මෙම ස්ලොට් එකේ ලැයිස්තුගත කර නැත)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>ස්ථරය මෙනුව විවෘතව තබයි</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>මෙම මෙනුවේ නම් කළ ස්ථරය සක්‍රිය අතරතුර එය විවෘතව තබන්න. තෝරාගත් භෞතික ආදානය උද්දීපනය හසුරුවයි. "ඕනෑම ස්ථරයක්" සහ "මූලික" සාමාන්‍ය මතුපිට විවෘත කිරීම භාවිත කරයි.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>ස්පර්ශයෙන් හෝ අපගමනයෙන් විවෘත කිරීමට යළි සකසන්න.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>හසුරුවන ආදානය</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ස්ථරය මෙම මෙනුව විවෘතව තබා ඇති අතරතුර උද්දීපිත කොටුව හසුරුවන භෞතික ආදානය.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>මෙම ස්ලොට් එකට පවරා ඇති භෞතික පාලකවලින් කියවේ. ස්ථරය මෙනුව විවෘත කරන අතර, මෙම ආදානය එය හසුරුවයි. එය ප්‍රතිදානය කරන දේ එහි කොටු පවසයි.</value></data>
@@ -4702,7 +4746,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>මෝටරය</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>දිශාව අනුව බෙදීම</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>මධ්‍ය ඩෙඩ්සෝන්</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>වම් ස්ටික් X වෙත යළි සකසන්න</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ප්‍රබලතාව යළි සකසන්න (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>මධ්‍ය ඩෙඩ්සෝන් යළි සකසන්න (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>"සුක්කානම් කෝණ කම්පනය සක්‍රිය කරන්න" යළි සකසන්න</value></data>
@@ -5219,6 +5262,9 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_LanguageRefs" xml:space="preserve"><value>ක්ලින්ගොන් සහ සින්ඩරින් මූලාශ්‍ර</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ක්ලින්ගොන් සහ සින්ඩරින් පරිවර්තනවල වචන, boQwI' පිටුපස ඇති ශබ්දකෝෂය වන klingon-assistant-data (Apache-2.0) සහ Paul Strack ගේ එල්ෆ් ශබ්දකෝෂය වන Eldamo (CC BY 4.0) සමඟ සසඳා පරීක්ෂා කර ඇත. ශබ්දකෝෂ දත්ත පමණි, ඉන් කිසිවක් ඇතුළත් නොවේ.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>එම ගොනුව PadForge තේමාවක් නොවේ.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge හට එම ගොනුව කියවිය නොහැක.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge හට එම ගොනුව සොයාගත නොහැක.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>තේමාවක් නොවේ</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>තේමාව සුරැකිය නොහැකි විය. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>නව තේමාව</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>ඔබ තේමාව සාදන අතරතුරම PadForge එය පෙන්වයි.</value></data>
@@ -5233,6 +5279,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam වෙතින් පින්තූරය ලබා ගනිමින්…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam සතුව මෙම ක්‍රීඩාව සඳහා පළල් පින්තූරයක් නැත.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam වෙත ළඟා විය නොහැකි විය. ඔබේ සම්බන්ධතාවය පරීක්ෂා කරන්න.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge හට මෙම ක්‍රීඩාව සඳහා Steam හි පින්තූරය කියවිය නොහැක.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>පිහිටීම</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>පින්තූරය එහි කවුළුව තුළ ඉහළට හෝ පහළට ගෙන යයි.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ක්‍රීඩාවේ ලාංඡනය පෙන්වන්න</value></data>
@@ -5273,4 +5320,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>මුල් Star Trek කතා මාලාව සඳහා රූගත කළ ආකෘතිය, එය සතු Smithsonian National Air and Space Museum විසින් ඡායාරූපගත කළ: Star Trek තේමාව LCARS හි පින්තූරය.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>තේමා පින්තූරය: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation හි රාමුවක්: Star Trek තේමාව Starfleet හි පින්තූරය. Memory Alpha හි හමු විය.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>ලයිට්බාර්</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ලයිට්බාර්</value></data>
 </root>

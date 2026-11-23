@@ -65,7 +65,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_BlinkController.cpp") { Product = $"thingm:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"thingm:{vendorId:X4}:{productId:X4}" },
             Programs = new[] { VendorPrograms.Blink1Control },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(true, LedCount, Frames),

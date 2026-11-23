@@ -98,7 +98,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = registration.Name,
-                Map = new LightMap(MatrixKeyboardLayouts.Lights(layout), "OpenRGB " + layout.Source)
+                Map = new LightMap(MatrixKeyboardLayouts.Lights(layout))
                 {
                     Product = $"cherry:{registration.VendorId:X4}:{registration.ProductId:X4}",
                 },

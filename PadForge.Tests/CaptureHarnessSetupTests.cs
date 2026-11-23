@@ -1590,11 +1590,12 @@ namespace PadForge.Tests
             Assert.Contains("Close-DialogHwnd $stray", close, StringComparison.Ordinal);
             Assert.Equal(2, Regex.Matches(close, @"\$script:modalLeaks\+\+").Count);
             Assert.EndsWith("return [Win32]::IsWindowEnabled([IntPtr]$script:hwnd)", close.TrimEnd(), StringComparison.Ordinal);
-            // What closes one declines: WM_CLOSE first, then Escape, then a
-            // closing button of the dialog's own.
+            // What closes one declines: WM_CLOSE first, then Escape (sent
+            // only while the dialog is in front), then a closing button of
+            // the dialog's own.
             string one = Body("Close-DialogHwnd");
             int wmClose = one.IndexOf("0x0010", StringComparison.Ordinal);
-            int escape = one.IndexOf("SendWait(\"{ESC}\")", StringComparison.Ordinal);
+            int escape = one.IndexOf("Send-EscapeTo -Hwnd $Hwnd", StringComparison.Ordinal);
             Assert.True(wmClose >= 0 && escape > wmClose, "a dialog is not closed by WM_CLOSE and then Escape");
 
             // What the guard rests on: the dialogs are DialogWindows, one

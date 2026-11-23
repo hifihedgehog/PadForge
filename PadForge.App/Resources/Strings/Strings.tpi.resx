@@ -234,7 +234,7 @@
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod bilong gem</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Kisim ol DSX mod bilong gem</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pot bilong ol mod bilong gem</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>I harim long :{0}. {1} i salim long kontrola namba {2}, tasol dispela namba i no bilong wanpela virtual kontrola i gat PlayStation kontrola long en.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>I harim long :{0}. {1} i salim long kontrola namba {2}, tasol dispela namba i no bilong wanpela virtual kontrola i gat DualSense o DualShock 4 long en.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Narapela program, olsem DSX, i usim pot {0}. Pasim em o makim narapela pot.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Wanpela mod bilong gem</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>nogat kontrola</value></data>
@@ -485,6 +485,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Putim kala</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Bilong yu yet</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Yu yet i wokim)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Ol stik</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ol triga</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ol POV</value></data>
@@ -1159,18 +1160,12 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Ol dot long 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Hamas maus kaunt long wanpela tanim 360° bilong kamera. I dipen long sensitiviti bilong maus long gem: apim sapos flick i no tanim inap, daunim sapos em i tanim tumas.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reset i go long 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Taim bilong flick</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Reset i go long 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Threshold bilong flick</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Reset i go long 0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 digri</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 digri</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 digri</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 digri</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Reset i go long 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Reset i go long 0°</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Reset i go long otomatik (-1)</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stiaring wil</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Reset stiaring wil</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Reset renj bilong tanim</value></data>
@@ -1298,9 +1293,6 @@
   <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Taim gem i guria</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Pilaim DualSense haptics long dispela kontrola</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset i go long default (Of)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset i go long default (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reset i go long 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profail "{0}" i ekspot pinis.</value></data>
@@ -1682,7 +1674,6 @@
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stik long han sut Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mota</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Skelim long sait</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reset i go long Stik long han kais X</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profail</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd i no pinis insait long 60 minit.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Rausim ol olpela draiva…</value></data>
@@ -2135,6 +2126,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrola i no kisim tok we i redim em, olsem na i no salim wanpela samting. Lukim sapos em i konek na salim gen.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Salim i stop long wanpela rong insait long PadForge. Fail bilong log i gat ol liklik toktok.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Wanpela piksa i go yet long kontrola. Stopim salim?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Salim yet</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -2153,6 +2145,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Senisim stail</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Rausim long lis. Fail i stap yet long ples bilong en.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fail bilong “{0}” i lus o i no inap ritim. PadForge i soim Tudak inap fail i kam bek.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fail bilong “{0}” i no holim wanpela stail bilong PadForge. PadForge i soim Tudak inap fail i holim stail.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nem</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Stail bilong mi</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>As</value></data>
@@ -2164,10 +2157,20 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kisim piksa long Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam i no gat brait piksa bilong dispela gem.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>I no inap kisim Steam. Lukim konekson bilong yu.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge i no inap ritim piksa bilong Steam bilong dispela gem.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Ples</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Muvim piksa i go antap o i go daun insait long windo bilong en.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Soim logo bilong gem</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Bihainim piksa</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Kisim foapela kala long piksa.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ol piksa (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Olgeta fail (*.*)|*.*</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>PadForge i no inap opim, ritim o mapim wanpela samting. Diagnostics log i kolim nem bilong en.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} i bungim wanpela rong. Diagnostics log i gat as bilong en.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Input ensin i bungim wanpela rong. Diagnostics log i gat as bilong en.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL i no inap stat. Diagnostics log i gat as bilong en.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>I no inap redim HIDMaestro. Diagnostics log i gat as bilong en.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>HIDMaestro profail bilong wanpela virtual kontrola i lus. Diagnostics log i kolim nem bilong en.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} i no inap kisim nem na lukluk bilong yu yet, olsem na em i yusim profail bilong en yet.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge i no inap ritim dispela fail.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no inap painim dispela fail.</value></data>
 </root>

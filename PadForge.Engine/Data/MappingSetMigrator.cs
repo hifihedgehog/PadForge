@@ -86,12 +86,6 @@ namespace PadForge.Engine.Data
             return -1;
         }
 
-        /// <summary>The button target a pressure target pairs with
-        /// ("PressureButtonA" to "ButtonA"), or null for any other
-        /// target.</summary>
-        public static string PressedButtonTarget(string pressureTarget)
-            => IsPressureTarget(pressureTarget) ? pressureTarget.Substring(PressurePrefix.Length) : null;
-
         // Bundled motion-passthrough targets. Sony-class VCs only — Xbox and
         // friends have no motion channel to relay. Sub-channels: one row per
         // sensor type, source descriptors "Motion Gyro" / "Motion Accel".

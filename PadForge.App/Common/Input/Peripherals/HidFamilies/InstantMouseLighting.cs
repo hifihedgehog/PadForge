@@ -86,7 +86,7 @@ namespace PadForge.Common.Input.Peripherals
             Family = Instance,
             Name = name,
             // One zone, "Mouse" (RGBController_InstantMouse.cpp:168-184).
-            Map = new LightMap(SinowealthLighting.OneLight(), "OpenRGB RGBController_InstantMouse.cpp")
+            Map = new LightMap(SinowealthLighting.OneLight())
             {
                 Product = $"instant:{InstantVid:X4}:{productId:X4}",
             },

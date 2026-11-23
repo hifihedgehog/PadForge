@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Wpf.Ui.Appearance;
@@ -18,6 +19,33 @@ namespace PadForge.Common
         /// picture shows through the card (ThemeManager).</summary>
         internal const string HomeEngineCardKey = "HomeEngineCardBrush";
 
+        /// <summary>The colors of Windows' contrast theme, as Windows gives
+        /// them to every program (WPF's SystemColors reads GetSysColor).</summary>
+        internal readonly record struct ContrastColors(Color Window, Color WindowText, Color GrayText, Color Highlight, Color HighlightText, Color ButtonText)
+        {
+            internal static ContrastColors OfWindows() => new(SystemColors.WindowColor, SystemColors.WindowTextColor, SystemColors.GrayTextColor,
+                SystemColors.HighlightColor, SystemColors.HighlightTextColor, SystemColors.ControlTextColor);
+        }
+
+        /// <summary>The contrast theme's colors, read when high contrast
+        /// puts its look on. A test gives its own.</summary>
+        internal static System.Func<ContrastColors> Contrast = ContrastColors.OfWindows;
+
+        /// <summary>Whether the look in force stands on a dark ground:
+        /// PadForge's dark base, or a contrast theme whose window color
+        /// white text reads on better than black text. Code that draws its
+        /// own colors picks its dark or light set by it.</summary>
+        internal static bool DarkGround
+        {
+            get
+            {
+                var theme = ApplicationThemeManager.GetAppTheme();
+                if (theme != ApplicationTheme.HighContrast) return theme == ApplicationTheme.Dark;
+                Color window = Contrast().Window;
+                return Themes.ThemeColor.Contrast(Colors.White, window) > Themes.ThemeColor.Contrast(Colors.Black, window);
+            }
+        }
+
         // Dark-ground text colors.
         private static readonly Color ColdDark = Color.FromRgb(0x7C, 0xC7, 0xEA);
         private static readonly Color ColdDeepDark = Color.FromRgb(0x2E, 0x6A, 0x8F);
@@ -36,7 +64,15 @@ namespace PadForge.Common
         public static void ApplyAccent()
         {
             var theme = ApplicationThemeManager.GetAppTheme();
+            // Windows' high contrast stands over every look.
+            if (theme == ApplicationTheme.HighContrast)
+            {
+                ApplyContrast(Contrast());
+                return;
+            }
             ApplicationAccentColorManager.Apply(Accent, theme);
+            foreach (string key in ContrastOnlyKeys)
+                Application.Current.Resources.Remove(key);
 
             // Swap the identity text brushes for the active ground. Consumers
             // bind with DynamicResource, so an app-level override wins over
@@ -190,6 +226,22 @@ namespace PadForge.Common
             // to 1 on a card, on the wait well and on the wait tint.
             SetBrush("WaitBrush", dark ? Color.FromRgb(0xF2, 0xB8, 0x4B) : Color.FromRgb(0x8F, 0x62, 0x00));
             SetBrush("DashLineBrush", dark ? Color.FromRgb(0x34, 0x41, 0x54) : Color.FromRgb(0xAE, 0xB6, 0xC4));
+            // A caution line (a motion row's note, the no-keys line): wpf-ui's
+            // own tone on each ground, as a brush of PadForge's own, which a
+            // theme then holds to the text contrast (#591).
+            SetBrush("SystemFillColorCautionBrush", dark ? Color.FromRgb(0xFC, 0xE1, 0x00) : Color.FromRgb(0x9D, 0x5D, 0x00));
+            // The R, G and B of a lighting card's rows: each reads at 4.5 to 1
+            // on a card.
+            SetBrush("ChannelRedBrush", dark ? Color.FromRgb(0xEF, 0x53, 0x50) : Color.FromRgb(0xD3, 0x2F, 0x2F));
+            SetBrush("ChannelGreenBrush", dark ? Color.FromRgb(0x66, 0xBB, 0x6A) : Color.FromRgb(0x2E, 0x7D, 0x32));
+            SetBrush("ChannelBlueBrush", dark ? Color.FromRgb(0x42, 0xA5, 0xF5) : Color.FromRgb(0x15, 0x65, 0xC0));
+            // A stick's radar: its outer ring, its inner rings and crosshair,
+            // and the dead zone's fill, fainter where a zone only snaps to
+            // an axis. The same on both grounds.
+            SetBrush("RadarRingBrush", Color.FromRgb(0x25, 0x30, 0x49));
+            SetBrush("RadarGridBrush", Color.FromRgb(0x1E, 0x27, 0x39));
+            SetBrush("DeadZoneFillBrush", Color.FromArgb(0x2E, 0x25, 0x30, 0x49));
+            SetBrush("DeadZoneFaintFillBrush", Color.FromArgb(0x18, 0x25, 0x30, 0x49));
             // Text ramp (#175): both grounds get a deliberate steel-tinted
             // hierarchy; stock light gray reads too faint.
             SetBrush("TextFillColorPrimaryBrush", dark ? Color.FromRgb(0xEE, 0xF2, 0xF7) : Color.FromRgb(0x1A, 0x24, 0x33));
@@ -254,6 +306,28 @@ namespace PadForge.Common
 
             if (Application.Current.TryFindResource("CardBackgroundFillColorDefaultBrush") is Brush cardFill)
                 Application.Current.Resources[HomeEngineCardKey] = cardFill;
+
+            // The words of the filled buttons, each in the ink that reads on
+            // every fill it stands on: the Primary button's pressed words
+            // are white on dark, where its deep ember reads 3.7 to 1 under
+            // the dark ink, and its words on light are the dark ink, where
+            // white reads 3.5 to 1 on the light ember. The fills stay as
+            // designed.
+            var res = Application.Current.Resources;
+            Color page = Solid(Application.Current.TryFindResource("ApplicationBackgroundBrush"), dark ? Colors.Black : Colors.White);
+            Color card = Solid(Application.Current.TryFindResource("CardBackgroundFillColorDefaultBrush"), page);
+            Themes.ThemeEngine.HoldButtonInk(key => Themes.ThemeEngine.IsOwn(res, key) ? res[key] : Application.Current.TryFindResource(key),
+                key => Themes.ThemeEngine.IsOwn(res, key), (key, value) => res[key] = value, Themes.ThemeEngine.StockInk, card, page);
+        }
+
+        /// <summary>A brush's color laid over a solid ground: what shows.</summary>
+        private static Color Solid(object brush, Color ground)
+        {
+            if (brush is not SolidColorBrush solid) return ground;
+            Color c = solid.Color;
+            double a = c.A / 255.0 * solid.Opacity;
+            static byte Mix(byte top, byte under, double share) => (byte)System.Math.Round(top * share + under * (1 - share));
+            return Color.FromRgb(Mix(c.R, ground.R, a), Mix(c.G, ground.G, a), Mix(c.B, ground.B, a));
         }
 
         // Chrome unification (#175 control spec §§1-8, route a): every stock
@@ -262,7 +336,11 @@ namespace PadForge.Common
         // Buttons are raised steel with one flat edge, inputs are darker
         // fields, and flyout surfaces sit a step above the page. Every key
         // pinned here is listed in EmberChromeKeys so light theme falls
-        // back to stock Fluent.
+        // back to stock Fluent, apart from the three AccentButtonForeground
+        // keys: the light branch removes them too, and the end of
+        // ApplyAccent sets them again on either ground outside Windows'
+        // high contrast, in the ink that reads on the Primary button's
+        // fills.
         private static void ApplyDarkChrome()
         {
             // §1 Button: steel raise.
@@ -363,7 +441,10 @@ namespace PadForge.Common
             "ButtonBorderBrushDisabled",
             "ButtonForegroundPressed",
             "ControlElevationBorderBrush",
-            // §2 Primary (Color pins self-heal, brushes must be removed)
+            // §2 Primary (Color pins self-heal, brushes must be removed).
+            // The three AccentButtonForeground keys are removed here and
+            // set again on either ground at the end of ApplyAccent (outside
+            // Windows' high contrast), in the ink that reads on the fills.
             "AccentButtonBackground",
             "AccentButtonForeground",
             "AccentButtonForegroundPointerOver",
@@ -420,6 +501,105 @@ namespace PadForge.Common
             "SliderThumbBackground",
             "SliderThumbBackgroundPointerOver",
         };
+
+        // Under Windows' high contrast: the grounds text stands on, which take
+        // the contrast theme's window color.
+        private static readonly string[] ContrastGroundKeys =
+        {
+            "ApplicationBackgroundBrush", "SolidBackgroundFillColorBaseBrush", "NavigationViewContentBackground",
+            "CardBackgroundFillColorDefaultBrush", "CardBackgroundFillColorSecondaryBrush", "ControlFillColorDefaultBrush",
+            "SteelGroundBrush", "SteelRaisedBrush", "SteelPressedBrush", "SteelPaneBrush", "SteelWindowBrush", "SteelFieldBrush",
+            "SteelLiftBrush", "SteelFootBrush", "ShellDialogGroundBrush", "SteelSegmentBrush", "SteelBandBrush", "SteelTrayBrush",
+            "SteelWellBrush", "SteelPaneHoverBrush", "SteelCardHoverBrush", "NavigationViewItemBackgroundSelected",
+            "NavigationViewItemBackgroundPointerOver", "NavigationViewItemBackgroundPressed",
+            "EmberCardPickBrush", "EmberWellBrush", "EmberPickBrush", "WaitWellBrush",
+        };
+
+        // The text, which takes its window text color.
+        private static readonly string[] ContrastTextKeys =
+        {
+            "TextFillColorPrimaryBrush", "TextFillColorSecondaryBrush", "TextFillColorTertiaryBrush", "SubRowTextBrush",
+            "SelectedTextBrush", "QuietGlyphBrush", "ColdBrush", "ColdDeepBrush", "ColdMutedBrush", "EmberTextBrush",
+            "EmberHotBrush", "InputChipTextBrush", "DangerInkBrush", "LinkHoverBrush", "WaitBrush", "WaitTextBrush",
+            "WaitMutedBrush", "ChannelRedBrush", "ChannelGreenBrush", "ChannelBlueBrush", "SystemFillColorCautionBrush",
+            "AccentTextFillColorPrimaryBrush", "AccentTextFillColorSecondaryBrush", "AccentTextFillColorTertiaryBrush",
+        };
+
+        // Edges and hairlines, in the window text color, as wpf-ui's
+        // contrast dictionaries draw a card's edge.
+        private static readonly string[] ContrastLineKeys =
+        {
+            "NavigationViewContentGridBorderBrush", "CardStrokeColorDefaultBrush", "SteelLineBrush", "SteelLineSoftBrush",
+            "SteelPaneLineBrush", "SteelPillLineBrush", "SteelWellLineBrush", "DashLineBrush", "InputChipEdgeBrush",
+            "EmberEdgeBrush", "WaitEdgeBrush", "DangerEdgeBrush", "RadarRingBrush", "RadarGridBrush",
+        };
+
+        // The ember fills under the ember buttons' words, the rings of a
+        // selection and the accent's marks, in the highlight color.
+        private static readonly string[] ContrastHighlightKeys =
+        {
+            "EmberBrush", "EmberLiftBrush", "EmberPressBrush", "EmberRingBrush", "EmberRingSoftBrush", "EmberRingFaintBrush",
+            "WaitRingBrush", "SystemAccentColorSecondaryBrush", "SystemAccentColorTertiaryBrush",
+        };
+
+        // Washes and tints laid over a ground, taken off.
+        private static readonly string[] ContrastClearKeys = { "EmberWashBrush", "WaitTintBrush", "EmberTintBrush", "ColdTintBrush" };
+
+        // The words of wpf-ui's controls that have no fill of their own, so
+        // they stand on PadForge's ground, with the fill a list row takes
+        // under the pointer. wpf-ui picks its contrast dictionary by the name
+        // of Windows' theme file and takes HCWhite, with Desert's fixed
+        // colors, for any file but its four (ApplicationThemeManager.cs:94-102),
+        // while PadForge's ground is Windows' own window color. Each key takes
+        // the Windows color its role names in all four dictionaries
+        // (HCWhite.xaml:270, 385, 388, 393, 395, 444-445, 539-540), so under
+        // the stock contrast themes the colors are the dictionary's own.
+        private static readonly string[] ContrastControlButtonTextKeys = { "CheckBoxForeground", "RadioButtonForeground" };
+        private static readonly string[] ContrastControlWindowTextKeys = { "ToggleSwitchContentForeground", "ListBoxItemForeground", "ListViewItemForeground" };
+        private static readonly string[] ContrastControlGrayTextKeys = { "RadioButtonForegroundDisabled", "ToggleSwitchContentForegroundDisabled", "LabelForeground" };
+        private const string ContrastControlHoverKey = "ListViewItemBackgroundPointerOver";
+
+        // The keys only the contrast look sets: PadForge's own looks take
+        // them from App.xaml or from wpf-ui's Light and Dark dictionaries, so
+        // they come off when high contrast does.
+        private static readonly string[] ContrastOnlyKeys = new[] { "EmberBrush", "EmberTintBrush", "ColdTintBrush", ContrastControlHoverKey }
+            .Concat(ContrastControlButtonTextKeys).Concat(ContrastControlWindowTextKeys).Concat(ContrastControlGrayTextKeys).ToArray();
+
+        /// <summary>
+        /// The look under Windows' high contrast, over whatever look the user
+        /// picked: every ground text stands on is the contrast theme's window
+        /// color, all text its window text and disabled text its gray text,
+        /// edges its window text, and an ember button its highlight with the
+        /// highlight's text, as wpf-ui's contrast dictionaries draw the
+        /// Primary button (HCBlack.xaml:215-221). wpf-ui's contrast
+        /// dictionary draws its own controls, so PadForge's chrome over them
+        /// comes off. The words of its controls that have no fill of their
+        /// own stand on PadForge's ground, so they take Windows' colors too.
+        /// </summary>
+        private static void ApplyContrast(ContrastColors c)
+        {
+            var res = Application.Current.Resources;
+            ApplicationAccentColorManager.Apply(c.Highlight, ApplicationTheme.HighContrast);
+            foreach (var key in EmberChromeKeys) res.Remove(key);
+            foreach (var key in SteelKeys) res.Remove(key);
+            foreach (var key in ContrastGroundKeys) SetBrush(key, c.Window);
+            foreach (var key in ContrastTextKeys) SetBrush(key, c.WindowText);
+            foreach (var key in ContrastLineKeys) SetBrush(key, c.WindowText);
+            foreach (var key in ContrastHighlightKeys) SetBrush(key, c.Highlight);
+            foreach (var key in ContrastClearKeys) SetBrush(key, Colors.Transparent);
+            foreach (var key in ContrastControlButtonTextKeys) SetBrush(key, c.ButtonText);
+            foreach (var key in ContrastControlWindowTextKeys) SetBrush(key, c.WindowText);
+            foreach (var key in ContrastControlGrayTextKeys) SetBrush(key, c.GrayText);
+            SetBrush(ContrastControlHoverKey, c.Window);
+            SetBrush("ControlStrokeColorDefaultBrush", c.ButtonText);
+            SetBrush("TextFillColorDisabledBrush", c.GrayText);
+            SetBrush("SteelMarkBrush", c.GrayText);
+            SetBrush("DeadZoneFillBrush", Color.FromArgb(0x2E, c.GrayText.R, c.GrayText.G, c.GrayText.B));
+            SetBrush("DeadZoneFaintFillBrush", Color.FromArgb(0x18, c.GrayText.R, c.GrayText.G, c.GrayText.B));
+            SetBrush("EmberInkBrush", c.HighlightText);
+            SetTitleWarmth(0);
+            res[HomeEngineCardKey] = res["CardBackgroundFillColorDefaultBrush"];
+        }
 
         private static void SetBrush(string key, Color color)
         {

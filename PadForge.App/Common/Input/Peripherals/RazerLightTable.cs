@@ -57,10 +57,6 @@ namespace PadForge.Common.Input.Peripherals
             = System.Array.Empty<(int, int, int, int)>();
 
         public bool HasKeys => KeyRows > 0;
-
-        /// <summary>The reference the lights were read from, for the log
-        /// and the tab.</summary>
-        public string Source { get; init; }
     }
 
     /// <summary>
@@ -109,10 +105,7 @@ namespace PadForge.Common.Input.Peripherals
             return s_maps.GetOrAdd((productId, region), _ =>
             {
                 var lights = row.HasKeys ? Compose(row, region) : row.Lights;
-                string source = row.KeyboardRecipe != null
-                    ? $"{row.Source}, {row.KeyboardRecipe} {region}"
-                    : row.Source;
-                return new LightMap(lights, source) { Product = ProductKey(productId) };
+                return new LightMap(lights) { Product = ProductKey(productId) };
             });
         }
 

@@ -105,7 +105,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(lights, "OpenRGB MSIKeyboardController") { Product = $"msi:1462:{productId:X4}" },
+                Map = new LightMap(lights) { Product = $"msi:1462:{productId:X4}" },
                 Programs = new[] { VendorPrograms.MsiMysticLight },
                 HoldMs = HoldMs,
                 RepaintMs = RepaintMs,

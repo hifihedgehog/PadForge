@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Resources.Strings;
 using PadForge.Services;
 
 namespace PadForge.Common.Input
@@ -37,14 +38,15 @@ namespace PadForge.Common.Input
         /// <summary>All saved profiles. Empty list = no profiles configured.</summary>
         public static List<ProfileData> Profiles { get; set; } = new();
 
-        /// <summary>The name a new profile takes: its own, trimmed, or
-        /// "Imported profile" when it has none, then the first "name (n)" from
-        /// 2 up that no profile has, compared without case. Every import and
-        /// the import preview use it, so the preview names the profile the
-        /// import adds.</summary>
+        /// <summary>The name a new profile takes: its own, trimmed, or the
+        /// string table's Import_UnnamedProfile when it has none (a
+        /// .pfprofile with an empty name reaches here unnamed), then the
+        /// first "name (n)" from 2 up that no profile has, compared without
+        /// case. Every import and the import preview use it, so the preview
+        /// names the profile the import adds.</summary>
         internal static string UniqueProfileName(string name)
         {
-            string baseName = string.IsNullOrWhiteSpace(name) ? "Imported profile" : name.Trim();
+            string baseName = string.IsNullOrWhiteSpace(name) ? Strings.Instance.Import_UnnamedProfile : name.Trim();
             string unique = baseName;
             int n = 2;
             while (Profiles.Any(p => string.Equals(p.Name, unique, System.StringComparison.OrdinalIgnoreCase)))

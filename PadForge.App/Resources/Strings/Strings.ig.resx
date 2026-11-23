@@ -791,11 +791,6 @@
   <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Aka ekpe</value></data>
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Aka nri</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Azụ</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Tọgharịa gaa na 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Tọgharịa gaa na 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Tọgharịa gaa na 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Tọgharịa gaa na 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Tọgharịa gaa na 0°</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Tọgharịa wheel</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ụda</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>N'elu ihuenyo</value></data>
@@ -818,8 +813,6 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Nlele</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Mgbe niile</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Gbanyụọ</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Tọgharịa gaa na ndabara (Gbanyụọ)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Tọgharịa gaa na ndabara (100%)</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Bupụ…</value></data>
@@ -1119,7 +1112,6 @@
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick aka nri Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone etiti</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tọgharịa gaa na stick aka ekpe X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tọgharịa ike (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tọgharịa deadzone etiti (2%)</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
@@ -1488,6 +1480,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Njikwa ahụ anabataghị iwu na-akwado ya, ya mere o nweghị ihe e zipuru. Lelee na ejikọrọ ya ma zipu ọzọ.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Iziga ahụ kwụsịrị n'ihi njehie dị na PadForge. Faịlụ log nwere nkọwa ya.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>A ka na-ezipu foto gaa na njikwa ahụ. Kwụsị izipu ahụ?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Gaa n'ihu na-ezipu</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -1520,4 +1513,6 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Mee ka ọ dabara na foto</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Na-ewere agba anọ ahụ site na foto ahụ.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Foto (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faịlụ niile (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge enweghị ike ịgụ faịlụ ahụ.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ahụghị faịlụ ahụ.</value></data>
 </root>

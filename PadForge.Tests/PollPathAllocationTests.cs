@@ -230,5 +230,47 @@ namespace PadForge.Tests
                 () => PadForge.Common.Input.InputManager.UpdateIdleDisconnect(device, state), 1000);
             AssertNothing(windows);
         }
+
+        /// <summary>The virtual-controller step runs on every pass, and a
+        /// slot whose controllers are off waits in it with no virtual
+        /// controller. The ordering pass copied the slot's order list for it
+        /// on every pass, though it decides nothing for a slot until one of
+        /// the slot's devices is online: 32 bytes a pass on a PC with one Xbox
+        /// slot and its pads off (measured 2026-11-23).</summary>
+        [Fact]
+        public void TheVirtualStepAllocatesNothingWhileASlotWaitsForItsDevices()
+        {
+            var devices = PadForge.Common.Input.SettingsManager.UserDevices;
+            var settings = PadForge.Common.Input.SettingsManager.UserSettings;
+            var xboxOrder = PadForge.Common.Input.SettingsManager.XboxSlotOrder;
+            bool[] created = (bool[])PadForge.Common.Input.SettingsManager.SlotCreated.Clone();
+            bool[] enabled = (bool[])PadForge.Common.Input.SettingsManager.SlotEnabled.Clone();
+            try
+            {
+                PadForge.Common.Input.SettingsManager.UserDevices = new PadForge.Common.Input.DeviceCollection();
+                PadForge.Common.Input.SettingsManager.UserSettings = new PadForge.Common.Input.SettingsCollection();
+                PadForge.Common.Input.SettingsManager.XboxSlotOrder = new List<int> { 0 };
+                Array.Clear(PadForge.Common.Input.SettingsManager.SlotCreated);
+                Array.Clear(PadForge.Common.Input.SettingsManager.SlotEnabled);
+                PadForge.Common.Input.SettingsManager.SlotCreated[0] = true;
+                PadForge.Common.Input.SettingsManager.SlotEnabled[0] = true;
+                // Assigned and offline: the device list has no row for it.
+                PadForge.Common.Input.SettingsManager.UserSettings.Items.Add(
+                    new UserSetting { InstanceGuid = Guid.NewGuid(), MapTo = 0 });
+                var im = new PadForge.Common.Input.InputManager();
+                var step = (Action)Delegate.CreateDelegate(typeof(Action), im,
+                    typeof(PadForge.Common.Input.InputManager).GetMethod("UpdateVirtualDevices",
+                        BindingFlags.Instance | BindingFlags.NonPublic)!);
+                AssertNothing(AllocationWindow.Clean(step, 1000));
+            }
+            finally
+            {
+                PadForge.Common.Input.SettingsManager.UserDevices = devices;
+                PadForge.Common.Input.SettingsManager.UserSettings = settings;
+                PadForge.Common.Input.SettingsManager.XboxSlotOrder = xboxOrder;
+                Array.Copy(created, PadForge.Common.Input.SettingsManager.SlotCreated, created.Length);
+                Array.Copy(enabled, PadForge.Common.Input.SettingsManager.SlotEnabled, enabled.Length);
+            }
+        }
     }
 }

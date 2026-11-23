@@ -113,7 +113,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_OKSKeyboard.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"oks:{VendorId:X4}:{productId:X4}",
             },
@@ -203,7 +203,7 @@ namespace PadForge.Common.Input.Peripherals
                 || !Send(io, wait, WriteRgbPacket(DirectBrightness, 0, Speed, Direction)))
                 return null;
             return new Session(kb87
-                ? new LightMap(Kb87Lights(), "OpenRGB RGBController_OKSKeyboard.cpp") { Product = $"oks:{VendorId:X4}:{productId:X4}:kb87" }
+                ? new LightMap(Kb87Lights()) { Product = $"oks:{VendorId:X4}:{productId:X4}:kb87" }
                 : null);
         }
 

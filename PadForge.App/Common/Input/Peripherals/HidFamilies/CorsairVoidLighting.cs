@@ -77,7 +77,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_CorsairVoid.cpp") { Product = $"corsair:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"corsair:{vendorId:X4}:{productId:X4}" },
             Programs = new[] { VendorPrograms.CorsairIcue },
             RepaintMs = PluginDeviceLighting.VoidWaitMs,
             Begin = (_, _) => new Session(() => Environment.TickCount64),

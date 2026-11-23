@@ -1301,7 +1301,9 @@ namespace PadForge.Tests
             string list = raw.Substring(listStart, listEnd - listStart);
             Assert.DoesNotContain("Permission is hereby granted", list);
             Assert.DoesNotContain("MIT License (full text", list);
-            Assert.Equal(3, Regex.Matches(Flat(raw), "Permission is hereby granted, free of charge, to any person obtaining a copy").Count);
+            // "of this software" sets the MIT grant apart from the SIL Open
+            // Font License's, which opens with the same words.
+            Assert.Equal(3, Regex.Matches(Flat(raw), "Permission is hereby granted, free of charge, to any person obtaining a copy of this software").Count);
             var entries = Regex.Split(list.Replace("\r", string.Empty), @"\n\n+").Where(e => e.Length > 0 && !char.IsWhiteSpace(e[0])).ToList();
             // Positive control: the split found the entries.
             Assert.True(entries.Count > 60, $"found only {entries.Count} entries");
@@ -1425,6 +1427,89 @@ namespace PadForge.Tests
                 previous = sortName;
             }
             Assert.Equal(new[] { "About_RawInput" }, rows.Where(r => r.Chip == null).Select(r => r.Name));
+        }
+
+        /// <summary>
+        /// The README comparison row for DirectInput stick, wheel and HOTAS
+        /// output counts the profiles the Extended type's picker offers,
+        /// Custom apart. It said 143, the count of every controller profile
+        /// across the Xbox, PlayStation, Nintendo and Extended types.
+        /// </summary>
+        [Fact]
+        public void TheDirectInputComparisonRowCountsTheExtendedProfiles()
+        {
+            int extended = HMaestroProfileCatalog.ExtendedProfiles.Count(p => p.Id != HMaestroProfileCatalog.CustomProfileId);
+            Assert.True(extended > 0 && extended < HMaestroProfileCatalog.ExtendedProfiles.Count, $"Extended offers {extended} profiles");
+            var row = ReadmeLines().Where(l => l.StartsWith("| Flight stick / wheel / HOTAS virtual output (DirectInput) |", StringComparison.Ordinal)).ToList();
+            // Positive control: the row is still there to be checked.
+            Assert.True(row.Count == 1, $"README has {row.Count} DirectInput comparison rows, not one");
+            var said = Regex.Match(row[0], @"\| ✅ (\d+) [A-Za-z]+ profiles \+ Custom \|");
+            Assert.True(said.Success, "the DirectInput comparison row gives no profile count: " + row[0]);
+            Assert.Equal(extended, int.Parse(said.Groups[1].Value));
+            Assert.Contains($"✅ {extended} Extended profiles + Custom", row[0]);
+        }
+
+        /// <summary>
+        /// Every GitHub project the README's license list links is named in
+        /// LICENSE, the notices the executable embeds. LICENSE missed the
+        /// Aurebesh font and the Klingon and Sindarin references
+        /// (klingon-assistant-data and Eldamo) that README and About credit,
+        /// and README kept the Ionicons credit after the drawing that used it
+        /// and its LICENSE and About credits were removed.
+        /// </summary>
+        [Fact]
+        public void LicenseNamesEveryProjectTheReadmeLicenseListLinks()
+        {
+            string readme = Text("README.md").Replace("\r", string.Empty);
+            int start = readme.IndexOf("\n## License\n", StringComparison.Ordinal);
+            int end = readme.IndexOf("\n## Trademark\n", StringComparison.Ordinal);
+            Assert.True(start >= 0 && end > start, "README has no license list ahead of its Trademark section");
+            var projects = Regex.Matches(readme.Substring(start, end - start), @"https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
+                .Select(m => m.Value.Substring("https://".Length).TrimEnd('/').ToLowerInvariant()).Distinct().ToList();
+            // Positive control: the pattern still finds the links.
+            Assert.True(projects.Count > 200, $"found only {projects.Count} GitHub links in README's license list");
+            string license = Text("LICENSE").ToLowerInvariant();
+            var missing = projects.Where(p => !license.Contains(p, StringComparison.Ordinal)).ToList();
+            Assert.True(missing.Count == 0, "LICENSE does not name:\n" + string.Join("\n", missing));
+        }
+
+        /// <summary>
+        /// The executable embeds Aurebesh.ttf, and the SIL Open Font License
+        /// lets it travel only when each copy carries the font's copyright
+        /// notice and the license (clause 2, in
+        /// Resources/Fonts/LICENSE.md). LICENSE, the notices the executable
+        /// embeds, carries both: the entry with SilvinoR's copyright and the
+        /// reserved name, and the license text at the end.
+        /// </summary>
+        [Fact]
+        public void LicenseCarriesTheAurebeshFontNoticeAndItsLicense()
+        {
+            string raw = Text("LICENSE");
+            string Flat(string s) => Regex.Replace(s, @"\s+", " ");
+            int listStart = raw.IndexOf("Third-Party Licenses and Attributions", StringComparison.Ordinal);
+            int listEnd = raw.IndexOf("Special Thanks", StringComparison.Ordinal);
+            Assert.True(listStart >= 0 && listEnd > listStart, "LICENSE has no attribution list");
+            var entries = Regex.Split(raw.Substring(listStart, listEnd - listStart).Replace("\r", string.Empty), @"\n\n+")
+                .Where(e => e.Length > 0 && !char.IsWhiteSpace(e[0])).ToList();
+            var font = entries.Where(e => e.Split('\n')[0] == "Aurebesh font").ToList();
+            Assert.True(font.Count == 1, $"LICENSE has {font.Count} Aurebesh font entries, not one");
+            foreach (string part in new[]
+                     {
+                         "https://github.com/vinorodrigues/font-aurebesh", "Copyright (c) 2022, SilvinoR",
+                         "Reserved Font Name AUREBESH", "1aeb227950f2555923485fb586534cbba8c4a979",
+                     })
+                Assert.Contains(part, Flat(font[0]));
+
+            string ofl = Flat(LicenseBlock(raw, "SIL Open Font License 1.1 ("));
+            foreach (string part in new[]
+                     {
+                         "Copyright (c) 2022, SilvinoR", "with Reserved Font Name AUREBESH",
+                         "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
+                         "provided that each copy contains the above copyright notice and this license",
+                         "This license becomes null and void if any of the above conditions are not met.",
+                         "OTHER DEALINGS IN THE FONT SOFTWARE.",
+                     })
+                Assert.Contains(part, ofl);
         }
 
         /// <summary>The About page's credit rows in order, as the keys their

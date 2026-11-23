@@ -20,7 +20,7 @@ namespace PadForge.SteamWorkshop.Tests
             return new ConfigTranslator().Translate(config, new TranslationOptions
             {
                 FileId = fileId,
-                PreferredLanguage = "english",
+                PreferredLanguages = new[] { "english" },
             });
         }
 

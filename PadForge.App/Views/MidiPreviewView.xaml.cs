@@ -44,10 +44,14 @@ namespace PadForge.Views
         private bool _dirty;
         private bool _layoutBuilt;
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
+        // The look the layout was built in (#591): the CC fills and the keys'
+        // pressed brushes are that look's, so a look put on while the view
+        // shows builds it again.
+        private int _builtLook;
 
         // Colors — pre-cached dark/light variants (zero per-frame allocation)
         private static bool IsDarkTheme =>
-            Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            PadForge.Common.EmberTheme.DarkGround;
 
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
@@ -133,7 +137,16 @@ namespace PadForge.Views
                 CompositionTarget.Rendering += OnRendering;
             };
             Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            // The section titles are copied into the canvas as text, and the
+            // page that holds the picture is kept, so a language switch
+            // redraws it. Held weakly by Strings.
+            Strings.CultureChanged += OnCultureChanged;
         }
+
+        /// <summary>Redraws once every handler of the switch has run, as the
+        /// keyboard picture does.</summary>
+        private void OnCultureChanged()
+            => Dispatcher.BeginInvoke(new Action(() => { if (_layoutBuilt) RebuildLayout(); }));
 
         public void Bind(PadViewModel vm)
         {
@@ -293,6 +306,7 @@ namespace PadForge.Views
             MidiCanvas.Height = topY + LayoutPadding;
             _layoutBuilt = true;
             _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+            _builtLook = PadForge.Common.Themes.ThemeLook.Version;
             _dirty = true;
             PickBoundsChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -381,6 +395,7 @@ namespace PadForge.Views
             MidiCanvas.Height = topY + LayoutPadding;
             _layoutBuilt = true;
             _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+            _builtLook = PadForge.Common.Themes.ThemeLook.Version;
             _dirty = true;
         }
 
@@ -662,9 +677,9 @@ namespace PadForge.Views
             // Iconic gate: IsVisible stays TRUE while minimized.
             if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
-            // Rebuild on theme change.
+            // Rebuild on a theme or look change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
-            if (_layoutBuilt && _lastTheme != currentTheme) RebuildLayout();
+            if (_layoutBuilt && (_lastTheme != currentTheme || _builtLook != PadForge.Common.Themes.ThemeLook.Version)) RebuildLayout();
 
             if (!_layoutBuilt) return;
 

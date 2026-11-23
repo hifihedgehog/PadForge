@@ -53,6 +53,10 @@ namespace PadForge.Views
         /// order the pad draws them.</summary>
         private readonly List<(OverlayElement Element, string Text)> _callouts = new();
 
+        /// <summary>The leaders' runs over the pad, drawn in the art under
+        /// the lit controls, so a new layout takes them out again.</summary>
+        private readonly List<UIElement> _leadersOnPad = new();
+
         public WorkshopControllerPreview()
         {
             InitializeComponent();
@@ -70,6 +74,7 @@ namespace PadForge.Views
         public void Render(string controllerTag, IEnumerable<Callout> callouts)
         {
             ModelCanvas.Children.Clear();
+            _leadersOnPad.Clear();
             _callouts.Clear();
             var wanted = (callouts ?? Enumerable.Empty<Callout>())
                 .Where(c => !string.IsNullOrWhiteSpace(c.ArtAnchor))
@@ -120,21 +125,30 @@ namespace PadForge.Views
         /// <summary>Draws each callout beside the pad, on the side its
         /// control is nearest: its words at 12, and a leader from beside the
         /// words to the control's edge, with a small ember tick there so the
-        /// eye lands on the part. Each line starts level with its control
+        /// eye lands on the part. The leader's level run beside the pad and
+        /// the tick are drawn over the art. Its run over the pad is drawn in
+        /// the art, under the lit controls (z 5) and over the body (z 1): the
+        /// Deck's paddle tiles stand in the margin every leader on their side
+        /// crosses to reach the pad, and a run drawn on top scribbles over
+        /// them. That run is 1 wide at the size the pad is drawn at. Each line starts level with its control
         /// and walks down to clear the one above it, and a column too long
         /// for the frame is pulled up to end inside it. Words too long for
         /// the room beside the pad end in an ellipsis.</summary>
         internal void LayoutCallouts()
         {
             CalloutCanvas.Children.Clear();
+            foreach (var line in _leadersOnPad) ModelCanvas.Children.Remove(line);
+            _leadersOnPad.Clear();
             double width = CalloutCanvas.ActualWidth, height = CalloutCanvas.ActualHeight;
             if (_callouts.Count == 0 || !(width > 0) || !(height > 0) || !(ArtBox.ActualWidth > 0)) return;
 
             GeneralTransform toCallouts = ModelCanvas.TransformToVisual(CalloutCanvas);
             Rect pad = toCallouts.TransformBounds(new Rect(0, 0, ModelCanvas.Width, ModelCanvas.Height));
             double middle = pad.Left + pad.Width / 2;
+            GeneralTransform toArt = toCallouts.Inverse;
+            double scale = pad.Width / ModelCanvas.Width;
             var places = _callouts
-                .Select(c => (c.Text, At: toCallouts.TransformBounds(new Rect(c.Element.X, c.Element.Y, c.Element.Width, c.Element.Height))))
+                .Select(c => (c.Text, c.Element, At: toCallouts.TransformBounds(new Rect(c.Element.X, c.Element.Y, c.Element.Width, c.Element.Height))))
                 .ToList();
 
             foreach (bool left in new[] { true, false })
@@ -188,10 +202,27 @@ namespace PadForge.Views
                         {
                             new(left ? edge - LeaderRun + 4 : edge + LeaderRun - 4, rows[i]),
                             new(edge, rows[i]),
-                            new(ex, cy),
                         },
                         IsHitTestVisible = false,
                     });
+                    if (toArt != null && scale > 0)
+                    {
+                        var el = side[i].Element;
+                        var onPad = new System.Windows.Shapes.Polyline
+                        {
+                            Stroke = Leader,
+                            StrokeThickness = 1 / scale,
+                            Points = new PointCollection
+                            {
+                                toArt.Transform(new Point(edge, rows[i])),
+                                new(left ? el.X : el.X + el.Width, el.Y + el.Height / 2),
+                            },
+                            IsHitTestVisible = false,
+                        };
+                        Panel.SetZIndex(onPad, 3);
+                        ModelCanvas.Children.Add(onPad);
+                        _leadersOnPad.Add(onPad);
+                    }
                     var tick = new System.Windows.Shapes.Ellipse
                     {
                         Width = TickSize, Height = TickSize, Fill = Ember, IsHitTestVisible = false,

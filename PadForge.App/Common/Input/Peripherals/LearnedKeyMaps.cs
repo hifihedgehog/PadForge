@@ -67,7 +67,7 @@ namespace PadForge.Common.Input.Peripherals
                 }
                 lights[i] = light;
             }
-            return changed ? new LightMap(lights, map.Source) { Product = map.Product, Strips = map.Strips } : map;
+            return changed ? new LightMap(lights) { Product = map.Product, Strips = map.Strips } : map;
         }
 
         /// <summary>Names light <paramref name="address"/> of

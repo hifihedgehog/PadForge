@@ -40,7 +40,7 @@ namespace PadForge.Tests
             sb.Append("\t\"preset\"\n\t{\n\t\t\"id\"\t\"0\"\n\t\t\"name\"\t\"Default\"\n");
             sb.Append($"\t\t\"group_source_bindings\"\n\t\t{{\n\t\t\t\"1\"\t\"{source} active\"\n\t\t}}\n\t}}\n}}\n");
             var config = SteamInputConfig.FromVdf(VdfParser.Parse(sb.ToString()));
-            return new ConfigTranslator().Translate(config, new TranslationOptions { FileId = 42, PreferredLanguage = "english" });
+            return new ConfigTranslator().Translate(config, new TranslationOptions { FileId = 42, PreferredLanguages = new[] { "english" } });
         }
 
         /// <summary>The angle a rotated mouse row realizes, from its X row's

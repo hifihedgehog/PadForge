@@ -73,7 +73,7 @@ namespace PadForge.ViewModels
             foreach (var p in _profileChoices)
             {
                 if (string.IsNullOrEmpty(p.ProfileId))
-                    p.DisplayName = Strings.Instance.Common_Default;
+                    p.DisplayName = Strings.Instance.Profile_Default;
             }
             foreach (var d in _deviceChoices)
             {
@@ -150,7 +150,7 @@ namespace PadForge.ViewModels
         {
             string currentId = Data.TargetProfileId;
             _profileChoices.Clear();
-            _profileChoices.Add(new ProfileChoice("", Strings.Instance.Common_Default));
+            _profileChoices.Add(new ProfileChoice("", Strings.Instance.Profile_Default));
             var profiles = SettingsManager.Profiles;
             if (profiles != null)
             {

@@ -198,14 +198,14 @@ namespace PadForge.Common.Input.Peripherals
             {
                 DetectK55ProXt => new HidLightingModel
                 {
-                    Map = new LightMap(K55ProXtLights(), "OpenRGB RGBController_CorsairK55RGBPROXT.cpp") { Product = product },
+                    Map = new LightMap(K55ProXtLights()) { Product = product },
                     KeepAliveMs = BoardKeepAliveMs,
                     KeepAliveIdleMs = BoardKeepAliveMs,
                     Begin = (io, wait) => BeginK55ProXt(io, wait, product),
                 },
                 _ => new HidLightingModel
                 {
-                    Map = new LightMap(Lights(TypeOf(productId), LogicalOf(productId), name), "OpenRGB RGBController_CorsairPeripheral.cpp")
+                    Map = new LightMap(Lights(TypeOf(productId), LogicalOf(productId), name))
                     { Product = product },
                     Begin = (io, wait) => BeginPeripheral(io, wait, productId, name, product, oneColor),
                 },
@@ -635,7 +635,7 @@ namespace PadForge.Common.Input.Peripherals
             var logical = type == CorsairDeviceType.Keyboard ? LogicalOf(productId) : Logical.Normal;
             foreach (var frame in OpenFrames(type, logical, physical))
                 if (!io.WriteOutput(frame)) return null;
-            var map = new LightMap(Lights(type, logical, name), $"OpenRGB RGBController_CorsairPeripheral.cpp, {type}")
+            var map = new LightMap(Lights(type, logical, name))
             { Product = product };
             bool keyboard = type == CorsairDeviceType.Keyboard;
             return new PeripheralSession(KeyboardProfileBackups.SessionKey(product, io.Path), type, logical, physical, map, keyboard ? 2 : 1, oneColor);

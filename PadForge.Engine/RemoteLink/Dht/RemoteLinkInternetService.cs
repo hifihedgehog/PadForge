@@ -44,6 +44,11 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// <summary>Dial a paired peer at its STABLE identity relay. Needs no
         /// DHT lookup and no direct path, so it is tried first on reconnect.</summary>
         private readonly Func<byte[], byte[], CancellationToken, Task<bool>> _connectByIdentityRelay;
+        /// <summary>Hands every peer of a pass, as (public key, capability), to
+        /// the listener that answers their punch probes
+        /// (<see cref="LinkServer.SetKnownPunchPeers"/>), so this host answers a
+        /// paired peer's reconnect dial while its own pass is not punching.</summary>
+        private readonly Action<IReadOnlyList<(byte[] PeerPublicKey, byte[] Capability)>> _answerPunchFrom;
         private readonly byte[] _selfFingerprint;
         private readonly Action<string> _log;
 
@@ -53,8 +58,10 @@ namespace PadForge.Engine.RemoteLink.Dht
             Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> connectByPunch,
             Func<NatProfile> localNat = null,
             Action<string> log = null,
-            Func<byte[], byte[], CancellationToken, Task<bool>> connectByIdentityRelay = null)
+            Func<byte[], byte[], CancellationToken, Task<bool>> connectByIdentityRelay = null,
+            Action<IReadOnlyList<(byte[] PeerPublicKey, byte[] Capability)>> answerPunchFrom = null)
         {
+            _answerPunchFrom = answerPunchFrom;
             _presence = presence ?? throw new ArgumentNullException(nameof(presence));
             _selfPublicKey = selfPublicKey;
             _selfPrivateKey = selfPrivateKey;
@@ -142,26 +149,40 @@ namespace PadForge.Engine.RemoteLink.Dht
             var nonce = PresenceRecord.PunchNonce(peer.Capability);
             // Both peers run this loop and both punch; the lower fingerprint
             // leads the handshake so they never both lead.
-            var peerFp = PeerCrypto.Fingerprint(peer.PeerPublicKey);
-            bool asInitiator = CompareBytes(_selfFingerprint, peerFp) < 0;
+            bool asInitiator = LeadsHandshake(_selfFingerprint, PeerCrypto.Fingerprint(peer.PeerPublicKey));
 
             bool ok = await _connectByPunch(peer.PeerPublicKey, endpoints, nonce, asInitiator, ct).ConfigureAwait(false);
             if (ok) { peer.IsConnected = true; _log($"internet reconnect ok for {Short(peer.PeerPublicKey)}"); }
             return ok;
         }
 
-        /// <summary>Runs one full maintenance pass over all peers: publish
+        /// <summary>Runs one full maintenance pass over all peers: hand them to
+        /// the punch listener so their reconnect dials are answered, publish
         /// presence for each, then attempt reconnect for the disconnected ones.
-        /// The host calls this on the republish cadence and on the discovery
-        /// tick.</summary>
+        /// The host's one caller is its 60 s maintenance timer
+        /// (InputService.InternetMaintainTick), which hands over every paired
+        /// peer that carries a capability, those it must not dial
+        /// included.</summary>
         public async Task MaintainAsync(IEnumerable<Peer> peers, CancellationToken ct)
         {
+            var list = new List<Peer>(peers ?? Array.Empty<Peer>());
+            // Ahead of the single-flight gate: when a pass outlasts the
+            // timer's period, the pass already running answers for its own
+            // peers, and this list is the newest.
+            if (_answerPunchFrom != null)
+            {
+                var answer = new List<(byte[] PeerPublicKey, byte[] Capability)>(list.Count);
+                foreach (var p in list) answer.Add((p.PeerPublicKey, p.Capability));
+                try { _answerPunchFrom(answer); }
+                catch (Exception ex) { _log($"punch answer list failed: {ex.Message}"); }
+            }
+            peers = list;
             // Single-flight. A pass runs DHT lookups and punch sprays for every
-            // peer and can outlast its own cadence, and two callers drive it
-            // (the republish timer and the discovery tick): overlapping passes
-            // sprayed the same peer twice and raced each other's connection
-            // attempts. A pass already running is answer enough for the tick
-            // that arrives during it.
+            // peer and can outlast the 60 s maintenance timer's period, and
+            // the timer fires again whether or not the last pass returned:
+            // overlapping passes sprayed the same peer twice and raced each
+            // other's connection attempts. A pass already running is answer
+            // enough for the tick that arrives during it.
             if (Interlocked.Exchange(ref _maintaining, 1) != 0) return;
             try
             {
@@ -178,6 +199,14 @@ namespace PadForge.Engine.RemoteLink.Dht
         }
 
         private int _maintaining;
+
+        /// <summary>True when this peer leads the handshake with a paired peer
+        /// on the internet lane: the lower full fingerprint leads, so the two
+        /// sides never both lead. A pass that dials and the host that answers
+        /// the dial (<see cref="LinkServer.AutoRespondRole"/>) both decide by
+        /// this.</summary>
+        public static bool LeadsHandshake(byte[] selfFingerprint, byte[] peerFingerprint)
+            => CompareBytes(selfFingerprint, peerFingerprint) < 0;
 
         private static int CompareBytes(byte[] a, byte[] b)
         {

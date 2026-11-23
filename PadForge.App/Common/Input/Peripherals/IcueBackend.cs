@@ -33,7 +33,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Refusal. The path exists only while iCUE runs
     /// (<see cref="IcueRoute.AddShared"/>), so a session that does not come up
-    /// is iCUE answering no, which the tab says in place of its waiting line
+    /// is iCUE answering no, which the Lighting group says in place of its waiting line
     /// (<see cref="PeripheralOutputs.RefusalOn"/>). CSS_ConnectionRefused
     /// names a setting (iCUESDK.h:40, docs/index.html:166).</para>
     ///

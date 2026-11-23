@@ -229,8 +229,10 @@
         </Style>
 
         <!-- The three overlays as the Overlays board draws them, on its 84 by
-             48 grid, in the overlays' own colors: the overlays do not follow
-             the theme. The clear rectangle keeps the bounds. -->
+             48 grid. Their grounds, lines and pale marks are the overlays'
+             own fixed colors. The menu's arc and the profile's flame are in
+             the theme's accent, as the overlays draw them. The clear
+             rectangle keeps the bounds. -->
         <DrawingImage x:Key="OverlaysPreviewMenu">
             <DrawingImage.Drawing>
                 <DrawingGroup>

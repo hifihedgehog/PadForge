@@ -34,7 +34,7 @@ namespace PadForge.Common.Input
     /// Why raw HID (SDL is amplitude-only): the bundled SDL fork's Switch and
     /// Steam drivers hard-code the rumble carrier and vary only amplitude
     /// (SDL_hidapi_switch.c ActuallyRumble; SDL_hidapi_steam.c RumbleJoystick
-    /// since fork b46ae33238 synthesizes fixed-carrier 0x8F pulse trains for
+    /// since fork 1e4312eb35 synthesizes fixed-carrier 0x8F pulse trains for
     /// #267 rumble emulation, intensity as duty cycle, still not tone
     /// playback). Tone playback needs the raw-HID writer pattern
     /// PadForge already built for the Wii speaker and the Sony speaker.
@@ -158,7 +158,9 @@ namespace PadForge.Common.Input
         /// <summary>#271 item 1: per-(slot, device) persona-haptics render.
         /// (Enabled, GainPct). When enabled, the slot's virtual-DualSense
         /// authored haptic audio (persona UAC channels 3/4) feeds this
-        /// sink's mixer and renders through the tone chain. Read at the
+        /// sink's mixer and renders through the sink's chain: the mono tone
+        /// reducer on a tone sink, the PCM stream (PcmSource) on a
+        /// PcmCapable sink. Read at the
         /// sink's ~4 Hz config cadence, like the tone filter above.</summary>
         public static Func<int, Guid, (bool Enabled, int GainPct)> PersonaHapticsProvider { get; set; }
 

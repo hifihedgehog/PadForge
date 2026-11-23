@@ -30,7 +30,7 @@ namespace PadForge.Common.Input
                 catch (Exception ex)
                 {
                     System.Threading.Volatile.Write(ref _steeringAngleFrames[padIndex], 0);
-                    RaiseError($"Error publishing the steering angle for pad {padIndex}", ex);
+                    RaiseSlotError(padIndex, $"Error publishing the steering angle for pad {padIndex}", ex);
                 }
             }
         }

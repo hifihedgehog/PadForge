@@ -4,9 +4,10 @@ namespace PadForge.Engine
 {
     /// <summary>
     /// Virtual input device representing the touchpad overlay window.
-    /// Reads touchpad state from a callback and exposes it through the
-    /// standard <see cref="ISdlInputDevice"/> pipeline so it appears
-    /// in the Devices page and can be assigned to a controller.
+    /// State is pushed in through <see cref="UpdateStateMulti"/> and read
+    /// out through the standard <see cref="ISdlInputDevice"/> pipeline, so
+    /// the device appears on the Devices page and can be assigned to a
+    /// controller.
     /// </summary>
     public class TouchpadOverlayDevice : ISdlInputDevice
     {
@@ -70,13 +71,12 @@ namespace PadForge.Engine
         public const int OverlayMaxFingers = 5;
 
         /// <summary>
-        /// Multi-finger touch path. Caller (overlay window's WPF
-        /// TouchDown / TouchMove / TouchUp handlers) populates a
-        /// <see cref="TouchpadInputState"/> with up to
-        /// <see cref="OverlayMaxFingers"/> active contacts and passes it
-        /// here. Contact IDs are caller-managed (typically a stable map
-        /// from WPF <c>TouchDevice.Id</c> → slot) so the gesture engine
-        /// can distinguish same-finger continuation from re-touches in
+        /// Multi-finger touch path. InputService's UI timer passes the
+        /// overlay window's snapshot (TouchpadOverlay.GetMultiFingerState),
+        /// a <see cref="TouchpadInputState"/> with up to
+        /// <see cref="OverlayMaxFingers"/> contacts. The window gives every
+        /// finger that is down a new contact id when it lands, so the
+        /// gesture engine can tell a finger that stays from a new touch in
         /// the same slot. The <paramref name="click"/> bit feeds
         /// <c>Buttons[16]</c> for parity with physical-pad behavior.
         /// </summary>
@@ -96,25 +96,12 @@ namespace PadForge.Engine
                     pad.FingerDown[i] = snapshot.FingerDown[i];
                     pad.FingerContactId[i] = snapshot.FingerContactId[i];
                 }
-                // Caller-managed contact IDs are authoritative; do not
-                // re-synthesize. If the caller left them at -1 while
-                // still reporting FingerDown=true, fall back to the
-                // monotonic synth so the gesture engine sees a stable
-                // identifier.
-                for (int i = 0; i < slots; i++)
-                {
-                    if (pad.FingerDown[i] && pad.FingerContactId[i] < 0)
-                        pad.FingerContactId[i] = _overlayContactIdNext++;
-                }
                 pad.Clicked = click;
                 s.Touchpads = new[] { pad };
                 if (s.Buttons.Length > 16) s.Buttons[16] = click;
                 _currentState = s;
             }
         }
-
-        // Monotonic contact-ID source for the overlay's finger slots.
-        private int _overlayContactIdNext = 1;
 
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {

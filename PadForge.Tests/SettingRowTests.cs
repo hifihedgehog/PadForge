@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows;
@@ -87,6 +88,38 @@ namespace PadForge.Tests
         [InlineData(280, double.PositiveInfinity, true, 280)]
         public void TheChildThatGivesWay_TakesWhatItWantsOrWhatIsLeft(double wanted, double room, bool grow, double expected)
             => Assert.Equal(expected, SettingRow.FlexWidth(wanted, room, grow));
+
+        /// <summary>A row whose controls stand at its end is laid out by
+        /// MeasureEnds and ArrangeEnds, which read neither Grow nor
+        /// ValueWidth, so a row that sets Ends and either of them carries
+        /// markup that does nothing. Ends is read on the row or inherited
+        /// from anything that holds it.</summary>
+        [Fact]
+        public void NoRowWhoseControlsStandAtItsEndSetsGrowOrValueWidth()
+        {
+            var d = new System.IO.DirectoryInfo(System.IO.Directory.GetCurrentDirectory());
+            while (d != null && !System.IO.File.Exists(System.IO.Path.Combine(d.FullName, "SharedVersion.cs")))
+                d = d.Parent;
+            Assert.True(d != null, "repository root not found");
+            var offenders = new System.Collections.Generic.List<string>();
+            foreach (string file in System.IO.Directory.GetFiles(System.IO.Path.Combine(d.FullName, "PadForge.App"), "*.xaml",
+                         System.IO.SearchOption.AllDirectories))
+            {
+                var doc = System.Xml.Linq.XDocument.Load(file, System.Xml.Linq.LoadOptions.SetLineInfo);
+                void Walk(System.Xml.Linq.XElement element, bool ends)
+                {
+                    var local = element.Attributes().FirstOrDefault(a => a.Name.LocalName == "SettingRow.Ends");
+                    if (local != null) ends = local.Value == "True";
+                    if (ends && element.Name.LocalName == "SettingRow"
+                        && (element.Attribute("Grow") != null || element.Attribute("ValueWidth") != null))
+                        offenders.Add($"{System.IO.Path.GetFileName(file)}:{((System.Xml.IXmlLineInfo)element).LineNumber}");
+                    foreach (var child in element.Elements()) Walk(child, ends);
+                }
+                Walk(doc.Root, false);
+            }
+            Assert.True(offenders.Count == 0,
+                "rows that stand their controls at their end and set Grow or ValueWidth:\n  " + string.Join("\n  ", offenders));
+        }
 
         // ── a row with a slider ────────────────────────────────────────
 

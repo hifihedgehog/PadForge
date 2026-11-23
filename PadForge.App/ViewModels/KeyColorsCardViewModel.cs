@@ -128,9 +128,6 @@ namespace PadForge.ViewModels
         public bool HasEdge => _map.Lights.Any(l => l.Kind == LightKind.Edge);
         public bool HasLogo => _map.Lights.Any(l => l.Kind == LightKind.Logo);
 
-        /// <summary>Keys no source has named, which Map Key Lights can name.</summary>
-        public bool HasUnnamedKeys => _map.UnnamedKeyCount > 0;
-
         public ObservableCollection<KeyColorLayerItem> Layers { get; } = new();
 
         public bool HasLayers => Layers.Count > 1;
@@ -321,7 +318,7 @@ namespace PadForge.ViewModels
             }
             _map = map;
             bool layersChanged = SyncLayers(layers);
-            // The page attaches on every pass that could change the tab.
+            // The page attaches on every pass that could change the group.
             // One that changes nothing raises nothing.
             if (!deviceChanged && !layersChanged) return;
             if (deviceChanged)
@@ -336,7 +333,7 @@ namespace PadForge.ViewModels
             LightsChanged?.Invoke();
         }
 
-        /// <summary>Lets go of the device, when the device the tab shows
+        /// <summary>Lets go of the device, when the device the group shows
         /// changes, until the page attaches the card to the new one.</summary>
         internal void Detach() => Attach(null, null, null);
 

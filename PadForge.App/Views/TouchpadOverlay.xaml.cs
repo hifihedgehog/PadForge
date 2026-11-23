@@ -9,11 +9,15 @@ using PadForge.Engine;
 namespace PadForge.Views
 {
     /// <summary>
-    /// Transparent overlay window that captures touch input for PlayStation touchpad emulation.
-    /// Uses WS_EX_NOACTIVATE to prevent stealing focus from games.
-    /// First touch = finger 0, second touch = finger 1 (no zones needed).
-    /// Double-tap triggers touchpad click.
-    /// Draggable via mouse on surface, resizable via corner grip.
+    /// Transparent overlay window that captures touch input for the virtual
+    /// touchpad device (TouchpadOverlayDevice), which can be assigned to any
+    /// controller. Uses WS_EX_NOACTIVATE so it does not take focus from games.
+    /// Each touch outside a drag takes the lowest free finger slot. The touch
+    /// that starts a three-finger drag, and any touch during one, takes none,
+    /// so no more than two slots fill. The click bar along the
+    /// bottom holds the touchpad click, and a double tap with the first
+    /// finger pulses it. A right drag or a three-finger touch moves the
+    /// window, and the corner grip resizes it.
     /// </summary>
     public partial class TouchpadOverlay : Window
     {
@@ -29,13 +33,14 @@ namespace PadForge.Views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        // Touch tracking: first touch = finger 0, second = finger 1
         private readonly object _stateLock = new();
-        // The overlay tracks up to OverlayMaxFingers touches, one a slot,
-        // and every slot feeds the TouchpadInputState the engine reads. A
-        // slot is taken by TouchDevice.Id on TouchDown and freed on
-        // TouchUp. The mouse makes no touch: its right drag moves the
-        // window, and its left button presses the click bar.
+        // The overlay has OverlayMaxFingers slots, one a touch, and every
+        // slot feeds the TouchpadInputState the engine reads. A touch
+        // outside a drag takes a slot by TouchDevice.Id on TouchDown, and
+        // TouchUp frees it. The third touch starts a drag and takes none,
+        // so no more than two slots fill. The mouse makes no touch: its
+        // right drag moves the window, and its left button presses the
+        // click bar.
         private const int OverlaySlotCount = Engine.TouchpadOverlayDevice.OverlayMaxFingers;
         private readonly int?[] _slotTouchIds = new int?[OverlaySlotCount];
         private readonly float[] _slotX = new float[OverlaySlotCount];
@@ -53,10 +58,9 @@ namespace PadForge.Views
         private bool _down0 { get => _slotDown[0]; set => _slotDown[0] = value; }
         private bool _down1 { get => _slotDown[1]; set => _slotDown[1] = value; }
         // Click bar: held while the user presses the bottom strip (mouse
-        // or touch) — reported as a sustained Buttons[16]=true so
+        // or touch), reported as a sustained Buttons[16]=true so
         // click-and-hold patterns (click-drag, sustained context input)
-        // work. _clickPulse is the legacy double-tap-on-surface pulse,
-        // single-frame, kept as a quick momentary fallback. Both feed
+        // work. _clickPulse is the double tap's one-frame click. Both feed
         // Buttons[16] through the OR in GetMultiFingerState, which
         // InputService hands to TouchpadOverlayDevice.UpdateStateMulti.
         private bool _clickBarHeld;
@@ -89,8 +93,8 @@ namespace PadForge.Views
         {
             // Self-heal any stale touch tracking from a previous session.
             // OnTouchUp can be skipped if the overlay is hidden mid-touch
-            // (macro toggle, engine stop, screen lock, touch device disconnect)
-            // — leaving _fingerNTouchId / _activeTouchIds / _isDragging in
+            // (macro toggle, engine stop, screen lock, touch device disconnect),
+            // which leaves _slotTouchIds / _activeTouchIds / _isDragging in
             // states that block subsequent finger detection. Resetting on
             // visibility transitions both directions covers Show/Hide cycles.
             ResetTouchTracking();
@@ -473,15 +477,12 @@ namespace PadForge.Views
             e.Handled = true;
             ReleaseTouchCapture(e.TouchDevice);
             _activeTouchIds.Remove(e.TouchDevice.Id);
+            bool dragging = _isDragging;
 
-            if (_isDragging)
+            if (_isDragging && _activeTouchIds.Count < 3)
             {
-                if (_activeTouchIds.Count < 3)
-                {
-                    _isDragging = false;
-                    PositionChanged?.Invoke();
-                }
-                return;
+                _isDragging = false;
+                PositionChanged?.Invoke();
             }
 
             lock (_stateLock)
@@ -489,16 +490,17 @@ namespace PadForge.Views
                 for (int i = 0; i < OverlaySlotCount; i++)
                 {
                     if (_slotTouchIds[i] != e.TouchDevice.Id) continue;
+                    // The first two fingers keep their slots through a
+                    // three-finger drag, so a finger lifted during the drag
+                    // frees its slot here too. No later TouchUp comes for it.
                     _slotTouchIds[i] = null;
                     _slotDown[i] = false;
                     _slotContactIds[i] = -1;
-                    // Double-tap-to-click pulse fires only on slot 0
-                    // releases — preserves the existing single-finger
-                    // tap-to-click muscle memory. Multi-finger releases
-                    // don't trigger the pulse; their click semantics
-                    // come from the dedicated click bar or a future
-                    // multi-finger-tap gesture.
-                    if (i == 0)
+                    // The double-tap click pulse fires only on slot 0
+                    // releases, the single-finger tap-to-click. Other
+                    // fingers click with the click bar. A lift during a
+                    // drag is no tap.
+                    if (i == 0 && !dragging)
                     {
                         var now = DateTime.UtcNow;
                         if ((now - _lastTapTime).TotalMilliseconds < DoubleTapMs)
@@ -540,8 +542,7 @@ namespace PadForge.Views
                     snap.FingerContactId[i] = _slotContactIds[i];
                 }
                 click = _clickBarHeld || _clickPulse;
-                // Click pulse consumed by the legacy reader path or here,
-                // whichever runs first. Single-shot pulse semantics.
+                // The click pulse is consumed here, once.
                 _clickPulse = false;
             }
             snap.Clicked = click;

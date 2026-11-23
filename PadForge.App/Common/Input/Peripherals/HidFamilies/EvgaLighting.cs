@@ -188,19 +188,19 @@ namespace PadForge.Common.Input.Peripherals
             {
                 KeyboardDetector => new HidLightingModel
                 {
-                    Map = new LightMap(KeyboardLights(productId is Z20AnsiPid or Z20UkPid), "OpenRGB EVGAKeyboardController"),
+                    Map = new LightMap(KeyboardLights(productId is Z20AnsiPid or Z20UkPid)),
                     RepaintMs = VolatileRepaintMs,
                     Begin = (_, _) => new KeyboardSession(),
                 },
                 X12Detector => new HidLightingModel
                 {
-                    Map = new LightMap(X12Lights(), "OpenRGB EVGAX12Controller"),
+                    Map = new LightMap(X12Lights()),
                     RepaintMs = VolatileRepaintMs,
                     Begin = (io, wait) => X12Session.Begin(io, wait),
                 },
                 _ => new HidLightingModel
                 {
-                    Map = new LightMap(MouseLights(), "OpenRGB EVGAMouseController"),
+                    Map = new LightMap(MouseLights()),
                     HoldMs = HoldMs,
                     RepaintMs = RepaintMs,
                     Begin = (io, wait) => MouseSession.Begin(io, wait,
@@ -211,7 +211,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = registration.Name,
-                Map = new LightMap(model.Map.Lights, model.Map.Source) { Product = $"evga:3842:{productId:X4}" },
+                Map = new LightMap(model.Map.Lights) { Product = $"evga:3842:{productId:X4}" },
                 HoldMs = model.HoldMs,
                 RepaintMs = model.RepaintMs,
                 Begin = model.Begin,

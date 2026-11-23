@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tidak diketahui</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Default</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Telusuri…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Lanjutkan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hentikan</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Mesin berhenti.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Kesalahan: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} tidak dapat dibuat.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Sebuah perangkat tidak dapat dibuka, dibaca, atau dipetakan. Log diagnostik mencantumkan namanya.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} mengalami error. Log diagnostik memuat penyebabnya.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Mesin input mengalami error. Log diagnostik memuat penyebabnya.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL tidak dapat dimulai. Log diagnostik memuat penyebabnya.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro tidak dapat disiapkan. Log diagnostik memuat penyebabnya.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Profil HIDMaestro milik sebuah kontroler virtual hilang. Log diagnostik mencantumkan namanya.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} tidak dapat memakai identitas dan tata letak kustomnya, jadi memakai bawaan profilnya.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil berganti: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil berganti: Default</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Default</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port server gerakan</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Menyediakan data giroskop dan akselerometer untuk Cemu, Dolphin, Yuzu, dll.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod game</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Memungkinkan mod game yang dibuat untuk DSX mengatur pelatuk adaptif, bilah lampu, lampu pemain, dan lampu bisu pada kontroler PlayStation Anda.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Memungkinkan mod game yang dibuat untuk DSX mengatur pelatuk adaptif, bilah lampu, lampu pemain, dan lampu bisu pada DualSense atau DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Terima mod game DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port mod game</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Jalankan DSX.exe pengganti</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Beberapa mod, seperti DualSense4GTAV, mematikan diri sendiri kecuali ada program bernama DSX yang berjalan. Opsi ini menjalankan program pengganti kecil dengan nama itu selama server mendengarkan.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Berfungsi dengan mod yang dibuat untuk DSX, seperti untuk GTA V, Red Dead Redemption 2, Skyrim, dan Forza. Selama server mendengarkan, PadForge menuliskan port-nya di tempat mod tersebut mencarinya.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Mendengarkan di :{0}. {1} mengirim ke kontroler virtual {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Mendengarkan di :{0}. {1} mengirim, tetapi tidak ada kontroler virtual yang memiliki kontroler PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mendengarkan di :{0}. {1} mengirim ke indeks kontroler {2}, dan tidak ada kontroler virtual dengan kontroler PlayStation yang memiliki indeks itu.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Mendengarkan di :{0}. {1} mengirim, tetapi tidak ada kontroler virtual yang memiliki DualSense atau DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mendengarkan di :{0}. {1} mengirim ke indeks kontroler {2}, dan tidak ada kontroler virtual dengan DualSense atau DualShock 4 yang memiliki indeks itu.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} dipakai program lain, seperti DSX. Tutup program itu atau pilih port lain.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Sebuah mod game</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Berfungsi dengan OpenTrack dan pelacak apa pun yang mengirim output UDP-nya atau menulis memori bersama FreeTrack 2.0, serta dengan runtime OpenXR di komputer ini yang dapat menjalankan sesi di latar belakang.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>File tidak ditemukan</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Tidak dapat dibaca</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>File tema “{0}” hilang atau tidak dapat dibaca. PadForge menampilkan Gelap sampai file itu kembali.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>File tema “{0}” tidak berisi tema PadForge. PadForge menampilkan Gelap sampai isinya benar.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profil “{0}” sedang memakai tampilan game-nya. Tema Anda kembali saat profil lain aktif.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Tema PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>File itu bukan tema PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge tidak dapat membaca file itu.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge tidak dapat menemukan file itu.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Bukan tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema tidak dapat disimpan. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema baru</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge memakai tema itu selagi Anda membuatnya.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Mengambil gambar dari Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam tidak punya gambar lebar untuk game ini.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Tidak dapat menjangkau Steam. Periksa koneksi Anda.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge tidak dapat membaca gambar Steam untuk game ini.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisi</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Menggeser gambar ke atas atau ke bawah di dalam jendelanya.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Tampilkan logo game</value></data>
@@ -1094,6 +1105,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontroler tidak menerima perintah yang menyiapkannya, jadi tidak ada yang terkirim. Pastikan kontroler tersambung, lalu kirim lagi.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Pengiriman berhenti karena galat di PadForge. Berkas log berisi rinciannya.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Gambar masih dikirim ke kontroler. Hentikan pengiriman?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Lanjutkan kirim</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>File Controller Pak (*.mpk)|*.mpk|Semua file (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Pulihkan Controller Pak</value></data>
@@ -1657,6 +1669,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Peluruhan denyut</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kustom</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Buatan pengguna)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stik</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Pelatuk</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2638,7 +2651,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Kontroler ini memiliki magnetometer. Menambatkan yaw ke utara magnetis menghilangkan drift horizontal yang lambat pada bidikan giroskop. Kalibrasikan dahulu: tekan Kalibrasikan, putar kontroler melalui semua orientasi membentuk angka 8 selama beberapa detik, lalu tekan lagi.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Tambatkan yaw ke kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Menambahkan laju koreksi kecil yang menarik bidikan horizontal ke arah haluan magnetis, sehingga drift tidak dapat menumpuk. Memerlukan kalibrasi magnetometer yang tersimpan. Sampel yang terganggu logam atau magnet di dekatnya ditolak secara otomatis.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Atur ulang ke default (nonaktif)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulasi pitch dan roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch dan roll dihitung dari akselerometer</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Giroskop kontroler ini hanya mendeteksi putaran ke kiri dan ke kanan. Dengan simulasi aktif, PadForge menurunkan pitch dan roll dari akselerometer dan mengirimkannya bersama yaw dari giroskop ke baris pemetaan dan gerakan kontroler virtual. Akselerometer tidak dapat membedakan dorongan dari kemiringan, sehingga menggerakkan kontroler ke samping atau ke depan tanpa memutarnya terbaca sebagai rotasi singkat.</value></data>
@@ -3035,7 +3047,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sapukan stik mengelilingi tepinya untuk memetakan batas yang dapat dicapai, lalu bentuk ulang menjadi lingkaran penuh.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Atur ulang kalibrasi batas</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Atur ulang offset tengah Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Atur ulang ke Radial berskala</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Atur ulang zona mati X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Atur ulang zona mati Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Atur ulang anti-zona mati X</value></data>
@@ -3487,13 +3498,10 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Atur ulang flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Titik per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Jumlah hitungan mouse untuk satu putaran kamera penuh 360°. Bergantung pada sensitivitas mouse game: naikkan jika flick berputar kurang, turunkan jika berputar berlebih.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Atur ulang ke 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Waktu flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Berapa lama flick penuh 180° selesai, dengan ease-out. Putaran yang lebih pendek selesai dalam waktu yang sama.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Atur ulang ke 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Ambang batas flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Defleksi stik yang memulai flick, sebagai pecahan dari defleksi penuh. Selama flick, titik lepas turun menjadi 90% dari nilai ini.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Atur ulang ke 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Kunci sudut</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Mengunci flick ke sudut-sudut tetap agar putaran lebih konsisten. Hanya depan mengunci setiap flick tepat ke arah depan.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Tanpa kunci sudut</value></data>
@@ -3502,22 +3510,16 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 derajat</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 derajat</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 derajat</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Atur ulang ke Tanpa kunci sudut</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Kekuatan kunci sudut</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Seberapa kuat flick ditarik ke sudut kuncian. 1 mengunci sepenuhnya, 0 menonaktifkan kunci sudut, nilai di antaranya mencampur keduanya.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Atur ulang ke 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zona mati sudut depan</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Flick dalam sudut ini dari arah depan lurus tidak memutar apa pun. Memungkinkan Anda memulai sapuan tanpa putaran flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Atur ulang ke 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Penghalusan sapuan</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Menghaluskan derau sapuan tepi. -1 memakai jendela bertingkat otomatis, 0 menonaktifkan penghalusan, nilai lebih besar menghaluskan rotasi per tick yang lebih besar.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Atur ulang ke otomatis (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Izinkan flick saat aktivasi</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Offset rotasi</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Memutar seluruh peta flick sebesar sekian derajat. Positif berarti searah jarum jam. Kunci sudut diterapkan setelah offset.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Atur ulang offset rotasi</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Saat lapisan yang memuat Flick stick aktif ketika stik sudah terdefleksi, jalankan flick seketika. Nonaktif membiarkan kamera diam dan melacak rotasi dari sudut stik saat ini.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Atur ulang Izinkan flick saat aktivasi</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Umpan balik batas kemudi</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat di batas kemudi untuk stik dalam mode kemudi</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Saat stik yang diatur ke suatu mode kemudi diputar habis hingga batas kemudi, mainkan isyarat (getaran, pelatuk, atau bilah lampu) agar Anda merasakan batasnya. Semua nonaktif secara default.</value></data>
@@ -3707,11 +3709,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Putar haptik DualSense pada kontroler ini</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Saat game menggerakkan slot ini sebagai DualSense virtual dengan audio haptik buatan pengembang, putar trek itu pada aktuator kontroler ini. Steam Controller 2026 lewat USB atau dongle-nya, dan Flydigi Apex 6 Pro, memutar trek itu sendiri. Setiap kontroler lain, dan Steam Controller itu lewat Bluetooth, mendapat nada yang diturunkan dari audio, yang mendekati rasa rancangan pembuatnya, bukan mereproduksinya.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gain haptik</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Atur ulang ke default (nonaktif)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Atur ulang ke default (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Frekuensi potong low-pass aktuator</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Menjaga streaming haptik Steam Controller di bawah frekuensi ini sehingga panel bergetar alih-alih memutar suara yang terdengar. Di sekitar 250 Hz, aktuator mulai terdengar. Naikkan untuk detail yang lebih tajam, turunkan agar lebih senyap.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Atur ulang ke 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Nada di atas frekuensi ini dipotong atau diturunkan oktafnya. Default 800 Hz mempertahankan getaran mesin dan benturan sekaligus menangkap bunyi bip bernada tinggi.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Atur ulang nada tinggi</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atur ulang batas nada</value></data>
@@ -4312,8 +4311,59 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Wilayah kursor</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Daftar roda ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Area kursor ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Tahan mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klik mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Sakelar mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Denyut haptik ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ekor pelepasan)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Ketuk {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Tembak otomatis {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Tahan {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Sakelar {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Tekan dua kali {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Tekan lama {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Satu langkah roda ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Sakelar roda ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Roda turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Lompatkan kursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Atur LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Pusatkan ulang giroskop ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Geser kursor sedikit ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Tombol tangkapan layar ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Keyboard layar ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Atur warna lampu</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Pusatkan ulang kamera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Lompatkan kursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Geser kursor sedikit</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Tangkapan layar</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Keyboard layar</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Ganti lapisan shift</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Aktifkan lapisan shift</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Matikan lapisan shift</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Tahan lapisan shift</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Ubah nomor pemain</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Tidak diikat</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Alihkan mode desktop</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Tombol sistem Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Alihkan kaca pembesar</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Tambah kecerahan</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Kurangi kecerahan</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Matikan kontroler</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Buka konfigurator Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Buka menu cepat Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Keluar dari game</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Alihkan haptik</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Alihkan HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Alihkan getaran</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Paksa tombol Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Putaran kalibrasi giroskop</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Hadapkan ke arah</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tahan)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lepas)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lepas)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivasi)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk melihat apa yang ikut terbawa.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Yang ikut terbawa</value></data>
@@ -4928,11 +4978,9 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Lapisan</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Pilih lapisan yang mengizinkan menu ini. Lapisan mana pun dan Dasar sama-sama mengizinkannya di bawah lapisan aktif lainnya. Lapisan bernama harus cocok dengan lapisan yang sedang aktif.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Atur ulang ke Lapisan mana pun dan nonaktifkan pembukaan yang ditahan lapisan.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (tidak terdaftar di slot ini)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Lapisan menahan menu tetap terbuka</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Menjaga menu ini tetap terbuka selama lapisan bernamanya aktif. Input fisik yang dipilih mengendalikan sorotan. Lapisan mana pun dan Dasar memakai pembukaan permukaan biasa.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Atur ulang ke pembukaan saat disentuh atau didefleksikan.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Kendalikan dengan</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Input fisik yang mengendalikan sel tersorot selama lapisan menjaga menu ini tetap terbuka.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini. Lapisan membuka menu, dan input ini mengendalikannya. Sel menu menentukan outputnya.</value></data>
@@ -5014,7 +5062,6 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dipisah menurut arah</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona mati tengah</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atur ulang ke Stik kiri X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Atur ulang kekuatan (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Atur ulang zona mati tengah (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Atur ulang Aktifkan getaran sudut kemudi</value></data>
@@ -5681,6 +5728,25 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profil</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Lapisan {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Pelatuk: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Bilah lampu</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Tambahan {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bilah lampu {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Jalankan program</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Jangkauan {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Profil impor</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Makro impor</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Preset {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Menu radial {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Menu sentuh {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Area mouse</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>ketuk</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>tahan</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>ketuk dua kali</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Efek pelatuk kiri</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Efek pelatuk kanan</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Pemetaan tombol {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Kontroler</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Mempertahankan output sendiri</value></data>
@@ -6012,7 +6078,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX tidak mempublikasikan cara kerja pengaturan {0}, sehingga PadForge memakai caranya sendiri.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX tidak mempublikasikan nomor inputnya. Profil DSX yang dipublikasikan memakai 41 sampai 44 sebagai D-pad, sehingga PadForge membacanya seperti itu.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX tidak menulis pengikatan seperti ini, sehingga file ini diubah di luar DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX beralih ke preset ini lewat pintasan. Makronya ada di halaman Makro, siap diikat ke tombol.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX beralih ke preset ini lewat pintasan. Makronya ada di bagian Makro dan menu milik kontroler, siap diikat ke tombol.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Tidak ada profil DSX yang dipublikasikan memakai {0}, sehingga PadForge tidak dapat mengetahui fungsinya.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX membiarkan game mengatur ini saat sakelar passthrough aktif, sehingga PadForge juga menyerahkannya kepada game.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Pada Native Mode dengan Send Data to Device nonaktif, DSX tidak mengirim apa pun miliknya ke kontroler, sehingga PadForge juga menyerahkan ini kepada game.</value></data>

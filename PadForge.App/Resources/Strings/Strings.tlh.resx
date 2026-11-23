@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>rarpu'</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>rarHa'pu'</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Sovlu'be'</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>motlh</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>yInej…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>yIruch</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>yImev</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>QuQ mevpu'.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Qagh: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} chenmoHlu'be'.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>wa' jan poSmoHlu'be', laDlu'be' pagh nellu'be'. pongDaj ja' Qagh nejmeH QonoS.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Qagh tu' {0}. meq ja' Qagh nejmeH QonoS.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Qagh tu' 'elmoHghach QuQ. meq ja' Qagh nejmeH QonoS.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>taghlaHbe' SDL. meq ja' Qagh nejmeH QonoS.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro jomlu'be'. meq ja' Qagh nejmeH QonoS.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>wa' SeHjan velqa' HIDMaestro tu'qom tu'lu'be'. pongDaj ja' Qagh nejmeH QonoS.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>DI'lu'pu'bogh ngu'meH De' Qur je lo'laHbe' {0}, vaj tu'qomDaj De' Qur je lo'.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>tu'qom choHlu'pu': {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>tu'qom choHlu'pu': motlh</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>motlh</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>vIHtaHghach turwI' vergh</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu, latlh nIqHommey je, ngaDmoQ De' tom noch De' je peS.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Quj DI'wI'mey</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX lo'meH chenmoHlu'pu'bogh Quj DI'wI'mey, PlayStation SeHjanmeylIj chu'wI'mey choHlaHbogh, wovmoHwI' naQmey, QujwI' wovmoHwI'mey, tam wovmoHwI'mey je lucher 'e' chaw' PadForge.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DualSense ghap DualShock 4 SeHjanDaq chu'wI'mey choHlaHbogh, wovmoHwI' naQ, QujwI' wovmoHwI'mey, tam wovmoHwI' je lucher DSX lo'meH chenmoHlu'pu'bogh Quj DI'wI'mey 'e' chaw' PadForge.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX Quj DI'wI'mey yIlaj</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Quj DI'wI' vergh</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe lIw yIQapmoH</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DSX ponglu'bogh nIqHom QaptaHbe'chugh, chu'Ha''egh 'op DI'wI'mey, DualSense4GTAV rur. 'IjtaHvIS turwI', pongvetlh ghajbogh lIw mach QapmoH PadForge.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX lo'meH chenmoHlu'pu'bogh DI'wI'mey lo'laH, GTA V, Red Dead Redemption 2, Skyrim, Forza je DI'wI'mey rur. 'IjtaHvIS turwI', DI'wI'meyvetlh nejbogh DaqDaq vergh ghItlh PadForge.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>vergh :{0} 'IjtaH. SeHjan velqa' {2}Daq De' ngeHtaH {1}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>vergh :{0} 'IjtaH. De' ngeHtaH {1}, 'ach PlayStation SeHjan ghajbogh SeHjan velqa' tu'lu'be'.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>vergh :{0} 'IjtaH. SeHjan mI' {2}Daq De' ngeHtaH {1}, 'ach mI'vetlh ghajbogh SeHjan velqa', PlayStation SeHjan ghajbogh, tu'lu'be'.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>vergh :{0} 'IjtaH. De' ngeHtaH {1}, 'ach DualSense ghap DualShock 4 ghajbogh SeHjan velqa' tu'lu'be'.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>vergh :{0} 'IjtaH. SeHjan mI' {2}Daq De' ngeHtaH {1}, 'ach mI'vetlh ghajbogh SeHjan velqa', DualSense ghap DualShock 4 ghajbogh, tu'lu'be'.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>vergh {0} lo'taH latlh nIqHom, DSX rur. yISoQmoH ghap latlh vergh yIwIv.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Quj DI'wI'</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack lo'laH, UDP mejmoHghach ngeHbogh ghap FreeTrack 2.0 qawHaq lInlu'bogh ghItlhbogh ghochwI' lo'laH je, De'wI'vamDaq OpenXR Qapbogh nIqHom lo'laH je, HurDaq poH QapmoHlaHchugh.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>'a'baqa' tu'lu'be'</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>laDlaHbe' PadForge</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” 'a'baqa' tu'lu'be' pagh laDlaHbe' PadForge. 'a'baqa' cheghpa', Hurgh 'ang PadForge.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>PadForge HaSta lo' ngaSbe' “{0}” 'a'baqa'. HaSta lo' ngaSpa' 'a'baqa', Hurgh 'ang PadForge.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>QujDaj HaSta lo' tuQtaH “{0}” tu'qom. latlh tu'qom lo'lu'DI', HaSta lo'lIj chegh.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge HaSta lo'mey (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>PadForge HaSta lo' ngaSbe' 'a'baqa'vetlh.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>'a'baqa'vetlh laDlaHbe' PadForge.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>'a'baqa'vetlh tu'laHbe' PadForge.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>HaSta lo' 'oHbe'</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>HaSta lo' pollaHpu'be' PadForge. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>HaSta lo' chu'</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>HaSta lo' DachenmoHtaHvIS, HaSta lo' tuQ PadForge.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam turwI'meyvo' mIllogh Suqlu'taH…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>QujvamvaD mIllogh vaS ghajbe' Steam.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam rarlaHbe' PadForge. SIr'o' yI'ol.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Qujvam Steam mIllogh laDlaHbe' PadForge.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Daq</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>QorwaghDajDaq Dung bIng joq mIllogh vIHmoH.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Quj Degh yI'ang</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>SeHjan ghuHmoHbogh ra' Hevbe' SeHjan, vaj pagh ngeHlu'. SeHjan rarlu' 'e' yI'ol 'ej yIngeHqa'.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge Qagh mevmoH ngeHlu'ghach. De'mey ngaS ta 'a'baqa'.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>SeHjanDaq mIllogh ngeHlu'taH. ngeHlu'ghach DamevmoH'a'?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>yIngeHtaH</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak 'a'baqa'mey (*.mpk)|*.mpk|'a'baqa'mey Hoch (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak vergh {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak yIcheghmoH</value></data>
@@ -1435,7 +1447,7 @@
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>taghmeH lolDaq 'omtaHghach puS, 'ej Qav lolDaq naQ 'omtaHghach. Qav lol DajuSDI', 'aqroS HoS pol chu'wI'.</value></data>
   <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>waltaHghach ngaj law'. taghmeH lolvo' Qav lolDaq waltaHghachmey ngaj. chu'wI' DaHurDI', waltaHghach mIchmey pIm DajuS. wa' waltaHghach taHbogh Dajembe'.</value></data>
   <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>GameCube chu'wI' teH rIS rurmeH, yutlhegh HoS je mI'mey lan (taghmeH ~56%, Qav ~63%, Surma' 'aqroS). ghIq, latlh jemtaHghach DaneHchugh, tlhamwI'mey yIDI'.</value></data>
-  <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
+  <!-- Lighting group (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>tamghay</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>tamghay</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>SeHjan teH nobta'lu'bogh wovmoHwI' naQ rItlh potlh, wab lo' je yIlan. reH Qap Quj ghItlhbogh. Quj wovmoHwI' naQ SeHbe'DI', Qap lo'wI' DuHmey.</value></data>
@@ -1658,6 +1670,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>bartaHghach ragh</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>vey ghuS</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>lo'wI' wIv</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (lo'wI' chenmoHpu')</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>naQmey</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>chu'wI'mey</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -2639,7 +2652,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>peQ noch ghaj SeHjanvam. tuy'wI' Dop lurghDaq Der DarIjmoHchugh, ngaDmoQ QeqDI' QIt SaS vIHtaHghach teq. wa'DIch yIlughmoH: lughmoH leQ yI'uy, lupmey puS 8 DaghItlhtaHvIS Hoch lurghDaq SeHjan yIjIrmoH, vaj yI'uyqa'.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>SInanDaq Der yIrIjmoH</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>QIt lughmoHwI' vIHtaHghach chel, peQ lurghDaq SaS Qeq Hoqbogh, vaj QIt vIHtaHghach chenlaHbe'. peQ noch lughmoHghach polpu'bogh poQ. chovnatlhmey QIHlu'pu'bogh baS Sum ghap peQnagh Sum lajQo' PadForge.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>yImotlhmoH (chu'Ha')</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>tor ron je lIltaHghach</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>tom nochvo' tor ron je SImlu'</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Der neH jem SeHjanvam ngaDmoQ. lIltaHghach chu'lu'DI', tom nochvo' tor ron je SIm PadForge, 'ej ngaDmoQ Der je ngeH neltaHghach wevmeyDaq SeHjan velqa' vIHtaHghachDaq je. yuv tom je chevlaHbe' tom noch, vaj SeHjan Datlhe'moHbe'taHvIS reDDaq ghap tlhopDaq DavIHmoHchugh, jIr ngaj 'oH.</value></data>
@@ -2668,7 +2680,7 @@
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>choHwI'</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>QeqmeH 'uyHa'</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>chu'meH naQ</value></data>
-  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Qeq ngeD veH lo'bogh naQ wIv. naQ nIH (motlh): tu'qommey tu'lu'bogh choHbe'. Hoch naQ: naQ vIHqu'bogh lo'.</value></data>
+  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Qeq ngeD veH lo'bogh naQ botlh chuq wIv. naQ nIH (motlh): tu'qommey tu'lu'bogh choHbe'. Hoch naQ: naQ vIHqu'bogh botlh chuq lo'.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>naQ nIH</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>naQ poS</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Hoch naQ</value></data>
@@ -3049,7 +3061,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>veH SIchlaHbogh naQ DanelmeH, HeH Dop naQ yIjIrmoH. ghIq gho naQ moj veH.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>veH lughmoHghach yImotlhmoH</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>botlh choH Y yImotlhmoH</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>neHmaH gho motlh yIlo'</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>neHmaH X yImotlhmoH</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>neHmaH Y yImotlhmoH</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>neHmaH juSwI' X yImotlhmoH</value></data>
@@ -3501,13 +3512,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>naQ moD yImotlhmoH</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° tlhe'meH vI'mey</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>mIllogh qonwI' 360° naQ tlhe'meH, 'eQway' vI'mey. Quj 'eQway' jemlaHghachmo' choH: moD tlhe'taHghach puSchugh, yIghurmoH, 'ej tlhoy tlhe'chugh, yInupmoH.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>yImotlhmoH (14400)</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>moD poH</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>180° moD naQ rInmeH poH. QItchoHtaH Dorpa'. tlhe'lu'bogh tajvaj machchugh, poH rap rIn.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>yImotlhmoH (0.1 s)</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>moD veH</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>moD taghmoHbogh naQ botlh chuq, botlh chuq naQ SubmaH. moDtaHvIS, mevmeH vI' 'oH veHvam 90%.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>yImotlhmoH (0.9)</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>tajvaj ngaQmoH</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>moD yIlan ngaQbogh tajvajmeyDaq, vaj rapchu' tlhe'lu'bogh tajvajmey. tlhop neH: tlhopDaq Hoch moD lanlu'.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>tajvaj pagh</value></data>
@@ -3516,22 +3524,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 lawrI'</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 lawrI'</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 lawrI'</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>yImotlhmoH (tajvaj pagh)</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>ngaQmoH HoS</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ngaQbogh tajvajDaq moD Hoq HoS 'ar. 1 lo'lu'DI', naQ lanlu'. 0 lo'lu'DI', ngaQmoHtaHghach chu'Ha'. mI'mey joj lo'lu'DI', DuDlu'.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>yImotlhmoH (1.0)</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>tlhop tajvaj neHmaH</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>tlhop tajvajvam qoDDaq moD tu'lu'chugh, pagh tlhe'. vaj tlhe'be'chugh HeH DabI'laH.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>yImotlhmoH (0°)</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>bI' HabmoH</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>HeH bI'lu'taHvIS, ngeb mI'mey HabmoH. -1 lo'lu'DI', nIqHom wIvbogh Qorwagh lo'lu'. 0 lo'lu'DI', HabmoHghach chu'Ha'. mI'mey tIn lo'lu'DI', tlhe'lu'bogh tajvajmey tIn HabmoHlu'.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>yImotlhmoH (nIqHom wIvbogh, -1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>chu'DI' moD yIchaw'</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>tlhe' choH</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>moD naQ tlhe'moH lawrI' mI'vam. mI' ruS: 'Ing. tlhe' choH qaSpu'DI' ngaQmoHtaHghach Qap.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>tlhe' choH yImotlhmoH</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>naQ moD ghajbogh patlh chu'lu'DI', botlh chuqtaHvIS naQ, SIbI' moDlu'. chu'Ha' lo'lu'DI', ratlh mIllogh qonwI', 'ej 'a'ren naQ tajvajvo' tlhe'taHghach ghoch.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>chu'DI' moD chaw' yImotlhmoH</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>lurgh SeH HeH ghuH</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>lurgh SeH lo'Daq naQ, HeH SIchDI' ghuH</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>lurgh SeH lo' lo'bogh naQ tlhe'lu'DI' HeH SIchmeH, ghuH chu'lu' (jelmoHghach, chu'wI', wovmoHwI' naQ pagh), vaj vuS Dajem. motlh: Hoch chu'Ha'.</value></data>
@@ -3721,11 +3723,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>SeHjanvamDaq DualSense walmoHghach yIchu'</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>DaqvamDaq SeHjan velqa' DualSense SeHtaHvIS Quj, walmoHghach wab chenmoHlu'pu'bogh ngeHchugh, SeHjanvam walmoHwI'meyDaq wab chu'lu'. USB pagh HevwI'Daj lo'bogh Steam Controller 2026, Flydigi Apex 6 Pro je, wab chu' chaH. SeHjan latlh Hoch, Bluetooth lo'bogh Steam Controller je, wabvo' 'awtIrmey Hev. chenmoHwI' jemlaHghach rur 'awtIrmeyvam, 'ach rapbe'.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>walmoHghach HoS</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>yImotlhmoH (chu'Ha')</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>yImotlhmoH (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>walmoHwI' chaDvay' vuS</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>chaDvay'vam bIngDaq ratlh Steam Controller walmoHghach ghoqchuy, vaj wab Qoylu'be', 'ach wal 'echlet Habmey. 250 Hz retlhDaq, QoychoHlu' walmoHwI'mey. pup law' DaneHchugh, yIghurmoH. tam law' DaneHchugh, yInupmoH.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>yImotlhmoH (250 Hz)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>chaDvay'vam juSbogh 'awtIrmey pe'lu' pagh punmoHlu'. motlh 800 Hz lo'lu'DI', QuQ jelmoHghach, ngeQmo' jelmoHghach je ratlh, 'ach lu'lapmey Hambogh jon.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>'awtIrmey Ham yImotlhmoH</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>'awtIr vuS yImotlhmoH</value></data>
@@ -4326,8 +4325,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop tu'qom</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop mIw</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ghaSwI' Sep</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} choHwI'</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>rutlh tetlh ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>ghaSwI' Sep ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>'eQway' leQ {0} yI'uytaH ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>'eQway' leQ {0} yI'uy ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>'eQway' leQ {0} yIchoH ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>walmoHghach ngaj ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} ('uyHa'DI')</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} yIHot ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} yIbaHqa'taH ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} yI'uytaH ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} yIchoH ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} 'uyqa'taH ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} cha'logh yI'uy ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} 'uytaHghach nI' ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>rutlh Su'Dagh ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>rutlh yIchoH ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>rutlh 'uyqa'taH ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>QuvDaq ghaSwI' yIlan ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED yIcher ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ngaDmoQ botlh yIcherqa' ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>ghaSwI' yIvIHmoH ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>jIH mIllogh nItlh leQ ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>jIH nItlh 'echlet ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>wovmoHwI' rItlh yIcher</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>mIllogh qonwI' botlhDaq yIlan</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>QuvDaq ghaSwI' yIlan</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>ghaSwI' yIvIHmoH</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>jIH mIllogh</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>jIH nItlh 'echlet</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>choHwI' patlh yIchoH</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>choHwI' patlh yIchu'</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>choHwI' patlh yIchu'Ha'</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>choHwI' patlh yI'uytaH</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>QujwI' mI' yIchoH</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>nellu'be'</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>De'wI' lo' yIchoH</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam pat nItlh leQ</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>jo'wI' yIchoH</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>wovtaHghach Dung</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>wovtaHghach bIng</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>SeHjan yIchu'Ha'</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam DuHmey SeHlaw yIpoSmoH</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam HIDjolev ngaj yIpoSmoH</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Quj yIbup</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>walmoHghach yIchoH</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD yIchoH</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>jelmoHghach yIchoH</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide leQ yI'uy</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>ngaDmoQ lughmoHmeH jIr</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>lurghDaq yItlhe'</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} ('uytaH)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} ('uyHa')</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} ('uyHa')</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (chu')</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>nab yIwIv, vaj Dochmey qemlu'bogh Dalegh.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Dochmey qemlu'bogh</value></data>
@@ -4975,11 +5025,9 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>patlh</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>HIDjolevvam chaw'bogh patlh yIwIv. patlh vay' bIng patlh je: latlh patlhmey chu'lu'taHvIS chaw'. patlh ponglu'bogh, DaH patlh chu'lu'bogh rapnIS.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>patlh vay'Daq yImotlhmoH, 'ej patlh poSmoHtaHbogh HIDjolev yIchu'Ha'.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (Daqvam tetlhDaq tu'lu'be')</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>patlh HIDjolev poSmoHtaH</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>patlh ponglu'bogh chu'lu'taHvIS, HIDjolevvam yIpoSmoHtaH. wIvlu'pu'bogh teH 'elmoHghach, wovmoHlu'bogh Daq SeH. patlh vay' bIng patlh je, motlh poSmoHtaHghach lo'.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>yImotlhmoH: Hotlu'DI' pagh botlh chuq tu'lu'DI' poSmoH.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>SeHmeH 'elmoHghach</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>patlh HIDjolevvam poSmoHtaHvIS, wovmoHlu'bogh pa' SeHbogh teH 'elmoHghach.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Daqvam noblu'pu'bogh teH SeHjanmeyvo' laDlu'. HIDjolev poSmoH patlh, 'ej SeH 'elmoHghachvam. pa'meyDaj mejmoHghach 'ang.</value></data>
@@ -5061,7 +5109,6 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>nguSDI'</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>lurghvaD chev</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>botlh neHmaH</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>yImotlhmoH (poS naQ X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>HoS yImotlhmoH (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>botlh neHmaH yImotlhmoH (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>He SeHmeH lawrI' jelmoHghach chu' yImotlhmoH</value></data>
@@ -5765,7 +5812,7 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>{0} DuHDaj ta' nuq 'e' ja'be' DSX, vaj DuHDaj lo' PadForge.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>'elmoHghach mI'meyDaj ja'be' DSX. lurgh 'echletvaD 41 44 je lo' DSX tu'qommey ja'lu'pu'bogh, vaj mI'meyvetlh laD PadForge.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>rarmeH De'vam rur ghItlhbe' DSX, vaj DSX Hur 'a'baqa' choHlu'pu'.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>qIghvo' vey ghuSvamDaq choH DSX. mIwmey tenwalDaq mIwDaj tu'lu', 'ej leQ rarmeH ghuS.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>qIghvo' vey ghuSvamDaq choH DSX. SeHjan mIwmey &amp; HIDjolevmey 'ay'Daq mIwDaj tu'lu', 'ej leQDaq rarmeH ghuS.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>{0} lo'bogh DSX tu'qom ja'lu'pu'bogh tu'lu'be', vaj nuq ta' 'e' Sovbe' PadForge.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>tolmoHghach leQDaj chu'lu'taHvIS Dochvam cher Quj 'e' chaw' DSX, vaj QujvaD 'oH nob PadForge je.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Sung lo'Daq, janDaq De' yIngeH chu'Ha'lu'DI', SeHjanDaq De' Daj ngeHbe' DSX, vaj QujvaD Dochvam nob PadForge je.</value></data>
@@ -5776,6 +5823,25 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Import_Tr_AppSetting" xml:space="preserve"><value>nIqHom DuHmeyDaj Daq {0} pol PadForge, tu'qom Hur.</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>patlh {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>choH {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>chu'wI'mey: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>wovmoHwI' naQ</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} latlh Dochmey</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} wovmoHwI' naQ</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>nIqHom yItagh</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} yutlhegh</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>tu'qom qemlu'pu'bogh</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>mIw qemlu'pu'bogh</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>vey ghuS {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>HIDjolev gho {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Hot HIDjolev {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>'eQway' Sep</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>Hot</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>'uytaH</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>cha'logh Hot</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>chu'wI' poS wanI'</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>chu'wI' nIH wanI'</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>leQ neltaHghach {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>ghu'lIS {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>SeHjan</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>mejmoHghachmeyDaj Daj pol</value></data>

@@ -430,9 +430,6 @@ namespace PadForge.Tests
         [Fact]
         public void TheClusterFrames_AreTheOnesLogitechsOwnProgramSends()
         {
-            Same("11 FF 0F 0C FF FF 00", HidppUnitProtocol.RgbGetInfo(0xFF, 0x0F, 0xFF, 0xFF));
-            Same("11 FF 0F 0C 01 FF 00", HidppUnitProtocol.RgbGetInfo(0xFF, 0x0F, 0x01, 0xFF));
-            Same("11 FF 0F 0C 01 01 00", HidppUnitProtocol.RgbGetInfo(0xFF, 0x0F, 0x01, 0x01));
             Same("11 FF 0F 5C 00", HidppUnitProtocol.RgbSwControlRead(0xFF, 0x0F));
             Same("11 FF 0F 5C 01 03 07", HidppUnitProtocol.RgbSwControl(0xFF, 0x0F, 0x03, 0x07));
             Same("11 FF 0F 8C 01 01", HidppUnitProtocol.RgbPowerFull(0xFF, 0x0F));
@@ -506,14 +503,13 @@ namespace PadForge.Tests
         }
 
         /// <summary>The 0x8081 frames, with the feature at index 0x09 as on
-        /// the G915 X of OpenRGB issue 4461: the zone page question, one
-        /// range, the frame end with every byte zero, and the Host
-        /// streaming choice on cluster FF, which is that capture's
+        /// the G915 X of OpenRGB issue 4461: one range, the frame end with
+        /// every byte zero, and the Host streaming choice on cluster FF,
+        /// which is that capture's
         /// 11 FF 08 1D FF 01 ... 01 with this worker's software ID.</summary>
         [Fact]
         public void TheStreamFrames_AreTheOnesLogitechsOwnProgramSendsAG915X()
         {
-            Same("11 FF 09 0C 00 01 00", HidppUnitProtocol.PerKeyZonePage(0xFF, 0x09, 1));
             Same("11 FF 09 5C 01 D2 FD 76 00", HidppUnitProtocol.PerKeyRange(0xFF, 0x09, 0x01, 0xD2, 0xFD, 0x76, 0x00));
             Same("11 01 07 5C 01 FE 12 34 56", HidppUnitProtocol.PerKeyRange(0x01, 0x07, 0x01, 0xFE, 0x12, 0x34, 0x56));
             // The byte after the one range ends the list.
@@ -523,7 +519,6 @@ namespace PadForge.Tests
             Assert.All(end.Skip(4), b => Assert.Equal(0, b));
             Same("11 01 07 7C", HidppUnitProtocol.PerKeyFrameEnd(0x01, 0x07));
             Same("11 FF 08 1C FF 01 00 00 00 00 00 00 00 00 00 00 01 00 00 00", HidppUnitProtocol.RgbHostStreaming(0xFF, 0x08, 0x01));
-            Same("11 FF 08 0C FF 01 00", HidppUnitProtocol.RgbGetInfo(0xFF, 0x08, 0xFF, 0x01));
             Same("11 FF 08 5C 00", HidppUnitProtocol.RgbSwControlRead(0xFF, 0x08));
         }
 

@@ -26,8 +26,9 @@ namespace PadForge.Common.Input
     ///
     /// <para>A device that plays the haptic track itself takes none of it: a
     /// DualSense being fed the persona's haptic channels, whose rumble bits
-    /// would switch it out of audio haptics, and a Steam or Switch pad with
-    /// Play DualSense Haptics on This Controller on. chiaki-ng makes the same
+    /// would switch it out of audio haptics, and a pad that plays haptic
+    /// tones (Steam, Switch, SInput or Flydigi Apex 6 Pro) with Play
+    /// DualSense Haptics on This Controller on. chiaki-ng makes the same
     /// reduction for controllers without voice coils and skips it while a
     /// DualSense plays the haptics (gui/src/streamsession.cpp,
     /// PushHapticsFrame).</para>

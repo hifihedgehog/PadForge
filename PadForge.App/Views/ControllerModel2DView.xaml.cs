@@ -120,7 +120,18 @@ namespace PadForge.Views
         /// around the pad, so its triggers stand below the picture's top and
         /// its grips above the picture's foot. The annotations, the pick
         /// ring and the clicks find the pad through the layout, so they
-        /// follow it.</summary>
+        /// follow it. The room is set in the measure, from the size the view
+        /// is measured at, so the pad is measured with it. The picture
+        /// arranges the view at that size, where the arrange's set changes
+        /// nothing. The arrange's set changes the room only for a view
+        /// measured with no bound.</summary>
+        protected override Size MeasureOverride(Size constraint)
+        {
+            if (!double.IsInfinity(constraint.Width) && !double.IsInfinity(constraint.Height))
+                ModelBox.Margin = ControllerModelFraming.PictureRoom(constraint.Width, constraint.Height);
+            return base.MeasureOverride(constraint);
+        }
+
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
             ModelBox.Margin = ControllerModelFraming.PictureRoom(arrangeBounds.Width, arrangeBounds.Height);
@@ -770,7 +781,7 @@ namespace PadForge.Views
             // visible frame.
             // Iconic gate: IsVisible stays TRUE while the window is
             // minimized, so without this the overlay repainted per display
-            // frame while nothing could render (the marquee mechanism).
+            // frame while nothing could render.
             if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || _loadedModel == null)
                 return;

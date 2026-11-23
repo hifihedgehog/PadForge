@@ -5,7 +5,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// <summary>A keyboard OpenRGB lays out as a grid of its own (#557):
     /// the grid, each cell an index into the LEDs or -1, the LED count and,
     /// where OpenRGB names them, the LEDs' names.</summary>
-    internal sealed record MatrixLayout(string Source, int Rows, int Cols, int Count, short[] Grid, string[] Names);
+    internal sealed record MatrixLayout(int Rows, int Cols, int Count, short[] Grid, string[] Names);
 
     /// <summary>
     /// The grids of OpenRGB's Cherry, EVision and Das Keyboard families,

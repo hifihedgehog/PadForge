@@ -81,7 +81,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registrations[0].Name,
-                    Map = new LightMap(Lights(pro), "OpenRGB RGBController_ValkyrieKeyboard.cpp") { Product = product },
+                    Map = new LightMap(Lights(pro)) { Product = product },
                     RepaintMs = RepaintMs,
                     Begin = (io, wait) => new Session(pro),
                 };

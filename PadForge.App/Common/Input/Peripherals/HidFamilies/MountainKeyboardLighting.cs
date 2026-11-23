@@ -172,7 +172,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(EverestLights(), "OpenRGB RGBController_MountainKeyboard.cpp")
+            Map = new LightMap(EverestLights())
             {
                 Product = $"mountain:{VendorId:X4}:{EverestPid:X4}",
             },
@@ -349,7 +349,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Everest60Lights(), "OpenRGB RGBController_Mountain60Keyboard.cpp")
+            Map = new LightMap(Everest60Lights())
             {
                 Product = $"mountain:{VendorId:X4}:{pid:X4}",
             },

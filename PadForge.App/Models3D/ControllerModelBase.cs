@@ -627,6 +627,37 @@ namespace PadForge.Models3D
         //  Highlight generation
         // ─────────────────────────────────────────────
 
+        // The materials CreateAccentHighlight made. The DualSense's clear
+        // plastic shares the touchpad's entry, so its material is among
+        // them. A material a model makes itself (the DualSense's
+        // MaterialTransparentFlat when the touchpad has no entry) is not.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Material, object> s_accentHighlights = new();
+        private static readonly object AccentMark = new();
+
+        /// <summary>Gives every highlight entry made from the accent a new
+        /// one in the accent in force (#591): a look put on while the model
+        /// shows lights hover, press and the Map All flash in its accent.
+        /// An entry holding a material the model made itself stays. A part
+        /// lit at that moment takes the new material too, so the view still
+        /// knows it as its own.</summary>
+        public void RetintAccentHighlights()
+        {
+            Material fresh = null;
+            foreach (var group in new List<Model3DGroup>(HighlightMaterials.Keys))
+            {
+                Material old = HighlightMaterials[group];
+                if (old == null || !s_accentHighlights.TryGetValue(old, out _)) continue;
+                fresh ??= CreateAccentHighlight();
+                HighlightMaterials[group] = fresh;
+                foreach (var child in group.Children)
+                {
+                    if (child is not GeometryModel3D geometry) continue;
+                    if (ReferenceEquals(geometry.Material, old)) geometry.Material = fresh;
+                    if (ReferenceEquals(geometry.BackMaterial, old)) geometry.BackMaterial = fresh;
+                }
+            }
+        }
+
         /// <summary>The accent material every glow in the preview is drawn
         /// with: hover, press, and the Map All flash all look one up in
         /// <see cref="HighlightMaterials"/>.</summary>
@@ -646,7 +677,9 @@ namespace PadForge.Models3D
                 accentBrush = new SolidColorBrush(PadForge.Common.EmberTheme.Accent);
             }
 
-            return new DiffuseMaterial(accentBrush);
+            var material = new DiffuseMaterial(accentBrush);
+            s_accentHighlights.AddOrUpdate(material, AccentMark);
+            return material;
         }
 
         /// <summary>

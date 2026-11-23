@@ -30,23 +30,11 @@ namespace PadForge.Common.Input.KeyboardScreens
             bool mono = KeyboardScreenFormats.IsMonochrome(kind);
             text = (text ?? string.Empty).Trim();
             var foreground = mono ? Brushes.Black : Brushes.White;
-            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
             // A margin of a twentieth keeps text off the color screens'
             // bezels. The monochrome screen has no pixel to spare.
             int margin = mono ? 0 : Math.Max(4, width / 20);
             double maxWidth = width - 2 * margin, maxHeight = height - 2 * margin;
-            FormattedText fitted = null;
-            for (double size = maxHeight; size >= 6; size -= 1)
-            {
-                var candidate = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                    typeface, size, foreground, 1.0)
-                {
-                    MaxTextWidth = maxWidth,
-                    TextAlignment = TextAlignment.Center,
-                };
-                fitted = candidate;
-                if (candidate.MinWidth <= maxWidth && candidate.Height <= maxHeight) break;
-            }
+            FormattedText fitted = FitText(text, foreground, maxWidth, maxHeight);
             var visual = new DrawingVisual();
             if (mono)
             {
@@ -65,6 +53,40 @@ namespace PadForge.Common.Input.KeyboardScreens
                     dc.DrawText(fitted, new Point(margin, margin + Math.Max(0, (maxHeight - fitted.Height) / 2)));
             }
             return Pixels(visual, kind);
+        }
+
+        /// <summary>The device screens' text in the screen face, bold, as
+        /// large as fits a box of <paramref name="maxWidth"/> by
+        /// <paramref name="maxHeight"/>, from the box's height down to 6, on
+        /// as many lines as its words need, centered. Text too long for the
+        /// box at 6 keeps the lines that fit and ends in an ellipsis. The
+        /// keyboard screens, the VMU and the Flydigi screen draw with
+        /// it.</summary>
+        internal static FormattedText FitText(string text, Brush foreground, double maxWidth, double maxHeight)
+        {
+            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+            FormattedText fitted = null;
+            for (double size = maxHeight; size >= 6; size -= 1)
+            {
+                var candidate = new FormattedText(text ?? string.Empty, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                    typeface, size, foreground, 1.0)
+                {
+                    MaxTextWidth = maxWidth,
+                    TextAlignment = TextAlignment.Center,
+                };
+                fitted = candidate;
+                if (candidate.MinWidth <= maxWidth && candidate.Height <= maxHeight) break;
+            }
+            // No size fits: the smallest keeps the lines the box holds, and
+            // the last line, or a word wider than a line, ends in an
+            // ellipsis. FormattedText draws whole lines up to MaxTextHeight
+            // and trims the last one it draws.
+            if (fitted != null && (fitted.MinWidth > maxWidth || fitted.Height > maxHeight))
+            {
+                fitted.Trimming = TextTrimming.CharacterEllipsis;
+                fitted.MaxTextHeight = Math.Max(1, maxHeight);
+            }
+            return fitted;
         }
 
         /// <summary>A picture file, decoded no larger than

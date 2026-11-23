@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Онлайн</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Офлайн</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Тодорхойгүй</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Үндсэн</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Хайх…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Үргэлжлүүлэх</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Зогсоох</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Хөдөлгүүр зогслоо.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Алдаа: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}: үүсгэж чадсангүй.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Төхөөрөмжийг нээх, унших эсвэл оноох боломжгүй байна. Аль төхөөрөмж болохыг оношилгооны бүртгэлээс харна уу.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} алдаатай тулгарлаа. Шалтгааныг оношилгооны бүртгэлээс харна уу.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Оролтын хөдөлгүүр алдаатай тулгарлаа. Шалтгааныг оношилгооны бүртгэлээс харна уу.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL-ийг эхлүүлж чадсангүй. Шалтгааныг оношилгооны бүртгэлээс харна уу.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro-г тохируулж чадсангүй. Шалтгааныг оношилгооны бүртгэлээс харна уу.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Виртуал контроллерын HIDMaestro профайл алга. Аль контроллер болохыг оношилгооны бүртгэлээс харна уу.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} өөрийн тохируулсан таних мэдээлэл болон байрлалыг авч чадаагүй тул профайлынхаа анхны тохиргоог ашиглаж байна.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профайл солигдлоо: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профайл солигдлоо: Үндсэн</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Үндсэн</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Хөдөлгөөний серверийн порт</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu зэрэгт гироскоп болон акселерометрийн өгөгдөл дамжуулна.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Тоглоомын модууд</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-д зориулж хийсэн тоглоомын модуудад таны PlayStation контроллеруудын дасан зохицох гох, гэрлийн зурвас, тоглогчийн гэрэл болон дуу хаах гэрлийг тохируулах боломж олгоно.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-д зориулж хийсэн тоглоомын модуудад DualSense эсвэл DualShock 4-ийн дасан зохицох гох, гэрлийн зурвас, тоглогчийн гэрэл болон дуу хаах гэрлийг тохируулах боломж олгоно.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX тоглоомын модуудыг хүлээн авах</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Тоглоомын модын порт</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe орлуулагч ажиллуулах</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV зэрэг зарим мод DSX нэртэй програм ажиллаагүй бол өөрсдийгөө унтраадаг. Энэ нь сервер сонсож байх үед тэр нэртэй жижиг орлуулагч програм ажиллуулна.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>GTA V, Red Dead Redemption 2, Skyrim, Forza зэрэг тоглоомд зориулсан, DSX-д зориулж хийсэн модуудтай ажиллана. Сервер сонсож байх үед PadForge өөрийн портыг тэдгээр модын хайдаг газарт бичнэ.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} дээр сонсож байна. {1} {2}-р виртуал контроллер руу илгээж байна.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} дээр сонсож байна. {1} илгээж байгаа ч аль ч виртуал контроллер дээр PlayStation контроллер алга.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} дээр сонсож байна. {1} {2}-р контроллер руу илгээж байгаа боловч PlayStation контроллертой виртуал контроллеруудын аль нь ч ийм дугааргүй байна.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} дээр сонсож байна. {1} илгээж байгаа ч аль ч виртуал контроллер дээр DualSense эсвэл DualShock 4 алга.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} дээр сонсож байна. {1} {2}-р контроллер руу илгээж байгаа боловч DualSense эсвэл DualShock 4-тэй виртуал контроллеруудын аль нь ч ийм дугааргүй байна.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} портыг DSX зэрэг өөр програм ашиглаж байна. Тэр програмыг хаах эсвэл өөр порт сонгоно уу.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Тоглоомын мод</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack болон UDP гаралтаа илгээдэг эсвэл FreeTrack 2.0 хуваалцсан санах ойд бичдэг аливаа хянагчтай, мөн энэ компьютер дээрх арын горимд сесс ажиллуулж чадах OpenXR ажиллах орчинтой ажиллана.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Файл олдсонгүй</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Унших боломжгүй</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” загварын файл алга эсвэл уншигдахгүй байна. Файл буцаж ирэх хүртэл PadForge Бараан загварыг харуулна.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” загварын файлд PadForge загвар алга. Файлд загвар орох хүртэл PadForge Бараан загварыг харуулна.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” профайл өөрийн тоглоомын төрхийг харуулж байна. Өөр профайл идэвхтэй болоход таны загвар буцаж ирнэ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Уншилтын үйлдэл болон арын боловсруулалтыг тохируулах.</value></data>
@@ -1047,6 +1054,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контроллер өөрийг нь бэлтгэх тушаалыг хүлээж аваагүй тул юу ч илгээгдсэнгүй. Холбогдсон эсэхийг нь шалгаад дахин илгээнэ үү.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge дотор гарсан алдааны улмаас илгээлт зогслоо. Дэлгэрэнгүйг лог файлаас харна уу.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Зураг контроллер руу илгээгдсээр байна. Илгээхийг зогсоох уу?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Үргэлжлүүлэн илгээх</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak файлууд (*.mpk)|*.mpk|Бүх файл (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak сэргээх</value></data>
@@ -1434,6 +1442,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Импульс сулрах хугацаа</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Бэлэн тохиргоо</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Өөрийн</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Хэрэглэгчийн үүсгэсэн)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Стикүүд</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Гохууд</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2414,7 +2423,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Энэ контроллер магнитометртэй. Зүүн-баруун эргэлтийг соронзон хойд зүгт бэхлэх нь гироскопын онилгын удаан хэвтээ шилжилтийг арилгана. Эхлээд калибровк хийнэ үү: “Калибровк хийх” дээр дараад, контроллерийг хэдэн секундын турш 8 тоон хэлбэрээр бүх чиглэлд эргүүлж, дахин дарна уу.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Зүүн-баруун эргэлтийг луужинд бэхлэх</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Хэвтээ онилгыг соронзон чиглэл рүү татах бага хэмжээний засах хурд нэмдэг тул шилжилт хуримтлагдахгүй. Хадгалсан магнитометрийн калибровк шаардлагатай. Ойролцоох металл эсвэл соронзонд саатуулагдсан дээжүүдийг автоматаар хасна.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Үндсэн утгад буцаах (унтраалттай)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Урагш-хойш болон хажуу тийш хазайлтын дуурайлт</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Акселерометрээс гаргасан урагш-хойш болон хажуу тийш хазайлт</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Энэ контроллерийн гироскоп зөвхөн зүүн, баруун тийш эргэхийг мэдэрдэг. Дуурайлт асаалттай үед PadForge урагш-хойш болон хажуу тийш хазайлтыг акселерометрээс гаргаж, гироскопын зүүн-баруун эргэлтийн хамт оноолтын мөрүүд болон виртуал контроллерийн хөдөлгөөн рүү илгээнэ. Акселерометр түлхэлтийг хазайлтаас ялгаж чаддаггүй тул контроллерийг эргүүлэлгүйгээр хажуу тийш эсвэл урагш хөдөлгөхөд богино эргэлт гэж уншигдана.</value></data>
@@ -2810,7 +2818,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Хүрч болох хилийг тодорхойлохын тулд стикийг ирмэгийн дагуу тойруулж, дараа нь бүтэн тойрог болгон хэлбэржүүлнэ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Хилийн калибровкийг дахин тохируулах</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Төвийн шилжилт Y-ийг дахин тохируулах</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Масштабласан радиал руу буцаах</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Үхсэн бүс X-ийг дахин тохируулах</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Үхсэн бүс Y-ийг дахин тохируулах</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Үхсэн бүсийн нөхөлт X-ийг дахин тохируулах</value></data>
@@ -3262,13 +3269,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Флик стикийг дахин тохируулах</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°-д ногдох цэг</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Камерын нэг бүтэн 360° эргэлтэд ногдох хулганы тоолуур. Тоглоомын хулганы мэдрэмжээс хамаарна: флик дутуу эргүүлбэл өсгөж, хэт эргүүлбэл бууруулна уу.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Дахин тохируулах: 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Фликийн хугацаа</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Бүтэн 180° флик удаашрах төгсгөлтэйгээр хэр удаан үргэлжлэхийг заана. Богино эргэлтүүд ижил хугацаанд дуусна.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Дахин тохируулах: 0.1 с</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Фликийн босго</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Фликийг эхлүүлэх стикийн хазайлт, бүтэн хазайлтын хэсгээр. Флик хийж байх үед суллах цэг үүний 90% хүртэл буурна.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Дахин тохируулах: 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Тогтоох өнцөг</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Илүү тогтвортой эргэлтийн тулд фликийг тогтмол өнцгүүдэд татна. “Зөвхөн урагш” нь бүх фликийг яг урагш чиглэлд татна.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Татахгүй</value></data>
@@ -3277,22 +3281,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 градус</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 градус</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 градус</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Дахин тохируулах: татахгүй</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Татах хүч</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Флик тогтоох өнцөг рүү хэр хүчтэй татагдахыг заана. 1 бол бүрэн татна, 0 бол татахыг унтраана, завсрын утгууд холино.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Дахин тохируулах: 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Урд өнцгийн үхсэн бүс</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Яг урагш чиглэлээс энэ өнцөг доторх флик юу ч эргүүлэхгүй. Флик эргэлтгүйгээр гүйлгэлт эхлүүлэх боломж олгоно.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Дахин тохируулах: 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Гүйлгэлтийн зөөллөлт</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Ирмэгийн дагуух гүйлгэлтийн шуугианыг зөөллөнө. -1 бол автомат шаталсан цонхыг ашиглана, 0 бол зөөллөлтийг унтраана, их утга алхам бүрийн том эргэлтийг зөөллөнө.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Дахин тохируулах: автомат (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Идэвхжихэд фликийг зөвшөөрөх</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Эргэлтийн шилжилт</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Флик зураглалыг бүхэлд нь энэ хэдэн градусаар эргүүлнэ. Эерэг нь цагийн зүүний дагуу. Татах нь шилжилтийн дараа хэрэгжинэ.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Эргэлтийн шилжилтийг дахин тохируулах</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Флик стик байрлах давхарга стик аль хэдийн хазайсан үед идэвхжвэл фликийг шууд гүйцэтгэнэ. Унтраалттай үед камер хөдлөхгүй бөгөөд эргэлтийг стикийн одоогийн өнцгөөс эхлэн хянана.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Идэвхжихэд флик зөвшөөрөхийг дахин тохируулах</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Жолооны хязгаарын эргэх холбоо</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Жолоодлогын горимын стик бүрэн хязгаарт хүрэхэд өгөх дохио</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Жолоодлогын горимд тохируулсан стикийг бүрэн хязгаар хүртэл эргүүлэхэд хязгаарыг мэдрэхийн тулд дохио (чичиргээ, гох эсвэл гэрлийн зурвас) өгнө. Үндсэн тохиргоогоор бүгд унтраалттай.</value></data>
@@ -3482,11 +3480,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense хаптикийг энэ контроллер дээр тоглуулах</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Тоглоом энэ слотыг тусгай хаптик аудиотой виртуал DualSense болгон удирдах үед тэр аудиог энэ контроллерын актуатор дээр тоглуулна. USB эсвэл өөрийн донглоор холбогдсон Steam Controller 2026, мөн Flydigi Apex 6 Pro уг аудиог өөрөө тоглуулна. Бусад бүх контроллер, мөн Bluetooth-ээр холбогдсон тэр Steam Controller аудиогоос гаргасан ая хүлээн авна. Энэ нь зохиогчийн мэдрэмжийг яг давтахгүй, ойролцоогоор илэрхийлнэ.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Хаптикийн өсгөлт</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Үндсэн рүү дахин тохируулах (Унтраалттай)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Үндсэн рүү дахин тохируулах (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Актуаторын нам давтамжийн шүүлтүүрийн хязгаар</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller-ын хаптик урсгалыг энэ давтамжаас доош байлгаснаар самбарууд сонсогдохуйц дуу гаргахын оронд чичирнэ. 250 Гц орчимд актуаторууд сонсогдож эхэлнэ. Илүү тод нарийвчлалын тулд өсгө, илүү чимээгүй ажиллагааны тулд бууруул.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Гц руу дахин тохируулах</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Энэ давтамжаас дээш ая тасрах эсвэл нугалагдана. Үндсэн 800 Гц нь хөдөлгүүр, цохилтын чичиргээг хадгалж, өндөр дуут дохиог барина.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Өндөр аяыг дахин тохируулах</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Аяны хязгаарыг дахин тохируулах</value></data>
@@ -4055,8 +4050,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop профайл</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop макро</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Курсорын муж</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} шилжилт</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Дугуйн жагсаалт ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Курсорын муж ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Хулганы {0} дарж барих ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Хулганы {0} товших ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Хулганы {0} сэлгэх ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Чичиргээний импульс ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (суллалтын төгсгөл)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} товших ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} автомат давтах ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} дарж барих ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} сэлгэх ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} турбо ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} давхар дарах ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} удаан дарах ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Дугуйн нэг алхам ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Дугуй сэлгэх ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Турбо дугуй ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Курсорыг шилжүүлэх ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED тохируулах ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Гирог төвлөрүүлэх ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Курсорыг бага зэрэг хөдөлгөх ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Дэлгэцийн агшны товч ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Дэлгэцийн гар ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Гэрлийн өнгө тохируулах</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Камерыг төвлөрүүлэх</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Курсорыг шилжүүлэх</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Курсорыг бага зэрэг хөдөлгөх</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Дэлгэцийн агшин</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Дэлгэцийн гар</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Шилжилтийн давхарга солих</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Шилжилтийн давхарга асаах</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Шилжилтийн давхарга унтраах</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Шилжилтийн давхарга барих</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Тоглогчийн дугаар солих</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Оноогоогүй</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Ширээний горим сэлгэх</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam системийн товч</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Томруулагч сэлгэх</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Гэрэлтүүлэг нэмэх</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Гэрэлтүүлэг хасах</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Контроллерыг унтраах</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam тохируулагчийг нээх</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam шуурхай цэсийг нээх</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Тоглоомоос гарах</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Мэдрэхүйн хариу сэлгэх</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD сэлгэх</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Чичиргээ сэлгэх</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide товчийг албадах</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Гирогийн тохируулгын эргүүлэлт</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Чиглэл рүү эргэх</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (барих)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (суллах)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (суллах)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (идэвхжүүлэх)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Юу шилжихийг харахын тулд тохиргоо сонгоно уу.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Шилжих зүйлс</value></data>
@@ -4645,11 +4691,9 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Давхарга</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Энэ цэсийг зөвшөөрөх давхаргыг сонгоно уу. Дурын давхарга ба Суурь нь бусад идэвхтэй давхаргын үед ч зөвшөөрнө. Нэрлэсэн давхарга нь одоо идэвхтэй давхаргатай таарах ёстой.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Дурын давхарга болгож дахин тохируулж, давхаргаар нээлттэй барихыг унтраана.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (энэ слотод жагсаагдаагүй)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Давхарга цэсийг нээлттэй барина</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Нэрлэсэн давхарга нь идэвхтэй байх хугацаанд энэ цэсийг нээлттэй байлгана. Сонгосон физик оролт тодруулгыг удирдана. Дурын давхарга ба Суурь нь энгийн гадаргуугаар нээгдэнэ.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Хүрэх эсвэл хазайлтаар нээгдэхээр дахин тохируулна.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Удирдах оролт</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Давхарга энэ цэсийг нээлттэй барьж байх үед тодруулсан нүдийг удирдах физик оролт.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Энэ слотод хуваарилсан физик контроллеруудаас уншина. Давхарга цэсийг нээж, энэ оролт түүнийг удирдана. Цэс юу гаргахыг түүний нүднүүд заана.</value></data>
@@ -4729,7 +4773,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Мотор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Чиглэлээр хуваах</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Төвийн үхсэн бүс</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Дахин тохируулах (зүүн стик X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Хүчийг дахин тохируулах (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Төвийн үхсэн бүсийг дахин тохируулах (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>«Жолооны өнцгийн чичиргээг идэвхжүүлэх»-ийг дахин тохируулах</value></data>
@@ -5244,6 +5287,9 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_LanguageRefs" xml:space="preserve"><value>Клингон ба Синдарин хэлний эх сурвалжууд</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Клингон ба Синдарин орчуулгын үгсийг boQwI'-ийн суурь толь болох klingon-assistant-data (Apache-2.0) болон Paul Strack-ийн элф хэлний толь Eldamo (CC BY 4.0)-оор шалгасан. Зөвхөн толийн өгөгдөл, аль нь ч багтаагүй.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Энэ файл PadForge загвар биш байна.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge тэр файлыг уншиж чадахгүй байна.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge тэр файлыг олж чадахгүй байна.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Загвар биш</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Загварыг хадгалж чадсангүй. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Шинэ загвар</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Таныг загвар бүтээх зуур PadForge түүнийг өөр дээрээ шууд харуулна.</value></data>
@@ -5258,6 +5304,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam-ээс зургийг авч байна…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-д энэ тоглоомын өргөн зураг байхгүй.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-д холбогдож чадсангүй. Холболтоо шалгана уу.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge энэ тоглоомын Steam зургийг уншиж чадахгүй байна.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Байрлал</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Зургийг цонхон дотор нь дээш эсвэл доош шилжүүлнэ.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Тоглоомын логог харуулах</value></data>
@@ -5298,4 +5345,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Анхны Star Trek цувралын зураг авалтад ашигласан макет, түүнийг хадгалдаг Smithsonian National Air and Space Museum-ийн гэрэл зураг: Star Trek загварын LCARS хувилбарын зураг.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Загварын зураг: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation цувралын кадр: Star Trek загварын Starfleet хувилбарын зураг. Memory Alpha-аас олсон.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Гэрлийн зурвас</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} гэрлийн зурвас</value></data>
 </root>

@@ -72,7 +72,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_LexipMouse.cpp") { Product = $"lexip:{VendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"lexip:{VendorId:X4}:{productId:X4}" },
             RepaintMs = AocMouseLighting.RepaintMs,
             Outranks = (first, second) => first.VendorId == VendorId && first.ProductId == second.ProductId && Lit(first)
                                           && (!Lit(second) || string.CompareOrdinal(first.Path, second.Path) < 0),

@@ -162,7 +162,7 @@ namespace PadForge.Common.Input
                         row.Dispose();
                         WinUsbKeyboardTable.Forget(row.Channel);
                         _winUsbKeyboardRetry[row.DevicePath] = (now + WinUsbKeyboardReopenMs, row.Channel, false);
-                        RaiseError($"Error registering the row of '{row.Name}'", ex);
+                        RaiseDeviceError($"Error registering the row of '{row.Name}'", ex);
                     }
                 }
                 _winUsbKeyboardsPending.Clear();
@@ -187,7 +187,7 @@ namespace PadForge.Common.Input
                         }
                         catch (Exception ex)
                         {
-                            RaiseError($"Error registering the row of '{row.Name}'", ex);
+                            RaiseDeviceError($"Error registering the row of '{row.Name}'", ex);
                         }
                     }
                 }

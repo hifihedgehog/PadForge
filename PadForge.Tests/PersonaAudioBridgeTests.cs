@@ -362,21 +362,6 @@ namespace PadForge.Tests
             Assert.True(AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, loud, 0, 0, false, Tick(_ => 0x4000, _ => 0), Opus(0), 200, 0x13));
         }
 
-        // ── Consumer-side verdicts (shared shape with tools/PersonaVerify) ──
-
-        [Theory]
-        [InlineData(0.0000, 0.0, "silence")]   // dead lane: muted pad, or nothing feeding it
-        [InlineData(0.0002, 3.0, "silence")]
-        [InlineData(0.5118, 1.95, "noise")]    // the measured stereo-decode failure
-        [InlineData(0.5897, 1.69, "noise")]
-        [InlineData(0.0208, 10.6, "audio")]    // the measured mono-decode success
-        [InlineData(0.0346, 6.8, "audio")]
-        [InlineData(0.3000, 8.0, "audio")]     // loud but peaky is real audio, not noise
-        public void ClassifyCapture_SeparatesSilenceNoiseAndAudio(double rms, double crest, string expected)
-        {
-            Assert.Equal(expected, AudioPassthroughService.ClassifyCapture(rms, crest));
-        }
-
         // ── Audio buffer length (#314, reported by vlue-c on #311) ──
         //
         // The packet 0x11 header byte governing the Bluetooth transport that

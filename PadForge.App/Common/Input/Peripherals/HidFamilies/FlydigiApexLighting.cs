@@ -122,7 +122,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "Flydigi Apex 4",
-            Map = new LightMap(Zones(Proto.Apex4LitGroups), "flydigi-space-station-mac LEDConfig.swift")
+            Map = new LightMap(Zones(Proto.Apex4LitGroups))
             {
                 Product = Product(FlydigiApexModel.Apex4),
             },
@@ -135,7 +135,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "Flydigi Apex 5",
-            Map = new LightMap(Zones(Proto.Apex5Leds), "openflydigi flydigi/lighting.py")
+            Map = new LightMap(Zones(Proto.Apex5Leds))
             {
                 Product = Product(FlydigiApexModel.Apex5),
             },
@@ -151,7 +151,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = "Flydigi Apex 6 Pro",
-                Map = new LightMap(Zones(1), "ApexSenseBridge Apex6Lighting.cpp") { Product = product },
+                Map = new LightMap(Zones(1)) { Product = product },
                 HoldMs = Apex6HoldMs,
                 RepaintMs = Apex6HoldMs,
                 Programs = s_programs,

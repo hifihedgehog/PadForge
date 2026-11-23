@@ -242,7 +242,7 @@ namespace PadForge.Tests
         public void VulcanIIMax_SecondLedsAndPalmRest()
         {
             var layout = RoccatVulcanLayouts.Find("RoccatVulcanIIMaxLayouts", 0);
-            var map = new LightMap(RoccatVulcanLayouts.Lights(layout), "t");
+            var map = new LightMap(RoccatVulcanLayouts.Lights(layout));
             Assert.Equal(16, map.EdgeCount);
             // F1 (0x3A) and its LED 2 at 0x89.
             var f1 = map.IndexesOf(0x3A).Select(i => map.Lights[i].Address).ToList();
@@ -513,7 +513,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The LED and control collections OpenRGB opens per
-        /// product (RoccatControllerDetect.cpp:125-153).</summary>
+        /// product (RoccatControllerDetect.cpp:128-156).</summary>
         [Fact]
         public void TheTwoCollections_AreOpenRgbs()
         {

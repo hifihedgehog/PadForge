@@ -63,8 +63,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                "OpenRGB RGBController_DreamCheeky.cpp") { Product = $"dreamcheeky:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }) { Product = $"dreamcheeky:{vendorId:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(false, 1, colors => new[] { Color(colors[0]) }, Opening),
         };

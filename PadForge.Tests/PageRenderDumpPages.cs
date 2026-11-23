@@ -1030,7 +1030,7 @@ namespace PadForge.Tests
                         keys.Add(new PadForge.Common.Input.Peripherals.LightInfo(keys.Count, PadForge.Common.Input.Peripherals.LightKind.Key,
                             0, PadForge.Common.Input.Peripherals.LightKeySource.None));
                     PadForge.Common.Input.Peripherals.PeripheralLightMaps.Publish(lights,
-                        new PadForge.Common.Input.Peripherals.LightMap(keys.ToArray(), "dialog-render-dump") { Product = "dump:keyboard" });
+                        new PadForge.Common.Input.Peripherals.LightMap(keys.ToArray()) { Product = "dump:keyboard" });
                     drawing.PictureWindow(new MapKeyLightsDialog(lights, "Corsair K70 RGB PRO"), "dialog-map-key-lights.png");
                     var listening = new MapKeyLightsDialog(lights, "Corsair K70 RGB PRO");
                     drawing.PictureWindow(listening, "dialog-map-key-lights-listening.png", () =>

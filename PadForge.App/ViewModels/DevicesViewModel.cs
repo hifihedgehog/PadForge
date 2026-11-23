@@ -45,6 +45,12 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(TouchpadLabel));
             OnPropertyChanged(nameof(Touchpad2Label));
             RenamePressed();
+            // The Head Tracker, Game Telemetry and Twitch Chat lines are
+            // built from the string table once per row and status, and a
+            // language change keeps both. Forgetting the row has the next
+            // tick build each line again, in the new language.
+            HeadTrackerStatusVersion = GameTelemetryStatusVersion = TwitchChatStatusVersion = -1;
+            HeadTrackerStatusDevice = GameTelemetryStatusDevice = TwitchChatStatusDevice = null;
             foreach (var item in ActiveSlotItems)
                 item.RaiseLabel();
             // The chips keep their items through a language change, so their
@@ -703,11 +709,12 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gameTelemetryStatus, value ?? string.Empty);
         }
 
-        /// <summary>The device's StatusVersion and instance the current
-        /// <see cref="GameTelemetryStatus"/> was built from, the head
-        /// tracker's cache pair.</summary>
+        /// <summary>The device's StatusVersion and instance and the forward
+        /// port the current <see cref="GameTelemetryStatus"/> was built
+        /// from.</summary>
         internal int GameTelemetryStatusVersion { get; set; } = -1;
         internal object GameTelemetryStatusDevice { get; set; }
+        internal int GameTelemetryStatusForward { get; set; } = -1;
 
         private bool _isTwitchChatDevice;
         /// <summary>Whether the selected device is the Twitch Chat row (issue
@@ -1044,7 +1051,7 @@ namespace PadForge.ViewModels
             IsFalconDevice = isFalcon;
             FalconDotX = FalconDotY = 0.5;
             IsGameTelemetryDevice = isGameTelemetry;
-            if (!isGameTelemetry) { GameTelemetryStatus = string.Empty; GameTelemetryStatusVersion = -1; GameTelemetryStatusDevice = null; }
+            if (!isGameTelemetry) { GameTelemetryStatus = string.Empty; GameTelemetryStatusVersion = -1; GameTelemetryStatusDevice = null; GameTelemetryStatusForward = -1; }
             IsTwitchChatDevice = isTwitchChat;
             if (!isTwitchChat) { TwitchChatStatus = string.Empty; TwitchChatStatusVersion = -1; TwitchChatStatusDevice = null; }
             IsMicrophoneDevice = isMicrophone;
@@ -1171,6 +1178,7 @@ namespace PadForge.ViewModels
             GameTelemetryStatus = string.Empty;
             GameTelemetryStatusVersion = -1;
             GameTelemetryStatusDevice = null;
+            GameTelemetryStatusForward = -1;
             IsTwitchChatDevice = false;
             TwitchChatStatus = string.Empty;
             TwitchChatStatusVersion = -1;
@@ -1287,8 +1295,9 @@ namespace PadForge.ViewModels
         /// </summary>
         public void RefreshSlotButtons()
         {
-            // Walk SlotOrders in type-group order (Xbox → PlayStation →
-            // Extended → KbM → MIDI) so the assignment buttons match the
+            // Walk SlotOrders in type-group order (VirtualControllerGroups.
+            // InOrder: Xbox, PlayStation, Nintendo, Extended, KbM, MIDI,
+            // VR) so the assignment buttons match the
             // Home cards' visual order. Iterating raw padIndex here
             // would put a creation-order-first PlayStation before an
             // Xbox added later, even though the card layout shows Xbox

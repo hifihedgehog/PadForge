@@ -37,21 +37,21 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// name that OpenRGB lists, in product ID order.</summary>
         internal static readonly RazerHidDevice[] Devices =
         {
-            new(0x0504, "Razer Kraken 7.1 Chroma", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8288"),
-            new(0x0510, "Razer Kraken 7.1 V2", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8324"),
-            new(0x0527, "Razer Kraken Ultimate", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8360"),
-            new(0x0533, "Razer Kraken V3 HyperSense", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8484"),
-            new(0x0537, "Razer Kraken V3 X", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8520"),
-            new(0x0549, "Razer Kraken V3", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8556"),
-            new(0x0554, "Razer Kraken Kitty V2 Pro", 0x00, 0x00, 1, 4, new RazerHidZone[] { new("Left Cat Ear", RazerHidZoneType.Single, 1, 1), new("Right Cat Ear", RazerHidZoneType.Single, 1, 1), new("Left Logo", RazerHidZoneType.Single, 1, 1), new("Right Logo", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8622"),
-            new(0x0560, "Razer Kraken Kitty Black Edition V2", 0x3F, 0x00, 1, 4, new RazerHidZone[] { new("Headset Left", RazerHidZoneType.Single, 1, 1), new("Headset Right", RazerHidZoneType.Single, 1, 1), new("Cat ears", RazerHidZoneType.Linear, 1, 2) }, "RazerDevices.cpp:8448"),
-            new(0x056B, "Razer Kraken V4 (Wired)", 0x60, 0x00, 1, 9, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9) }, "RazerDevices.cpp:8659"),
-            new(0x056C, "Razer Kraken V4 (Wireless)", 0x60, 0x00, 1, 9, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9) }, "RazerDevices.cpp:8695"),
-            new(0x0587, "Razer Kraken Kitty V3 Pro (Wired)", 0x60, 0x00, 1, 10, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9), new("Ears", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8743"),
-            new(0x0588, "Razer Kraken Kitty V3 Pro (Wireless)", 0x60, 0x00, 1, 10, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9), new("Ears", RazerHidZoneType.Single, 1, 1) }, "RazerDevices.cpp:8791"),
-            new(0x0F1F, "Razer Chroma Addressable RGB Controller", 0x3F, 0x05, 6, 80, new RazerHidZone[] { new("Channel 1", RazerHidZoneType.Linear, 1, 80), new("Channel 2", RazerHidZoneType.Linear, 1, 80), new("Channel 3", RazerHidZoneType.Linear, 1, 80), new("Channel 4", RazerHidZoneType.Linear, 1, 80), new("Channel 5", RazerHidZoneType.Linear, 1, 80), new("Channel 6", RazerHidZoneType.Linear, 1, 80) }, "RazerDevices.cpp:9083"),
-            new(0x0F26, "Razer Charging Pad Chroma", 0x1F, 0x00, 1, 10, new RazerHidZone[] { new("LED Strip", RazerHidZoneType.Linear, 1, 10) }, "RazerDevices.cpp:9590"),
-            new(0x0F35, "Razer Hanbo Chroma", 0x3F, 0x00, 1, 70, new RazerHidZone[] { new("Pump", RazerHidZoneType.Linear, 1, 16), new("Fan 1", RazerHidZoneType.Linear, 1, 18), new("Fan 2", RazerHidZoneType.Linear, 1, 18), new("Fan 3", RazerHidZoneType.Linear, 1, 18) }, "RazerDevices.cpp:9811"),
+            new(0x0504, "Razer Kraken 7.1 Chroma", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8288
+            new(0x0510, "Razer Kraken 7.1 V2", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8324
+            new(0x0527, "Razer Kraken Ultimate", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8360
+            new(0x0533, "Razer Kraken V3 HyperSense", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8484
+            new(0x0537, "Razer Kraken V3 X", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8520
+            new(0x0549, "Razer Kraken V3", 0x00, 0x00, 1, 1, new RazerHidZone[] { new("Headset", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8556
+            new(0x0554, "Razer Kraken Kitty V2 Pro", 0x00, 0x00, 1, 4, new RazerHidZone[] { new("Left Cat Ear", RazerHidZoneType.Single, 1, 1), new("Right Cat Ear", RazerHidZoneType.Single, 1, 1), new("Left Logo", RazerHidZoneType.Single, 1, 1), new("Right Logo", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8622
+            new(0x0560, "Razer Kraken Kitty Black Edition V2", 0x3F, 0x00, 1, 4, new RazerHidZone[] { new("Headset Left", RazerHidZoneType.Single, 1, 1), new("Headset Right", RazerHidZoneType.Single, 1, 1), new("Cat ears", RazerHidZoneType.Linear, 1, 2) }), // RazerDevices.cpp:8448
+            new(0x056B, "Razer Kraken V4 (Wired)", 0x60, 0x00, 1, 9, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9) }), // RazerDevices.cpp:8659
+            new(0x056C, "Razer Kraken V4 (Wireless)", 0x60, 0x00, 1, 9, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9) }), // RazerDevices.cpp:8695
+            new(0x0587, "Razer Kraken Kitty V3 Pro (Wired)", 0x60, 0x00, 1, 10, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9), new("Ears", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8743
+            new(0x0588, "Razer Kraken Kitty V3 Pro (Wireless)", 0x60, 0x00, 1, 10, new RazerHidZone[] { new("Headset", RazerHidZoneType.Linear, 1, 9), new("Ears", RazerHidZoneType.Single, 1, 1) }), // RazerDevices.cpp:8791
+            new(0x0F1F, "Razer Chroma Addressable RGB Controller", 0x3F, 0x05, 6, 80, new RazerHidZone[] { new("Channel 1", RazerHidZoneType.Linear, 1, 80), new("Channel 2", RazerHidZoneType.Linear, 1, 80), new("Channel 3", RazerHidZoneType.Linear, 1, 80), new("Channel 4", RazerHidZoneType.Linear, 1, 80), new("Channel 5", RazerHidZoneType.Linear, 1, 80), new("Channel 6", RazerHidZoneType.Linear, 1, 80) }), // RazerDevices.cpp:9083
+            new(0x0F26, "Razer Charging Pad Chroma", 0x1F, 0x00, 1, 10, new RazerHidZone[] { new("LED Strip", RazerHidZoneType.Linear, 1, 10) }), // RazerDevices.cpp:9590
+            new(0x0F35, "Razer Hanbo Chroma", 0x3F, 0x00, 1, 70, new RazerHidZone[] { new("Pump", RazerHidZoneType.Linear, 1, 16), new("Fan 1", RazerHidZoneType.Linear, 1, 18), new("Fan 2", RazerHidZoneType.Linear, 1, 18), new("Fan 3", RazerHidZoneType.Linear, 1, 18) }), // RazerDevices.cpp:9811
         };
     }
 }

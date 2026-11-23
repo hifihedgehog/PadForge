@@ -94,7 +94,7 @@ namespace PadForge.Common.Input.Peripherals
             count = Math.Clamp(count, 0, MaxLeds);
             var lights = new LightInfo[count];
             for (int i = 0; i < count; i++) lights[i] = new LightInfo(i, LightKind.Edge, 0, LightKeySource.None);
-            return new LightMap(lights, "OpenRGB RGBController_AsusMonitor.cpp") { Product = Product(productId) + ":" + count };
+            return new LightMap(lights) { Product = Product(productId) + ":" + count };
         }
 
         private static HidLightingModel Model(string name, ushort productId) => new()
@@ -102,8 +102,7 @@ namespace PadForge.Common.Input.Peripherals
             Family = Instance,
             Name = name,
             // One light until a session reads the count.
-            Map = new LightMap(new[] { new LightInfo(0, LightKind.Edge, 0, LightKeySource.None) },
-                "OpenRGB RGBController_AsusMonitor.cpp, LED count not asked yet")
+            Map = new LightMap(new[] { new LightInfo(0, LightKind.Edge, 0, LightKeySource.None) })
             {
                 Product = Product(productId),
             },

@@ -60,7 +60,7 @@ namespace PadForge.Tests
             Assert.Equal(20, pad.Count);
             Assert.Equal(0x58, pad.Single(l => l.Address == 68).Usage);
             Assert.Equal((LightKind.Zone, 2), (pad.Single(l => l.Address == 86).Kind, pad.Single(l => l.Address == 86).Zone));
-            Assert.Equal(4, new LightMap(G.Lights(G.Dial), "t").ZoneCount);
+            Assert.Equal(4, new LightMap(G.Lights(G.Dial)).ZoneCount);
         }
 
         private static (IReadOnlyList<LightInfo>, int[]) All(ushort pid, int rgb)

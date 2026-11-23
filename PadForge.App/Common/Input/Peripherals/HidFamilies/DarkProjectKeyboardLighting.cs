@@ -65,7 +65,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_DarkProjectKeyboard.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"darkproject:{VendorId:X4}:{productId:X4}",
             },

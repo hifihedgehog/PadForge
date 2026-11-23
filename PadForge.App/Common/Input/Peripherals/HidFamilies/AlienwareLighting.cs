@@ -180,7 +180,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         internal static LightMap MapOf(int platform, int count, ushort productId)
-            => new(Lights(platform, count), "OpenRGB AlienwareController")
+            => new(Lights(platform, count))
             {
                 Product = $"alienware:187C:{productId:X4}:{platform:X4}",
             };

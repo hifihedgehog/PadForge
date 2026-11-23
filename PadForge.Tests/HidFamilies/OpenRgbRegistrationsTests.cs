@@ -84,7 +84,7 @@ namespace PadForge.Tests
         /// Windows build compiles what the inventory counted. Where it does
         /// not: the ASUS TUF laptop's second registration is in
         /// AsusTUFLaptopDetect_Linux.cpp; Cooler Master's MM531 line is
-        /// commented out (CoolerMasterControllerDetect.cpp:422); seven HyperX
+        /// commented out (CoolerMasterControllerDetect.cpp:462 at 6b681e3c); seven HyperX
         /// lines are the #else branches of #ifdef _WIN32 blocks
         /// (HyperXAlloyOriginsControllerDetect.cpp:45-51 and its siblings);
         /// two Sinowealth lines are commented out

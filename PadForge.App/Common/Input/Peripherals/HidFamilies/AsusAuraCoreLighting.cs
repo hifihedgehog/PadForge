@@ -256,7 +256,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = new LightInfo[KeyboardZones];
             for (int i = 0; i < KeyboardZones; i++)
                 lights[i] = new LightInfo(i, LightKind.Zone, 0, LightKeySource.None) { Zone = i + 1 };
-            return new LightMap(lights, "OpenRGB RGBController_AsusAuraCore.cpp") { Product = ProductKey(productId, "4zone") };
+            return new LightMap(lights) { Product = ProductKey(productId, "4zone") };
         }
 
         /// <summary>The GA15DH's twenty LEDs (RGBController_AsusAuraCore.cpp:192-199),
@@ -265,7 +265,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var lights = new LightInfo[Ga15dhLeds];
             for (int i = 0; i < Ga15dhLeds; i++) lights[i] = new LightInfo(i, LightKind.Edge, 0, LightKeySource.None);
-            return new LightMap(lights, "OpenRGB RGBController_AsusAuraCore.cpp") { Product = ProductKey(productId, "ga15dh") };
+            return new LightMap(lights) { Product = ProductKey(productId, "ga15dh") };
         }
 
         /// <summary>The model of an Aura Core collection. Its map is the
@@ -529,7 +529,7 @@ namespace PadForge.Common.Input.Peripherals
                 max++;
             }
             bufferLength = (int)max;
-            return new LightMap(lights, "OpenRGB AsusAuraCoreLaptopDevices.cpp")
+            return new LightMap(lights)
             {
                 Product = ProductKey(productId, rows.Count > 0 ? rows[0].Key + ":" + layout : layout.ToString()),
             };

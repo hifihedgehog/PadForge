@@ -148,6 +148,9 @@ namespace PadForge.Views
                 CompositionTarget.Rendering += OnRendering;
             };
             Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            // The glow is a material made from the accent, so a look put on
+            // while the model shows makes it again in the new accent (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, () => _currentModel?.RetintAccentHighlights());
 
             // Order matters: scale first so it applies in the model's local
             // frame, then yaw/pitch rotate the scaled model around its

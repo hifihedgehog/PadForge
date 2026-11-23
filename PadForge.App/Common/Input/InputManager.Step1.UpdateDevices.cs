@@ -243,7 +243,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening device (instance {instanceId})", ex);
+                    RaiseDeviceError($"Error opening device (instance {instanceId})", ex);
                 }
             }
 
@@ -1139,7 +1139,7 @@ namespace PadForge.Common.Input
 
                 // 1c. The entry this device was saved under before it reported
                 //    a serial (#562). A Wii Remote on a Mayflash DolphinBar had
-                //    none until fork b8afb934a2 gave it one from its
+                //    none until fork f1caa192db gave it one from its
                 //    calibration, so its entry is keyed by the bar slot's path.
                 //    The first time a remote arrives with a serial it takes the
                 //    offline entry of the slot it sits in, with that slot's
@@ -1587,7 +1587,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening keyboard ({kb.Name})", ex);
+                    RaiseDeviceError($"Error opening keyboard ({kb.Name})", ex);
                 }
                 finally
                 {
@@ -1634,7 +1634,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening consumer control ({cc.Name})", ex);
+                    RaiseDeviceError($"Error opening consumer control ({cc.Name})", ex);
                 }
                 finally
                 {
@@ -1687,7 +1687,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error opening mouse ({mouse.Name})", ex);
+                    RaiseDeviceError($"Error opening mouse ({mouse.Name})", ex);
                 }
                 finally
                 {
@@ -1778,7 +1778,8 @@ namespace PadForge.Common.Input
         private long _logitechGKeysRetryTicks;
 
         /// <summary>The live G-Keys row, null while the feature is off. Read
-        /// by the status lane that writes the extras' lines on Extras and Home.</summary>
+        /// by InputService.UpdateGKeysStatus, which writes the G-Keys line in
+        /// Settings' Hardware Support card.</summary>
         internal LogitechGKeysDevice LogitechGKeys => _logitechGKeysDevice;
 
         // Analog keyboards (Phase 1k, issue #468). Discovery and the open are
@@ -2275,7 +2276,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError($"Error opening MIDI endpoint '{name}'", ex);
+                        RaiseDeviceError($"Error opening MIDI endpoint '{name}'", ex);
                     }
                 }
 
@@ -2422,7 +2423,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError($"Error opening microphone '{kv.Value}'", ex);
+                        RaiseDeviceError($"Error opening microphone '{kv.Value}'", ex);
                     }
                 }
 
@@ -2565,7 +2566,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError($"Error opening NFC reader '{reader}'", ex);
+                        RaiseDeviceError($"Error opening NFC reader '{reader}'", ex);
                     }
                 }
 
@@ -2649,7 +2650,7 @@ namespace PadForge.Common.Input
                     catch (Exception ex)
                     {
                         dev.Dispose();
-                        RaiseError($"Error registering headset tracker '{dev.Name}'", ex);
+                        RaiseDeviceError($"Error registering headset tracker '{dev.Name}'", ex);
                     }
                 }
                 _headsetPendingRegister.Clear();
@@ -2952,7 +2953,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Error opening handheld buttons device", ex);
+                        RaiseDeviceError("Error opening handheld buttons device", ex);
                     }
                 }
 
@@ -2972,7 +2973,7 @@ namespace PadForge.Common.Input
                     catch (Exception ex)
                     {
                         pending.Dispose();
-                        RaiseError("Error registering system motion device", ex);
+                        RaiseDeviceError("Error registering system motion device", ex);
                     }
                 }
                 if (_systemMotionDevice != null)
@@ -3172,7 +3173,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Error opening head tracker device", ex);
+                        RaiseDeviceError("Error opening head tracker device", ex);
                     }
                 }
             }
@@ -3278,7 +3279,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Error opening Logitech G-Keys device", ex);
+                        RaiseDeviceError("Error opening Logitech G-Keys device", ex);
                     }
                 }
             }
@@ -3424,7 +3425,7 @@ namespace PadForge.Common.Input
                     catch (Exception ex)
                     {
                         DisposeAnalogKeyboardAsync(dev);
-                        RaiseError($"Error registering analog keyboard '{dev.Name}'", ex);
+                        RaiseDeviceError($"Error registering analog keyboard '{dev.Name}'", ex);
                     }
                 }
                 _analogPendingRegister.Clear();

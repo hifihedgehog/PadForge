@@ -30,19 +30,43 @@ namespace PadForge.Common.Input
         /// </summary>
         public const string CustomProfileId = "padforge-custom";
 
+        /// <summary>The id suffix every profile the user imports carries
+        /// (SettingsService.AddUserProfile), which keeps a capture's id clear
+        /// of the built-in catalog's.</summary>
+        public const string UserProfileIdSuffix = "-user";
+
         /// <summary>The name PadForge shows for a profile: the catalog's own,
         /// a product name read the same in every language, except the
         /// synthetic Custom entry, whose name is a word of PadForge's and is
-        /// shown in the interface's language. The profile keeps "Custom" as
-        /// its Name, which HIDMaestro reads for a device name and mapping
-        /// string, so the virtual device stays the same in every language.</summary>
+        /// shown in the interface's language, and a profile the user
+        /// imported, whose own name is shown with the interface language's
+        /// "(User Generated)" mark. Each profile keeps its own Name, which
+        /// HIDMaestro reads for a device name and mapping string, so the
+        /// virtual device stays the same in every language.</summary>
+        /// <remarks>Read on the 30 Hz dashboard lane (PadViewModel's
+        /// PresetDisplayName), so an imported profile's name is made once
+        /// for each language and kept with the profile.</remarks>
         public static string DisplayName(HIDMaestro.HMProfile profile)
         {
             if (profile == null) return string.Empty;
-            return string.Equals(profile.Id, CustomProfileId, StringComparison.OrdinalIgnoreCase)
-                ? PadForge.Resources.Strings.Strings.Instance.Pad_Preset_Custom
-                : profile.Name ?? string.Empty;
+            if (string.Equals(profile.Id, CustomProfileId, StringComparison.OrdinalIgnoreCase))
+                return PadForge.Resources.Strings.Strings.Instance.Pad_Preset_Custom;
+            string name = profile.Name ?? string.Empty;
+            if (profile.Id == null || !profile.Id.EndsWith(UserProfileIdSuffix, StringComparison.OrdinalIgnoreCase))
+                return name;
+            string format = PadForge.Resources.Strings.Strings.Instance.Pad_Preset_UserGenerated_Format;
+            if (s_userNames.TryGetValue(profile, out var made) && string.Equals(made.Format, format, StringComparison.Ordinal))
+                return made.Name;
+            made = new UserProfileName(format, string.Format(format, name));
+            s_userNames.AddOrUpdate(profile, made);
+            return made.Name;
         }
+
+        /// <summary>An imported profile's shown name and the format it was
+        /// made with.</summary>
+        private sealed record UserProfileName(string Format, string Name);
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<HIDMaestro.HMProfile, UserProfileName> s_userNames = new();
 
         private static readonly object _initLock = new object();
 
@@ -145,12 +169,14 @@ namespace PadForge.Common.Input
             get => Current.Nintendo;
         }
 
-        /// <summary>Profiles that don't match the strict Xbox or PlayStation
-        /// filters above — third-party gamepads, flight sticks, wheels,
-        /// HOTAS, plus any vendor-Microsoft / vendor-Sony profiles whose
-        /// name doesn't carry the canonical product family (Surface, PS
-        /// Move, PS Classic, etc.). Mutually exclusive with the other two
-        /// buckets so each profile appears in exactly one category.</summary>
+        /// <summary>The synthetic Custom profile first, then the profiles
+        /// that match none of the strict Xbox, PlayStation and Nintendo
+        /// filters above and are no keyboard or mouse: third-party gamepads,
+        /// flight sticks, wheels, HOTAS, plus any vendor-Microsoft /
+        /// vendor-Sony profiles whose name doesn't carry the canonical
+        /// product family (Surface, PS Move, PS Classic, etc.). Mutually
+        /// exclusive with the other buckets so each profile appears in
+        /// exactly one category.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
             get => Current.Extended;
@@ -414,8 +440,8 @@ namespace PadForge.Common.Input
                     .Where(IsNintendoProfile)
                     .ToList();
 
-                // Extended = everything that's not Xbox or PlayStation,
-                // plus the synthetic "Custom" entry at the top so the
+                // Extended = everything that's not Xbox, PlayStation,
+                // Nintendo, a keyboard or a mouse, plus the synthetic "Custom" entry at the top so the
                 // user can define a fully custom VC without inheriting
                 // from any catalog profile. Custom sorts first to
                 // make it the discoverable default for new Extended

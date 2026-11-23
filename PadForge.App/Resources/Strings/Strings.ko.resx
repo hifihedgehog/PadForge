@@ -96,7 +96,6 @@
   <data name="Common_Online" xml:space="preserve"><value>온라인</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>오프라인</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>알 수 없음</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>기본값</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>찾아보기…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>진행</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>중지</value></data>
@@ -274,6 +273,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>엔진이 중지되었습니다.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>오류: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}을(를) 만들지 못했습니다.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>장치를 열 수 없거나 읽을 수 없거나 매핑할 수 없습니다. 진단 로그에 해당 장치가 나와 있습니다.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}에서 오류가 발생했습니다. 진단 로그에 원인이 있습니다.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>입력 엔진에서 오류가 발생했습니다. 진단 로그에 원인이 있습니다.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL을 시작할 수 없습니다. 진단 로그에 원인이 있습니다.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro를 설정할 수 없습니다. 진단 로그에 원인이 있습니다.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>가상 컨트롤러의 HIDMaestro 프로필이 없습니다. 진단 로그에 해당 컨트롤러가 나와 있습니다.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0}에 사용자 지정 ID와 레이아웃을 적용할 수 없어 프로필 자체의 설정을 사용합니다.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>프로필 전환: 기본값</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>기본값</value></data>
@@ -358,15 +364,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>모션 서버 포트</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로 및 가속도계 데이터를 제공합니다.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>게임 모드</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX용으로 만든 게임 모드가 PlayStation 컨트롤러의 적응형 트리거, 라이트바, 플레이어 조명, 음소거 조명을 설정할 수 있게 합니다.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX용으로 만든 게임 모드가 DualSense 또는 DualShock 4의 적응형 트리거, 라이트바, 플레이어 조명, 음소거 조명을 설정할 수 있게 합니다.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX 게임 모드 허용</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>게임 모드 포트</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe 대역 실행</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV 같은 일부 모드는 DSX라는 이름의 프로그램이 실행 중이지 않으면 스스로 꺼집니다. 서버가 수신 대기하는 동안 그 이름의 작은 대역 프로그램을 실행합니다.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX용으로 만든 모드(GTA V, Red Dead Redemption 2, Skyrim, Forza용 등)와 함께 작동합니다. 서버가 수신 대기하는 동안 PadForge는 해당 모드가 찾는 위치에 포트를 기록합니다.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중. {1}이(가) 가상 컨트롤러 {2}에 전송 중입니다.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중. {1}이(가) 전송 중이지만 PlayStation 컨트롤러가 연결된 가상 컨트롤러가 없습니다.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중. {1}이(가) 컨트롤러 인덱스 {2}(으)로 전송 중인데, PlayStation 컨트롤러가 연결된 가상 컨트롤러 중 해당 인덱스를 가진 것이 없습니다.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중. {1}이(가) 전송 중이지만 DualSense 또는 DualShock 4가 연결된 가상 컨트롤러가 없습니다.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중. {1}이(가) 컨트롤러 인덱스 {2}(으)로 전송 중인데, DualSense 또는 DualShock 4가 연결된 가상 컨트롤러 중 해당 인덱스를 가진 것이 없습니다.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>포트 {0}을(를) DSX 등 다른 프로그램이 사용 중입니다. 해당 프로그램을 닫거나 다른 포트를 선택하세요.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>게임 모드</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack와 UDP 출력을 보내거나 FreeTrack 2.0 공유 메모리에 쓰는 모든 트래커, 그리고 이 컴퓨터에 설치된, 백그라운드에서 세션을 실행할 수 있는 OpenXR 런타임과 함께 작동합니다.</value></data>
@@ -426,9 +432,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>파일을 찾을 수 없음</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>읽을 수 없음</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” 테마 파일이 없거나 읽을 수 없습니다. 파일이 다시 생길 때까지 PadForge는 어둡게로 표시합니다.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” 테마 파일에 PadForge 테마가 들어 있지 않습니다. 올바른 테마가 될 때까지 PadForge는 어둡게로 표시합니다.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>프로필 “{0}”이(가) 게임의 모습을 입고 있습니다. 다른 프로필이 활성화되면 내 테마로 돌아갑니다.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge 테마 (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>이 파일은 PadForge 테마가 아닙니다.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge가 해당 파일을 읽을 수 없습니다.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge가 해당 파일을 찾을 수 없습니다.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>테마 아님</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>테마를 저장하지 못했습니다. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>새 테마</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>테마를 만드는 동안 PadForge에 바로 적용됩니다.</value></data>
@@ -443,6 +453,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam에서 그림을 가져오는 중…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam에 이 게임의 와이드 그림이 없습니다.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam에 연결하지 못했습니다. 연결 상태를 확인하십시오.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge가 이 게임의 Steam 그림을 읽을 수 없습니다.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>위치</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>창 안에서 그림을 위나 아래로 옮깁니다.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>게임 로고 표시</value></data>
@@ -854,6 +865,7 @@
   <data name="Pad_Triggers" xml:space="preserve"><value>트리거</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>프리셋</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>사용자 정의</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (사용자 생성)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>스틱</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>트리거</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -1484,7 +1496,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>스틱으로 가장자리를 훑어 도달 가능한 경계를 측정한 뒤 완전한 원으로 변형합니다.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>경계 보정 재설정</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y 초기화</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>스케일 방사형으로 초기화</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>데드존 X 초기화</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>데드존 Y 초기화</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>안티 데드존 X 초기화</value></data>
@@ -1883,7 +1894,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>이 컨트롤러에는 자력계가 있습니다. 요를 자북에 고정하면 자이로 조준의 느린 수평 드리프트가 사라집니다. 먼저 보정하세요. 보정을 누르고 몇 초간 컨트롤러를 8자로 모든 방향으로 돌린 뒤 다시 누릅니다.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>요를 나침반에 고정</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>수평 조준을 자기 방위로 끌어당기는 작은 보정률을 더해 드리프트가 누적되지 않게 합니다. 저장된 자력계 보정이 필요합니다. 주변 금속이나 자석으로 왜곡된 샘플은 자동으로 제외됩니다.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>피치 및 롤 시뮬레이션</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>가속도계로 구한 피치와 롤</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>이 컨트롤러의 자이로는 좌우 회전만 감지합니다. 시뮬레이션을 켜면 PadForge가 가속도계에서 피치와 롤을 구해 자이로의 요와 함께 매핑과 가상 컨트롤러의 모션으로 보냅니다. 가속도계는 미는 동작과 기울임을 구분하지 못하므로, 회전하지 않고 컨트롤러를 옆이나 앞으로 움직이면 잠깐의 회전으로 읽힙니다.</value></data>
@@ -2971,11 +2981,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense 햅틱을 이 컨트롤러로 재생</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>게임이 이 슬롯을 가상 DualSense로 구동하며 제작된 햅틱 오디오를 출력할 때 해당 트랙을 이 컨트롤러의 액추에이터에서 재생합니다. USB 또는 동글로 연결한 Steam Controller 2026과 Flydigi Apex 6 Pro는 트랙을 그대로 재생합니다. 그 밖의 컨트롤러, 그리고 Bluetooth로 연결한 그 Steam Controller는 오디오에서 파생된 톤을 받으며, 설계된 느낌을 재현하기보다 근사합니다.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>햅틱 게인</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>기본값으로 재설정 (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>액추에이터 로우패스 컷오프</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller 햇틱 스트리밍을 이 주파수 이하로 유지하여 패드가 소리를 내지 않고 진동하게 합니다. 약 250 Hz부터 액추에이터 소리가 들리기 시작합니다. 높이면 디테일이 살고 낮추면 더 조용해집니다.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz로 재설정</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>이 주파수를 넘는 음은 잘리거나 접힙니다. 기본값 800 Hz는 엔진과 타격 진동을 유지하면서 날카로운 비프음만 잡아냅니다.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>고음 재설정</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>톤 한도 재설정</value></data>
@@ -3505,6 +3512,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>컨트롤러가 준비 명령을 받지 못해 아무것도 보내지 못했습니다. 연결되어 있는지 확인한 다음 다시 보내세요.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge의 오류로 전송이 중지되었습니다. 자세한 내용은 로그 파일에 있습니다.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>그림이 아직 컨트롤러로 전송 중입니다. 보내기를 중지할까요?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>계속 보내기</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>컨트롤러 팩 파일 (*.mpk)|*.mpk|모든 파일 (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>컨트롤러 팩 포트 {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>컨트롤러 팩 복원</value></data>
@@ -4133,8 +4141,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop 프로필</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop 매크로</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>커서 영역</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} 시프트</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>휠 목록 ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>커서 영역 ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>마우스 {0} 누르고 있기 ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>마우스 {0} 클릭 ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>마우스 {0} 토글 ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>햅틱 펄스 ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (해제 후 구간)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>탭 {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>연사 {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>누르고 있기 {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>토글 {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>터보 {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>두 번 누르기 {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>길게 누르기 {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>휠 한 칸 ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>휠 토글 ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>휠 터보 ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>커서 이동 ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED 설정 ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>자이로 중앙 재설정 ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>커서 미세 이동 ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>스크린샷 키 ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>화상 키보드 ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>조명 색상 설정</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>카메라 중앙 재설정</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>커서 이동</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>커서 미세 이동</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>스크린샷</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>화상 키보드</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>시프트 레이어 전환</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>시프트 레이어 켜기</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>시프트 레이어 끄기</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>시프트 레이어 유지</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>플레이어 번호 변경</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>할당 안 됨</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>데스크톱 모드 전환</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam 시스템 키</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>돋보기 전환</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>밝기 높이기</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>밝기 낮추기</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>컨트롤러 전원 끄기</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam 구성기 열기</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam 빠른 메뉴 열기</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>게임 종료</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>햅틱 전환</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD 전환</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>진동 전환</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>가이드 버튼 강제 입력</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>자이로 보정 회전</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>방향으로 돌아보기</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (누름)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (뗌)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (뗌)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (진입)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>구성을 선택하면 변환되는 내용을 볼 수 있습니다.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>변환되는 내용</value></data>
@@ -4270,13 +4329,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>플릭 스틱 초기화</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°당 카운트</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>카메라를 360° 한 바퀴 돌리는 데 필요한 마우스 카운트입니다. 게임의 마우스 감도에 따라 다릅니다. 플릭 회전이 부족하면 높이고, 과하면 낮추세요.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400으로 초기화</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>플릭 시간</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>180° 전체 플릭이 완료되기까지 걸리는 시간입니다(감속 곡선 적용). 더 짧은 회전도 같은 시간에 끝납니다.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s로 초기화</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>플릭 임계값</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>플릭을 시작하는 스틱 기울임 정도로, 최대 기울임에 대한 비율입니다. 플릭 중에는 해제 지점이 이 값의 90%로 낮아집니다.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9로 초기화</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>스냅 각도</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>플릭을 고정 각도에 스냅하여 더 일관된 회전을 만듭니다. 전방 전용은 모든 플릭을 정면으로 스냅합니다.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>스냅 없음</value></data>
@@ -4285,22 +4341,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90도</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60도</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45도</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>스냅 없음으로 초기화</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>스냅 강도</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>플릭이 스냅 각도로 끌리는 강도입니다. 1은 완전히 스냅, 0은 스냅 비활성화, 중간 값은 혼합됩니다.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0으로 초기화</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>전방 각도 데드존</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>정면에서 이 각도 이내의 플릭은 회전하지 않습니다. 플릭 회전 없이 가장자리 스윕을 시작할 수 있습니다.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0°로 초기화</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>스윕 스무딩</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>가장자리 스윕의 노이즈를 평활화합니다. -1은 자동 단계 윈도우를 사용하고, 0은 스무딩을 끄며, 값이 클수록 틱당 더 큰 회전을 평활화합니다.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>자동(-1)으로 초기화</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>활성화 시 플릭 허용</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>회전 오프셋</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>플릭 맵 전체를 이 각도만큼 회전합니다. 양수는 시계 방향입니다. 스냅은 오프셋 다음에 적용됩니다.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>회전 오프셋 초기화</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick이 있는 레이어가 스틱이 이미 기울어진 상태에서 활성화되면 즉시 플릭을 실행합니다. 끄면 카메라를 그대로 두고 현재 스틱 각도부터 회전을 추적합니다.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>'engage 시 플릭 허용' 재설정</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>사용자 지정</value></data>
   <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>마우스 버튼 대신 아무 장치에서 기록한 입력으로 인식기를 대기시킵니다. 키, 게임패드 버튼, 페달 같은 아날로그 입력을 사용할 수 있습니다. 아래에서 입력을 기록하세요.</value></data>
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>사용자 지정 활성화 입력</value></data>
@@ -4883,11 +4933,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>레이어</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>이 메뉴를 허용할 레이어를 선택합니다. ‘모든 레이어’와 ‘베이스’는 다른 레이어가 활성화된 상태에서도 허용합니다. 이름 있는 레이어는 현재 활성 레이어와 일치해야 합니다.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>‘모든 레이어’로 되돌리고 레이어가 메뉴를 열어 두는 기능을 끕니다.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (이 슬롯에 없음)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>레이어가 메뉴를 열어 둠</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>이름 있는 레이어가 활성화된 동안 이 메뉴를 열어 둡니다. 선택한 물리 입력이 강조 표시를 조작합니다. ‘모든 레이어’와 ‘베이스’는 평소처럼 표면으로 열립니다.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>터치 또는 기울임으로 열기로 되돌립니다.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>조작 입력</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>레이어가 메뉴를 열어 두는 동안 강조된 셀을 조작하는 물리 입력입니다.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 레이어가 메뉴를 열고 이 입력이 조작합니다. 출력은 메뉴의 셀이 결정합니다.</value></data>
@@ -4969,7 +5017,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>모터</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>방향별 분리</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>중앙 데드존</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>왼쪽 스틱 X로 초기화</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>강도 초기화 (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>중앙 데드존 초기화 (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>'조향각 진동 사용' 재설정</value></data>
@@ -5636,6 +5683,25 @@
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>프로필</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>레이어 {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>시프트 {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>트리거: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>라이트바</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} 추가 동작</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} 라이트바</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>프로그램 실행</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} 범위</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>가져온 프로필</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>가져온 매크로</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>프리셋 {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>방사형 메뉴 {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>터치 메뉴 {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>마우스 영역</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>탭</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>길게 누르기</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>두 번 탭</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>왼쪽 트리거 효과</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>오른쪽 트리거 효과</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>버튼 매핑 {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>항목 {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>컨트롤러</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>자체 출력 유지</value></data>
@@ -5967,7 +6033,7 @@
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX는 {0} 설정이 어떻게 작동하는지 공개하지 않으므로 PadForge는 자체 방식을 사용합니다.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX는 입력 번호를 공개하지 않습니다. 공개된 DSX 프로필은 41부터 44까지를 D-Pad로 사용하므로 PadForge도 그렇게 읽습니다.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX는 이런 바인딩을 쓰지 않으므로 이 파일은 DSX 밖에서 수정되었습니다.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX는 단축키로 이 프리셋으로 전환합니다. 해당 매크로는 매크로 페이지에 있으며 버튼에 바로 할당할 수 있습니다.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX는 단축키로 이 프리셋으로 전환합니다. 해당 매크로는 컨트롤러의 매크로 및 메뉴 섹션에 있으며 버튼에 바로 할당할 수 있습니다.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>공개된 DSX 프로필 중 {0}을(를) 사용하는 것이 없어 PadForge는 그 기능을 알 수 없습니다.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX는 패스스루 스위치가 켜져 있는 동안 게임이 이 항목을 설정하도록 하므로 PadForge도 게임에 맡깁니다.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode에서 Send Data to Device가 꺼져 있으면 DSX는 컨트롤러에 자체 데이터를 보내지 않으므로 PadForge도 이 항목을 게임에 맡깁니다.</value></data>

@@ -79,7 +79,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Error opening the " + kind + " row", ex);
+                        RaiseDeviceError("Error opening the " + kind + " row", ex);
                     }
                 }
                 changed |= UpdatePeripheralUnitRows(PeripheralOutputs.UnitRows);
@@ -133,7 +133,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError("Error opening the row of " + PeripheralUnitRow.NameFor(unit), ex);
+                    RaiseDeviceError("Error opening the row of " + PeripheralUnitRow.NameFor(unit), ex);
                 }
             }
             return changed;

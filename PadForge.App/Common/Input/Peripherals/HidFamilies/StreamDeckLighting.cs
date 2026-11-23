@@ -81,7 +81,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_ElgatoStreamDeck.cpp") { Product = $"elgato:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"elgato:{vendorId:X4}:{productId:X4}" },
             Programs = new[] { VendorPrograms.ElgatoStreamDeck },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new Session(),

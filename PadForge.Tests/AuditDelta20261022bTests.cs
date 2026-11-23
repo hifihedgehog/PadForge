@@ -11,7 +11,7 @@ namespace PadForge.Tests
     /// reconnect work of #484).
     ///
     /// <para>A right Joy-Con's NIR camera follows its hint on the fork's
-    /// update loop since SDL 3f4999d129 (51f408fb): UpdateIR reads the hint
+    /// update loop since SDL 82219ef2f2 (51f408fb): UpdateIR reads the hint
     /// on every pass, starts the camera when the hint and the sensors ask for
     /// it, and tears it down when either stops asking. The bounce
     /// InputService ran on every hint flip predates that build. It only
@@ -52,7 +52,7 @@ namespace PadForge.Tests
 
         /// <summary>Both shipped SDL builds carry the update-loop camera
         /// machine the hint flip now relies on. Its log strings are the
-        /// fingerprint: an SDL3.dll from before 3f4999d129 has none of
+        /// fingerprint: an SDL3.dll from before 82219ef2f2 has none of
         /// them.</summary>
         [Theory]
         [InlineData("x64")]

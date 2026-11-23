@@ -90,7 +90,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_SkydimoHID.cpp") { Product = $"skydimo:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"skydimo:{vendorId:X4}:{productId:X4}" },
             Programs = new[] { VendorPrograms.Skydimo },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(false, LedCount, Frames),

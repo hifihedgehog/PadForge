@@ -87,7 +87,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_MSIClutchGM11.cpp") { Product = $"msiclutch:{VendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"msiclutch:{VendorId:X4}:{productId:X4}" },
             HoldMs = SinowealthLighting.StoredHoldMs,
             RepaintMs = SinowealthLighting.StoredRepaintMs,
             Programs = VendorPrograms.MsiClutch,

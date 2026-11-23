@@ -183,7 +183,7 @@
   <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Fisintonana analogique</value></data>
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, tanana havia</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tanana havanana</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mihaino amin'ny :{0}. Mandefa any amin'ny contrôleur laharana {2} ny {1}, nefa tsy misy contrôleur virtoaly misy contrôleur PlayStation manana io laharana io.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mihaino amin'ny :{0}. Mandefa any amin'ny contrôleur laharana {2} ny {1}, nefa tsy misy contrôleur virtoaly misy DualSense na DualShock 4 manana io laharana io.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa, toy ny DSX, ny port {0}. Akatony izy na mifidiana port hafa.</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Ity PC ity ihany</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Kaody vaovao</value></data>
@@ -473,6 +473,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ampio loko</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Manokana</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Noforonin'ny mpampiasa)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gâchette</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -1340,12 +1341,7 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Fanitsiana ny fidiran'ny Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Avereno ny flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Avereno ho 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Avereno ho 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Seuil an'ny flick</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Avereno ho 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Avereno ho 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Avereno ho 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lokon'ny lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Familiana</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Avereno ny familiana</value></data>
@@ -1387,9 +1383,6 @@
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Tsy mandeha</value></data>
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Tapaho</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Fetran'ny feo</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Avereno amin'ny par défaut (tsy mandeha)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Avereno amin'ny par défaut (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Avereno ho 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Avoahy…</value></data>
@@ -2269,6 +2262,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Tsy nekin'ny contrôleur ny baiko manomana azy, ka tsy nisy nalefa. Hamarino fa mifandray izy ary alefaso indray.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Nijanona noho ny hadisoana tao amin'ny PadForge ny fandefasana. Ao amin'ny rakitra log ny antsipiriany.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mbola mandeha any amin'ny contrôleur ny sary. Hajanona ve ny fandefasana?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tohizo ny fandefasana</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -2289,6 +2283,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Ovay ny endrika</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Esory ao amin'ny lisitra. Mijanona eo amin'ny toerany ny rakitra.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Tsy hita na tsy azo vakiana ny rakitry ny “{0}”. Maizina no asehon'ny PadForge mandra-piverin'ilay rakitra.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Tsy misy endrika PadForge ao amin'ny rakitry ny “{0}”. Maizina no asehon'ny PadForge mandra-pisian'izany.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Anarana</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ny endrikako</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Fototra</value></data>
@@ -2299,10 +2294,18 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Maka ny sary avy amin'ny Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Tsy manana sary malalaka ho an'ity lalao ity ny Steam.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Tsy tratra ny Steam. Hamarino ny fifandraisanao.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Tsy vakian'ny PadForge ny sarin'ny Steam ho an'ity lalao ity.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Toerana</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Mampiakatra na mampidina ny sary ao anatin'ny varavarankeliny.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Asehoy ny logon'ny lalao</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ampifanaraho amin'ny sary</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Maka ny loko efatra avy amin'ny sary.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Sary (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Rakitra rehetra (*.*)|*.*</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Nisy fitaovana iray tsy azo nosokafana, novakiana na nampifanarahina. Ny rakitra diagnostika no milaza hoe iza izy.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Nisy hadisoana nitranga tamin'ny {0}. Ao amin'ny rakitra diagnostika ny antony.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Nisy hadisoana nitranga tamin'ny motera mamaky ny fitaovana. Ao amin'ny rakitra diagnostika ny antony.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Tsy afaka nanomboka ny SDL. Ao amin'ny rakitra diagnostika ny antony.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Tsy azo nalamina ny HIDMaestro. Ao amin'ny rakitra diagnostika ny antony.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Tsy hita ny profil HIDMaestro an'ny contrôleur virtoaly iray. Ny rakitra diagnostika no milaza hoe iza izy.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Tsy nahazo ny maha-izy azy sy ny fandaminana namboarina ho azy ny {0}, ka ireo an'ny profiliny ihany no ampiasainy.</value></data>
 </root>

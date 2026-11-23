@@ -998,13 +998,13 @@ namespace PadForge
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
-                    // Buttons' picture: rumble all devices in the slot (null = no filter).
+                    // The Force Feedback group's Test beside Left Motor: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
                         _inputService.SendTestRumble(pvm.PadIndex, null, true, false);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
-                    // Buttons' picture: rumble all devices in the slot (null = no filter).
+                    // The Force Feedback group's Test beside Right Motor: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
                         _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
                 };
@@ -1247,8 +1247,8 @@ namespace PadForge
                     RecordKeyboardRow(pvm, menu, row);
                 };
 
-                // Map All: each control of the layout in turn, Buttons'
-                // Map All for the keyboard. A click while it runs stops it.
+                // Map All: each control of the layout in turn, the Mappings
+                // section's Map All for the keyboard. A click while it runs stops it.
                 pad.MenuKeyboardMapAllRequested += (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
@@ -1388,7 +1388,7 @@ namespace PadForge
                     // Touchpad-gesture properties get the full
                     // MarkDirty + Sync + RefreshAvailableInputsForSlot
                     // treatment so the picker re-reads PadSetting and
-                    // the next save commits the gesture-tab toggle.
+                    // the next save commits the Touchpad group's toggle.
                     //
                     // CRITICAL: this branch MUST NOT trip for the
                     // non-touchpad scalar / gyro fields below. During
@@ -1720,7 +1720,8 @@ namespace PadForge
                 }
 
                 // ─────────────────────────────────────────────────────────
-                //  REGRESSION GUARD — the Device dropdown must NOT influence
+                //  REGRESSION GUARD: the device picked in the header's
+                //  Driven by list must NOT influence
                 //  which physical device a recorded mapping is attached to.
                 //
                 //  The mapping list + the controller preview are PER-VC, not
@@ -1736,8 +1737,8 @@ namespace PadForge
                 //  from `activePad.SelectedMappedDevice`. A previous change did
                 //  exactly that ("stamp from the dropdown so the row is
                 //  device-correct immediately") and it OVERWROTE the correct
-                //  winning-device GUID with whatever happened to be selected in
-                //  the dropdown — so a button physically pressed on device A
+                //  winning-device GUID with whatever device was picked in the
+                //  header, so a button physically pressed on device A
                 //  would get filed under device B. The row is already
                 //  device-correct the moment CompleteRecording returns; the
                 //  only thing that genuinely needed fixing was the per-VC
@@ -1753,8 +1754,8 @@ namespace PadForge
                 // Pick the device whose DeviceObjects metadata is used to turn
                 // a raw descriptor ("Button 5") into a friendly label ("A"):
                 // the device that actually fired the recording (CompleteRecording
-                // stamped its GUID on the row), NOT the dropdown selection.
-                // Falls back to the dropdown device only when the row has no
+                // stamped its GUID on the row), NOT the device picked in the
+                // header. Falls back to the header's device only when the row has no
                 // recorded device origin — e.g. a Map All Y first-phase row
                 // whose primary slot is still empty.
                 Guid ResolveGuidFor(MappingItem m)
@@ -1767,7 +1768,7 @@ namespace PadForge
                 // The Mappings DataGrid binds to the per-VC MappingItems (which
                 // are already current after recording), but RefreshMappingsCore
                 // re-hydrates those items FROM the MappingSet — so until the
-                // MappingSet catches up, a tab switch / device-dropdown toggle /
+                // MappingSet catches up, a section switch / a change of the device picked in the header /
                 // device-assignment change would re-read stale rows. Committing
                 // here keeps the MappingSet authoritative immediately, which is
                 // the actual fix for "the Mappings table doesn't reflect what I
@@ -1906,7 +1907,7 @@ namespace PadForge
                     // Issue #61 — promote the freshly-recorded Neg into a
                     // visible ExtraSource on the row so the table reflects
                     // the bipolar pair immediately, without the user having
-                    // to toggle the Device dropdown to trigger a load-time
+                    // to change the device picked in the header to trigger a load-time
                     // migration. CompleteRecording already stamped the row's
                     // device origin from the device that fired, so the
                     // promoted source inherits the correct DeviceGuid.
@@ -1935,7 +1936,7 @@ namespace PadForge
                         string dirHint = isXAxis ? Strings.Instance.Status_DirectionRight : Strings.Instance.Status_DirectionDown;
                         _viewModel.SetStatus(string.Format(Strings.Instance.Status_NowMap_Format, negMapping.TargetLabel, dirHint), persist: true);
 
-                        // Switch to Buttons' picture so the 3D directional arrow is visible.
+                        // Switch to the Mappings picture so the 3D directional arrow is visible.
                         activePad.SelectedConfigTab = 0;
 
                         // Update recording target to pos for flash/arrow.
@@ -2015,7 +2016,7 @@ namespace PadForge
                         activePad.MapAllPromptText = string.Format(Strings.Instance.Status_MapPrompt_Format, result.Mapping.TargetLabel, dirHint, idx + 1, activePad.Mappings.Count);
                     }
 
-                    // Switch to Buttons' picture so the 3D directional arrow is visible.
+                    // Switch to the Mappings picture so the 3D directional arrow is visible.
                     activePad.SelectedConfigTab = 0;
 
                     // Update the recording target to the neg setting for flash/arrow.
@@ -2152,7 +2153,7 @@ namespace PadForge
                 if (mapping == null) return;
 
                 // RecorderService listens to EVERY device on the slot (the
-                // first to fire wins). The dropdown selection has no bearing
+                // first to fire wins). The device picked in the header has no bearing
                 // on what gets recorded; see the big REGRESSION GUARD comment
                 // in the RecordingCompleted handler above.
 
@@ -4541,8 +4542,8 @@ namespace PadForge
             => System.Windows.Automation.AutomationProperties.SetAutomationId(item, "Nav_" + tag);
 
         /// <summary>Drives <see cref="PadForge.Common.AmbientMotionProbe"/>
-        /// from window activation and minimize. The marquees and the XAML
-        /// animations that wait on it react through their own bindings.</summary>
+        /// from window activation and minimize. The marquees and the halos'
+        /// breath listen for the change in code.</summary>
         private static void SetAmbientMotion(bool active)
             => PadForge.Common.AmbientMotionProbe.Instance.IsAppActive = active;
 
@@ -5909,7 +5910,16 @@ namespace PadForge
         private void WireSearch()
         {
             _searchService = new PadForge.Search.SearchService(_viewModel, SearchPageOf, BindPadPage);
-            _searchVm = new SearchViewModel(_searchService.Query);
+            // A result's place, a Settings group and another controller's
+            // value are read as text when Search opens. A change of language
+            // while Search is open reads them again before the query runs
+            // again.
+            _searchVm = new SearchViewModel(_searchService.Query, () =>
+            {
+                if (!_searchOpen) return;
+                _searchService.RefreshAvailability(otherControllers: false);
+                ReadOtherControllersLater();
+            });
             _searchNavigator = new PadForge.Search.SearchNavigator(_searchService, SearchPageOf, _viewModel,
                 tag => SelectNavItemByTag(tag), NavigateToSlot, () => OpenAddController(Guid.Empty, TitleSearchBox));
             SearchPanelView.DataContext = _searchVm;
@@ -6902,7 +6912,7 @@ namespace PadForge
             _viewModel.Settings.ProfileItems.Remove(selected);
             _viewModel.Settings.SelectedProfile = null;
             if (wasActive)
-                _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
+                _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileDeleted_Format, selected.Name);
         }
@@ -7329,7 +7339,7 @@ namespace PadForge
             // hand releases an external hold too.
             _inputService.NoteManualProfileSwitch();
             _inputService.RevertToDefaultProfile();
-            _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
+            _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
             _viewModel.StatusText = Strings.Instance.Status_ProfileRevertedDefault;
             _settingsService.MarkDirty();
         }
@@ -8428,7 +8438,7 @@ namespace PadForge
         }
 
         /// <summary>VC-level macro Copy From (#112): pick another virtual controller
-        /// and append its macros to this one. Mirrors Buttons' Copy From, which
+        /// and append its macros to this one. Mirrors the header More's Copy From, which
         /// is VC-to-VC. A copied macro whose trigger is bound to a device not present on
         /// this VC pastes with that trigger unresolved (re-record it), same as Paste.</summary>
         private void OnCopyMacroFrom(PadViewModel padVm)

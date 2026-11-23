@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>В сети</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Не в сети</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Неизвестно</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>По умолчанию</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Обзор…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Продолжить</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Остановить</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Движок остановлен.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Ошибка: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Не удалось создать {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Не удалось открыть, прочитать или сопоставить устройство. Его название указано в журнале диагностики.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}: произошла ошибка. Причина указана в журнале диагностики.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>В движке ввода произошла ошибка. Причина указана в журнале диагностики.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Не удалось запустить SDL. Причина указана в журнале диагностики.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Не удалось настроить HIDMaestro. Причина указана в журнале диагностики.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>У виртуального контроллера отсутствует профиль HIDMaestro. Его название указано в журнале диагностики.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} не удалось применить измененные идентификацию и раскладку, поэтому используются штатные из профиля.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профиль переключен: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профиль переключен: По умолчанию</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>По умолчанию</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Порт сервера движения</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Передает данные гироскопа и акселерометра в Cemu, Dolphin, Yuzu и др.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Игровые моды</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Позволяет игровым модам, созданным для DSX, управлять адаптивными триггерами, световой панелью, индикаторами игрока и индикатором микрофона на ваших контроллерах PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Позволяет игровым модам, созданным для DSX, управлять адаптивными триггерами, световой панелью, индикаторами игрока и индикатором микрофона на DualSense или DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Принимать игровые моды DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Порт игровых модов</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Запускать заглушку DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Некоторые моды, например DualSense4GTAV, отключаются, если не запущена программа с именем DSX. Эта настройка запускает небольшую заглушку с таким именем, пока сервер прослушивает порт.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Работает с модами, созданными для DSX, например для GTA V, Red Dead Redemption 2, Skyrim и Forza. Пока сервер прослушивает порт, PadForge записывает его номер там, где эти моды его ищут.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Прослушивание :{0}. {1} отправляет данные на виртуальный контроллер {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Прослушивание :{0}. {1} отправляет данные, но ни к одному виртуальному контроллеру не подключен контроллер PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Прослушивание :{0}. {1} отправляет данные на контроллер с индексом {2}, а у виртуального контроллера с PlayStation-контроллером такого индекса нет.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Прослушивание :{0}. {1} отправляет данные, но ни к одному виртуальному контроллеру не подключен DualSense или DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Прослушивание :{0}. {1} отправляет данные на контроллер с индексом {2}, а у виртуального контроллера с DualSense или DualShock 4 такого индекса нет.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Порт {0} занят другой программой, например DSX. Закройте ее или выберите другой порт.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Игровой мод</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Работает с OpenTrack и любым трекером, который отправляет данные по UDP или пишет в общую память FreeTrack 2.0, а также со средой выполнения OpenXR на этом компьютере, если она умеет вести сеанс в фоновом режиме.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Файл не найден</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Не читается</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Файл темы «{0}» отсутствует или не читается. PadForge показывает тему «Темная», пока файл не вернется.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Файл темы «{0}» не содержит темы PadForge. PadForge показывает тему «Темная», пока это так.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Профиль «{0}» показывает облик своей игры. Ваша тема вернется, когда станет активным другой профиль.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Темы PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Этот файл не является темой PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge не может прочитать этот файл.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge не может найти этот файл.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Это не тема</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Не удалось сохранить тему. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Новая тема</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge показывает тему, пока вы ее создаете.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Получение картинки из Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>В Steam нет широкой картинки для этой игры.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Не удалось связаться со Steam. Проверьте подключение.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge не может прочитать картинку Steam для этой игры.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Положение</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Сдвигает картинку вверх или вниз в ее окне.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Показывать логотип игры</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контроллер не принял команду, которая его подготавливает, поэтому ничего не отправлено. Проверьте, что он подключен, и отправьте еще раз.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Отправка остановлена из-за ошибки в PadForge. Подробности есть в файле журнала.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Картинка еще передается на контроллер. Остановить отправку?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Продолжить отправку</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Файлы Controller Pak (*.mpk)|*.mpk|Все файлы (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Восстановление Controller Pak</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Затухание импульса</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Пресет</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Пользовательский</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (создан пользователем)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Стики</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Триггеры</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Переключатели POV</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>В этом контроллере есть магнитометр. Привязка рыскания к магнитному северу убирает медленный горизонтальный дрейф при прицеливании гироскопом. Сначала выполните калибровку: нажмите «Калибровать магнитометр», несколько секунд вращайте контроллер «восьмеркой» через все положения, затем нажмите кнопку еще раз.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Привязать рыскание к компасу</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Добавляет небольшую корректирующую скорость, которая подтягивает горизонтальное прицеливание к магнитному курсу, поэтому дрейф не накапливается. Нужна сохраненная калибровка магнитометра. Замеры, искаженные металлом или магнитами поблизости, отбрасываются автоматически.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Сбросить по умолчанию (выкл.)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Симуляция тангажа и крена</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Тангаж и крен по данным акселерометра</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Гироскоп этого контроллера чувствует только повороты влево и вправо. Когда симуляция включена, PadForge вычисляет тангаж и крен по акселерометру и отправляет их вместе с рысканием от гироскопа в строки назначений и в движение виртуального контроллера. Акселерометр не отличает толчок от наклона, поэтому смещение контроллера вбок или вперед без поворота читается как короткое вращение.</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Обведите стиком по краю, чтобы снять достижимую границу, а затем привести ее к полному кругу.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Сбросить калибровку границы</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Сбросить смещение центра Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Сбросить на «Радиальная с масштабированием»</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Сбросить мертвую зону X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Сбросить мертвую зону Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Сбросить антимертвую зону X</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Сбросить флик-стик</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Точек на 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Число отсчетов мыши на один полный поворот камеры на 360°. Зависит от чувствительности мыши в игре: увеличьте, если флик не доворачивает, уменьшите, если переворачивает.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Сбросить на 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Время флика</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Сколько длится полный флик на 180°, с плавным замедлением в конце. Более короткие повороты занимают столько же времени.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Сбросить на 0.1 с</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Порог флика</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Отклонение стика, с которого начинается флик, в долях полного отклонения. Во время флика точка отпускания снижается до 90% этого значения.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Сбросить на 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Угол привязки</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Привязывает флик к фиксированным углам, чтобы повороты были стабильнее. «Только вперед» привязывает каждый флик к направлению строго вперед.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Без привязки</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 градусов</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 градусов</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 градусов</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Сбросить на «Без привязки»</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Сила привязки</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Насколько сильно флик притягивается к углу привязки. 1 дает полную привязку, 0 отключает ее, промежуточные значения смешивают.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Сбросить на 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Мертвая зона переднего угла</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Флик в пределах этого угла от направления строго вперед ничего не поворачивает. Позволяет начать ведение по краю без поворота-флика.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Сбросить на 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Сглаживание ведения</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Сглаживает шум при ведении по краю. -1 включает автоматическое ступенчатое окно, 0 отключает сглаживание, большие значения сглаживают более крупные повороты за такт.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Сбросить на автоматическое (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Разрешить флик при включении</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Смещение поворота</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Поворачивает всю карту флика на указанное число градусов. Положительное значение поворачивает по часовой стрелке. Привязка применяется после смещения.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Сбросить смещение поворота</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Если слой с флик-стиком включается, когда стик уже отклонен, флик выполняется сразу. Когда выключено, камера остается на месте, а поворот отслеживается от текущего угла стика.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Сбросить «Разрешить флик при включении»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Отдача на упоре руля</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал на упоре для стика в режиме руления</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Когда стик в режиме руления повернут до упора, подается сигнал (вибрация, триггер или световая панель), чтобы вы почувствовали предел. По умолчанию все выключено.</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Воспроизводить тактильную отдачу DualSense на этом контроллере</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Когда игра управляет этим слотом как виртуальным DualSense с авторской тактильной звуковой дорожкой, эта дорожка воспроизводится на приводах этого контроллера. Steam Controller 2026 по USB или через свой донгл и Flydigi Apex 6 Pro воспроизводят саму дорожку. Все остальные контроллеры, а также этот Steam Controller по Bluetooth, получают тоны, вычисленные из звука. Они приближенно передают задуманное ощущение, а не воспроизводят его точно.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Усиление тактильной отдачи</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Сбросить по умолчанию (выкл.)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Сбросить по умолчанию (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Срез НЧ-фильтра приводов</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Удерживает тактильный поток Steam Controller ниже этой частоты, чтобы трекпады вибрировали, а не звучали вслух. Примерно с 250 Гц приводы становятся слышны. Увеличьте для более четких деталей, уменьшите для более тихой работы.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Сбросить на 250 Гц</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Тоны выше этой частоты обрезаются или опускаются. Значение по умолчанию 800 Гц сохраняет вибрацию двигателя и ударов и при этом отлавливает высокие писки.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Сбросить высокие тоны</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Сбросить предел тона</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Профиль Мастерской</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Макрос Мастерской</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Область курсора</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Сдвиг {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Список колесика ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Область курсора ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Удержание кнопки мыши {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Щелчок кнопкой мыши {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Переключение кнопки мыши {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Тактильный импульс ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (после отпускания)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Касание {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Автоогонь {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Удержание {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Переключение {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Турбо {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Двойное нажатие {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Долгое нажатие {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Шаг колесика ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Переключение колесика ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Турбо колесика ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Перенос курсора ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Установка светодиода ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Центровка гироскопа ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Сдвиг курсора ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Клавиша снимка экрана ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Экранная клавиатура ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Задать цвет подсветки</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Центровка камеры</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Перенос курсора</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Сдвиг курсора</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Снимок экрана</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Экранная клавиатура</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Сменить слой сдвига</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Включить слой сдвига</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Отключить слой сдвига</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Удерживать слой сдвига</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Сменить номер игрока</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Не назначено</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Переключить режим рабочего стола</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Системная кнопка Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Переключить лупу</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Увеличить яркость</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Уменьшить яркость</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Выключить контроллер</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Открыть конфигуратор Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Открыть быстрое меню Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Выйти из игры</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Переключить тактильную отдачу</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Переключить HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Переключить вибрацию</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Принудительная кнопка Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Вращение для калибровки гироскопа</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Повернуться в направлении</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (удержание)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (отпускание)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (отпускание)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (активация)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Выберите конфигурацию, чтобы увидеть, что переносится.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Что переносится</value></data>
@@ -4928,11 +4978,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Слой</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Выберите слой, который разрешает это меню. «Любой слой» и «Базовый» разрешают его и при других активных слоях. Именованный слой должен совпадать с активным в данный момент слоем.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Сбросить на «Любой слой» и отключить удержание меню слоем.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (нет в этом слоте)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Слой держит меню открытым</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Держать это меню открытым, пока активен его именованный слой. Выделением управляет выбранный физический ввод. Для вариантов «Любой слой» и «Базовый» меню открывается обычным способом, с поверхности.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Сбросить на открытие по прикосновению или отклонению.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Чем управлять</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Физический ввод, который управляет выделением ячейки, пока слой держит это меню открытым.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Читается с физических контроллеров, назначенных этому слоту. Слой открывает меню, а этот ввод им управляет. Что выдает меню, определяют его ячейки.</value></data>
@@ -5014,7 +5062,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Мотор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>По направлению</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Мертвая зона в центре</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Сбросить на «Левый стик X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Сбросить силу (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Сбросить мертвую зону в центре (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Сбросить «Включить вибрацию по углу руления»</value></data>
@@ -5681,6 +5728,25 @@
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Профили</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Слой {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Триггеры: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Световая панель</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Дополнения: {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Световая панель: {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Запуск программы</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Диапазон: {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Импортированный профиль</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Импортированный макрос</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Пресет {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Радиальное меню {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Сенсорное меню {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Область мыши</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>касание</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>удержание</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>двойное касание</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Эффект левого триггера</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Эффект правого триггера</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Назначение кнопок {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Пункт {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Контроллер</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Сохраняет свои выходы</value></data>
@@ -6012,7 +6078,7 @@
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX не публикует, как работает его параметр {0}, поэтому PadForge использует свой способ.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX не публикует номера своих входов. В опубликованных профилях DSX числа от 41 до 44 означают крестовину, поэтому PadForge читает их так же.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX не записывает такую привязку, поэтому файл был изменен вне DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX переключается на этот пресет по горячей клавише. Его макрос находится на странице «Макросы» и готов к привязке к кнопке.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX переключается на этот пресет по горячей клавише. Его макрос находится в разделе «Макросы и меню» контроллера и готов к привязке к кнопке.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Ни один опубликованный профиль DSX не использует {0}, поэтому PadForge не может определить, что это делает.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX позволяет игре задавать это, пока включен его переключатель сквозной передачи, поэтому PadForge тоже оставляет это игре.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>В режиме Native Mode при выключенном Send Data to Device DSX не отправляет контроллеру ничего своего, поэтому PadForge тоже оставляет это игре.</value></data>

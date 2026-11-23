@@ -65,7 +65,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_AOCMousemat.cpp") { Product = $"aocmat:{VendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"aocmat:{VendorId:X4}:{productId:X4}" },
             RepaintMs = AocMouseLighting.RepaintMs,
             Begin = (io, _) => io == null ? null : new Session(),
         };

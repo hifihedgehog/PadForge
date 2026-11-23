@@ -58,15 +58,18 @@ namespace PadForge.SteamWorkshop.Api
             _http = http ?? SteamHttp.Client;
         }
 
-        /// <summary>Portrait art with fallback: 600x900 to capsule_616x353 to header. Null if none resolve.</summary>
+        /// <summary>Portrait art with fallback: 600x900 to capsule_616x353 to header. Null if none resolve.
+        /// A server error on a file is rethrown when no later file resolves.</summary>
         public Task<ArtworkResult> GetPortraitAsync(int appId, CancellationToken ct = default) =>
             FetchChainAsync(appId, PortraitChain, ct);
 
-        /// <summary>Hero art with fallback: library_hero to header. Null if none resolve.</summary>
+        /// <summary>Hero art with fallback: library_hero to header. Null if none resolve.
+        /// A server error on a file is rethrown when no later file resolves.</summary>
         public Task<ArtworkResult> GetHeroAsync(int appId, CancellationToken ct = default) =>
             FetchChainAsync(appId, HeroChain, ct);
 
-        /// <summary>Fetches one specific CDN file with no fallback. Null on 404 or a non-image body.</summary>
+        /// <summary>Fetches one specific CDN file with no fallback. Null on 404 or a non-image body.
+        /// A network failure or a server error with no stale copy throws <see cref="HttpRequestException"/>.</summary>
         public async Task<ArtworkResult> GetFileAsync(int appId, string file, CancellationToken ct = default)
         {
             if (string.IsNullOrEmpty(file)) throw new ArgumentException("file is empty.", nameof(file));
@@ -109,13 +112,28 @@ namespace PadForge.SteamWorkshop.Api
             return new ArtworkResult(appId, file, BuildUrl(appId, file), bytes);
         }
 
+        /// <summary>The first file of the chain that resolves. A server error on one file
+        /// goes on to the next, since Steam answered and a later file may still come.
+        /// When no later file resolves, the server error is rethrown, because the file
+        /// the server could not give may exist.</summary>
         private async Task<ArtworkResult> FetchChainAsync(int appId, string[] files, CancellationToken ct)
         {
+            HttpRequestException serverError = null;
             foreach (var file in files)
             {
-                var result = await GetFileAsync(appId, file, ct).ConfigureAwait(false);
+                ArtworkResult result;
+                try
+                {
+                    result = await GetFileAsync(appId, file, ct).ConfigureAwait(false);
+                }
+                catch (HttpRequestException ex) when ((int?)ex.StatusCode >= 500)
+                {
+                    serverError ??= ex;
+                    continue;
+                }
                 if (result != null) return result;
             }
+            if (serverError != null) throw serverError;
             return null;
         }
 
@@ -126,6 +144,11 @@ namespace PadForge.SteamWorkshop.Api
             using var response = await _http
                 .GetAsync(BuildUrl(appId, file), HttpCompletionOption.ResponseHeadersRead, ct)
                 .ConfigureAwait(false);
+            // A server error says nothing about the file: it is a failed
+            // reach, which a stale copy answers and the caller hears. Any
+            // other refusal is a definitive miss.
+            if ((int)response.StatusCode >= 500)
+                throw new HttpRequestException("The Steam CDN answered " + (int)response.StatusCode + " for " + file + ".", null, response.StatusCode);
             if (!response.IsSuccessStatusCode)
                 return null;
 

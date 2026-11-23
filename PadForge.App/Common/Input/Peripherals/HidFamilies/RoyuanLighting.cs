@@ -39,10 +39,16 @@ namespace PadForge.Common.Input.Peripherals
     /// keeps the same spacing between pictures by its hold and its repaint
     /// interval, with one difference: the hold starts over at each change, so a
     /// color that keeps changing goes out not at all, as for every model that
-    /// stores its pictures. The family remembers each keyboard's last SET and
-    /// waits out the rest of the 1.5 s before a hand-back and before the read a
-    /// new session starts with. The crash path cannot wait, so its one frame
-    /// can land inside the spacing.</para>
+    /// stores its pictures. The family keeps each keyboard's next transfer as
+    /// OpenRGB keeps next_transfer: 500 ms after the state's read and 1.5 s
+    /// after a SET (lines 159 and 523). A hand-back and the read a new session
+    /// starts with wait for it, and a picture asked for sooner goes out then.
+    /// A keyboard is its Windows container, so an Akko lit on both of its
+    /// collections keeps one spacing: every feature report reaches the one
+    /// control endpoint, whatever the interface. OpenRGB paces each of its two
+    /// controllers alone. A collection Windows names no container for is a
+    /// keyboard of its own. The crash path cannot wait, so its one frame can
+    /// land inside the spacing.</para>
     ///
     /// <para>The Skyloong GK68HE Pro has a Direct mode, 0x15, whose color
     /// goes in its own report: 0E, red, green and blue, and the checksum at
@@ -87,30 +93,61 @@ namespace PadForge.Common.Input.Peripherals
         public static readonly RoyuanLighting Instance = new();
 
         private readonly Func<long> _clock;
+        private readonly Func<string, Guid> _containerOf;
 
-        /// <summary>When each Akko's collection last took a SET, by path.</summary>
-        private readonly Dictionary<string, long> _lastSet = new(StringComparer.OrdinalIgnoreCase);
+        /// <summary>When each Akko may next take a transfer, by its keyboard
+        /// (<see cref="KeyboardOf"/>).</summary>
+        private readonly Dictionary<string, long> _nextTransfer = new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>Test seam: the clock the Akko's spacing is measured
-        /// by.</summary>
-        internal RoyuanLighting(Func<long> clock = null) => _clock = clock ?? (() => Environment.TickCount64);
-
-        /// <summary>Waits out what is left of the spacing after this keyboard's
-        /// last SET (ROYUAN_POST_SET_DELAY_MS).</summary>
-        private void SpaceFromLastSet(IHidReportChannel io, Action<int> wait)
+        /// <summary>Test seam: the clock the Akko's spacing is measured by and
+        /// the container lookup.</summary>
+        internal RoyuanLighting(Func<long> clock = null, Func<string, Guid> containerOf = null)
         {
-            long last;
-            lock (_lastSet)
-            {
-                if (!_lastSet.TryGetValue(io.Path ?? "", out last)) return;
-            }
-            long left = last + AkkoPostSetMs - _clock();
-            if (left > 0) wait((int)left);
+            _clock = clock ?? (() => Environment.TickCount64);
+            _containerOf = containerOf ?? AudioPassthroughService.DevicePathContainerId;
         }
 
-        private void NoteSet(IHidReportChannel io)
+        /// <summary>The key of the keyboard a collection belongs to: its Windows
+        /// container, or its path where Windows names none, or names the PC's
+        /// own. Asked anew at each SET and each wait for one, so a keyboard
+        /// plugged in where another was is never taken for it.</summary>
+        private string KeyboardOf(IHidReportChannel io)
         {
-            lock (_lastSet) _lastSet[io.Path ?? ""] = _clock();
+            string path = io.Path ?? "";
+            Guid container = path.Length == 0 ? Guid.Empty : _containerOf(path);
+            return container == Guid.Empty || container == PeripheralLinker.LocalMachineContainer
+                ? path
+                : "container:" + container.ToString("D");
+        }
+
+        /// <summary>The time left before this keyboard's next transfer, 0 when
+        /// it may take one now.</summary>
+        private int LeftBeforeTransfer(IHidReportChannel io)
+        {
+            string keyboard = KeyboardOf(io);
+            long next;
+            lock (_nextTransfer)
+            {
+                if (!_nextTransfer.TryGetValue(keyboard, out next)) return 0;
+            }
+            return (int)Math.Max(0, next - _clock());
+        }
+
+        /// <summary>Waits for this keyboard's next transfer (sleep_until(next_transfer),
+        /// lines 180 and 512).</summary>
+        private void WaitForTransfer(IHidReportChannel io, Action<int> wait)
+        {
+            int left = LeftBeforeTransfer(io);
+            if (left > 0) wait(left);
+        }
+
+        /// <summary>Puts this keyboard's next transfer <paramref name="ms"/> from now:
+        /// ROYUAN_PRE_SET_DELAY_MS after the state's read, ROYUAN_POST_SET_DELAY_MS
+        /// after a SET.</summary>
+        private void NoteTransfer(IHidReportChannel io, int ms)
+        {
+            string keyboard = KeyboardOf(io);
+            lock (_nextTransfer) _nextTransfer[keyboard] = _clock() + ms;
         }
 
         internal const string FamilyName = "RoyuanKeyboardController";
@@ -178,7 +215,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registration.Name,
-                    Map = new LightMap(SinowealthLighting.OneLight(), "OpenRGB RoyuanKeyboardController")
+                    Map = new LightMap(SinowealthLighting.OneLight())
                     {
                         Product = $"royuan:{collection.VendorId:X4}:{collection.ProductId:X4}",
                     },
@@ -325,9 +362,9 @@ namespace PadForge.Common.Input.Peripherals
                 if (board == Board.Legacy) return new Session(board, null, spacing);
                 // OpenRGB makes no controller of a board that does not answer
                 // (RoyuanKeyboardControllerDetect.cpp:22-37 and 43-57, line 146).
-                spacing?.SpaceFromLastSet(io, wait);
+                spacing?.WaitForTransfer(io, wait);
                 var state = ReadState(io, wait);
-                spacing?.NoteSet(io);
+                spacing?.NoteTransfer(io, AkkoPreSetMs);
                 return state == null ? null : new Session(board, state, spacing);
             }
 
@@ -344,18 +381,26 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     return io.SetFeature(DirectColor(rgb)) ? HidLightingPaint.Sent : HidLightingPaint.Failed;
                 }
+                // The other collection of the keyboard may have taken a SET since
+                // this session's last.
+                int left = _spacing?.LeftBeforeTransfer(io) ?? 0;
+                if (left > 0)
+                {
+                    LaterMs = left;
+                    return HidLightingPaint.Later;
+                }
                 // Noted either way: a SET that reports a failure may have landed.
                 bool sent = io.SetFeature(Picture(_board, rgb));
-                _spacing?.NoteSet(io);
+                _spacing?.NoteTransfer(io, AkkoPostSetMs);
                 return sent ? HidLightingPaint.Sent : HidLightingPaint.Failed;
             }
 
             public override bool HandBack(IHidReportChannel io, Action<int> wait)
             {
                 if (_crash.Length == 0) return true;
-                _spacing?.SpaceFromLastSet(io, wait);
+                _spacing?.WaitForTransfer(io, wait);
                 bool sent = io.SetFeature(_crash[0]);
-                _spacing?.NoteSet(io);
+                _spacing?.NoteTransfer(io, AkkoPostSetMs);
                 return sent;
             }
         }

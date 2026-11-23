@@ -80,8 +80,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = "Lenovo Legion K510 Mini Pro",
-                Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                    "OpenRGB RGBController_LenovoK510.cpp") { Product = product },
+                Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }) { Product = product },
                 HoldMs = LenovoLegionLighting.HoldMs,
                 RepaintMs = LenovoLegionLighting.RepaintMs,
                 Begin = (io, wait) => Begin(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),
@@ -306,8 +305,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "Lenovo Legion M300",
-            Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                "OpenRGB RGBController_LenovoM300.cpp") { Product = $"lenovo:{VendorId:X4}:{ProductId:X4}" },
+            Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }) { Product = $"lenovo:{VendorId:X4}:{ProductId:X4}" },
             HoldMs = LenovoLegionLighting.HoldMs,
             RepaintMs = LenovoLegionLighting.RepaintMs,
             Programs = VendorPrograms.LenovoAccessories,
@@ -424,7 +422,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "Lenovo Legion K500",
-            Map = new LightMap(Lights(), "OpenRGB RGBController_LenovoK500.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"lenovo:{VendorId:X4}:{ProductId:X4}",
             },

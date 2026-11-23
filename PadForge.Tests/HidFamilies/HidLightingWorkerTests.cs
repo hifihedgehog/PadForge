@@ -38,7 +38,7 @@ namespace PadForge.Tests
         {
             new LightInfo(0, LightKind.Zone, 0, LightKeySource.None),
             new LightInfo(1, LightKind.Key, 0x29, LightKeySource.Generated),
-        }, "test") { Product = "fake:worker" };
+        }) { Product = "fake:worker" };
 
         /// <summary>A model of the family with what a test sets on top.</summary>
         public HidLightingModel With(Func<HidLightingModel, HidLightingModel> change = null)
@@ -246,7 +246,7 @@ namespace PadForge.Tests
                 if (Fails) return false;
                 var lights = Enumerable.Range(0, Math.Max(1, StripCounts.At(counts, 1)))
                     .Select(i => new LightInfo(i, LightKind.Edge, 0, LightKeySource.None)).ToArray();
-                _map = new LightMap(lights, "sized") { Strips = new[] { new LightStrip(1, 48, StripCounts.At(counts, 1)) } };
+                _map = new LightMap(lights) { Strips = new[] { new LightStrip(1, 48, StripCounts.At(counts, 1)) } };
                 return true;
             }
         }

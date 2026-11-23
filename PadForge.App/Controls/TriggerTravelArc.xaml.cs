@@ -120,7 +120,9 @@ namespace PadForge.Controls
         public TriggerTravelArc()
         {
             InitializeComponent();
-            Loaded += (_, _) => InitVisuals();
+            // Built when it loads, and again in the look's tones when a look
+            // is put on while it shows (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, InitVisuals);
         }
 
         private void InitVisuals()

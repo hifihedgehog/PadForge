@@ -14,7 +14,7 @@ namespace PadForge.Common.Input.Peripherals
     /// (0023) or A202105291658 (0028) for the ARGB controller, A202104052336
     /// (0012) for the Small (DetectCoolerMasterARGB and
     /// DetectCoolerMasterSmallARGB, CoolerMasterControllerDetect.cpp:86-111
-    /// and 321-346; GetVersion, CMARGBController.cpp:60-80 and
+    /// and 355-380; GetVersion, CMARGBController.cpp:60-80 and
     /// CMSmallARGBController.cpp:90-106; the strings at CMARGBController.h:30-32
     /// and CMSmallARGBController.h:64). The models ask the same of the serial
     /// string before the worker lists a collection
@@ -180,7 +180,7 @@ namespace PadForge.Common.Input.Peripherals
                     lights.Add(new LightInfo(StripAddress(port + 1, led), LightKind.Edge, 0, LightKeySource.None) { Zone = port + 1 });
             }
             lights.Add(ZoneLight(ArgbRgbPort, 5));
-            return new LightMap(lights, "OpenRGB RGBController_CMARGBController.cpp") { Product = product, Strips = strips };
+            return new LightMap(lights) { Product = product, Strips = strips };
         }
 
         /// <summary>The colors <paramref name="strip"/> takes in a picture, one
@@ -449,7 +449,7 @@ namespace PadForge.Common.Input.Peripherals
             if (leds == 0) lights.Add(ZoneLight(0, 1));
             for (int led = 0; led < leds; led++)
                 lights.Add(new LightInfo(StripAddress(1, led), LightKind.Edge, 0, LightKeySource.None) { Zone = 1 });
-            return new LightMap(lights, "OpenRGB RGBController_CMSmallARGBController.cpp")
+            return new LightMap(lights)
             {
                 Product = product,
                 Strips = new[] { new LightStrip(1, SmallArgbLeds, leds) },

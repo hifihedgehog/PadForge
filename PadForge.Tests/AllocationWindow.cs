@@ -69,4 +69,16 @@ namespace PadForge.Tests
             return false;
         }
     }
+
+    /// <summary>
+    /// Allocation tests whose windows run long. A pause of the threads
+    /// anywhere in the process spoils the window it lands in, and in a full
+    /// run, with the parallel classes allocating, one landed in each of the
+    /// hundred 2000-poll windows of the wheel curve's test, which then had no
+    /// window to count. xunit runs a DisableParallelization collection after
+    /// the parallel ones have ended, and its classes one at a time, so these
+    /// windows run beside no other test.
+    /// </summary>
+    [CollectionDefinition("AllocationMeasurements", DisableParallelization = true)]
+    public sealed class AllocationMeasurementsCollection { }
 }

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Желіде</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Желіден тыс</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Белгісіз</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Әдепкі</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Шолу…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Жалғастыру</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Тоқтату</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Қозғалтқыш тоқтатылды.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Қате: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} жасалмады.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Құрылғыны ашу, оқу немесе салыстыру мүмкін болмады. Оның атауы диагностика журналында бар.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} қатеге тап болды. Себебі диагностика журналында бар.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Енгізу қозғалтқышы қатеге тап болды. Себебі диагностика журналында бар.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL іске қосылмады. Себебі диагностика журналында бар.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro бапталмады. Себебі диагностика журналында бар.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Виртуалды контроллердің HIDMaestro профилі жоқ. Оның атауы диагностика журналында бар.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} өзгертілген сәйкестігі мен орналасуын қабылдай алмады, сондықтан өз профилінікін қолданады.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профиль ауыстырылды: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профиль ауыстырылды: Әдепкі</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Әдепкі</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Қозғалыс сервері порты</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu және т.б. үшін гироскоп пен акселерометр деректерін береді.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ойын модтары</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX үшін жасалған ойын модтарына PlayStation контроллерлеріңіздің бейімделгіш триггерлерін, жарық жолағын, ойыншы жарықтарын және дыбысты өшіру жарығын басқаруға мүмкіндік береді.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX үшін жасалған ойын модтарына DualSense немесе DualShock 4 контроллерінің бейімделгіш триггерлерін, жарық жолағын, ойыншы жарықтарын және дыбысты өшіру жарығын басқаруға мүмкіндік береді.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX ойын модтарын қабылдау</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Ойын моды порты</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe алмастырғышын іске қосу</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV сияқты кейбір модтар DSX деп аталатын бағдарлама жұмыс істемесе, өздерін өшіріп тастайды. Бұл сервер тыңдап тұрғанда сол атаумен шағын алмастырғышты іске қосады.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX үшін жасалған модтармен жұмыс істейді, мысалы GTA V, Red Dead Redemption 2, Skyrim және Forza модтарымен. Сервер тыңдап тұрғанда PadForge өз портын сол модтар іздейтін жерге жазады.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр. {1} {2}-виртуалды контроллерге жіберіп тұр.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр. {1} жіберіп тұр, бірақ ешбір виртуалды контроллерде PlayStation контроллері жоқ.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр. {1} {2} контроллер индексіне жіберіп тұр, бірақ PlayStation контроллері бар виртуалды контроллерлердің ешқайсысында мұндай индекс жоқ.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр. {1} жіберіп тұр, бірақ ешбір виртуалды контроллерде DualSense немесе DualShock 4 жоқ.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр. {1} {2} контроллер индексіне жіберіп тұр, бірақ DualSense немесе DualShock 4 бар виртуалды контроллерлердің ешқайсысында мұндай индекс жоқ.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} портын DSX сияқты басқа бағдарлама пайдаланып тұр. Оны жабыңыз немесе басқа порт таңдаңыз.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ойын моды</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-пен, UDP шығысын жіберетін немесе FreeTrack 2.0 ортақ жадына жазатын кез келген трекермен, сондай-ақ осы компьютердегі сеансты фондық режимде іске қоса алатын OpenXR орындау ортасымен жұмыс істейді.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Файл табылмады</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Оқу мүмкін емес</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>«{0}» тақырыбының файлы жоқ немесе оны оқу мүмкін емес. Ол қайта пайда болғанша PadForge Қараңғы тақырыпты көрсетеді.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>«{0}» тақырыбының файлында PadForge тақырыбы жоқ. Ол пайда болғанша PadForge Қараңғы тақырыпты көрсетеді.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>«{0}» профилі өз ойынының келбетін киіп тұр. Басқа профиль белсенді болғанда тақырыбыңыз қайтады.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Кіріс қозғалтқышы</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Сұрау әрекеті мен фондық өңдеуді баптау.</value></data>
@@ -1047,6 +1054,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контроллер өзін дайындайтын пәрменді қабылдамады, сондықтан ештеңе жіберілмеді. Оның қосылғанын тексеріп, қайта жіберіңіз.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Жіберу PadForge ішіндегі қатеге байланысты тоқтады. Мәліметтер журнал файлында.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Контроллерге сурет әлі жіберіліп жатыр. Жіберуді тоқтату керек пе?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Жіберуді жалғастыру</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak файлдары (*.mpk)|*.mpk|Барлық файлдар (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak қалпына келтіру</value></data>
@@ -1434,6 +1442,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Импульстің сөнуі</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Дайын баптау</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Теңшелетін</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (пайдаланушы жасаған)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Стиктер</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Триггерлер</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV қосқыштары</value></data>
@@ -2414,7 +2423,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Бұл контроллерде магнитометр бар. Бұрылуды магниттік солтүстікке байлау гироскоппен көздеудегі баяу көлденең ауытқуды жояды. Алдымен калибрлеңіз: «Калибрлеу» түймесін басыңыз, бірнеше секунд бойы контроллерді 8 санының пішінімен барлық бағыттарда айналдырыңыз, содан кейін қайта басыңыз.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Бұрылуды компасқа байлау</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Көлденең көздеуді магниттік бағытқа қарай тартатын кішкене түзету жылдамдығын қосады, сондықтан ауытқу жинақталмайды. Сақталған магнитометр калибрлеуі қажет. Жақын маңдағы металл не магниттер бұзған үлгілер автоматты түрде қабылданбайды.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Әдепкі мәнге қайтару (өшірулі)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Еңкею мен қисаюды имитациялау</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Акселерометрден есептелген еңкею мен қисаю</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Бұл контроллердің гироскопы тек солға және оңға бұрылуды сезеді. Имитация қосулы болса, PadForge еңкею мен қисаюды акселерометрден есептеп шығарады және оларды гироскоптың бұрылуымен бірге тағайындау жолдарына және виртуалды контроллердің қозғалысына жібереді. Акселерометр итеруді еңкейтуден ажырата алмайды, сондықтан контроллерді бұрмай жанына не алға жылжыту қысқа айналу ретінде оқылады.</value></data>
@@ -2810,7 +2818,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Қол жетімді шекараны белгілеу үшін стикті шетінің бойымен айналдырыңыз, содан кейін ол толық шеңберге келтіріледі.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Шекара калибрлеуін қалпына келтіру</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Орталық ығысуы Y мәнін қалпына келтіру</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>«Масштабталған радиалды» мәніне қайтару</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Өлі аймақ X мәнін қалпына келтіру</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Өлі аймақ Y мәнін қалпына келтіру</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Анти-өлі аймақ X мәнін қалпына келтіру</value></data>
@@ -3257,13 +3264,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick параметрлерін қалпына келтіру</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° бұрылысқа нүкте саны</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Камераны толық 360° бұру үшін тінтуір санақтары. Ойындағы тінтуір сезімталдығына байланысты: сілтеу толық бұрылмаса, көтеріңіз, артық бұрылса, төмендетіңіз.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 мәніне қайтару</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Сілтеу уақыты</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Толық 180° сілтеудің баяулай аяқталуымен қанша уақытта орындалатыны. Қысқарақ бұрылыстар да сол уақытта аяқталады.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 с мәніне қайтару</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Сілтеу шегі</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Сілтеуді бастайтын стик ауытқуы, толық ауытқудың үлесімен. Сілтеу кезінде босату нүктесі осы мәннің 90% деңгейіне түседі.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 мәніне қайтару</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Бекіту бұрышы</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Тұрақтырақ бұрылыстар үшін сілтеуді белгіленген бұрыштарға бекітеді. «Тек алға» әр сілтеуді тура алдыңғы бағытқа бекітеді.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Бекітусіз</value></data>
@@ -3272,22 +3276,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 градус</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 градус</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 градус</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>«Бекітусіз» мәніне қайтару</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Бекіту күші</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Сілтеу бекітілген бұрышқа қаншалықты қатты тартылатыны. 1 толық бекітеді, 0 бекітуді өшіреді, аралық мәндер араластырады.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 мәніне қайтару</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Алдыңғы бұрыштың өлі аймағы</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Тура алдыңғы бағыттан осы бұрыш ішіндегі сілтеу ештеңені бұрмайды. Сілтеп бұрусыз жүргізуді бастауға мүмкіндік береді.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° мәніне қайтару</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Жүргізуді тегістеу</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Шет бойымен жүргізудегі шуды тегістейді. -1 автоматты сатылы терезені пайдаланады, 0 тегістеуді өшіреді, үлкенірек мәндер әр циклдегі үлкенірек бұрылыстарды тегістейді.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Автоматты мәнге қайтару (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Іске қосылғанда сілтеуге рұқсат беру</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Бұрылыс ығысуы</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Бүкіл сілтеу картасын осынша градусқа бұрады. Оң мән сағат тілімен. Бекіту ығысудан кейін қолданылады.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Бұрылыс ығысуын қалпына келтіру</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick орналасқан қабат стик ауытқып тұрғанда іске қосылса, сілтеуді бірден орындау. Өшірулі болса, камера қозғалмайды және бұрылысты стиктің ағымдағы бұрышынан бастап қадағалайды.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>«Іске қосылғанда сілтеуге рұқсат беру» параметрін қалпына келтіру</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Рөл шегіндегі кері байланыс</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Рөлдеу режиміндегі стиктің шекке жеткендегі белгісі</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Рөлдеу режиміне орнатылған стик толық шекке дейін бұрылғанда, шекті сезу үшін белгі (діріл, триггер немесе жарық жолағы) ойнату. Әдепкі бойынша барлығы өшірулі.</value></data>
@@ -3477,11 +3475,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense хаптикасын осы контроллерде ойнату</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ойын бұл ұяшықты авторлық хаптикалық дыбысы бар виртуалды DualSense ретінде басқарғанда, сол жолды осы контроллердің жетектерінде ойнату. USB немесе өз донглы арқылы қосылған Steam Controller 2026 және Flydigi Apex 6 Pro жолды өзі ойнатады. Басқа барлық контроллерлер, сондай-ақ Bluetooth арқылы қосылған сол Steam Controller дыбыстан алынған тондарды алады, олар дизайнердің ойлаған сезімін дәл қайталамай, шамамен жеткізеді.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Хаптика күшейтуі</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Әдепкі мәнге қайтару (өшірулі)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Әдепкі мәнге қайтару (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Жетектің төменгі жиілік сүзгісінің шегі</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller хаптикалық ағынын осы жиіліктен төмен ұстайды, сонда тақталар естілетін дыбыс шығармай, дірілдейді. Шамамен 250 Гц маңында жетектер естіле бастайды. Айқынырақ егжей-тегжей үшін көтеріңіз, тынышырақ ойын үшін төмендетіңіз.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Гц мәніне қайтару</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Осы жиіліктен жоғары тондар кесіледі немесе төмен түсіріледі. Әдепкі 800 Гц мәні қозғалтқыш пен соққы дірілін сақтап, жоғары биіктіктегі дыбыстық сигналдарды ұстайды.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Жоғары тондарды қалпына келтіру</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Тон шегін қалпына келтіру</value></data>
@@ -4050,8 +4045,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop профилі</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop макросы</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Курсор аймағы</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} ауыстырғышы</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Дөңгелек тізімі ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Меңзер аймағы ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Тінтуір {0} батырмасын ұстау ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Тінтуір {0} батырмасын басу ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Тінтуір {0} батырмасын ауыстырып қосу ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptic импульсі ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (жіберу соңы)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} түртуі ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} автоатысы ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} ұстау ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} ауыстырып қосу ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} турбосы ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} қос басу ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} ұзақ басу ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Дөңгелек қадамы ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Дөңгелекті ауыстырып қосу ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Турбо дөңгелек ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Меңзерді жылжыту ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED орнату ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Гироскопты орталықтандыру ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Меңзерді сәл жылжыту ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Скриншот пернесі ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Экрандық пернетақта ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Жарық түсін орнату</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Камераны орталықтандыру</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Меңзерді жылжыту</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Меңзерді сәл жылжыту</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Скриншот</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Экрандық пернетақта</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Ауыстыру қабатын ауыстыру</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ауыстыру қабатын қосу</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Ауыстыру қабатын өшіру</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Ауыстыру қабатын ұстау</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Ойыншы нөмірін өзгерту</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Байланыспаған</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Жұмыс үстелі режимін ауыстыру</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam жүйелік пернесі</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Ұлғайтқышты ауыстыру</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Жарықтықты арттыру</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Жарықтықты азайту</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Контроллерді өшіру</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam конфигураторын ашу</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam жылдам мәзірін ашу</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Ойыннан шығу</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Haptic сигналын ауыстыру</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD ауыстыру</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Діріл сигналын ауыстыру</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide батырмасын мәжбүрлеу</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Гироскопты айналдыра калибрлеу</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Бағытқа бұрылу</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (басып тұру)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (жіберу)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (жіберу)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (қосу)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Не ауысатынын көру үшін конфигурацияны таңдаңыз.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Не ауысады</value></data>
@@ -4657,11 +4703,9 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Қабат</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Осы мәзірге рұқсат беретін қабатты таңдаңыз. Кез келген қабат және Негізгі қабат оған басқа белсенді қабаттарда да рұқсат береді. Аты берілген қабат қазір белсенді қабатқа сәйкес келуі керек.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Кез келген қабатқа қайтару және қабатпен ұстап ашуды өшіру.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (бұл ұяшықта көрсетілмеген)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Қабат мәзірді ашық ұстайды</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Аты берілген қабат белсенді болған кезде осы мәзірді ашық ұстаңыз. Таңдалған физикалық кіріс бөлектеуді басқарады. Кез келген қабат және Негізгі қабат әдеттегі беттік ашуды қолданады.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Түртіп немесе ауытқытып ашуға қайтару.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Басқару құралы</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Қабат осы мәзірді ашық ұстап тұрғанда бөлектелген элементті басқаратын физикалық кіріс.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Осы ұяшыққа тағайындалған физикалық контроллерлерден оқылады. Қабат мәзірді ашады, ал бұл кіріс оны басқарады. Мәзірдің не шығаратынын оның торкөздері көрсетеді.</value></data>
@@ -4741,7 +4785,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Мотор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Бағыт бойынша бөлу</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Орталық өлі аймақ</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Сол жақ стик X күйіне қайтару</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Күшті қалпына келтіру (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Орталық өлі аймақты қалпына келтіру (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Рөл бұрышы дірілін қосуды қалпына келтіру</value></data>
@@ -5258,6 +5301,9 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_LanguageRefs" xml:space="preserve"><value>Клингон және синдарин тілдерінің сілтемелері</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Клингон және синдарин аудармаларындағы сөздер klingon-assistant-data (Apache-2.0) жобасымен, яғни boQwI' сөздігінің деректерімен, және Paul Strack құрастырған эльф тілдерінің лексиконы Eldamo (CC BY 4.0) жобасымен салыстырылып тексерілді. Тек сөздік деректері, ешқайсысы жеткізілмейді.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Бұл файл PadForge тақырыбы емес.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge бұл файлды оқи алмайды.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge бұл файлды таба алмайды.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Тақырып емес</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Тақырыпты сақтау мүмкін болмады. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Жаңа тақырып</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Тақырыпты жасап жатқанда PadForge оны киіп тұрады.</value></data>
@@ -5272,6 +5318,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Сурет Steam жүйесінен алынуда…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam жүйесінде бұл ойынның кең суреті жоқ.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam жүйесіне қосылу мүмкін болмады. Қосылымыңызды тексеріңіз.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge Steam жүйесіндегі бұл ойынның суретін оқи алмайды.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Орны</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Суретті терезесінде жоғары немесе төмен жылжытады.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ойын логотипін көрсету</value></data>
@@ -5312,4 +5359,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Star Trek түпнұсқа сериалы үшін түсірілген макет, оны Smithsonian National Air and Space Museum суретке түсірген, макет сонда сақтаулы: Star Trek тақырыбының LCARS суреті.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Тақырып суреті: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>«Star Trek: The Next Generation» сериалынан кадр: Star Trek тақырыбының Starfleet суреті. Memory Alpha сайтынан табылған.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Жарық жолағы</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} жарық жолағы</value></data>
 </root>

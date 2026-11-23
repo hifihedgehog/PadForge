@@ -86,7 +86,9 @@ namespace PadForge.Common.Themes
             text = text.Trim();
             if (text.StartsWith('#')) text = text.Substring(1);
             if (text.Length != 6) return false;
-            if (!uint.TryParse(text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint value)) return false;
+            // Hex digits alone: HexNumber also lets white space through,
+            // which would read "# 12345" as #012345.
+            if (!uint.TryParse(text, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out uint value)) return false;
             color = Color.FromRgb((byte)(value >> 16), (byte)(value >> 8), (byte)value);
             return true;
         }
@@ -120,11 +122,14 @@ namespace PadForge.Common.Themes
         /// <summary>The color, moved away from the ground's lightness
         /// until it reads on it at the ratio. A color that already reads
         /// is returned as it is.</summary>
-        internal static Color Reads(Color color, Color on, double ratio)
+        internal static Color Reads(Color color, Color on, double ratio) => Reads(color, on, ratio, Luminance(on) < 0.2);
+
+        /// <summary>The color, moved lighter or darker as asked until it
+        /// reads on the ground at the ratio, or as far as it goes.</summary>
+        internal static Color Reads(Color color, Color on, double ratio, bool lighter)
         {
             if (Contrast(color, on) >= ratio) return color;
             var c = Lch.From(color);
-            bool lighter = Luminance(on) < 0.2;
             for (int i = 0; i < 200; i++)
             {
                 c = new Lch(Math.Clamp(c.L + (lighter ? 0.005 : -0.005), 0, 1), c.C, c.H);

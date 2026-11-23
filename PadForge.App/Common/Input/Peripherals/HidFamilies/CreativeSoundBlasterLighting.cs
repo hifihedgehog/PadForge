@@ -62,8 +62,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(new[] { new LightInfo(0, LightKind.Logo, 0, LightKeySource.None) },
-                "OpenRGB RGBController_CreativeSoundBlasterXG6.cpp") { Product = $"creative:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(new[] { new LightInfo(0, LightKind.Logo, 0, LightKeySource.None) }) { Product = $"creative:{vendorId:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(false, 1, colors => Frames(colors[0])),
         };

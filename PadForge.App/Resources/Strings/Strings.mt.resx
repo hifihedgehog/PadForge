@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Mhux magħruf</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Default</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Browżja…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kompli</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Waqqaf</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Il-magna waqfet.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Żball: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ma setax jinħoloq.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Apparat ma setax jinfetaħ, jinqara jew jiġi mmappjat. Il-log dijanjostiku jsemmi liema.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} ltaqa' ma' żball. Il-log dijanjostiku fih il-kawża.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Il-magna tal-input ltaqgħet ma' żball. Il-log dijanjostiku fih il-kawża.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ma setax jibda. Il-log dijanjostiku fih il-kawża.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro ma setax jiġi ssettjat. Il-log dijanjostiku fih il-kawża.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Il-profil HIDMaestro ta' kontrollur virtwali nieqes. Il-log dijanjostiku jsemmih.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ma setax jieħu l-identità u l-layout personalizzati tiegħu u juża dawk tal-profil tiegħu.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Il-profil inbidel: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Il-profil inbidel: Default</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Default</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port tas-server tal-moviment</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Jipprovdi data tal-ġiroskopju u tal-aċċelerometru lil Cemu, Dolphin, Yuzu, eċċ.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mods tal-logħob</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Iħalli lill-mods tal-logħob magħmula għal DSX jikkontrollaw it-triggers adattivi, il-lightbar, id-dwal tal-plejer u d-dawl tal-mute tal-kontrolluri PlayStation tiegħek.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Iħalli lill-mods tal-logħob magħmula għal DSX jikkontrollaw it-triggers adattivi, il-lightbar, id-dwal tal-plejer u d-dawl tal-mute ta' DualSense jew DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Aċċetta l-mods tal-logħob ta' DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port tal-mods tal-logħob</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Ħaddem sostitut ta' DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Xi mods, bħal DualSense4GTAV, jitfu lilhom infushom jekk ma jkunx qed jaħdem programm jismu DSX. Dan iħaddem sostitut żgħir b'dak l-isem waqt li s-server ikun qed jisma'.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Jaħdem ma' mods magħmula għal DSX, bħal dawk għal GTA V, Red Dead Redemption 2, Skyrim u Forza. Waqt li s-server ikun qed jisma', PadForge jikteb il-port tiegħu fejn dawk il-mods ifittxuh.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}. {1} qed jibgħat lill-kontrollur virtwali {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}. {1} qed jibgħat, imma l-ebda kontrollur virtwali m'għandu kontrollur PlayStation fuqu.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}. {1} qed jibgħat lill-indiċi tal-kontrollur {2}, u l-ebda kontrollur virtwali b'kontrollur PlayStation fuqu m'għandu dak l-indiċi.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}. {1} qed jibgħat, imma l-ebda kontrollur virtwali m'għandu DualSense jew DualShock 4 fuqu.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}. {1} qed jibgħat lill-indiċi tal-kontrollur {2}, u l-ebda kontrollur virtwali b'DualSense jew DualShock 4 fuqu m'għandu dak l-indiċi.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Il-port {0} qed jintuża minn programm ieħor, bħal DSX. Agħlqu jew agħżel port ieħor.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ta' logħba</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Jaħdem ma' OpenTrack u ma' kull tracker li jibgħat l-output UDP tiegħu jew jikteb fil-memorja kondiviża FreeTrack 2.0, u ma' runtime OpenXR fuq din il-magna li jista' jħaddem sessjoni fl-isfond.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Il-fajl ma nstabx</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ma jistax jinqara</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Il-fajl ta' “{0}” ma jinstabx jew ma jistax jinqara. PadForge juri Dalma sakemm jerġa' jidher.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Il-fajl ta' “{0}” ma fih ebda tema ta' PadForge. PadForge juri Dalma sakemm ikollu waħda.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Il-profil “{0}” qed jilbes id-dehra tal-logħba tiegħu. It-tema tiegħek terġa' lura meta profil ieħor ikun attiv.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Magna tal-input</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Ikkonfigura l-imġiba tal-polling u l-ipproċessar fl-isfond.</value></data>
@@ -1047,6 +1054,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Il-kontrollur ma aċċettax il-kmand li jipprepara, allura ma ntbagħat xejn. Iċċekkja li huwa konness u ibgħat mill-ġdid.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>L-ibgħat waqaf minħabba żball ġewwa PadForge. Il-fajl tal-log fih id-dettalji.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Stampa għadha sejra lejn il-kontrollur. Twaqqaf l-ibgħat?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kompli ibgħat</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fajls tal-Controller Pak (*.mpk)|*.mpk|Il-fajls kollha (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Irrestawra l-Controller Pak</value></data>
@@ -1433,6 +1441,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Tnaqqis tal-impuls</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalizzat</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Maħluq mill-utent)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2413,7 +2422,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Dan il-kontrollur għandu manjetometru. L-ankrar tal-yaw mat-tramuntana manjetika jneħħi d-drift orizzontali bil-mod mill-immirar bil-ġiroskopju. Ikkalibra l-ewwel: agħfas Ikkalibra, dawwar il-kontrollur fl-orjentazzjonijiet kollha f'forma ta' 8 għal ftit sekondi, imbagħad agħfas mill-ġdid.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ankra l-yaw mal-boxxla</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Iżżid rata korrettiva żgħira li tiġbed l-immirar orizzontali lejn id-direzzjoni manjetika, biex id-drift ma jakkumulax. Teħtieġ kalibrazzjoni tal-manjetometru maħżuna. Kampjuni disturbati minn metall jew kalamiti fil-qrib jiġu miċħuda awtomatikament.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Irrisettja għad-default (mitfi)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulazzjoni tal-pitch u r-roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch u roll miksuba mill-aċċelerometru</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Il-ġiroskopju ta' dan il-kontrollur iħoss biss id-dawran lejn ix-xellug u l-lemin. Bis-simulazzjoni mixgħula, PadForge joħroġ il-pitch u r-roll mill-aċċelerometru u jibgħathom flimkien mal-yaw tal-ġiroskopju lir-ringieli tal-mappjar u lill-moviment tal-kontrollur virtwali. Aċċelerometru ma jistax jiddistingwi bejn imbuttatura u inklinazzjoni, għalhekk meta tċaqlaq il-kontrollur lateralment jew 'il quddiem mingħajr ma ddawru, jinqara bħala rotazzjoni qasira.</value></data>
@@ -2785,7 +2793,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Dawwar l-istick mat-tarf kollu tiegħu biex timmappja l-konfini li jintlaħqu, imbagħad dawn jiġu ffurmati mill-ġdid f'ċirku sħiħ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Irrisettja l-kalibrazzjoni tal-konfini</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Irrisettja l-offset taċ-ċentru Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Irrisettja għal radjali skalat</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Irrisettja ż-żona mejta X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Irrisettja ż-żona mejta Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Irrisettja l-anti-żona mejta X</value></data>
@@ -3200,13 +3207,10 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Irrisettja l-flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punti għal kull 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>L-għadd tal-maws għal dawra sħiħa ta' 360° tal-kamera. Jiddependi mis-sensittività tal-maws tal-logħba: għollih jekk flick ma jdurx biżżejjed, naqqsu jekk idur iżżejjed.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Irrisettja għal 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Ħin tal-flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Kemm jieħu ħin biex flick sħiħ ta' 180° jitlesta, b'tnaqqis gradwali tal-veloċità lejn l-aħħar. Dawriet iqsar jispiċċaw fl-istess ħin.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Irrisettja għal 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Limitu tal-flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Id-devjazzjoni tal-istick li tibda flick, bħala frazzjoni tad-devjazzjoni sħiħa. Waqt il-flick, il-punt tar-rilaxx jinżel għal 90% ta' dan.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Irrisettja għal 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Angoli fissi</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Waħħal il-flick ma' angoli fissi għal dawriet aktar konsistenti. 'Il quddiem biss iwaħħal kull flick dritt 'il quddiem.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Mingħajr twaħħil</value></data>
@@ -3215,22 +3219,16 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 grad</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 grad</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 grad</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Irrisettja għal Mingħajr twaħħil</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Saħħa tat-twaħħil</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Kemm flick jinġibed b'saħħa lejn l-angolu fiss. 1 iwaħħal għalkollox, 0 jitfi t-twaħħil, u l-valuri bejniethom jitħalltu.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Irrisettja għal 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Żona mejta tal-angolu ta' quddiem</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Flick f'dan l-angolu minn dritt 'il quddiem ma jdawwar xejn. Jippermettilek tibda tiġbida mingħajr dawra ta' flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Irrisettja għal 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Twittija tat-tiġbida</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Iwitti l-istorbju tat-tiġbida tul it-tarf. -1 juża t-tieqa awtomatika f'livelli, 0 jitfi t-twittija, u valuri akbar iwittu rotazzjonijiet akbar għal kull tick.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Irrisettja għal Awtomatiku (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Ippermetti flick mal-attivazzjoni</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Offset tar-rotazzjoni</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Iddawwar il-mappa kollha tal-flick b'dawn il-gradi. Pożittiv huwa fid-direzzjoni tal-arloġġ. It-twaħħil jiġi applikat wara l-offset.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Irrisettja l-offset tar-rotazzjoni</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Meta s-saff li fih hemm il-flick stick jattiva bl-istick diġà mbiegħed miċ-ċentru, il-flick isir minnufih. Mitfi jżomm il-kamera wieqfa u jsegwi r-rotazzjoni mill-angolu attwali tal-istick.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Irrisettja Ippermetti flick mal-attivazzjoni</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback fil-limitu tas-sewqan</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal fil-limitu sħiħ għal stick f'modalità tas-sewqan</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Meta stick issettjat għal modalità tas-sewqan jiddawwar sal-limitu sħiħ, agħti sinjal (rumble, trigger jew lightbar) biex tħoss il-limitu. Kollha mitfija b'default.</value></data>
@@ -3420,11 +3418,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Doqq il-haptics tad-DualSense fuq dan il-kontrollur</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Meta logħba tmexxi dan is-slot bħala DualSense virtwali b'awdjo haptic maħluq apposta, doqq dik it-trakka fuq l-attwaturi ta' dan il-kontrollur. Steam Controller 2026 permezz ta' USB jew bid-dongle tiegħu, u Flydigi Apex 6 Pro, idoqqu t-trakka nnifisha. Kull kontrollur ieħor, u dak is-Steam Controller permezz ta' Bluetooth, jirċievi toni derivati mill-awdjo, li joqorbu lejn is-sensazzjoni li ried id-disinjatur iżda ma jirriproduċuhiex.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Qawwa tal-haptics</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Irrisettja għad-default (Mitfi)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Irrisettja għad-default (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Frekwenza low-pass tal-attwaturi</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Iżomm l-istreaming haptic tal-Steam Controller taħt din il-frekwenza biex il-pads jivvibraw minflok ma jdoqqu ħoss li jinstema'. Madwar 250 Hz l-attwaturi jibdew jinstemgħu. Għollih għal dettall aktar ċar, naqqsu għal użu aktar kwiet.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Irrisettja għal 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>It-toni 'l fuq minn din il-frekwenza jinqatgħu jew jitniżżlu. Id-default ta' 800 Hz iżomm ir-rumble tal-magni u tal-impatti u jaqbad il-beeps għoljin.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Irrisettja t-toni għolja</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Irrisettja l-limitu tat-ton</value></data>
@@ -3990,8 +3985,59 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil tal-Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro tal-Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Reġjun tal-kursur</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift ta' {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Lista tar-rota ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Reġjun tal-kursur ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Żomm il-ġurdien {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Ikklikkja l-ġurdien {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Ibdel il-ġurdien {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Polz aptiku ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (denb tal-ħelsien)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Ittekkja {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Sparar awtomatiku {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Żomm {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Ibdel {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Agħfas darbtejn {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Agħfas fit-tul {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Pass tar-rota ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Ibdel ir-rota ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo tar-rota ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Qabbeż il-kursur ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Issettja l-LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Ċentra mill-ġdid il-ġajro ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Imbotta l-kursur ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Buttuna tal-iscreenshot ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Tastiera fuq l-iskrin ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Issettja l-kulur tad-dawl</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Ċentra mill-ġdid il-kamera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Qabbeż il-kursur</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Imbotta l-kursur</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Screenshot</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Tastiera fuq l-iskrin</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Biddel is-shift layer</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ixgħel shift layer</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Itfi shift layer</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Żomm shift layer</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Biddel in-numru tal-plejer</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Mhux marbut</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Ibdel il-modalità desktop</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Buttuna tas-sistema ta' Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Ibdel il-magnifier</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Żid il-luminożità</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Naqqas il-luminożità</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Itfi l-kontrollur</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Iftaħ il-konfiguratur ta' Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Iftaħ il-menu rapidu ta' Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Oħroġ mil-logħba</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Ibdel l-aptiċi</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Ibdel il-HUD ta' Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Ibdel ir-rumble</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Ġiegħel il-buttuna Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Dawran tal-kalibrazzjoni tal-ġajro</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Dur lejn id-direzzjoni</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (żamma)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (rilaxx)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (rilaxx)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (attivazzjoni)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Agħżel konfigurazzjoni biex tara dak li jgħaddi.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Dak li jgħaddi</value></data>
@@ -4593,11 +4639,9 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Saff</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Agħżel is-saff li jippermetti dan il-menu. Kwalunkwe saff u Bażi t-tnejn jippermettuh taħt saffi attivi oħra. Saff b'isem irid jaqbel mas-saff li huwa attiv bħalissa.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Irrisettja għal Kwalunkwe saff u itfi l-ftuħ waqt li s-saff ikun miżmum.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (mhux elenkat f'dan is-slot)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Is-saff iżomm il-menu miftuħ</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Żomm dan il-menu miftuħ waqt li s-saff bl-isem tiegħu jkun attiv. L-input fiżiku magħżul imexxi l-enfasi. Kwalunkwe saff u Bażi jużaw il-ftuħ normali tal-wiċċ.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Irrisettja għall-ftuħ bil-mess jew bid-devjazzjoni.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Mexxi bi</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>L-input fiżiku li jmexxi ċ-ċellula enfasizzata waqt li s-saff iżomm dan il-menu miftuħ.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Jinqara mill-kontrolluri fiżiċi assenjati lil dan is-slot. Is-saff jiftaħ il-menu, u dan l-input imexxih. Iċ-ċelloli tiegħu jgħidu x'joħroġ.</value></data>
@@ -4677,7 +4721,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mutur</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Maqsum skont id-direzzjoni</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Żona mejta taċ-ċentru</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Irrisettja għal Stick tax-xellug X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Irrisettja s-saħħa (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Irrisettja ż-żona mejta taċ-ċentru (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Irrisettja “Ixgħel ir-rumble tal-angolu tat-tmun”</value></data>
@@ -5192,6 +5235,9 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referenzi tal-Klingon u tas-Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Il-kliem tat-traduzzjonijiet bil-Klingon u bis-Sindarin, ivverifikat ma' klingon-assistant-data (Apache-2.0), id-dizzjunarju wara boQwI', u Eldamo (CC BY 4.0), il-lessiku Elfiku ta' Paul Strack. Dejta tad-dizzjunarju biss, l-ebda waħda minnha ma tiġi inkluża.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Dak il-fajl mhuwiex tema ta' PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ma jistax jaqra dak il-fajl.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ma jistax isib dak il-fajl.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Mhijiex tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>It-tema ma setgħetx tiġi ssalvata. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema ġdida</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge jilbes it-tema waqt li tibnieha.</value></data>
@@ -5206,6 +5252,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Qed tinkiseb l-istampa minn Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam m'għandux stampa wiesgħa għal din il-logħba.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ma setax isir kuntatt ma' Steam. Iċċekkja l-konnessjoni tiegħek.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ma jistax jaqra l-istampa ta' Steam għal din il-logħba.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Pożizzjoni</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Iċċaqlaq l-istampa 'l fuq jew 'l isfel fit-tieqa tagħha.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Uri l-logo tal-logħba</value></data>
@@ -5246,4 +5293,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Il-mudell iffilmjat għas-serje oriġinali ta' Star Trek, ippotografat mis-Smithsonian National Air and Space Museum, li jżommu: l-istampa tat-tema LCARS ta' Star Trek.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Stampa tat-tema: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Frejm minn Star Trek: The Next Generation: l-istampa tat-tema Starfleet ta' Star Trek. Misjub fuq Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar {0}</value></data>
 </root>

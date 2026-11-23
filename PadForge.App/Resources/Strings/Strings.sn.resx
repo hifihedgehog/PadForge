@@ -859,11 +859,6 @@
   <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Kuruboshwe</value></data>
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Kurudyi</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Kumashure</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Dzorera kuita 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Dzorera kuita 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Dzorera kuita 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Dzorera kuita 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Dzorera kuita 0°</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Dzorera wheel</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Inzwi</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Pakati</value></data>
@@ -880,7 +875,6 @@
   <data name="Macro_Sound_File_Label" xml:space="preserve"><value>Faira yeinzwi</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Vhoriyamu</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Nguva dzose</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Dzorera kuita 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faira iyi haisi purofaira ye-PadForge inogona kuverengwa.</value></data>
@@ -1523,4 +1517,6 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Enzanisa nemufananidzo</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Inotora mavara mana kubva pamufananidzo.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mifananidzo (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafaira ese (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge haigone kuverenga mufananidzo weSteam wemutambo uyu.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ramba Uchitumira</value></data>
 </root>

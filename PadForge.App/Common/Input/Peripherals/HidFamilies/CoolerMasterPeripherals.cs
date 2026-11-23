@@ -59,8 +59,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = mm530
                 ? new[] { ZoneLight(0, 1), ZoneLight(1, 2), LogoLight(2) }
                 : new[] { ZoneLight(0, 1), LogoLight(1) };
-            return NewModel(name, productId, lights, "OpenRGB RGBController_CMMMController.cpp",
-                (io, wait) => BeginMouse(io, mm530));
+            return NewModel(name, productId, lights, (io, wait) => BeginMouse(io, mm530));
         }
 
         /// <summary>41 80 (SendInitPacket, CMMMController.cpp:297-303).</summary>
@@ -224,7 +223,7 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         private static HidLightingModel Mm711Model(string name, ushort productId)
             => NewModel(name, productId, new[] { ZoneLight(0, 1), LogoLight(1) },
-                "OpenRGB RGBController_CMMM711Controller.cpp", (io, wait) => BeginMm711(io));
+                (io, wait) => BeginMm711(io));
 
         /// <summary>51 A8 00 00, the wheel at bytes 5-7 and the logo at 8-10
         /// (SetLedsDirect, CMMM711Controller.cpp:145-157).</summary>
@@ -291,8 +290,7 @@ namespace PadForge.Common.Input.Peripherals
         /// they were.</para>
         /// </summary>
         private static HidLightingModel Mm712Model(string name, ushort productId)
-            => NewModel(name, productId, new[] { LogoLight(0) }, "OpenRGB RGBController_CMMM712Controller.cpp",
-                (io, wait) => BeginMm712(io));
+            => NewModel(name, productId, new[] { LogoLight(0) }, (io, wait) => BeginMm712(io));
 
         internal static byte[] Mm712Init() => Packet(stackalloc byte[] { 0x44, 0x81, 0x02 });
         internal static byte[] Mm712Direct(bool on) => Packet(stackalloc byte[] { 0x5A, 0x81, on ? (byte)0x02 : (byte)0x01 });

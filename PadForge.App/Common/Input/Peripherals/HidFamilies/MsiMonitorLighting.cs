@@ -179,7 +179,7 @@ namespace PadForge.Common.Input.Peripherals
             int count = layout?.Leds ?? Leds71;
             var lights = new LightInfo[count];
             for (int i = 0; i < count; i++) lights[i] = new LightInfo(i, LightKind.Edge, 0, LightKeySource.None);
-            return new LightMap(lights, layout == null ? "OpenRGB RGBController_MSIMonitor.cpp" : "OpenRGB RGBController_MSIMonitor72.cpp")
+            return new LightMap(lights)
             {
                 Product = Product(productId) + (layout == null ? ":71" : $":72v{layout.Value.Version}"),
             };

@@ -128,7 +128,7 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Dictionary<string, HidLightingModel> _models = new(StringComparer.Ordinal);
         private readonly object _gate = new();
 
-        /// <summary>The Sense Aimo OpenRGB names (RoccatControllerDetect.cpp:61) and
+        /// <summary>The Sense Aimo OpenRGB names (RoccatControllerDetect.cpp:64) and
         /// Turtle Beach's AIMO Pad Wide.</summary>
         internal const ushort SenseAimoMid = 0x343A;
         internal const ushort TurtleBeachAimoWide = 0x5026;
@@ -168,7 +168,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             programs ??= VendorPrograms.Roccat;
             string product = $"roccat:{registration.VendorId:X4}:{registration.ProductId:X4}";
-            HidLightingModel Direct(IReadOnlyList<LightInfo> lights, string source, Func<Protocol> protocol, bool heldByWindows = false)
+            HidLightingModel Direct(IReadOnlyList<LightInfo> lights, Func<Protocol> protocol, bool heldByWindows = false)
             {
                 // A device with no frame that gives control back owes nothing.
                 bool owes = protocol().ReleaseFrames.Length > 0;
@@ -176,7 +176,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registration.Name,
-                    Map = new LightMap(lights, source) { Product = product },
+                    Map = new LightMap(lights) { Product = product },
                     Programs = VendorPrograms.Roccat,
                     RepaintMs = RepaintMs,
                     HeldByWindows = heldByWindows,
@@ -188,43 +188,43 @@ namespace PadForge.Common.Input.Peripherals
             switch (registration.Detector)
             {
                 case "DetectRoccatBurstCoreControllers":
-                    return Direct(new[] { Zone(0, 1) }, "OpenRGB RGBController_RoccatBurst.cpp:120-144", () => Burst(1));
+                    return Direct(new[] { Zone(0, 1) }, () => Burst(1));
                 case "DetectRoccatBurstProControllers":
-                    return Direct(new[] { Zone(0, 1), Logo(1) }, "OpenRGB RGBController_RoccatBurst.cpp:120-144", () => Burst(2));
+                    return Direct(new[] { Zone(0, 1), Logo(1) }, () => Burst(2));
                 case "DetectRoccatKoneProControllers":
-                    return Direct(new[] { Zone(0, 1), Zone(1, 2) }, "OpenRGB RGBController_RoccatKonePro.cpp:122-150", KonePro);
+                    return Direct(new[] { Zone(0, 1), Zone(1, 2) }, KonePro);
                 case "DetectRoccatKoneXPControllers":
-                    return Direct(KoneXpLights(), "OpenRGB RGBController_RoccatKoneXP.cpp:177-232", KoneXp);
+                    return Direct(KoneXpLights(), KoneXp);
                 case "DetectRoccatMouseControllers":
-                    return Direct(KoneAimoLights(), "OpenRGB RGBController_RoccatKoneAimo.cpp:58-157", KoneAimo);
+                    return Direct(KoneAimoLights(), KoneAimo);
                 case "DetectRoccatKoneXTDControllers":
                 {
                     var lights = new LightInfo[KoneXtdLeds];
                     for (int i = 0; i < lights.Length; i++) lights[i] = Zone(i, i + 1);
-                    return Direct(lights, "OpenRGB RGBController_RoccatKoneXTD.cpp:139-158", KoneXtd);
+                    return Direct(lights, KoneXtd);
                 }
                 case "DetectRoccatBurstProAirControllers":
                     // Its one registration is the mouse collection, which Windows
                     // holds, and its frames are feature reports, which pass there
-                    // (RoccatControllerDetect.cpp:412, RoccatBurstProAirController.cpp:72,93).
+                    // (RoccatControllerDetect.cpp:433, RoccatBurstProAirController.cpp:72,93).
                     return Direct(new[] { Zone(0, 1), Logo(1), Zone(2, 2), Zone(3, 3) },
-                        "OpenRGB RGBController_RoccatBurstProAir.cpp:95-121", BurstProAir, heldByWindows: true);
+                        BurstProAir, heldByWindows: true);
                 case "DetectRoccatKoneProAirControllers":
-                    return Direct(new[] { Zone(0, 1), Zone(1, 2) }, "OpenRGB RGBController_RoccatKoneProAir.cpp:129-153", KoneProAir);
+                    return Direct(new[] { Zone(0, 1), Zone(1, 2) }, KoneProAir);
                 case "DetectRoccatEloControllers":
-                    return Direct(new[] { Zone(0, 1) }, "OpenRGB RGBController_RoccatElo.cpp:54-69", Elo);
+                    return Direct(new[] { Zone(0, 1) }, Elo);
                 case "DetectRoccatHordeAimoKeyboardControllers":
                 {
                     var lights = new LightInfo[HordeLeds];
                     for (int i = 0; i < lights.Length; i++) lights[i] = Zone(i, i + 1);
-                    return Direct(lights, "OpenRGB RGBController_RoccatHordeAimo.cpp:53-71", Horde);
+                    return Direct(lights, Horde);
                 }
                 case "DetectRoccatKovaControllers":
                     return new HidLightingModel
                     {
                         Family = this,
                         Name = registration.Name,
-                        Map = new LightMap(new[] { Zone(0, 1), Edge(1) }, "OpenRGB RGBController_RoccatKova.cpp:91-112") { Product = product },
+                        Map = new LightMap(new[] { Zone(0, 1), Edge(1) }) { Product = product },
                         Programs = VendorPrograms.Roccat,
                         HoldMs = StoredHoldMs,
                         RepaintMs = StoredRepaintMs,
@@ -237,7 +237,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Family = this,
                         Name = registration.Name,
-                        Map = new LightMap(new[] { Edge(0), Edge(1) }, "OpenRGB RGBController_RoccatSenseAimo.cpp:141-160") { Product = product },
+                        Map = new LightMap(new[] { Edge(0), Edge(1) }) { Product = product },
                         Programs = programs,
                         RepaintMs = RepaintMs,
                         Begin = (io, wait) => BeginSenseAimo(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),

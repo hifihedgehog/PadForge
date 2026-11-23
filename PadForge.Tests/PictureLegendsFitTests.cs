@@ -168,5 +168,42 @@ namespace PadForge.Tests
                 }
             }, TimeSpan.FromMinutes(2), "the MIDI title test timed out");
         }
+
+        /// <summary>The MIDI picture's section titles follow a change of
+        /// language. They are copied into the canvas when it is built, and
+        /// the page that holds the picture is kept, so it was built again
+        /// only for a change of the controller or the theme.</summary>
+        [Fact]
+        public void TheMidiPicturesTitlesFollowALanguageChange()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                var before = CultureInfo.CurrentUICulture;
+                var view = new MidiPreviewView();
+                try
+                {
+                    PadForge.Resources.Strings.Strings.ChangeCulture(CultureInfo.GetCultureInfo("en"));
+                    var vm = new PadViewModel(0) { OutputType = VirtualControllerType.Midi };
+                    vm.MidiConfig.CcCount = 2;
+                    vm.MidiConfig.NoteCount = 2;
+                    view.Bind(vm);
+                    var canvas = (Canvas)view.FindName("MidiCanvas");
+                    var s = PadForge.Resources.Strings.Strings.Instance;
+                    bool Shows(string text) => canvas.Children.OfType<TextBlock>().Any(t => t.Text == text);
+                    Assert.True(Shows(s.Preview_CCOutputs) && Shows(s.Preview_NoteOutputs), "the English titles are not drawn: the checks below prove nothing");
+
+                    PadForge.Resources.Strings.Strings.ChangeCulture(CultureInfo.GetCultureInfo("de"));
+                    dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Background);
+                    Assert.Equal("CC-Ausgänge", s.Preview_CCOutputs);
+                    Assert.True(Shows(s.Preview_CCOutputs), "the CC title stayed in the old language");
+                    Assert.True(Shows(s.Preview_NoteOutputs), "the note title stayed in the old language");
+                }
+                finally
+                {
+                    PadForge.Resources.Strings.Strings.ChangeCulture(before);
+                    view.Unbind();
+                }
+            }, TimeSpan.FromMinutes(2), "the MIDI language test timed out");
+        }
     }
 }

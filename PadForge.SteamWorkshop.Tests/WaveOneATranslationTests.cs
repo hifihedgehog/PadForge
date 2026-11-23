@@ -21,7 +21,7 @@ namespace PadForge.SteamWorkshop.Tests
             return new ConfigTranslator().Translate(config, new TranslationOptions
             {
                 FileId = fileId,
-                PreferredLanguage = preferredLanguage,
+                PreferredLanguages = new[] { preferredLanguage },
             });
         }
 
@@ -304,7 +304,13 @@ namespace PadForge.SteamWorkshop.Tests
             string vdf = TokenHead("#Library_ControllerSaveDefaultTitle")
                 + Localization(("english", "Unrelated", "x"))
                 + "}\n";
-            Assert.Equal("Steam Workshop Config", Translate(vdf).Name);
+            Assert.Equal("Workshop Profile", Translate(vdf).Name);
+            var config = SteamInputConfig.FromVdf(VdfParser.Parse(vdf));
+            Assert.Equal("Untitled", new ConfigTranslator().Translate(config, new TranslationOptions
+            {
+                FileId = 42,
+                NameFormat = key => key == TranslationNames.UntitledConfig ? "Untitled" : null,
+            }).Name);
         }
 
         // ─── B-14a inner deadzone ───────────────────────────────────────

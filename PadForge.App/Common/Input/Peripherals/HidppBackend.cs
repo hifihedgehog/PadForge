@@ -31,7 +31,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>True when both hold equal units in the same order, the
         /// same pending containers and the same scan state, so publishing one
-        /// raises a status change only when a tab would read something new.
+        /// raises a status change only when a group would read something new.
         /// The worker builds a new snapshot on every scan and liveness check,
         /// most of them the same as the last, as the direct backends'
         /// <see cref="DirectSnapshot.SameAs"/> expects of its own.</summary>

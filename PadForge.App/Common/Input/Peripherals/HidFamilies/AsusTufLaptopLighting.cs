@@ -107,8 +107,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "ASUS TUF Laptop Keyboard",
-                Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) },
-                    "OpenRGB AsusTUFLaptopController")
+                Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) })
                 {
                     Product = "asus:tuf-laptop",
                 },

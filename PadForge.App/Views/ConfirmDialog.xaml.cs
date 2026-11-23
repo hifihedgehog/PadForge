@@ -7,8 +7,8 @@ namespace PadForge.Views
     /// or a step forward, in the ember look.</summary>
     public enum ConfirmKind { Destructive, Primary }
 
-    /// <summary>The shared confirm (#574) on the dialog frame: the question
-    /// as the title, what happens as the line under it, an optional fact in
+    /// <summary>The shared confirm (#574) on the dialog frame: a title, the
+    /// question or what happens as the line under it, an optional fact in
     /// the secondary text color, and a foot where Cancel holds the default, the cancel
     /// and the first focus. Esc cancels, and Enter never fires the action
     /// unless the user tabs onto it. <see cref="Notice"/> is the same window

@@ -408,6 +408,50 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>Text the class leaves as it is posts no dispatcher work: a
+        /// trimmed line of right-to-left letters only, which Apply neither
+        /// flips nor takes over, and any text once Watch is off again, as
+        /// after a switch from Arabic to English. Latin text with a bracket
+        /// and Arabic text with a bracketed stretch are still looked at, the
+        /// positive controls.</summary>
+        [Fact]
+        public void TextThisClassLeavesAlone_PostsNoWork()
+        {
+            RunSta(() =>
+            {
+                var stateProperty = (DependencyProperty)typeof(TextDirection)
+                    .GetField("StateProperty", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+                    .GetValue(null);
+                bool Pending(TextBlock b)
+                {
+                    object s = b.GetValue(stateProperty);
+                    return s != null && (bool)s.GetType().GetField("Pending").GetValue(s);
+                }
+                void Drain() => Dispatcher.CurrentDispatcher.Invoke(() => { }, DispatcherPriority.ApplicationIdle);
+
+                var latin = new TextBlock { TextTrimming = TextTrimming.CharacterEllipsis };
+                TextDirection.SetWatch(latin, true);
+                latin.Text = Device;
+                Assert.True(Pending(latin), "watched Latin text with a bracket is not looked at: the checks below prove nothing");
+
+                var mixed = new TextBlock();
+                TextDirection.SetWatch(mixed, true);
+                mixed.Text = Before + "(2015)";
+                Assert.True(Pending(mixed), "watched Arabic text with a bracketed stretch is not looked at");
+
+                var arabic = new TextBlock { TextTrimming = TextTrimming.CharacterEllipsis };
+                TextDirection.SetWatch(arabic, true);
+                arabic.Text = "وحدة تحكم طويلة الاسم";
+                Assert.False(Pending(arabic), "a trimmed line of right-to-left letters posted work Apply does nothing with");
+                Drain();
+
+                TextDirection.SetWatch(latin, false);
+                Drain();
+                latin.Text = "Xbox One Controller (2016)";
+                Assert.False(Pending(latin), "a block no longer watched posted work for a text change");
+            });
+        }
+
         /// <summary>The pill's Preset name scrolls under the pointer from its
         /// start: a Latin name's moving copy stands with its first letter at
         /// the label's left edge, and slides left from there.</summary>

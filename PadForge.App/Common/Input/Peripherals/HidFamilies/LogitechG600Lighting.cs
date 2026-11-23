@@ -86,7 +86,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "Logitech G600 Gaming Mouse",
-            Map = new LightMap(Lights(), "OpenRGB LogitechG600Controller") { Product = "logitech:046D:C24A" },
+            Map = new LightMap(Lights()) { Product = "logitech:046D:C24A" },
             RepaintMs = RepaintMs,
             RecheckMs = RecheckMs,
             Programs = VendorPrograms.Logitech,

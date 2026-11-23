@@ -72,7 +72,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "MSI Vigor GK30",
-            Map = new LightMap(Lights(), "OpenRGB MSIVigorController") { Product = "msi:0DB0:0B30" },
+            Map = new LightMap(Lights()) { Product = "msi:0DB0:0B30" },
             HoldMs = HoldMs,
             RepaintMs = RepaintMs,
             Begin = (_, _) => new Session(),

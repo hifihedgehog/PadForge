@@ -124,7 +124,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registration.Name,
-                    Map = new LightMap(MatrixKeyboardLayouts.Lights(layout), "OpenRGB " + layout.Source) { Product = product },
+                    Map = new LightMap(MatrixKeyboardLayouts.Lights(layout)) { Product = product },
                     RepaintMs = RepaintMs,
                     KeepAliveMs = RefreshMs,
                     KeepAliveIdleMs = RefreshMs,
@@ -136,7 +136,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = registration.Name,
-                Map = new LightMap(MatrixKeyboardLayouts.Lights(first), "OpenRGB " + first.Source) { Product = product },
+                Map = new LightMap(MatrixKeyboardLayouts.Lights(first)) { Product = product },
                 HoldMs = LenovoLegionLighting.HoldMs,
                 RepaintMs = LenovoLegionLighting.RepaintMs,
                 Begin = (io, wait) => new SonixCustomSession(

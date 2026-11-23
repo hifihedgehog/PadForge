@@ -22,14 +22,21 @@ namespace PadForge.ViewModels
         private string _queryText = string.Empty;
         private SearchResult _selected;
 
-        internal SearchViewModel(Func<string, IReadOnlyList<SearchResult>> query)
+        private readonly Action _readAgain;
+
+        /// <summary><paramref name="readAgain"/> reads the places and values
+        /// the results show again, before a change of language runs the
+        /// query again.</summary>
+        internal SearchViewModel(Func<string, IReadOnlyList<SearchResult>> query, Action readAgain = null)
         {
             _query = query;
+            _readAgain = readAgain;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(Results);
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SearchResult.GroupLabel)));
             ResultsView = view;
             Strings.CultureChanged += () =>
             {
+                _readAgain?.Invoke();
                 Run();
                 OnPropertyChanged(nameof(ShortcutText));
             };

@@ -91,7 +91,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Lórí ayélujára</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Kò sí lórí ayélujára</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Àìmọ̀</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Àìyípadà</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tẹ̀síwájú</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Dúró</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Bẹ̀rẹ̀</value></data>
@@ -185,7 +184,7 @@
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Gba àwọn mod eré DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pọ́ọ̀tì mod eré</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Mú àrọ́pò DSX.exe ṣiṣẹ́</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ń gbọ́ lórí :{0}. {1} ń fi ránṣẹ́ sí nọ́mbà ẹ̀rọ ìdarí {2}, kò sì sí ẹ̀rọ ìdarí àfarawé tí ẹ̀rọ ìdarí PlayStation wà lórí rẹ̀ tí ó ní nọ́mbà yẹn.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ń gbọ́ lórí :{0}. {1} ń fi ránṣẹ́ sí nọ́mbà ẹ̀rọ ìdarí {2}, kò sì sí ẹ̀rọ ìdarí àfarawé tí DualSense tàbí DualShock 4 wà lórí rẹ̀ tí ó ní nọ́mbà yẹn.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pọ́ọ̀tì {0} ti wà ní lílò lọ́wọ́ ìṣàfilọ́lẹ̀ mìíràn, bíi DSX. Pa á tàbí yan pọ́ọ̀tì mìíràn.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod eré kan</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Sopọ̀</value></data>
@@ -405,6 +404,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ṣàfikún àwọ̀</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Àdáni</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Olùlò ló ṣe é)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Àwọn ọ̀pá</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Àwọn tírígà</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Àwọn POV</value></data>
@@ -1230,11 +1230,6 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Àtúnṣe fún àwọn ìgbéwọlé Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Tún flick stick tò</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Tún tò sí 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Tún tò sí 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Tún tò sí 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Tún tò sí 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Tún tò sí 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Àwọ̀ lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Kẹ̀kẹ́ ìdarí</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Tún kẹ̀kẹ́ ìdarí tò</value></data>
@@ -1265,9 +1260,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Ariwo</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Nígbà gbogbo</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Pa</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Tún tò sí àìyípadà (Pa)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Tún tò sí àìyípadà (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Tún tò sí 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Gbé jáde…</value></data>
@@ -1721,7 +1713,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mọ́tò</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Pín nípa ìhà</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone àárín</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tún tò sí Ọ̀pá òsì X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tún agbára tò (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tún deadzone àárín tò (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profaili</value></data>
@@ -2118,6 +2109,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Ṣàtúnṣe àwòṣe</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Yọ kúrò nínú àkójọ. Fáìlì náà ṣì wà níbi tí ó wà.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fáìlì “{0}” kò sí tàbí a kò lè kà á. PadForge yóò fi Òkùnkùn hàn títí yóò fi padà.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fáìlì “{0}” kò ní àwòṣe PadForge kankan nínú. PadForge yóò fi Òkùnkùn hàn títí yóò fi ní.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Orúkọ</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Àwòṣe mi</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Ìpìlẹ̀</value></data>
@@ -2128,10 +2120,12 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ń gba àwòrán láti Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam kò ní àwòrán gbígbòòrò fún eré yìí.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>A kò lè dé Steam. Ṣàyẹ̀wò àsopọ̀ íntánẹ́ẹ̀tì rẹ.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge kò lè ka àwòrán Steam fún eré yìí.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Ipò</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ó ń gbé àwòrán náà sókè tàbí sísàlẹ̀ nínú fèrèsé rẹ̀.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Fi àmì eré náà hàn</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Bá àwòrán mu</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ó ń mú àwọ̀ mẹ́rẹ̀ẹ̀rin náà láti inú àwòrán.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Àwọn àwòrán (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Gbogbo fáìlì (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Máa fi ránṣẹ́ lọ</value></data>
 </root>

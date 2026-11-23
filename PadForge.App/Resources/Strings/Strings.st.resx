@@ -1237,4 +1237,6 @@
   <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Setshwantsho sa thimi: Matshwao a mane a matlo</value></data>
   <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Setshwantsho sa thimi: Mohlala wa studio wa USS Enterprise</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Setshwantsho sa thimi: USS Enterprise-D</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge e ke ke ya bala setshwantsho sa Steam sa papadi ena.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tswela pele ho Romela</value></data>
 </root>

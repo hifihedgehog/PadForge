@@ -393,10 +393,10 @@ namespace PadForge.Services
         /// <summary>The line for a state, a port, the sender's name (null when
         /// none is sending), Home's number of the virtual controller
         /// its index names (0 when it names none), and the index it sent
-        /// when that is past every virtual controller with a PlayStation
-        /// controller while some have one (-1 otherwise). With no
-        /// virtual controller named and no index past them, none has a
-        /// PlayStation controller.</summary>
+        /// when that is past every virtual controller with a DualSense or
+        /// DualShock 4 while some have one (-1 otherwise). With no virtual
+        /// controller named and no index past them, none has a DualSense or
+        /// DualShock 4.</summary>
         internal static string FormatStatus(ServerState state, int port, string sender, int virtualController,
             int pastIndex = -1)
         {
@@ -441,7 +441,7 @@ namespace PadForge.Services
 
     /// <summary>
     /// The reply's device list (#529): one entry per controller index a mod
-    /// can address, each describing the first online PlayStation pad on that
+    /// can address, each describing the first online DualSense or DualShock 4 on that
     /// virtual controller. Built on the receive thread, at most every 250 ms,
     /// since a mod that resends its state every frame asks for it every
     /// frame.

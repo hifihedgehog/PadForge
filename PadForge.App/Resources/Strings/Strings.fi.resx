@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Yhteydessä</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Ei yhteyttä</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tuntematon</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Oletus</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Selaa…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jatka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Pysäytä</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Moottori pysäytetty.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Virhe: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}: luominen epäonnistui.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Laitetta ei voitu avata, lukea tai yhdistää. Diagnostiikkaloki kertoo, mikä laite on kyseessä.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} kohtasi virheen. Diagnostiikkaloki kertoo syyn.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Syötemoottori kohtasi virheen. Diagnostiikkaloki kertoo syyn.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL:ää ei voitu käynnistää. Diagnostiikkaloki kertoo syyn.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro-ajuria ei voitu ottaa käyttöön. Diagnostiikkaloki kertoo syyn.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Virtuaaliohjaimen HIDMaestro-profiili puuttuu. Diagnostiikkaloki kertoo, mikä se on.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ei voinut ottaa käyttöön muokattua identiteettiään ja asetteluaan, joten se käyttää profiilinsa omaa.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiili vaihdettu: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiili vaihdettu: Oletus</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Oletus</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Liikepalvelimen portti</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Välittää gyro- ja kiihtyvyysanturitiedot emulaattoreille, kuten Cemu, Dolphin ja Yuzu.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Pelimodit</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Sallii DSX-ohjelmaa varten tehtyjen pelimodien asettaa PlayStation-ohjaintesi mukautuvat liipaisimet, valopalkin, pelaajavalot ja mykistysvalon.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Sallii DSX-ohjelmaa varten tehtyjen pelimodien asettaa DualSense-ohjaimen tai DualShock 4 -ohjaimen mukautuvat liipaisimet, valopalkin, pelaajavalot ja mykistysvalon.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Hyväksy DSX-pelimodit</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pelimodien portti</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Suorita DSX.exe-korvike</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Jotkin modit, kuten DualSense4GTAV, sammuttavat itsensä, ellei DSX-niminen ohjelma ole käynnissä. Tämä käynnistää tällä nimellä pienen korvikkeen palvelimen kuunnellessa.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Toimii DSX-ohjelmaa varten tehtyjen modien kanssa, esimerkiksi peleille GTA V, Red Dead Redemption 2, Skyrim ja Forza. Palvelimen kuunnellessa PadForge kirjoittaa sen portin sinne, mistä modit sitä etsivät.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Kuuntelee porttia :{0}. {1} lähettää virtuaaliohjaimelle {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Kuuntelee porttia :{0}. {1} lähettää, mutta millään virtuaaliohjaimella ei ole PlayStation-ohjainta.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kuuntelee porttia :{0}. {1} lähettää ohjainindeksiin {2}, eikä yhdelläkään virtuaaliohjaimella, jolla on PlayStation-ohjain, ole sitä indeksiä.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Kuuntelee porttia :{0}. {1} lähettää, mutta millään virtuaaliohjaimella ei ole DualSense- tai DualShock 4 -ohjainta.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kuuntelee porttia :{0}. {1} lähettää ohjainindeksiin {2}, eikä yhdelläkään virtuaaliohjaimella, jolla on DualSense- tai DualShock 4 -ohjain, ole sitä indeksiä.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Portti {0} on toisen ohjelman käytössä, esimerkiksi DSX-ohjelman. Sulje se tai valitse toinen portti.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Pelimodi</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Toimii OpenTrack-ohjelman ja minkä tahansa sellaisen seurantaohjelman kanssa, joka lähettää tulosteensa UDP:nä tai kirjoittaa FreeTrack 2.0 -muotoiseen jaettuun muistiin, sekä tämän koneen OpenXR-ajoympäristön kanssa, joka pystyy suorittamaan istunnon taustalla.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Tiedostoa ei löydy</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ei luettavissa</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Teeman ”{0}” tiedosto puuttuu tai sitä ei voi lukea. PadForge käyttää asetusta Tumma, kunnes tiedosto on takaisin.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Teeman ”{0}” tiedosto ei sisällä PadForge-teemaa. PadForge käyttää asetusta Tumma, kunnes tiedostossa on teema.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profiili ”{0}” käyttää pelinsä ulkoasua. Teemasi palaa, kun jokin toinen profiili on aktiivinen.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-teemat (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Tuo tiedosto ei ole PadForge-teema.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ei voi lukea tuota tiedostoa.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ei löydä tuota tiedostoa.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Ei teema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Teemaa ei voitu tallentaa. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Uusi teema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge näyttää teeman jo sitä rakentaessasi.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Haetaan kuvaa Steamista…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steamissa ei ole tälle pelille leveää kuvaa.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steamiin ei saatu yhteyttä. Tarkista yhteytesi.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ei voi lukea Steamin kuvaa tälle pelille.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Sijainti</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Siirtää kuvaa ylös tai alas sen ikkunassa.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Näytä pelin logo</value></data>
@@ -1094,6 +1105,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Ohjain ei ottanut vastaan komentoa, joka valmistelee sen, joten mitään ei lähetetty. Tarkista, että se on yhdistetty, ja lähetä uudelleen.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Lähetys pysähtyi PadForge-sovelluksen virheeseen. Lokitiedostossa on tarkemmat tiedot.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kuvaa lähetetään vielä ohjaimeen. Pysäytetäänkö lähetys?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Jatka lähetystä</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak -tiedostot (*.mpk)|*.mpk|Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak portti {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Palauta Controller Pak</value></data>
@@ -1657,6 +1669,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulssin häivytys</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Esiasetus</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Mukautettu</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (käyttäjän luoma)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sauvat</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Liipaisimet</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-hatut</value></data>
@@ -2638,7 +2651,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Tässä ohjaimessa on magnetometri. Kiertymän ankkurointi magneettiseen pohjoiseen poistaa hitaan vaakasuuntaisen ryöminnän gyrotähtäyksestä. Kalibroi ensin: paina Kalibroi, kääntele ohjainta kaikkiin asentoihin kahdeksikon muodossa muutaman sekunnin ajan ja paina sitten uudelleen.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ankkuroi kiertymä kompassiin</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Lisää pienen korjaavan nopeuden, joka vetää vaakatähtäystä kohti magneettista suuntaa, joten ryömintää ei pääse kertymään. Vaatii tallennetun magnetometrin kalibroinnin. Lähellä olevan metallin tai magneettien häiritsemät näytteet hylätään automaattisesti.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Palauta oletus (pois)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Nyökkäyksen ja kallistuksen simulointi</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Nyökkäys ja kallistus laskettuna kiihtyvyysanturista</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Tämän ohjaimen gyro havaitsee vain kääntymisen vasemmalle ja oikealle. Kun simulointi on käytössä, PadForge johtaa nyökkäyksen ja kallistuksen kiihtyvyysanturista ja lähettää ne gyron kiertymän kanssa määritysriveille ja virtuaaliohjaimen liikkeeseen. Kiihtyvyysanturi ei erota työntöä kallistuksesta, joten ohjaimen liikuttaminen sivulle tai eteenpäin kääntämättä sitä tulkitaan lyhyeksi kierroksi.</value></data>
@@ -3035,7 +3047,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Kierrä sauvaa reunaa pitkin, jotta tavoitettava reuna kartoitetaan, ja muotoile se sitten täydeksi ympyräksi.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Palauta reunan kalibrointi</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Palauta keskipisteen korjaus Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Palauta skaalattuun säteittäiseen</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Palauta kuollut alue X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Palauta kuollut alue Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Palauta kuolleen alueen kompensointi X</value></data>
@@ -3487,13 +3498,10 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Palauta Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pisteitä 360° kohden</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Hiiren askeleet yhteen täyteen 360° kameran kääntöön. Riippuu pelin hiiren herkkyydestä: nosta arvoa, jos heilautus kääntää liian vähän, ja laske sitä, jos se kääntää liikaa.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Palauta arvoon 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Heilautuksen kesto</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Kuinka kauan täysi 180° heilautus kestää loppua kohti hidastuen. Lyhyemmät käännökset päättyvät samassa ajassa.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Palauta arvoon 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Heilautuksen kynnys</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Sauvan poikkeama, joka aloittaa heilautuksen, osuutena täydestä poikkeamasta. Heilautuksen aikana vapautuskohta laskee 90 %:iin tästä.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Palauta arvoon 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Tartuntakulma</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Tarttuu heilautuksessa kiinteisiin kulmiin, jolloin käännökset ovat johdonmukaisempia. Vain eteenpäin -asetus kohdistaa jokaisen heilautuksen suoraan eteen.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Ei tarttumista</value></data>
@@ -3502,22 +3510,16 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 astetta</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 astetta</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 astetta</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Palauta: ei tarttumista</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Tartunnan voimakkuus</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Kuinka voimakkaasti heilautus vetää kohti tartuntakulmaa. 1 tarttuu täysin, 0 poistaa tarttumisen käytöstä, väliarvot sekoittavat.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Palauta arvoon 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Etukulman kuollut alue</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Heilautus, joka on tämän kulman sisällä suoraan edestä, ei käännä mitään. Näin voit aloittaa kierron ilman heilautuskäännöstä.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Palauta arvoon 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Kierron tasoitus</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Tasoittaa reunan kierron kohinaa. -1 käyttää automaattista porrastettua ikkunaa, 0 poistaa tasoituksen käytöstä ja suuremmat arvot tasoittavat suurempia kierroksia kyselykierrosta kohden.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Palauta automaattiseksi (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Salli heilautus aktivoitaessa</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Kierron siirtymä</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Kääntää koko heilautuskarttaa näin monta astetta. Positiivinen on myötäpäivään. Tarttuminen tehdään siirtymän jälkeen.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Palauta kierron siirtymä</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kun Flick Stick -syötteen sisältävä kerros aktivoituu sauvan ollessa jo poikkeutettuna, heilautus laukeaa heti. Pois päältä pitää kameran paikallaan ja seuraa kiertoa sauvan nykyisestä kulmasta.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Palauta Salli heilautus aktivoitaessa</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ohjauksen ääriasentopalaute</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Vihje ääriasennossa ohjaustilaan asetetulle sauvalle</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kun ohjaustilaan asetettu sauva käännetään ääriasentoon asti, toistetaan vihje (tärinä, liipaisin tai valopalkki), jotta tunnet rajan. Kaikki oletuksena pois päältä.</value></data>
@@ -3707,11 +3709,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Toista DualSense-haptiikka tällä ohjaimella</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kun peli ohjaa tätä paikkaa virtuaalisena DualSense-ohjaimena, jolla on suunniteltu haptinen ääniraita, raita toistetaan tämän ohjaimen toimilaitteilla. Steam Controller 2026 USB-yhteydellä tai omalla sovittimellaan sekä Flydigi Apex 6 Pro toistavat raidan itse. Kaikki muut ohjaimet sekä tämä Steam Controller Bluetooth-yhteydellä saavat äänestä johdettuja sävyjä, jotka jäljittelevät suunnittelijan tarkoittamaa tuntumaa mutta eivät toista sitä täsmälleen.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiikan vahvistus</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Palauta oletus (pois)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Palauta oletus (100 %)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Toimilaitteen alipäästön rajataajuus</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Pitää Steam Controllerin haptisen suoratoiston tämän taajuuden alapuolella, jotta levyt värisevät eivätkä toista kuuluvaa ääntä. Noin 250 Hz:n kohdalla toimilaitteet alkavat kuulua. Nosta arvoa terävämpiä yksityiskohtia varten ja laske sitä hiljaisempaa käyttöä varten.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Palauta arvoon 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tätä taajuutta korkeammat sävyt leikataan tai lasketaan alemmas. Oletusarvo 800 Hz säilyttää moottorin ja iskujen jyrinän mutta poimii korkeat piippaukset.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Palauta korkeat sävyt</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Palauta sävyraja</value></data>
@@ -4312,8 +4311,59 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profiili</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kohdistinalue</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Vaihtotaso ({0})</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Pyöräluettelo ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Kohdistinalue ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Pidä hiiren painiketta {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Napsauta hiiren painiketta {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Kytke hiiren painike {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptinen pulssi ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (vapautuksen jälkiosa)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Napauta {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Sarjatuli {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Pidä {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Kytke {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Kaksoispainallus {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Pitkä painallus {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Pyöränaksahdus ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Kytke pyörä ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbopyörä ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Siirrä kohdistin ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Aseta LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Keskitä gyro uudelleen ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Liikauta kohdistinta ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Kuvakaappausnäppäin ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Näyttönäppäimistö ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Aseta valon väri</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Keskitä kamera uudelleen</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Siirrä kohdistin</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Liikauta kohdistinta</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Kuvakaappaus</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Näyttönäppäimistö</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Vaihda vaihtotasoa</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ota vaihtotaso käyttöön</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Poista vaihtotaso käytöstä</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Pidä vaihtotasoa</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Vaihda pelaajanumeroa</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Ei sidottu</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Kytke työpöytätila</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steamin järjestelmäpainike</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Kytke suurennus</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Kirkkaus ylös</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Kirkkaus alas</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Sammuta ohjain</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Avaa Steamin määritys</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Avaa Steamin pikavalikko</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Lopeta peli</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Kytke haptiikka</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Kytke Steamin HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Kytke tärinä</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Pakota Guide-painike</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Gyron kalibrointikierto</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Käänny suuntaan</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (pito)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (vapautus)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (vapautus)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (kytkentä)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Valitse määritys nähdäksesi, mitä siirtyy mukana.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Mitä siirtyy mukana</value></data>
@@ -4928,11 +4978,9 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Kerros</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Valitse kerros, joka sallii tämän valikon. Mikä tahansa kerros ja Perus sallivat sen myös muiden kerrosten ollessa aktiivisia. Nimetyn kerroksen on vastattava parhaillaan aktiivista kerrosta.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Palauta asetukseksi Mikä tahansa kerros ja poista kerroksen pitämä avaus käytöstä.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ei tämän paikan luettelossa)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Kerros pitää valikon auki</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Pidä tämä valikko auki, kun sen nimetty kerros on aktiivinen. Valittu fyysinen syöte ohjaa korostusta. Mikä tahansa kerros ja Perus käyttävät tavallista pinnan avausta.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Palauta avaamiseen kosketuksesta tai poikkeamasta.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Ohjaava syöte</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Fyysinen syöte, joka ohjaa korostettua solua, kun kerros pitää tämän valikon auki.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Luetaan tähän paikkaan liitetyistä fyysisistä ohjaimista. Kerros avaa valikon ja tämä syöte ohjaa sitä. Valikon solut määräävät, mitä se lähettää.</value></data>
@@ -5014,7 +5062,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Moottori</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Jaa suunnan mukaan</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Keskikohdan kuollut alue</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Palauta: Vasen sauva X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Palauta voimakkuus (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Palauta keskikohdan kuollut alue (2 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Palauta ohjauskulman tärinän käyttöönotto</value></data>
@@ -5681,6 +5728,25 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiilit</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Taso {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Vaihto {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Liipaisimet ({0})</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Valopalkki</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Lisätoiminnot ({0})</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Valopalkki ({0})</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Käynnistä ohjelma</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Alue ({0})</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Tuotu profiili</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Tuotu makro</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Esiasetus {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Säteittäinen valikko {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Kosketusvalikko {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Hiiren alue</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>napautus</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>pito</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>kaksoisnapautus</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Vasemman liipaisimen tehoste</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Oikean liipaisimen tehoste</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Painikemääritys {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Kohta {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Ohjain</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Säilyttää omat tulosteensa</value></data>
@@ -6012,7 +6078,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX ei julkaise, miten sen asetus {0} toimii, joten PadForge käyttää omaansa.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX ei julkaise syötenumeroitaan. Julkaistut DSX-profiilit käyttävät numeroita 41:stä 44:ään ristiohjaimena, joten PadForge lukee ne niin.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ei kirjoita tällaista kytkentää, joten tiedostoa on muutettu DSX:n ulkopuolella.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX vaihtaa tähän esiasetukseen pikanäppäimestä. Sen makro on Makrot-sivulla valmiina sidottavaksi painikkeeseen.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX vaihtaa tähän esiasetukseen pikanäppäimestä. Sen makro on ohjaimen Makrot ja valikot -osiossa valmiina sidottavaksi painikkeeseen.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Mikään julkaistu DSX-profiili ei käytä arvoa {0}, joten PadForge ei voi tietää, mitä se tekee.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX antaa pelin määrittää tämän, kun sen läpivientikytkin on päällä, joten PadForge jättää tämänkin pelin hoidettavaksi.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Kun Native Mode on käytössä ja Send Data to Device on pois päältä, DSX ei lähetä ohjaimelle mitään omaa, joten PadForge jättää tämänkin pelin hoidettavaksi.</value></data>

@@ -834,6 +834,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Kora sɛso bi…</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Yi fi nhyehyɛe no mu. Fael no tena baabi a ɛwɔ.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” fael no ayera anaa wontumi nkenkan. PadForge kyerɛ Esum kosi sɛ ɛbɛsan aba.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” fael no nkura PadForge ahosiesie biara. PadForge kyerɛ Esum kosi sɛ ɛbɛkura bi.</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Fapem</value></data>
   <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Fam a ahosu nhyehyɛe no gyina so. Ahosu nhyehyɛe a ɛyɛ esum wɔ nkyerɛwee a ɛyɛ hann, na nea ɛyɛ hann wɔ nkyerɛwee a ɛyɛ esum.</value></data>
   <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Mfonini</value></data>
@@ -845,4 +846,5 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Kyerɛ agodie no agyiraehyɛde</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ma ɛne mfonini no nhyia</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ɛfa ahosu anan no fi mfonini no mu.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kɔ so soma</value></data>
 </root>

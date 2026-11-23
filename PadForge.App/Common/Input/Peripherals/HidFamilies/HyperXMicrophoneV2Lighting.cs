@@ -110,7 +110,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = registration.Name,
-            Map = new LightMap(Lights(), "OpenRGB HyperXMicrophoneV2Controller")
+            Map = new LightMap(Lights())
             {
                 Product = $"hyperx:{registration.VendorId:X4}:{productId:X4}",
             },

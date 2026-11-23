@@ -3583,7 +3583,6 @@ namespace PadForge.Tests
             var map = PeripheralLightMaps.For(PathOf(keyboard));
             Assert.Contains(map.Lights, l => l.Address == 0x64);
             Assert.DoesNotContain(map.Lights, l => l.Address == 0x59);
-            Assert.Equal("OpenRGB SteelSeriesApexRegions.h, SKU 64743", map.Source);
         }
 
         // ── The test host and real devices ──

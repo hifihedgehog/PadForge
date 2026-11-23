@@ -157,7 +157,7 @@ namespace PadForge.Common.Input.Peripherals
                 Family = Instance,
                 Name = name,
                 // One zone, "Mouse" (RGBController_RedragonMouse.cpp:81-96).
-                Map = new LightMap(SinowealthLighting.OneLight(), "OpenRGB RGBController_RedragonMouse.cpp") { Product = product },
+                Map = new LightMap(SinowealthLighting.OneLight()) { Product = product },
                 HoldMs = HoldMs,
                 RepaintMs = RepaintMs,
                 Begin = (io, wait) => Session.Begin(io, KeyboardProfileBackups.SessionKey(product, io?.Path), Readable(productId)),

@@ -86,7 +86,7 @@ namespace PadForge.Tests
         }
 
         private static LightMap Map(params LightStrip[] strips)
-            => new(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) }, "test") { Strips = strips };
+            => new(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) }) { Strips = strips };
 
         [Fact]
         public void TheCard_ListsEachStripOfTheDevice_WithItsCountAndMost()
@@ -228,7 +228,7 @@ namespace PadForge.Tests
         {
             string product = "test:strips:" + Guid.NewGuid();
             var strips = new[] { new LightStrip(1, 48, 0) };
-            var map = new LightMap(new[] { new LightInfo(7, LightKind.Key, 0, LightKeySource.None) }, "test")
+            var map = new LightMap(new[] { new LightInfo(7, LightKind.Key, 0, LightKeySource.None) })
             {
                 Product = product,
                 Strips = strips,

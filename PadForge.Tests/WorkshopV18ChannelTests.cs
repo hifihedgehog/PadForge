@@ -217,7 +217,7 @@ namespace PadForge.Tests
         // ── Clone hygiene (audit 2026-07-17 G4) ──
 
         [Fact]
-        public void MappingSourceClone_DropsGateCacheAndFeelState()
+        public void MappingSourceClone_DropsGateCache()
         {
             var s = new CustomInputState();
             s.Buttons[0] = true;
@@ -231,10 +231,9 @@ namespace PadForge.Tests
 
             // The cached synthetic source pins the ORIGINAL's device guid;
             // a retargeted clone re-reading it would gate against the stale
-            // device. The per-device feel map is likewise not the clone's.
+            // device.
             Assert.Null(clone.GateSourceCache);
             Assert.Null(clone.GateSourceCacheKey);
-            Assert.Null(clone.MouseFeelByDevice);
             // The serialized gate itself still travels.
             Assert.Equal("Button 1", clone.GateDescriptor);
         }

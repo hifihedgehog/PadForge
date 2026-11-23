@@ -315,6 +315,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Embojuaju sa'y</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preajuste</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Ñemomba'epyre</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Puruhára ojapopyre)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Palanca kuéra</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatillo kuéra</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -1318,7 +1319,7 @@
   <data name="Common_Apply" xml:space="preserve"><value>Moĩ</value></data>
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mba'e'oka ojekuaa'ỹva</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ñeñapytĩ)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ñemosãso)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ñemosãso)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ñepyrũ)</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Peteĩ web pad ojejapo porãva omoĩ peteĩteĩ aty mombyrykue pe tembe'y hi'aguĩvévagui pantalla ipe'ãvévape, RetroArch overlay-kuéra omongu'e háicha ijykere mokõivéva. Oñemoñe'ẽ documentación ramónte, ndaipóri código GPL oñemondóva.</value></data>
@@ -1326,6 +1327,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Eñongatu peteĩ kópia…</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Nohẽ lístagui. Marandurenda opyta oĩhaguépe.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” marandurenda ndaipóri térã ndaikatúi ojelee. PadForge ohechauka Iñypytũ ojevy peve.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” marandurenda ndoguerekói PadForge tema. PadForge ohechauka Iñypytũ oguereko peve.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Téra</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Che tema</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pyenda</value></data>
@@ -1340,4 +1342,7 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Embojoja ta'ãngare</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ojagarra umi irundy sa'y ta'ãngagui.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ta'angakuéra (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Opaite marandurenda (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ndaikatúi olee upe marandurenda.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ndojuhúi upe marandurenda.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Emondo meme</value></data>
 </root>

@@ -166,10 +166,10 @@
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mga game mod</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ginatugutan sini ang mga game mod nga ginhimo para sa DSX nga magkontrol sang adaptive trigger, lightbar, suga sang player kag suga sang mute sang imo mga PlayStation controller.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ginatugutan sini ang mga game mod nga ginhimo para sa DSX nga magkontrol sang adaptive trigger, lightbar, suga sang player kag suga sang mute sang DualSense ukon DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Batuna ang mga DSX game mod</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port sang game mod</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Nagapamati sa :{0}. Nagapadala ang {1} sa controller index {2}, kag wala sing virtual controller nga may PlayStation controller nga may amo nga index.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Nagapamati sa :{0}. Nagapadala ang {1} sa controller index {2}, kag wala sing virtual controller nga may DualSense ukon DualShock 4 nga may amo nga index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ginagamit ang port {0} sang iban nga programa, pareho sang DSX. Sirhi ini ukon magpili sang iban nga port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isa ka game mod</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Konektado</value></data>
@@ -379,6 +379,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Magdugang sing kolor</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kustom</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Ginhimo sang user)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Mga stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>
@@ -904,11 +905,6 @@
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (wala nga stick)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset ang flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>I-reset sa 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>I-reset sa 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>I-reset sa 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>I-reset sa 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>I-reset sa 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Kolor sang lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Manibela</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>I-reset ang manibela</value></data>
@@ -930,9 +926,6 @@
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Pirme</value></data>
   <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Samtang ginauyatan ang input</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Patay</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>I-reset sa default (Patay)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset sa default (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset sa 250 Hz</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Na-export ang profile nga "{0}".</value></data>
@@ -1326,7 +1319,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Ginbahin suno sa direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone sa tunga</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>I-reset sa wala nga stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>I-reset ang kusog (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>I-reset ang deadzone sa tunga (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
@@ -1774,6 +1766,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit ang tema</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kuhaa sa listahan. Ang file magapabilin sa iya lugar.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ang file sang “{0}” nadula ukon indi mabasa. Ginapakita sang PadForge ang Madulom tubtob nga mabalik ini.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Wala sing PadForge theme ang file sang “{0}”. Ginapakita sang PadForge ang Madulom tubtob nga may theme na ini.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Ngalan</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Akon nga tema</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Basehan</value></data>
@@ -1789,4 +1782,13 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ibagay sa litrato</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ginakuha ang apat ka kolor halin sa litrato.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tanan nga file (*.*)|*.*</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>May device nga indi mabuksan, mabasa ukon ma-map. Ginasambit ini sang diagnostics log.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Nakasugata sing error ang {0}. Ara sa diagnostics log ang kabangdanan.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Nakasugata sing error ang input engine. Ara sa diagnostics log ang kabangdanan.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Indi makasugod ang SDL. Ara sa diagnostics log ang kabangdanan.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Indi ma-set up ang HIDMaestro. Ara sa diagnostics log ang kabangdanan.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Nadula ang HIDMaestro profile sang isa ka virtual controller. Ginasambit ini sang diagnostics log.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Indi magamit sang {0} ang iya kustom nga identidad kag layout, gani ginagamit niya ang kaugalingon sang iya profile.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Indi mabasa sang PadForge ang litrato sang Steam para sa sini nga game.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Padayon nga ipadala</value></data>
 </root>

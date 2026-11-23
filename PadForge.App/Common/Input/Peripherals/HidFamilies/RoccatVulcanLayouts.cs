@@ -18,7 +18,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// cell an index into <see cref="Leds"/> or -1, and the LEDs in
     /// OpenRGB's order.</summary>
     internal sealed record RoccatVulcanLayout(string Table, int Region, int Rows, int Cols, short[] Grid,
-                                              string Source, RoccatVulcanLed[] Leds);
+                                              RoccatVulcanLed[] Leds);
 
     /// <summary>
     /// The layouts of the Roccat Vulcan keyboards (#557), generated from

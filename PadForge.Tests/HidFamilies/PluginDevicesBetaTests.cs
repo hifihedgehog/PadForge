@@ -33,6 +33,7 @@ namespace PadForge.Tests
             PluginStepKind.Feature => "set " + Short(s.Bytes),
             PluginStepKind.ReadFeature => "get " + s.Value.ToString("X2"),
             PluginStepKind.ReadInput => "read",
+            PluginStepKind.Drain => "drain",
             _ => "wait " + s.Value,
         }).ToArray();
 
@@ -442,12 +443,74 @@ namespace PadForge.Tests
             Assert.NotEmpty(d.Lights);
             Assert.Equal(new[]
             {
-                "out 00 51 2C 04 02 1E 64 01 00 02", "read",
-                "out 00 51 2C 04 01", "read",
-                "out 00 51 2C 04", "read",
+                "drain", "out 00 51 2C 04 02 1E 64 01 00 02", "read",
+                "drain", "out 00 51 2C 04 01", "read",
+                "drain", "out 00 51 2C 04", "read",
             }, Steps(d.HandBack));
             Assert.All(d.HandBack.Where(s => s.Kind == PluginStepKind.Output), s => Assert.Equal(65, s.Bytes.Length));
             Assert.All(d.HandBack.Where(s => s.Kind == PluginStepKind.ReadInput), s => Assert.Equal(300, s.Value));
+        }
+
+        /// <summary>A keyboard of these that answers every report it takes, in order
+        /// (AsusKeyboard.cs:24-25 at aa0037c5), with the report's first five bytes.</summary>
+        private sealed class AnsweringEveryReport : IHidReportChannel
+        {
+            private readonly Queue<byte[]> _waiting = new();
+            public readonly List<string> Log = new();
+            public string Path => @"\\?\hid#vid_0b05&pid_1b04&mi_01#fake";
+            public bool FeatureOnly => false;
+            public int InputReportLength => 65;
+            public int OutputReportLength => 65;
+            public int FeatureReportLength => 0;
+            public bool SetFeature(byte[] report) => false;
+            public bool GetFeature(byte reportId, byte[] buffer) => false;
+
+            public bool WriteOutput(byte[] report, int timeoutMs = HidReportChannel.WriteTimeoutMs)
+            {
+                Log.Add("out " + Hex(report, 5));
+                _waiting.Enqueue(report.Take(5).ToArray());
+                return true;
+            }
+
+            public int ReadInput(byte[] buffer, int timeoutMs)
+            {
+                if (_waiting.Count == 0) return 0;
+                var answer = _waiting.Dequeue();
+                if (timeoutMs > 0) Log.Add("answer " + Hex(answer, 5));
+                answer.CopyTo(buffer, 0);
+                return buffer.Length;
+            }
+
+            public void Dispose() { }
+        }
+
+        /// <summary>A picture's C0 81 reports go out with no read, so their answers wait in
+        /// the queue when the hand-back starts, three pictures' worth here, more than
+        /// eight reports. Each 51 2C report goes out after all of those are read
+        /// away, so the read after it takes its own answer before the next goes out, as
+        /// WriteForResponseLocked drains until nothing waits before each write
+        /// (AsusKeyboard.cs:337, WindowsUsbProvider.Drain, at aa0037c5).</summary>
+        [Theory]
+        [InlineData(0x1B04)]
+        [InlineData(0x1B7E)]
+        public void TheFalchionRxKind_ReadsEachWaveReportsOwnAnswer_AfterAPicture(int pid)
+        {
+            var d = Device(0x0B05, (ushort)pid);
+            var model = F.Instance.Match(CollectionOf(d));
+            var io = new AnsweringEveryReport();
+            var session = model.Begin(io, _ => { });
+            Assert.NotNull(session);
+            for (int picture = 0; picture < 3; picture++)
+                Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights, model.Map.Lights.Select(_ => 0x112233 + picture).ToList()));
+            Assert.True(io.Log.Count(l => l.StartsWith("out 00 C0 81", StringComparison.Ordinal)) > 8);
+            int before = io.Log.Count;
+            Assert.True(session.HandBack(io, _ => { }));
+            Assert.Equal(new[]
+            {
+                "out 00 51 2C 04 02", "answer 00 51 2C 04 02",
+                "out 00 51 2C 04 01", "answer 00 51 2C 04 01",
+                "out 00 51 2C 04 00", "answer 00 51 2C 04 00",
+            }, io.Log.Skip(before));
         }
 
         [Fact]

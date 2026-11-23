@@ -607,19 +607,7 @@ namespace PadForge.Services
         public static byte[] RenderText(string text)
         {
             text = (text ?? string.Empty).Trim();
-            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-            FormattedText fitted = null;
-            for (double size = BlissBoxScreen.Height; size >= 6; size -= 1)
-            {
-                var candidate = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                    typeface, size, Brushes.Black, 1.0)
-                {
-                    MaxTextWidth = BlissBoxScreen.Width,
-                    TextAlignment = TextAlignment.Center,
-                };
-                fitted = candidate;
-                if (candidate.MinWidth <= BlissBoxScreen.Width && candidate.Height <= BlissBoxScreen.Height) break;
-            }
+            FormattedText fitted = FitText(text);
             var visual = new DrawingVisual();
             TextOptions.SetTextRenderingMode(visual, TextRenderingMode.Aliased);
             TextOptions.SetTextFormattingMode(visual, TextFormattingMode.Display);
@@ -634,6 +622,11 @@ namespace PadForge.Services
             target.Render(visual);
             return Threshold(target);
         }
+
+        /// <summary>The text RenderText draws, fitted to the VMU's 48 by 32.</summary>
+        internal static FormattedText FitText(string text)
+            => PadForge.Common.Input.KeyboardScreens.KeyboardScreenRenderer.FitText(text, Brushes.Black,
+                BlissBoxScreen.Width, BlissBoxScreen.Height);
 
         /// <summary>A picture as the VMU shows it, dark pixels on the LCD's
         /// pale green, for previews scaled up with nearest-neighbor.</summary>

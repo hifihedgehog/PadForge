@@ -178,7 +178,7 @@ namespace PadForge.Common.Input.Peripherals
                 for (int led = 0; led < leds; led++)
                     lights.Add(new LightInfo(StripAddress(strip, led), LightKind.Edge, 0, LightKeySource.None) { Zone = strip });
             }
-            return new LightMap(lights, "OpenRGB RGBController_CorsairLightingNode.cpp")
+            return new LightMap(lights)
             {
                 Product = $"corsair:{CorsairLights.VendorId:X4}:{productId:X4}",
                 Strips = strips,

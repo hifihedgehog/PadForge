@@ -114,12 +114,12 @@ namespace PadForge.Common.Input.Peripherals
 
             return new Dictionary<string, (LightMap, Handler[])>(StringComparer.Ordinal)
             {
-                ["keyboard"] = Entry(keyboard, "gamesense-sdk rgb-per-key-zones, OpenRGB SteelSeries Apex key codes"),
-                ["mouse"] = Entry(mouse, "gamesense-sdk mouse zones"),
+                ["keyboard"] = Entry(keyboard),
+                ["mouse"] = Entry(mouse),
             };
         }
 
-        private static (LightMap, Handler[]) Entry(List<(LightInfo Light, Handler Handler)> pairs, string source)
+        private static (LightMap, Handler[]) Entry(List<(LightInfo Light, Handler Handler)> pairs)
         {
             var lights = new LightInfo[pairs.Count];
             var handlers = new Handler[pairs.Count];
@@ -128,7 +128,7 @@ namespace PadForge.Common.Input.Peripherals
                 lights[i] = pairs[i].Light;
                 handlers[i] = pairs[i].Handler;
             }
-            return (new LightMap(lights, source), handlers);
+            return (new LightMap(lights), handlers);
         }
 
         /// <summary>The event a type's light colors travel on, beside its

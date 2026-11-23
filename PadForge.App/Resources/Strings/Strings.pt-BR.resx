@@ -96,7 +96,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Desconhecido</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Padrão</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Procurar…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Prosseguir</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Parar</value></data>
@@ -274,6 +273,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor parado.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Erro: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Não foi possível criar {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Não foi possível abrir, ler ou mapear um dispositivo. O log de diagnóstico informa qual.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} encontrou um erro. O log de diagnóstico tem a causa.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>O motor de entrada encontrou um erro. O log de diagnóstico tem a causa.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Não foi possível iniciar o SDL. O log de diagnóstico tem a causa.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Não foi possível configurar o HIDMaestro. O log de diagnóstico tem a causa.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Falta o perfil HIDMaestro de um controle virtual. O log de diagnóstico informa qual.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} não pôde assumir a identidade e o layout personalizados e usa os do seu próprio perfil.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil alterado: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil alterado: Padrão</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Padrão</value></data>
@@ -358,15 +364,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Porta do Servidor de Movimento</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornece dados de giroscópio e acelerômetro para Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mods de Jogos</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Permite que mods de jogos feitos para o DSX definam os gatilhos adaptáveis, a barra de luz, as luzes de jogador e a luz de mudo dos seus controles PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Permite que mods de jogos feitos para o DSX definam os gatilhos adaptáveis, a barra de luz, as luzes de jogador e a luz de mudo de um DualSense ou DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Aceitar Mods de Jogos do DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Porta de Mods de Jogos</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Executar um Substituto do DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Alguns mods, como o DualSense4GTAV, se desativam a menos que um programa chamado DSX esteja em execução. Isto executa um pequeno substituto com esse nome enquanto o servidor escuta.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Funciona com mods feitos para o DSX, como os de GTA V, Red Dead Redemption 2, Skyrim e Forza. Enquanto o servidor escuta, o PadForge grava sua porta onde esses mods a procuram.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Escutando em :{0}. {1} está enviando para o controle virtual {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Escutando em :{0}. {1} está enviando, mas nenhum controle virtual tem um controle PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Escutando em :{0}. {1} está enviando para o índice de controle {2}, e nenhum controle virtual com um controle PlayStation tem esse índice.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Escutando em :{0}. {1} está enviando, mas nenhum controle virtual tem um DualSense ou DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Escutando em :{0}. {1} está enviando para o índice de controle {2}, e nenhum controle virtual com um DualSense ou DualShock 4 tem esse índice.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>A porta {0} está em uso por outro programa, como o DSX. Feche-o ou escolha outra porta.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Um mod de jogo</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funciona com o OpenTrack e com qualquer rastreador que envie sua saída UDP ou escreva na memória compartilhada do FreeTrack 2.0, e com um tempo de execução OpenXR instalado nesta máquina que possa executar uma sessão em segundo plano.</value></data>
@@ -426,9 +432,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Arquivo não encontrado</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Não pode ser lido</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>O arquivo de "{0}" não foi encontrado ou não pode ser lido. O PadForge mostra Escuro até ele voltar.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>O arquivo de "{0}" não contém um tema do PadForge. O PadForge mostra Escuro até que contenha.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>O perfil "{0}" está usando o visual do seu jogo. Seu tema volta quando outro perfil estiver ativo.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Temas do PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Esse arquivo não é um tema do PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>O PadForge não consegue ler esse arquivo.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>O PadForge não encontra esse arquivo.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Não é um tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Não foi possível salvar o tema. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Novo Tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>O PadForge veste o tema enquanto você o cria.</value></data>
@@ -443,6 +453,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Obtendo a imagem do Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>O Steam não tem imagem panorâmica para este jogo.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Não foi possível conectar ao Steam. Verifique sua conexão.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>O PadForge não consegue ler a imagem do Steam para este jogo.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posição</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Move a imagem para cima ou para baixo na sua janela.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mostrar o Logotipo do Jogo</value></data>
@@ -854,6 +865,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predefinição</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Criada pelo Usuário)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Analógicos</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -1484,7 +1496,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Percorra a borda com o direcional para mapear o limite alcançável e remodele-o em um círculo completo.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Redefinir Calibração do Limite</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Redefinir Deslocamento Central Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redefinir para Radial Escalada</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redefinir Deadzone X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redefinir Deadzone Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redefinir Anti-Deadzone X</value></data>
@@ -1883,7 +1894,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Este controle traz um magnetômetro. Ancorar a guinada ao norte magnético remove a deriva horizontal lenta da mira por giroscópio. Calibre primeiro: pressione Calibrar, gire o controle em forma de oito por todas as orientações por alguns segundos e pressione novamente.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancorar a Guinada à Bússola</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adiciona uma pequena taxa corretiva que puxa a mira horizontal para o rumo magnético, impedindo o acúmulo de deriva. Requer uma calibração do magnetômetro salva. Amostras perturbadas por metal ou ímãs próximos são rejeitadas automaticamente.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Redefinir para o Padrão (Desligado)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulação de Pitch e Roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch e roll calculados pelo acelerômetro</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>O giroscópio deste controle detecta apenas o giro para a esquerda e para a direita. Com a simulação ativada, o PadForge deriva o pitch e o roll do acelerômetro e os envia junto com o yaw do giroscópio para os mapeamentos e para o movimento do controle virtual. Um acelerômetro não distingue um empurrão de uma inclinação, então mover o controle para o lado ou para a frente sem girá-lo é lido como uma rotação breve.</value></data>
@@ -2971,11 +2981,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduzir a Háptica do DualSense Neste Controle</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual com áudio háptico de autor, essa trilha é reproduzida nos atuadores deste controle. Um Steam Controller 2026 por USB ou pelo seu dongle, e um Flydigi Apex 6 Pro, reproduzem a própria trilha. Qualquer outro controle, e esse Steam Controller por Bluetooth, recebe tons derivados do áudio, que aproximam a sensação projetada em vez de reproduzi-la.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ganho Háptico</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Redefinir para o Padrão (Desligado)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Redefinir para o Padrão (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Corte de Passa-Baixa do Atuador</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Mantém o streaming háptico do Steam Controller abaixo desta frequência para que os pads vibrem em vez de reproduzir som audível. Por volta de 250 Hz os atuadores começam a ficar audíveis. Aumente para mais detalhe, diminua para jogar mais silencioso.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Redefinir para 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tons acima desta frequência são cortados ou dobrados. O padrão de 800 Hz preserva a vibração de motor e impactos e captura os bipes agudos.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restaurar Tons Agudos</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restaurar Limite de Tom</value></data>
@@ -3499,6 +3506,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>O controle não aceitou o comando que o prepara, então nada foi enviado. Verifique se ele está conectado e envie de novo.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>O envio parou por um erro no PadForge. O arquivo de log tem os detalhes.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Uma imagem ainda está indo para o controle. Interromper o envio?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Continuar Enviando</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Arquivos de Controller Pak (*.mpk)|*.mpk|Todos os Arquivos (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porta {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restaurar Controller Pak</value></data>
@@ -4127,8 +4135,59 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Perfil do Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro do Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Região do Cursor</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift de {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Lista da roda ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Região do cursor ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Segurar mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Clicar mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Alternar mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Pulso háptico ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (parte final ao soltar)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Toque em {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Disparo automático {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Segurar {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Alternar {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Toque duplo em {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Toque longo em {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Passo da roda ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Alternar roda ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Roda turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Teletransportar cursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Definir LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Recentralizar giroscópio ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Mover cursor um pouco ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Tecla de captura de tela ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Teclado na tela ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Definir cor da luz</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentralizar câmera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Teletransportar cursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Mover cursor um pouco</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Captura de tela</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Teclado na tela</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Trocar camada de shift</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ativar uma camada de shift</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Desativar uma camada de shift</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Manter uma camada de shift</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Mudar número do jogador</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Sem atribuição</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Alternar modo desktop</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Tecla de sistema do Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Alternar lupa</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Aumentar brilho</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Diminuir brilho</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Desligar controle</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Abrir configurador do Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Abrir menu rápido do Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Sair do jogo</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Alternar háptico</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Alternar HUD do Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Alternar vibração</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Forçar botão Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Giro de calibração do giroscópio</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Virar para a direção</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (segurar)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (soltar)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (soltar)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ativar)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Escolha uma configuração para ver o que é aproveitado.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>O Que É Aproveitado</value></data>
@@ -4264,13 +4323,10 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Redefinir Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Contagens por 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Contagens de mouse para uma volta completa de câmera de 360°. Depende da sensibilidade do mouse do jogo: aumente se um flick girar de menos, diminua se girar demais.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Redefinir para 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Tempo de Flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Quanto tempo um flick completo de 180° leva para concluir, com desaceleração no final. Giros mais curtos terminam no mesmo tempo.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Redefinir para 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Limiar de Flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Deflexão do analógico que inicia um flick, como fração da deflexão total. Durante o flick, o ponto de liberação cai para 90% deste valor.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Redefinir para 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Ângulo de Encaixe</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Encaixa o flick em ângulos fixos para giros mais consistentes. Somente para Frente encaixa todo flick diretamente à frente.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Sem Encaixe</value></data>
@@ -4279,22 +4335,16 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Graus</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Graus</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Graus</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Redefinir para Sem Encaixe</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Força do Encaixe</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Com que força um flick puxa para o ângulo encaixado. 1 encaixa totalmente, 0 desativa o encaixe, valores intermediários misturam.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Redefinir para 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zona Morta do Ângulo Frontal</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Um flick dentro deste ângulo em relação à frente não gira nada. Permite começar uma varredura sem um giro de flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Redefinir para 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Suavização da Varredura</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Suaviza o ruído da varredura pela borda. -1 usa a janela escalonada automática, 0 desliga a suavização, valores maiores suavizam rotações por tick maiores.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Redefinir para Automático (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Permitir Flick na Ativação</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Deslocamento de Rotação</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Gira todo o mapa de flick nestes graus. Positivo é no sentido horário. O encaixe se aplica após o deslocamento.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Redefinir o Deslocamento de Rotação</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quando a camada que hospeda o Flick Stick é ativada com o analógico já defletido, dispara o flick imediatamente. Desligado mantém a câmera parada e acompanha a rotação a partir do ângulo atual do analógico.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Redefinir Permitir Flick ao Acionar</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personalizado</value></data>
   <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>Arma o reconhecedor com uma entrada gravada de qualquer dispositivo em vez de um botão do mouse: uma tecla, um botão de gamepad ou uma entrada analógica como um pedal. Grave a entrada abaixo.</value></data>
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Entrada de Ativação Personalizada</value></data>
@@ -4877,11 +4927,9 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Camada</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Escolha a camada que permite este menu. “Qualquer Camada” e “Base” o permitem também sob outras camadas ativas. Uma camada nomeada precisa coincidir com a camada ativa.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Redefinir para “Qualquer Camada” e desligar a abertura mantida pela camada.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (não consta neste slot)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>A Camada Mantém o Menu Aberto</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Mantém este menu aberto enquanto sua camada nomeada estiver ativa. A entrada física selecionada direciona o destaque. “Qualquer Camada” e “Base” abrem da forma habitual.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Redefinir para abrir ao tocar ou inclinar.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Direcionar Com</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>A entrada física que direciona a célula destacada enquanto a camada mantém o menu aberto.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Lido dos controles físicos atribuídos a este slot. A camada abre o menu e esta entrada o direciona. Suas células dizem o que ele emite.</value></data>
@@ -4963,7 +5011,6 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dividir por direção</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta central</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Redefinir para analógico esquerdo X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Redefinir intensidade (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Redefinir zona morta central (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Redefinir Ativar Vibração por Ângulo de Direção</value></data>
@@ -5630,6 +5677,25 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Perfis</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Camada {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Gatilhos: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Barra de luz</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Extras de {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Barra de luz de {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Iniciar Programa</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Alcance de {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Perfil importado</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Macro importada</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Predefinição {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Menu Radial {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Menu de Toque {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Região do mouse</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>toque</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>manter pressionado</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>toque duplo</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Efeito do gatilho esquerdo</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Efeito do gatilho direito</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Mapeamento de Botões {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Controle</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Mantém as próprias saídas</value></data>
@@ -5961,7 +6027,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>O DSX não publica como funciona sua configuração {0}, então o PadForge usa a sua própria.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>O DSX não publica seus números de entrada. Os perfis publicados do DSX usam 41 a 44 como D-Pad, então o PadForge os lê assim.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>O DSX não grava um mapeamento como este, então o arquivo foi alterado fora do DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>O DSX troca para esta predefinição por um atalho. A macro dela está na página Macros, pronta para ser associada a um botão.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>O DSX troca para esta predefinição por um atalho. A macro dela está na seção Macros e Menus do controle, pronta para ser associada a um botão.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Nenhum perfil publicado do DSX usa {0}, então o PadForge não sabe dizer o que isso faz.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>O DSX deixa o jogo definir isto enquanto sua chave de transmissão está ligada, então o PadForge também deixa com o jogo.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>No Native Mode com Send Data to Device desativado, o DSX não envia nada próprio ao controle, então o PadForge também deixa isto com o jogo.</value></data>

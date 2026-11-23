@@ -364,7 +364,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(lights, "OpenRGB LenovoDevices.h")
+                Map = new LightMap(lights)
                 {
                     Product = product,
                 },
@@ -534,7 +534,7 @@ namespace PadForge.Common.Input.Peripherals
             extra.Sort();
             foreach (int code in extra)
                 result.Add(new LightInfo(code, LightKind.Key, 0, LightKeySource.None));
-            return new LightMap(result, $"Lenovo Legion Toolkit key map, {layout}") { Product = product };
+            return new LightMap(result) { Product = product };
         }
 
         // ─────────────────────────────────────────────

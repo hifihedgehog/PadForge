@@ -90,5 +90,35 @@ namespace PadForge.Tests
             Assert.True(string.IsNullOrEmpty(source.Descriptor), $"the source's own descriptor took '{source.Descriptor}'");
             Assert.True(string.IsNullOrEmpty(other.SourceDescriptor));
         }
+
+        /// <summary>A MIDI note, analog key, encoder detent or touchpad
+        /// gesture completes a key recording through
+        /// CompleteRecordingWithDescriptor. Its result must say it was a key
+        /// recording, or the window adds the row's source again as a stray
+        /// source row and skips moving on from Up to Down.</summary>
+        [Theory]
+        [InlineData("Ramped", RecorderService.ParamTarget.Up)]
+        [InlineData("Incremental", RecorderService.ParamTarget.Down)]
+        [InlineData("InvertOnHold", RecorderService.ParamTarget.Modifier)]
+        public void AKeyRecordedFromADescriptorIsReportedAsAKeyRecording(string kind, RecorderService.ParamTarget target)
+        {
+            using var session = new Session();
+            var row = session.Row("ButtonB");
+            var source = new MappingSourceItem { Kind = kind };
+            row.ExtraSources.Add(source);
+            RecordingResult result = null;
+            session.Recorder.RecordingCompleted += (_, r) => result = r;
+
+            session.Recorder.StartRecordingExtraSourceParam(row, source, 0, target);
+            Assert.True(session.Recorder.IsRecording);
+            typeof(RecorderService)
+                .GetMethod("CompleteRecordingWithDescriptor", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(session.Recorder, new object[] { "Midi Note 60", session.Device.InstanceGuid });
+
+            Assert.False(session.Recorder.IsRecording);
+            Assert.Equal("Midi Note 60", Field(source, target));
+            Assert.NotNull(result);
+            Assert.True(result.IsParamRecording, "the result of a key recording did not say it was one");
+        }
     }
 }

@@ -351,7 +351,7 @@ namespace PadForge.Common.Input.Peripherals
         public static LightMap LightMapOf(IReadOnlyList<LampDescription> lamps, int kind)
         {
             var lights = new List<LightInfo>(lamps?.Count ?? 0);
-            if (lamps == null) return new LightMap(lights, "LampArray");
+            if (lamps == null) return new LightMap(lights);
             int zone = 0;
             foreach (var lamp in lamps)
             {
@@ -375,7 +375,7 @@ namespace PadForge.Common.Input.Peripherals
                     light = new LightInfo(lamp.LampId, LightKind.Other, 0, LightKeySource.None);
                 lights.Add(light with { X = lamp.X, Y = lamp.Y, HasPosition = true });
             }
-            return new LightMap(lights, "LampArray");
+            return new LightMap(lights);
         }
 
         // ─────────────────────────────────────────────

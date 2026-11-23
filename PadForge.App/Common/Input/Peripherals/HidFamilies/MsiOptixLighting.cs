@@ -90,7 +90,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_MSIOptix.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"msi:{VendorId:X4}:{productId:X4}:optix",
             },

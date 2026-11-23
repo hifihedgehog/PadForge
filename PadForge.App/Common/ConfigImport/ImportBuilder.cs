@@ -415,9 +415,10 @@ namespace PadForge.Common.ConfigImport
     }
 
     /// <summary>
-    /// What both importers share. They describe bindings per layer and per
-    /// physical input, and this turns the description into a
-    /// <see cref="ProfileData"/>: one pad slot per virtual controller the file
+    /// What the reWASD, DS4Windows and DSX importers share. They describe
+    /// bindings per layer and per physical input, and this turns the
+    /// description into a <see cref="ProfileData"/>: one pad slot per
+    /// virtual controller the file
     /// names, one keyboard and mouse slot when anything sends keys or mouse,
     /// and macros, activators and menus on the right slots. The slot assembly
     /// follows WorkshopProfileMaterializer and StarterProfileCatalog.Wrap.
@@ -889,7 +890,7 @@ namespace PadForge.Common.ConfigImport
                 macro.PairKey = NextPairKey();
                 _macros.Add(new ImportMacro
                 {
-                    Name = macro.Name + " (release)",
+                    Name = string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Common_ReleaseMacroName_Format, macro.Name),
                     Control = macro.Control,
                     Layer = macro.Layer,
                     Inputs = macro.Inputs,
@@ -905,7 +906,7 @@ namespace PadForge.Common.ConfigImport
                 _macros.Add(macro);
                 _macros.Add(new ImportMacro
                 {
-                    Name = macro.Name + " (release)",
+                    Name = string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Common_ReleaseMacroName_Format, macro.Name),
                     Control = macro.Control,
                     Layer = macro.Layer,
                     Inputs = macro.Inputs,
@@ -966,7 +967,7 @@ namespace PadForge.Common.ConfigImport
             _macros.Add(press);
             _macros.Add(new ImportMacro
             {
-                Name = press.Name + " (release)",
+                Name = string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Common_ReleaseMacroName_Format, press.Name),
                 Control = press.Control,
                 Layer = press.Layer,
                 Inputs = press.Inputs,
@@ -1069,7 +1070,7 @@ namespace PadForge.Common.ConfigImport
                     var (axis, _) = ImportOutput.Stick(target, false).AxisPayload();
                     _macros.Add(new ImportMacro
                     {
-                        Name = ImportOutput.Stick(target, false).Label.Replace(" Right", " X").Replace(" Down", " Y") + " range",
+                        Name = string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Import_StickRangeMacro_Format, ImportOutput.Stick(target, false).Label.Replace(" Right", " X").Replace(" Down", " Y")),
                         Control = control,
                         Layer = layer,
                         Mode = MacroTriggerMode.Always,
@@ -1394,7 +1395,7 @@ namespace PadForge.Common.ConfigImport
 
             return new ProfileData
             {
-                Name = string.IsNullOrWhiteSpace(name) ? "Imported profile" : name.Trim(),
+                Name = string.IsNullOrWhiteSpace(name) ? PadForge.Resources.Strings.Strings.Instance.Import_UnnamedProfile : name.Trim(),
                 ExecutableNames = executables ?? string.Empty,
                 SlotCreated = created,
                 SlotEnabled = enabled,
@@ -1512,7 +1513,7 @@ namespace PadForge.Common.ConfigImport
             return new MacroData
             {
                 PadIndex = slot,
-                Name = string.IsNullOrWhiteSpace(m.Name) ? "Imported macro" : m.Name,
+                Name = string.IsNullOrWhiteSpace(m.Name) ? PadForge.Resources.Strings.Strings.Instance.Import_UnnamedMacro : m.Name,
                 IsEnabled = true,
                 TriggerSource = MacroTriggerSource.InputDevice,
                 TriggerInputs = specs.Count > 0 ? string.Join("|", specs) : null,

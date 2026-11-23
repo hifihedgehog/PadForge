@@ -141,8 +141,8 @@ namespace PadForge.Engine.Touchpad
         // ─── Tier 3: shape templates ──────────────────────────────────
 
         /// <summary>In-box shape gestures (Circle/Square/Triangle/Z/
-        /// Checkmark) enabled. Custom user gestures have their own
-        /// per-gesture toggles in the profile's gesture library.</summary>
+        /// Checkmark) enabled. Custom user gestures carry their own enable
+        /// flag (<see cref="TouchpadCustomGesture.Enabled"/>).</summary>
         [XmlAttribute] public bool EnableShapeGestures { get; set; }
 
         /// <summary>Point-cloud shape-recognizer match threshold (the
@@ -166,15 +166,16 @@ namespace PadForge.Engine.Touchpad
         // toggles and joystick toggles from the same Touchpad group.
 
         /// <summary>Master enable for the touchpad's joystick / D-pad
-        /// output channel. Off by default so existing users keep their
-        /// behavior; on enables the Touchpad N JoystickX/Y and
-        /// JoystickDPad* descriptors in the mapping picker.</summary>
+        /// output channel, off by default. On adds the pad's StickX and
+        /// StickY descriptors to the mapping picker, and DPadUp, DPadRight,
+        /// DPadDown and DPadLeft unless the D-pad mode is Off.</summary>
         [XmlAttribute] public bool EnableJoystickOutput { get; set; }
 
         /// <summary>Distance from anchor (normalized 0..1 touchpad units)
         /// at which stick output saturates to ±1. Smaller = twitchier,
-        /// larger = more travel. 0.30 = half the pad in either direction
-        /// gives full stick deflection.</summary>
+        /// larger = more travel. At 0.30 the stick is fully deflected once
+        /// the finger is 30 percent of the pad's width or height from where
+        /// it landed.</summary>
         [XmlAttribute] public float JoystickMaxRadius { get; set; } = 0.30f;
 
         /// <summary>Magnitude below this maps stick output to (0, 0).

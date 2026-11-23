@@ -77,7 +77,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_ZETBladeOptical.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"zet:{VendorId:X4}:{productId:X4}",
             },

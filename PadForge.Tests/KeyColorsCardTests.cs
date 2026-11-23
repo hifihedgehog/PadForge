@@ -30,7 +30,7 @@ namespace PadForge.Tests
             new LightInfo(5, LightKind.Edge, 0, LightKeySource.None),
             new LightInfo(6, LightKind.Logo, 0, LightKeySource.None),
             new LightInfo(7, LightKind.Key, 0x04, LightKeySource.Device),   // a second light under A
-        }, "test");
+        });
 
         private static ShiftLayerInfo Layer(string mask, string name = null)
             => new() { LayerMask = mask, LayerName = name ?? mask };
@@ -311,7 +311,7 @@ namespace PadForge.Tests
             {
                 new LightInfo(0, LightKind.Edge, 0, LightKeySource.None),
                 new LightInfo(1, LightKind.Edge, 0, LightKeySource.None),
-            }, "test");
+            });
             Assert.Empty(KeyLightsView.PlaceByLayout(edgeOnly));
         }
 
@@ -324,7 +324,7 @@ namespace PadForge.Tests
                 new LightInfo(1, LightKind.Key, 0x16, LightKeySource.Device) { X = 19050, Y = 0, HasPosition = true },
                 new LightInfo(2, LightKind.Key, 0x07, LightKeySource.Device) { X = 38100, Y = 0, HasPosition = true },
                 new LightInfo(3, LightKind.Edge, 0, LightKeySource.None) { X = 19050, Y = 30000, HasPosition = true },
-            }, "test");
+            });
             Assert.True(map.Positioned);
             Assert.Equal(19050, KeyLightsView.KeyPitch(map.Lights), 3);
             var placed = KeyLightsView.PlaceByPosition(map);
@@ -355,7 +355,7 @@ namespace PadForge.Tests
             {
                 new LightInfo(0, LightKind.Key, 0x04, LightKeySource.Device),
                 new LightInfo(1, LightKind.Key, 0x05, LightKeySource.Device),
-            }, "test"), vm.LayerTabs);
+            }), vm.LayerTabs);
             Assert.True(vm.KeyColors.IsVisible);
 
             vm.DeviceConfig = vm.GetOrCreateDeviceConfig(Guid.NewGuid());

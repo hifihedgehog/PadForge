@@ -1276,13 +1276,10 @@ namespace PadForge.Common.Input.Peripherals
                 string sku = unit.Sku ?? SteelSeriesApexLayouts.FixedSku(unit.ProductId);
                 var form = SteelSeriesApexLayouts.FormOf(unit.ProductId);
                 var lights = SteelSeriesApexLayouts.Lights(SteelSeriesApexLayouts.Grid(sku, form));
-                string source = SteelSeriesApexLayouts.Knows(sku)
-                    ? "OpenRGB SteelSeriesApexRegions.h, SKU " + sku
-                    : "OpenRGB SteelSeriesApexRegions.h, " + form + " layout";
-                return new LightMap(lights, source) { Product = product };
+                return new LightMap(lights) { Product = product };
             }
             if (info.Lights is not { Count: > 1 } own) return null;
-            return new LightMap(own, "rivalcfg and OpenRGB SteelSeriesController") { Product = product };
+            return new LightMap(own) { Product = product };
         }
 
         /// <summary>Whether two maps hold the same lights for the same

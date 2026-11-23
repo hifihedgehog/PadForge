@@ -143,7 +143,9 @@ namespace PadForge.Views.Controls
         public TriggerEffectGraph()
         {
             InitializeComponent();
-            Loaded += (_, _) => Redraw();
+            // Drawn when it loads, and again in the look's tones when a look
+            // is put on while it shows (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, Redraw);
             SizeChanged += (_, _) => Redraw();
         }
 

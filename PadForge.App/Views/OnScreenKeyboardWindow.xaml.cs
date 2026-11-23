@@ -123,7 +123,7 @@ namespace PadForge.Views
                 HideKeyboard();
                 return;
             }
-            bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            bool dark = PadForge.Common.EmberTheme.DarkGround;
             var accent = Application.Current?.TryFindResource("SystemAccentColorPrimaryBrush") as Brush
                 ?? new SolidColorBrush(Color.FromRgb(0xF2, 0x5C, 0x1F));
             var theme = (dark, accent);

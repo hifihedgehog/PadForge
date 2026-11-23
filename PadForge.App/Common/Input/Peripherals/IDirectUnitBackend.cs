@@ -61,7 +61,7 @@ namespace PadForge.Common.Input.Peripherals
     /// are no HID collections keeps a unit while its own look still finds
     /// the device, by the same rule. While a unit is asleep the linker
     /// links no path to it, the rows that match it keep the outputs they
-    /// had on record, so their tabs stay up with the line for a device
+    /// had on record, so their groups stay up with the line for a device
     /// that has not answered yet, and a unit with a row of its own keeps
     /// that row. Its claim stays where the dispatcher put it, and paints
     /// again once the unit answers and is listed awake. The backend tries
@@ -107,7 +107,7 @@ namespace PadForge.Common.Input.Peripherals
         OutputFamily Family { get; }
 
         /// <summary>What the last scan found and whether one has run, for
-        /// the linker and the tab's route line, in one object swapped whole
+        /// the linker and the Lighting group's route line, in one object swapped whole
         /// (<see cref="DirectBackendSnapshot"/>), so the link pass never
         /// reads the units of one scan beside the scan state of another.
         /// <see cref="DirectBackendSnapshot.NotScanned"/> until the first
@@ -206,7 +206,7 @@ namespace PadForge.Common.Input.Peripherals
         }
     }
 
-    /// <summary>What the direct backends have found, swapped whole so a tab
+    /// <summary>What the direct backends have found, swapped whole so a group
     /// never reads half a pass. The link pass builds one on every pass from
     /// the list it linked from.</summary>
     internal sealed class DirectSnapshot
@@ -241,7 +241,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>True when both hold the same units in the same order,
         /// the same families and the same scan state, so publishing one
-        /// raises a status change only when a tab would read something
+        /// raises a status change only when a group would read something
         /// new.</summary>
         public bool SameAs(DirectSnapshot other)
         {

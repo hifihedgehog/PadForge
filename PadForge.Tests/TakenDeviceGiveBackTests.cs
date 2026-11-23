@@ -100,6 +100,53 @@ namespace PadForge.Tests
 
             Assert.Equal(node, Assert.Single(vm.Settings.FlydigiScreenBindings));
         }
+
+        /// <summary>A reset that takes every profile away lets every game
+        /// look's picture go: no profile wears one any more.</summary>
+        [Fact]
+        public void ResetToDefaults_LetsEveryGameLooksPictureGo()
+        {
+            var storeBefore = PadForge.Common.Themes.GameLooks.Store;
+            string folder = Path.Combine(Path.GetTempPath(), "PadForgeResetLooks-" + Guid.NewGuid().ToString("N"));
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.ActiveProfileId = null;
+                SettingsManager.PendingDefaultSnapshot = null;
+                SettingsManager.SlotCreated = new bool[InputManager.MaxPads];
+                SettingsManager.SlotEnabled = new bool[InputManager.MaxPads];
+                SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+                var store = new PadForge.Common.Themes.GameLookStore(folder);
+                PadForge.Common.Themes.GameLooks.Store = store;
+                // Any bytes stand for the picture: the store keeps what it is given.
+                Assert.True(store.Write(620, new byte[] { 0x89, 0x50, 0x4E, 0x47, 1, 2, 3 }));
+                Assert.True(store.Write(730, new byte[] { 0x89, 0x50, 0x4E, 0x47, 4, 5, 6 }));
+                SettingsManager.Profiles = new List<ProfileData>
+                {
+                    new ProfileData { Name = "Portal 2", GameLook = new ProfileGameLook { AppId = 620, Game = "Portal 2", Accent = "#3399FF" } },
+                    new ProfileData { Name = "Portal 2 Co-op", GameLook = new ProfileGameLook { AppId = 620, Game = "Portal 2", Accent = "#3399FF" } },
+                    new ProfileData { Name = "Counter-Strike", GameLook = new ProfileGameLook { AppId = 730, Game = "Counter-Strike", Accent = "#FFAA33" } },
+                    new ProfileData { Name = "Plain" },
+                };
+                var vm = new MainViewModel();
+                var settings = new SettingsService(vm);
+                _ = new InputService(vm) { SettingsService = settings };
+
+                settings.ResetToDefaults();
+
+                Assert.Empty(SettingsManager.Profiles);
+                Assert.Null(store.Stamp(620));
+                Assert.Null(store.Stamp(730));
+            }
+            finally
+            {
+                PadForge.Common.Themes.GameLooks.Store = storeBefore;
+                try { if (Directory.Exists(folder)) Directory.Delete(folder, recursive: true); }
+                catch (IOException) { }
+                catch (UnauthorizedAccessException) { }
+            }
+        }
     }
 
     /// <summary>Every key of a keyboard read over WinUSB reaches a key index,

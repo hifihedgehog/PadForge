@@ -253,14 +253,10 @@ namespace PadForge.Common.Input.Peripherals
     {
         private readonly Dictionary<ushort, int[]> _byUsage = new();
 
-        public static readonly LightMap Empty = new(Array.Empty<LightInfo>(), "none");
+        public static readonly LightMap Empty = new(Array.Empty<LightInfo>());
 
         /// <summary>Every light, in address order.</summary>
         public IReadOnlyList<LightInfo> Lights { get; }
-
-        /// <summary>Where the map came from, for the log and the tab: the
-        /// reference or the device report it was read from.</summary>
-        public string Source { get; }
 
         /// <summary>The device model the map belongs to, the key Map Key
         /// Lights stores its names under (<see cref="LearnedKeyMaps"/>), or
@@ -296,10 +292,9 @@ namespace PadForge.Common.Input.Peripherals
         /// ones Map Key Lights asks about.</summary>
         public int UnnamedKeyCount { get; }
 
-        public LightMap(IReadOnlyList<LightInfo> lights, string source)
+        public LightMap(IReadOnlyList<LightInfo> lights)
         {
             Lights = lights ?? Array.Empty<LightInfo>();
-            Source = source ?? string.Empty;
             bool positioned = Lights.Count > 0;
             var byUsage = new Dictionary<ushort, List<int>>();
             for (int i = 0; i < Lights.Count; i++)

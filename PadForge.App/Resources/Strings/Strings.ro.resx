@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Conectat</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Deconectat</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Necunoscut</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Implicit</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Răsfoire…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Continuare</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Oprire</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motorul s-a oprit.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Eroare: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} nu a putut fi creat.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Un dispozitiv nu a putut fi deschis, citit sau mapat. Jurnalul de diagnosticare îl indică.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} a întâmpinat o eroare. Jurnalul de diagnosticare conține cauza.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Motorul de intrare a întâmpinat o eroare. Jurnalul de diagnosticare conține cauza.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL nu a putut porni. Jurnalul de diagnosticare conține cauza.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro nu a putut fi configurat. Jurnalul de diagnosticare conține cauza.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Profilul HIDMaestro al unui controler virtual lipsește. Jurnalul de diagnosticare îl indică.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} nu a putut prelua identitatea și aspectul personalizate și folosește pe cele ale profilului său.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil schimbat: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil schimbat: Implicit</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Implicit</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port server de mișcare</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Furnizează date de giroscop și accelerometru pentru Cemu, Dolphin, Yuzu etc.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Modificări de joc</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Permite modificărilor de joc create pentru DSX să seteze trăgacele adaptive, bara luminoasă, luminile de jucător și lumina microfonului dezactivat de pe controlerele PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Permite modificărilor de joc create pentru DSX să seteze trăgacele adaptive, bara luminoasă, luminile de jucător și lumina microfonului dezactivat de pe un DualSense sau DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Acceptare modificări de joc DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port modificări de joc</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Rulare substitut DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Unele modificări, precum DualSense4GTAV, se opresc singure dacă nu rulează un program numit DSX. Aceasta pornește un mic substitut cu acest nume cât timp serverul ascultă.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Funcționează cu modificări create pentru DSX, precum cele pentru GTA V, Red Dead Redemption 2, Skyrim și Forza. Cât timp serverul ascultă, PadForge își scrie portul acolo unde îl caută aceste modificări.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Ascultă pe :{0}. {1} trimite către controlerul virtual {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ascultă pe :{0}. {1} trimite, dar niciun controler virtual nu are un controler PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ascultă pe :{0}. {1} trimite către indexul de controler {2}, iar niciun controler virtual cu un controler PlayStation nu are acel index.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ascultă pe :{0}. {1} trimite, dar niciun controler virtual nu are un DualSense sau DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ascultă pe :{0}. {1} trimite către indexul de controler {2}, iar niciun controler virtual cu un DualSense sau DualShock 4 nu are acel index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Portul {0} este folosit de alt program, de exemplu DSX. Închideți-l sau alegeți alt port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>O modificare de joc</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funcționează cu OpenTrack și cu orice dispozitiv de urmărire care își trimite ieșirea prin UDP sau scrie în memoria partajată FreeTrack 2.0, precum și cu un mediu de execuție OpenXR de pe acest computer care poate rula o sesiune în fundal.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fișier negăsit</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nu poate fi citită</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fișierul temei „{0}” lipsește sau nu poate fi citit. PadForge afișează varianta Întunecată până când fișierul revine.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fișierul temei „{0}” nu conține o temă PadForge. PadForge afișează varianta Întunecată până când o conține.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profilul „{0}” afișează aspectul jocului său. Tema dumneavoastră revine când este activ alt profil.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Teme PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Acest fișier nu este o temă PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge nu poate citi acest fișier.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge nu găsește acest fișier.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Nu este o temă</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema nu a putut fi salvată. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Temă nouă</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge afișează tema chiar în timp ce o creați.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Se obține imaginea de la Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nu are o imagine lată pentru acest joc.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam nu a putut fi accesat. Verificați conexiunea.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge nu poate citi imaginea Steam pentru acest joc.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Poziție</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Deplasează imaginea în sus sau în jos în cadrul ei.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Afișare logo joc</value></data>
@@ -1094,6 +1105,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Controlerul nu a primit comanda care îl pregătește, deci nu s-a trimis nimic. Verificați dacă este conectat și trimiteți din nou.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Trimiterea s-a oprit din cauza unei erori în PadForge. Fișierul jurnal conține detaliile.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>O imagine încă se trimite la controler. Opriți trimiterea?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Continuare trimitere</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fișiere Controller Pak (*.mpk)|*.mpk|Toate fișierele (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restaurare Controller Pak</value></data>
@@ -1657,6 +1669,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Atenuare puls</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Presetare</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalizat</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (creat de utilizator)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stickuri</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trăgace</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-uri</value></data>
@@ -2638,7 +2651,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Acest controler are un magnetometru. Ancorarea girației la nordul magnetic elimină driftul orizontal lent din țintirea cu giroscopul. Calibrați mai întâi: apăsați Calibrare, rotiți controlerul în toate orientările, descriind un 8, timp de câteva secunde, apoi apăsați din nou.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancorare girație la busolă</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adaugă o mică rată de corecție care trage țintirea orizontală spre direcția magnetică, astfel încât driftul să nu se poată acumula. Necesită o calibrare salvată a magnetometrului. Eșantioanele perturbate de metale sau magneți din apropiere sunt respinse automat.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Resetare la valoarea implicită (dezactivat)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulare tangaj și ruliu</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Tangaj și ruliu calculate din accelerometru</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Giroscopul acestui controler detectează doar rotirea la stânga și la dreapta. Cu simularea activată, PadForge derivă tangajul și ruliul din accelerometru și le trimite, împreună cu girația giroscopului, către rândurile de mapare și către mișcarea controlerului virtual. Un accelerometru nu poate deosebi o împingere de o înclinare, așa că deplasarea controlerului lateral sau înainte fără a-l roti este citită ca o rotație scurtă.</value></data>
@@ -3035,7 +3047,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Rotiți stickul de-a lungul marginii pentru a mapa limita accesibilă, apoi remodelați-o într-un cerc complet.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Resetare calibrare limită</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Resetare decalaj centru Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Resetare la Radială scalată</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Resetare zonă moartă X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Resetare zonă moartă Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Resetare anti-zonă moartă X</value></data>
@@ -3487,13 +3498,10 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Resetare Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Puncte per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Unități de mouse pentru o rotație completă a camerei de 360°. Depinde de sensibilitatea mouse-ului din joc: măriți valoarea dacă un flick rotește prea puțin, micșorați-o dacă rotește prea mult.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Resetare la 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Durată flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Cât durează un flick complet de 180°, cu încetinire la final. Rotirile mai scurte se termină în același timp.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Resetare la 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Prag flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Deplasarea stickului care pornește un flick, ca fracție din deplasarea completă. În timpul unui flick, punctul de eliberare scade la 90% din această valoare.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Resetare la 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Unghi de aliniere</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Aliniază flick-ul la unghiuri fixe, pentru rotiri mai constante. Doar înainte aliniază fiecare flick drept înainte.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Fără aliniere</value></data>
@@ -3502,22 +3510,16 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 de grade</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 de grade</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 de grade</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Resetare la Fără aliniere</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Forța alinierii</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Cât de puternic este atras un flick spre unghiul de aliniere. 1 aliniază complet, 0 dezactivează alinierea, valorile intermediare combină.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Resetare la 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zonă moartă a unghiului frontal</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Un flick în acest unghi față de direcția drept înainte nu rotește nimic. Vă permite să începeți o mișcare de-a lungul marginii fără o rotire prin flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Resetare la 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Netezirea mișcării pe margine</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Netezește zgomotul mișcării pe margine. -1 folosește fereastra automată în trepte, 0 dezactivează netezirea, valorile mai mari netezesc rotiri mai mari per ciclu.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Resetare la Automat (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Permitere flick la activare</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Decalaj de rotație</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Rotește întreaga hartă de flick cu acest număr de grade. Valorile pozitive înseamnă sens orar. Alinierea se aplică după decalaj.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Resetare decalaj de rotație</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Când stratul care găzduiește Flick Stick se activează cu stickul deja deplasat, declanșează imediat flick-ul. Dezactivat păstrează camera nemișcată și urmărește rotația de la unghiul curent al stickului.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Resetare Permitere flick la activare</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback la limita direcției</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un semnal la limita direcției pentru un stick în mod de direcție</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Când un stick setat pe un mod de direcție este rotit complet până la limită, redă un semnal (vibrație, trăgaci sau bară luminoasă) ca să simțiți limita. Toate sunt dezactivate implicit.</value></data>
@@ -3707,11 +3709,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Redare haptică DualSense pe acest controler</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Când un joc controlează acest slot ca DualSense virtual cu audio haptic creat de dezvoltatori, redă acea pistă pe actuatoarele acestui controler. Un Steam Controller 2026 conectat prin USB sau prin receptorul său și un Flydigi Apex 6 Pro redau pista ca atare. Toate celelalte controlere, precum și acel Steam Controller prin Bluetooth, primesc tonuri derivate din audio, care aproximează senzația dorită de designer, fără a o reproduce.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Amplificare haptică</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Resetare la valoarea implicită (dezactivat)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Resetare la valoarea implicită (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Frecvență de tăiere trece-jos a actuatorului</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Menține fluxul haptic al Steam Controller sub această frecvență, astfel încât touchpadurile să vibreze în loc să redea sunet audibil. În jur de 250 Hz, actuatoarele încep să devină audibile. Măriți valoarea pentru detalii mai clare sau micșorați-o pentru un joc mai silențios.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Resetare la 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonurile peste această frecvență sunt eliminate sau coborâte. Valoarea implicită de 800 Hz păstrează vibrațiile de motor și de impact și prinde bipurile înalte.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Resetare tonuri înalte</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetare limită de ton</value></data>
@@ -4312,8 +4311,59 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macrocomandă Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Regiune cursor</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Schimbare {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Listă cu rotița ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Regiune cursor ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Menținere mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Clic mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Comutare mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Impuls haptic ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (final la eliberare)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Atingere {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Foc automat {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Menținere {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Comutare {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Apăsare dublă {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Apăsare lungă {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Pas de rotiță ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Comutare rotiță ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Rotiță turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Salt cursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Setare LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Recentrare giroscop ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Împingere cursor ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Tastă captură de ecran ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Tastatură pe ecran ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Setare culoare lumină</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentrare cameră</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Salt cursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Împingere cursor</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Captură de ecran</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Tastatură pe ecran</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Schimbare strat de schimbare</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Activare strat de schimbare</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Dezactivare strat de schimbare</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Menținere strat de schimbare</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Schimbare număr jucător</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Neasociat</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Comutare mod desktop</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Tasta de sistem Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Comutare lupă</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Luminozitate mai mare</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Luminozitate mai mică</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Oprire controler</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Deschidere configurator Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Deschidere meniu rapid Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Ieșire din joc</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Comutare haptică</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Comutare HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Comutare vibrații</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Forțare buton Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Rotire pentru calibrarea giroscopului</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Întoarcere în direcția indicată</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ținere)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (eliberare)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (eliberare)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (activare)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Alegeți o configurație pentru a vedea ce se transferă.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ce se transferă</value></data>
@@ -4928,11 +4978,9 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Strat</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Alegeți stratul care permite acest meniu. Orice strat și Bază îl permit amândouă sub alte straturi active. Un strat cu nume trebuie să coincidă cu stratul activ în prezent.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Resetează la Orice strat și dezactivează deschiderea menținută de strat.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (nu există pe acest slot)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Stratul menține meniul deschis</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Menține acest meniu deschis cât timp stratul său cu nume este activ. Intrarea fizică selectată controlează evidențierea. Orice strat și Bază folosesc deschiderea normală prin suprafață.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Resetează la deschiderea prin atingere sau deplasare.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Controlat cu</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Intrarea fizică ce controlează celula evidențiată cât timp stratul menține acest meniu deschis.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Citit de pe controlerele fizice atribuite acestui slot. Stratul deschide meniul, iar această intrare îl controlează. Celulele sale stabilesc ce emite.</value></data>
@@ -5014,7 +5062,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Împărțit pe direcție</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zonă moartă centrală</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Resetare la Stick stâng X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Resetare intensitate (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Resetare zonă moartă centrală (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Resetare Activare vibrații după unghiul de virare</value></data>
@@ -5681,6 +5728,25 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiluri</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Strat {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Trăgace: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Bară luminoasă</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Extra {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bară luminoasă {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Lansare program</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Domeniu {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Profil importat</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Macrocomandă importată</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Presetare {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Meniu radial {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Meniu tactil {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Regiune mouse</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>atingere</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>menținere</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>atingere dublă</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Efect trăgaci stâng</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Efect trăgaci drept</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Mapare butoane {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Element {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Își păstrează ieșirile proprii</value></data>
@@ -6012,7 +6078,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX nu publică modul de funcționare al setării sale {0}, așa că PadForge folosește modul propriu.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX nu publică numerele sale de intrare. Profilurile DSX publicate folosesc numerele de la 41 la 44 pentru D-pad, așa că PadForge le citește astfel.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX nu scrie o asociere ca aceasta, așa că fișierul a fost modificat în afara DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX trece la această presetare printr-o scurtătură. Macrocomanda ei se află în pagina Macrocomenzi, gata de asociat unui buton.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX trece la această presetare printr-o scurtătură. Macrocomanda ei se află în secțiunea Macrocomenzi și meniuri a controlerului, gata de asociat unui buton.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Niciun profil DSX publicat nu folosește {0}, așa că PadForge nu poate stabili ce face.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX lasă jocul să stabilească aceasta cât timp comutatorul său de transmitere directă este activ, așa că PadForge o lasă și el în seama jocului.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>În Native Mode cu Send Data to Device dezactivat, DSX nu trimite nimic propriu către controler, așa că PadForge lasă aceasta în seama jocului.</value></data>

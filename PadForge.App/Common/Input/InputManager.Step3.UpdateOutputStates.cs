@@ -232,7 +232,7 @@ namespace PadForge.Common.Input
                 {
                     // Don't zero OutputState. Keep last valid state to prevent
                     // transient glitches from propagating through the pipeline.
-                    RaiseError($"Error mapping device {us.InstanceGuid}", ex);
+                    RaiseDeviceError($"Error mapping device {us.InstanceGuid}", ex);
                 }
             }
 
@@ -3114,7 +3114,7 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // Snapshot pre-deadzone values for stick tab preview.
+            // Snapshot pre-deadzone values for the Sticks group's preview.
             raw.PreDzMouseDeltaX = raw.MouseDeltaX;
             raw.PreDzMouseDeltaY = raw.MouseDeltaY;
 
@@ -3168,8 +3168,8 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
             // Mouse-movement speed (Sticks group, stick 0 on a KBM slot).
-            // Applied after the deadzone / range / curve stage so the tab
-            // scales what the mapping table produced.
+            // Applied after the deadzone / range / curve stage so the Sticks
+            // group's speed scales what the mapping table produced.
             ApplyKbmStickSpeed(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
                 TryParseDoubleStatic(ps.LeftThumbSensitivity, 1));
 

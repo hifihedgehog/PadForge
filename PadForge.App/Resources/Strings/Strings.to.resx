@@ -835,6 +835,7 @@
   <data name="About_RetroArchDesc" xml:space="preserve"><value>ʻOku tauhi ʻe ha pad uepi kuo ke fakafōtunga ʻa e mamaʻo ʻo e kulupu taki taha mei he kauʻā ʻoku ofi taha ki ai ʻi ha sikilini ʻoku fālahi ange, ʻo hangē ko e founga ʻoku hiki ai ʻe he ngaahi overlay ʻa e RetroArch honau konga ʻe ua. Naʻe lau pē ko ha fakamatala, ʻoku ʻikai ha kouti GPL ʻe kau mai.</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Toʻo mei he lisí. ʻOku nofo pē ʻa e faile ʻi hono feituʻu.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Kuo mole pe ʻikai lava ʻo lau ʻa e faile ʻo e “{0}”. ʻE fakaʻaliʻali ʻe PadForge ʻa e Fakapoʻuli kae ʻoua kuo toe foki mai.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>ʻOku ʻikai ha kaveinga PadForge ʻi he faile ʻo e “{0}”. ʻE fakaʻaliʻali ʻe PadForge ʻa e Fakapoʻuli kae ʻoua kuo ʻi ai.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Hingoa</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Hoku tēma</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Makatuʻunga</value></data>
@@ -849,4 +850,6 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Fakaʻaliʻali ʻa e logo ʻo e vaʻinga</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Fakatatau ki he fakatātā</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Toʻo ʻa e lanu ʻe fā mei he fakatātā.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>ʻOku ʻikai lava ʻe PadForge ʻo lau ʻa e fakatātā ʻa Steam ki he vaʻinga ko ʻení.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hokohoko ʻa e Fekau</value></data>
 </root>

@@ -73,7 +73,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_ThermaltakePoseidonZRGB.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"thermaltake:{VendorId:X4}:{productId:X4}",
             },

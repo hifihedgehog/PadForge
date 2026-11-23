@@ -113,7 +113,11 @@ namespace PadForge.Common.Input
         /// the setup again, since creates run one at a time.</summary>
         private static long _hmaestroSetupFailedTick;
         private const long HmSetupRetryHoldMs = 5_000;
-        private const string HmSetupFailedMessage = "Failed to initialize HIDMaestro.";
+        private const string HmSetupFailedLog = "Failed to initialize HIDMaestro.";
+
+        /// <summary>The message-line text the last failed setup raised, so
+        /// its recovery clears the same text after a language change.</summary>
+        private string _hmSetupFailedStatus;
 
         internal static bool HmSetupHeldAt(long failedTick, long nowTick)
             => failedTick != 0 && nowTick - failedTick < HmSetupRetryHoldMs;
@@ -2122,11 +2126,11 @@ namespace PadForge.Common.Input
                                             // publication, outside the lifecycle lock. Teardown can
                                             // dispose this captured dispatcher before it starts.
                                             try { AudioPassthroughService.RequestPersonaReconcile(personaFeed); }
-                                            catch (Exception ex) { RaiseError($"Failed to reconcile persona audio for pad {capturedIndex}", ex); }
+                                            catch (Exception ex) { RaiseSlotError(capturedIndex, $"Failed to reconcile persona audio for pad {capturedIndex}", ex); }
                                             try { effects?.StartDeferredEffects(); }
                                             catch (Exception ex)
                                             {
-                                                RaiseError($"Failed to apply effects for pad {capturedIndex}", ex);
+                                                RaiseSlotError(capturedIndex, $"Failed to apply effects for pad {capturedIndex}", ex);
                                             }
                                             if (vcAsync is HMaestroVirtualController
                                                 || vcAsync is KeyboardMouseVirtualController { HasHidDevices: true })
@@ -2640,7 +2644,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error updating virtual controller for pad {padIndex}", ex);
+                    RaiseSlotError(padIndex, $"Error updating virtual controller for pad {padIndex}", ex);
                 }
             }
         }
@@ -2702,7 +2706,7 @@ namespace PadForge.Common.Input
                     ctx.InstallDriver();
                     bool recovered = _hmaestroSetupFailedTick != 0;
                     Volatile.Write(ref _hmaestroSetupFailedTick, 0);
-                    if (recovered) RaiseErrorResolved(HmSetupFailedMessage);
+                    if (recovered) RaiseErrorResolved(_hmSetupFailedStatus ?? Strings.Instance.Status_HidMaestroSetupFailed, HmSetupFailedLog);
 
                     // No exit sweep of PadForge's own. Through 1.x the sweep
                     // removed every controller on the PC, so a ProcessExit
@@ -2728,7 +2732,8 @@ namespace PadForge.Common.Input
                     // Dispose returns at once (HMContext.Dispose).
                     try { ctx?.Dispose(); } catch { }
                     Volatile.Write(ref _hmaestroSetupFailedTick, Math.Max(1, Environment.TickCount64));
-                    RaiseError(HmSetupFailedMessage, ex);
+                    _hmSetupFailedStatus = Strings.Instance.Status_HidMaestroSetupFailed;
+                    RaiseError(_hmSetupFailedStatus, HmSetupFailedLog, ex);
                 }
             }
         }
@@ -3026,7 +3031,7 @@ namespace PadForge.Common.Input
         {
             var profile = _hmaestroContext.GetProfile(profileId)
                           ?? HMaestroProfileCatalog.GetProfileById(profileId);
-            if (profile == null) RaiseError($"HIDMaestro profile '{profileId}' not found.", null);
+            if (profile == null) RaiseError(Strings.Instance.Status_HidMaestroProfileMissing, $"HIDMaestro profile '{profileId}' not found.", null);
             return profile;
         }
 
@@ -3312,7 +3317,7 @@ namespace PadForge.Common.Input
                            ?? HMaestroProfileCatalog.GetProfileById(profileId);
             if (baseProfile == null)
             {
-                RaiseError($"HIDMaestro profile '{profileId}' not found.", null);
+                RaiseError(Strings.Instance.Status_HidMaestroProfileMissing, $"HIDMaestro profile '{profileId}' not found.", null);
                 return null;
             }
 
@@ -3458,7 +3463,8 @@ namespace PadForge.Common.Input
                         // profile with nothing to ever reconcile it: the card
                         // showed a custom layout the device never had.
                         effectiveProfile = baseProfile;
-                        RaiseError($"Extended customization for pad {padIndex} could not be built; "
+                        RaiseError(string.Format(Strings.Instance.Status_CustomLayoutFailed_Format, SlotLabel(padIndex)),
+                                   $"Extended customization for pad {padIndex} could not be built; "
                                    + $"the slot is running the catalog profile '{profileId}' instead.", ex);
                     }
                 }
@@ -3963,20 +3969,25 @@ namespace PadForge.Common.Input
         {
             bool displacedAny = false;
 
-            // Lock-free pre-gate: the per-subgroup order snapshots below
-            // clone under OrderSync every call, and this runs every poll
-            // tick. A VC-less created+enabled un-latched slot is a
-            // necessary condition for any preemption decision, so the
-            // steady state (every slot settled) skips the snapshots
-            // entirely. Decisions are unchanged: the full walk still
-            // applies IsSlotActive and ordering when the gate passes.
+            // Pre-gate: the per-subgroup order snapshots below clone under
+            // OrderSync every call, and this runs every poll tick. A
+            // VC-less created+enabled un-latched slot with a device online
+            // is a necessary condition for any preemption decision (the
+            // walk's first loop asks the same five things), so the steady
+            // state skips the snapshots entirely: every slot settled, and
+            // also a slot whose devices are off, which waits here VC-less
+            // for as long as they stay off and cloned its order list every
+            // pass when the gate left IsSlotActive to the walk. Decisions
+            // are unchanged: the full walk still applies the ordering when
+            // the gate passes.
             bool anyCandidate = false;
             for (int i = 0; i < MaxPads; i++)
             {
                 if (_virtualControllers[i] == null
                     && SettingsManager.SlotCreated[i]
                     && SettingsManager.SlotEnabled[i]
-                    && !_createFailed[i])
+                    && !_createFailed[i]
+                    && IsSlotActive(i))
                 {
                     anyCandidate = true;
                     break;
@@ -4220,7 +4231,7 @@ namespace PadForge.Common.Input
             if (ctx != null)
             {
                 try { ctx.Dispose(); }
-                catch (Exception ex) { RaiseError("Error disposing HIDMaestro context", ex); }
+                catch (Exception ex) { RaiseEngineError("Error disposing HIDMaestro context", ex); }
             }
         }
 

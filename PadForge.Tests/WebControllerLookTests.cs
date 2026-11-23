@@ -200,8 +200,8 @@ namespace PadForge.Tests
             Assert.Contains("<div id=\"disconnect-message\" class=\"pf-cover\">", controller);
             string css = Web("css", "controller.css");
             Assert.Contains(".touch-zone.touchpad-zone {", css);
-            Assert.Contains(".touchpad-dot.f0 { background: rgba(255, 107, 44, 0.6); border: 2px solid var(--ember); }", css);
-            Assert.Contains(".touchpad-dot.f1 { background: rgba(124, 199, 234, 0.6); border: 2px solid var(--cold); }", css);
+            Assert.Contains(".touchpad-dot.f0 { background: var(--ember-dot); border: 2px solid var(--ember); }", css);
+            Assert.Contains(".touchpad-dot.f1 { background: var(--cold-dot); border: 2px solid var(--cold); }", css);
             // What the page has to say is a pill at the top's middle. A
             // strip across the top lay over the fullscreen button.
             Assert.Matches(@"#statusBar \{[^}]*left: 50%;[^}]*transform: translateX\(-50%\);[^}]*width: max-content;", css);

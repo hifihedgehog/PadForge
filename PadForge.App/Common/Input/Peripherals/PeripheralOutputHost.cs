@@ -120,7 +120,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Raised from the host thread when a row's recorded
         /// outputs changed, so the owner saves the settings and refreshes the
-        /// device list. The tabs refresh on <see cref="PeripheralOutputs.LinksChanged"/>
+        /// device list. The groups refresh on <see cref="PeripheralOutputs.LinksChanged"/>
         /// and <see cref="PeripheralOutputs.StatusChanged"/>, raised first.</summary>
         public event Action CapabilitiesChanged;
 
@@ -225,7 +225,7 @@ namespace PadForge.Common.Input.Peripherals
             _gameSense.Start();
             _chroma?.Start();
             _ledSdk?.Start();
-            // Published before the first pass, so the tabs read from the
+            // Published before the first pass, so the groups read from the
             // start which families run and that none has scanned yet. No
             // pass of an earlier run touches the orphans' clock or the
             // rows' any more: Stop marked that run stopped under the gate
@@ -509,7 +509,7 @@ namespace PadForge.Common.Input.Peripherals
 
             // Each direct backend's snapshot, read once, so its units and
             // its scan state are of one scan, and the table, the records and
-            // the snapshot the tabs read all come from one list.
+            // the snapshot the groups read all come from one list.
             var found = new List<DirectUnit>();
             bool directScanned = true, openRgbUnanswered = false;
             for (int i = 0; i < _direct.Count; i++)
@@ -625,7 +625,7 @@ namespace PadForge.Common.Input.Peripherals
                     // sits there (PeripheralOutputs.SlotLive), so a reorder's
                     // rebuild never hands its devices back and takes them
                     // again. The prune takes no other lock, and its events only
-                    // set a wake or queue a tab refresh.
+                    // set a wake or queue a group refresh.
                     PeripheralOutputs.PruneClaims(assigned, PeripheralOutputs.SlotLive);
                 }
             }
@@ -659,7 +659,7 @@ namespace PadForge.Common.Input.Peripherals
                 // scan has come keeps its record whichever came first.
                 var held = PeripheralLinker.HeldRows(_unitLastSeen, rows, units, now);
 
-                // The records first, so a tab that refreshes on the new table
+                // The records first, so a group that refreshes on the new table
                 // reads the record that goes with it.
                 bool changed = false;
                 for (int i = 0; i < rows.Count; i++)
@@ -672,7 +672,7 @@ namespace PadForge.Common.Input.Peripherals
                     // device row before the direct backends' first, a row
                     // whose unit its backend lists asleep, so a mouse
                     // asleep at launch, or one a write to just failed,
-                    // keeps its tabs, and a row whose last unit left the
+                    // keeps its groups, and a row whose last unit left the
                     // list less than the hold ago.
                     bool stillLooking = PeripheralLinker.StillLooking(rows[i], inputs) || held.Contains(rows[i].Device);
                     int next = PeripheralLinker.Capabilities(ud.PeripheralOutputs, links, stillLooking);
@@ -690,7 +690,7 @@ namespace PadForge.Common.Input.Peripherals
                 else if (changed || liveChanged)
                 {
                     // A record that moved under an unchanged table, or a slot
-                    // that came or went, still changes what the tabs show.
+                    // that came or went, still changes what the groups show.
                     PeripheralOutputs.NotifyStatusChanged();
                 }
                 if (changed)

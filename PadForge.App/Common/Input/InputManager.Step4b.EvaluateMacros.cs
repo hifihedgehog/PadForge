@@ -335,7 +335,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Macro error on pad {i}", ex);
+                    RaiseSlotError(i, $"Macro error on pad {i}", ex);
                 }
             }
 

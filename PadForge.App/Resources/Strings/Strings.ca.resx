@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>En línia</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Fora de línia</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Desconegut</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Per defecte</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Navega…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Continua</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Atura</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor aturat.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>No s'ha pogut crear {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>No s'ha pogut obrir, llegir o assignar un dispositiu. El registre de diagnòstic en dona el nom.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} ha tingut un error. El registre de diagnòstic en té la causa.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>El motor d'entrada ha tingut un error. El registre de diagnòstic en té la causa.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL no s'ha pogut iniciar. El registre de diagnòstic en té la causa.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro no s'ha pogut configurar. El registre de diagnòstic en té la causa.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Falta el perfil HIDMaestro d'un comandament virtual. El registre de diagnòstic en dona el nom.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} no ha pogut adoptar la seva identitat i disposició personalitzades i fa servir les del seu perfil.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil canviat: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil canviat: Per defecte</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Per defecte</value></data>
@@ -538,15 +544,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port del servidor de moviment</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Proporciona dades de giroscopi i acceleròmetre a Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mods de joc</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Permet que els mods de joc fets per a DSX controlin els gallets adaptatius, la barra de llum, els llums de jugador i el llum de silenci dels comandaments PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Permet que els mods de joc fets per a DSX controlin els gallets adaptatius, la barra de llum, els llums de jugador i el llum de silenci d'un DualSense o un DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Accepta mods de joc de DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port dels mods de joc</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Executa un substitut de DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Alguns mods, com DualSense4GTAV, s'apaguen tret que s'estigui executant un programa anomenat DSX. Això executa un petit substitut amb aquest nom mentre el servidor escolta.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Funciona amb mods fets per a DSX, com els de GTA V, Red Dead Redemption 2, Skyrim i Forza. Mentre el servidor escolta, PadForge escriu el seu port on aquests mods el busquen.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Escoltant a :{0}. {1} està enviant al comandament virtual {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Escoltant a :{0}. {1} està enviant, però cap comandament virtual té un comandament PlayStation connectat.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Escoltant a :{0}. {1} està enviant a l'índex de comandament {2}, i cap comandament virtual amb un comandament PlayStation té aquest índex.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Escoltant a :{0}. {1} està enviant, però cap comandament virtual té un DualSense o un DualShock 4 connectat.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Escoltant a :{0}. {1} està enviant a l'índex de comandament {2}, i cap comandament virtual amb un DualSense o un DualShock 4 té aquest índex.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>El port {0} l'està usant un altre programa, com DSX. Tanca'l o tria un altre port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod de joc</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funciona amb OpenTrack i amb qualsevol seguidor que enviï la seva sortida per UDP o escrigui a la memòria compartida de FreeTrack 2.0, i amb un entorn d'execució OpenXR d'aquest equip que pugui executar una sessió en segon pla.</value></data>
@@ -636,6 +642,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>No s'ha trobat el fitxer</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>No es pot llegir</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>El fitxer de «{0}» no hi és o no es pot llegir. PadForge mostra Fosc fins que torni.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>El fitxer de «{0}» no conté cap tema de PadForge. PadForge mostra Fosc fins que en contingui un.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>El perfil «{0}» porta l'aspecte del seu joc. El teu tema torna quan hi ha un altre perfil actiu.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motor d'entrada</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configura el comportament del sondeig i el processament en segon pla.</value></data>
@@ -1041,6 +1048,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>El comandament no ha acceptat l'ordre que el prepara, així que no s'ha enviat res. Comprova que estigui connectat i torna a enviar.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>L'enviament s'ha aturat per un error de PadForge. El fitxer de registre en té els detalls.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Encara s'està enviant una imatge al comandament. Vols aturar l'enviament?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Continua l'enviament</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fitxers de Controller Pak (*.mpk)|*.mpk|Tots els fitxers (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak del port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restaura el Controller Pak</value></data>
@@ -1428,6 +1436,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Esvaïment del pols</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predefinit</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalitzada</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (generat per l'usuari)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Palanques</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gallets</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2408,7 +2417,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Aquest comandament té un magnetòmetre. Ancorar la guinyada al nord magnètic elimina la deriva horitzontal lenta de la punteria amb giroscopi. Primer calibra'l: prem Calibra el magnetòmetre, fes girar el comandament per totes les orientacions dibuixant un vuit durant uns segons i torna a prémer el botó.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancora la guinyada a la brúixola</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Afegeix una petita velocitat correctiva que atreu la punteria horitzontal cap al rumb magnètic, de manera que la deriva no es pot acumular. Necessita un calibratge del magnetòmetre desat. Les mostres alterades per metalls o imants propers es rebutgen automàticament.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Restableix el valor per defecte (desactivat)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulació del capcineig i el balanceig</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Capcineig i balanceig calculats a partir de l'acceleròmetre</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>El giroscopi d'aquest comandament només detecta els girs a esquerra i dreta. Amb la simulació activada, PadForge obté el capcineig i el balanceig de l'acceleròmetre i els envia, juntament amb la guinyada del giroscopi, a les files d'assignació i al moviment del comandament virtual. Un acceleròmetre no pot distingir una empenta d'una inclinació, així que moure el comandament cap a un costat o endavant sense girar-lo es llegeix com una rotació breu.</value></data>
@@ -2804,7 +2812,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Fes escombrar la palanca per tota la vora per mesurar el límit que pot assolir i, després, reformar-lo en un cercle complet.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Restableix el calibratge del límit</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Restableix el desplaçament del centre Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Restableix a Radial escalada</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Restableix la zona morta X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Restableix la zona morta Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Restableix l'antizona morta X</value></data>
@@ -3256,13 +3263,10 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Restableix el Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punts per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Recompte del ratolí per a una volta completa de càmera de 360°. Depèn de la sensibilitat del ratolí del joc: apuja'l si un flick no gira prou i abaixa'l si gira massa.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Restableix a 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Temps del flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Quant tarda a completar-se un flick complet de 180°, amb desacceleració final. Els girs més curts acaben en el mateix temps.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Restableix a 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Llindar del flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Desviació de la palanca que inicia un flick, com a fracció de la desviació completa. Durant el flick, el punt d'alliberament baixa al 90% d'aquest valor.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Restableix a 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Angle d'ajust</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Ajusta el flick a angles fixos per fer girs més regulars. Només endavant ajusta cada flick just al davant.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Sense ajust</value></data>
@@ -3271,22 +3275,16 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 graus</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 graus</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 graus</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Restableix a Sense ajust</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Força de l'ajust</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Amb quina força un flick tendeix cap a l'angle ajustat. 1 l'ajusta del tot, 0 desactiva l'ajust i els valors intermedis barregen tots dos comportaments.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Restableix a 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zona morta de l'angle frontal</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Un flick dins d'aquest angle respecte al davant no gira res. Permet començar una escombrada sense fer un gir de flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Restableix a 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Suavitzat de l'escombrada</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Suavitza el soroll de l'escombrada per la vora. -1 fa servir la finestra automàtica per nivells, 0 desactiva el suavitzat i els valors més grans suavitzen rotacions més grans per cicle.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Restableix a Automàtic (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Permet el flick en activar</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Desplaçament de la rotació</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Fa girar tot el mapa del flick aquests graus. Els valors positius van en sentit horari. L'ajust s'aplica després del desplaçament.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Restableix el desplaçament de la rotació</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quan la capa que conté el Flick Stick s'activa amb la palanca ja desviada, fa el flick immediatament. Desactivat manté la càmera quieta i segueix la rotació des de l'angle actual de la palanca.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Restableix Permet el flick en activar</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Avís de tope de direcció</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un senyal al tope d'una palanca en mode de direcció</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quan una palanca configurada en un mode de direcció es gira fins al tope, reprodueix un senyal (vibració, gallet o barra de llum) perquè notis el límit. Tot desactivat per defecte.</value></data>
@@ -3476,11 +3474,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reprodueix la resposta hàptica del DualSense en aquest comandament</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quan un joc controla aquesta ranura com a DualSense virtual amb àudio hàptic dissenyat, reprodueix aquesta pista als actuadors d'aquest comandament. Un Steam Controller 2026 per USB o amb el seu receptor, i un Flydigi Apex 6 Pro, reprodueixen la pista tal qual. Qualsevol altre comandament, i aquest Steam Controller per Bluetooth, rep tons derivats de l'àudio, que s'aproximen a la sensació dissenyada en lloc de reproduir-la.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Guany de la resposta hàptica</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Restableix el valor per defecte (desactivat)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Restableix el valor per defecte (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Tall de pas baix dels actuadors</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Manté la transmissió hàptica del Steam Controller per sota d'aquesta freqüència perquè els panells vibrin en lloc de reproduir so audible. Cap als 250 Hz, els actuadors comencen a sentir-se. Apuja-la per tenir més detall, o abaixa-la per jugar amb menys soroll.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Restableix a 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Els tons per sobre d'aquesta freqüència es tallen o es baixen d'octava. El valor per defecte de 800 Hz conserva la vibració de motors i impactes i atura els xiulets aguts.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restableix els tons aguts</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restableix el límit de to</value></data>
@@ -4049,8 +4044,59 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Perfil de Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro de Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Regió del cursor</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Canvi de {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Llista de roda ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Regió del cursor ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Mantén el ratolí {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Clica el ratolí {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Alterna el ratolí {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Pols hàptic ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (cua d'alliberament)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Toc {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Autodisparament {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Mantén {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Alterna {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Doble pulsació {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Pulsació llarga {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Pas de roda ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Alterna la roda ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Roda turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Salta amb el cursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Defineix el LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Recentra el giroscopi ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Empeny el cursor ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Tecla de captura ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Teclat en pantalla ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Defineix el color de llum</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentra la càmera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Salta amb el cursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Empeny el cursor</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Captura de pantalla</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Teclat en pantalla</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Canvia de capa de canvi</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Activa una capa de canvi</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Desactiva una capa de canvi</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Mantén una capa de canvi</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Canvia el número de jugador</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Sense assignar</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Alterna el mode d'escriptori</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Tecla de sistema de Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Alterna la lupa</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Més brillantor</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Menys brillantor</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Apaga el comandament</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Obre el configurador de Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Obre el menú ràpid de Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Surt del joc</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Alterna la resposta hàptica</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Alterna el HUD de Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Alterna la vibració</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Força el botó Guia</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Gir de calibratge del giroscopi</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Gira cap a la direcció</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (mantenir)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (deixar anar)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (deixar anar)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (activar)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Tria una configuració per veure què s'incorpora.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>El que s'incorpora</value></data>
@@ -4658,11 +4704,9 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Capa</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Tria la capa que permet aquest menú. Qualsevol capa i Base el permeten també amb altres capes actives. Una capa amb nom ha de coincidir amb la capa activa en aquell moment.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Restableix a Qualsevol capa i desactiva l'obertura mantinguda per la capa.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (no és a la llista d'aquesta ranura)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>La capa manté el menú obert</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Manté aquest menú obert mentre la seva capa amb nom està activa. L'entrada física seleccionada mou el ressaltat. Qualsevol capa i Base fan servir l'obertura normal de la superfície.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Restableix l'obertura en tocar o desviar.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Dirigeix amb</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>L'entrada física que mou la cel·la ressaltada mentre la capa manté aquest menú obert.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Es llegeix dels comandaments físics assignats a aquesta ranura. La capa obre el menú i aquesta entrada el dirigeix. Les seves cel·les indiquen què genera.</value></data>
@@ -4742,7 +4786,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dividit per direcció</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta central</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Restableix a Palanca esquerra X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Restableix la força (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Restableix la zona morta central (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Restableix Activa la vibració segons l'angle de direcció</value></data>
@@ -5270,6 +5313,9 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertit</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Pic</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Aquest fitxer no és un tema de PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge no pot llegir aquest fitxer.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge no troba aquest fitxer.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>No és un tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>No s'ha pogut desar el tema. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema nou</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge porta el tema mentre el crees.</value></data>
@@ -5284,6 +5330,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>S'està obtenint la imatge de Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam no té cap imatge ampla d'aquest joc.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>No s'ha pogut accedir a Steam. Comprova la connexió.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge no pot llegir la imatge que Steam té d'aquest joc.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posició</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Mou la imatge amunt o avall dins de la seva finestra.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mostra el logotip del joc</value></data>
@@ -5324,4 +5371,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>La maqueta filmada per a la sèrie original de Star Trek, fotografiada pel Smithsonian National Air and Space Museum, que la conserva: la imatge del tema de Star Trek LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imatge del tema: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Un fotograma de Star Trek: La nova generació: la imatge del tema de Star Trek Starfleet. Trobat a Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Barra de llum</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Barra de llum {0}</value></data>
 </root>

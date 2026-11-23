@@ -116,7 +116,7 @@ namespace PadForge.Common.Input.Peripherals
         /// times nothing.</summary>
         internal int WaitMs => Volatile.Read(ref _waitMs);
 
-        /// <summary>The last run started. What the tabs say is that run's.</summary>
+        /// <summary>The last run started. What the groups say is that run's.</summary>
         private static WorkerRun s_latestRun;
 
         private Thread _lastThread;
@@ -283,7 +283,7 @@ namespace PadForge.Common.Input.Peripherals
                             }
                         }
                         var state = client.Connected ? BackendState.Connected : BackendState.Waiting;
-                        // GG runs and does not take PadForge's game: the tabs
+                        // GG runs and does not take PadForge's game: the groups
                         // name that in place of a wait for GG to start.
                         bool refused = !client.Connected && PeripheralOutputs.Presence.SteelSeriesGGRunning;
                         if (!run.Stop)

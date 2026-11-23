@@ -70,7 +70,7 @@ namespace PadForge.Views
 
         // Colors — pre-cached dark/light variants (zero per-frame allocation)
         private static bool IsDarkTheme =>
-            Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            PadForge.Common.EmberTheme.DarkGround;
 
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
         private static SolidColorBrush FA(byte a, byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromArgb(a, r, g, b)); br.Freeze(); return br; }
@@ -120,6 +120,10 @@ namespace PadForge.Views
         private MouseGlyph.Parts _parts;
         private bool _flashOn;
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
+        // The look the layout was built in (#591): the lit lock lights, the
+        // pressed keys and buttons and the hover washes hold that look's
+        // brushes, so a look put on while the view shows builds it again.
+        private int _builtLook;
 
         public KBMPreviewView()
         {
@@ -215,6 +219,7 @@ namespace PadForge.Views
             _paintedLeds = int.MinValue;
             _scrollLeftArrow = _scrollRightArrow = null;
             _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+            _builtLook = PadForge.Common.Themes.ThemeLook.Version;
             if (_vm == null || _vm.OutputType != VirtualControllerType.KeyboardMouse) return;
             BuildKeyboardCanvas();
             BuildMouseCanvas();
@@ -902,9 +907,10 @@ namespace PadForge.Views
             // all per-frame work while hidden, including the theme check.
             // Iconic gate: IsVisible stays TRUE while minimized.
             if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
-            // Rebuild on theme change.
+            // Rebuild on a theme or look change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
-            if (_layoutBuilt && _lastTheme != currentTheme) { _lastTheme = currentTheme; RebuildLayout(); }
+            if (_layoutBuilt && (_lastTheme != currentTheme || _builtLook != PadForge.Common.Themes.ThemeLook.Version))
+                RebuildLayout();
 
             if (_vm == null || !_layoutBuilt) return;
             var kbm = _vm.KbmOutputSnapshot;

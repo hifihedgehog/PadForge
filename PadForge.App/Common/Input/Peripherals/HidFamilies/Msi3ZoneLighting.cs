@@ -48,7 +48,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "MSI 3-Zone Laptop",
-            Map = new LightMap(Lights(), "OpenRGB MSI3ZoneController") { Product = "msi:1770:FF00" },
+            Map = new LightMap(Lights()) { Product = "msi:1770:FF00" },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new Session(),
         });

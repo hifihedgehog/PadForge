@@ -117,7 +117,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registrations[0].Name,
-                    Map = new LightMap(Lights(pid), "OpenRGB RGBController_GaiZhongGai.cpp") { Product = product },
+                    Map = new LightMap(Lights(pid)) { Product = product },
                     RepaintMs = RepaintMs,
                     Begin = (io, wait) => Session.Begin(io, pid, product),
                 };
@@ -462,7 +462,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (read == null) return false;
                     _lengths = read;
                 }
-                _map = new LightMap(HubLights(_pid, _lengths), _map.Source) { Product = _map.Product, Strips = strips };
+                _map = new LightMap(HubLights(_pid, _lengths)) { Product = _map.Product, Strips = strips };
                 return true;
             }
 
@@ -478,14 +478,14 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         var flash = ReadLightBoard(io);
                         if (flash == null) return null;
-                        return new Session(pid, new LightMap(LightBoardLights(flash), "GaiZhongGai LightBoard, from the board") { Product = product });
+                        return new Session(pid, new LightMap(LightBoardLights(flash)) { Product = product });
                     }
                     case HubGreen:
                     case HubBlue:
                     {
                         var lengths = ReadHubLengths(io);
                         if (lengths == null) return null;
-                        return new Session(pid, new LightMap(HubLights(pid, lengths), "GaiZhongGai RGB hub, from the hub")
+                        return new Session(pid, new LightMap(HubLights(pid, lengths))
                         {
                             Product = product,
                             Strips = HubStrips(pid, null),

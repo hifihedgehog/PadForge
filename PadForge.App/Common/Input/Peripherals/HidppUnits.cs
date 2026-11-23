@@ -316,17 +316,6 @@ namespace PadForge.Common.Input.Peripherals
             => HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionSetSwControl,
                 claim ? new byte[] { 0x01, 0x01 } : new byte[] { 0x00, 0x00 });
 
-        /// <summary>0x8071 getInfo. One function answers three questions,
-        /// told apart by its first two bytes (Logitech's x8071 document,
-        /// p.2-3): [FF FF] the device, [cluster FF] one cluster, [cluster
-        /// effect] one effect of a cluster, with cluster FF for the list of
-        /// multi-cluster effects. The third byte, typeOfInfo, is 0. Logitech's
-        /// own program asks all three this way (g810-led-resources
-        /// dumps/g815/G815-Hotplug-to-start.pcapng: 11 FF 0F 0C FF FF 00,
-        /// then 00 FF 00, then 00 00 00).</summary>
-        public static byte[] RgbGetInfo(byte deviceIndex, byte featureIndex, byte cluster, byte effect)
-            => HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionRgbGetInfo, new byte[] { cluster, effect, 0x00 });
-
         /// <summary>0x8071 manageSwControl as a write: [01, flags, events]
         /// (Logitech's x8071 document, p.26-28). [01 01 00] takes the
         /// clusters alone, [01 00 00] hands everything back, and Logitech's
@@ -445,15 +434,6 @@ namespace PadForge.Common.Input.Peripherals
         /// type's answer 00 05 01 00 00), so a color with no red would
         /// switch them off. Black stays black here, so that black is dark.</summary>
         public static byte MediaRed(byte r, byte g, byte b) => r == 0 && (g | b) != 0 ? (byte)0x01 : r;
-
-        /// <summary>0x8081 getInfo for one page of zone presence: [00, page,
-        /// 00]. The answer repeats the two bytes and then holds 14 bytes of
-        /// bits, bit i for zone page * 112 + i (Logitech's x8081 document,
-        /// p.4-6). A G915 X answers page 1 with
-        /// 00 01 00 00 00 00 00 7A 00 00 F0 1F 00 00 04 00
-        /// (unplug_and_replug.pcapng).</summary>
-        public static byte[] PerKeyZonePage(byte deviceIndex, byte featureIndex, byte page)
-            => HidppHapticProtocol.Frame(deviceIndex, featureIndex, FunctionPerKeyV2GetInfo, new byte[] { 0x00, page, 0x00 });
 
         /// <summary>0x8081 setRangeRgbZones with one range: the first zone,
         /// the last, and the color for every zone between (Logitech's x8081
@@ -1509,7 +1489,14 @@ namespace PadForge.Common.Input.Peripherals
             return true;
         }
 
-        /// <summary>One 0x8071 getInfo question. All three kinds of question
+        /// <summary>One 0x8071 getInfo question, told apart by its first two
+        /// bytes (Logitech's x8071 document, p.2-3): [FF FF] the device,
+        /// [cluster FF] one cluster, [cluster effect] one effect of a
+        /// cluster, with cluster FF for the list of multi-cluster effects.
+        /// The third byte, typeOfInfo, is 0. Logitech's own program asks all
+        /// three this way (g810-led-resources
+        /// dumps/g815/G815-Hotplug-to-start.pcapng: 11 FF 0F 0C FF FF 00,
+        /// then 00 FF 00, then 00 00 00). All three kinds of question
         /// share one function, so the answer is checked against the
         /// question: its first byte against the cluster asked about, and
         /// for an effect its second byte against the effect. A device or a

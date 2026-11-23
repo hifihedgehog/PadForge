@@ -1141,10 +1141,12 @@ namespace PadForge.Tests
             // off a boxed value, here and in the page's own value style.
             Assert.DoesNotContain("x:Name=\"PART_ContentHost\" Margin=\"{TemplateBinding Padding}\"", PageText());
 
-            // Every row of the section grows its slider.
+            // Every row of the section grows its slider, except a row whose
+            // switch stands at its end, whose layout does not read Grow.
             var rows = scroll.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
             Assert.True(rows.Count > 40, "the section has " + rows.Count + " rows");
-            Assert.All(rows, r => Assert.Equal("True", (string)r.Attribute("Grow")));
+            Assert.All(rows.Where(r => !r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Ends" && a.Value == "True")),
+                r => Assert.Equal("True", (string)r.Attribute("Grow")));
             // A range's two-thumb slider is no Slider, so it is marked to
             // fill its row.
             var ranges = scroll.Descendants().Where(e => e.Name.LocalName == "RangeSlider").ToList();
@@ -1438,7 +1440,8 @@ namespace PadForge.Tests
         /// row grows its slider and holds its value in a column 66 wide, so
         /// the sliders of a card end at one line, and opens on its label. A
         /// row whose switch stands at its end opens on a label that takes the
-        /// row's room. No row sets itself in, no slider keeps a width of its
+        /// row's room, and sets neither Grow nor ValueWidth, which its layout
+        /// does not read. No row sets itself in, no slider keeps a width of its
         /// own, and a value typed in place stands in the page's field box.
         /// The section's cards stand as far apart as the page's do.</summary>
         private static List<XElement> SectionRows(XElement scroll, XElement own, Func<XElement, bool> apart = null)
@@ -1451,12 +1454,12 @@ namespace PadForge.Tests
             var rows = scroll.Descendants().Where(e => e.Name.LocalName == "SettingRow" && (apart == null || !apart(e))).ToList();
             Assert.All(rows, r =>
             {
-                Assert.Equal("True", (string)r.Attribute("Grow"));
-                Assert.Equal("66", (string)r.Attribute("ValueWidth"));
+                bool ends = r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Ends" && a.Value == "True");
+                Assert.Equal(ends ? null : "True", (string)r.Attribute("Grow"));
+                Assert.Equal(ends ? null : "66", (string)r.Attribute("ValueWidth"));
                 Assert.Null(r.Attribute("Margin"));
                 var first = r.Elements().First(e => !e.Name.LocalName.Contains('.'));
                 Assert.Equal("TextBlock", first.Name.LocalName);
-                bool ends = r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Ends" && a.Value == "True");
                 Assert.Contains((string)first.Attribute("Style"), ends
                     ? new[] { "{StaticResource EndsLabel}" }
                     : new[] { "{StaticResource DzLabel}", "{StaticResource DzSubLabel}" });
@@ -2238,7 +2241,9 @@ namespace PadForge.Tests
             foreach (string id in new[] { "MacroList", "MenuList", "ActionsList", "CellsList" })
                 Assert.Contains("Select-PadListItem -ListAid \"" + id + "\"", script);
             // A control picked through its list row stays picked, so each
-            // recipe that picks one ends on a fresh process.
+            // recipe that picks one lets go of it at its end: the bar's
+            // cross (Pad_PickedLetGo) on the slot's picture, and a fresh
+            // process only when the bar stays.
             Assert.Contains("$script:RowPicked = $true", script);
             foreach (string recipe in new[] { "function Capture-RowOptionShots {", "function Capture-MotionRow {", "function Capture-SourcePickerSet {" })
             {
@@ -2247,6 +2252,13 @@ namespace PadForge.Tests
                 string body = script.Substring(start, script.IndexOf("\n}", start, StringComparison.Ordinal) - start);
                 Assert.Contains("Drop-RowPick | Out-Null", body);
             }
+            int drop = script.IndexOf("function Drop-RowPick {", StringComparison.Ordinal);
+            Assert.True(drop > 0, "no Drop-RowPick");
+            string dropBody = script.Substring(drop, script.IndexOf("\n}", drop, StringComparison.Ordinal) - drop);
+            int letGo = dropBody.IndexOf("-Aid \"Pad_PickedLetGo\"", StringComparison.Ordinal);
+            int invoke = dropBody.IndexOf("InvokePattern]::Pattern).Invoke()", StringComparison.Ordinal);
+            int restart = dropBody.IndexOf("Reset-PadForgeUia", StringComparison.Ordinal);
+            Assert.True(letGo > 0 && invoke > letGo && restart > invoke, "Drop-RowPick does not press the bar's cross before it restarts PadForge");
         }
 
         /// <summary>The eight strings the header and the sections added are

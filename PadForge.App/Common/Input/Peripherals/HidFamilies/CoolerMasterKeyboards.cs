@@ -109,8 +109,7 @@ namespace PadForge.Common.Input.Peripherals
             if (!v1 && Array.IndexOf(V2Keyboards, productId) < 0) return null;
             var lights = KeyboardLights(productId, KeyboardLayout.AnsiQwerty);
             if (lights == null) return null;
-            return NewModel(name, productId, lights, "OpenRGB CMKeyboardDevices.cpp",
-                (io, wait) => BeginKeyboard(io, productId, v1));
+            return NewModel(name, productId, lights, (io, wait) => BeginKeyboard(io, productId, v1));
         }
 
         /// <summary>The keys of a keyboard in a region: the layout OpenRGB
@@ -381,7 +380,7 @@ namespace PadForge.Common.Input.Peripherals
                 Region = region;
                 Profile = profile;
                 if (region != KeyboardLayout.AnsiQwerty && KeyboardLights(productId, region) is { } lights)
-                    _map = new LightMap(lights, "OpenRGB CMKeyboardDevices.cpp") { Product = Product(productId) };
+                    _map = new LightMap(lights) { Product = Product(productId) };
                 var handBack = new List<byte[]>(2);
                 if (profile is byte p) handBack.Add(ActiveProfile(p));
                 handBack.Add(ControlMode(FirmwareControl));

@@ -13,7 +13,7 @@ namespace PadForge.Common.Input.Peripherals
 
     /// <summary>One std::map&lt;int,layout_info&gt; of AsusAuraKeyboardLayouts.h:
     /// a keyboard line's layouts by region.</summary>
-    internal sealed record AsusKeyboardLayoutSet(string Name, string Source, AsusKeyboardLayout[] Layouts)
+    internal sealed record AsusKeyboardLayoutSet(string Name, AsusKeyboardLayout[] Layouts)
     {
         /// <summary>The layout stored under <paramref name="region"/>, or
         /// null where the map has none.</summary>

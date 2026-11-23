@@ -827,68 +827,182 @@ namespace PadForge.Engine.RemoteLink
         /// is full-cone. Returns true on success (the peer is Registered), false
         /// on punch failure so the caller can fall back to Connect by Address.
         /// Held open up to <paramref name="punchTimeout"/> so a human delay
-        /// between the two people clicking Connect still lands.</summary>
+        /// between the two people clicking Connect still lands. When the
+        /// always-on responder already answers the peer on this nonce, the call
+        /// waits for that session instead of starting a second one on its
+        /// channel, returns true when it connected, and dials once it
+        /// failed.</summary>
         public async Task<bool> ConnectByPunchAsync(
             IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce, bool handshakeAsInitiator,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan? punchTimeout = null,
             CancellationToken ct = default)
-            => await PunchConnectAsync(handshakeAsInitiator, candidates, sharedNonce, exposeLocal,
-                punchTimeout ?? TimeSpan.FromSeconds(30), ct).ConfigureAwait(false);
+        {
+            string key = sharedNonce is { Length: HolePuncher.NonceLen } ? Convert.ToHexString(sharedNonce) : null;
+            if (key != null)
+            {
+                while (true)
+                {
+                    Task<bool> answering;
+                    lock (_punchNoncesLock)
+                    {
+                        // Held in the same lock the responder checks, so no
+                        // answer can start between this look and the hold.
+                        if (!_autoSessions.TryGetValue(key, out answering))
+                        {
+                            HoldPunchNonce(key);
+                            break;
+                        }
+                    }
+                    try { if (await answering.WaitAsync(ct).ConfigureAwait(false)) return true; }
+                    catch (OperationCanceledException) { return false; }
+                }
+            }
+            try
+            {
+                return await PunchConnectAsync(handshakeAsInitiator, candidates, sharedNonce, exposeLocal,
+                    punchTimeout ?? TimeSpan.FromSeconds(30), ct).ConfigureAwait(false);
+            }
+            finally
+            {
+                if (key != null) lock (_punchNoncesLock) ReleasePunchNonce(key);
+            }
+        }
 
         // Nonces we are already auto-responding to, so a spray (many probes per
         // second) starts exactly one responder session.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _autoResponding = new();
 
-        /// <summary>Capability-derived nonces for paired peers, so an unsolicited
-        /// DHT-lane dial is recognized too. Set by the host each maintenance
-        /// pass; empty is fine (the code lane needs no registration).</summary>
-        public void SetKnownPunchNonces(IEnumerable<byte[]> nonces)
+        // The nonces this PC's own punch sessions run with, each with its count
+        // of holds. ConnectByPunchAsync holds once no answer of the responder
+        // runs on the nonce, and PunchConnectAsync once its socket and nonce
+        // pass its first check, and each releases in its finally. A
+        // ConnectByPunchAsync that ends while it waits on an answer never
+        // holds. The always-on responder answers none of
+        // them: every session's punch sink already sees each probe that
+        // reaches the socket, and a second session on the nonce would share
+        // the first one's channel id and take its control datagrams. Both PCs
+        // list each other as paired, so the PC whose pass dials hears the
+        // answering PC's probes, which carry the pass's own nonce.
+        private readonly Dictionary<string, int> _punchNonces = new(StringComparer.Ordinal);
+        // The responder's sessions by nonce, each with its outcome, so a dial
+        // on a nonce the responder already answers waits for that session
+        // (ConnectByPunchAsync) instead of starting a second one.
+        private readonly Dictionary<string, Task<bool>> _autoSessions = new(StringComparer.Ordinal);
+        private readonly object _punchNoncesLock = new();
+
+        // Callers hold _punchNoncesLock.
+        private void HoldPunchNonce(string key)
+            => _punchNonces[key] = _punchNonces.TryGetValue(key, out int holds) ? holds + 1 : 1;
+
+        private void ReleasePunchNonce(string key)
         {
-            _knownNonces.Clear();
-            if (nonces == null) return;
-            foreach (var n in nonces)
-                if (n != null && n.Length == HolePuncher.NonceLen)
-                    _knownNonces[Convert.ToHexString(n)] = 0;
+            if (_punchNonces.TryGetValue(key, out int holds) && holds > 1) _punchNonces[key] = holds - 1;
+            else _punchNonces.Remove(key);
         }
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _knownNonces = new();
+
+        /// <summary>The paired peers whose internet reconnect dial this host
+        /// answers unprompted: each one's capability punch nonce
+        /// (<see cref="Dht.PresenceRecord.PunchNonce"/>), the nonce a paired
+        /// peer's maintenance pass punches with, mapped to that peer's
+        /// fingerprint. <see cref="Dht.RemoteLinkInternetService"/> hands its
+        /// whole peer list over at the start of every maintenance pass, so a
+        /// peer unpaired since the last pass is dropped. A peer with no stored
+        /// capability or a malformed key is skipped. The code lane needs no
+        /// entry here.</summary>
+        public void SetKnownPunchPeers(IEnumerable<(byte[] PeerPublicKey, byte[] Capability)> peers)
+        {
+            var known = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+            if (peers != null)
+                foreach (var (key, cap) in peers)
+                {
+                    if (key is not { Length: PeerCrypto.KeySize } || cap is not { Length: > 0 }) continue;
+                    known[Convert.ToHexString(Dht.PresenceRecord.PunchNonce(cap))] = PeerCrypto.Fingerprint(key);
+                }
+            _knownPunchPeers = known;
+        }
+        // Replaced whole, never edited in place, so a probe read on the socket
+        // thread sees either the last pass's set or this one's.
+        private volatile IReadOnlyDictionary<string, byte[]> _knownPunchPeers = new Dictionary<string, byte[]>();
+
+        /// <summary>The handshake role to answer an unsolicited punch probe in,
+        /// or null when the probe is none of ours. A probe carrying the nonce two
+        /// peers derive from each other's codes takes the code lane's role. A
+        /// probe carrying a paired peer's capability nonce must also carry that
+        /// peer's fingerprint prefix, which turns away this host's own probe
+        /// coming back through a hairpinning router, and takes the role the
+        /// peer's maintenance pass expects: the lower full fingerprint leads
+        /// (<see cref="Dht.RemoteLinkInternetService.LeadsHandshake"/>).</summary>
+        internal bool? AutoRespondRole(byte[] senderPrefix, byte[] nonce)
+        {
+            var self = _identity?.Fingerprint;
+            if (self == null || senderPrefix == null || nonce == null) return null;
+            var expected = LinkCode.TwoWayPunchNonce(self, senderPrefix);
+            if (System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(expected, nonce))
+                return LinkCode.IsHandshakeInitiator(self, senderPrefix);
+            if (_knownPunchPeers.TryGetValue(Convert.ToHexString(nonce), out var peerFp)
+                && senderPrefix.Length == HolePuncher.PrefixLen
+                && senderPrefix.AsSpan().SequenceEqual(peerFp.AsSpan(0, HolePuncher.PrefixLen)))
+                return Dht.RemoteLinkInternetService.LeadsHandshake(self, peerFp);
+            return null;
+        }
 
         /// <summary>
         /// Answers an unsolicited punch probe (#294). The probe carries the
         /// DIALER's fingerprint prefix, so we can derive the very nonce the two
-        /// of us would share and verify it. On a match we start a responder
+        /// of us would share and verify it. A paired peer's internet reconnect
+        /// carries its capability nonce instead, which a maintenance pass has
+        /// listed (<see cref="AutoRespondRole"/>). On a match we start a responder
         /// punch/handshake aimed at the probe's SOURCE endpoint, which is
         /// authoritative (better than any advertised candidate). This is what
         /// makes the flow one-sided: the host just leaves Remote Link running.
+        /// A probe whose nonce one of this PC's own sessions runs with is left
+        /// to that session, so one PC never runs two sessions on one channel
+        /// because of its own dial.
         /// </summary>
         private void TryAutoRespondToPunch(IPEndPoint from, byte[] dg)
         {
             try
             {
                 if (!HolePuncher.TryParseProbe(dg, out _, out var senderPrefix, out var nonce)) return;
-                if (_identity?.Fingerprint == null) return;
 
                 // Either the nonce two peers derive from each other's codes, or
                 // a paired peer's capability nonce (the DHT lane).
-                var expected = LinkCode.TwoWayPunchNonce(_identity.Fingerprint, senderPrefix);
-                bool match = System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(expected, nonce)
-                             || _knownNonces.ContainsKey(Convert.ToHexString(nonce));
-                if (!match) return;
+                if (AutoRespondRole(senderPrefix, nonce) is not bool asInitiator) return;
 
                 string key = Convert.ToHexString(nonce);
-                if (!_autoResponding.TryAdd(key, 0)) return; // one session per nonce
+                TaskCompletionSource<bool> answered;
+                lock (_punchNoncesLock)
+                {
+                    // A session of this PC's own already runs with the nonce
+                    // and hears this probe through its punch sink.
+                    if (_punchNonces.ContainsKey(key)) return;
+                    if (!_autoResponding.TryAdd(key, 0)) return; // one session per nonce
+                    answered = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+                    _autoSessions[key] = answered.Task;
+                }
 
-                bool asInitiator = LinkCode.IsHandshakeInitiator(_identity.Fingerprint, senderPrefix);
                 SdlDiagLog.WriteLine($"PUNCH auto-respond: dial from {from}, role={(asInitiator ? "init" : "resp")}");
                 _ = Task.Run(async () =>
                 {
+                    bool connected = false;
                     try
                     {
                         var expose = PrepareExposure(ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
-                        await PunchConnectAsync(asInitiator, new[] { from }, nonce, expose,
+                        connected = await PunchConnectAsync(asInitiator, new[] { from }, nonce, expose,
                             TimeSpan.FromSeconds(20), _cts?.Token ?? CancellationToken.None).ConfigureAwait(false);
                     }
                     catch { }
-                    finally { _autoResponding.TryRemove(key, out _); }
+                    finally
+                    {
+                        lock (_punchNoncesLock)
+                        {
+                            _autoSessions.Remove(key);
+                            _autoResponding.TryRemove(key, out _);
+                        }
+                        // After the session's cleanup, so a dial that waited
+                        // registers its own channel only once this one let go.
+                        answered.TrySetResult(connected);
+                    }
                 });
             }
             catch { }
@@ -924,6 +1038,8 @@ namespace PadForge.Engine.RemoteLink
             IPEndPoint peerEp = null;
             var controlAdapter = new UdpControlAdapter(sock, () => peerEp);
             uint channelId = UdpControlChannel.ChannelIdFromNonce(sharedNonce);
+            string nonceKey = Convert.ToHexString(sharedNonce);
+            lock (_punchNoncesLock) HoldPunchNonce(nonceKey);
 
             int probesIn = 0;
             int punchKey = Interlocked.Increment(ref _punchSinkCounter);
@@ -978,6 +1094,7 @@ namespace PadForge.Engine.RemoteLink
             {
                 _punchSinks.TryRemove(punchKey, out _);
                 controlRegistration.Dispose();
+                lock (_punchNoncesLock) ReleasePunchNonce(nonceKey);
             }
         }
 
@@ -2046,7 +2163,8 @@ namespace PadForge.Engine.RemoteLink
                     var dg = datagram.ToArray();
                     foreach (var sink in _punchSinks.Values) sink(from, dg);
                     // ALWAYS-ON RESPONDER: a ping addressed to us with a nonce
-                    // we can derive is a peer dialing our code. Answer it even
+                    // we can derive is a peer dialing our code, or a paired
+                    // peer's internet reconnect (AutoRespondRole). Answer it even
                     // with no punch in flight, so only the joiner has to click
                     // Connect. Without this the host had to click at the same
                     // moment or every probe was silently dropped (field failure

@@ -72,7 +72,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_LegoDimensionsToypadBase.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"legotoypad:{VendorId:X4}:{productId:X4}",
             },

@@ -200,7 +200,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The other collections of the device a session talks
         /// through beside the unit's own, as OpenRGB opens a control and a
-        /// LED collection of one keyboard (RoccatControllerDetect.cpp:101-203).
+        /// LED collection of one keyboard (RoccatControllerDetect.cpp:104-206 at 6b681e3c).
         /// A collection is listed only while each of its siblings is in the
         /// walk too. The worker opens them for read and write beside the
         /// unit's channel, from the same container, hands them to

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ออนไลน์</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ออฟไลน์</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>ไม่ทราบ</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>ค่าเริ่มต้น</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>เรียกดู…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ดำเนินการต่อ</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>หยุด</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>เอนจินหยุดแล้ว</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>ข้อผิดพลาด: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>สร้าง {0} ไม่ได้</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>เปิด อ่าน หรือแมปอุปกรณ์ไม่ได้ บันทึกวินิจฉัยระบุอุปกรณ์นั้นไว้</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} เกิดข้อผิดพลาด บันทึกวินิจฉัยมีสาเหตุไว้</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>เอนจินอินพุตเกิดข้อผิดพลาด บันทึกวินิจฉัยมีสาเหตุไว้</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL เริ่มทำงานไม่ได้ บันทึกวินิจฉัยมีสาเหตุไว้</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>ตั้งค่า HIDMaestro ไม่ได้ บันทึกวินิจฉัยมีสาเหตุไว้</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>โปรไฟล์ HIDMaestro ของคอนโทรลเลอร์เสมือนหายไป บันทึกวินิจฉัยระบุรายการนั้นไว้</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ใช้ข้อมูลระบุตัวตนและเลย์เอาต์ที่ปรับแต่งไม่ได้ จึงใช้ของโปรไฟล์เดิมแทน</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>สลับโปรไฟล์แล้ว: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>สลับโปรไฟล์แล้ว: ค่าเริ่มต้น</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ค่าเริ่มต้น</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>พอร์ตเซิร์ฟเวอร์การเคลื่อนไหว</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>ส่งข้อมูลไจโรและเซนเซอร์วัดความเร่งให้ Cemu, Dolphin, Yuzu ฯลฯ</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>ม็อดเกม</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ให้ม็อดเกมที่สร้างสำหรับ DSX ตั้งค่าอะแดปทีฟทริกเกอร์ แถบไฟ ไฟผู้เล่น และไฟปิดเสียงของคอนโทรลเลอร์ PlayStation ของคุณ</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ให้ม็อดเกมที่สร้างสำหรับ DSX ตั้งค่าอะแดปทีฟทริกเกอร์ แถบไฟ ไฟผู้เล่น และไฟปิดเสียงของ DualSense หรือ DualShock 4</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>รับม็อดเกม DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>พอร์ตม็อดเกม</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>เรียกใช้ตัวแทน DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>ม็อดบางตัว เช่น DualSense4GTAV จะปิดตัวเองถ้าไม่มีโปรแกรมชื่อ DSX ทำงานอยู่ ตัวเลือกนี้จะเรียกใช้ตัวแทนขนาดเล็กชื่อนั้นขณะที่เซิร์ฟเวอร์รอรับอยู่</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>ใช้ได้กับม็อดที่สร้างสำหรับ DSX เช่นม็อดของ GTA V, Red Dead Redemption 2, Skyrim และ Forza ขณะที่เซิร์ฟเวอร์รอรับอยู่ PadForge จะเขียนพอร์ตลงในที่ที่ม็อดเหล่านั้นค้นหา</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}. {1} กำลังส่งไปยังคอนโทรลเลอร์เสมือน {2}</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}. {1} กำลังส่งข้อมูล แต่ไม่มีคอนโทรลเลอร์เสมือนใดที่มีคอนโทรลเลอร์ PlayStation อยู่</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}. {1} กำลังส่งไปยังดัชนีคอนโทรลเลอร์ {2} และไม่มีคอนโทรลเลอร์เสมือนที่มีคอนโทรลเลอร์ PlayStation ใช้ดัชนีนั้น</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}. {1} กำลังส่งข้อมูล แต่ไม่มีคอนโทรลเลอร์เสมือนใดที่มี DualSense หรือ DualShock 4 อยู่</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}. {1} กำลังส่งไปยังดัชนีคอนโทรลเลอร์ {2} และไม่มีคอนโทรลเลอร์เสมือนที่มี DualSense หรือ DualShock 4 ใช้ดัชนีนั้น</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>พอร์ต {0} ถูกโปรแกรมอื่นใช้งานอยู่ เช่น DSX ให้ปิดโปรแกรมนั้นหรือเลือกพอร์ตอื่น</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ม็อดเกม</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ใช้งานได้กับ OpenTrack และตัวติดตามใดก็ตามที่ส่งเอาต์พุต UDP หรือเขียนหน่วยความจำที่ใช้ร่วมกันแบบ FreeTrack 2.0 รวมถึงรันไทม์ OpenXR บนเครื่องนี้ที่รันเซสชันในเบื้องหลังได้</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ไม่พบไฟล์</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>อ่านไม่ได้</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ไฟล์ของ "{0}" หายไปหรืออ่านไม่ได้ PadForge จะแสดงธีมมืดจนกว่าไฟล์จะกลับมา</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>ไฟล์ของ “{0}” ไม่มีธีมของ PadForge อยู่ PadForge จะแสดงธีมมืดจนกว่าจะมี</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>โปรไฟล์ "{0}" กำลังใช้รูปลักษณ์ของเกม ธีมของคุณจะกลับมาเมื่อใช้โปรไฟล์อื่น</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>ธีม PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่ธีมของ PadForge</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge อ่านไฟล์นั้นไม่ได้</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ไม่พบไฟล์นั้น</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>ไม่ใช่ธีม</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ไม่สามารถบันทึกธีมได้ {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ธีมใหม่</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge จะแสดงธีมให้เห็นทันทีระหว่างที่คุณสร้าง</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>กำลังดึงรูปภาพจาก Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ไม่มีรูปภาพแนวกว้างสำหรับเกมนี้</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>ติดต่อ Steam ไม่ได้ ตรวจสอบการเชื่อมต่อของคุณ</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge อ่านรูปภาพของ Steam สำหรับเกมนี้ไม่ได้</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>ตำแหน่ง</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>เลื่อนรูปภาพขึ้นหรือลงภายในกรอบ</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>แสดงโลโก้ของเกม</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>คอนโทรลเลอร์ไม่รับคำสั่งที่ใช้เตรียมความพร้อม จึงยังไม่ได้ส่งอะไรไป ตรวจสอบว่าเชื่อมต่ออยู่ แล้วส่งอีกครั้ง</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>การส่งหยุดลงเพราะเกิดข้อผิดพลาดใน PadForge ดูรายละเอียดได้ในไฟล์บันทึก</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>รูปภาพยังส่งไปยังคอนโทรลเลอร์อยู่ หยุดการส่งหรือไม่?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>ส่งต่อ</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ไฟล์ Controller Pak (*.mpk)|*.mpk|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak พอร์ต {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>กู้คืน Controller Pak</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>เวลาจางพัลส์</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>พรีเซ็ต</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>กำหนดเอง</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (ผู้ใช้สร้างเอง)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>สติ๊ก</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ทริกเกอร์</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>คอนโทรลเลอร์นี้มีแมกนีโตมิเตอร์ การยึดยอว์กับทิศเหนือแม่เหล็กจะขจัดการดริฟต์แนวนอนอย่างช้า ๆ ออกจากการเล็งด้วยไจโร ปรับเทียบก่อน: กด “ปรับเทียบ” หมุนคอนโทรลเลอร์ให้ครบทุกทิศทางเป็นรูปเลข 8 สักสองสามวินาที แล้วกดอีกครั้ง</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ยึดยอว์กับเข็มทิศ</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>เพิ่มอัตราแก้ไขเล็กน้อยที่ดึงการเล็งแนวนอนเข้าหาทิศทางแม่เหล็ก การดริฟต์จึงไม่สะสม ต้องมีค่าปรับเทียบแมกนีโตมิเตอร์ที่บันทึกไว้ ตัวอย่างที่ถูกรบกวนจากโลหะหรือแม่เหล็กใกล้เคียงจะถูกตัดทิ้งโดยอัตโนมัติ</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>รีเซ็ตเป็นค่าเริ่มต้น (ปิด)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>การจำลองพิตช์และโรล</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>พิตช์และโรลที่คำนวณจากตัวตรวจจับความเร่ง</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ไจโรของคอนโทรลเลอร์นี้รับรู้ได้เฉพาะการหันซ้ายและขวา เมื่อเปิดการจำลอง PadForge จะคำนวณพิตช์และโรลจากเซนเซอร์วัดความเร่ง แล้วส่งไปพร้อมกับยอว์ของไจโรให้แถวการแมปและการเคลื่อนไหวของคอนโทรลเลอร์เสมือน เซนเซอร์วัดความเร่งแยกการผลักออกจากการเอียงไม่ได้ การขยับคอนโทรลเลอร์ไปด้านข้างหรือไปข้างหน้าโดยไม่หมุนจึงถูกอ่านเป็นการหมุนชั่วครู่</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>กวาดสติ๊กไปรอบขอบเพื่อหาขอบเขตที่ไปถึงได้ แล้วปรับรูปร่างให้เป็นวงกลมเต็ม</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>รีเซ็ตการปรับเทียบขอบเขต</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>รีเซ็ตค่าชดเชยกึ่งกลาง Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>รีเซ็ตเป็นแบบรัศมีปรับสเกล</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>รีเซ็ตเดดโซน X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>รีเซ็ตเดดโซน Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>รีเซ็ตแอนตี้เดดโซน X</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>รีเซ็ตฟลิกสติ๊ก</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>จุดต่อ 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>จำนวนเคานต์ของเมาส์สำหรับการหันกล้องครบ 360° หนึ่งรอบ ขึ้นอยู่กับความไวเมาส์ของเกม: เพิ่มค่าหากการฟลิกหันไม่ถึง ลดค่าหากหันเกิน</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>รีเซ็ตเป็น 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>เวลาฟลิก</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>ระยะเวลาที่การฟลิกเต็ม 180° ใช้จนเสร็จ โดยค่อย ๆ ผ่อนช่วงท้าย การหันที่สั้นกว่าจะเสร็จในเวลาเท่ากัน</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>รีเซ็ตเป็น 0.1 วินาที</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ค่าเกณฑ์การฟลิก</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ระยะโยกของสติ๊กที่เริ่มการฟลิก คิดเป็นสัดส่วนของระยะโยกเต็ม ขณะฟลิก จุดปล่อยจะลดลงเหลือ 90% ของค่านี้</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>รีเซ็ตเป็น 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>มุมสแนป</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>สแนปการฟลิกเข้ากับมุมคงที่เพื่อให้การหันสม่ำเสมอขึ้น “ด้านหน้าเท่านั้น” จะสแนปทุกการฟลิกไปตรงด้านหน้า</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>ไม่สแนป</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 องศา</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 องศา</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 องศา</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>รีเซ็ตเป็นไม่สแนป</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>ความแรงการสแนป</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>การฟลิกถูกดึงเข้าหามุมสแนปแรงแค่ไหน 1 คือสแนปเต็มที่ 0 คือปิดการสแนป ค่าระหว่างนั้นคือผสมกัน</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>รีเซ็ตเป็น 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>เดดโซนมุมด้านหน้า</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>การฟลิกภายในมุมนี้จากตรงด้านหน้าจะไม่หันอะไร ช่วยให้คุณเริ่มกวาดได้โดยไม่เกิดการหันแบบฟลิก</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>รีเซ็ตเป็น 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>การปรับเรียบการกวาด</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>ปรับเรียบสัญญาณรบกวนจากการกวาดตามขอบ -1 ใช้ช่วงเวลาแบบแบ่งระดับอัตโนมัติ 0 คือปิดการปรับเรียบ ค่าที่มากขึ้นจะปรับเรียบการหมุนต่อรอบที่ใหญ่ขึ้น</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>รีเซ็ตเป็นอัตโนมัติ (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>อนุญาตให้ฟลิกเมื่อเปิดใช้</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>ค่าชดเชยการหมุน</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>หมุนแผนที่การฟลิกทั้งหมดตามจำนวนองศานี้ ค่าบวกคือตามเข็มนาฬิกา การสแนปจะมีผลหลังค่าชดเชย</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>รีเซ็ตค่าชดเชยการหมุน</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>เมื่อเลเยอร์ที่มีฟลิกสติ๊กถูกเปิดใช้ขณะที่สติ๊กถูกโยกอยู่แล้ว ให้ฟลิกทันที เมื่อปิด กล้องจะอยู่นิ่งและติดตามการหมุนจากมุมสติ๊กปัจจุบัน</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>รีเซ็ตการอนุญาตให้ฟลิกเมื่อเปิดใช้</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>การตอบสนองเมื่อเลี้ยวสุด</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>สัญญาณเมื่อสติ๊กโหมดบังคับเลี้ยวหมุนสุด</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>เมื่อสติ๊กที่ตั้งเป็นโหมดการบังคับเลี้ยวถูกหมุนจนสุด จะเล่นสัญญาณ (การสั่น ทริกเกอร์ หรือแถบไฟ) เพื่อให้คุณรู้สึกถึงขีดจำกัด ค่าเริ่มต้นคือปิดทั้งหมด</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>เล่นแฮปติกของ DualSense บนคอนโทรลเลอร์นี้</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>เมื่อเกมสั่งงานช่องนี้ในฐานะ DualSense เสมือนพร้อมเสียงแฮปติกที่ออกแบบมา ให้เล่นแทร็กนั้นบนแอคชูเอเตอร์ของคอนโทรลเลอร์นี้ Steam Controller 2026 ที่ต่อผ่าน USB หรือดองเกิลของตัวเอง และ Flydigi Apex 6 Pro จะเล่นแทร็กนั้นโดยตรง ส่วนคอนโทรลเลอร์อื่นทั้งหมด รวมถึง Steam Controller เครื่องนั้นเมื่อต่อผ่าน Bluetooth จะได้โทนที่คำนวณจากเสียง ซึ่งให้ความรู้สึกใกล้เคียงกับที่ผู้ออกแบบตั้งใจ แต่ไม่ได้ทำซ้ำตามต้นฉบับ</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>เกนแฮปติก</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>รีเซ็ตเป็นค่าเริ่มต้น (ปิด)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>รีเซ็ตเป็นค่าเริ่มต้น (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>ความถี่ตัดโลว์พาสของแอคชูเอเตอร์</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>คงการสตรีมแฮปติกของ Steam Controller ให้ต่ำกว่าความถี่นี้ เพื่อให้แพดสั่นแทนที่จะเล่นเสียงจนได้ยิน ที่ราว 250 Hz แอคชูเอเตอร์จะเริ่มได้ยินเป็นเสียง เพิ่มค่าเพื่อรายละเอียดที่คมขึ้น ลดค่าเพื่อให้เงียบลง</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>รีเซ็ตเป็น 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>โทนที่สูงกว่าความถี่นี้จะถูกตัดหรือพับ ค่าเริ่มต้น 800 Hz จะคงการสั่นของเครื่องยนต์และแรงกระแทกไว้ ขณะที่ดักเสียงบี๊บแหลมสูง</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>รีเซ็ตโทนเสียงสูง</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>รีเซ็ตขีดจำกัดโทน</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>โปรไฟล์ Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>แมโคร Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ขอบเขตเคอร์เซอร์</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>เลเยอร์ชิฟต์ {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>รายการลูกกลิ้ง ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>พื้นที่เคอร์เซอร์ ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>กดเมาส์ {0} ค้าง ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>คลิกเมาส์ {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>สลับเมาส์ {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>พัลส์แฮปติก ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ช่วงปล่อย)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>แตะ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>ยิงอัตโนมัติ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>กด {0} ค้าง ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>สลับ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>เทอร์โบ {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>กด {0} สองครั้ง ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>กด {0} นาน ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>หมุนลูกกลิ้งหนึ่งขีด ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>สลับหมุนลูกกลิ้ง ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>เทอร์โบลูกกลิ้ง ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>วาร์ปเคอร์เซอร์ ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>ตั้งค่าไฟ LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>จัดไจโรกลับกึ่งกลาง ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>ขยับเคอร์เซอร์เล็กน้อย ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>ปุ่มภาพหน้าจอ ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>คีย์บอร์ดบนหน้าจอ ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ตั้งสีไฟ</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>จัดกล้องกลับกึ่งกลาง</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>วาร์ปเคอร์เซอร์</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>ขยับเคอร์เซอร์เล็กน้อย</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>ภาพหน้าจอ</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>คีย์บอร์ดบนหน้าจอ</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>สลับเลเยอร์ชิฟต์</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>เปิดเลเยอร์ชิฟต์</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>ปิดเลเยอร์ชิฟต์</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>กดเลเยอร์ชิฟต์ค้าง</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>เปลี่ยนหมายเลขผู้เล่น</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>ไม่ได้ผูก</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>สลับโหมดเดสก์ท็อป</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>ปุ่มระบบ Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>สลับแว่นขยาย</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>เพิ่มความสว่าง</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>ลดความสว่าง</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>ปิดคอนโทรลเลอร์</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>เปิดตัวกำหนดค่า Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>เปิดเมนูด่วน Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>ออกจากเกม</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>สลับแฮปติก</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>สลับ HUD ของ Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>สลับแรงสั่น</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>บังคับกดปุ่ม Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>หมุนปรับเทียบไจโร</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>หันไปทางทิศที่ชี้</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (กดค้าง)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ปล่อย)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ปล่อย)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (เปิดใช้)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>เลือกคอนฟิกเพื่อดูสิ่งที่แปลงมา</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>สิ่งที่แปลงมา</value></data>
@@ -4928,11 +4978,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>เลเยอร์</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>เลือกเลเยอร์ที่อนุญาตให้ใช้เมนูนี้ “เลเยอร์ใดก็ได้” และ “ฐาน” ต่างก็อนุญาตให้ใช้ได้ภายใต้เลเยอร์อื่นที่ทำงานอยู่ เลเยอร์ที่ตั้งชื่อไว้ต้องตรงกับเลเยอร์ที่ทำงานอยู่ในปัจจุบัน</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>รีเซ็ตเป็น “เลเยอร์ใดก็ได้” และปิดการเปิดค้างโดยเลเยอร์</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ไม่มีในรายการของช่องนี้)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>เลเยอร์เปิดเมนูค้างไว้</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>เปิดเมนูนี้ค้างไว้ขณะที่เลเยอร์ที่ตั้งชื่อไว้ทำงานอยู่ อินพุตจริงที่เลือกจะบังคับตำแหน่งไฮไลต์ “เลเยอร์ใดก็ได้” และ “ฐาน” จะเปิดเมนูจากพื้นผิวตามปกติ</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>รีเซ็ตเป็นการเปิดเมื่อสัมผัสหรือโยก</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>บังคับด้วย</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>อินพุตจริงที่บังคับเซลล์ที่ไฮไลต์ ขณะที่เลเยอร์เปิดเมนูนี้ค้างไว้</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>อ่านจากคอนโทรลเลอร์จริงที่กำหนดให้ช่องนี้ เลเยอร์เป็นตัวเปิดเมนู และอินพุตนี้เป็นตัวบังคับเมนู เซลล์ของเมนูระบุสิ่งที่เมนูส่งออก</value></data>
@@ -5014,7 +5062,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>มอเตอร์</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>แยกตามทิศทาง</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>เดดโซนกึ่งกลาง</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>รีเซ็ตเป็นสติ๊กซ้าย X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>รีเซ็ตความแรง (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>รีเซ็ตเดดโซนกึ่งกลาง (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>รีเซ็ตการเปิดใช้การสั่นตามมุมการบังคับเลี้ยว</value></data>
@@ -5681,6 +5728,25 @@
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>โปรไฟล์</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>เลเยอร์ {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>ทริกเกอร์: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>แถบไฟ</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>ส่วนเสริมของ {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>แถบไฟของ {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>เปิดโปรแกรม</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>ช่วงของ {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>โปรไฟล์ที่นำเข้า</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>แมโครที่นำเข้า</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>พรีเซ็ต {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>เมนูวงกลม {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>เมนูสัมผัส {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>พื้นที่เมาส์</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>แตะ</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>กดค้าง</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>แตะสองครั้ง</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>เอฟเฟกต์ทริกเกอร์ซ้าย</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>เอฟเฟกต์ทริกเกอร์ขวา</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>การแมปปุ่ม {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>รายการ {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>คงเอาต์พุตของตัวเองไว้</value></data>
@@ -6012,7 +6078,7 @@
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX ไม่เปิดเผยว่าการตั้งค่า {0} ทำงานอย่างไร PadForge จึงใช้วิธีของตัวเอง</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX ไม่เปิดเผยหมายเลขอินพุตของตัวเอง โปรไฟล์ DSX ที่เผยแพร่กันใช้ 41 ถึง 44 เป็น D-pad PadForge จึงอ่านตามนั้น</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ไม่เขียนการผูกปุ่มแบบนี้ ไฟล์นี้จึงถูกแก้ไขนอก DSX</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX สลับมาใช้พรีเซ็ตนี้จากปุ่มลัด แมโครของพรีเซ็ตอยู่ในหน้าแมโคร พร้อมให้ผูกกับปุ่ม</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX สลับมาใช้พรีเซ็ตนี้จากปุ่มลัด แมโครของพรีเซ็ตอยู่ในส่วนแมโครและเมนูของคอนโทรลเลอร์ พร้อมให้ผูกกับปุ่ม</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>ไม่มีโปรไฟล์ DSX ที่เผยแพร่กันใช้ {0} PadForge จึงบอกไม่ได้ว่าทำหน้าที่อะไร</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX ปล่อยให้เกมกำหนดค่านี้เองขณะที่สวิตช์ส่งผ่านเปิดอยู่ PadForge จึงปล่อยให้เกมกำหนดเช่นกัน</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>เมื่ออยู่ใน Native Mode และปิด Send Data to Device ไว้ DSX จะไม่ส่งสิ่งใดของตัวเองไปยังคอนโทรลเลอร์ PadForge จึงปล่อยค่านี้ให้เกมกำหนดเช่นกัน</value></data>

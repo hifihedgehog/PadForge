@@ -420,7 +420,7 @@ namespace PadForge.Common.Input
             catch (Exception ex)
             {
                 rec.Failed = true;
-                RaiseError($"Could not make the On-Screen Keyboard's virtual keyboard '{rec.ProfileId}'.", ex);
+                RaiseEngineError($"Could not make the On-Screen Keyboard's virtual keyboard '{rec.ProfileId}'.", ex);
             }
             finally
             {
@@ -449,7 +449,7 @@ namespace PadForge.Common.Input
             var dispose = Task.Run(() =>
             {
                 try { vc.Dispose(); }
-                catch (Exception ex) { RaiseError("Error removing the On-Screen Keyboard's virtual keyboard", ex); }
+                catch (Exception ex) { RaiseEngineError("Error removing the On-Screen Keyboard's virtual keyboard", ex); }
             });
             lock (_oskHidTasks) _oskHidTasks.Add(dispose);
         }

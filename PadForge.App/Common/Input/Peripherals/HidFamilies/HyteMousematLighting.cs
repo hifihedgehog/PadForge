@@ -78,7 +78,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "HYTE CNVS",
-                Map = new LightMap(Lights(), "OpenRGB RGBController_HYTEMousemat.cpp") { Product = $"hyte:{VendorId:X4}:cnvs" },
+                Map = new LightMap(Lights()) { Product = $"hyte:{VendorId:X4}:cnvs" },
                 Programs = new[] { VendorPrograms.HyteNexus },
                 RepaintMs = RepaintMs,
                 Open = key => _open(key),

@@ -241,7 +241,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Loads the active mouse device's gesture settings into the
         /// VM. Missing settings load as defaults, so Reset to Defaults resets
-        /// this tab by construction (the ab58f957 load-mirror contract).</summary>
+        /// the Mouse group by construction (the ab58f957 load-mirror contract).</summary>
         public void LoadMouseGestureSettingsForActiveDevice()
         {
             var us = GetActiveUserSettingForMouse();

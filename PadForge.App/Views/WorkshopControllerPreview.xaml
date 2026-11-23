@@ -12,7 +12,9 @@
             <Canvas FlowDirection="LeftToRight" x:Name="ModelCanvas" Background="Transparent"/>
         </Viewbox>
         <!-- The callouts, outside the Viewbox so their words stay 12 and
-             their leaders 1 wide at any size the pad is drawn at. -->
+             their leaders' runs beside the pad 1 wide at any size the pad
+             is drawn at. A leader's run over the pad is drawn in the art,
+             under the lit controls (LayoutCallouts). -->
         <Canvas FlowDirection="LeftToRight" x:Name="CalloutCanvas" IsHitTestVisible="False" ClipToBounds="True"/>
     </Grid>
 </UserControl>

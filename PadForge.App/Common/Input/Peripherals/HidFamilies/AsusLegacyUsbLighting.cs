@@ -90,8 +90,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             _cerberus = new(() => Model("ASUS Cerberus Mech", CerberusMap(), (io, wait) => BeginCerberus(io)));
             _sagaris = new(() => Model("ASUS Sagaris GK1100",
-                new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                    "OpenRGB RGBController_AsusSagarisKeyboard.cpp") { Product = SagarisProduct },
+                new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }) { Product = SagarisProduct },
                 (io, wait) => BeginSagaris(io),
                 path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(SagarisProduct, path)) != null
                         && KeyboardProfileBackups.Failures(KeyboardProfileBackups.DeviceKey(SagarisProduct, path)) < LenovoLegionLighting.RepairTries,
@@ -101,7 +100,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 },
                     new LightInfo(1, LightKind.Logo, 0, LightKeySource.None),
-                }, "OpenRGB RGBController_AsusStrixClaw.cpp") { Product = "asus:195D:1016" },
+                }) { Product = "asus:195D:1016" },
                 (io, wait) => io == null ? null : new ClawSession()));
         }
 
@@ -151,7 +150,7 @@ namespace PadForge.Common.Input.Peripherals
                 var (row, col) = cells[i];
                 lights[i] = row < 0 ? light : light with { X = col, Y = row, Width = 1, Height = 1, HasPosition = true };
             }
-            return new LightMap(lights, "OpenRGB RGBController_AsusCerberusKeyboard.cpp") { Product = "asus:195D:2047" };
+            return new LightMap(lights) { Product = "asus:195D:2047" };
         }
 
         internal static byte[] CerberusFrame(params byte[] head)

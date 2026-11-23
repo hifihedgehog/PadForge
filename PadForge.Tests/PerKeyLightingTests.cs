@@ -167,7 +167,7 @@ namespace PadForge.Tests
             new LightInfo(4, LightKind.Logo, 0, LightKeySource.None),
             new LightInfo(5, LightKind.Zone, 0, LightKeySource.None) { Zone = 2 },
             new LightInfo(6, LightKind.Key, 0x04, LightKeySource.Device),      // a second light under A
-        }, "test");
+        });
 
         [Fact]
         public void EveryLightShowsTheBackground_WhenNothingIsSet()

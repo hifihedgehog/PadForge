@@ -26,7 +26,7 @@ namespace PadForge.Tests
             return new ConfigTranslator().Translate(config, new TranslationOptions
             {
                 FileId = 42,
-                PreferredLanguage = "english",
+                PreferredLanguages = new[] { "english" },
             });
         }
 

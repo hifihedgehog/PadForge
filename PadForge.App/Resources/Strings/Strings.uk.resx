@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Онлайн</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Офлайн</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Невідомо</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Типово</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Огляд…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Продовжити</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Зупинити</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Рушій зупинено.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Помилка: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}: не вдалося створити.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Пристрій не вдалося відкрити, прочитати або зіставити. Його назва є в журналі діагностики.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}: сталася помилка. Причину наведено в журналі діагностики.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>У рушії введення сталася помилка. Причину наведено в журналі діагностики.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL не вдалося запустити. Причину наведено в журналі діагностики.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro не вдалося налаштувати. Причину наведено в журналі діагностики.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Для віртуального контролера бракує профілю HIDMaestro. Його назва є в журналі діагностики.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} не вдалося створити з вашою ідентичністю та розкладкою, тому він використовує розкладку свого профілю.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профіль перемкнено: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профіль перемкнено: Типовий</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Типовий</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Порт сервера руху</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Передає дані гіроскопа й акселерометра до Cemu, Dolphin, Yuzu тощо.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ігрові моди</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Дає змогу ігровим модам, створеним для DSX, керувати адаптивними тригерами, світловою панеллю, індикаторами гравця та індикатором вимкнення мікрофона на ваших контролерах PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Дає змогу ігровим модам, створеним для DSX, керувати адаптивними тригерами, світловою панеллю, індикаторами гравця та індикатором вимкнення мікрофона на DualSense або DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Приймати ігрові моди DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Порт ігрових модів</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Запускати замінник DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Деякі моди, як-от DualSense4GTAV, вимикаються, якщо не запущено програму з назвою DSX. Це запускає невеликий замінник із такою назвою, поки сервер прослуховує.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Працює з модами, створеними для DSX, зокрема для GTA V, Red Dead Redemption 2, Skyrim і Forza. Поки сервер прослуховує, PadForge записує свій порт там, де ці моди його шукають.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Прослуховує :{0}. {1} надсилає на віртуальний контролер {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Прослуховує :{0}. {1} надсилає, але жоден віртуальний контролер не має контролера PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Прослуховує :{0}. {1} надсилає на індекс контролера {2}, а жоден віртуальний контролер із контролером PlayStation не має такого індексу.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Прослуховує :{0}. {1} надсилає, але жоден віртуальний контролер не має DualSense або DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Прослуховує :{0}. {1} надсилає на індекс контролера {2}, а жоден віртуальний контролер із DualSense або DualShock 4 не має такого індексу.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Порт {0} зайнятий іншою програмою, наприклад DSX. Закрийте її або виберіть інший порт.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ігровий мод</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Працює з OpenTrack і будь-яким трекером, що надсилає дані через UDP або записує спільну пам'ять FreeTrack 2.0, а також із середовищем виконання OpenXR на цьому комп'ютері, яке може вести сеанс у фоновому режимі.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Файл не знайдено</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Не вдається прочитати</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Файл теми «{0}» відсутній або його не вдається прочитати. Доки він не повернеться, PadForge показує тему «Темна».</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Файл теми «{0}» не містить теми PadForge. Доки це не зміниться, PadForge показує тему «Темна».</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Профіль «{0}» має вигляд своєї гри. Ваша тема повернеться, коли активним стане інший профіль.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Рушій введення</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Налаштуйте опитування та фонову обробку.</value></data>
@@ -1047,6 +1054,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контролер не прийняв команду, що готує його до приймання, тому нічого не надіслано. Перевірте, чи він підключений, і надішліть знову.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Надсилання зупинила помилка в PadForge. Подробиці є в файлі журналу.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Зображення ще надходить на контролер. Зупинити надсилання?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Продовжити надсилання</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Файли Controller Pak (*.mpk)|*.mpk|Усі файли (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak, порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Відновити Controller Pak</value></data>
@@ -1434,6 +1442,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Згасання імпульсу</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Пресет</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Власний</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (створено користувачем)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Стіки</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Тригери</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2414,7 +2423,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Цей контролер має магнітометр. Прив'язка рискання до магнітної півночі прибирає повільний горизонтальний дрейф прицілювання гіроскопом. Спершу відкалібруйте: натисніть «Калібрувати», кілька секунд обертайте контролер вісімкою через усі орієнтації, а потім натисніть ще раз.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Прив'язати рискання до компаса</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Додає невелику коригувальну швидкість, що підтягує горизонтальний приціл до магнітного курсу, тож дрейф не накопичується. Потрібне збережене калібрування магнітометра. Вимірювання, спотворені металом чи магнітами поблизу, відкидаються автоматично.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Скинути до типового (вимкнено)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Імітація тангажу та крену</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Тангаж і крен, обчислені з акселерометра</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Гіроскоп цього контролера відчуває лише повороти вліво і вправо. Коли імітацію ввімкнено, PadForge обчислює тангаж і крен з акселерометра та надсилає їх разом із рисканням гіроскопа до рядків прив'язок і до руху віртуального контролера. Акселерометр не відрізняє поштовх від нахилу, тому переміщення контролера вбік або вперед без повороту читається як короткий поворот.</value></data>
@@ -2810,7 +2818,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Обведіть стік по краю, щоб визначити досяжну межу, а потім перетворити її на повне коло.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Скинути калібрування межі</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Скинути зміщення центру Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Скинути до масштабованої радіальної</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Скинути мертву зону X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Скинути мертву зону Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Скинути антимертву зону X</value></data>
@@ -3257,13 +3264,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Скинути флік-стік</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Точок на 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Кількість відліків миші на один повний оберт камери на 360°. Залежить від чутливості миші у грі: збільште, якщо флік не докручує, зменште, якщо перекручує.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Скинути до 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Час фліку</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Скільки триває повний флік на 180° із плавним уповільненням наприкінці. Коротші повороти завершуються за той самий час.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Скинути до 0.1 с</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Поріг фліку</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Відхилення стіка, що починає флік, як частка повного відхилення. Під час фліку точка відпускання знижується до 90% цього значення.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Скинути до 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Кут прилипання</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Змушує флік прилипати до фіксованих кутів для стабільніших поворотів. «Лише вперед» спрямовує кожен флік точно вперед.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Без прилипання</value></data>
@@ -3272,22 +3276,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 градусів</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 градусів</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 градусів</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Скинути до «Без прилипання»</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Сила прилипання</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Наскільки сильно флік притягується до кута прилипання. 1 дає повне прилипання, 0 вимикає його, проміжні значення змішують.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Скинути до 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Мертва зона переднього кута</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Флік у межах цього кута від напрямку вперед нічого не повертає. Дає змогу почати ведення по краю без повороту фліком.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Скинути до 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Згладжування ведення</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Згладжує шум під час ведення по краю. -1 використовує автоматичне багаторівневе вікно, 0 вимикає згладжування, більші значення згладжують більші повороти за такт.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Скинути до автоматичного (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Дозволити флік під час задіяння</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Зміщення повороту</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Повертає всю карту фліків на стільки градусів. Додатне значення означає за годинниковою стрілкою. Прилипання застосовується після зміщення.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Скинути зміщення повороту</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Коли шар із флік-стіком задіюється за вже відхиленого стіка, флік виконується негайно. Якщо вимкнено, камера залишається нерухомою, а поворот відстежується від поточного кута стіка.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Скинути «Дозволити флік під час задіяння»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Відгук на упор керма</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал на упорі для стіка в режимі кермування</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Коли стік у режимі кермування повернуто до упору, відтворюється сигнал (вібрація, тригер або світлова панель), щоб ви відчули межу. Типово все вимкнено.</value></data>
@@ -3477,11 +3475,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Відтворювати тактильний відгук DualSense на цьому контролері</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Коли гра керує цим слотом як віртуальним DualSense з авторським тактильним аудіо, ця доріжка відтворюється на приводах цього контролера. Steam Controller 2026 через USB або свій донгл і Flydigi Apex 6 Pro відтворюють саму доріжку. Усі інші контролери, а також Steam Controller через Bluetooth, отримують тони, обчислені з аудіо, які наближають задум дизайнера, а не відтворюють його точно.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Підсилення тактильного відгуку</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Скинути до типового (вимкнено)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Скинути до типового (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Частота зрізу ФНЧ приводів</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Утримує потокове передавання тактильного відгуку Steam Controller нижче цієї частоти, щоб панелі вібрували, а не відтворювали чутний звук. Приблизно з 250 Гц приводи стає чутно. Збільште для чіткіших деталей, зменште для тихішої роботи.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Скинути до 250 Гц</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Тони вище цієї частоти обрізаються або опускаються. Типове значення 800 Гц зберігає вібрацію двигуна й ударів, але перехоплює високі писки.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Скинути високі тони</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Скинути межу тону</value></data>
@@ -4050,8 +4045,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Профіль Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Макрос Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Область курсора</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Зсув {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Список колеса ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Ділянка курсора ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Утримання миші {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Клік миші {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Перемикання миші {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Тактильний імпульс ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (після відпускання)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Дотик {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Автоогонь {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Утримання {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Перемикання {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Турбо {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Подвійне натискання {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Довге натискання {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Крок колеса ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Перемикання колеса ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Турбоколесо ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Перенесення курсора ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Задати світлодіод ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Центрування гіроскопа ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Зсув курсора ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Клавіша знімка екрана ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Екранна клавіатура ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Задати колір підсвічування</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Відцентрувати камеру</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Перенести курсор</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Зсунути курсор</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Знімок екрана</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Екранна клавіатура</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Перемкнути шар зсуву</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Увімкнути шар зсуву</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Вимкнути шар зсуву</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Утримувати шар зсуву</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Змінити номер гравця</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Не призначено</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Перемкнути режим робочого стола</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Системна клавіша Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Перемкнути лупу</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Яскравість більше</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Яскравість менше</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Вимкнути контролер</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Відкрити конфігуратор Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Відкрити швидке меню Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Вийти з гри</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Перемкнути тактильний відгук</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Перемкнути HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Перемкнути вібрацію</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Примусова кнопка Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Калібрування гіроскопа обертанням</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Повернутися в напрямку</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (утримання)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (відпускання)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (відпускання)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (задіяння)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Виберіть конфігурацію, щоб побачити, що переноситься.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Що переноситься</value></data>
@@ -4658,11 +4704,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Шар</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Виберіть шар, який дозволяє це меню. «Будь-який шар» і «Базовий» дозволяють його й під іншими активними шарами. Іменований шар має збігатися з поточним активним шаром.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Скинути до «Будь-який шар» і вимкнути відкриття, утримуване шаром.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (немає в цьому слоті)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Шар тримає меню відкритим</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Тримати це меню відкритим, поки активний його іменований шар. Вибраний фізичний вхід керує виділенням. «Будь-який шар» і «Базовий» відкривають меню звичайним способом, із поверхні.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Скинути до відкриття дотиком або відхиленням.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Керувати через</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Фізичний вхід, що керує виділеною коміркою, поки шар тримає це меню відкритим.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Зчитується з фізичних контролерів, призначених цьому слоту. Шар відкриває меню, а цей вхід керує ним. Що меню видає, визначають його комірки.</value></data>
@@ -4742,7 +4786,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Мотор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Розділення за напрямком</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Центральна мертва зона</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Скинути до «Лівий стік X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Скинути силу (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Скинути центральну мертву зону (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Скинути «Увімкнути вібрацію за кутом керма»</value></data>
@@ -5259,6 +5302,9 @@
   <data name="About_LanguageRefs" xml:space="preserve"><value>Джерела щодо клінгонської та синдарина</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Слова клінгонського та синдаринського перекладів звірено з klingon-assistant-data (Apache-2.0), словником, на якому працює boQwI', і з Eldamo (CC BY 4.0), ельфійським лексиконом Paul Strack. Лише дані словників, жодні з них не постачаються.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Цей файл не є темою PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge не вдається прочитати цей файл.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge не вдається знайти цей файл.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Це не тема</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Не вдалося зберегти тему. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Нова тема</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Поки ви створюєте тему, PadForge одразу показує її на собі.</value></data>
@@ -5273,6 +5319,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Отримання зображення зі Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>У Steam немає широкого зображення для цієї гри.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Не вдалося зв'язатися зі Steam. Перевірте підключення.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge не вдається прочитати зображення Steam для цієї гри.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Положення</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Пересуває зображення вгору або вниз у його вікні.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Показувати логотип гри</value></data>
@@ -5313,4 +5360,6 @@
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Модель, яку знімали для оригінального серіалу «Зоряний шлях», сфотографував Smithsonian National Air and Space Museum, де її зберігають: зображення теми «Зоряного шляху» LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Зображення теми: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Кадр із «Зоряного шляху: Наступне покоління»: зображення теми «Зоряного шляху» Starfleet. Знайдено на Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Світлова панель</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Світлова панель {0}</value></data>
 </root>

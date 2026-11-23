@@ -150,6 +150,18 @@ namespace PadForge.Common.ConfigImport
             }
         }
 
+        /// <summary>An object's first properties. JsonDocument keeps a name
+        /// that repeats, so a file can hold any number of one activator.</summary>
+        private static IEnumerable<JsonProperty> Properties(JsonElement obj, int cap)
+        {
+            int n = 0;
+            foreach (var property in obj.EnumerateObject())
+            {
+                if (n++ >= cap) yield break;
+                yield return property;
+            }
+        }
+
         private static string[] Words(string mode)
             => (mode ?? "").Split(new[] { '_', ' ', '-' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -161,7 +173,14 @@ namespace PadForge.Common.ConfigImport
         private static bool Is(string mode, string name) => string.Equals(mode, name, StringComparison.OrdinalIgnoreCase);
 
         private static bool IsNone(string mode)
-            => mode.Length == 0 || Is(mode, "NONE") || Is(mode, "OFF") || Is(mode, "DISABLED");
+            => mode.Length == 0 || Is(mode, "NONE") || IsDisabled(mode);
+
+        /// <summary>DSX's Disabled stick, motion and touchpad mode, which sends
+        /// nothing to the virtual controller. Its Mod System README lists it
+        /// apart from passthrough (ToMode: sticks 6, motion 7, touchpad 3).
+        /// A profile writes stick and motion passthrough as NONE and
+        /// touchpad passthrough as PASSTHROUGH.</summary>
+        private static bool IsDisabled(string mode) => Is(mode, "DISABLED") || Is(mode, "OFF");
 
         private static string Percent(double fraction)
             => (fraction * 100).ToString("0.##", CultureInfo.InvariantCulture) + " %";
@@ -214,7 +233,9 @@ namespace PadForge.Common.ConfigImport
 
             _b.DeclarePad(PadId, VirtualControllerType.Xbox, "xbox-360-wired");
             string xboxSubtype = Str(general, "ActiveXboxSubtype");
-            if (!Word(device, "XBOX"))
+            if (device.Length == 0)
+                _b.Skipped(ImportReasons.ControllerSetting, Label, "ActiveVirtualDevice", "ActiveVirtualDevice");
+            else if (!Word(device, "XBOX"))
                 _b.Skipped(ImportReasons.DsxModeName, Label, device, device);
             else if (xboxSubtype.Length > 0 && !Is(xboxSubtype, "GAMEPAD"))
                 _b.Skipped(ImportReasons.DsxModeName, Label, xboxSubtype, xboxSubtype);
@@ -224,12 +245,29 @@ namespace PadForge.Common.ConfigImport
         }
 
         /// <summary>The virtual controller's rumble passthrough: off, the
-        /// game's rumble never reaches the pad.</summary>
+        /// game's rumble never reaches the pad. DSX's master game feedback
+        /// passthrough stands beside it, and no public source says what it
+        /// covers that the per-device switches do not, so turned off it gets
+        /// a line under the section it is read from.</summary>
         private void RumbleSwitch(JsonElement? general, string key)
         {
+            if (!Bool(general, "UseGameFeedbackPassthrough", true))
+                _b.Skipped(ImportReasons.ControllerSetting, "Virtual controller", "UseGameFeedbackPassthrough", "UseGameFeedbackPassthrough");
             if (Bool(general, key, true)) return;
+            RumbleOff("Rumble", key + " off");
+        }
+
+        /// <summary>Rumble off, as a rumble strength of zero, except where
+        /// DSX sends nothing of its own to the controller.</summary>
+        private void RumbleOff(string label, string shown)
+        {
+            if (_nativeNoData)
+            {
+                _b.Partial(ImportReasons.DsxNoData, label, shown, "");
+                return;
+            }
             _b.RumblePercent = "0";
-            _b.Clean("Rumble", key + " off", "0 %");
+            _b.Clean(label, shown, "0 %");
         }
 
         // ── Default rows and the zones ──────────────────────────────────
@@ -305,8 +343,14 @@ namespace PadForge.Common.ConfigImport
             if (end < 1 && end > start) src.ParamRangeOuter = end;
             if (Bool(zones, prefix + "_advanced_mode", false))
                 _b.Partial(ImportReasons.DsxShaping, label, "Advanced", "", "Advanced");
-            else if (start > 0 || end < 1)
+            else if (end > start && (start > 0 || end < 1))
                 _b.Clean(label, Percent(start) + " - " + Percent(end), descriptor);
+            else if (end <= start)
+            {
+                // An end at or below the start leaves no range to carry.
+                _b.Clean(label, Percent(start), descriptor);
+                _b.Skipped(ImportReasons.ControllerSetting, label, "End " + Percent(end), "End " + Percent(end));
+            }
             return src;
         }
 
@@ -424,8 +468,15 @@ namespace PadForge.Common.ConfigImport
         private void ReadStickMode(JsonElement? sticks, string side, string pre, string longPre)
         {
             string mode = Str(sticks, pre + "_mode_updated");
-            if (IsNone(mode)) return;
             string label = side + " stick";
+            if (IsDisabled(mode))
+            {
+                // Taken, so no default row passes it through.
+                _stickTaken.Add(side);
+                _b.Clean(label, mode, "");
+                return;
+            }
+            if (IsNone(mode)) return;
             const string Base = ImportBuilder.BaseLayer;
 
             if (Word(mode, "FLICK"))
@@ -455,14 +506,7 @@ namespace PadForge.Common.ConfigImport
                 _b.ReadsMouse = true;
                 _b.Clean(label, "Stick to mouse", "KbmMouseX, KbmMouseY");
                 _b.Partial(ImportReasons.DsxUnit, label, "Mouse speeds", "KbmMouseX, KbmMouseY");
-                if (Bool(sticks, pre + "_stick_to_mouse_is_use_mmo_mode", false))
-                {
-                    // MMO mode holds a mouse button while the stick moves the
-                    // pointer, as MMO cameras turn with it held.
-                    var button = ImportOutput.Mouse(Bool(sticks, pre + "_stick_to_mouse_is_use_lmb_for_mmo_mode", true) ? 0 : 1);
-                    foreach (var dir in StickDirections(side)) _b.Bind(Base, dir, button);
-                    _b.Partial(ImportReasons.DsxUnit, label, "MMO mode", button.Target);
-                }
+                MmoMode(label, sticks, pre + "_stick_to_mouse", StickDirections(side));
                 Modifiers(label, sticks, pre + "_stick_to_mouse");
                 return;
             }
@@ -486,6 +530,7 @@ namespace PadForge.Common.ConfigImport
                 string scheme = Str(sticks, pre + "_stick_to_wasd_control_scheme");
                 if (scheme.Length == 0) scheme = Word(mode, "ARROW") ? "ARROWS" : Word(mode, "KEYBOARD") ? "CUSTOM" : "WASD";
                 KeyScheme(label, scheme, StickDirections(side), sticks, longPre + "_to_keyboard_custom_");
+                MmoMode(label, sticks, pre + "_stick_to_wasd", StickDirections(side));
                 Zones(label, Child(sticks, longPre + "_to_keyboard_directional_zones"));
                 return;
             }
@@ -498,6 +543,20 @@ namespace PadForge.Common.ConfigImport
                 return;
             }
             _b.Skipped(ImportReasons.DsxModeName, label, mode, mode);
+        }
+
+        /// <summary>A mode's MMO switch, which DSX writes for its stick to
+        /// mouse, stick to WASD, motion to mouse and motion to keyboard
+        /// modes: a mouse button held while the mode's directions are, as MMO
+        /// cameras turn with it held. A null direction binds nothing.</summary>
+        private void MmoMode(string label, JsonElement? section, string prefix, ImportInput[] dirs)
+        {
+            if (!Bool(section, prefix + "_is_use_mmo_mode", false)) return;
+            var button = ImportOutput.Mouse(Bool(section, prefix + "_is_use_lmb_for_mmo_mode", true) ? 0 : 1);
+            foreach (var dir in dirs)
+                if (dir != null) _b.Bind(ImportBuilder.BaseLayer, dir, button);
+            _b.ReadsMouse = true;
+            _b.Partial(ImportReasons.DsxUnit, label, "MMO mode", button.Target);
         }
 
         /// <summary>A mouse mode's precise and fast speed buttons, which DSX
@@ -525,18 +584,17 @@ namespace PadForge.Common.ConfigImport
         }
 
         /// <summary>Four directions to keys: WASD, the arrow keys, or the
-        /// keys DSX's custom scheme names.</summary>
+        /// keys DSX's custom scheme names. A null direction is one the file
+        /// turns off, and binds nothing.</summary>
         private void KeyScheme(string label, string scheme, ImportInput[] dirs, JsonElement? section, string customPrefix)
         {
             if (Word(scheme, "WASD"))
             {
-                BindDirections(dirs, new[] { 0x57, 0x53, 0x41, 0x44 });
-                _b.Clean(label, "WASD", "W, S, A, D");
+                _b.Clean(label, "WASD", BindDirections(dirs, new[] { 0x57, 0x53, 0x41, 0x44 }, new[] { "W", "S", "A", "D" }));
             }
             else if (Word(scheme, "ARROW"))
             {
-                BindDirections(dirs, new[] { 0x26, 0x28, 0x25, 0x27 });
-                _b.Clean(label, "Arrow keys", "Up, Down, Left, Right");
+                _b.Clean(label, "Arrow keys", BindDirections(dirs, new[] { 0x26, 0x28, 0x25, 0x27 }, new[] { "Up", "Down", "Left", "Right" }));
             }
             else if (Word(scheme, "CUSTOM"))
             {
@@ -555,10 +613,18 @@ namespace PadForge.Common.ConfigImport
             _b.Partial(ImportReasons.DsxUnit, label, "Press threshold", "");
         }
 
-        private void BindDirections(ImportInput[] dirs, int[] vks)
+        /// <summary>The keys bound, by name.</summary>
+        private string BindDirections(ImportInput[] dirs, int[] vks, string[] names)
         {
-            for (int i = 0; i < 4; i++) _b.Bind(ImportBuilder.BaseLayer, dirs[i], ImportOutput.Key((byte)vks[i]));
-            _b.ReadsKeyboard = true;
+            var bound = new List<string>();
+            for (int i = 0; i < 4; i++)
+            {
+                if (dirs[i] == null) continue;
+                _b.Bind(ImportBuilder.BaseLayer, dirs[i], ImportOutput.Key((byte)vks[i]));
+                bound.Add(names[i]);
+            }
+            if (bound.Count > 0) _b.ReadsKeyboard = true;
+            return string.Join(", ", bound);
         }
 
         /// <summary>Four directions to controller buttons: the D-pad, or the
@@ -574,8 +640,14 @@ namespace PadForge.Common.ConfigImport
                     return;
                 }
                 string[] targets = { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" };
-                for (int i = 0; i < 4; i++) _b.Bind(ImportBuilder.BaseLayer, dirs[i], ImportOutput.Pad(targets[i]));
-                _b.Clean(label, "D-pad", "DPadUp, DPadDown, DPadLeft, DPadRight");
+                var bound = new List<string>();
+                for (int i = 0; i < 4; i++)
+                {
+                    if (dirs[i] == null) continue;
+                    _b.Bind(ImportBuilder.BaseLayer, dirs[i], ImportOutput.Pad(targets[i]));
+                    bound.Add(targets[i]);
+                }
+                _b.Clean(label, "D-pad", string.Join(", ", bound));
                 _b.Partial(ImportReasons.DsxUnit, label, "Press threshold", "");
                 return;
             }
@@ -594,7 +666,7 @@ namespace PadForge.Common.ConfigImport
         /// DSX being a WPF program, and the line says so.</summary>
         private void CustomKey(string label, ImportInput dir, JsonElement? binding)
         {
-            if (binding == null) return;
+            if (dir == null || binding == null) return;
             string type = Str(binding, "KeyboardMappingType");
             if (IsNone(type)) return;
             var keys = new List<byte>();
@@ -627,6 +699,9 @@ namespace PadForge.Common.ConfigImport
                     if (KeyFromName(name) is not byte vk) { _b.Skipped(ImportReasons.DsxModeName, label, name, name); return; }
                     keys.Add(vk);
                 }
+                // Every field read and none holds a key: DSX presses
+                // nothing, as with an empty text.
+                if (keys.Count == 0) return;
             }
             else
             {
@@ -640,7 +715,16 @@ namespace PadForge.Common.ConfigImport
                     keys.Add(vk);
                 }
             }
-            if (keys.Count == 0) return;
+            if (keys.Count == 0)
+            {
+                // A hot key whose modifier and key are both None: DSX
+                // presses nothing, as with an empty text or mix.
+                if (Word(type, "HOTKEY")) return;
+                // Any other type, taken as a hot key and holding no key, such
+                // as one that carries DSX's ActionID instead.
+                _b.Skipped(ImportReasons.DsxModeName, label, type, type);
+                return;
+            }
             BindHeld(label, new[] { dir }, keys.Select(ImportOutput.Key).ToList(), "dsx:" + label);
             _b.Partial(ImportReasons.DsxKeyName, label, shown, string.Join(" + ", keys.Select(ImportOutput.KeyName)), shown);
         }
@@ -736,6 +820,11 @@ namespace PadForge.Common.ConfigImport
             string mode = Str(motion, "motion_mode");
             const string Label = "Motion";
             const string Base = ImportBuilder.BaseLayer;
+            if (IsDisabled(mode))
+            {
+                _b.Clean(Label, mode, "");
+                return;
+            }
             if (IsNone(mode) || Word(mode, "PASSTHROUGH"))
             {
                 if (_playStation) BindMotionPassthrough();
@@ -745,6 +834,11 @@ namespace PadForge.Common.ConfigImport
             if (Word(mode, "MOUSE"))
             {
                 var axes = MotionAxes(motion, "motion_to_mouse_");
+                if (NoMotionAxis(Label, mode, axes))
+                {
+                    if (_playStation && Bool(motion, "motion_to_mouse_is_use_passthrough", true)) BindMotionPassthrough();
+                    return;
+                }
                 if (axes.Horizontal != null)
                     _b.Bind(Base, "dsx:gyro:x", "KbmMouseX", new MappingSource { Descriptor = axes.Horizontal, Invert = axes.InvertH }, 0);
                 if (axes.Vertical != null)
@@ -752,6 +846,7 @@ namespace PadForge.Common.ConfigImport
                 _b.ReadsMouse = true;
                 _b.Clean(Label, "Motion to mouse", "KbmMouseX, KbmMouseY");
                 MotionLines(Label, axes.Roll, "KbmMouseX, KbmMouseY");
+                MmoMode(Label, motion, "motion_to_mouse", MotionDirections(axes));
                 Modifiers(Label, motion, "motion_to_mouse");
                 if (_playStation && Bool(motion, "motion_to_mouse_is_use_passthrough", true)) BindMotionPassthrough();
                 return;
@@ -770,9 +865,14 @@ namespace PadForge.Common.ConfigImport
                     _b.Skipped(ImportReasons.ControllerSetting, Label, mode, mode);
                     return;
                 }
-                _motionStick = side;
                 string pre = "motion_to_" + side.ToLowerInvariant() + "_stick_";
                 var axes = MotionAxes(motion, pre);
+                if (NoMotionAxis(Label, mode, axes))
+                {
+                    if (_playStation && Bool(motion, pre + "is_use_passthrough", true)) BindMotionPassthrough();
+                    return;
+                }
+                _motionStick = side;
                 // The stick reads full at DSX's rate, in the degrees per second
                 // the setting's name gives.
                 double full = Math.Clamp(Num(motion, pre + "max_output_speed_deg_s", 180), 1, 2000);
@@ -803,17 +903,28 @@ namespace PadForge.Common.ConfigImport
             }
             if (Word(mode, "KEYBOARD") || Word(mode, "WASD"))
             {
-                KeyScheme(Label, Str(motion, "motion_to_keyboard_control_scheme"), MotionDirections(motion, "motion_to_keyboard_"),
-                    motion, "motion_to_keyboard_custom_");
-                MotionLines(Label, false, "");
+                var axes = MotionAxes(motion, "motion_to_keyboard_");
+                if (!NoMotionAxis(Label, mode, axes))
+                {
+                    // WASD when the key is missing, as the stick modes read it.
+                    string scheme = Str(motion, "motion_to_keyboard_control_scheme");
+                    KeyScheme(Label, scheme.Length > 0 ? scheme : "WASD", MotionDirections(axes),
+                        motion, "motion_to_keyboard_custom_");
+                    MmoMode(Label, motion, "motion_to_keyboard", MotionDirections(axes));
+                    MotionLines(Label, axes.Roll, "");
+                }
                 if (_playStation && Bool(motion, "motion_to_keyboard_is_use_passthrough", true)) BindMotionPassthrough();
                 return;
             }
             if (Word(mode, "CONTROLLER") || Word(mode, "BUTTON"))
             {
-                ButtonScheme(Label, Str(motion, "motion_to_controller_buttons_control_scheme"),
-                    MotionDirections(motion, "motion_to_controller_buttons_"), motion, "motion_to_cb_custom_");
-                MotionLines(Label, false, "");
+                var axes = MotionAxes(motion, "motion_to_controller_buttons_");
+                if (!NoMotionAxis(Label, mode, axes))
+                {
+                    ButtonScheme(Label, Str(motion, "motion_to_controller_buttons_control_scheme"),
+                        MotionDirections(axes), motion, "motion_to_cb_custom_");
+                    MotionLines(Label, axes.Roll, "");
+                }
                 if (_playStation && Bool(motion, "motion_to_controller_buttons_is_use_passthrough", true)) BindMotionPassthrough();
                 return;
             }
@@ -821,15 +932,26 @@ namespace PadForge.Common.ConfigImport
             if (_playStation) BindMotionPassthrough();
         }
 
+        /// <summary>A motion mode whose file turns off both its X and its Y
+        /// axis binds nothing here and gets one line that says both are off,
+        /// with the Z axis line when the file turns its Z axis on.</summary>
+        private bool NoMotionAxis(string label, string mode, (string Horizontal, bool InvertH, string Vertical, bool InvertV, bool Roll) axes)
+        {
+            if (axes.Horizontal != null || axes.Vertical != null) return false;
+            _b.Clean(label, mode + ": X and Y axes off", "");
+            if (axes.Roll) _b.Partial(ImportReasons.DsxShaping, label, "Z axis", "", "Z axis");
+            return true;
+        }
+
         /// <summary>The gyro read as four directions, as the reWASD import
         /// reads its gyro directions: pitch for up and down, yaw for left and
         /// right. Pitch reads nose up as positive, so up is its upper half,
-        /// and yaw a turn to the left, so left is its upper half.</summary>
-        private static ImportInput[] MotionDirections(JsonElement? motion, string prefix)
+        /// and yaw a turn to the left, so left is its upper half. An axis the
+        /// file turns off leaves its two directions null.</summary>
+        private static ImportInput[] MotionDirections((string Horizontal, bool InvertH, string Vertical, bool InvertV, bool Roll) axes)
         {
-            var axes = MotionAxes(motion, prefix);
-            string h = axes.Horizontal ?? "Gyro Yaw", v = axes.Vertical ?? "Gyro Pitch";
-            static ImportInput Half(string descriptor, bool lower, string name) => new()
+            string h = axes.Horizontal, v = axes.Vertical;
+            static ImportInput Half(string descriptor, bool lower, string name) => descriptor == null ? null : new ImportInput
             {
                 Control = "dsx:gyro:" + name,
                 Label = "Gyro " + name,
@@ -876,8 +998,9 @@ namespace PadForge.Common.ConfigImport
             const string Base = ImportBuilder.BaseLayer;
 
             bool toMouse = Word(mode, "MOUSE");
-            bool passthrough = IsNone(mode) || Word(mode, "PASSTHROUGH")
-                               || (toMouse && Bool(touch, "IsTouchpadToMousePassthroughEnabled", false));
+            bool disabled = IsDisabled(mode);
+            bool passthrough = !disabled && (IsNone(mode) || Word(mode, "PASSTHROUGH")
+                                             || (toMouse && Bool(touch, "IsTouchpadToMousePassthroughEnabled", false)));
             if (passthrough && _playStation)
             {
                 void Row(string target, string descriptor)
@@ -913,6 +1036,10 @@ namespace PadForge.Common.ConfigImport
                 if (Bool(touch, "IsTouchpadToMouseScrollWithTwoFingersEnabled", false)) gestures.Add("Two-finger scroll");
                 if (gestures.Count > 0)
                     _b.Partial(ImportReasons.TouchpadShape, Label, string.Join(", ", gestures), "");
+            }
+            else if (disabled)
+            {
+                _b.Clean(Label, mode, "");
             }
             else if (!passthrough)
             {
@@ -1055,7 +1182,8 @@ namespace PadForge.Common.ConfigImport
                 }
                 _b.AddMacro(new ImportMacro
                 {
-                    Name = label,
+                    Name = effectSide == MacroTriggerEffectSide.Left
+                        ? Strings.Instance.Import_LeftTriggerEffectMacro : Strings.Instance.Import_RightTriggerEffectMacro,
                     Mode = MacroTriggerMode.Always,
                     PadId = PadId,
                     Actions = new[]
@@ -1075,18 +1203,38 @@ namespace PadForge.Common.ConfigImport
             ReadTriggerPresets();
         }
 
+        /// <summary>A saved preset list's entries other than the one in force,
+        /// with their names, a nameless one by its place. The one in force is
+        /// the entry named as the active section is, or carrying its
+        /// preset_id: every published profile writes active preset 0 beside
+        /// an empty list and an active section named "- NONE -", so the
+        /// index names no entry. An entry that is not an object gets a line.</summary>
+        private IEnumerable<(JsonElement Preset, string Name)> SavedPresets(string list, JsonElement? active, string label)
+        {
+            string activeName = Str(active, "preset_name");
+            string activeId = Str(active, "preset_id");
+            int index = 0;
+            foreach (var preset in Items(_root, list, MaxPresets))
+            {
+                string name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_UnnamedPreset_Format, ++index);
+                if (preset.ValueKind != JsonValueKind.Object)
+                {
+                    _b.Skipped(ImportReasons.DsxEdited, label, name);
+                    continue;
+                }
+                string presetName = Str(preset, "preset_name");
+                string presetId = Str(preset, "preset_id");
+                if ((activeName.Length > 0 && presetName == activeName) || (activeId.Length > 0 && presetId == activeId)) continue;
+                yield return (preset, presetName.Length > 0 ? presetName : name);
+            }
+        }
+
         /// <summary>The saved presets beside the active one. Each becomes a
         /// macro the user can bind, as DSX switches to one from a shortcut.</summary>
         private void ReadTriggerPresets()
         {
-            int activeIndex = Int(_root, "controller_adaptive_triggers_active_preset", 0);
-            int index = 0;
-            foreach (var preset in Items(_root, "controller_adaptive_triggers_preset_list", MaxPresets))
+            foreach (var (preset, name) in SavedPresets("controller_adaptive_triggers_preset_list", Section("controller_adaptive_triggers"), "Trigger preset"))
             {
-                int i = index++;
-                if (i == activeIndex || preset.ValueKind != JsonValueKind.Object) continue;
-                string name = Str(preset, "preset_name");
-                if (name.Length == 0) name = "Preset " + (i + 1).ToString(CultureInfo.InvariantCulture);
                 if (!preset.TryGetProperty("lt_type", out _) && !preset.TryGetProperty("rt_type", out _))
                 {
                     _b.Skipped(ImportReasons.ControllerSetting, "Trigger preset", name, name);
@@ -1102,7 +1250,7 @@ namespace PadForge.Common.ConfigImport
                         : TriggerAction(setup.Value.Mode, setup.Value.Values, effectSide, MacroTriggerEffectHold.UntilStopped));
                 }
                 if (actions.Count == 0) continue;
-                _b.AddMacro(new ImportMacro { Name = "Triggers: " + name, PadId = PadId, Actions = actions, Unbound = true });
+                _b.AddMacro(new ImportMacro { Name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_TriggerPresetMacro_Format, name), PadId = PadId, Actions = actions, Unbound = true });
                 _b.Partial(ImportReasons.DsxPreset, "Trigger preset", name, "TriggerEffect");
             }
         }
@@ -1130,13 +1278,16 @@ namespace PadForge.Common.ConfigImport
             string mode = Str(led, "colormode");
             double brightness = Math.Clamp(Num(led, "brightness", 100), 0, 100) / 100.0;
 
-            if (_ledsToGame) _b.Partial(ImportReasons.DsxPassthrough, Label, mode, "", Label);
-            else if (_nativeNoData) _b.Partial(ImportReasons.DsxNoData, Label, mode, "", Label);
+            // DSX writes colormode in every profile, so one without it was
+            // made elsewhere, and its mode is not known.
+            string shown = mode.Length > 0 ? mode : "colormode";
+            if (_ledsToGame) _b.Partial(ImportReasons.DsxPassthrough, Label, shown, "", Label);
+            else if (_nativeNoData) _b.Partial(ImportReasons.DsxNoData, Label, shown, "", Label);
+            else if (mode.Length == 0) _b.Skipped(ImportReasons.ControllerSetting, Label, shown, shown);
             else ReadLightbar(led, mode, brightness);
 
-            foreach (var preset in Items(_root, "controller_led_preset_list", MaxPresets))
-                if (preset.ValueKind == JsonValueKind.Object)
-                    _b.Skipped(ImportReasons.ControllerSetting, "Lightbar preset", Str(preset, "preset_name"), Str(preset, "preset_name"));
+            foreach (var (_, name) in SavedPresets("controller_led_preset_list", led, "Lightbar preset"))
+                _b.Skipped(ImportReasons.ControllerSetting, "Lightbar preset", name, name);
 
             if (Bool(led, "battery_use_flash", false))
                 _b.Skipped(ImportReasons.NoSuchSetting, Label, "Low battery flash", "Low battery flash");
@@ -1248,7 +1399,7 @@ namespace PadForge.Common.ConfigImport
             }
             _b.AddMacro(new ImportMacro
             {
-                Name = "Lightbar",
+                Name = Strings.Instance.Import_LightbarMacro,
                 Control = "lightbar",
                 RunsBesideLayers = true,
                 Mode = MacroTriggerMode.Always,
@@ -1372,9 +1523,29 @@ namespace PadForge.Common.ConfigImport
 
             if (haptics == null)
             {
-                // The older section, before DSX 3.2's haptics page.
-                if (Section("controller_haptics_rumble") != null)
+                // The older section, before DSX 3.2's haptics page: its rumble
+                // switch, intensity and enhanced rumble are the new rumble
+                // page's three, and its touchpad haptics switch is the new
+                // modes' touchpad_to_haptics (the eight published profiles
+                // with both sections write the two alike). The rest has no
+                // PadForge setting.
+                var older = Section("controller_haptics_rumble");
+                if (older != null)
+                {
+                    if (Bool(older, "touchpad_haptics_enabled", false))
+                        TouchpadHaptics(Label, "Touchpad to haptics");
+                    if (!Bool(older, "rumble_isenabled", true))
+                        RumbleOff(Label, "Rumble off");
+                    else
+                    {
+                        int intensity = Int(older, "rumble_intensity", 8);
+                        if (intensity != 8)
+                            _b.Partial(ImportReasons.DsxUnit, Label, "Rumble intensity " + intensity.ToString(CultureInfo.InvariantCulture), "");
+                        if (Bool(older, "enhanced_rumble_experience_is_enabled", false))
+                            _b.Skipped(ImportReasons.NoSuchSetting, Label, "Enhanced rumble", "Enhanced rumble");
+                    }
                     _b.Skipped(ImportReasons.ControllerSetting, Label, "controller_haptics_rumble", "controller_haptics_rumble");
+                }
                 return;
             }
 
@@ -1383,8 +1554,7 @@ namespace PadForge.Common.ConfigImport
             {
                 if (!Bool(rumble, "enabled", true))
                 {
-                    _b.RumblePercent = "0";
-                    _b.Clean(Label, "Rumble off", "0 %");
+                    RumbleOff(Label, "Rumble off");
                 }
                 else
                 {
@@ -1416,11 +1586,18 @@ namespace PadForge.Common.ConfigImport
             if (output != null)
             {
                 int speaker = Int(output, "speaker_volume", 100);
-                if (speaker != 100)
+                int headset = Math.Clamp(Int(output, "headset_volume", 100), 0, 100);
+                if (_nativeNoData)
+                {
+                    if (speaker != 100)
+                        _b.Partial(ImportReasons.DsxNoData, "Speaker volume", speaker.ToString(CultureInfo.InvariantCulture) + " %", "");
+                    if (headset != 100)
+                        _b.Partial(ImportReasons.DsxNoData, "Headset volume", headset.ToString(CultureInfo.InvariantCulture) + " %", "");
+                }
+                else if (speaker != 100)
                     _b.Skipped(ImportReasons.AppSetting, "Speaker volume", speaker.ToString(CultureInfo.InvariantCulture) + " %",
                         Strings.Instance.Pad_Audio_MasterVolume);
-                int headset = Math.Clamp(Int(output, "headset_volume", 100), 0, 100);
-                if (headset != 100)
+                if (!_nativeNoData && headset != 100)
                 {
                     _b.HeadphoneVolume = headset.ToString(CultureInfo.InvariantCulture);
                     _b.Clean("Headset volume", headset.ToString(CultureInfo.InvariantCulture) + " %", "HeadphoneVolume");
@@ -1432,15 +1609,14 @@ namespace PadForge.Common.ConfigImport
             // numbers.
             if (Child(haptics, "modes") is JsonElement m)
             {
-                foreach (var property in m.EnumerateObject())
+                foreach (var property in Properties(m, MaxOutputs))
                 {
                     if (property.Value.ValueKind != JsonValueKind.Object || !Bool(property.Value, "enabled", false)) continue;
                     string shown = property.Name.Replace('_', ' ');
                     if (shown.Length > 0) shown = char.ToUpperInvariant(shown[0]) + shown[1..];
                     if (property.Name.Equals("touchpad_to_haptics", StringComparison.OrdinalIgnoreCase))
                     {
-                        // PadForge's own touchpad haptics, the swipe ticks.
-                        _b.Partial(ImportReasons.TouchpadShape, Label, shown, "");
+                        TouchpadHaptics(Label, shown);
                         continue;
                     }
                     if (property.Name.Equals("button_to_haptics", StringComparison.OrdinalIgnoreCase))
@@ -1454,10 +1630,14 @@ namespace PadForge.Common.ConfigImport
                 }
             }
 
-            foreach (var preset in Items(_root, "controller_haptics_preset_list", MaxPresets))
-                if (preset.ValueKind == JsonValueKind.Object)
-                    _b.Skipped(ImportReasons.ControllerSetting, "Haptics preset", Str(preset, "preset_name"), Str(preset, "preset_name"));
+            foreach (var (_, name) in SavedPresets("controller_haptics_preset_list", haptics, "Haptics preset"))
+                _b.Skipped(ImportReasons.ControllerSetting, "Haptics preset", name, name);
         }
+
+        /// <summary>DSX's touchpad haptics, in either haptics section: it
+        /// points to PadForge's own touchpad haptics, the swipe ticks.</summary>
+        private void TouchpadHaptics(string label, string shown)
+            => _b.Partial(ImportReasons.TouchpadShape, label, shown, "");
 
         /// <summary>DSX's microphone button turns the PC's microphone on and
         /// off. PadForge has no action that mutes a microphone.</summary>
@@ -1555,7 +1735,7 @@ namespace PadForge.Common.ConfigImport
                     // made again by hand on the right button.
                     bool any = false;
                     if (Child(binding, "activators") is JsonElement unknown)
-                        foreach (var activator in unknown.EnumerateObject())
+                        foreach (var activator in Properties(unknown, MaxOutputs))
                         {
                             if (activator.Value.ValueKind != JsonValueKind.Object) continue;
                             _b.Skipped(ImportReasons.DsxNumber, MappingLabel, named + " " + activator.Name + ": " + Describe(activator.Value), named);
@@ -1565,7 +1745,7 @@ namespace PadForge.Common.ConfigImport
                     continue;
                 }
                 if (Child(binding, "activators") is not JsonElement acts) continue;
-                foreach (var activator in acts.EnumerateObject())
+                foreach (var activator in Properties(acts, MaxOutputs))
                 {
                     if (activator.Value.ValueKind != JsonValueKind.Object) continue;
                     LowerActivator(inputs, activator.Name, activator.Value, named);
@@ -1612,7 +1792,8 @@ namespace PadForge.Common.ConfigImport
                 return;
             }
             var trigger = release ? MacroTriggerMode.OnRelease : MacroTriggerMode.OnPress;
-            string macroName = MappingLabel + " " + string.Join(" + ", inputs.Select(i => i.Label));
+            string macroName = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ButtonMappingMacro_Format,
+                string.Join(" + ", inputs.Select(i => i.Label)));
 
             // A profile switch names its target, "profile:" and the name.
             string target = Str(Child(output, "details"), "profileSystemTarget");
@@ -1665,9 +1846,13 @@ namespace PadForge.Common.ConfigImport
                 }
                 outs.Add(o);
             }
-            if (outs.Count == 0) return;
+            if (outs.Count == 0)
+            {
+                // Every published advanced output holds two or three.
+                _b.Skipped(ImportReasons.DsxEdited, MappingLabel, binding);
+                return;
+            }
             string emitted = string.Join(" + ", outs.Select(o => o.Label));
-            // Before the binding's own rows, which read the same control.
             Mute(inputs, act);
 
             if (Bool(settings, "turboEnabled", false))

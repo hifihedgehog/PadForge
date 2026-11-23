@@ -553,16 +553,6 @@ namespace PadForge.Engine.Data
         internal MappingSource Gate2SourceCache;
         internal string Gate2SourceCacheKey;
 
-        // ─── Runtime mouse-feel state (v18, not serialized): per-source
-        // EMA value and trackball velocity, advanced once per poll frame
-        // (seq-gated like the gyro EMA). Keyed by the EVALUATED device
-        // guid (the _touchpadDeltas pattern): a device-free source on a
-        // multi-device slot is evaluated once per device each poll, and
-        // a single scalar served the second device the first device's
-        // smoothed value. Poll thread is the only reader and writer.
-        // Clone() drops the map so a cloned row starts cold. ───
-        internal System.Collections.Generic.Dictionary<string, MouseFeelState> MouseFeelByDevice;
-
         /// <summary>Every double here keeps its value when handed NaN or
         /// infinity, from the settings file, a view model or a copy alike, so
         /// a hand-edited "NaN" never reaches the engine. Every lane assigns
@@ -628,8 +618,7 @@ namespace PadForge.Engine.Data
         /// NoInherit). Runtime caches do NOT travel: the gate-source cache holds
         /// a synthetic source built with the ORIGINAL's device guid, so a clone
         /// that is retargeted to another device would keep evaluating its gate
-        /// against the stale device, and the mouse-feel map is per-evaluated-
-        /// device filter state the clone must rebuild cold. The menu parse cache
+        /// against the stale device. The menu parse cache
         /// stays: it is keyed by Descriptor reference, which the clone shares.</summary>
         public MappingSource Clone()
         {
@@ -638,20 +627,7 @@ namespace PadForge.Engine.Data
             copy.GateSourceCacheKey = null;
             copy.Gate2SourceCache = null;
             copy.Gate2SourceCacheKey = null;
-            copy.MouseFeelByDevice = null;
             return copy;
         }
-    }
-
-    /// <summary>Per-(source, evaluated device) mouse-feel runtime state
-    /// (v18): the per-source EMA filter value and the trackball momentum,
-    /// each seq-gated to one advance per poll frame. Lives in
-    /// <see cref="MappingSource.MouseFeelByDevice"/>, never serialized.</summary>
-    internal sealed class MouseFeelState
-    {
-        public float EmaValue;
-        public ulong EmaSeq;
-        public float TrackballVelocity;
-        public ulong TrackballSeq;
     }
 }

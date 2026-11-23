@@ -228,7 +228,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name,
-                Map = new LightMap(Lights(type), "OpenRGB RGBController_WootingKeyboard.cpp") { Product = product },
+                Map = new LightMap(Lights(type)) { Product = product },
                 Programs = VendorPrograms.Wooting,
                 RepaintMs = RepaintMs,
                 Begin = (io, wait) => Begin(io, wait, protocol),

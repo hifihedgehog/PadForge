@@ -2176,7 +2176,7 @@ namespace PadForge.Common.ConfigImport
                 CursorClampOffsetY = offsetY,
                 LatchDirection = d,
             };
-            string label = string.IsNullOrWhiteSpace(description) ? "Mouse region" : description.Trim();
+            string label = string.IsNullOrWhiteSpace(description) ? Strings.Instance.Import_MouseRegionMacro : description.Trim();
             _b.AddHoldPair(new ImportMacro
             {
                 Name = label,
@@ -2777,7 +2777,7 @@ namespace PadForge.Common.ConfigImport
 
             _b.AddMacro(new ImportMacro
             {
-                Name = "Lightbar",
+                Name = Strings.Instance.Import_LightbarMacro,
                 Control = "lightbar",
                 RunsBesideLayers = pattern.Count == 1,
                 Layer = layer,

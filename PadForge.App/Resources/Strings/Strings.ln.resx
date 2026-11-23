@@ -149,14 +149,14 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Slot" xml:space="preserve"><value>Esika</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ba mod ya masano</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Epesaka ba mod ya masano oyo esalemi mpo na DSX nzela ya kobongisa ba gâchette adaptative, barre lumineuse, miinda ya basakani mpe mwinda ya mute ya ba manette na yo ya PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Epesaka ba mod ya masano oyo esalemi mpo na DSX nzela ya kobongisa ba gâchette adaptative, barre lumineuse, miinda ya basakani mpe mwinda ya mute ya DualSense to DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Kondima ba mod ya masano ya DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port ya ba mod ya masano</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Ba mod mosusu, lokola DualSense4GTAV, ekomikangaka soki programme moko na nkombo DSX ezali kotambola te. Oyo ebandisaka programme moke na nkombo wana ntango serveur ezali koyoka.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Esalaka na ba mod oyo esalemi mpo na DSX, lokola oyo ya GTA V, Red Dead Redemption 2, Skyrim mpe Forza. Ntango serveur ezali koyoka, PadForge ekomaka port na yango epai ba mod wana ezali koluka yango.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Ezali koyoka na :{0}. {1} ezali kotinda na manette virtuelle {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ezali koyoka na :{0}. {1} ezali kotinda, kasi manette virtuelle moko te ezali na manette ya PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ezali koyoka na :{0}. {1} ezali kotinda na manette nimero {2}, kasi ezali na manette virtuelle moko te ya manette PlayStation oyo ezali na nimero yango.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ezali koyoka na :{0}. {1} ezali kotinda, kasi manette virtuelle moko te ezali na DualSense to DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ezali koyoka na :{0}. {1} ezali kotinda na manette nimero {2}, kasi ezali na manette virtuelle moko te ya DualSense to DualShock 4 oyo ezali na nimero yango.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Programme mosusu, lokola DSX, ezali kosalela port {0}. Kanga yango to pona port mosusu.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod moko ya lisano</value></data>
 
@@ -446,6 +446,7 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Zongisa palette</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Préréglage</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personnalisé</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Esalemi na mosaleli)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Ba stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ba gâchette</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ba POV</value></data>
@@ -1159,11 +1160,6 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Mibongiseli ya ba entrée ya Flick Stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Kozongisa flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Kozongisa na 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Kozongisa na 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Kozongisa na 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Kozongisa na 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Kozongisa na 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Langi ya barre lumineuse</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volant</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Kozongisa volant</value></data>
@@ -1178,8 +1174,6 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Kotala</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Ntango nyonso</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Kozongisa na par défaut (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Kozongisa na 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
@@ -1527,7 +1521,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Moteur</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Kokabola na ngámbo</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zone morte ya katikati</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Kozongisa na Stick ya mwasi X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Kozongisa makasi (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Kozongisa zone morte ya katikati (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
@@ -2019,6 +2012,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Manette endimaki te commande oyo ebongisaka yango, yango wana eloko moko etindamaki te. Tala soki ekangisami mpe tinda lisusu.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Botindi etelemi mpo na libunga moko kati na PadForge. Fichier ya log ezali na ba détail.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Elili ezali kaka kokende na manette. Kotelemisa kotinda?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kokoba kotinda</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>

@@ -60,8 +60,7 @@ namespace PadForge.Common.Input.Peripherals
         /// the session does not start.</para>
         /// </summary>
         private static HidLightingModel Mp750Model(string name, ushort productId)
-            => NewModel(name, productId, new[] { ZoneLight(0, 1) }, "OpenRGB RGBController_CMMP750Controller.cpp",
-                (io, wait) => BeginMp750(io));
+            => NewModel(name, productId, new[] { ZoneLight(0, 1) }, (io, wait) => BeginMp750(io));
 
         /// <summary>SendUpdate's frame (CMMP750Controller.cpp:151-176): the
         /// mode's row, then for a color mode the color and the speed, and
@@ -163,8 +162,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var lights = new LightInfo[MonitorLeds];
             for (int i = 0; i < lights.Length; i++) lights[i] = EdgeLight(i);
-            return NewModel(name, productId, lights, "OpenRGB RGBController_CMMonitorController.cpp",
-                (io, wait) => new SoftwareModeSession(desk: false));
+            return NewModel(name, productId, lights, (io, wait) => new SoftwareModeSession(desk: false));
         }
 
         /// <summary>SetSoftwareModeEnabled (CMMonitorController.cpp:194-208).</summary>
@@ -292,8 +290,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var lights = new LightInfo[Gd160Leds * 2];
             for (int i = 0; i < lights.Length; i++) lights[i] = EdgeLight(i);
-            return NewModel(name, productId, lights, "OpenRGB RGBController_CMGD160Controller.cpp",
-                (io, wait) => new SoftwareModeSession(desk: true));
+            return NewModel(name, productId, lights, (io, wait) => new SoftwareModeSession(desk: true));
         }
 
         /// <summary>SetControlMode for one side (CMGD160Controller.cpp:167-190).</summary>
@@ -365,8 +362,7 @@ namespace PadForge.Common.Input.Peripherals
         /// sets it or the PC restarts.</para>
         /// </summary>
         private static HidLightingModel GpuModel(string name, ushort productId)
-            => NewModel(name, productId, new[] { LogoLight(0) }, "OpenRGB RGBController_CMR6000Controller.cpp",
-                (io, wait) => new GpuSession(productId == Radeon6900));
+            => NewModel(name, productId, new[] { LogoLight(0) }, (io, wait) => new GpuSession(productId == Radeon6900));
 
         /// <summary>The frames of SendUpdate for OpenRGB's Direct mode: mode
         /// 0, speed 0xFF (Direct.speed), random 0, brightness 0xFF, the color
@@ -471,7 +467,7 @@ namespace PadForge.Common.Input.Peripherals
         /// </summary>
         private static HidLightingModel RgbControllerModel(string name, ushort productId)
             => NewModel(name, productId, new[] { ZoneLight(0, 1), ZoneLight(1, 2), ZoneLight(2, 3), ZoneLight(3, 4) },
-                "OpenRGB RGBController_CMRGBController.cpp", (io, wait) => BeginRgbc(io),
+                (io, wait) => BeginRgbc(io),
                 RgbcRepaintMs, RgbcHoldMs);
 
         internal static byte[] RgbcFlow(byte flag) => Packet(stackalloc byte[] { 0x41, flag });

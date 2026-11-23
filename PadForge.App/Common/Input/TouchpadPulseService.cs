@@ -41,6 +41,12 @@ namespace PadForge.Common.Input
 
         private static readonly ConcurrentDictionary<(int Slot, Guid Device), Cell> _cells = new();
 
+        // The end of the latest burst on each slot, so the poll thread's
+        // keepalive asks a slot without walking the cells: a walk of a
+        // ConcurrentDictionary makes an enumerator, and the cells stay after
+        // their bursts end until Clear, so every pass would make one.
+        private static readonly long[] _slotUntilMs = new long[InputManager.MaxPads];
+
         /// <summary>Sony pads the effects dispatcher is the sole rumble
         /// writer for. Mirrors the exact PID set of the SDL-rumble skip
         /// in <c>InputManager.Step2.ApplyForceFeedback</c>.</summary>
@@ -79,6 +85,8 @@ namespace PadForge.Common.Input
             if (nowMs < cell.UntilMs && cell.Amp > amp) amp = cell.Amp;
             cell.Amp = amp;
             cell.UntilMs = nowMs + PulseDurationMs;
+            if ((uint)slot < (uint)_slotUntilMs.Length && cell.UntilMs > System.Threading.Volatile.Read(ref _slotUntilMs[slot]))
+                System.Threading.Volatile.Write(ref _slotUntilMs[slot], cell.UntilMs);
         }
 
         /// <summary>Current pulse level 0..1 for (slot, device), read by
@@ -103,15 +111,7 @@ namespace PadForge.Common.Input
             => IsSlotActive(slot, Environment.TickCount64);
 
         internal static bool IsSlotActive(int slot, long nowMs)
-        {
-            if (_cells.IsEmpty) return false;
-            foreach (var kv in _cells)
-            {
-                if (kv.Key.Slot != slot) continue;
-                if (nowMs < kv.Value.UntilMs) return true;
-            }
-            return false;
-        }
+            => (uint)slot < (uint)_slotUntilMs.Length && nowMs < System.Threading.Volatile.Read(ref _slotUntilMs[slot]);
 
         /// <summary>Mixes a pulse level into the scaled motor pair via
         /// max(), the audio-bass idiom (<c>ScaleRumbleForDevice</c>'s
@@ -129,6 +129,11 @@ namespace PadForge.Common.Input
         /// <summary>Drops every live pulse. Called from
         /// <c>InputManager.ResetGestureContexts</c> (profile switch /
         /// engine stop) so a burst never outlives its source.</summary>
-        public static void Clear() => _cells.Clear();
+        public static void Clear()
+        {
+            _cells.Clear();
+            for (int i = 0; i < _slotUntilMs.Length; i++)
+                System.Threading.Volatile.Write(ref _slotUntilMs[i], 0);
+        }
     }
 }

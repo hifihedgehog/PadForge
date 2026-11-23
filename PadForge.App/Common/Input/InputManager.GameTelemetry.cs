@@ -76,7 +76,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Error opening game telemetry device", ex);
+                        RaiseDeviceError("Error opening game telemetry device", ex);
                     }
                 }
             }

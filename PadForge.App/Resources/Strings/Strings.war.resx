@@ -179,7 +179,7 @@
   <data name="Dashboard_Connected" xml:space="preserve"><value> konektado</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mga game mod</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port han game mod</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Namamati ha :{0}. Nagpapadara an {1} ha controller index {2}, ngan waray virtual nga controller nga may PlayStation nga controller nga may-ada hito nga index.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Namamati ha :{0}. Nagpapadara an {1} ha controller index {2}, ngan waray virtual nga controller nga may DualSense o DualShock 4 nga may-ada hito nga index.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Usa nga game mod</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Waray nakita nga suportado nga analog keyboard.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Waray nakita nga Bliss-Box port.</value></data>
@@ -215,6 +215,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Waray makita an file</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Diri mabasa</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Nawara o diri mabasa an file han “{0}”. Ipapakita han PadForge an Madulom tubtob nga mabalik ini.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Waray tema han PadForge ha file han “{0}”. Ipapakita han PadForge an Madulom tubtob nga may-ada na.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Gingagamit han profile nga “{0}” an hitsura han iya dula. Mabalik an imo tema kon iba nga profile an aktibo.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Bintana</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
@@ -406,6 +407,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Kasanag</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kustom</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Ginhimo han user)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Mga stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>
@@ -954,11 +956,6 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Pag-tuning han mga input han Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset an flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>I-reset ha 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>I-reset ha 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>I-reset ha 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>I-reset ha 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>I-reset ha 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Kolor han lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Manibela</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>I-reset an manibela</value></data>
@@ -971,8 +968,6 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default han sistema</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Pirme</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset ha default (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset ha 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
@@ -1593,6 +1588,9 @@
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>An custom web pad nagpapabilin han distansya han kada cluster tikang ha mas hirani nga ngilit han mas halapad nga screen, sugad han pagbalhin han mga overlay han RetroArch han ira duha nga katunga. Ginbasa la komo dokumentasyon, waray GPL nga code nga iginhahatag.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Diri tema han PadForge ito nga file.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>Diri mabasa han PadForge ito nga file.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>Diri makita han PadForge ito nga file.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Diri tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Diri natipig an tema. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Bag-o nga tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Ginpapakita han PadForge an tema samtang imo ini ginhihimo.</value></data>
@@ -1622,4 +1620,6 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Ngatanan nga file (*.*)|*.*</value></data>
   <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Diri mabasa han PadForge ito nga file sugad nga litrato.</value></data>
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Litrato: an litrato ha library han Steam para ha {0}.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Diri mabasa han PadForge an litrato han Steam para hini nga dula.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Padayon pagpadara</value></data>
 </root>

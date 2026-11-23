@@ -586,8 +586,6 @@ namespace PadForge.Tests
                 m.AddExtraSourceCommand.Execute(null);
                 Assert.Equal("MaxAbs", m.CombineMode);
             }
-            Assert.Null(MappingSetMigrator.PressedButtonTarget("ButtonA"));
-            Assert.Equal("DPadLeft", MappingSetMigrator.PressedButtonTarget("PressureDPadLeft"));
             Assert.Equal(-1, MappingSetMigrator.PressureIndexOf("PressureButton"));
         }
 
@@ -838,7 +836,7 @@ namespace PadForge.Tests
                 us.SetPadSetting(ps);
                 lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(us);
 
-                Assert.True(DeviceService.FillEmptyPressureMappingsForSlot(0, Full));
+                Assert.True(DeviceService.FillEmptyPresetMappingsForSlot(0, "dualshock-3", Full));
                 Assert.Equal("Axis 6", ps.PressureButtonA);
                 Assert.Equal("Axis 15", ps.PressureDPadRight);
             }
@@ -1014,7 +1012,7 @@ namespace PadForge.Tests
                 us.SetPadSetting(ps);
                 lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(us);
 
-                Assert.True(DeviceService.FillEmptyPressureMappingsForSlot(0, Full));
+                Assert.True(DeviceService.FillEmptyPresetMappingsForSlot(0, "dualshock-3", Full));
                 Assert.Equal("Axis 6", ps.PressureButtonA);
                 Assert.Equal("Axis 11", ps.PressureRightShoulder);
                 Assert.Equal("", ps.PressureDPadUp);
@@ -1046,7 +1044,7 @@ namespace PadForge.Tests
                 us.SetPadSetting(ps);
                 lock (SettingsManager.UserSettings.SyncRoot) SettingsManager.UserSettings.Items.Add(us);
 
-                Assert.True(DeviceService.FillEmptyPressureMappingsForSlot(0, Full));
+                Assert.True(DeviceService.FillEmptyPresetMappingsForSlot(0, "dualshock-3", Full));
 
                 Assert.Equal("Axis 6", ps.PressureButtonA);
                 Assert.Equal("Axis 3", ps.PressureButtonB);   // the user's own stays
@@ -1056,7 +1054,7 @@ namespace PadForge.Tests
                 Assert.Equal(ps.ComputeChecksum(), ps.PadSettingChecksum);
                 Assert.Equal(ps.PadSettingChecksum, us.PadSettingChecksum);
                 // Nothing left to fill, so nothing to merge.
-                Assert.False(DeviceService.FillEmptyPressureMappingsForSlot(0, Full));
+                Assert.False(DeviceService.FillEmptyPresetMappingsForSlot(0, "dualshock-3", Full));
             }
             finally
             {

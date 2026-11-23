@@ -180,7 +180,7 @@ namespace PadForge.Common.Input.Peripherals
             foreach (byte zone in unit.PerKeyZones)
                 if (zone is >= 1 and <= 254)
                     lights.Add(new LightInfo(zone, LightKind.Zone, 0, LightKeySource.None) { Zone = ++number });
-            return new LightMap(lights, "HID++ 0x8081") { Product = ProductOf(unit) };
+            return new LightMap(lights) { Product = ProductOf(unit) };
         }
 
         private static LightMap OfZones(HidppUnit unit)
@@ -190,7 +190,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = new List<LightInfo>(unit.PerKeyZones.Length);
             foreach (byte zone in unit.PerKeyZones)
                 if (LightOf(zone, region, rapid) is LightInfo light) lights.Add(light);
-            return new LightMap(lights, "HID++ 0x8081") { Product = ProductOf(unit) };
+            return new LightMap(lights) { Product = ProductOf(unit) };
         }
 
         /// <summary>The light at <paramref name="zone"/>, or null for a zone
@@ -257,7 +257,7 @@ namespace PadForge.Common.Input.Peripherals
                     ? new LightInfo(zone, LightKind.Logo, 0, LightKeySource.None)
                     : new LightInfo(zone, LightKind.Zone, 0, LightKeySource.None) { Zone = ++number });
             }
-            return new LightMap(lights, "HID++ zones");
+            return new LightMap(lights);
         }
 
         /// <summary>The location code of a logo zone or cluster.</summary>
@@ -278,7 +278,7 @@ namespace PadForge.Common.Input.Peripherals
             foreach (var type in unit.KeyTypes)
                 foreach (byte id in type.Keys)
                     if (KeyLightOf(type.Type, id, unit.KeyboardLayout, extras) is LightInfo light) lights.Add(light);
-            return new LightMap(lights, "HID++ 0x8080") { Product = ProductOf(unit) };
+            return new LightMap(lights) { Product = ProductOf(unit) };
         }
 
         /// <summary>The light of key <paramref name="id"/> of a 0x8080 key

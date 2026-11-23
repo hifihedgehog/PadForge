@@ -93,8 +93,7 @@ namespace PadForge.Views
 
         private void ApplyTheme()
         {
-            bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
-                == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            bool isDark = PadForge.Common.EmberTheme.DarkGround;
 
             if (isDark)
             {

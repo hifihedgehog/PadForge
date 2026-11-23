@@ -126,7 +126,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static LightMap MapOf(bool us, string product)
         {
             var layout = us ? MatrixKeyboardLayouts.DasUs : MatrixKeyboardLayouts.DasEu;
-            return new LightMap(MatrixKeyboardLayouts.Lights(layout), "OpenRGB " + layout.Source) { Product = product };
+            return new LightMap(MatrixKeyboardLayouts.Lights(layout)) { Product = product };
         }
 
         // ─────────────────────────────────────────────

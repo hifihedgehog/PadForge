@@ -1741,7 +1741,7 @@ namespace PadForge.Services
                 }
             };
 
-            // Wii IR pointer tuning (#146 Pointer group), per (device, slot): the
+            // Wii IR pointer tuning (#146 IR Pointer group), per (device, slot): the
             // sensor-bar vertical offset (above -> negative, below -> positive,
             // like Touchmote's offsetY) and the smoothing factor come from the
             // pair's PadSetting, same lookup shape as GyroTuningProvider, so
@@ -1780,7 +1780,7 @@ namespace PadForge.Services
                 return irTuningSnapshot.Get((g, slotIndex));
             };
 
-            // Wii pointer mode (#203 Pointer group), per (device, slot): same
+            // Wii pointer mode (#203 IR Pointer group), per (device, slot): same
             // lookup shape as IrTuningProvider above. Mode ints match the
             // SourceCoercion doc: 0 Mouse, 1 FpsMouse, 2 Mouse43, 3 Mouse169.
             // 250 ms snapshot, same mechanism as IrTuningProvider. A
@@ -1867,8 +1867,8 @@ namespace PadForge.Services
                         if (!wrote) return;
 
                         // Targeted VM update (never a full reload: the user
-                        // may be mid-edit elsewhere on the tab), only when
-                        // the slot's selected device is one of the IR
+                        // may be mid-edit elsewhere in the IR Pointer
+                        // group), only when the slot's selected device is one of the IR
                         // devices just written.
                         var padVm = _mainVm.Pads[slotIdx];
                         if (_previousSelectedDevice.TryGetValue(slotIdx, out var selGuid)
@@ -2323,7 +2323,7 @@ namespace PadForge.Services
                 // authoritative slot's referenced gesture descriptors turn
                 // their feature families on without a Touchpad group toggle
                 // (gate = user toggle OR referenced-by-mapping). Manual
-                // slots return unchanged, keeping the tab authoritative.
+                // slots return unchanged, keeping the group authoritative.
                 return ApplyWorkshopGestureAutoArm(slotIndex, resolved);
             });
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
@@ -3005,9 +3005,10 @@ namespace PadForge.Services
 
             // ── Feed touchpad overlay state into the virtual device ──
             // Multi-finger path: pull the full TouchpadInputState snapshot
-            // from the overlay (slots 0..OverlayMaxFingers-1, contact IDs
-            // mapped from WPF TouchDevice.Id) and forward to the engine
-            // device via UpdateStateMulti.
+            // from the overlay (slots 0..OverlayMaxFingers-1, each keyed by
+            // WPF TouchDevice.Id, with a contact id the overlay assigns when
+            // each finger lands) and forward to the engine device via
+            // UpdateStateMulti.
             if (_touchpadOverlay?.IsVisible == true && _touchpadOverlayDevice != null)
             {
                 var snap = _touchpadOverlay.GetMultiFingerState(out bool click);
@@ -3163,9 +3164,9 @@ namespace PadForge.Services
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Vr)
                     padVm.VrOutputSnapshot = _inputManager.CombinedVrRawStates[i];
 
-                // Per-device state for stick/trigger tab previews.
+                // Per-device state for the Sticks and Triggers groups' previews.
                 // Pad-page gate: these transforms and the gyro readouts
-                // below feed ONLY the Pad page's tabs; when no Pad page is
+                // below feed ONLY the Pad page's groups; when no Pad page is
                 // showing, skip them (the next visible tick refreshes at
                 // 30 Hz). Mirrors the UpdateMappingLiveValues gate.
                 if (IsPadPageVisible)
@@ -3209,7 +3210,7 @@ namespace PadForge.Services
                     else if (_inputManager.SlotRawHidSurface[i])
                     {
                         // No device selected: fall back to combined for the
-                        // stick/trigger tabs so they aren't stuck on stale
+                        // Sticks and Triggers groups so they aren't stuck on stale
                         // per-device data from a previous selection.
                         padVm.UpdateFromRawDeviceState(_inputManager.CombinedRawHidStates[i]);
                     }
@@ -3744,7 +3745,7 @@ namespace PadForge.Services
                     // combined pair's right half, #275) whose sensors are on
                     // while the hint asks for it, and tears it down when the
                     // hint stops asking, which frees the MCU for NFC
-                    // (SDL_hidapi_switch.c UpdateIR, since SDL 3f4999d129 in
+                    // (SDL_hidapi_switch.c UpdateIR, since SDL 82219ef2f2 in
                     // 51f408fb). The sensor bounce that once followed a flip
                     // only turned the IMU off and on, two subcommands that
                     // wait for the pad's reply under SDL's joystick lock.
@@ -3957,8 +3958,9 @@ namespace PadForge.Services
             RefreshNavItemConnectedCounts(deviceSnapshot);
         }
 
-        /// <summary>Home's "Devices connected": the rows that are online and
-        /// count as a device on the Devices page
+        /// <summary>Home's "Devices connected": the rows that are online,
+        /// that the Devices page builds a row for (SyncDevicesList skips
+        /// IsVirtualOrShadowDevice rows) and that count as a device there
         /// (DeviceRowViewModel.CountsAsDevice), so the two pages give one
         /// number. Home counted every online row, the merged rows, a
         /// keyboard's media keys and the rows PadForge and the extras feed
@@ -3970,7 +3972,7 @@ namespace PadForge.Services
             for (int i = 0; i < rows.Length; i++)
             {
                 var row = rows[i];
-                if (row != null && row.IsOnline
+                if (row != null && row.IsOnline && !IsVirtualOrShadowDevice(row)
                     && DeviceRowViewModel.IsCountedDevice(row.DevicePath, Common.DeviceTypeGlyph.KeyFor(row.CapType)))
                     count++;
             }
@@ -4398,7 +4400,7 @@ namespace PadForge.Services
 
         private long _lastStageLedgerRefreshTick;
 
-        // Stage glyphs are the same characters the matching tab page
+        // Stage glyphs are the same characters the matching group
         // headers use (Gyro E7AD, Lighting E781, Touchpad EFA5, Audio
         // E767). Sticks / Triggers render the Zacksly shapes instead of
         // a font glyph, matching their LabeledShapeIcon headers.
@@ -4444,7 +4446,7 @@ namespace PadForge.Services
                     // Lighting group: DualSense / Edge / DS4, plus the #209
                     // Guide LED population (XInput-pathed pads, the 2015
                     // Steam Controller, and #226 Switch home-LED devices)
-                    // now that the tab shows for them too.
+                    // now that the group shows for them too.
                     bool sonyLightbar = ud.VendorId == 0x054C
                         && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2
                          || ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0);
@@ -4468,7 +4470,7 @@ namespace PadForge.Services
             }
 
             // Sticks / Triggers follow the output-type gates SyncTabVisibility
-            // applies to their tabs (MIDI has neither; KBM keeps Sticks for
+            // applies to their groups (MIDI has neither; KBM keeps Sticks for
             // Mouse X/Y but drops Triggers). Both need at least one assigned
             // device so an empty slot's ledger stays empty.
             bool isMidi = padVm.OutputType == VirtualControllerType.Midi;
@@ -4681,8 +4683,9 @@ namespace PadForge.Services
                 });
             }
 
-            // Desired membership in tab order. A stage only appears when
-            // the slot HAS it (a gyro glyph on a gyro-less pad is noise).
+            // Desired membership, in the ledger's own order (Sticks,
+            // Triggers, Gyro, Lighting, Touchpad, Audio). A stage only
+            // appears when the slot HAS it (a gyro glyph on a gyro-less pad is noise).
             var desired = new List<(string Kind, string Glyph, bool Stick, bool Trig, bool Hot, List<StageSummaryLine> Lines)>();
             if (capSticks) desired.Add(("Sticks", string.Empty, true, false, stickHot, stickLines));
             if (capTriggers) desired.Add(("Triggers", string.Empty, false, true, triggerHot, triggerLines));
@@ -5194,17 +5197,8 @@ namespace PadForge.Services
 
         private long _lastGuideLedApplyTick;
 
-        /// <summary>Applies every (slot, device) Guide Button LED config
-        /// (#209, Switch home LED #226). DeviceDefault writes nothing,
-        /// ever. Fixed pushes the configured percent. Battery maps the
-        /// device's battery percent (the same GetEffectiveBattery overlay
-        /// every battery consumer uses) to brightness with a floor of 10,
-        /// skipping devices whose battery is unreadable so the last
-        /// written level stands. Runs on the dispatcher: device connect
-        /// (OnDevicesUpdated), Lighting group edits
-        /// (ActiveDeviceConfigPropertyChanged in MainWindow), and the
-        /// 30 s slow lane. All three writers change-detect, so re-entry
-        /// is cheap.</summary>
+        /// <summary>The last GUIDELED summary ApplyGuideLeds logged, so a
+        /// pass with the same counts logs nothing.</summary>
         private string _lastGuideLedApplySummary;
 
         private (byte r, byte g, byte b) ResolveWebLightbar(ViewModels.PadViewModel padVm, Guid instanceGuid, int playerNumber)
@@ -5225,6 +5219,17 @@ namespace PadForge.Services
             return PlayerIdentityDefaults.WebColorFor(playerNumber);
         }
 
+        /// <summary>Applies every (slot, device) Guide Button LED config
+        /// (#209, Switch home LED #226). DeviceDefault writes nothing,
+        /// ever. Fixed pushes the configured percent. Battery maps the
+        /// device's battery percent (the same GetEffectiveBattery overlay
+        /// every battery consumer uses) to brightness with a floor of 10,
+        /// skipping devices whose battery is unreadable so the last
+        /// written level stands. Runs on the dispatcher: device connect
+        /// (OnDevicesUpdated), Lighting group edits
+        /// (ActiveDeviceConfigPropertyChanged in MainWindow), and the
+        /// 30 s slow lane. All three writers change-detect, so re-entry
+        /// is cheap.</summary>
         internal void ApplyGuideLeds()
         {
             try
@@ -7686,8 +7691,8 @@ namespace PadForge.Services
 
             // Sensitivity curves. The load mirror at LoadPadSettingToViewModel
             // reads all six; the save side must cover the SAME fields or a
-            // curve edit is lost when the device dropdown switches inside the
-            // autosave debounce window (audit lens 1m, F3).
+            // curve edit is lost when the device picked in the header changes
+            // inside the autosave debounce window (audit lens 1m, F3).
             ps.LeftThumbSensitivityCurveX = padVm.LeftSensitivityCurveX;
             ps.LeftThumbSensitivityCurveY = padVm.LeftSensitivityCurveY;
             ps.RightThumbSensitivityCurveX = padVm.RightSensitivityCurveX;
@@ -7794,7 +7799,8 @@ namespace PadForge.Services
         /// the slot's MappingSet. Safe to call when no device is
         /// selected (e.g. after unassigning the only / last device on
         /// a slot) — mappings are per-VC so they're authoritative
-        /// regardless of which physical device the dropdown is on.
+        /// regardless of which physical device is picked in the header's
+        /// Driven by list.
         /// Use this on device-assignment changes to keep the
         /// mapping list in sync without forcing a per-device-tuning
         /// reload.
@@ -7947,9 +7953,9 @@ namespace PadForge.Services
             padVm.RightTriggerSensitivityCurve = ps.RightTriggerSensitivityCurve ?? "0,0;1,1";
 
             // Motion Lean steering tunables, mirroring the startup load in
-            // SettingsService.LoadPadSettings. Absent here, switching the
-            // assigned-device dropdown kept the previous device's values in
-            // the VM (audit lens 1m, F2).
+            // SettingsService.LoadPadSettings. Absent here, changing the
+            // device picked in the header kept the previous device's values
+            // in the VM (audit lens 1m, F2).
             padVm.MotionSteerInnerDz = TryParseDouble(ps.GetRawMapping("MotionSteerInner"), 15);
             padVm.MotionSteerOuterDz = TryParseDouble(ps.GetRawMapping("MotionSteerOuter"), 135);
             padVm.SetMotionSteerOrient(ps.GetRawMapping("MotionSteerOrient"));
@@ -8034,7 +8040,7 @@ namespace PadForge.Services
             // set written by SaveViewModelToPadSetting above — every
             // sync direction in the VM ↔ PadSetting ↔ XML chain has to
             // cover the SAME fields or the missing ones get clobbered
-            // when the device dropdown is switched.
+            // when a different device is picked in the header's Driven by list.
             padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
             padVm.GyroSensitivityV = TryParseDouble(ps.GyroSensitivityV, 1.0);
             padVm.GyroDeadZoneDegPerSec = TryParseDouble(ps.GyroDeadZoneDegPerSec, 3.0);
@@ -8094,7 +8100,8 @@ namespace PadForge.Services
             padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
             // Steering at-lock feedback (#94) — per assigned device (VM-prop pattern, like
-            // wheel/gyro): reload the selected device's values on dropdown swap.
+            // wheel/gyro): reload the selected device's values when a different
+            // device is picked in the header's Driven by list.
             padVm.SteeringAngleRumbleEnabled = ps.SteeringAngleRumbleEnabled == "1";
             padVm.SteeringAngleRumbleAxis = TryParseInt(ps.SteeringAngleRumbleAxis, 0);
             padVm.SteeringAngleRumbleStrength = TryParseInt(ps.SteeringAngleRumbleStrength, 50);
@@ -8113,7 +8120,7 @@ namespace PadForge.Services
             padVm.SteeringLockLightbarHoldMs = TryParseDouble(ps.SteeringLockLightbarHoldMs, 80);
             padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
 
-            // Touchpad-gestures tab — per-(device, pad) settings live
+            // Touchpad group: per-(device, pad) settings live
             // under PadSetting.TouchpadSettings as a typed sub-tree
             // (TouchpadSettingsEntry[]). Reading them into the VM
             // requires resolving the active pad index; defer that to
@@ -8121,7 +8128,7 @@ namespace PadForge.Services
             // selected touchpad index off itself.
             padVm.LoadTouchpadGestureSettingsForActiveDevice();
 
-            // Mouse-gestures tab (issue #200): same per-(slot, device)
+            // Mouse Gestures group (issue #200): same per-(slot, device)
             // typed sub-tree contract as the touchpad settings above, same
             // VM-side loader so Reset to Defaults resets it by construction.
             padVm.LoadMouseGestureSettingsForActiveDevice();
@@ -8199,8 +8206,8 @@ namespace PadForge.Services
         /// <summary>Per-VC mapping refresh. Reads the slot's MappingSet
         /// — the SOLE source of truth — and populates every MappingItem
         /// in <paramref name="padVm"/>. The mapping list is intentionally
-        /// device-agnostic: changing the assigned-device dropdown does
-        /// NOT affect what's shown here. Legacy per-device descriptors
+        /// device-agnostic: picking another device in the header's Driven
+        /// by list does NOT affect what's shown here. Legacy per-device descriptors
         /// are converted into the MappingSet at settings load time
         /// (<see cref="SettingsService.LoadFromFile"/> →
         /// <c>BuildOneSlotFromLegacy</c>) and on device assignment
@@ -10848,7 +10855,7 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Called when the user selects a different device in a pad slot's dropdown.
+        /// Called when the user picks a different device in the header's Driven by list.
         /// Saves current ViewModel values to the old device's PadSetting, then loads
         /// the new device's PadSetting into the ViewModel.
         /// </summary>
@@ -12870,7 +12877,8 @@ namespace PadForge.Services
                                 if (s == null) return false;
                                 return await s.ConnectByIdentityRelayAsync(peerKey, cap, BuildExposedDevices(),
                                     timeout: TimeSpan.FromSeconds(25), ct: ict).ConfigureAwait(false);
-                            });
+                            },
+                            answerPunchFrom: list => _linkServer?.SetKnownPunchPeers(list));
 
                         _remoteLinkInternetTimer?.Dispose();
                         _remoteLinkInternetTimer = new System.Threading.Timer(_ => _ = InternetMaintainTick(), null, 3000, 60_000);
@@ -12914,7 +12922,8 @@ namespace PadForge.Services
                     IsConnected = !mayDial || connected.Contains(t.FingerprintHex) || server.IsPeerConnecting(t.FingerprintHex),
                 });
             }
-            if (peers.Count == 0) return;
+            // An empty pass still runs: it takes back the punch answer of a
+            // peer unpaired since the last one.
             try { await svc.MaintainAsync(peers, _internetCts?.Token ?? System.Threading.CancellationToken.None).ConfigureAwait(false); }
             catch { }
         }
@@ -14527,7 +14536,7 @@ namespace PadForge.Services
         {
             string name = profileId != null
                 ? SettingsManager.Profiles.Find(p => p.Id == profileId)?.Name
-                : Strings.Instance.Common_Default;
+                : Strings.Instance.Profile_Default;
 
             if (_switchOverlay == null)
             {
@@ -14536,7 +14545,7 @@ namespace PadForge.Services
                 _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
             }
 
-            _switchOverlay.ShowProfileName(name ?? Strings.Instance.Common_Default);
+            _switchOverlay.ShowProfileName(name ?? Strings.Instance.Profile_Default);
         }
 
         private void ShowVCsToggleOverlay(bool enabled)
@@ -14625,7 +14634,7 @@ namespace PadForge.Services
         {
             RefreshServerStatusStrings();
             SyncDevicesList(); // Re-resolve localized device names (merged keyboards/mice/touchpads).
-            // Per-slot MappedDevices dropdown items snapshot the localized
+            // Per-slot MappedDevices items (the header's Driven by pills) snapshot the localized
             // device name at population time, so they keep showing the old
             // language until UpdatePadDeviceInfo re-runs.
             UpdatePadDeviceInfo();
@@ -17025,7 +17034,7 @@ namespace PadForge.Services
         /// (Step 1, IsHidMaestroVirtualDevice). This is a defense-in-depth
         /// layer.
         /// </summary>
-        private static bool IsVirtualOrShadowDevice(UserDevice ud)
+        internal static bool IsVirtualOrShadowDevice(UserDevice ud)
         {
             // Offline devices are never virtual controllers — virtual controllers
             // only exist while the engine is running.
@@ -17035,9 +17044,14 @@ namespace PadForge.Services
             if (ud.IsHidden)
                 return true;
 
-            // Web and peer wrappers are input sources. Their names and paths
-            // do not identify this process's virtual outputs.
-            if (ud.Device is WebControllerDevice or RemotePeerDevice)
+            // A row read through a wrapper PadForge built for one of its own
+            // schemes is that wrapper's source: a web or peer controller, or
+            // a WinMM MIDI port the user named "Virtual 1", which reads
+            // midi://winmm:Virtual 1. Its name and path do not identify this
+            // process's virtual outputs. A row with no such wrapper keeps the
+            // filter below whatever its path says: a URI alone is not
+            // provenance.
+            if (IsOwnSchemeWrapper(ud.Device))
                 return false;
 
             // ── Name-based detection ──
@@ -17051,15 +17065,32 @@ namespace PadForge.Services
 
             // ── Device path detection ──
             string path = ud.DevicePath;
-            if (!string.IsNullOrEmpty(path))
-            {
-                string pathLower = path.ToLowerInvariant();
-                if (pathLower.Contains("vigem") || pathLower.Contains("virtual"))
-                    return true;
-            }
+            if (!string.IsNullOrEmpty(path)
+                && (path.Contains("vigem", StringComparison.OrdinalIgnoreCase)
+                    || path.Contains("virtual", StringComparison.OrdinalIgnoreCase)))
+                return true;
 
             return false;
         }
+
+        /// <summary>Whether a device is one of the wrappers PadForge builds
+        /// for its own schemes (DeviceRowViewModel.IsInternalVirtualPath):
+        /// web://, peer://, overlay://, midi://, nfc://, mic://,
+        /// handheld://, sensor://, headtrack://, openxr://, logigkeys://,
+        /// keyboardscreen://, falcon://, telemetry://, twitch://,
+        /// analogkb://, a vendor lighting program's row and lightunit://.
+        /// Each writes its own path, so the type stands for the scheme.</summary>
+        internal static bool IsOwnSchemeWrapper(ISdlInputDevice device) => device is
+            WebControllerDevice or RemotePeerDevice or TouchpadOverlayDevice
+            or MidiInputDevice or NfcReaderDevice or MicrophoneInputDevice
+            or HandheldButtonsDevice or SystemMotionDevice or HeadTrackerDevice
+            or OpenXrHandDevice or LogitechGKeysDevice or KeyboardScreenDevice
+            or PadForge.Common.Input.Falcon.FalconDevice
+            or PadForge.Common.Input.Telemetry.GameTelemetryDevice
+            or PadForge.Common.Input.Twitch.TwitchChatDevice
+            or AnalogKeyboardDevice
+            or PadForge.Common.Input.Peripherals.PeripheralOutputRow
+            or PadForge.Common.Input.Peripherals.PeripheralUnitRow;
 
         /// <summary>The dossier FIRMWARE text for a device: the value its
         /// open SDL device holds now, empty for a device SDL does not open.
@@ -17145,7 +17176,7 @@ namespace PadForge.Services
             // to SDL's shared-handle rumble flag (user report 2026-07-05:
             // Steam Controller and Switch 2 Pro dossiers showed no rumble
             // chip despite hardware-confirmed rumble). Since fork
-            // b46ae33238 (#267) the 2015 Steam Controller also reports
+            // 1e4312eb35 (#267) the 2015 Steam Controller also reports
             // SDL_JOYSTICK_CAP_RUMBLE itself, so for that one family this
             // override is redundant but harmless.
             bool sonyLightbarPad = ud.VendorId == 0x054C
@@ -18051,7 +18082,7 @@ namespace PadForge.Services
                         Map(ps.LeftTriggerRouteActivatorDeviceGuid);
                     ps.RightTriggerRouteActivatorDeviceGuid =
                         Map(ps.RightTriggerRouteActivatorDeviceGuid);
-                    // The per-device Touchpad and Mouse groups are keyed by
+                    // The per-device Touchpad and Mouse Gestures groups are keyed by
                     // guid too (round eleven): without these, every
                     // touchpad and gesture setting the user authored for
                     // the device fell back to defaults on a reconnect,
@@ -18127,7 +18158,7 @@ namespace PadForge.Services
                 pad.RightTriggerRouteActivatorDeviceGuid =
                     Map(pad.RightTriggerRouteActivatorDeviceGuid);
                 // Same shape on the mouse-gesture mirror: its VM value is
-                // what the next Mouse group gesture writes back into the
+                // what the next Mouse Gestures group gesture writes back into the
                 // entry array.
                 pad.MouseGestureCustomEngageDeviceGuid =
                     Map(pad.MouseGestureCustomEngageDeviceGuid);
@@ -18400,7 +18431,9 @@ namespace PadForge.Services
                     }
 
                     // Initialize the previous-device tracker if not set, and populate
-                    // dropdowns for the initial selection (including offline devices).
+                    // the mapping rows' input choices, every device on the slot with
+                    // the device picked in the header's Driven by list first (offline
+                    // devices included).
                     if (!_previousSelectedDevice.ContainsKey(i) && padVm.SelectedMappedDevice != null)
                     {
                         var initGuid = padVm.SelectedMappedDevice.InstanceGuid;
@@ -18728,12 +18761,12 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Finds the UserDevice for the currently selected device in a pad slot's dropdown.
+        /// Finds the UserDevice for the device picked in the header's Driven by list.
         /// Falls back to the first device in the slot if nothing is selected.
         /// </summary>
         private static UserDevice FindSelectedDeviceForSlot(PadViewModel padVm)
         {
-            // Use the dropdown-selected device if available.
+            // Use the device picked in the header's Driven by list if available.
             if (padVm.SelectedMappedDevice != null &&
                 padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
             {
@@ -22019,8 +22052,8 @@ namespace PadForge.Services
         /// <summary>
         /// Save Current Setup Here (#574): the live setup replaces what a stored
         /// profile holds. The snapshot is the one Save As takes, kept under the
-        /// stored profile's id, name, games, polling override and screen pictures.
-        /// Its Workshop provenance goes, since it no longer holds that config. The
+        /// stored profile's id, name, games, polling override, screen pictures
+        /// and game look. Its Workshop provenance goes, since it no longer holds that config. The
         /// active profile and Default are refused: the first is the live setup
         /// already, and the second is never overwritten. Returns the profile as
         /// stored, or null when nothing changed.
@@ -22539,7 +22572,7 @@ namespace PadForge.Services
                     if (!PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseCursorDescriptor(src.Descriptor)) continue;
                     // Consumed and postponed sources are suppressed in dispatch,
                     // so the preview suppresses them too, the same rule the
-                    // trigger preview applies one tab over.
+                    // trigger preview applies in the Triggers group.
                     if (InputManager.IsSourceSuppressedPostpone(slotIndex, src, stickRead: true)) continue;
 
                     // Read through the evaluator instead of repeating its math.

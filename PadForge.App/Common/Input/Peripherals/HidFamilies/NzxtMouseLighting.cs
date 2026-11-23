@@ -80,7 +80,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_NZXTMouse.cpp") { Product = $"nzxtmouse:{VendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"nzxtmouse:{VendorId:X4}:{productId:X4}" },
             RepaintMs = AocMouseLighting.RepaintMs,
             Programs = VendorPrograms.Nzxt,
             Begin = (io, _) => io != null && AskFirmware(io) ? new Session() : null,

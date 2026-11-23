@@ -138,7 +138,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var lights = KeyboardLedNames.FromLayout(KeyboardLayouts.Build(board.Recipe, layout));
             if (board.LogoLight) lights.Add(new LightInfo(LogoValue, LightKind.Logo, 0, LightKeySource.None));
-            return new LightMap(lights, "OpenRGB RGBController_WinbondGamingKeyboard.cpp")
+            return new LightMap(lights)
             {
                 Product = $"winbond:{VendorId:X4}:{productId:X4}:{board.Recipe}:{layout}",
             };

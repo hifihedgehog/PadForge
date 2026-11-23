@@ -759,6 +759,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Isoni eú kopi…</value></data>
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Siwili ewe theme</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ewe file an “{0}” a mwalechelo ika ese tongeni álleani. PadForge epwe pwáraaló Roch tori an epwe liwiniti.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Esor eú theme an PadForge lón ewe file an “{0}”. PadForge epwe pwáraaló Roch tori epwe wor lón.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Iit</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ai theme</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Longolong</value></data>
@@ -784,4 +785,6 @@
   <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Sasingen theme: Ekkewe rúánú crest an ekkewe imw</value></data>
   <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Sasingen theme: Ewe studio model an USS Enterprise</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Sasingen theme: USS Enterprise-D</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ese tongeni álleani ewe sasing seni Steam ren ei urumwot.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Sópwelo le Tiinnóó</value></data>
 </root>

@@ -178,8 +178,8 @@ body {
     display: none;
     z-index: 16;
 }
-.touchpad-dot.f0 { background: rgba(255, 107, 44, 0.6); border: 2px solid var(--ember); }
-.touchpad-dot.f1 { background: rgba(124, 199, 234, 0.6); border: 2px solid var(--cold); }
+.touchpad-dot.f0 { background: var(--ember-dot); border: 2px solid var(--ember); }
+.touchpad-dot.f1 { background: var(--cold-dot); border: 2px solid var(--cold); }
 
 @media only screen and (orientation: portrait) {
     #controller-viewport, #disconnect-message {

@@ -84,7 +84,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(Lights(bar), "OpenRGB IonicoController") { Product = $"ionico:048D:{productId:X4}" },
+                Map = new LightMap(Lights(bar)) { Product = $"ionico:048D:{productId:X4}" },
                 RepaintMs = RepaintMs,
                 Begin = (_, _) => new Session(bar),
             };

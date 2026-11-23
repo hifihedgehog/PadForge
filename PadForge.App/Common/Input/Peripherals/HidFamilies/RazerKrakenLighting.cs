@@ -139,10 +139,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static LightMap MapOf(ushort productId)
         {
             var device = RazerHidTable.Device(productId);
-            string source = device != null
-                ? $"OpenRGB {device.Source}, first color (RGBController_RazerKraken.cpp:162-169)"
-                : "OpenRGB RazerControllerDetect.cpp, first color (RGBController_RazerKraken.cpp:162-169)";
-            return new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }, source)
+            return new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } })
             {
                 Product = RazerHidTable.Product(productId),
             };

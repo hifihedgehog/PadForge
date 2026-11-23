@@ -350,7 +350,7 @@ namespace PadForge.Engine
         /// on the far end of a socket is not survivable. The Lighting group asks
         /// these two questions directly instead.</para>
         ///
-        /// <para>Same rule the tab applies to physical pads: a bar for the
+        /// <para>Same rule the Lighting group applies to physical pads: a bar for the
         /// DualSense family and the DualShock 4, indicator LEDs for the
         /// DualSense family alone.</para>
         /// </summary>

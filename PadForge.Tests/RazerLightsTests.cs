@@ -692,9 +692,6 @@ namespace PadForge.Tests
             Assert.All(new[] { At(5, 5), At(5, 9), At(5, 15), At(0, 0) },
                 l => Assert.Equal((LightKind.Key, (ushort)0, LightLabel.None), (l.Kind, l.Usage, l.Label)));
             Assert.Equal(96, map.Lights.Count);
-            Assert.Contains("uchroma", map.Source);
-            Assert.Contains("bce7798", map.Source);
-            Assert.Contains("left unnamed", map.Source);
         }
 
         /// <summary>A Blade 15 (2018) Mercury, which uchroma gives its
@@ -711,8 +708,6 @@ namespace PadForge.Tests
             Assert.Equal((LightKind.Other, LightLabel.Fn), (At(5, 15).Kind, At(5, 15).Label));
             Assert.Equal(((ushort)0xE1, (ushort)0xE5), (At(4, 1).Usage, At(4, 15).Usage));
             Assert.Equal(96, map.Lights.Count);
-            Assert.Contains("Polychromatic blade_2018_en_US.svg", map.Source);
-            Assert.Contains("one source", map.Source);
         }
 
         /// <summary>A Blade 16 (2023), which only openrazer lists, takes its
@@ -731,7 +726,6 @@ namespace PadForge.Tests
             Assert.Equal(((ushort)0xE1, (ushort)0xE5), (At(4, 1).Usage, At(4, 15).Usage));
             Assert.Equal((LightKind.Other, LightLabel.Fn), (At(5, 2).Kind, At(5, 2).Label));
             Assert.Equal((LightKind.Key, (ushort)0), (At(5, 13).Kind, At(5, 13).Usage));
-            Assert.Contains("Polychromatic", map.Source);
         }
 
         [Fact]
@@ -828,7 +822,6 @@ namespace PadForge.Tests
                     if (lights.Plan == RazerLightPlan.Frame)
                         Assert.All(all, l => Assert.InRange(l.Address, 0, lights.Rows * lights.Columns - 1));
                 }
-                Assert.False(string.IsNullOrEmpty(lights.Source), id);
                 if (lights.KeyboardRecipe != null)
                 {
                     Assert.NotNull(KeyboardLayouts.Recipe(lights.KeyboardRecipe));

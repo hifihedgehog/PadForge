@@ -164,7 +164,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name + " (" + laptop.Product + ")",
-                Map = new LightMap(Lights(kind, laptop), "OpenRGB MSILaptopController")
+                Map = new LightMap(Lights(kind, laptop))
                 {
                     Product = $"msi-laptop:1038:{productId:X4}:{laptop.Product}",
                 },

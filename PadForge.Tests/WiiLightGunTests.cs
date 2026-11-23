@@ -674,7 +674,7 @@ namespace PadForge.Tests
         // A remote turned off and on came back with every button working and
         // no aim. The fork powered the camera only on the sensor-enable edge,
         // a power-up that timed out was retried only by the next toggle or a
-        // reopen (SDL_hidapi_wii.c EnableIR, before SDL c2eb7a5f2a), and
+        // reopen (SDL_hidapi_wii.c EnableIR, before SDL db3d0e47c5), and
         // PadForge enabled the sensors once per open.
 
         private static bool Check(SdlDeviceWrapper w, short axes, bool reporting, int ms)

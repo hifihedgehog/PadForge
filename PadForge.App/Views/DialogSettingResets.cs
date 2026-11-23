@@ -47,6 +47,18 @@ namespace PadForge.Views
     public partial class ProfileDialog
     {
         private void ResetPollingRate_Click(object sender, RoutedEventArgs e) => PollingRateBox.SelectedIndex = 0;
+
+        /// <summary>Back to no game look, the default (#591).</summary>
+        private void ResetGameLook_Click(object sender, RoutedEventArgs e) => GameLookSwitch.IsChecked = false;
+    }
+
+    public partial class ThemeBuilderDialog
+    {
+        /// <summary>Back to the picture's middle, where a new picture starts (#591).</summary>
+        private void ResetPosition_Click(object sender, RoutedEventArgs e) => PositionSlider.Value = 50;
+
+        /// <summary>Back to the logo shown, where a new picture starts (#591).</summary>
+        private void ResetLogo_Click(object sender, RoutedEventArgs e) => LogoSwitch.IsChecked = true;
     }
 
     public partial class DreamcastScreenDialog

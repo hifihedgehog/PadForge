@@ -106,7 +106,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = this,
             Name = name,
-            Map = new LightMap(Lights(pid), "OpenRGB RGBController_FnaticStreak.cpp")
+            Map = new LightMap(Lights(pid))
             {
                 Product = $"fnatic:{VendorId:X4}:{pid:X4}",
             },

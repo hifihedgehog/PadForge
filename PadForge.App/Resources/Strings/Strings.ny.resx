@@ -125,7 +125,7 @@
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Yatsika</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ikumvetsera pa :{0}. {1} ikutumiza ku nambala {2} ya kontrola, koma palibe kontrola ya pakompyuta yokhala ndi kontrola ya PlayStation yomwe ili ndi nambala imeneyo.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ikumvetsera pa :{0}. {1} ikutumiza ku nambala {2} ya kontrola, koma palibe kontrola ya pakompyuta yokhala ndi DualSense kapena DualShock 4 yomwe ili ndi nambala imeneyo.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Lumikizani</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kanani</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Palibe chipangizo</value></data>
@@ -867,16 +867,11 @@
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Kumanja</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Kumbuyo</value></data>
   <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Bwezeretsani njira yoyendetsera</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Bwezeretsani ku 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Bwezeretsani ku 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Bwezeretsani ku 0.9</value></data>
   <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Kutsogolo kokha</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>Madigiri 180</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>Madigiri 90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>Madigiri 60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>Madigiri 45</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Bwezeretsani ku 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Bwezeretsani ku 0°</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Bwezeretsani wheel</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Mawu</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Pakati</value></data>
@@ -904,8 +899,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Voliyumu</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Bwerezani mpaka itayimitsidwa</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Nthawi zonse</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Bwezeretsani ku zokhazikika (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Bwezeretsani ku 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Tumizani kunja…</value></data>
@@ -1191,7 +1184,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mota</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Gawani malinga ndi mbali</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone yapakati</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Bwezeretsani ku Stick yakumanzere X</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Mbiri</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd sinamalize mkati mwa mphindi 60.</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
@@ -1520,6 +1512,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Chowongolera sichinalandire lamulo loti chikonzekere, choncho palibe chomwe chatumizidwa. Onetsetsani kuti chalumikizidwa ndipo tumizaninso.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Kutumiza kwaima chifukwa cha vuto mu PadForge. Fayilo ya log ili ndi tsatanetsatane.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Chithunzi chikutumizidwabe ku chowongolera. Muimitse kutumiza?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Pitirizani kutumiza</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -1551,4 +1544,6 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Tengerani chithunzi</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Imatenga mitundu inayi kuchokera pachithunzi.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Zithunzi (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafayilo onse (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge sikutha kuwerenga fayiloyo.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge sikupeza fayiloyo.</value></data>
 </root>

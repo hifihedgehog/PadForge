@@ -103,9 +103,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             var names = keypad ? KeyboardLedNames.LightSaltKeypadNames : KeyboardLedNames.LightSaltKeyboardNames;
             var cells = keypad ? KeyboardLedNames.LightSaltKeypadIndices : KeyboardLedNames.LightSaltKeyboardIndices;
-            return new LightMap(KeyboardLedNames.FromNames(names, i => cells[i]), keypad
-                ? "OpenRGB RGBController_LightSaltKeypad.cpp"
-                : "OpenRGB RGBController_LightSaltKeyboard.cpp")
+            return new LightMap(KeyboardLedNames.FromNames(names, i => cells[i]))
             {
                 Product = $"lightsalt:{VendorId:X4}:{productId:X4}:{(keypad ? "keypad" : "keyboard")}",
             };

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Na mreži</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Izvan mreže</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Nepoznato</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Zadano</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Pregledaj…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Nastavi</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Zaustavi</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Mehanizam je zaustavljen.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Pogreška: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Nije moguće stvoriti {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Uređaj se nije mogao otvoriti, očitati ili mapirati. Dnevnik dijagnostike navodi koji je uređaj.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} je naišao na pogrešku. Dnevnik dijagnostike sadrži uzrok.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Ulazni mehanizam naišao je na pogrešku. Dnevnik dijagnostike sadrži uzrok.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL se nije mogao pokrenuti. Dnevnik dijagnostike sadrži uzrok.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro se nije mogao postaviti. Dnevnik dijagnostike sadrži uzrok.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Nedostaje HIDMaestro profil jednog virtualnog kontrolera. Dnevnik dijagnostike navodi koji.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} nije mogao preuzeti prilagođeni identitet i raspored pa koristi one iz svog profila.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil je promijenjen: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil je promijenjen: Zadani</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Zadani</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Priključak poslužitelja pokreta</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Daje podatke žiroskopa i akcelerometra programima Cemu, Dolphin, Yuzu itd.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Modifikacije igara</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Omogućuje modifikacijama igara izrađenima za DSX postavljanje adaptivnih okidača, svjetlosne trake, svjetala igrača i svjetla za utišavanje na vašim PlayStation kontrolerima.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Omogućuje modifikacijama igara izrađenima za DSX postavljanje adaptivnih okidača, svjetlosne trake, svjetala igrača i svjetla za utišavanje na kontroleru DualSense ili DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Prihvati DSX modifikacije igara</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Priključak modifikacija igara</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Pokreni zamjenu DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Neke modifikacije, poput DualSense4GTAV, same se isključe ako se ne izvodi program naziva DSX. Ovo pokreće malu zamjenu tog naziva dok poslužitelj osluškuje.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Radi s modifikacijama izrađenima za DSX, primjerice za GTA V, Red Dead Redemption 2, Skyrim i Forza. Dok poslužitelj osluškuje, PadForge upisuje svoj priključak ondje gdje ga te modifikacije traže.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Osluškuje na :{0}. {1} šalje na virtualni kontroler {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Osluškuje na :{0}. {1} šalje, ali nijedan virtualni kontroler nema PlayStation kontroler.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Osluškuje na :{0}. {1} šalje na indeks kontrolera {2}, a nijedan virtualni kontroler s PlayStation kontrolerom nema taj indeks.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Osluškuje na :{0}. {1} šalje, ali nijedan virtualni kontroler nema DualSense ili DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Osluškuje na :{0}. {1} šalje na indeks kontrolera {2}, a nijedan virtualni kontroler s kontrolerom DualSense ili DualShock 4 nema taj indeks.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Priključak {0} koristi drugi program, na primjer DSX. Zatvorite ga ili odaberite drugi priključak.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Modifikacija igre</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Radi s programom OpenTrack i svakim alatom za praćenje koji šalje UDP izlaz ili zapisuje dijeljenu memoriju FreeTrack 2.0 te s OpenXR okruženjem na ovom računalu koje može pokrenuti sesiju u pozadini.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Datoteka nije pronađena</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nije čitljivo</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Datoteka teme „{0}“ nedostaje ili se ne može pročitati. PadForge prikazuje temu Tamna dok datoteka ne bude opet dostupna.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Datoteka teme „{0}“ ne sadrži PadForge temu. PadForge prikazuje temu Tamna dok je ne sadrži.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profil „{0}“ nosi izgled svoje igre. Vaša tema vraća se kad postane aktivan drugi profil.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Ulazni mehanizam</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurirajte ponašanje prozivanja i obradu u pozadini.</value></data>
@@ -1047,6 +1054,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontroler nije prihvatio naredbu koja ga priprema, pa ništa nije poslano. Provjerite je li povezan i pošaljite ponovno.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Slanje je zaustavljeno zbog pogreške u programu PadForge. Pojedinosti su u datoteci dnevnika.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Slika se još šalje na kontroler. Zaustaviti slanje?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Nastavi slanje</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Datoteke Controller Pak (*.mpk)|*.mpk|Sve datoteke (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak priključak {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Vrati Controller Pak</value></data>
@@ -1434,6 +1442,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Slabljenje impulsa</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predložak</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Prilagođeno</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (korisnički izrađeno)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Palice</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Okidači</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ovi</value></data>
@@ -2414,7 +2423,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Ovaj kontroler ima magnetometar. Sidrenje skretanja na magnetski sjever uklanja spori vodoravni pomak iz ciljanja žiroskopom. Najprije kalibrirajte: pritisnite Kalibriraj, nekoliko sekundi okrećite kontroler kroz sve orijentacije u obliku osmice, a zatim ponovno pritisnite.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Sidri skretanje na kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Dodaje malu korektivnu brzinu koja vodoravno ciljanje povlači prema magnetskom smjeru pa se pomak ne može nakupljati. Potrebna je spremljena kalibracija magnetometra. Uzorci koje ometaju obližnji metal ili magneti automatski se odbacuju.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Vrati na zadano (isključeno)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulacija propinjanja i valjanja</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Propinjanje i valjanje izvedeni iz akcelerometra</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Žiroskop ovog kontrolera osjeća samo okretanje ulijevo i udesno. Uz uključenu simulaciju PadForge izvodi propinjanje i valjanje iz akcelerometra i šalje ih zajedno sa skretanjem žiroskopa u retke mapiranja i pokret virtualnog kontrolera. Akcelerometar ne može razlikovati guranje od naginjanja pa se pomicanje kontrolera u stranu ili naprijed bez okretanja očitava kao kratka rotacija.</value></data>
@@ -2810,7 +2818,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Prijeđite palicom po rubu da biste zabilježili dosežnu granicu, a zatim je preoblikujte u puni krug.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Vrati kalibraciju granice na zadano</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Vrati pomak središta Y na zadano</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Vrati na skaliranu radijalnu</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Vrati mrtvu zonu X na zadano</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Vrati mrtvu zonu Y na zadano</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Vrati anti-mrtvu zonu X na zadano</value></data>
@@ -3261,13 +3268,10 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Vrati flick stick na zadano</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Točke po 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Broj pomaka miša za jedan puni okret kamere od 360°. Ovisi o osjetljivosti miša u igri: povećajte ako flick okrene premalo, smanjite ako okrene previše.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Vrati na 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Trajanje flicka</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Koliko traje puni flick od 180°, s usporavanjem na kraju. Kraći okreti završavaju u istom vremenu.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Vrati na 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Prag flicka</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Otklon palice koji pokreće flick, kao udio punog otklona. Tijekom flicka točka otpuštanja spušta se na 90% te vrijednosti.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Vrati na 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Kut privlačenja</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Privlači flick na fiksne kutove za ujednačenije okrete. Samo naprijed privlači svaki flick ravno naprijed.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Bez privlačenja</value></data>
@@ -3276,22 +3280,16 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 stupnjeva</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 stupnjeva</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 stupnjeva</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Vrati na Bez privlačenja</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Jačina privlačenja</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Koliko snažno flick vuče prema privučenom kutu. 1 potpuno privlači, 0 isključuje privlačenje, vrijednosti između miješaju.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Vrati na 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Mrtva zona prednjeg kuta</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Flick unutar ovog kuta od smjera ravno naprijed ne okreće ništa. Omogućuje početak prelaska po rubu bez okreta flickom.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Vrati na 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Izglađivanje prelaska</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Izglađuje šum prelaska po rubu. -1 koristi automatski stupnjevani prozor, 0 isključuje izglađivanje, veće vrijednosti izglađuju veće rotacije po ciklusu.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Vrati na automatsko (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Dopusti flick pri uključivanju</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Pomak rotacije</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Zakreće cijelu kartu flicka za ovoliko stupnjeva. Pozitivno je u smjeru kazaljke na satu. Privlačenje se primjenjuje nakon pomaka.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Vrati pomak rotacije na zadano</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kada se sloj s flick stickom uključi dok je palica već otklonjena, odmah izvodi flick. Isključeno drži kameru mirnom i prati rotaciju od trenutačnog kuta palice.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Vrati na zadano: Dopusti flick pri uključivanju</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Povratna reakcija na kraju zakreta</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Znak na kraju zakreta za palicu u načinu upravljanja</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kada se palica postavljena na način upravljanja zakrene do kraja, reproducira se znak (vibracija, okidač ili svjetlosna traka) kako biste osjetili granicu. Sve je zadano isključeno.</value></data>
@@ -3481,11 +3479,8 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduciraj DualSense haptiku na ovom kontroleru</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kada igra upravlja ovim utorom kao virtualnim kontrolerom DualSense s izrađenim haptičkim zvukom, taj se zapis reproducira na aktuatorima ovog kontrolera. Steam Controller 2026 putem USB-a ili svog prijamnika i Flydigi Apex 6 Pro reproduciraju sam zapis. Svaki drugi kontroler, kao i taj Steam Controller putem Bluetootha, dobiva tonove izvedene iz zvuka, koji približno dočaravaju osjećaj koji je dizajner zamislio, ali ga ne reproduciraju.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Pojačanje haptike</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Vrati na zadano (isključeno)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Vrati na zadano (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Granica niskopropusnog filtra aktuatora</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Drži haptički prijenos kontrolera Steam Controller ispod ove frekvencije kako bi pločice vibrirale umjesto da čujno reproduciraju zvuk. Oko 250 Hz aktuatori postaju čujni. Povećajte za oštrije pojedinosti, smanjite za tiše igranje.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Vrati na 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonovi iznad ove frekvencije odrežu se ili spuštaju. Zadanih 800 Hz zadržava vibraciju motora i udaraca, a hvata visoke zvučne signale.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Vrati visoke tonove na zadano</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Vrati granicu tona na zadano</value></data>
@@ -4054,8 +4049,59 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Područje kursora</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Pomak {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Popis kotačića ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Područje kursora ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Drži tipku miša {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klik tipkom miša {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Preklopi tipku miša {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptički impuls ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (nastavak nakon otpuštanja)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Tapni {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Autofire {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Drži {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Preklopi {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Dvostruki pritisak {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Dugi pritisak {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Korak kotačića ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Preklopi kotačić ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo kotačić ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Skok kursora ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Postavi LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Ponovno centriraj žiroskop ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Pomakni kursor ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Tipka za snimku zaslona ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Zaslonska tipkovnica ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Postavi boju svjetla</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Ponovno centriraj kameru</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Skok kursora</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Pomakni kursor</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Snimka zaslona</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Zaslonska tipkovnica</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Promijeni sloj pomaka</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Uključi sloj pomaka</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Isključi sloj pomaka</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Drži sloj pomaka</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Promijeni broj igrača</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Nedodijeljeno</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Uključi ili isključi način rada za radnu površinu</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steamova sistemska tipka</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Uključi ili isključi povećalo</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Povećaj svjetlinu</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Smanji svjetlinu</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Isključi kontroler</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Otvori Steamov konfigurator</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Otvori Steamov brzi izbornik</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Izađi iz igre</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Uključi ili isključi haptiku</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Uključi ili isključi Steam HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Uključi ili isključi vibraciju</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Prisilna tipka Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Kalibracija žiroskopa okretanjem</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Okreni se prema smjeru</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (držanje)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (otpuštanje)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (otpuštanje)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (uključivanje)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Odaberite konfiguraciju da biste vidjeli što se prenosi.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Što se prenosi</value></data>
@@ -4661,11 +4707,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Sloj</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Odaberite sloj koji dopušta ovaj izbornik. Bilo koji sloj i Osnovni dopuštaju ga i uz druge aktivne slojeve. Imenovani sloj mora odgovarati trenutačno aktivnom sloju.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Vrati na Bilo koji sloj i isključi otvaranje držanjem sloja.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (nije na popisu ovog utora)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Sloj drži izbornik otvorenim</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Ovaj izbornik ostaje otvoren dok je njegov imenovani sloj aktivan. Odabrani fizički ulaz upravlja isticanjem. Bilo koji sloj i Osnovni koriste uobičajeno otvaranje površinom.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Vrati na otvaranje dodirom ili otklonom.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Upravljaj pomoću</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Fizički ulaz koji upravlja istaknutom ćelijom dok sloj drži ovaj izbornik otvorenim.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Čita se s fizičkih kontrolera dodijeljenih ovom utoru. Sloj otvara izbornik, a ovaj ulaz njime upravlja. Ćelije izbornika određuju njegov izlaz.</value></data>
@@ -4745,7 +4789,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Podijeljeno po smjeru</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Središnja mrtva zona</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Vrati na Lijeva palica X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Vrati jačinu na zadano (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Vrati središnju mrtvu zonu na zadano (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Vrati na zadano: Omogući vibraciju prema kutu upravljanja</value></data>
@@ -5262,6 +5305,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Reference za klingonski i sindarinski</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Riječi klingonskog i sindarinskog prijevoda provjerene su prema projektu klingon-assistant-data (Apache-2.0), rječniku iza aplikacije boQwI', te projektu Eldamo (CC BY 4.0), elfskom leksikonu autora Paul Strack. Samo rječnički podaci, ništa se od njih ne isporučuje.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ta datoteka nije tema za PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ne može pročitati tu datoteku.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ne može pronaći tu datoteku.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Nije tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema nije spremljena. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nova tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge prikazuje temu dok je izrađujete.</value></data>
@@ -5276,6 +5322,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Dohvaćanje slike sa Steama…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nema široku sliku za ovu igru.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nije moguće pristupiti Steamu. Provjerite vezu.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ne može pročitati Steamovu sliku za ovu igru.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Položaj</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Pomiče sliku gore ili dolje u njezinu okviru.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Prikaži logotip igre</value></data>
@@ -5316,4 +5363,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Model snimljen za originalnu seriju Zvjezdane staze, koji je fotografirao Smithsonian National Air and Space Museum, gdje se i čuva: slika teme LCARS iz Zvjezdanih staza.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Slika teme: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kadar iz serije Zvjezdane staze: Sljedeća generacija: slika teme Starfleet iz Zvjezdanih staza. Pronađeno na Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Svjetlosna traka</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Svjetlosna traka ({0})</value></data>
 </root>

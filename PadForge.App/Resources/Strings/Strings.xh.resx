@@ -139,7 +139,7 @@
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ii-mod zemidlalo</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Yamkela ii-mod zemidlalo ze-DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Izibuko le-mod yomdlalo</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Imamele kwizibuko :{0}. {1} ithumela kwisilawuli esinenombolo {2}, kwaye akukho silawuli sibonakalayo esinesilawuli se-PlayStation esinaloo nombolo.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Imamele kwizibuko :{0}. {1} ithumela kwisilawuli esinenombolo {2}, kwaye akukho silawuli sibonakalayo esine-DualSense okanye i-DualShock 4 esinaloo nombolo.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Izibuko {0} lisetyenziswa yenye inkqubo, njenge-DSX. Yivale okanye ukhethe elinye izibuko.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>I-mod yomdlalo</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Qhagamshela</value></data>
@@ -376,6 +376,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Yongeza umbala</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>I-preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Eyakho</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Wenziwe ngumsebenzisi)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Iintonga</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ii-trigger</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Amaqhosha</value></data>
@@ -1082,17 +1083,12 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>I-flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ulungiso lwezinto zokufaka ze-flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Seta kwakhona i-flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Seta kwakhona ku-14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Seta kwakhona ku-0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Umda we-flick</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Seta kwakhona ku-0.9</value></data>
   <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Phambili kuphela</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>Iidigri ezili-180</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>Iidigri ezingama-90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>Iidigri ezingama-60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>Iidigri ezingama-45</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Seta kwakhona ku-1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Seta kwakhona ku-0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Umbala we-lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Ivili</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Seta kwakhona ivili</value></data>
@@ -1120,8 +1116,6 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Mamela kuqala</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Ivolyum</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Ngalo lonke ixesha</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Seta kwakhona kokungagqibekanga (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Seta kwakhona ku-250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Thumela ngaphandle…</value></data>
@@ -1934,6 +1928,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Hlela umxholo</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Susa kuluhlu. Ifayile ihlala apho ikhoyo.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ifayile yomxholo “{0}” ayikho okanye ayinakufundwa. I-PadForge ibonisa “Emnyama” de ifayile ibuye.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Ifayile yomxholo “{0}” ayinamxholo we-PadForge. I-PadForge ibonisa “Emnyama” de ifayile ibe nawo.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Igama</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Umxholo wam</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Isiseko</value></data>
@@ -1944,10 +1939,12 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kufunyanwa umfanekiso kwi-Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>I-Steam ayinawo umfanekiso obanzi walo mdlalo.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ayikwazanga ukufikelela kwi-Steam. Jonga uqhagamshelo lwakho.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda umfanekiso we-Steam walo mdlalo.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Indawo</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ihambisa umfanekiso phezulu okanye ezantsi kwifestile yawo.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Bonisa ilogo yomdlalo</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ngqamanisa nomfanekiso</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ithatha imibala emine kumfanekiso.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imifanekiso (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Zonke iifayile (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Qhubeka uthumela</value></data>
 </root>

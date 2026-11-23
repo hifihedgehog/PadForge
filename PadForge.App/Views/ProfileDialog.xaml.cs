@@ -327,7 +327,7 @@ namespace PadForge.Views
                     return;
                 }
                 if (_look == null) SetLookSwitch(false);
-                ShowLookState(made.Fault == GameLookFault.LookupOff ? s.Profile_GameLook_LookupOff : s.ThemeBuilder_NoArt);
+                ShowLookState(GameLooks.FaultText(made.Fault));
             }
             catch (OperationCanceledException)
             {

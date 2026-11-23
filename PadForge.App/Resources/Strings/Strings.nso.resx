@@ -75,7 +75,6 @@
   <data name="Common_Stopped" xml:space="preserve"><value>E emišitšwe</value></data>
   <data name="Common_Running" xml:space="preserve"><value>E a šoma</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ga e tsebje</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Tlwaelo</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Phuruphutša…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tšwela pele</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Emiša</value></data>
@@ -765,11 +764,6 @@
   <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Lanngele</value></data>
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Lagoja</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Morago</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Bušetša go 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Bušetša go 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Bušetša go 0.9</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Bušetša go 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Bušetša go 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Mmala wa lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Wheel</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Bušetša wheel</value></data>
@@ -792,8 +786,6 @@
   <data name="Macro_Sound_Browse" xml:space="preserve"><value>Fetleka…</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Bogolo bja modumo</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Ka mehla</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Bušetša go tlwaelo (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Bušetša go 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faele ye ga se profaele ya PadForge ye e balegago.</value></data>
@@ -1351,6 +1343,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Khontroulara ga se ya amogela taelo ye e e lokišetšago, ka gona ga go selo se se romilwego. Lekola gore e kgokagantšwe gomme o romele gape.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Go romela go emišitšwe ke phošo ka gare ga PadForge. Faele ya log e na le dintlha.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Seswantšho se sa ntše se ya khontroulareng. Emiša go romela?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tšwela pele go romela</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -1378,4 +1371,7 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Swantšhanya le seswantšho</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E tšea mebala ye mene go tšwa seswantšhong.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Diswantšho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele ka moka (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala faele yeo.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ga e kgone go hwetša faele yeo.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala seswantšho sa Steam sa papadi ye.</value></data>
 </root>

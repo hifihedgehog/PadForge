@@ -730,10 +730,7 @@ namespace PadForge.Common.Input
                     LoopbackLagFrames = -1;
                     for (int i = 0; i < count; i++)
                         if (buffer[offset + i] > 1e-4f || buffer[offset + i] < -1e-4f)
-                        { _sink.LastAudibleTicks = Environment.TickCount64;
-                          // count is interleaved-stereo element count (frames*2);
-                          // the counter is documented as frames, so halve it.
-                          System.Threading.Interlocked.Add(ref _remoteAudioRenderedFrames, count / 2); break; }
+                        { _sink.LastAudibleTicks = Environment.TickCount64; break; }
                     return count;
                 }
 
@@ -1516,14 +1513,6 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        // Owner-side diagnostics (#138 audio): blocks the ring received vs. audible
-        // frames the device transport actually pulled. Surfaced in the SNAP line so an
-        // owner log alone shows whether received audio is reaching the pad speaker.
-        private static long _remoteAudioRxBlocks;
-        private static long _remoteAudioRenderedFrames;
-        public static long RemoteAudioRxBlocks => System.Threading.Interlocked.Read(ref _remoteAudioRxBlocks);
-        public static long RemoteAudioRenderedFrames => System.Threading.Interlocked.Read(ref _remoteAudioRenderedFrames);
-
         /// <summary>Owner-side: a paired peer sent a speaker PCM block (s16 48 kHz
         /// stereo, interleaved LE) for a shared pad. Feed it into the device's render
         /// ring and mark demand so the worker builds the real BT/USB transport and the
@@ -1531,7 +1520,6 @@ namespace PadForge.Common.Input
         public static void FeedRemoteAudio(Guid physicalDeviceGuid, byte[] s16StereoPcm)
         {
             if (s16StereoPcm == null || s16StereoPcm.Length < 4) return;
-            System.Threading.Interlocked.Increment(ref _remoteAudioRxBlocks);
             bool isNew;
             lock (_remoteAudioGate)
             {
@@ -2918,7 +2906,7 @@ namespace PadForge.Common.Input
         /// interleave 0x31 reports whose payload is a 71-byte Opus packet
         /// in place of controller state (header bit0 = HasHID, bit1 =
         /// HasMic). The SDL fork skips HasMic reports in state parsing
-        /// (hifihedgehog/SDL#20, fork cec3689a12), so the mic session does
+        /// (hifihedgehog/SDL#20, fork f3cec1a454), so the mic session does
         /// not corrupt input. The full-scale noise seen on 2026-07-31 came
         /// from decoding the stream as stereo, not from HIDMaestro's ISO IN
         /// reply: 0f01755f went back to the mono decode (see BtMicChannels)
@@ -4068,7 +4056,6 @@ namespace PadForge.Common.Input
         // DS4AudioStreamer's 0xA2 stops a genuine CUH-ZCT2's input.
         private const int Ds4BtReportSize = 462;       // report 0x17, 4 SBC frames
         private const int Ds4SmallReportSize = 270;    // report 0x14, 2 SBC frames
-        private const int Ds4ControlReportSize = 78;   // report 0x11
         private const int Ds4FramesPerReport = 4;
         private const int Ds4MinBufferedFrames = 4;    // wake threshold (ds4mac §12.6)
         private const int Ds4FrameQueueCap = 12;       // 48 ms of audio
@@ -4405,26 +4392,24 @@ namespace PadForge.Common.Input
         /// 0x13 Headset: 0x16"; that reference sends no path register at
         /// all, so the pid alone routes). PadForge hardcoded 0x13, which is
         /// why every headphone path was speaker-only over BT.
-        /// Owner-reported 2026-08-01.</summary>
+        /// Owner-reported 2026-08-01.
+        ///
+        /// <para>Headset + Speaker rides the headset lane alone, plus the
+        /// OutputPathSelect register (path 2, L_L_R) the dispatcher writes.
+        /// One report id carries one stream. The first cut sent the same
+        /// frame on both lanes, two 0x35 reports per tick sharing one seq
+        /// counter, so each lane's stream saw +2 sequence jumps every tick.
+        /// That is the warble signature of the 2026-07-31 bring-up ("the
+        /// firmware drops/garbles on seq jumps, and a discontinuous Opus
+        /// stream decodes as WARBLE"), and the owner heard it as "garbled
+        /// with headphone+speaker".</para></summary>
         internal static byte Ds5BtAudioLanePid(int outputPath) => outputPath switch
         {
             1 => 0x16,   // StereoHeadset
             2 => 0x16,   // MonoHeadset
-            3 => 0x16,   // HeadsetAndSpeaker: headset lane, speaker lane added below
+            3 => 0x16,   // HeadsetAndSpeaker: the headset lane alone
             _ => 0x13,   // Default / SpeakerOnly
         };
-
-        /// <summary>Headset + Speaker over BT rides the HEADSET lane only,
-        /// plus the OutputPathSelect register (path 2, L_L_R) the dispatcher
-        /// already writes. The first cut sent the same frame on BOTH lanes,
-        /// two 0x35 reports per tick sharing one seq counter, so each
-        /// lane's stream saw +2 sequence jumps every tick. That is the
-        /// documented warble signature from the 2026-07-31 bring-up ("the
-        /// firmware drops/garbles on seq jumps, and a discontinuous Opus
-        /// stream decodes as WARBLE"), and the owner heard exactly that:
-        /// "garbled with headphone+speaker". Same mistake, one level down.
-        /// One report id gets ONE stream, full stop.</summary>
-        internal static bool Ds5BtWantsBothLanes(int outputPath) => false;
 
         /// <summary>Whether the BT frame must be folded to mono before
         /// encoding. Every path except Headphones (Stereo) ends at a mono
@@ -4452,7 +4437,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Encode one 10 ms frame from <paramref name="pull"/> and
         /// send it as a 0x35 report on the lane the device's output path
-        /// selects (speaker, headset, or both).</summary>
+        /// selects (speaker or headset).</summary>
         /// <param name="hapticPcm">This tick's actuator block when the game is
         /// driving the speaker AND the haptics together, else null. Non-null
         /// makes this one combined report instead of two (#300).</param>
@@ -4670,16 +4655,6 @@ namespace PadForge.Common.Input
             report[Ds5BtReportSize - 1] = (byte)(c >> 24);
             return signal;
         }
-
-        /// <summary>Classifies a consumer-side capture measurement. Full
-        /// scale noise shows a HIGH rms with a LOW crest factor, because
-        /// randomized samples fill the range uniformly, whereas real
-        /// capture stays peaky even when quiet. Shared shape with
-        /// tools/PersonaVerify.</summary>
-        internal static string ClassifyCapture(double rms, double crest)
-            => rms < 0.0005 ? "silence"
-             : (rms > 0.25 && crest < 6.0) ? "noise"
-             : "audio";
 
         /// <summary>Pulls this tick's actuator block, if there is a whole one,
         /// and reports whether it should go on the wire. Split out of the send
@@ -4976,9 +4951,6 @@ namespace PadForge.Common.Input
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, VoiceMicLane>
             _voiceMicLanes = new();
-
-        internal static bool IsVoiceBtMicActive(Guid padGuid)
-            => _voiceMicLanes.ContainsKey(padGuid);
 
         /// <summary>True when the voice lane wants this pad's mic session
         /// open RIGHT NOW (lane registered and the listen gate open). The

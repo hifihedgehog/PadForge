@@ -381,8 +381,8 @@ def emit(rows, commit):
             parts.append("Lights = new[] { %s }" % ", ".join(calls))
         if r.get("same_key_cells"):
             parts.append("SameKeyCells = new[] { %s }" % ", ".join("(%d, %d, %d, %d)" % c for c in r["same_key_cells"]))
-        parts.append('Source = "%s"' % r["source"])
-        add("            new() { %s },%s" % (", ".join(parts), " // " + r["note"] if r["note"] else ""))
+        comment = r["source"] + ("; " + r["note"] if r["note"] else "")
+        add("            new() { %s }, // %s" % (", ".join(parts), comment))
     add("        };")
     add("    }")
     add("}")

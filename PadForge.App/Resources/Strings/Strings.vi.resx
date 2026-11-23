@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Trực tuyến</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Ngoại tuyến</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Không xác định</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Mặc định</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Duyệt…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tiếp tục</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Dừng</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Bộ máy đã dừng.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Lỗi: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Không tạo được {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Không thể mở, đọc hoặc ánh xạ một thiết bị. Nhật ký chẩn đoán có tên thiết bị đó.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} gặp lỗi. Nhật ký chẩn đoán có nguyên nhân.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Bộ máy đầu vào gặp lỗi. Nhật ký chẩn đoán có nguyên nhân.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL không thể khởi động. Nhật ký chẩn đoán có nguyên nhân.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Không thể thiết lập HIDMaestro. Nhật ký chẩn đoán có nguyên nhân.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Một tay cầm ảo bị thiếu hồ sơ HIDMaestro. Nhật ký chẩn đoán có tên tay cầm đó.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} không thể dùng danh tính và bố cục đã tùy chỉnh nên dùng của hồ sơ gốc.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Đã chuyển hồ sơ: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Đã chuyển hồ sơ: Mặc định</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Mặc định</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Cổng máy chủ chuyển động</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cung cấp dữ liệu con quay hồi chuyển và gia tốc kế cho Cemu, Dolphin, Yuzu, v.v.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod trò chơi</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Cho phép các mod trò chơi dành cho DSX đặt cò thích ứng, thanh đèn, đèn người chơi và đèn tắt tiếng trên tay cầm PlayStation của bạn.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Cho phép các mod trò chơi dành cho DSX đặt cò thích ứng, thanh đèn, đèn người chơi và đèn tắt tiếng trên DualSense hoặc DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Chấp nhận mod trò chơi DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Cổng mod trò chơi</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Chạy DSX.exe thay thế</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Một số mod, như DualSense4GTAV, tự tắt nếu không có chương trình tên DSX đang chạy. Tùy chọn này chạy một chương trình thay thế nhỏ mang tên đó khi máy chủ đang lắng nghe.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Hoạt động với các mod làm cho DSX, như mod cho GTA V, Red Dead Redemption 2, Skyrim và Forza. Khi máy chủ đang lắng nghe, PadForge ghi cổng của nó vào nơi các mod tìm.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}. {1} đang gửi tới tay cầm ảo {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}. {1} đang gửi, nhưng không có tay cầm ảo nào có tay cầm PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}. {1} đang gửi tới chỉ số tay cầm {2}, và không có tay cầm ảo nào có tay cầm PlayStation mang chỉ số đó.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}. {1} đang gửi, nhưng không có tay cầm ảo nào có DualSense hoặc DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}. {1} đang gửi tới chỉ số tay cầm {2}, và không có tay cầm ảo nào có DualSense hoặc DualShock 4 mang chỉ số đó.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Cổng {0} đang được một chương trình khác sử dụng, chẳng hạn DSX. Hãy đóng nó hoặc chọn cổng khác.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Một mod trò chơi</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Hoạt động với OpenTrack và mọi bộ theo dõi gửi đầu ra UDP hoặc ghi vào bộ nhớ dùng chung FreeTrack 2.0, cũng như với một runtime OpenXR trên máy này có thể chạy phiên ở chế độ nền.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Không tìm thấy tệp</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Không đọc được</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Tệp của chủ đề “{0}” bị thiếu hoặc không đọc được. PadForge hiển thị Tối cho đến khi tệp trở lại.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Tệp của chủ đề “{0}” không chứa chủ đề PadForge nào. PadForge hiển thị Tối cho đến khi có.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Hồ sơ “{0}” đang dùng diện mạo của trò chơi. Chủ đề của bạn sẽ trở lại khi một hồ sơ khác được kích hoạt.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Chủ đề PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Tệp đó không phải là chủ đề PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge không đọc được tệp đó.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge không tìm thấy tệp đó.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Không phải chủ đề</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Không thể lưu chủ đề. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Chủ đề mới</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge hiển thị chủ đề ngay khi bạn tạo.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Đang lấy hình từ Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam không có hình rộng cho trò chơi này.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Không kết nối được đến Steam. Hãy kiểm tra kết nối của bạn.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge không đọc được hình của Steam cho trò chơi này.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Vị trí</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Di chuyển hình lên hoặc xuống trong khung của nó.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Hiện logo của trò chơi</value></data>
@@ -1094,6 +1105,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Tay cầm không nhận lệnh chuẩn bị, nên chưa có gì được gửi. Hãy kiểm tra tay cầm đã được kết nối chưa và gửi lại.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Việc gửi đã dừng vì một lỗi trong PadForge. Tệp nhật ký có chi tiết.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Một hình vẫn đang được gửi đến tay cầm. Dừng việc gửi?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tiếp tục gửi</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Tệp Controller Pak (*.mpk)|*.mpk|Tất cả tệp (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak cổng {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Khôi phục Controller Pak</value></data>
@@ -1657,6 +1669,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Thời gian tắt dần xung</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Thiết lập sẵn</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Tùy chỉnh</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Người dùng tạo)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Cần analog</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Cò</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2638,7 +2651,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Tay cầm này có từ kế. Neo yaw theo hướng bắc từ sẽ loại bỏ độ trôi ngang chậm khi ngắm bằng con quay hồi chuyển. Hãy hiệu chỉnh trước: nhấn Hiệu chỉnh, xoay tay cầm qua mọi hướng theo hình số 8 trong vài giây, rồi nhấn lần nữa.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Neo yaw theo la bàn</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Thêm một tốc độ hiệu chỉnh nhỏ kéo hướng ngắm ngang về phía hướng từ, nên độ trôi không thể tích tụ. Cần có dữ liệu hiệu chỉnh từ kế đã lưu. Các mẫu bị nhiễu bởi kim loại hoặc nam châm ở gần sẽ tự động bị loại.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Đặt lại về mặc định (tắt)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Mô phỏng pitch và roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch và roll tính từ gia tốc kế</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Con quay hồi chuyển của tay cầm này chỉ cảm nhận được chuyển động xoay trái và phải. Khi bật mô phỏng, PadForge suy ra pitch và roll từ gia tốc kế rồi gửi chúng cùng yaw của con quay hồi chuyển đến các hàng ánh xạ và chuyển động của tay cầm ảo. Gia tốc kế không phân biệt được một cú đẩy với một lần nghiêng, nên di chuyển tay cầm sang ngang hoặc về phía trước mà không xoay nó sẽ được đọc như một lần xoay ngắn.</value></data>
@@ -3035,7 +3047,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Quét cần analog quanh vành của nó để lập bản đồ đường biên chạm tới được, rồi định hình lại thành một đường tròn đầy đủ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Đặt lại hiệu chỉnh biên</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Đặt lại bù lệch tâm Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Đặt lại về Hướng tâm có tỷ lệ</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Đặt lại vùng chết X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Đặt lại vùng chết Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Đặt lại chống vùng chết X</value></data>
@@ -3487,13 +3498,10 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Đặt lại flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Số điểm mỗi 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Số điểm chuột cho một vòng xoay camera 360° đầy đủ. Tùy thuộc vào độ nhạy chuột của trò chơi: hãy tăng nếu một cú gạt xoay chưa đủ, giảm nếu xoay quá.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Đặt lại về 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Thời gian gạt</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Một cú gạt 180° đầy đủ mất bao lâu để hoàn tất, có giảm tốc ở cuối. Các lần xoay ngắn hơn cũng kết thúc trong cùng thời gian.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Đặt lại về 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Ngưỡng gạt</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Độ lệch của cần analog để bắt đầu một cú gạt, tính theo tỷ lệ của độ lệch tối đa. Trong lúc gạt, điểm nhả giảm xuống 90% giá trị này.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Đặt lại về 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Góc bắt dính</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Bắt dính cú gạt vào các góc cố định để xoay đều hơn. Chỉ phía trước bắt dính mọi cú gạt về thẳng phía trước.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Không bắt dính</value></data>
@@ -3502,22 +3510,16 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 độ</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 độ</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 độ</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Đặt lại về Không bắt dính</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Độ mạnh bắt dính</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Cú gạt bị kéo về góc bắt dính mạnh đến đâu. 1 bắt dính hoàn toàn, 0 tắt bắt dính, các giá trị ở giữa thì pha trộn.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Đặt lại về 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Vùng chết góc phía trước</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Cú gạt nằm trong góc này tính từ thẳng phía trước sẽ không xoay gì. Cho phép bạn bắt đầu quét mà không bị xoay do gạt.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Đặt lại về 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Làm mượt khi quét</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Làm mượt nhiễu khi quét quanh vành. -1 dùng cửa sổ phân bậc tự động, 0 tắt làm mượt, giá trị lớn hơn làm mượt các lần xoay lớn hơn trong mỗi nhịp.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Đặt lại về Tự động (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Cho phép gạt khi kích hoạt</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Độ lệch xoay</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Xoay toàn bộ bản đồ gạt đi số độ này. Dương là theo chiều kim đồng hồ. Bắt dính được áp dụng sau độ lệch.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Đặt lại độ lệch xoay</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Khi lớp chứa Flick stick được kích hoạt trong lúc cần analog đã lệch sẵn, thực hiện cú gạt ngay lập tức. Tắt sẽ giữ camera đứng yên và theo dõi độ xoay từ góc cần hiện tại.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Đặt lại Cho phép gạt khi kích hoạt</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Phản hồi khi hết lái</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tín hiệu khi cần analog ở chế độ đánh lái hết lái</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Khi một cần analog đặt ở chế độ đánh lái được xoay đến hết lái, phát một tín hiệu (rung, cò hoặc thanh đèn) để bạn cảm nhận được giới hạn. Mặc định tắt hết.</value></data>
@@ -3707,11 +3709,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Phát phản hồi xúc giác DualSense trên tay cầm này</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Khi trò chơi điều khiển khe này như một DualSense ảo có âm thanh xúc giác được biên soạn sẵn, hãy phát bản đó trên các bộ truyền động của tay cầm này. Steam Controller 2026 qua USB hoặc dongle của nó, và Flydigi Apex 6 Pro, sẽ phát chính bản đó. Mọi tay cầm khác, và cả Steam Controller đó khi dùng Bluetooth, nhận các âm được suy ra từ âm thanh, chỉ xấp xỉ cảm giác của nhà thiết kế chứ không tái tạo nó.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Độ lợi xúc giác</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Đặt lại về mặc định (tắt)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Đặt lại về mặc định (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Tần số cắt thông thấp của bộ truyền động</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Giữ luồng xúc giác của Steam Controller dưới tần số này để các bàn cảm ứng rung thay vì phát ra âm thanh nghe được. Ở khoảng 250 Hz, các bộ truyền động bắt đầu nghe được. Hãy tăng để chi tiết sắc nét hơn, giảm để chơi êm hơn.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Đặt lại về 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Các âm trên tần số này sẽ bị cắt hoặc hạ quãng tám. Mặc định 800 Hz giữ được rung của động cơ và va chạm trong khi vẫn bắt được các tiếng bíp cao.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Đặt lại âm cao</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Đặt lại giới hạn âm</value></data>
@@ -4312,8 +4311,59 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Hồ sơ Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Vùng con trỏ</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Danh sách con lăn ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Vùng con trỏ ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Giữ chuột {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Nhấp chuột {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Bật tắt chuột {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Xung rung ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (đoạn nhả)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Chạm {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Bắn tự động {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Giữ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Bật tắt {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Nhấn đúp {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Nhấn giữ lâu {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Một nấc con lăn ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Bật tắt con lăn ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Con lăn turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Nhảy con trỏ ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Đặt đèn LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Đặt lại tâm con quay ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Đẩy nhẹ con trỏ ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Phím chụp màn hình ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Bàn phím ảo ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Đặt màu đèn</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Đặt lại tâm camera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Nhảy con trỏ</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Đẩy nhẹ con trỏ</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Chụp màn hình</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Bàn phím ảo</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Chuyển lớp shift</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Bật một lớp shift</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Tắt một lớp shift</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Giữ một lớp shift</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Đổi số người chơi</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Chưa gán</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Bật tắt chế độ máy tính</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Phím hệ thống Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Bật tắt kính lúp</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Tăng độ sáng</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Giảm độ sáng</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Tắt tay cầm</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Mở trình cấu hình Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Mở menu nhanh Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Thoát trò chơi</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Bật tắt phản hồi rung</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Bật tắt HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Bật tắt rung</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Ép nút Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Xoay hiệu chỉnh con quay</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Quay theo hướng</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (giữ)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (nhả)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (nhả)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (kích hoạt)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chọn một cấu hình để xem những gì được chuyển sang.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Những gì được chuyển sang</value></data>
@@ -4928,11 +4978,9 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Lớp</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Chọn lớp cho phép menu này. Bất kỳ lớp nào và Cơ sở đều cho phép nó bên dưới các lớp đang hoạt động khác. Một lớp có tên phải khớp với lớp đang hoạt động hiện tại.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Đặt lại về Bất kỳ lớp nào và tắt việc mở do lớp giữ.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (không có trong danh sách của khe này)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Lớp giữ menu mở</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Giữ menu này mở khi lớp có tên của nó đang hoạt động. Đầu vào vật lý đã chọn điều hướng phần tô sáng. Bất kỳ lớp nào và Cơ sở dùng cách mở bằng bề mặt thông thường.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Đặt lại về mở khi chạm hoặc khi lệch.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Điều hướng bằng</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Đầu vào vật lý điều hướng ô được tô sáng trong khi lớp giữ menu này mở.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Được đọc từ các tay cầm vật lý đã gán cho khe này. Lớp mở menu, và đầu vào này điều hướng nó. Các ô của menu cho biết menu xuất ra gì.</value></data>
@@ -5014,7 +5062,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mô-tơ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Chia theo hướng</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Vùng chết ở tâm</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Đặt lại về Cần trái X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Đặt lại cường độ (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Đặt lại vùng chết ở tâm (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Đặt lại Bật rung theo góc lái</value></data>
@@ -5681,6 +5728,25 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Hồ sơ</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Lớp {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Cò: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Thanh đèn</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} bổ sung</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Thanh đèn {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Chạy chương trình</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Phạm vi {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Hồ sơ đã nhập</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Macro đã nhập</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Thiết lập sẵn {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Menu tròn {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Menu cảm ứng {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Vùng chuột</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>chạm</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>giữ</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>chạm đúp</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Hiệu ứng cò trái</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Hiệu ứng cò phải</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Ánh xạ nút {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Mục {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Tay cầm</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Giữ đầu ra riêng</value></data>
@@ -6012,7 +6078,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX không công bố thiết lập {0} của nó hoạt động ra sao, nên PadForge dùng cách riêng.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX không công bố các con số đầu vào của nó. Các hồ sơ DSX đã được công bố dùng 41 đến 44 cho D-pad, nên PadForge đọc chúng theo cách đó.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX không ghi một thiết lập gán nút như thế này, nên tệp đã bị chỉnh sửa bên ngoài DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX chuyển sang bộ cài đặt sẵn này bằng một phím tắt. Macro của nó nằm ở trang Macro, sẵn sàng để gán cho một nút.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX chuyển sang bộ cài đặt sẵn này bằng một phím tắt. Macro của nó nằm trong mục Macro và menu của tay cầm, sẵn sàng để gán cho một nút.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Không có hồ sơ DSX đã công bố nào dùng {0}, nên PadForge không biết nó làm gì.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX để trò chơi tự đặt mục này khi công tắc truyền thẳng của nó đang bật, nên PadForge cũng để mục này cho trò chơi.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Ở Native Mode khi Send Data to Device tắt, DSX không tự gửi gì đến tay cầm, nên PadForge cũng để mục này cho trò chơi.</value></data>

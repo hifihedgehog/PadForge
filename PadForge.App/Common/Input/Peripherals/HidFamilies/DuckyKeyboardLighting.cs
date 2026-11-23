@@ -83,7 +83,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(HyperXKeyboardLighting.Named(names), "OpenRGB RGBController_DuckyKeyboard.cpp")
+                Map = new LightMap(HyperXKeyboardLighting.Named(names))
                 {
                     Product = $"ducky:{VendorId:X4}:{productId:X4}",
                 },

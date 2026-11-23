@@ -609,11 +609,6 @@
   <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Aage</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Pichhe</value></data>
   <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Steering mode reset karo</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 pe reset karo</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s pe reset karo</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 pe reset karo</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 pe reset karo</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° pe reset karo</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Steering wheel</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Steering wheel reset karo</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Beech me</value></data>
@@ -630,9 +625,6 @@
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Hamesa</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Band</value></data>
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Kaat do</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Default (band) pe reset karo</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Default (100%) pe reset karo</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz pe reset karo</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Menu_Icon_None" xml:space="preserve"><value>Koi icon nahi</value></data>
@@ -1193,4 +1185,5 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Game ke logo dikhao</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Picture se milao</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Picture se chaar color leta hai.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Bhejte raho</value></data>
 </root>

@@ -170,7 +170,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "Skydimo Serial",
-                Map = new LightMap(ZoneLights(), "OpenRGB SkydimoSerialController, from the device") { Product = Product },
+                Map = new LightMap(ZoneLights()) { Product = Product },
                 Programs = new[] { VendorPrograms.Skydimo },
                 RepaintMs = RepaintMs,
                 KeepAliveMs = KeepAliveMs,
@@ -295,7 +295,7 @@ namespace PadForge.Common.Input.Peripherals
             if (entry == null || entry.Layout == Layout.None)
             {
                 int max = entry != null && entry.Max != 0 ? entry.Max : DefaultMaxLeds;
-                return (max, new LightMap(ZoneLights(), "OpenRGB SkydimoSerialController " + (model ?? "")) { Product = Product });
+                return (max, new LightMap(ZoneLights()) { Product = Product });
             }
             var cells = Matrix(entry, out int width);
             var lights = new LightInfo[entry.Total];
@@ -308,7 +308,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (led >= 0 && led < lights.Length)
                         lights[led] = lights[led] with { X = cell % width, Y = cell / width, Width = 1, Height = 1, HasPosition = true };
                 }
-            return (entry.Total, new LightMap(lights, "OpenRGB SkydimoSerialController " + model) { Product = Product });
+            return (entry.Total, new LightMap(lights) { Product = Product });
         }
 
         /// <summary>The one zone a strip of unknown length takes.</summary>

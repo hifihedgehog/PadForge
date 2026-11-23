@@ -104,7 +104,8 @@ namespace PadForge.Tests
             int reads = 0;
             rig.Log.FeatureAnswer = (_, _) => ++reads < 2 ? new byte[65] : Answer();
             var collection = Vendor(0x4003, 0);
-            using var backend = rig.Lit(Families, collection, 0xFF0000, holdMs: R.AkkoPreSetMs);
+            // The family keeps the keyboard's next transfer by the rig's clock.
+            using var backend = rig.Lit(new IHidLightingFamily[] { new R(rig.Tick) }, collection, 0xFF0000, holdMs: R.AkkoPreSetMs);
             var sent = rig.Log.Sent();
             Assert.Equal("00 87", Hex(sent[0].Report, 2));
             // The first read missed, the second answered, 80 ms after each ask.
@@ -140,21 +141,83 @@ namespace PadForge.Tests
             byte[] answer = new byte[65];
             answer[1] = 0x87;
             answer[2] = 0x05; answer[3] = 0x02; answer[4] = 0x03; answer[5] = 0x13;
-            var first = R.Instance.Match(Vendor(0x4003, 0));
+            long now = 0;
+            var family = new R(() => now);
+            var first = family.Match(Vendor(0x4003, 0));
             Assert.Equal("Akko 3068B Plus / PC75B Plus", first.Name);
             var io = new FakeReportChannel { Path = null, FeatureReportLength = 65, ProductString = product, Feature = _ => answer };
             Assert.Null(first.Begin(io, _ => { }));
             Assert.Empty(io.Calls);
-            var vendor = R.Instance.Match(Vendor(0x4003, 1, 0xFFFF));
+            var vendor = family.Match(Vendor(0x4003, 1, 0xFFFF));
             Assert.Equal("Akko 3068B Plus / Dukharo VN66 (Vendor)", vendor.Name);
             var lit = new FakeReportChannel { Path = null, FeatureReportLength = 65, ProductString = product, Feature = _ => answer };
             var session = vendor.Begin(lit, _ => { });
             Assert.NotNull(session);
+            // The first picture goes out 500 ms after the state's read.
+            now += R.AkkoPreSetMs;
             Assert.Equal(HidLightingPaint.Sent, session.Paint(lit, _ => { }, vendor.Map.Lights, new[] { 0x102030 }));
             Assert.Equal("00 07 01 04 04 07 10 20 30 88", Hex(lit.Calls.Last().Bytes, 10));
             // An Akko on interface 0 opens as before.
             var akko = new FakeReportChannel { Path = null, FeatureReportLength = 65, ProductString = "Akko 3068B Plus", Feature = _ => answer };
             Assert.NotNull(first.Begin(akko, _ => { }));
+        }
+
+        /// <summary>A plain Akko 3068B Plus is lit on interface 0 and on its vendor
+        /// collection, both of which OpenRGB registers (RoyuanKeyboardControllerDetect.cpp:125-126
+        /// at 6b681e3c), and every feature report of either reaches its one control endpoint.
+        /// The two collections of one Windows container keep one next transfer, set as
+        /// OpenRGB sets next_transfer: 500 ms after the state's read and 1.5 s after a SET
+        /// (RoyuanKeyboardController.cpp:19-24, 159 and 523). A picture asked for sooner on
+        /// the other collection goes out once that time comes. Two keyboards are paced
+        /// apart.</summary>
+        [Fact]
+        public void AnAkkosTwoCollections_KeepOneSpacing()
+        {
+            long now = 100_000;
+            var answer = Answer();
+            var keyboard = new Guid("0a0b0c0d-0000-0000-0000-000000000001");
+            var family = new R(() => now, path => path.Contains("#k1", StringComparison.Ordinal) ? keyboard : Guid.Empty);
+            var model0 = family.Match(Vendor(0x4003, 0));
+            var model1 = family.Match(Vendor(0x4003, 1, 0xFFFF));
+            FakeReportChannel Channel(string path) => new() { Path = path, FeatureReportLength = 65, Feature = _ => answer };
+            int Sets(FakeReportChannel io) => io.Calls.Count(c => c.Kind == "set" && c.Bytes[1] == R.SetLedParams);
+            var colors = new[] { 0x102030 };
+
+            var first = Channel(@"\\?\hid#vid_3151&pid_4003&mi_00#k1");
+            var second = Channel(@"\\?\hid#vid_3151&pid_4003&mi_01&col02#k1");
+            var waits = new List<int>();
+            var s0 = model0.Begin(first, waits.Add);
+            Assert.NotNull(s0);
+            // The second read waits out the 500 ms after the first.
+            var s1 = model1.Begin(second, waits.Add);
+            Assert.NotNull(s1);
+            Assert.Contains(R.AkkoPreSetMs, waits);
+            now += R.AkkoPreSetMs;
+            Assert.Equal(HidLightingPaint.Sent, s0.Paint(first, _ => { }, model0.Map.Lights, colors));
+            // The other collection's picture waits the 1.5 s after that SET.
+            Assert.Equal(HidLightingPaint.Later, s1.Paint(second, _ => { }, model1.Map.Lights, colors));
+            Assert.Equal(R.AkkoPostSetMs, s1.LaterMs);
+            now += R.AkkoPostSetMs - 1;
+            Assert.Equal(HidLightingPaint.Later, s1.Paint(second, _ => { }, model1.Map.Lights, colors));
+            Assert.Equal(1, s1.LaterMs);
+            Assert.Equal(0, Sets(second));
+            now += 1;
+            Assert.Equal(HidLightingPaint.Sent, s1.Paint(second, _ => { }, model1.Map.Lights, colors));
+            Assert.Equal(1, Sets(second));
+            // Its hand-back, right after, waits too.
+            waits.Clear();
+            Assert.True(s0.HandBack(first, waits.Add));
+            Assert.Equal(new[] { R.AkkoPostSetMs }, waits);
+
+            // Collections of two keyboards, which Windows names no container for, are paced apart.
+            var other = Channel(@"\\?\hid#vid_3151&pid_4003&mi_00#k2");
+            var s2 = model0.Begin(other, _ => { });
+            now += R.AkkoPreSetMs;
+            var third = Channel(@"\\?\hid#vid_3151&pid_4003&mi_01&col02#k3");
+            var s3 = model1.Begin(third, _ => { });
+            Assert.Equal(HidLightingPaint.Sent, s2.Paint(other, _ => { }, model0.Map.Lights, colors));
+            now += R.AkkoPreSetMs;
+            Assert.Equal(HidLightingPaint.Sent, s3.Paint(third, _ => { }, model1.Map.Lights, colors));
         }
 
         [Fact]

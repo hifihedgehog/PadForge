@@ -1660,7 +1660,7 @@ namespace PadForge.Common.ConfigImport
 
             _b.AddHoldPair(new ImportMacro
             {
-                Name = input.Label + " extras",
+                Name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ExtrasMacro_Format, input.Label),
                 // Extras run beside the control's mapping, so they do not count
                 // as the control's own binding on a layer.
                 Control = null,
@@ -1698,7 +1698,7 @@ namespace PadForge.Common.ConfigImport
 
             _b.AddMacro(new ImportMacro
             {
-                Name = input.Label + " lightbar",
+                Name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_LightbarMacro_Format, input.Label),
                 Control = null,
                 Layer = layer,
                 Inputs = new[] { input },
@@ -2174,7 +2174,7 @@ namespace PadForge.Common.ConfigImport
 
             _b.AddMacro(new ImportMacro
             {
-                Name = "Lightbar",
+                Name = Strings.Instance.Import_LightbarMacro,
                 Control = "lightbar",
                 RunsBesideLayers = true,
                 Mode = MacroTriggerMode.Always,
@@ -2229,7 +2229,7 @@ namespace PadForge.Common.ConfigImport
                 // and then waits for as long as a wait can last.
                 _b.AddMacro(new ImportMacro
                 {
-                    Name = "LaunchProgram",
+                    Name = Strings.Instance.Import_LaunchProgramMacro,
                     // Every layer, so a layer that stops inheriting takes no
                     // copy of it and the program starts once.
                     Layer = "",
@@ -2568,7 +2568,7 @@ namespace PadForge.Common.ConfigImport
                         });
                         _b.AddMacro(new ImportMacro
                         {
-                            Name = name + " (release)",
+                            Name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Common_ReleaseMacroName_Format, name),
                             Inputs = unload,
                             Mode = style == "Release" ? MacroTriggerMode.OnRelease : MacroTriggerMode.OnPress,
                             PadId = PadId,
@@ -2694,7 +2694,12 @@ namespace PadForge.Common.ConfigImport
                 if (actions.Count == 0) return;
                 _b.AddMacro(new ImportMacro
                 {
-                    Name = name + " (" + gesture + ")",
+                    Name = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_GestureMacro_Format, name, gesture switch
+                    {
+                        "hold" => Strings.Instance.Import_Gesture_Hold,
+                        "double tap" => Strings.Instance.Import_Gesture_DoubleTap,
+                        _ => Strings.Instance.Import_Gesture_Tap,
+                    }),
                     Inputs = new[] { input },
                     Mode = mode,
                     HoldMs = HoldMs,

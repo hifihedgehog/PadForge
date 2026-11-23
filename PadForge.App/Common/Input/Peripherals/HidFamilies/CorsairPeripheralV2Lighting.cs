@@ -20,22 +20,22 @@ namespace PadForge.Common.Input.Peripherals
     /// writes at its collection's own write length where that is longer
     /// than 65, as the plugin does (<see cref="Begin"/>).
     ///
-    /// <para>The open, as OpenRGB's controller makes it at b9d903b5
-    /// (CorsairPeripheralV2Controller.cpp:20-137). The device's product ID is
+    /// <para>The open, as OpenRGB's controller makes it at 6b681e3c
+    /// (CorsairPeripheralV2Controller.cpp:20-139). The device's product ID is
     /// the collection's. A receiver's is its own, so the device behind it is
     /// asked for its product ID, property 12, with write command 09, up to
     /// eight times 120 ms apart until it answers one (lines 38-47,
-    /// GetAddressRetry and GetAddress, lines 263-318). A device not in
+    /// GetAddressRetry and GetAddress, lines 265-320). A device not in
     /// OpenRGB's device list gets nothing more (lines 68-97). Then the
     /// device's lighting register and packet size (lines 103-104), and the
     /// lighting resource: a transaction is opened on resource 22, and one the
     /// device refuses is opened on resource 1 instead, then closed (lines
-    /// 114-136), except on the K100s, the K70 PRO MINI WIRELESS and the K65 Mini,
+    /// 114-138), except on the K100s, the K70 PRO MINI WIRELESS and the K65 Mini,
     /// which stay on 22. Then
     /// software render mode, 01 03 00 02, a read of the lighting register
     /// (CorsairPeripheralV2HardwareController.cpp:15-19,
     /// CorsairPeripheralV2SoftwareController.cpp:15-19), and the board
-    /// layout, property 41 (lines 258-261). Each write but the property reads is
+    /// layout, property 41 (lines 260-263). Each write but the property reads is
     /// followed by a read of the answer, up to 50 ms, except on the K57,
     /// which answers none (skip_reads, lines 49-53). The receiver's ask goes
     /// out before the packet size is known, at OpenRGB's default of 1025
@@ -61,8 +61,8 @@ namespace PadForge.Common.Input.Peripherals
     /// transaction on handle 1: the transaction opened, 06 01 with the length
     /// and the first packet size less 8 bytes, its answer read for up to 3 ms
     /// or a 2 ms wait, 07 01 reports of the packet size less 4 bytes each
-    /// followed by 2 ms, and the transaction closed (SetLEDs, lines 377-460).
-    /// The read of waiting input before it is commented out there (line 389).
+    /// followed by 2 ms, and the transaction closed (SetLEDs, lines 379-462).
+    /// The read of waiting input before it is commented out there (line 391).
     /// ckb-next writes lighting on handle 0 (BRAGI_LIGHTING_HANDLE,
     /// bragi_proto.h:70), and OpenRGB did until 4f2d8920, which took the
     /// K65 Mini's own controller's handle 1 for every device of its list. A
@@ -83,7 +83,7 @@ namespace PadForge.Common.Input.Peripherals
     /// controller's Direct path bears out. OpenRGB reverts the render mode with
     /// hardware render mode, 01 03 00 01, when it closes a device, because
     /// a K70 Core RGB stops sending its knob's input while left in software
-    /// mode (lines 139-152). That is the hand-back and the crash path. A
+    /// mode (lines 141-154). That is the hand-back and the crash path. A
     /// device falls back to its own lighting after a minute without a
     /// picture, so OpenRGB sends the last one again once 30 seconds have
     /// passed without one, looking every 12.5 seconds
@@ -137,17 +137,17 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte LightCtrl2 = 0x22;
 
         /// <summary>The 32-bit value OpenRGB's GetAddress returns for a
-        /// protocol error, -1 (CorsairPeripheralV2Controller.cpp:310-316).</summary>
+        /// protocol error, -1 (CorsairPeripheralV2Controller.cpp:312-318).</summary>
         internal const uint NoValue = uint.MaxValue;
 
         /// <summary>How many waiting input reports one picture reads away
         /// at most. OpenRGB reads until none comes in 3 ms
-        /// (ClearPacketBuffer, lines 360-375) and a read error never ends its
+        /// (ClearPacketBuffer, lines 362-377) and a read error never ends its
         /// loop, so the bound is PadForge's.</summary>
         internal const int MaxClearReads = 64;
 
         /// <summary>The receivers (CorsairPeripheralV2Controller.cpp:38-47,
-        /// CorsairPeripheralV2Devices.h:101, 110 and 112-114).</summary>
+        /// CorsairPeripheralV2Devices.h:103, 112 and 114-116).</summary>
         internal static bool IsReceiver(uint productId)
             => productId is 0x1BA6 or 0x1B66 or 0x1B65 or 0x1BDC or 0x2B00 or LaptopReceiver;
 
@@ -211,7 +211,7 @@ namespace PadForge.Common.Input.Peripherals
             // A receiver's device is known once a session asks it.
             var map = device != null
                 ? MapOf(device, KeyboardLayout.AnsiQwerty, out _)
-                : new LightMap(Array.Empty<LightInfo>(), "OpenRGB CorsairPeripheralV2Devices.cpp, device not asked yet") { Product = product };
+                : new LightMap(Array.Empty<LightInfo>()) { Product = product };
             return new HidLightingModel
             {
                 Family = this,
@@ -399,7 +399,10 @@ namespace PadForge.Common.Input.Peripherals
         /// edge lights of its row in the plugin's list, each at the plugin's LED, except one
         /// at a LED <paramref name="keys"/> holds, which stays OpenRGB's. The plugin's grid is
         /// 16 by 8 with the bars around the keys, so each bar moves by the distance between
-        /// the plugin's Esc and OpenRGB's.</summary>
+        /// the plugin's Esc and OpenRGB's. The plugin places two LEDs of the top bar, 63 and
+        /// 64, on one cell (ledPositions [9, 1] twice, Corsair_Bragi_Device.js at 9511979f,
+        /// "K70 Pro Mini"), so bars that share a cell split it along the row, in the plugin's
+        /// order, and each can be picked.</summary>
         internal static IEnumerable<LightInfo> PluginBars(CorsairV2Device device, IReadOnlyList<LightInfo> keys)
         {
             if (!TakesThePluginsBars(device.ProductId)) yield break;
@@ -413,11 +416,23 @@ namespace PadForge.Common.Input.Peripherals
                 dx = keys[keyEsc].X - plugin[pluginEsc].X;
                 dy = keys[keyEsc].Y - plugin[pluginEsc].Y;
             }
+            var bars = new List<LightInfo>();
             foreach (var light in plugin)
             {
                 if (light.Kind != LightKind.Edge || keys.Any(k => k.Address == light.Address)) continue;
-                yield return light.HasPosition ? light with { X = light.X + dx, Y = light.Y + dy } : light;
+                bars.Add(light.HasPosition ? light with { X = light.X + dx, Y = light.Y + dy } : light);
             }
+            foreach (var cell in bars.Where(b => b.HasPosition).GroupBy(b => (b.X, b.Y)).Where(g => g.Count() > 1).ToList())
+            {
+                var shared = cell.ToList();
+                for (int k = 0; k < shared.Count; k++)
+                {
+                    var light = shared[k];
+                    float span = (light.Width > 0 ? light.Width : 1) / shared.Count;
+                    bars[bars.IndexOf(light)] = light with { X = light.X + k * span, Width = light.Width > 0 ? span : 0 };
+                }
+            }
+            foreach (var bar in bars) yield return bar;
         }
 
         private static int IndexOfUsage(IReadOnlyList<LightInfo> lights, ushort usage)
@@ -428,7 +443,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         internal static LightMap MapOf(CorsairV2Device device, KeyboardLayout layout, out int bufferLength)
-            => new(Lights(device, layout, out bufferLength), $"OpenRGB CorsairPeripheralV2Devices.cpp {device.Name}, {layout}")
+            => new(Lights(device, layout, out bufferLength))
             {
                 Product = CorsairLights.Product(device.ProductId),
             };
@@ -483,7 +498,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The block-write reports of <paramref name="data"/>
-        /// (SetLEDs, lines 392-457): 06, the handle, the length low and high,
+        /// (SetLEDs, lines 394-459): 06, the handle, the length low and high,
         /// two zeros, then the packet size less 8 bytes, and 07, the handle
         /// still in byte 3, then the packet size less 4 bytes per report, the
         /// last one's tail zero.</summary>
@@ -552,7 +567,7 @@ namespace PadForge.Common.Input.Peripherals
                 return true;
             }
 
-            /// <summary>GetAddress (lines 291-318): the property's 32-bit value,
+            /// <summary>GetAddress (lines 293-320): the property's 32-bit value,
             /// little-endian from hidapi's byte 3, <see cref="NoValue"/> when
             /// byte 2 names an error, 0 when nothing answered. Null when the
             /// write failed.</summary>
@@ -565,7 +580,7 @@ namespace PadForge.Common.Input.Peripherals
                 return (uint)(answer[4] | answer[5] << 8 | answer[6] << 16 | answer[7] << 24);
             }
 
-            /// <summary>GetAddressRetry (lines 269-289).</summary>
+            /// <summary>GetAddressRetry (lines 271-291).</summary>
             public uint? GetRetry(byte property)
             {
                 uint value = NoValue;
@@ -579,7 +594,7 @@ namespace PadForge.Common.Input.Peripherals
                 return value;
             }
 
-            /// <summary>StartTransaction (lines 320-339): the answer's error
+            /// <summary>StartTransaction (lines 322-341): the answer's error
             /// byte, or the command byte 0D still in the buffer when no
             /// answer came or none is read. -1 when the write failed.</summary>
             public int Start(byte option)
@@ -591,14 +606,14 @@ namespace PadForge.Common.Input.Peripherals
                 return Read(answer, AnswerMs) > 0 ? answer[3] : 0x0D;
             }
 
-            /// <summary>StopTransaction (lines 341-358).</summary>
+            /// <summary>StopTransaction (lines 343-360).</summary>
             public bool Stop(byte option) => Exchange(Frame(WriteCmd, 0x05, 0x01, option));
 
-            /// <summary>SetRenderMode (lines 212-232): 01 hardware, 02
+            /// <summary>SetRenderMode (lines 214-234): 01 hardware, 02
             /// software.</summary>
             public byte[] RenderMode(byte mode) => Frame(WriteCmd, 0x01, 0x03, 0x00, mode);
 
-            /// <summary>SetLEDs (lines 377-460): StartTransaction on the picture's
+            /// <summary>SetLEDs (lines 379-462): StartTransaction on the picture's
             /// handle, the block write, StopTransaction(0). On handle 0 the waiting
             /// input is read away first, as OpenRGB did before 4f2d8920.</summary>
             public bool SendData(byte[] data)
@@ -720,7 +735,7 @@ namespace PadForge.Common.Input.Peripherals
                     : PictureData(Triplets, BufferLength, lights, colors));
 
             /// <summary>Hardware render mode and its answer (the
-            /// destructor's SetRenderMode, lines 139-152).</summary>
+            /// destructor's SetRenderMode, lines 141-154).</summary>
             protected override bool SendHandBack(IHidReportChannel io, Action<int> wait)
                 => _link.Exchange(_link.RenderMode(0x01));
         }

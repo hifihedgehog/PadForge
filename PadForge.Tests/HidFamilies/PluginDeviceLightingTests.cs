@@ -67,6 +67,7 @@ namespace PadForge.Tests
             PluginStepKind.Feature => "set " + Hex(step.Bytes),
             PluginStepKind.ReadInput => "read",
             PluginStepKind.ReadFeature => "get " + step.Value.ToString("X2"),
+            PluginStepKind.Drain => "drain",
             _ => "wait " + step.Value,
         };
 

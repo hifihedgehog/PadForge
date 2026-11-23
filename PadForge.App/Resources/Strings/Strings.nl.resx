@@ -96,7 +96,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Onbekend</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Standaard</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Bladeren…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Doorgaan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
@@ -274,6 +273,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestopt.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Fout: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} kon niet worden gemaakt.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Een apparaat kon niet worden geopend, gelezen of toegewezen. Het diagnoselogboek noemt het.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} is op een fout gestuit. Het diagnoselogboek bevat de oorzaak.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>De invoerengine is op een fout gestuit. Het diagnoselogboek bevat de oorzaak.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL kon niet starten. Het diagnoselogboek bevat de oorzaak.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro kon niet worden ingesteld. Het diagnoselogboek bevat de oorzaak.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Het HIDMaestro-profiel van een virtuele controller ontbreekt. Het diagnoselogboek noemt de controller.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} kon zijn aangepaste identiteit en indeling niet gebruiken en gebruikt die van zijn eigen profiel.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiel gewisseld: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiel gewisseld: Standaard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standaard</value></data>
@@ -358,15 +364,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Motionserverpoort</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyroscoop- en versnellingsmetergegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Gamemods</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Laat gamemods die voor DSX zijn gemaakt de adaptieve triggers, lightbar, spelerslampjes en mute-lampje van PlayStation-controllers instellen.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Laat gamemods die voor DSX zijn gemaakt de adaptieve triggers, lightbar, spelerslampjes en mute-lampje van een DualSense of DualShock 4 instellen.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX-gamemods accepteren</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Poort voor gamemods</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Een DSX.exe-vervanger uitvoeren</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Sommige mods, zoals DualSense4GTAV, schakelen zichzelf uit zolang er geen programma met de naam DSX draait. Hiermee draait er een kleine vervanger onder die naam zolang de server luistert.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Werkt met mods die voor DSX zijn gemaakt, zoals die voor GTA V, Red Dead Redemption 2, Skyrim en Forza. Zolang de server luistert, schrijft PadForge zijn poort op de plek waar die mods ernaar zoeken.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Luistert op :{0}. {1} verzendt naar virtuele controller {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Luistert op :{0}. {1} verzendt, maar op geen enkele virtuele controller zit een PlayStation-controller.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Luistert op :{0}. {1} verzendt naar controllerindex {2}, en geen enkele virtuele controller met een PlayStation-controller heeft die index.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Luistert op :{0}. {1} verzendt, maar op geen enkele virtuele controller zit een DualSense of DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Luistert op :{0}. {1} verzendt naar controllerindex {2}, en geen enkele virtuele controller met een DualSense of DualShock 4 heeft die index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Poort {0} wordt gebruikt door een ander programma, zoals DSX. Sluit het af of kies een andere poort.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Een gamemod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Werkt met OpenTrack en met elke tracker die zijn UDP-uitvoer verstuurt of naar het gedeelde geheugen van FreeTrack 2.0 schrijft, en met een OpenXR-runtime op deze machine die een sessie op de achtergrond kan uitvoeren.</value></data>
@@ -426,9 +432,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Bestand niet gevonden</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Niet te lezen</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Het bestand van “{0}” ontbreekt of is niet te lezen. PadForge toont Donker totdat het weer beschikbaar is.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Het bestand van “{0}” bevat geen PadForge-thema. PadForge toont Donker totdat dat wel zo is.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Het profiel “{0}” draagt het uiterlijk van zijn spel. Uw thema keert terug wanneer een ander profiel actief is.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-thema’s (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Dat bestand is geen PadForge-thema.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge kan dat bestand niet lezen.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge kan dat bestand niet vinden.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Geen thema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Het thema kon niet worden opgeslagen. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nieuw thema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge toont het thema terwijl u het bouwt.</value></data>
@@ -443,6 +453,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Afbeelding ophalen van Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam heeft geen brede afbeelding voor dit spel.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Kon Steam niet bereiken. Controleer uw verbinding.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge kan de afbeelding van Steam voor dit spel niet lezen.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Positie</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Verplaatst de afbeelding omhoog of omlaag in het venster.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Logo van het spel tonen</value></data>
@@ -854,6 +865,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Voorinstelling</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Aangepast</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (door gebruiker gemaakt)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -1482,7 +1494,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Volg de rand met de stick om de bereikbare grens te meten en vervorm die tot een volledige cirkel.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Grenskalibratie resetten</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y herstellen</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Herstellen naar geschaald radiaal</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Deadzone X herstellen</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Deadzone Y herstellen</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X herstellen</value></data>
@@ -1903,7 +1914,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Deze controller heeft een magnetometer. De yaw verankeren aan het magnetische noorden verwijdert langzame horizontale drift bij gyro-richten. Eerst kalibreren: druk op Kalibreren, draai de controller enkele seconden in een acht door alle standen en druk nogmaals.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Yaw verankeren aan kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Voegt een kleine correctiesnelheid toe die het horizontale richten naar de magnetische koers trekt, zodat drift zich niet kan opstapelen. Vereist een opgeslagen magnetometerkalibratie. Metingen die door metaal of magneten zijn verstoord, worden automatisch verworpen.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pitch- en rollsimulatie</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch en roll berekend uit de versnellingsmeter</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>De gyroscoop van deze controller registreert alleen draaien naar links en rechts. Met simulatie aan leidt PadForge pitch en roll af uit de versnellingsmeter en stuurt ze samen met de yaw van de gyroscoop naar de toewijzingen en de beweging van de virtuele controller. Een versnellingsmeter kan een duw niet van een kanteling onderscheiden, dus de controller zijwaarts of naar voren bewegen zonder te draaien leest als een korte rotatie.</value></data>
@@ -2991,11 +3001,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptiek op deze controller afspelen</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor op de actuatoren van deze controller afgespeeld. Een Steam Controller 2026 via USB of zijn dongle en een Flydigi Apex 6 Pro spelen het spoor zelf af. Elke andere controller, en die Steam Controller via Bluetooth, krijgt tonen die uit de audio zijn afgeleid en het ontworpen gevoel benaderen in plaats van reproduceren.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiekversterking</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Standaard herstellen (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Actuator-laagdoorlaatgrens</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Houdt de haptische streaming van de Steam Controller onder deze frequentie zodat de pads trillen in plaats van hoorbaar geluid af te spelen. Rond 250 Hz worden de actuatoren hoorbaar. Hoger voor scherper detail, lager voor stiller spelen.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Terugzetten naar 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonen boven deze frequentie worden weggeknipt of gevouwen. De standaard 800 Hz behoudt motor- en impacttrillingen en vangt hoge pieptonen af.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hoge tonen resetten</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Toonlimiet resetten</value></data>
@@ -3525,6 +3532,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>De controller nam de opdracht om zich klaar te maken niet aan, dus er is niets verstuurd. Controleer of hij verbonden is en verstuur opnieuw.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Het versturen stopte door een fout in PadForge. Het logbestand bevat de details.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Er gaat nog een afbeelding naar de controller. Het versturen stoppen?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Blijven versturen</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-bestanden (*.mpk)|*.mpk|Alle bestanden (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak poort {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak herstellen</value></data>
@@ -4153,8 +4161,59 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profiel</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-macro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Cursorgebied</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Wiellijst ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Cursorgebied ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Muis {0} ingedrukt houden ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Muis {0} klikken ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Muis {0} omschakelen ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptische puls ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (loslaatstaart)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} tikken ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} autofire ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} ingedrukt houden ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} omschakelen ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} turbo ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} dubbel indrukken ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} lang indrukken ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Wieltik ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Wiel omschakelen ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbowiel ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Cursor verplaatsen ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Led instellen ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Gyro hercentreren ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Cursor bijsturen ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Schermafbeeldingstoets ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Schermtoetsenbord ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Lichtkleur instellen</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Camera hercentreren</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Cursor verplaatsen</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Cursor bijsturen</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Schermafbeelding</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Schermtoetsenbord</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Shiftlaag wisselen</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Shiftlaag inschakelen</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Shiftlaag uitschakelen</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Shiftlaag vasthouden</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Spelernummer wijzigen</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Niet gekoppeld</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Bureaubladmodus omschakelen</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam-systeemtoets</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Vergrootglas omschakelen</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Helderheid omhoog</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Helderheid omlaag</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Controller uitschakelen</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam-configurator openen</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam-snelmenu openen</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Spel afsluiten</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Haptiek omschakelen</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam-HUD omschakelen</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Rumble omschakelen</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide-knop forceren</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Gyrokalibratie door draaien</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Naar richting draaien</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ingedrukt)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (loslaten)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (loslaten)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (activeren)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Kies een configuratie om te zien wat er overkomt.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat er overkomt</value></data>
@@ -4290,13 +4349,10 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick herstellen</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Tellen per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Muistellen voor één volledige cameradraai van 360°. Hangt af van de muisgevoeligheid van het spel: verhoog als een flick te weinig draait, verlaag als hij te ver draait.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Herstellen naar 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Flicktijd</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Hoelang een volledige flick van 180° duurt, met een ease-out. Kortere draaien zijn in dezelfde tijd klaar.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Herstellen naar 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flickdrempel</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Stickuitslag die een flick start, als fractie van de volledige uitslag. Tijdens het flicken zakt het loslaatpunt naar 90% hiervan.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Herstellen naar 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Snaphoek</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Lijnt de flick uit op vaste hoeken voor consistentere draaien. Alleen vooruit lijnt elke flick recht vooruit uit.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Geen uitlijning</value></data>
@@ -4305,22 +4361,16 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 graden</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 graden</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 graden</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Herstellen naar Geen uitlijning</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Uitlijnsterkte</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Hoe sterk een flick naar de uitgelijnde hoek trekt. 1 lijnt volledig uit, 0 schakelt uitlijning uit, tussenliggende waarden mengen.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Herstellen naar 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Voorhoek-deadzone</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Een flick binnen deze hoek van recht vooruit draait niets. Zo kun je een veegbeweging starten zonder flickdraai.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Herstellen naar 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Veegsmoothing</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Vlakt ruis van het randvegen af. -1 gebruikt het automatische getrapte venster, 0 zet smoothing uit, grotere waarden vlakken grotere rotaties per tick af.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Herstellen naar Automatisch (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Flick bij activering toestaan</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotatieverschuiving</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Draait de hele flick-kaart met dit aantal graden. Positief is met de klok mee. Uitlijnen gebeurt na de verschuiving.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Rotatieverschuiving herstellen</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wanneer de laag met Flick Stick actief wordt terwijl de stick al is uitgeslagen, wordt de flick meteen uitgevoerd. Uit houdt de camera stil en volgt de rotatie vanaf de huidige stickhoek.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Flick bij inschakelen toestaan opnieuw instellen</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Aangepast</value></data>
   <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>Activeert de herkenner met een opgenomen invoer van elk apparaat in plaats van een muisknop: een toets, een gamepadknop of een analoge invoer zoals een pedaal. Neem de invoer hieronder op.</value></data>
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Aangepaste activeringsinvoer</value></data>
@@ -4903,11 +4953,9 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Laag</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Kies de laag die dit menu toestaat. ‘Elke laag’ en ‘Basis’ staan het ook toe onder andere actieve lagen. Een benoemde laag moet overeenkomen met de actieve laag.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Terug naar ‘Elke laag’ en het openhouden door de laag uitschakelen.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (niet aanwezig in deze sleuf)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Laag houdt het menu open</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Houdt dit menu open zolang de benoemde laag actief is. De gekozen fysieke invoer stuurt de markering. ‘Elke laag’ en ‘Basis’ openen op de gewone manier.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Terug naar openen bij aanraking of uitwijking.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Sturen met</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>De fysieke invoer die de gemarkeerde cel stuurt zolang de laag het menu openhoudt.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan dit slot zijn toegewezen. De laag opent het menu en deze invoer stuurt het. De cellen van het menu bepalen wat het uitvoert.</value></data>
@@ -4989,7 +5037,6 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Splitsen per richting</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dode zone rond midden</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Terugzetten naar Linkerstick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Sterkte terugzetten (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Dode zone rond midden terugzetten (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Stuurhoektrilling inschakelen opnieuw instellen</value></data>
@@ -5656,6 +5703,25 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profielen</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Laag {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Triggers: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Extra's van {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar van {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Programma starten</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Bereik van {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Geïmporteerd profiel</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Geïmporteerde macro</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Voorinstelling {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Radiaal menu {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Aanraakmenu {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Muisgebied</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>tik</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>vasthouden</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>dubbeltik</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Effect linkertrigger</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Effect rechtertrigger</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Knoppentoewijzing {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Houdt eigen uitvoer</value></data>
@@ -5987,7 +6053,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX publiceert niet hoe zijn instelling {0} werkt, dus PadForge gebruikt een eigen werkwijze.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX publiceert zijn invoernummers niet. Gepubliceerde DSX-profielen gebruiken 41 tot 44 voor de D-pad, dus PadForge leest ze zo.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX schrijft geen koppeling zoals deze, dus het bestand is buiten DSX om gewijzigd.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX schakelt vanaf een sneltoets over naar deze preset. De macro staat op de pagina Macro's, klaar om aan een knop te koppelen.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX schakelt vanaf een sneltoets over naar deze preset. De macro staat in het gedeelte Macro's en menu's van de controller, klaar om aan een knop te koppelen.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Geen enkel gepubliceerd DSX-profiel gebruikt {0}, dus PadForge kan niet bepalen wat het doet.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX laat de game dit instellen zolang de doorgifteschakelaar aan staat, dus PadForge laat het ook aan de game over.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>In Native Mode met Send Data to Device uit stuurt DSX zelf niets naar de controller, dus PadForge laat dit ook aan de game over.</value></data>

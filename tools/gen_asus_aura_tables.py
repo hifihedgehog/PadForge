@@ -233,7 +233,7 @@ def main():
     w("        internal static readonly AsusKeyboardLayoutSet[] KeyboardSets =")
     w("        {")
     for name, line, entries in sets:
-        w("            new(\"%s\", \"AsusAuraKeyboardLayouts.h:%d\", new AsusKeyboardLayout[]" % (name, line))
+        w("            new(\"%s\", new AsusKeyboardLayout[] // AsusAuraKeyboardLayouts.h:%d" % (name, line))
         w("            {")
         for key, matrix, size, rows, cols, leds, eline in entries:
             led_text = ", ".join("(%s, 0x%02X)" % (cs_string(n), v) for n, v in leds)

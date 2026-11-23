@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ఆన్‌లైన్</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ఆఫ్‌లైన్</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>తెలియదు</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>డిఫాల్ట్</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>బ్రౌజ్ చేయి…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>కొనసాగించు</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ఆపు</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>ఇంజిన్ ఆగింది.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>లోపం: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} సృష్టించబడలేదు.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>ఒక పరికరాన్ని తెరవడం, చదవడం లేదా మ్యాప్ చేయడం సాధ్యం కాలేదు. డయాగ్నోస్టిక్స్ లాగ్ దాని పేరును తెలుపుతుంది.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}లో లోపం ఎదురైంది. కారణం డయాగ్నోస్టిక్స్ లాగ్‌లో ఉంది.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>ఇన్‌పుట్ ఇంజిన్‌లో లోపం ఎదురైంది. కారణం డయాగ్నోస్టిక్స్ లాగ్‌లో ఉంది.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ప్రారంభం కాలేదు. కారణం డయాగ్నోస్టిక్స్ లాగ్‌లో ఉంది.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro ను సెటప్ చేయడం సాధ్యం కాలేదు. కారణం డయాగ్నోస్టిక్స్ లాగ్‌లో ఉంది.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ఒక వర్చువల్ కంట్రోలర్ HIDMaestro ప్రొఫైల్ లేదు. డయాగ్నోస్టిక్స్ లాగ్ దాని పేరును తెలుపుతుంది.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} తన అనుకూలీకరించిన గుర్తింపు, లేఅవుట్‌ను తీసుకోలేకపోయింది, తన ప్రొఫైల్‌లోని సొంతవాటిని వాడుతోంది.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>ప్రొఫైల్ మార్చబడింది: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>ప్రొఫైల్ మార్చబడింది: డిఫాల్ట్</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>డిఫాల్ట్</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>మోషన్ సర్వర్ పోర్ట్</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu మొదలైన వాటికి గైరో, యాక్సిలరోమీటర్ డేటాను అందిస్తుంది.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>గేమ్ మోడ్లు</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX కోసం రూపొందించిన గేమ్ మోడ్లు మీ PlayStation కంట్రోలర్ల అడాప్టివ్ ట్రిగ్గర్లు, లైట్ బార్, ప్లేయర్ లైట్లు, మ్యూట్ లైట్ను సెట్ చేయడానికి అనుమతిస్తుంది.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX కోసం రూపొందించిన గేమ్ మోడ్లు DualSense లేదా DualShock 4 యొక్క అడాప్టివ్ ట్రిగ్గర్లు, లైట్ బార్, ప్లేయర్ లైట్లు, మ్యూట్ లైట్ను సెట్ చేయడానికి అనుమతిస్తుంది.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX గేమ్ మోడ్లను అంగీకరించు</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>గేమ్ మోడ్ పోర్ట్</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe స్టాండ్-ఇన్ నడుపు</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV వంటి కొన్ని మోడ్లు DSX అనే ప్రోగ్రామ్ నడవకపోతే తమను తాము ఆఫ్ చేసుకుంటాయి. సర్వర్ వింటున్నంత సేపు ఇది ఆ పేరుతో ఒక చిన్న స్టాండ్-ఇన్ను నడుపుతుంది.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX కోసం రూపొందించిన మోడ్లతో పనిచేస్తుంది, ఉదాహరణకు GTA V, Red Dead Redemption 2, Skyrim, Forza మోడ్లు. సర్వర్ వింటున్నంత సేపు, ఆ మోడ్లు వెతికే చోట PadForge తన పోర్ట్ను రాస్తుంది.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} పై వింటోంది. {1} వర్చువల్ కంట్రోలర్ {2}కు పంపుతోంది.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} పై వింటోంది. {1} పంపుతోంది, కానీ ఏ వర్చువల్ కంట్రోలర్లోనూ PlayStation కంట్రోలర్ లేదు.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} పై వింటోంది. {1} కంట్రోలర్ ఇండెక్స్ {2}కు పంపుతోంది, PlayStation కంట్రోలర్ ఉన్న ఏ వర్చువల్ కంట్రోలర్ ఆ ఇండెక్స్ కలిగి లేదు.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} పై వింటోంది. {1} పంపుతోంది, కానీ ఏ వర్చువల్ కంట్రోలర్లోనూ DualSense లేదా DualShock 4 లేదు.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} పై వింటోంది. {1} కంట్రోలర్ ఇండెక్స్ {2}కు పంపుతోంది, DualSense లేదా DualShock 4 ఉన్న ఏ వర్చువల్ కంట్రోలర్ ఆ ఇండెక్స్ కలిగి లేదు.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>పోర్ట్ {0} DSX వంటి మరొక ప్రోగ్రామ్ వాడుకలో ఉంది. దాన్ని మూసివేయండి లేదా మరొక పోర్ట్ ఎంచుకోండి.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ఒక గేమ్ మోడ్</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack తోనూ, UDP అవుట్పుట్ పంపే లేదా FreeTrack 2.0 షేర్డ్ మెమరీకి రాసే ఏ ట్రాకర్‌తోనూ, బ్యాక్‌గ్రౌండ్‌లో సెషన్ నడపగల ఈ మెషీన్‌లోని OpenXR రన్టైమ్‌తోనూ పనిచేస్తుంది.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ఫైల్ కనబడలేదు</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>చదవలేకపోయింది</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ఫైల్ లేదు లేదా చదవలేకపోయింది. అది తిరిగి వచ్చే వరకు PadForge డార్క్‌ను చూపిస్తుంది.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” ఫైల్‌లో PadForge థీమ్ లేదు. అది ఉండే వరకు PadForge డార్క్‌ను చూపిస్తుంది.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” ప్రొఫైల్ తన గేమ్ రూపాన్ని ధరించింది. మరొక ప్రొఫైల్ యాక్టివ్ అయినప్పుడు మీ థీమ్ తిరిగి వస్తుంది.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge థీమ్‌లు (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ఆ ఫైల్ PadForge థీమ్ కాదు.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ఆ ఫైల్‌ను చదవలేకపోయింది.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ఆ ఫైల్‌ను కనుగొనలేకపోయింది.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>థీమ్ కాదు</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>థీమ్‌ను సేవ్ చేయలేకపోయింది. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>కొత్త థీమ్</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>మీరు థీమ్‌ను తయారు చేస్తుండగా PadForge దాన్ని ధరిస్తుంది.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam నుండి చిత్రాన్ని తెస్తోంది…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>ఈ గేమ్‌కు Steam లో వెడల్పు చిత్రం లేదు.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam ను చేరుకోలేకపోయింది. మీ కనెక్షన్‌ను తనిఖీ చేయండి.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>ఈ గేమ్ కోసం Steam చిత్రాన్ని PadForge చదవలేకపోయింది.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>స్థానం</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>చిత్రాన్ని దాని విండోలో పైకి లేదా కిందికి జరుపుతుంది.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>గేమ్ లోగోను చూపించు</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>కంట్రోలర్‌ను సిద్ధం చేసే కమాండ్‌ను అది తీసుకోలేదు, కాబట్టి ఏదీ పంపబడలేదు. అది కనెక్ట్ అయి ఉందో లేదో చూసి మళ్లీ పంపండి.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge లోని ఒక లోపం వల్ల పంపడం ఆగిపోయింది. వివరాలు లాగ్ ఫైల్‌లో ఉన్నాయి.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>చిత్రం ఇంకా కంట్రోలర్‌కు వెళ్తోంది. పంపడం ఆపాలా?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>పంపడం కొనసాగించు</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>కంట్రోలర్ పాక్ ఫైళ్లు (*.mpk)|*.mpk|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>కంట్రోలర్ పాక్ పోర్ట్ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>కంట్రోలర్ పాక్ పునరుద్ధరించు</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>పల్స్ క్షయం</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>ప్రీసెట్</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>కస్టమ్</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (యూజర్ రూపొందించినది)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>స్టిక్లు</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ట్రిగ్గర్లు</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVలు</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ఈ కంట్రోలర్లో మాగ్నెటోమీటర్ ఉంది. యా దిశను అయస్కాంత ఉత్తరానికి స్థిరపరచడం గైరో లక్ష్యం నుండి నెమ్మదైన క్షితిజ సమాంతర డ్రిఫ్ట్ను తొలగిస్తుంది. ముందుగా క్రమాంకనం చేయండి: క్రమాంకనం చేయి నొక్కండి, కొన్ని సెకన్ల పాటు కంట్రోలర్ను 8 ఆకారంలో అన్ని దిశలలో తిప్పండి, తర్వాత మళ్లీ నొక్కండి.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>యాను దిక్సూచికి ఆంకర్ చేయి</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>క్షితిజ సమాంతర లక్ష్యాన్ని అయస్కాంత దిశ వైపు లాగే చిన్న సరిదిద్దే రేటును జోడిస్తుంది, కాబట్టి డ్రిఫ్ట్ పేరుకుపోదు. నిల్వ చేసిన మాగ్నెటోమీటర్ క్రమాంకనం అవసరం. సమీపంలోని లోహం లేదా అయస్కాంతాల వల్ల చెదిరిన నమూనాలు స్వయంచాలకంగా తిరస్కరించబడతాయి.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>డిఫాల్ట్‌కు రీసెట్ చేయి (ఆఫ్)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>పిచ్ మరియు రోల్ అనుకరణ</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>యాక్సిలరోమీటర్ నుండి లెక్కించిన పిచ్ మరియు రోల్</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ఈ కంట్రోలర్ గైరో ఎడమకు, కుడికి తిరగడాన్ని మాత్రమే గ్రహిస్తుంది. సిమ్యులేషన్ ఆన్ చేసి ఉన్నప్పుడు, PadForge యాక్సిలరోమీటర్ నుండి పిచ్ మరియు రోల్ను లెక్కించి, వాటిని గైరో యా తో పాటు మ్యాపింగ్ వరుసలకు, వర్చువల్ కంట్రోలర్ మోషన్కు పంపుతుంది. యాక్సిలరోమీటర్ నెట్టడాన్ని వంపు నుండి వేరు చేయలేదు, కాబట్టి కంట్రోలర్ను తిప్పకుండా పక్కకు లేదా ముందుకు కదిలిస్తే అది క్షణిక భ్రమణంగా చదవబడుతుంది.</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>చేరగల సరిహద్దును మ్యాప్ చేయడానికి స్టిక్‌ను దాని అంచు వెంట తిప్పండి, తర్వాత దాన్ని పూర్తి వృత్తంగా మార్చవచ్చు.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>సరిహద్దు క్రమాంకనం రీసెట్ చేయి</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>మధ్య ఆఫ్సెట్ Y రీసెట్ చేయి</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>స్కేల్డ్ రేడియల్‌కు రీసెట్ చేయి</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>డెడ్ జోన్ X రీసెట్ చేయి</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>డెడ్ జోన్ Y రీసెట్ చేయి</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>యాంటీ-డెడ్ జోన్ X రీసెట్ చేయి</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ రీసెట్ చేయి</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°కి డాట్లు</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ఒక పూర్తి 360° కెమెరా తిరుగుడుకు మౌస్ కౌంట్లు. ఆట మౌస్ సున్నితత్వంపై ఆధారపడుతుంది: ఫ్లిక్ తక్కువగా తిరిగితే పెంచండి, ఎక్కువగా తిరిగితే తగ్గించండి.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400కు రీసెట్ చేయి</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ఫ్లిక్ సమయం</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>ఈజ్-అవుట్తో పూర్తి 180° ఫ్లిక్ పూర్తవడానికి పట్టే సమయం. చిన్న తిరుగుళ్లు అదే సమయంలో ముగుస్తాయి.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 సెకన్లకు రీసెట్ చేయి</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ఫ్లిక్ థ్రెషోల్డ్</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ఫ్లిక్ను ప్రారంభించే స్టిక్ విక్షేపం, పూర్తి విక్షేపంలో భిన్నంగా. ఫ్లిక్ చేస్తున్నప్పుడు విడుదల బిందువు దీనిలో 90%కి తగ్గుతుంది.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9కు రీసెట్ చేయి</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>స్నాప్ కోణం</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>మరింత స్థిరమైన తిరుగుళ్ల కోసం ఫ్లిక్ను నిర్ణీత కోణాలకు స్నాప్ చేయండి. ముందు మాత్రమే ప్రతి ఫ్లిక్ను నేరుగా ముందుకు స్నాప్ చేస్తుంది.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>స్నాపింగ్ లేదు</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 డిగ్రీలు</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 డిగ్రీలు</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 డిగ్రీలు</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>స్నాపింగ్ లేదు స్థితికి రీసెట్ చేయి</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>స్నాప్ బలం</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>స్నాప్ చేసిన కోణం వైపు ఫ్లిక్ ఎంత బలంగా లాగబడుతుందో. 1 పూర్తిగా స్నాప్ చేస్తుంది, 0 స్నాపింగ్ను నిలిపివేస్తుంది, మధ్య విలువలు కలుపుతాయి.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0కు రీసెట్ చేయి</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>ముందు కోణం డెడ్ జోన్</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>నేరుగా ముందు నుండి ఈ కోణంలోపు ఫ్లిక్ ఏమీ తిప్పదు. ఫ్లిక్-తిరుగుడు లేకుండా స్వీప్ ప్రారంభించడానికి ఇది అనుమతిస్తుంది.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0°కు రీసెట్ చేయి</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>స్వీప్ స్మూతింగ్</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>అంచు-స్వీప్ శబ్దాన్ని మృదువుగా చేస్తుంది. -1 స్వయంచాలక శ్రేణి విండోను వాడుతుంది, 0 స్మూతింగ్ను ఆపుతుంది, పెద్ద విలువలు ప్రతి టిక్కు పెద్ద భ్రమణాలను మృదువుగా చేస్తాయి.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>స్వయంచాలకానికి రీసెట్ చేయి (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>క్రియాశీలమైనప్పుడు ఫ్లిక్ను అనుమతించు</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>భ్రమణ ఆఫ్సెట్</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>మొత్తం ఫ్లిక్ మ్యాప్ను ఇన్ని డిగ్రీలు తిప్పుతుంది. ధనాత్మకం అంటే సవ్యదిశ. ఆఫ్సెట్ తర్వాత స్నాపింగ్ వర్తిస్తుంది.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>భ్రమణ ఆఫ్సెట్ రీసెట్ చేయి</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ను ఉంచే లేయర్ క్రియాశీలమైనప్పుడు స్టిక్ ఇప్పటికే వంగి ఉంటే, ఫ్లిక్ వెంటనే జరుగుతుంది. ఆఫ్ అయితే కెమెరా కదలకుండా ఉండి, ప్రస్తుత స్టిక్ కోణం నుండి భ్రమణాన్ని అనుసరిస్తుంది.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>క్రియాశీలమైనప్పుడు ఫ్లిక్ అనుమతి రీసెట్ చేయి</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>స్టీరింగ్ లాక్ ఫీడ్బ్యాక్</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>స్టీరింగ్ మోడ్‌లోని స్టిక్ పూర్తి లాక్‌కు చేరినప్పుడు సూచన</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>స్టీరింగ్ మోడ్కు సెట్ చేసిన స్టిక్ను పూర్తి లాక్ వరకు తిప్పినప్పుడు, పరిమితిని అనుభవించేలా సూచన (రంబుల్, ట్రిగ్గర్ లేదా లైట్ బార్) ప్లే అవుతుంది. అన్నీ డిఫాల్ట్గా ఆఫ్.</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ఈ కంట్రోలర్లో DualSense హాప్టిక్స్ ప్లే చేయి</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ఒక గేమ్ ఈ స్లాట్‌ను రచించిన హాప్టిక్ ఆడియోతో వర్చువల్ DualSense వలె నడిపినప్పుడు, ఆ ట్రాక్‌ను ఈ కంట్రోలర్ యాక్చుయేటర్లలో ప్లే చేస్తుంది. USB లేదా దాని డాంగిల్ ద్వారా Steam Controller 2026, మరియు Flydigi Apex 6 Pro, ఆ ట్రాక్‌ను తామే ప్లే చేస్తాయి. ఇతర ప్రతి కంట్రోలర్, బ్లూటూత్ ద్వారా ఆ Steam Controller కూడా, ఆడియో నుండి రూపొందించిన టోన్లను పొందుతుంది, అవి డిజైనర్ అనుభూతిని పునరుత్పత్తి చేయకుండా సుమారుగా సూచిస్తాయి.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>హాప్టిక్స్ గెయిన్</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>డిఫాల్ట్కు రీసెట్ చేయి (ఆఫ్)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>డిఫాల్ట్కు రీసెట్ చేయి (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>యాక్చుయేటర్ లో-పాస్ కటాఫ్</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller హాప్టిక్ స్ట్రీమింగ్ను ఈ ఫ్రీక్వెన్సీ కంటే తక్కువగా ఉంచుతుంది, తద్వారా ప్యాడ్లు శబ్దం వినిపించకుండా కంపిస్తాయి. సుమారు 250 Hz వద్ద యాక్చుయేటర్లు వినిపించడం మొదలవుతుంది. స్పష్టమైన వివరాల కోసం పెంచండి, నిశ్శబ్ద ప్లే కోసం తగ్గించండి.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz కు రీసెట్ చేయి</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>ఈ ఫ్రీక్వెన్సీ పైన ఉన్న టోన్లు కత్తిరించబడతాయి లేదా మడవబడతాయి. డిఫాల్ట్ 800 Hz ఇంజిన్, ఇంపాక్ట్ రంబుల్ను ఉంచి అధిక పిచ్ బీప్లను పట్టుకుంటుంది.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>అధిక టోన్లు రీసెట్ చేయి</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>టోన్ పరిమితి రీసెట్ చేయి</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop ప్రొఫైల్</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop మాక్రో</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>కర్సర్ ప్రాంతం</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} షిఫ్ట్</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>వీల్ జాబితా ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>కర్సర్ ప్రాంతం ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>మౌస్ {0} పట్టుకో ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>మౌస్ {0} క్లిక్ ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>మౌస్ {0} టోగుల్ ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>హాప్టిక్ పల్స్ ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (విడుదల తర్వాతి భాగం)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} ట్యాప్ ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} ఆటోఫైర్ ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} పట్టుకో ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} టోగుల్ ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} టర్బో ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} డబుల్ ప్రెస్ ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} లాంగ్ ప్రెస్ ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>వీల్ టిక్ ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>వీల్ టోగుల్ ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>టర్బో వీల్ ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>కర్సర్ జంప్ ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED సెట్ ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>గైరో రీసెంటర్ ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>కర్సర్ నడ్జ్ ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>స్క్రీన్‌షాట్ కీ ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>ఆన్ స్క్రీన్ కీబోర్డ్ ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>లైట్ రంగు సెట్ చేయి</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>కెమెరా రీసెంటర్</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>కర్సర్ జంప్</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>కర్సర్ నడ్జ్</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>స్క్రీన్‌షాట్</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>ఆన్ స్క్రీన్ కీబోర్డ్</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>షిఫ్ట్ లేయర్ మార్చు</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఆన్ చేయి</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఆఫ్ చేయి</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>షిఫ్ట్ లేయర్ పట్టుకో</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>ప్లేయర్ నంబర్ మార్చు</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>కేటాయింపు లేదు</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>డెస్క్‌టాప్ మోడ్ టోగుల్</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam సిస్టమ్ కీ</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>మాగ్నిఫయర్ టోగుల్</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>ప్రకాశం పెంచు</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>ప్రకాశం తగ్గించు</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>కంట్రోలర్ ఆఫ్ చేయి</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam కాన్ఫిగరేటర్ తెరువు</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam క్విక్ మెనూ తెరువు</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>గేమ్ నుండి నిష్క్రమించు</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>హాప్టిక్స్ టోగుల్</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD టోగుల్</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>రంబుల్ టోగుల్</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>గైడ్ బటన్ బలవంతంగా నొక్కు</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>గైరో క్యాలిబ్రేషన్ స్పిన్</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>దిశ వైపు తిరుగు</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (పట్టుకున్నప్పుడు)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (విడుదల)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (విడుదల)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ఎంగేజ్)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ఏమి దిగుమతి అవుతుందో చూడటానికి ఒక కాన్ఫిగరేషన్‌ను ఎంచుకోండి.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ఏమి దిగుమతి అవుతుంది</value></data>
@@ -4928,11 +4978,9 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>లేయర్</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>ఈ మెనును అనుమతించే లేయర్ను ఎంచుకోండి. ఏదైనా లేయర్ మరియు బేస్ ఇతర క్రియాశీల లేయర్ల కింద కూడా దాన్ని అనుమతిస్తాయి. పేరు పెట్టిన లేయర్ ప్రస్తుతం క్రియాశీలంగా ఉన్న లేయర్తో సరిపోలాలి.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>ఏదైనా లేయర్కు రీసెట్ చేసి, లేయర్ పట్టుకునే తెరవడాన్ని ఆఫ్ చేయి.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ఈ స్లాట్లో జాబితా చేయబడలేదు)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>లేయర్ మెనును తెరిచి ఉంచుతుంది</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>పేరు పెట్టిన లేయర్ క్రియాశీలంగా ఉన్నంతసేపు ఈ మెనును తెరిచి ఉంచండి. ఎంచుకున్న భౌతిక ఇన్పుట్ హైలైట్ను నడిపిస్తుంది. ఏదైనా లేయర్ మరియు బేస్ సాధారణ ఉపరితల తెరవడాన్ని ఉపయోగిస్తాయి.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>తాకినప్పుడు లేదా విక్షేపంపై తెరవడానికి రీసెట్ చేయి.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>దీనితో నడిపించు</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>లేయర్ ఈ మెనును తెరిచి ఉంచినప్పుడు హైలైట్ అయిన సెల్ను నడిపించే భౌతిక ఇన్పుట్.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ఈ స్లాట్కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. లేయర్ మెనును తెరుస్తుంది, ఈ ఇన్పుట్ దాన్ని నడిపిస్తుంది. అది ఏమి అవుట్పుట్ చేస్తుందో దాని సెల్లు చెబుతాయి.</value></data>
@@ -5014,7 +5062,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>మోటార్</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>దిశ వారీగా విభజన</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>మధ్య డెడ్ జోన్</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ఎడమ స్టిక్ X కు రీసెట్ చేయి</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>బలాన్ని రీసెట్ చేయి (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>మధ్య డెడ్ జోన్ రీసెట్ (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>స్టీరింగ్ యాంగిల్ రంబుల్ ప్రారంభించడాన్ని రీసెట్ చేయి</value></data>
@@ -5681,6 +5728,25 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>ప్రొఫైల్‌లు</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>లేయర్ {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>షిఫ్ట్ {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>ట్రిగ్గర్లు: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>లైట్ బార్</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} ఎక్స్‌ట్రాలు</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} లైట్ బార్</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>ప్రోగ్రామ్ ప్రారంభించు</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} పరిధి</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>దిగుమతైన ప్రొఫైల్</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>దిగుమతైన మాక్రో</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>ప్రీసెట్ {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>రేడియల్ మెనూ {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>టచ్ మెనూ {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>మౌస్ ప్రాంతం</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>ట్యాప్</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>హోల్డ్</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>డబుల్ ట్యాప్</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ ప్రభావం</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>కుడి ట్రిగ్గర్ ప్రభావం</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>బటన్ మ్యాపింగ్ {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>అంశం {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>కంట్రోలర్</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>తన స్వంత అవుట్‌పుట్‌లను ఉంచుకుంటుంది</value></data>
@@ -6012,7 +6078,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX తన {0} సెట్టింగ్ ఎలా పనిచేస్తుందో ప్రచురించదు, కాబట్టి PadForge తన సొంత విధానాన్ని ఉపయోగిస్తుంది.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX తన ఇన్‌పుట్ సంఖ్యలను ప్రచురించదు. ప్రచురించిన DSX ప్రొఫైల్‌లు 41 నుండి 44 వరకు సంఖ్యలను D-ప్యాడ్‌గా ఉపయోగిస్తాయి, కాబట్టి PadForge వాటిని అలాగే చదువుతుంది.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ఇలాంటి బైండింగ్‌ను రాయదు, కాబట్టి ఫైల్ DSX బయట మార్చబడింది.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX షార్ట్‌కట్ ద్వారా ఈ ప్రీసెట్‌కు మారుతుంది. దాని మాక్రో మాక్రోలు పేజీలో ఉంది, బటన్‌కు కేటాయించడానికి సిద్ధంగా ఉంది.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX షార్ట్‌కట్ ద్వారా ఈ ప్రీసెట్‌కు మారుతుంది. దాని మాక్రో కంట్రోలర్ యొక్క మాక్రోలు &amp; మెనూలు విభాగంలో ఉంది, బటన్‌కు కేటాయించడానికి సిద్ధంగా ఉంది.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>ప్రచురించిన ఏ DSX ప్రొఫైల్ {0} ను ఉపయోగించదు, కాబట్టి అది ఏమి చేస్తుందో PadForge చెప్పలేదు.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX పాస్త్రూ స్విచ్ ఆన్‌లో ఉన్నప్పుడు దీనిని గేమ్ సెట్ చేయడానికి వదిలేస్తుంది, కాబట్టి PadForge కూడా దీనిని గేమ్‌కే వదిలేస్తుంది.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode లో Send Data to Device ఆఫ్‌లో ఉంటే, DSX కంట్రోలర్‌కు తన సొంతంగా ఏదీ పంపదు, కాబట్టి PadForge కూడా దీనిని గేమ్‌కే వదిలేస్తుంది.</value></data>

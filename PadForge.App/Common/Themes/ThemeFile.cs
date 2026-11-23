@@ -22,8 +22,9 @@ namespace PadForge.Common.Themes
         GameLook,
     }
 
-    /// <summary>Why a listed theme file cannot be shown.</summary>
-    internal enum ThemeFault { None, Missing, Unreadable }
+    /// <summary>Why a listed theme file cannot be shown: it is not there,
+    /// PadForge cannot read it, or what it holds is no theme.</summary>
+    internal enum ThemeFault { None, Missing, Unreadable, NotATheme }
 
     /// <summary>
     /// One theme (#591): a name, a base, four colors and an optional
@@ -69,9 +70,6 @@ namespace PadForge.Common.Themes
             Dark = Dark, Background = Background, Accent = Accent, Secondary = Secondary, Attention = Attention,
         };
 
-        /// <summary>Whether the theme is anything but PadForge's own look.</summary>
-        internal bool IsCustom => Kind != ThemeKind.Stock;
-
         /// <summary>The picture, decoded once and frozen. Null when the
         /// theme has none or its bytes hold no picture.</summary>
         internal BitmapSource Picture
@@ -110,15 +108,6 @@ namespace PadForge.Common.Themes
                 return _thumbnail;
             }
         }
-
-        /// <summary>A copy that shares nothing a change could reach but
-        /// the picture's bytes, which no one changes in place.</summary>
-        internal ThemeDefinition Clone() => new ThemeDefinition
-        {
-            Id = Id, Kind = Kind, Name = Name, Look = Look, Author = Author, Credits = Credits, Dark = Dark,
-            Background = Background, Accent = Accent, Secondary = Secondary, Attention = Attention,
-            PictureBytes = PictureBytes, PictureName = PictureName, TileAt = TileAt, Path = Path, Fault = Fault,
-        };
     }
 
     /// <summary>
@@ -171,7 +160,11 @@ namespace PadForge.Common.Themes
                     if (read != data.Length) return broken;
                 }
                 var theme = Parse(data, System.IO.Path.GetFileNameWithoutExtension(path));
-                if (theme == null) return broken;
+                if (theme == null)
+                {
+                    broken.Fault = ThemeFault.NotATheme;
+                    return broken;
+                }
                 theme.Kind = ThemeKind.File;
                 theme.Path = path;
                 return theme;
@@ -317,12 +310,25 @@ namespace PadForge.Common.Themes
             if (!TryProperty(owner, name, out var value) || value.ValueKind != JsonValueKind.String) return null;
             string text = value.GetString()?.Trim();
             if (string.IsNullOrEmpty(text)) return null;
-            // One line, no control characters: the text goes into labels.
+            // One line, no control characters and no direction overrides,
+            // embeddings or isolates: the text goes into labels and into
+            // Save a Copy's file name. The three direction marks (U+200E,
+            // U+200F, U+061C) stay, since a right-to-left name may need
+            // them, and they place only the neutral characters beside them.
             var clean = new StringBuilder(text.Length);
-            foreach (char c in text) clean.Append(char.IsControl(c) ? ' ' : c);
+            foreach (char c in text) clean.Append(IsUnsafe(c) ? ' ' : c);
             text = clean.ToString().Trim();
-            return text.Length > max ? text.Substring(0, max).TrimEnd() : text;
+            if (text.Length <= max) return text;
+            // The cut keeps a pair whole or leaves it out.
+            int cut = char.IsHighSurrogate(text[max - 1]) ? max - 1 : max;
+            return text.Substring(0, cut).TrimEnd();
         }
+
+        /// <summary>A control character, a line or paragraph separator, or
+        /// a direction override, embedding or isolate.</summary>
+        private static bool IsUnsafe(char c)
+            => char.IsControl(c) || c == '\u2028' || c == '\u2029'
+               || (c >= '\u202A' && c <= '\u202E') || (c >= '\u2066' && c <= '\u2069');
 
         /// <summary>A color left out is fine. A color that is there and is
         /// no color makes the file no theme.</summary>

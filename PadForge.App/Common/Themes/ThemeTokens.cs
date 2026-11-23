@@ -78,6 +78,7 @@ namespace PadForge.Common.Themes
 
         internal void Refresh()
         {
+            ThemeLook.Invalidate();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Binding.IndexerName));
             Changed?.Invoke(this, EventArgs.Empty);
         }

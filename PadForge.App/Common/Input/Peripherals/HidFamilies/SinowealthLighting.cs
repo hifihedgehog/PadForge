@@ -178,7 +178,7 @@ namespace PadForge.Common.Input.Peripherals
                     return new HidLightingModel
                     {
                         Family = this, Name = name,
-                        Map = new LightMap(Array.Empty<LightInfo>(), "OpenRGB SinowealthKeyboard10cDevices.cpp") { Product = product },
+                        Map = new LightMap(Array.Empty<LightInfo>()) { Product = product },
                         RepaintMs = RepaintMs, KeepAliveMs = KeepaliveMs, KeepAliveIdleMs = KeepaliveMs,
                         Begin = (io, wait) => Keyboard10cSession.Begin(io, product),
                     };
@@ -186,7 +186,7 @@ namespace PadForge.Common.Input.Peripherals
                     return new HidLightingModel
                     {
                         Family = this, Name = name,
-                        Map = new LightMap(Thor300Lights(), "OpenRGB SinowealthKeyboard90Controller.h") { Product = product },
+                        Map = new LightMap(Thor300Lights()) { Product = product },
                         HoldMs = StoredHoldMs, RepaintMs = StoredRepaintMs,
                         Begin = (io, wait) => new Thor300Session(),
                     };
@@ -194,7 +194,7 @@ namespace PadForge.Common.Input.Peripherals
                     return new HidLightingModel
                     {
                         Family = this, Name = name,
-                        Map = new LightMap(ZetLights(), "OpenRGB RGBController_Sinowealth1007.cpp") { Product = product },
+                        Map = new LightMap(ZetLights()) { Product = product },
                         HoldMs = StoredHoldMs, RepaintMs = StoredRepaintMs,
                         Begin = (io, wait) => ZetSession.Begin(io, KeyboardProfileBackups.SessionKey(product, io?.Path)),
                         Owed = path => KeyboardProfileBackups.Get(KeyboardProfileBackups.DeviceKey(product, path)) != null
@@ -205,7 +205,7 @@ namespace PadForge.Common.Input.Peripherals
                     return new HidLightingModel
                     {
                         Family = this, Name = name,
-                        Map = new LightMap(OneLight(), "OpenRGB RGBController_SinowealthGMOW.cpp") { Product = product },
+                        Map = new LightMap(OneLight()) { Product = product },
                         Programs = VendorPrograms.Glorious,
                         HoldMs = StoredHoldMs, RepaintMs = StoredRepaintMs,
                         Begin = (io, wait) => new GmowSession(),
@@ -351,7 +351,7 @@ namespace PadForge.Common.Input.Peripherals
                 var model = Keyboard10cModel(modelId);
                 if (model == null) return null;
                 string mapProduct = $"{product}:{modelId:X2}";
-                var map = new LightMap(Keyboard10cLights(model), $"OpenRGB {model.Recipe}") { Product = mapProduct };
+                var map = new LightMap(Keyboard10cLights(model)) { Product = mapProduct };
                 return new Keyboard10cSession(modelId, map);
             }
 

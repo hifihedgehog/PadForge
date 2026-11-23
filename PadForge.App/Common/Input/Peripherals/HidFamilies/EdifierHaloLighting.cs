@@ -89,7 +89,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_EdifierHaloPixelbarAmbient.cpp, RGBController_EdifierHaloPixelbarScreen.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"edifier:{vendorId:X4}:{productId:X4}",
             },

@@ -30,7 +30,7 @@ namespace PadForge.Common.Input
         /// controller sends its state inside input reports 0x12 to 0x19, and
         /// SDL checked every one's CRC at byte 78 and dropped them, which
         /// stopped the pad's input. The SDL build PadForge takes from fork
-        /// e0b84e3498 (hifihedgehog/SDL#41) checks each report at its own
+        /// d947fad309 (hifihedgehog/SDL#41) checks each report at its own
         /// length, so the microphone is on. The DualSense microphone waited
         /// the same way on hifihedgehog/SDL#20 (<see cref="EnableBtMic"/>).
         /// Setting this false turns both DualShock 4 microphone lanes off. A

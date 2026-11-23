@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Σε σύνδεση</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Εκτός σύνδεσης</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Άγνωστο</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Προεπιλογή</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Αναζήτηση…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Συνέχεια</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Διακοπή</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Η μηχανή σταμάτησε.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Σφάλμα: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}: δεν ήταν δυνατή η δημιουργία.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Μια συσκευή δεν ήταν δυνατό να ανοιχθεί, να διαβαστεί ή να αντιστοιχιστεί. Το αρχείο καταγραφής διαγνωστικών την κατονομάζει.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Το {0} αντιμετώπισε σφάλμα. Το αρχείο καταγραφής διαγνωστικών περιέχει την αιτία.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Η μηχανή εισόδου αντιμετώπισε σφάλμα. Το αρχείο καταγραφής διαγνωστικών περιέχει την αιτία.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Το SDL δεν ήταν δυνατό να ξεκινήσει. Το αρχείο καταγραφής διαγνωστικών περιέχει την αιτία.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Το HIDMaestro δεν ήταν δυνατό να ρυθμιστεί. Το αρχείο καταγραφής διαγνωστικών περιέχει την αιτία.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Λείπει το προφίλ HIDMaestro ενός εικονικού χειριστηρίου. Το αρχείο καταγραφής διαγνωστικών το κατονομάζει.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Το {0} δεν μπόρεσε να λάβει την προσαρμοσμένη ταυτότητα και διάταξή του και χρησιμοποιεί αυτές του προφίλ του.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Αλλαγή προφίλ: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Αλλαγή προφίλ: Προεπιλεγμένο</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Προεπιλεγμένο</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Θύρα διακομιστή κίνησης</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Παρέχει δεδομένα γυροσκοπίου και επιταχυνσιομέτρου σε Cemu, Dolphin, Yuzu κ.λπ.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod παιχνιδιών</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Επιτρέπει στα mod παιχνιδιών που έγιναν για το DSX να ορίζουν τις προσαρμοζόμενες σκανδάλες, τη φωτεινή μπάρα, τα φώτα παίκτη και το φως σίγασης των χειριστηρίων PlayStation σας.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Επιτρέπει στα mod παιχνιδιών που έγιναν για το DSX να ορίζουν τις προσαρμοζόμενες σκανδάλες, τη φωτεινή μπάρα, τα φώτα παίκτη και το φως σίγασης ενός DualSense ή DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Αποδοχή mod παιχνιδιών DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Θύρα mod παιχνιδιών</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Εκτέλεση υποκατάστατου DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Ορισμένα mod, όπως το DualSense4GTAV, απενεργοποιούνται αν δεν εκτελείται πρόγραμμα με όνομα DSX. Αυτό εκτελεί ένα μικρό υποκατάστατο με αυτό το όνομα όσο ο διακομιστής ακούει.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Λειτουργεί με mod που έγιναν για το DSX, όπως αυτά για GTA V, Red Dead Redemption 2, Skyrim και Forza. Όσο ο διακομιστής ακούει, το PadForge γράφει τη θύρα του εκεί όπου την αναζητούν αυτά τα mod.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Ακρόαση στο :{0}. {1} στέλνει στο εικονικό χειριστήριο {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ακρόαση στο :{0}. {1} στέλνει, αλλά κανένα εικονικό χειριστήριο δεν έχει χειριστήριο PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ακρόαση στο :{0}. {1} στέλνει στον δείκτη χειριστηρίου {2}, και κανένα εικονικό χειριστήριο με χειριστήριο PlayStation δεν έχει αυτόν τον δείκτη.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ακρόαση στο :{0}. {1} στέλνει, αλλά κανένα εικονικό χειριστήριο δεν έχει DualSense ή DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ακρόαση στο :{0}. {1} στέλνει στον δείκτη χειριστηρίου {2}, και κανένα εικονικό χειριστήριο με DualSense ή DualShock 4 δεν έχει αυτόν τον δείκτη.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Η θύρα {0} χρησιμοποιείται από άλλο πρόγραμμα, όπως το DSX. Κλείστε το ή επιλέξτε άλλη θύρα.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ένα mod παιχνιδιού</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Λειτουργεί με το OpenTrack και με κάθε ανιχνευτή που στέλνει την έξοδό του μέσω UDP ή γράφει στην κοινόχρηστη μνήμη FreeTrack 2.0, καθώς και με ένα περιβάλλον εκτέλεσης OpenXR σε αυτόν τον υπολογιστή που μπορεί να εκτελεί μια συνεδρία στο παρασκήνιο.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Το αρχείο λείπει</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Δεν διαβάζεται</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Το αρχείο του «{0}» λείπει ή δεν διαβάζεται. Το PadForge εμφανίζει το Σκούρο μέχρι να επανέλθει.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Το αρχείο του «{0}» δεν περιέχει θέμα PadForge. Το PadForge εμφανίζει το Σκούρο μέχρι να περιέχει.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Το προφίλ «{0}» φορά την εμφάνιση του παιχνιδιού του. Το θέμα σας επιστρέφει όταν ενεργοποιηθεί άλλο προφίλ.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Θέματα PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Αυτό το αρχείο δεν είναι θέμα του PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει αυτό το αρχείο.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>Το PadForge δεν μπορεί να βρει αυτό το αρχείο.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Δεν είναι θέμα</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η αποθήκευση του θέματος. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Νέο θέμα</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Το PadForge φορά το θέμα όσο το δημιουργείτε.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Λήψη της εικόνας από το Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Το Steam δεν έχει πλατιά εικόνα για αυτό το παιχνίδι.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Δεν ήταν δυνατή η επικοινωνία με το Steam. Ελέγξτε τη σύνδεσή σας.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει την εικόνα του Steam για αυτό το παιχνίδι.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Θέση</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Μετακινεί την εικόνα πάνω ή κάτω μέσα στο παράθυρό της.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Εμφάνιση του λογότυπου του παιχνιδιού</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Το χειριστήριο δεν δέχτηκε την εντολή που το προετοιμάζει, γι' αυτό δεν στάλθηκε τίποτα. Ελέγξτε ότι είναι συνδεδεμένο και στείλτε ξανά.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Η αποστολή σταμάτησε από ένα σφάλμα στο PadForge. Το αρχείο καταγραφής έχει τις λεπτομέρειες.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Μια εικόνα εξακολουθεί να στέλνεται στο χειριστήριο. Να διακοπεί η αποστολή?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Συνέχιση αποστολής</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Αρχεία Controller Pak (*.mpk)|*.mpk|Όλα τα αρχεία (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak θύρα {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Επαναφορά του Controller Pak</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Εξασθένηση παλμού</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Προρύθμιση</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Προσαρμοσμένη</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (δημιουργία χρήστη)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Μοχλοί</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Σκανδάλες</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Αυτό το χειριστήριο διαθέτει μαγνητόμετρο. Η αγκύρωση της εκτροπής στον μαγνητικό βορρά αφαιρεί την αργή οριζόντια ολίσθηση από τη στόχευση με γυροσκόπιο. Βαθμονομήστε πρώτα: πατήστε «Βαθμονόμηση», περιστρέψτε το χειριστήριο σε όλους τους προσανατολισμούς διαγράφοντας ένα 8 για λίγα δευτερόλεπτα και πατήστε ξανά.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Αγκύρωση εκτροπής στην πυξίδα</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Προσθέτει έναν μικρό διορθωτικό ρυθμό που τραβά την οριζόντια στόχευση προς τη μαγνητική πορεία, ώστε να μη συσσωρεύεται ολίσθηση. Απαιτεί αποθηκευμένη βαθμονόμηση μαγνητομέτρου. Τα δείγματα που διαταράσσονται από κοντινά μέταλλα ή μαγνήτες απορρίπτονται αυτόματα.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Επαναφορά στην προεπιλογή (ανενεργό)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Προσομοίωση πρόνευσης και διατοιχισμού</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Πρόνευση και διατοιχισμός από το επιταχυνσιόμετρο</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Το γυροσκόπιο αυτού του χειριστηρίου ανιχνεύει μόνο τη στροφή αριστερά και δεξιά. Με την προσομοίωση ενεργή, το PadForge υπολογίζει την πρόνευση (pitch) και τον διατοιχισμό (roll) από το επιταχυνσιόμετρο και τα στέλνει, μαζί με την εκτροπή (yaw) του γυροσκοπίου, στις γραμμές αντιστοίχισης και στην κίνηση του εικονικού χειριστηρίου. Ένα επιταχυνσιόμετρο δεν μπορεί να ξεχωρίσει μια ώθηση από μια κλίση, επομένως η μετακίνηση του χειριστηρίου στο πλάι ή προς τα εμπρός χωρίς να το στρίψετε διαβάζεται ως σύντομη περιστροφή.</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Περιστρέψτε τον μοχλό κατά μήκος του άκρου του για να χαρτογραφηθεί το όριο που μπορεί να φτάσει, το οποίο έπειτα αναδιαμορφώνεται σε πλήρη κύκλο.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Επαναφορά βαθμονόμησης ορίου</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Επαναφορά μετατόπισης κέντρου Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Επαναφορά σε «Ακτινική με κλιμάκωση»</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Επαναφορά νεκρής ζώνης X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Επαναφορά νεκρής ζώνης Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Επαναφορά αντι-νεκρής ζώνης X</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Επαναφορά flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Κουκκίδες ανά 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Μονάδες κίνησης ποντικιού (counts) για μια πλήρη στροφή της κάμερας κατά 360°. Εξαρτάται από την ευαισθησία ποντικιού του παιχνιδιού: αυξήστε την τιμή αν ένα flick στρίβει λιγότερο από όσο πρέπει και μειώστε την αν στρίβει περισσότερο.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Επαναφορά σε 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Χρόνος flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Πόσο διαρκεί ένα πλήρες flick 180°, με ομαλή επιβράδυνση στο τέλος. Οι μικρότερες στροφές ολοκληρώνονται στον ίδιο χρόνο.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Επαναφορά σε 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Κατώφλι flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Η απόκλιση μοχλού που ξεκινά ένα flick, ως κλάσμα της πλήρους απόκλισης. Κατά τη διάρκεια του flick, το σημείο απελευθέρωσης πέφτει στο 90% αυτής της τιμής.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Επαναφορά σε 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Γωνία προσκόλλησης</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Προσκολλά το flick σε σταθερές γωνίες για πιο συνεπείς στροφές. Το «Μόνο εμπρός» προσκολλά κάθε flick ακριβώς ευθεία μπροστά.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Χωρίς προσκόλληση</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 μοίρες</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 μοίρες</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 μοίρες</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Επαναφορά σε «Χωρίς προσκόλληση»</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Ισχύς προσκόλλησης</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Πόσο ισχυρά έλκεται ένα flick προς τη γωνία προσκόλλησης. Το 1 προσκολλά πλήρως, το 0 απενεργοποιεί την προσκόλληση και οι ενδιάμεσες τιμές αναμειγνύουν.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Επαναφορά σε 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Νεκρή ζώνη μπροστινής γωνίας</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Ένα flick μέσα σε αυτή τη γωνία από την ευθεία μπροστά δεν προκαλεί στροφή. Σας επιτρέπει να ξεκινήσετε μια περιστροφή στο άκρο χωρίς στροφή flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Επαναφορά σε 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Εξομάλυνση περιστροφής</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Εξομαλύνει τον θόρυβο της περιστροφής στο άκρο. Το -1 χρησιμοποιεί το αυτόματο κλιμακωτό παράθυρο, το 0 απενεργοποιεί την εξομάλυνση και οι μεγαλύτερες τιμές εξομαλύνουν μεγαλύτερες περιστροφές ανά κύκλο.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Επαναφορά σε αυτόματο (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Να επιτρέπεται flick κατά την ενεργοποίηση</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Μετατόπιση περιστροφής</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Στρέφει ολόκληρο τον χάρτη του flick κατά τόσες μοίρες. Οι θετικές τιμές είναι δεξιόστροφες. Η προσκόλληση εφαρμόζεται μετά τη μετατόπιση.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Επαναφορά μετατόπισης περιστροφής</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Όταν το επίπεδο που φιλοξενεί το flick stick ενεργοποιείται με τον μοχλό ήδη σε απόκλιση, το flick εκτελείται αμέσως. Όταν είναι ανενεργό, η κάμερα μένει ακίνητη και η περιστροφή παρακολουθείται από την τρέχουσα γωνία του μοχλού.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Επαναφορά του «Να επιτρέπεται flick κατά την ενεργοποίηση»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ανάδραση τέρματος τιμονιού</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ένδειξη στο τέρμα για μοχλό σε λειτουργία τιμονιού</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Όταν ένας μοχλός σε λειτουργία τιμονιού στρίψει μέχρι το τέρμα, αναπαράγεται μια ένδειξη (δόνηση, σκανδάλη ή φωτεινή μπάρα), ώστε να αισθάνεστε το όριο. Όλα απενεργοποιημένα από προεπιλογή.</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Αναπαραγωγή απτικής ανάδρασης DualSense σε αυτό το χειριστήριο</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Όταν ένα παιχνίδι οδηγεί αυτή την υποδοχή ως εικονικό DualSense με σχεδιασμένο απτικό ήχο, το κομμάτι αυτό αναπαράγεται στους επενεργητές αυτού του χειριστηρίου. Ένα Steam Controller 2026 μέσω USB ή του dongle του, καθώς και ένα Flydigi Apex 6 Pro, αναπαράγουν το ίδιο το κομμάτι. Κάθε άλλο χειριστήριο, καθώς και αυτό το Steam Controller μέσω Bluetooth, λαμβάνει τόνους που προκύπτουν από τον ήχο, οι οποίοι προσεγγίζουν την αίσθηση που σχεδίασε ο δημιουργός αντί να την αναπαράγουν.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ενίσχυση απτικής ανάδρασης</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Επαναφορά στην προεπιλογή (ανενεργό)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Επαναφορά στην προεπιλογή (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Συχνότητα αποκοπής χαμηλοπερατού φίλτρου επενεργητή</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Κρατά τη ροή απτικής ανάδρασης του Steam Controller κάτω από αυτή τη συχνότητα, ώστε οι επιφάνειες να δονούνται αντί να παράγουν ακουστό ήχο. Γύρω στα 250 Hz οι επενεργητές αρχίζουν να ακούγονται. Αυξήστε την για πιο έντονη λεπτομέρεια, μειώστε την για πιο αθόρυβη λειτουργία.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Επαναφορά σε 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Οι τόνοι πάνω από αυτή τη συχνότητα αποκόπτονται ή μεταφέρονται σε χαμηλότερη οκτάβα. Η προεπιλογή των 800 Hz διατηρεί τη δόνηση κινητήρων και κρούσεων, ενώ πιάνει τα οξέα ηχητικά σήματα.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Επαναφορά υψηλών τόνων</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Επαναφορά ορίου τόνου</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Προφίλ Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Μακροεντολή Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Περιοχή δρομέα</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Μετατόπιση {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Λίστα τροχού ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Περιοχή δείκτη ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Κράτημα ποντικιού {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Κλικ ποντικιού {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Εναλλαγή ποντικιού {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Απτικός παλμός ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ουρά αποδέσμευσης)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Πάτημα {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Αυτόματη βολή {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Κράτημα {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Εναλλαγή {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Διπλό πάτημα {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Παρατεταμένο πάτημα {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Βήμα τροχού ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Εναλλαγή τροχού ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo τροχού ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Μετακίνηση δείκτη ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Ορισμός LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Επανακέντρωση γυροσκοπίου ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Ώθηση δείκτη ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Πλήκτρο στιγμιότυπου ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Εικονικό πληκτρολόγιο ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Ορισμός χρώματος φωτός</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Επανακέντρωση κάμερας</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Μετακίνηση δείκτη</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Ώθηση δείκτη</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Στιγμιότυπο οθόνης</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Εικονικό πληκτρολόγιο</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Αλλαγή επιπέδου μετατόπισης</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ενεργοποίηση επιπέδου μετατόπισης</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Απενεργοποίηση επιπέδου μετατόπισης</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Κράτημα επιπέδου μετατόπισης</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Αλλαγή αριθμού παίκτη</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Χωρίς σύνδεση</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Εναλλαγή λειτουργίας επιφάνειας εργασίας</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Πλήκτρο συστήματος Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Εναλλαγή μεγεθυντικού φακού</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Αύξηση φωτεινότητας</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Μείωση φωτεινότητας</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Απενεργοποίηση χειριστηρίου</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Άνοιγμα διαμορφωτή Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Άνοιγμα γρήγορου μενού Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Έξοδος από το παιχνίδι</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Εναλλαγή απτικής ανάδρασης</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Εναλλαγή HUD του Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Εναλλαγή δόνησης</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Επιβολή κουμπιού Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Περιστροφή βαθμονόμησης γυροσκοπίου</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Στροφή προς την κατεύθυνση</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (κράτημα)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (απελευθέρωση)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (απελευθέρωση)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ενεργοποίηση)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Επιλέξτε μια διαμόρφωση για να δείτε τι μεταφέρεται.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Τι μεταφέρεται</value></data>
@@ -4928,11 +4978,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Επίπεδο</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Επιλέξτε το επίπεδο που επιτρέπει αυτό το μενού. Τα «Οποιοδήποτε επίπεδο» και «Βασικό» το επιτρέπουν κάτω από άλλα ενεργά επίπεδα. Ένα ονομασμένο επίπεδο πρέπει να ταιριάζει με το τρέχον ενεργό επίπεδο.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Επαναφορά σε «Οποιοδήποτε επίπεδο» και απενεργοποίηση του ανοίγματος με κράτημα επιπέδου.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (δεν υπάρχει σε αυτή την υποδοχή)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Το επίπεδο κρατά το μενού ανοιχτό</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Κρατά αυτό το μενού ανοιχτό όσο είναι ενεργό το ονομασμένο επίπεδό του. Η επιλεγμένη φυσική είσοδος κατευθύνει την επισήμανση. Τα «Οποιοδήποτε επίπεδο» και «Βασικό» χρησιμοποιούν το κανονικό άνοιγμα από την επιφάνεια.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Επαναφορά στο άνοιγμα με επαφή ή απόκλιση.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Κατεύθυνση με</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Η φυσική είσοδος που κατευθύνει το επισημασμένο κελί όσο το επίπεδο κρατά αυτό το μενού ανοιχτό.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Διαβάζεται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτή την υποδοχή. Το επίπεδο ανοίγει το μενού και αυτή η είσοδος το κατευθύνει. Τα κελιά του ορίζουν τι δίνει ως έξοδο.</value></data>
@@ -5014,7 +5062,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Κινητήρας</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Διαχωρισμός ανά κατεύθυνση</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Κεντρική νεκρή ζώνη</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Επαναφορά σε «Αριστερός μοχλός X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Επαναφορά ισχύος (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Επαναφορά κεντρικής νεκρής ζώνης (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Επαναφορά ενεργοποίησης δόνησης γωνίας τιμονιού</value></data>
@@ -5681,6 +5728,25 @@
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Προφίλ</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Επίπεδο {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Σκανδάλες: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Φωτεινή μπάρα</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Επιπλέον του {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Φωτεινή μπάρα {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Εκκίνηση προγράμματος</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Εύρος {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Εισαγόμενο προφίλ</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Εισαγόμενη μακροεντολή</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Προρύθμιση {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Ακτινωτό μενού {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Μενού αφής {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Περιοχή ποντικιού</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>πάτημα</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>κράτημα</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>διπλό πάτημα</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Εφέ αριστερής σκανδάλης</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Εφέ δεξιάς σκανδάλης</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Αντιστοίχιση κουμπιών {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Στοιχείο {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Χειριστήριο</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Κρατά τις δικές του εξόδους</value></data>
@@ -6012,7 +6078,7 @@
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>Το DSX δεν δημοσιεύει πώς λειτουργεί η ρύθμισή του {0}, γι' αυτό το PadForge χρησιμοποιεί τη δική του.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>Το DSX δεν δημοσιεύει τους αριθμούς εισόδου του. Τα δημοσιευμένα προφίλ DSX χρησιμοποιούν τους αριθμούς 41 έως 44 για το D-pad, γι' αυτό το PadForge τους διαβάζει έτσι.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>Το DSX δεν γράφει σύνδεση σαν αυτή, επομένως το αρχείο άλλαξε εκτός DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>Το DSX μεταβαίνει σε αυτή την προεπιλογή από μια συντόμευση. Η μακροεντολή της βρίσκεται στη σελίδα Μακροεντολές, έτοιμη να συνδεθεί σε ένα κουμπί.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>Το DSX μεταβαίνει σε αυτή την προεπιλογή από μια συντόμευση. Η μακροεντολή της βρίσκεται στην ενότητα «Μακροεντολές και μενού» του χειριστηρίου, έτοιμη να συνδεθεί σε ένα κουμπί.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Κανένα δημοσιευμένο προφίλ DSX δεν χρησιμοποιεί το {0}, γι' αυτό το PadForge δεν μπορεί να καταλάβει τι κάνει.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>Το DSX αφήνει το παιχνίδι να το ορίζει όσο είναι ενεργός ο διακόπτης διέλευσής του, γι' αυτό και το PadForge το αφήνει στο παιχνίδι.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Στη λειτουργία Native Mode με απενεργοποιημένο το Send Data to Device, το DSX δεν στέλνει τίποτα δικό του στο χειριστήριο, γι' αυτό το PadForge το αφήνει και αυτό στο παιχνίδι.</value></data>

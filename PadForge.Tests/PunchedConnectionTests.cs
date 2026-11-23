@@ -21,6 +21,13 @@ namespace PadForge.Tests
     {
         private static readonly byte[] Caps = { 1, 0 };
 
+        // The punch windows are wide because the fabric delivers each
+        // datagram on the thread pool, which the parallel classes of a full
+        // run can hold for seconds. With the pool held 8 s, a 5 s window ran
+        // out on both sides with no answer, and a 15 s one connected at
+        // 8.2 s. A punch here takes about 0.3 s when the pool is free.
+        private static readonly TimeSpan PunchWindow = TimeSpan.FromSeconds(15);
+
         private static RemotePeerDeviceInfo PadInfo() => new()
         {
             PeerLocalDeviceId = "pad0", Name = "Punch Pad",
@@ -44,18 +51,18 @@ namespace PadForge.Tests
             var trustB = new PeerTrustStore();
             var nonce = new byte[16]; for (int i = 0; i < 16; i++) nonce[i] = (byte)(i + 1);
             Func<PendingPairing, PairingApproval> approve = _ => true;
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(40));
 
             // A initiates (knows B's endpoint), B responds (empty candidates,
             // learns A from the first probe), same as the real code/DHT lane.
             var taskA = PunchedConnection.ConnectInitiatorAsync(
                 a.Punch, a.Control, nonce, new[] { epB },
                 idA, trustA, Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t",
-                TimeSpan.FromSeconds(5), cts.Token);
+                PunchWindow, cts.Token);
             var taskB = PunchedConnection.ConnectResponderAsync(
                 b.Punch, b.Control, nonce, Array.Empty<IPEndPoint>(),
                 idB, trustB, new[] { PadInfo() }, Caps, approve, "t",
-                TimeSpan.FromSeconds(5), cts.Token);
+                PunchWindow, cts.Token);
 
             var rA = await taskA;
             var rB = await taskB;
@@ -106,7 +113,7 @@ namespace PadForge.Tests
             var idB = PeerIdentity.Generate();
             var nonce = new byte[16]; for (int i = 0; i < 16; i++) nonce[i] = (byte)(i + 3);
             Func<PendingPairing, PairingApproval> approve = _ => true;
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(40));
 
             // Role by fingerprint: lower leads. Both compute it consistently.
             bool aLeads = Compare(idA.Fingerprint, idB.Fingerprint) < 0;
@@ -114,11 +121,11 @@ namespace PadForge.Tests
             var taskA = PunchedConnection.ConnectTwoWayAsync(
                 a.Punch, a.Control, nonce, new[] { epB }, aLeads,
                 idA, new PeerTrustStore(), new[] { PadInfo() }, Caps, approve, "t",
-                TimeSpan.FromSeconds(6), cts.Token);
+                PunchWindow, cts.Token);
             var taskB = PunchedConnection.ConnectTwoWayAsync(
                 b.Punch, b.Control, nonce, new[] { epA }, !aLeads,
                 idB, new PeerTrustStore(), new[] { PadInfo() }, Caps, approve, "t",
-                TimeSpan.FromSeconds(6), cts.Token);
+                PunchWindow, cts.Token);
 
             var rA = await taskA;
             var rB = await taskB;

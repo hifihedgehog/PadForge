@@ -1,4 +1,4 @@
-name: Steam Workshop Config
+name: Workshop Profile
 slots: xbox kbm
 xbox rows: 0
 kbm rows: 10

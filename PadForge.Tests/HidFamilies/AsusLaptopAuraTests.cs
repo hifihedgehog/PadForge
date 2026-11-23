@@ -353,6 +353,46 @@ namespace PadForge.Tests
             Assert.DoesNotContain(Sets(other), f => f[2] == 0x02);
         }
 
+        /// <summary>A Scar 18 2026 (board G835L, asusctl's g814ji layout) lights the two ends
+        /// of its lightbar, LEDs 176 and 177. asusctl's layout places only 169 to 174, and
+        /// G-Helper's Strix18 layout, the one it picks for G814, G815, G834 and G835, puts
+        /// 176 at the bar's left end and 177 at its right (AuraKeyboardLayouts.cs:286 and 347
+        /// at aa0037c5). With every light red, the lightbar frame carries red in each of its
+        /// twelve slots, 176 at bytes 9 to 11 and 177 at bytes 42 to 44 (Aura.cs:737).</summary>
+        [Fact]
+        public void AScar18PerKeyMap_HoldsTheLightbarsEnds_AndItsFrameCarriesThem()
+        {
+            var io = Answering(Answered(3));
+            var session = AsusLaptopAura.Begin(io, _ => { }, 0x19B6, new AsusLaptopMachine("ROG Strix SCAR 18 G835LX_G835LX", "G835LX"));
+            var lights = session.Map.Lights;
+            var left = Assert.Single(lights, l => l.Address == 176);
+            var right = Assert.Single(lights, l => l.Address == 177);
+            Assert.Equal((LightKind.Edge, LightKind.Edge), (left.Kind, right.Kind));
+            var leftEnd = lights.Single(l => l.Address == 174);
+            var rightEnd = lights.Single(l => l.Address == 169);
+            Assert.True(left.HasPosition && right.HasPosition);
+            Assert.Equal((leftEnd.X - 1, leftEnd.Y), (left.X, left.Y));
+            Assert.Equal((rightEnd.X + 1, rightEnd.Y), (right.X, right.Y));
+            // The bar's lights are Edge 1 to Edge 8 from left to right, in
+            // G-Helper's order (AuraKeyboardLayouts.cs:286 at aa0037c5).
+            int[] bar8 = { 176, 174, 173, 172, 171, 170, 169, 177 };
+            for (int n = 0; n < bar8.Length; n++)
+                Assert.Equal((bar8[n], n + 1), (bar8[n], session.Map.EdgeNumberOf(lights.ToList().FindIndex(l => l.Address == bar8[n]))));
+            Assert.True(session.Map.Positioned);
+            int before = Sets(io).Count;
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, lights.Select(_ => 0xFF0000).ToList()));
+            var bar = Sets(io).Skip(before).Single(f => f[1] == 0xBC && f[2] == 0x02);
+            Assert.Equal("FF 00 00", Hex(bar.Skip(9).Take(3).ToArray()));
+            Assert.Equal("FF 00 00", Hex(bar.Skip(42).Take(3).ToArray()));
+            for (int k = 0; k < 12; k++) Assert.Equal("FF 00 00", Hex(bar.Skip(9 + k * 3).Take(3).ToArray()));
+            // The other Strix18 boards take the two ends too, and the table alone holds neither.
+            var g834 = AsusLaptopAura.FirstMap(0x19B6, new AsusLaptopMachine("ROG Strix SCAR 18 G834JY", "G834JY"));
+            Assert.Contains(g834.Lights, l => l.Address == 176);
+            Assert.Contains(g834.Lights, l => l.Address == 177);
+            var other = AsusLaptopAura.PerKeyMap(0x19B6, AsusLaptopAura.PerKeyTable(AsusLaptopAura.BoardOf("G834JY", 0x19B6)), false, false);
+            Assert.DoesNotContain(other.Lights, l => l.Address is 176 or 177);
+        }
+
         /// <summary>A keyboard that says per-key, ISO, with a rear strip.</summary>
         [Fact]
         public void APerKeyKeyboard_OpensWithBc00_AndTakesItsLayout()

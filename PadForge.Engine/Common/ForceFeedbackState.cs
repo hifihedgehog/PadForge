@@ -539,11 +539,13 @@ namespace PadForge.Engine
                 return;
             }
 
-            // Scalar values are already audio-mixed and gain/swap-scaled by
-            // InputManager.ComputeFinalVibrationStates so the Force Feedback group activity
-            // meter, the SDL physical-rumble path, and the DS5/DS4 effect
-            // packet stay in sync. Reapplying leftGain/rightGain/overallGain/
-            // swap here would double-attenuate. The directional/haptic
+            // Scalar values are already audio-mixed and gain/swap-scaled:
+            // InputManager.ApplyForceFeedback runs ScaleRumbleForDevice for
+            // this device once for each slot it is mapped to, with that
+            // (device, slot) PadSetting, and passes the max of the results
+            // here.
+            // Reapplying leftGain/rightGain/overallGain/swap here would
+            // double-attenuate. The directional/haptic
             // branches above still consume overallGain via SignedMagnitude
             // scaling — that's intentional and stays.
             ushort finalLeft = v.LeftMotorSpeed;
@@ -912,8 +914,8 @@ namespace PadForge.Engine
 
         /// <summary>The one predicate for "this device may hold the software
         /// auto-center spring", shared verbatim by the Wheel group's
-        /// hasGenericWheel gate (PadPage.SyncTabVisibility) so the tab and the
-        /// spring can never disagree (#282: the tab appeared or the slider
+        /// hasGenericWheel gate (PadPage.SyncTabVisibility) so the Wheel group
+        /// and the spring can never disagree (#282: the tab appeared or the slider
         /// worked, never reliably both, when the two sites drifted).
         ///
         /// <para>The old clause here was NumHapticAxes &lt;= 1. That hid the

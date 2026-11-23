@@ -163,19 +163,6 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void BtNeverDualSends_OneReportIdIsOneStream()
-        {
-            // The first cut sent Headset + Speaker on both lanes, two 0x35
-            // reports per tick on one seq counter: each lane's stream saw
-            // +2 sequence jumps and the firmware garbled it, the documented
-            // 2026-07-31 warble signature, heard again by the owner on
-            // hardware. One report id carries ONE stream. The split path
-            // rides the headset lane plus the OutputPathSelect register.
-            foreach (AudioOutputPath p in System.Enum.GetValues<AudioOutputPath>())
-                Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes((int)p));
-        }
-
-        [Fact]
         public void BtMonoFold_AveragesPairsInPlaceAndClamps()
         {
             var frame = new float[] { 0.5f, -0.25f, 1f, 1.5f };

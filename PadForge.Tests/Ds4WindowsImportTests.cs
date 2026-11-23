@@ -1684,7 +1684,7 @@ namespace PadForge.Tests
 
         // ── Special actions and auto profiles, beside the Profiles folder ──
 
-        private sealed class Ds4Folder : IDisposable
+        internal sealed class Ds4Folder : IDisposable
         {
             public readonly string Root = Path.Combine(Path.GetTempPath(), "pf-561-" + Guid.NewGuid().ToString("N"));
             public string ProfilePath => Path.Combine(Root, "Profiles", "Shooter.xml");
@@ -1757,6 +1757,37 @@ namespace PadForge.Tests
             Assert.Equal(mode, release.TriggerMode);
             Assert.Equal(MacroLatchDirection.Off, Only(release).LatchDirection);
             Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
+        }
+
+        /// <summary>No importer writes an English word into a macro's or a
+        /// profile's name: each comes from the string table. That covers
+        /// SettingsManager.UniqueProfileName, which names every imported
+        /// profile, a .pfprofile with an empty name included, and the Steam
+        /// Workshop translator's macro and layer names and its names for an
+        /// unnamed preset, menu or config, with the browser's preset chips
+        /// that must read the same.</summary>
+        [Fact]
+        public void TheImportersNameMacrosFromTheStringTable()
+        {
+            var sources = new System.Collections.Generic.List<(string File, string Text)>();
+            foreach (string file in new[] { "DsxTranslator.cs", "Ds4WindowsTranslator.cs", "RewasdTranslator.cs", "ImportBuilder.cs" })
+                sources.Add((file, ExtrasPageTests.RepoText("PadForge.App", "Common", "ConfigImport", file)));
+            sources.Add(("SettingsManager.cs", ExtrasPageTests.RepoText("PadForge.App", "Common", "SettingsManager.cs")));
+            sources.Add(("ConfigTranslator.cs", ExtrasPageTests.RepoText("PadForge.SteamWorkshop", "Translation", "ConfigTranslator.cs")));
+            sources.Add(("CommunityConfigsPanel.xaml.cs", ExtrasPageTests.RepoText("PadForge.App", "Views", "CommunityConfigsPanel.xaml.cs")));
+            foreach (var (file, source) in sources)
+            {
+                foreach (string literal in new[]
+                {
+                    "\"Triggers: \"", "\" (release)\"", "Name = \"Lightbar\"", "\" extras\"", "\" lightbar\"",
+                    "Name = \"LaunchProgram\"", "\" range\"", "\"Imported profile\"", "\"Imported macro\"",
+                    "name + \" (\" + gesture + \")\"", "MappingLabel + \" \" + string.Join",
+                    "\"Preset \"", "\"Mouse region\"",
+                    "$\"Preset {", "\"Radial\" : \"Touch\"", " Menu {menuId}",
+                    "Name = $\"", "} shift\"", "(release tail)\"", "\"Steam Workshop Config\"",
+                })
+                    Assert.False(source.Contains(literal, StringComparison.Ordinal), $"{file} names a macro with {literal}");
+            }
         }
 
         [Fact]

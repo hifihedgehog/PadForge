@@ -594,7 +594,7 @@ namespace PadForge.Services
                         MouseButton = mouseButton,
                         LatchDirection = ViewModels.MacroLatchDirection.Off,
                     },
-                m.DelayEndMs, Strings.Instance.Workshop_ReleaseMacroName_Format, untilRelease: false);
+                m.DelayEndMs, Strings.Instance.Common_ReleaseMacroName_Format, untilRelease: false);
             if (press == null || release == null) return Array.Empty<MacroData>();
             return new[] { press, release };
         }
@@ -826,7 +826,7 @@ namespace PadForge.Services
             }
 
             var engage = Build(MacroTriggerMode.OnPress, Strings.Instance.Workshop_EngageMacroName_Format);
-            var release = Build(MacroTriggerMode.OnRelease, Strings.Instance.Workshop_ReleaseMacroName_Format);
+            var release = Build(MacroTriggerMode.OnRelease, Strings.Instance.Common_ReleaseMacroName_Format);
             if (engage == null || release == null) return Array.Empty<MacroData>();
             return new[] { engage, release };
         }

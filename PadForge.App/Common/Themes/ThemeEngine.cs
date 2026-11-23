@@ -92,9 +92,33 @@ namespace PadForge.Common.Themes
                 ground = new Lch(lightness, asked.C, asked.H).ToColor();
             }
             // A mark has to read where it is drawn.
-            _accent = Lch.From(Held(seeds.Accent ?? StockAccent, MarkContrast));
+            Color accent = Held(seeds.Accent ?? StockAccent, MarkContrast);
+            _accent = Lch.From(accent);
+            // Words on the accent's fill are in the dark ink or in white. An
+            // accent where neither reads is moved the short way to the one
+            // that reads there: lighter on a dark base, where it also reads
+            // more as a mark, and darker on a light one.
+            Color darkInk = DarkInk();
+            if (ThemeColor.Contrast(darkInk, accent) < TextContrast && ThemeColor.Contrast(Colors.White, accent) < TextContrast)
+            {
+                accent = ThemeColor.Reads(accent, _dark ? darkInk : Colors.White, TextContrast);
+                _accent = Lch.From(accent);
+            }
             _secondary = Lch.From(seeds.Secondary ?? StockSecondary(_dark));
             _attention = Lch.From(seeds.Attention ?? StockAttention(_dark));
+        }
+
+        /// <summary>The stock dark ink: the words on an ember fill.</summary>
+        internal static readonly Color StockInk = Color.FromRgb(0x16, 0x0A, 0x03);
+
+        /// <summary>The dark ink at the theme's accent: the stock ink's
+        /// lightness, with a little of the accent's hue.</summary>
+        internal Color DarkInk()
+        {
+            var c = Lch.From(StockInk);
+            double hue = _accent.H + (c.H - _refAccent.H);
+            double chroma = Math.Min(c.C * (_refAccent.C > 0.001 ? _accent.C / _refAccent.C : 1), Math.Max(_accent.C * 1.3, 0.02));
+            return ThemeColor.WithLuma(ThemeColor.Luma(StockInk), Math.Min(chroma, 0.03), hue);
         }
 
         /// <summary>A color moved until it reads at the ratio on a card
@@ -147,10 +171,14 @@ namespace PadForge.Common.Themes
             var before = new Dictionary<object, object>();
             var added = new List<object>();
 
+            // A key set twice keeps what it held before the first.
             void Set(object key, object themed)
             {
-                if (IsOwn(res, key)) before[key] = res[key];
-                else added.Add(key);
+                if (!before.ContainsKey(key) && !added.Contains(key))
+                {
+                    if (IsOwn(res, key)) before[key] = res[key];
+                    else added.Add(key);
+                }
                 res[key] = themed;
             }
 
@@ -160,12 +188,18 @@ namespace PadForge.Common.Themes
                     Set(page, Frozen(new SolidColorBrush(_background.Value)));
                     keys.Remove(page);
                 }
+            // Home's engine card is the card in force, which ThemeManager
+            // sets once the engine is done (it is no stock color to map).
+            keys.Remove(EmberTheme.HomeEngineCardKey);
             foreach (object key in keys)
             {
                 if (key is not string name) continue;
                 object themed = Transform(name, app.TryFindResource(key));
                 if (themed != null) Set(key, themed);
             }
+            // The words on the accent's fills, from the fills as mapped.
+            HoldButtonInk(key => IsOwn(res, key) ? res[key] : app.TryFindResource(key), key => IsOwn(res, key),
+                (key, value) => Set(key, value), DarkInk(), _card, _page);
             return () =>
             {
                 foreach (var pair in before) res[pair.Key] = pair.Value;
@@ -173,7 +207,99 @@ namespace PadForge.Common.Themes
             };
         }
 
-        private static bool IsOwn(ResourceDictionary res, object key)
+        /// <summary>A fill a button's words stand on: the key it is read
+        /// from, the color key behind it when the application holds no
+        /// brush of that name (wpf-ui's own brushes bind their color), and
+        /// what a fill moved to read is written to.</summary>
+        private sealed record InkFill(string Key, string ColorKey, string[] Writes);
+
+        /// <summary>The words of each filled button and the fills they
+        /// stand on, the fill at rest first: the ember button in its three
+        /// states, and wpf-ui's Primary button, whose words at rest stay
+        /// under the pointer and whose pressed words are
+        /// AccentButtonForegroundPointerOver (its template's
+        /// PressedForeground). AccentButtonForegroundPressed goes with them.</summary>
+        private static readonly (string[] Inks, InkFill[] Fills)[] InkGroups =
+        {
+            (new[] { "EmberInkBrush" }, new[]
+            {
+                new InkFill("EmberBrush", null, Array.Empty<string>()),
+                new InkFill("EmberLiftBrush", null, new[] { "EmberLiftBrush" }),
+                new InkFill("EmberPressBrush", null, new[] { "EmberPressBrush" }),
+            }),
+            (new[] { "AccentButtonForeground" }, new[]
+            {
+                new InkFill("AccentButtonBackground", "AccentFillColorDefault", new[] { "AccentFillColorDefault", "AccentFillColorDefaultBrush" }),
+                new InkFill("AccentButtonBackgroundPointerOver", "AccentFillColorSecondary", new[] { "AccentFillColorSecondary", "AccentFillColorSecondaryBrush" }),
+            }),
+            (new[] { "AccentButtonForegroundPointerOver", "AccentButtonForegroundPressed" }, new[]
+            {
+                new InkFill("AccentButtonBackgroundPressed", "AccentFillColorTertiary", new[] { "AccentFillColorTertiary", "AccentFillColorTertiaryBrush" }),
+            }),
+        };
+
+        /// <summary>
+        /// Chooses the words of each filled button (#591): the dark ink
+        /// where it reads at the text contrast on every fill the words stand
+        /// on, else white where white does. Where neither does, the words
+        /// take the ink that reads better on the fill at rest, and a fill
+        /// they do not read on is moved until they do. PadForge's own looks
+        /// never need a fill moved: one of the two inks reads on all of a
+        /// button's fills. A fill with some alpha is read over a card and
+        /// over the page.
+        /// </summary>
+        internal static void HoldButtonInk(Func<string, object> find, Func<string, bool> own, Action<string, object> set, Color darkInk, Color card, Color page)
+        {
+            Color? Read(string key) => find(key) switch
+            {
+                SolidColorBrush brush => Color.FromArgb((byte)Math.Round(brush.Color.A * brush.Opacity), brush.Color.R, brush.Color.G, brush.Color.B),
+                Color color => color,
+                _ => null,
+            };
+            Color? FillOf(InkFill fill)
+            {
+                // The application's own brush stands over wpf-ui's, whose
+                // color is a by-name reference that a batched change has
+                // not reached yet: that one is read from its color key.
+                if (fill.ColorKey == null || own(fill.Key)) return Read(fill.Key);
+                return Read(fill.ColorKey);
+            }
+            double Worst(Color ink, Color fill) => Math.Min(ThemeColor.Contrast(ink, Over(fill, card)), ThemeColor.Contrast(ink, Over(fill, page)));
+
+            foreach (var (inks, fills) in InkGroups)
+            {
+                var colors = new Color?[fills.Length];
+                for (int i = 0; i < fills.Length; i++) colors[i] = FillOf(fills[i]);
+                if (colors[0] == null) continue;
+                bool Holds(Color ink) => colors.All(c => c == null || Worst(ink, c.Value) >= TextContrast);
+                Color chosen = Holds(darkInk) ? darkInk
+                    : Holds(Colors.White) ? Colors.White
+                    : Worst(darkInk, colors[0].Value) >= Worst(Colors.White, colors[0].Value) ? darkInk : Colors.White;
+                for (int i = 0; i < fills.Length; i++)
+                {
+                    if (colors[i] == null || Worst(chosen, colors[i].Value) >= TextContrast || fills[i].Writes.Length == 0) continue;
+                    // Moved where it stands on a card: it is solid from here on.
+                    Color moved = ThemeColor.Reads(Over(colors[i].Value, card), chosen, TextContrast);
+                    foreach (string write in fills[i].Writes)
+                        set(write, write.EndsWith("Brush", StringComparison.Ordinal) ? Frozen(new SolidColorBrush(moved)) : moved);
+                    if (fills[i].ColorKey != null && own(fills[i].Key)) set(fills[i].Key, Frozen(new SolidColorBrush(moved)));
+                }
+                foreach (string ink in inks) set(ink, Frozen(new SolidColorBrush(chosen)));
+            }
+        }
+
+        /// <summary>A color laid over a solid ground, as WPF draws it.</summary>
+        private static Color Over(Color color, Color ground)
+        {
+            if (color.A == 255) return color;
+            double a = color.A / 255.0;
+            static byte Mix(byte top, byte under, double share) => (byte)Math.Round(top * share + under * (1 - share));
+            return Color.FromRgb(Mix(color.R, ground.R, a), Mix(color.G, ground.G, a), Mix(color.B, ground.B, a));
+        }
+
+        /// <summary>Whether the dictionary holds the key itself. Contains
+        /// also answers for its merged dictionaries.</summary>
+        internal static bool IsOwn(ResourceDictionary res, object key)
         {
             foreach (object own in res.Keys) if (Equals(own, key)) return true;
             return false;
@@ -229,8 +355,15 @@ namespace PadForge.Common.Themes
         {
             "EmberTextBrush", "EmberHotBrush", "DangerInkBrush", "LinkHoverBrush", "ColdBrush", "InputChipTextBrush",
             "WaitBrush", "WaitTextBrush", "WaitMutedBrush", "AccentTextFillColorPrimaryBrush", "AccentTextFillColorSecondaryBrush",
-            "AccentTextFillColorTertiaryBrush",
+            "AccentTextFillColorTertiaryBrush", "SystemFillColorCautionBrush",
+            "ChannelRedBrush", "ChannelGreenBrush", "ChannelBlueBrush",
         };
+
+        // Gold words that also stand in a wait box and on a wait tint, and
+        // the stock values of those two grounds on each base.
+        private static readonly HashSet<string> WaitTextKeys = new(StringComparer.Ordinal) { "WaitBrush", "WaitTextBrush", "WaitMutedBrush" };
+        private static Color StockWaitWell(bool dark) => dark ? Color.FromRgb(0x17, 0x15, 0x0F) : Color.FromRgb(0xFF, 0xF6, 0xDF);
+        private static Color StockWaitTint(bool dark) => dark ? Color.FromArgb(0x1A, 0xF2, 0xB8, 0x4B) : Color.FromArgb(0x24, 0xB0, 0x7C, 0x10);
 
         // The steel text steps and the contrast each holds on a card.
         private static readonly Dictionary<string, double> SteelText = new(StringComparer.Ordinal)
@@ -245,7 +378,9 @@ namespace PadForge.Common.Themes
             {
                 if (AccentKeys.Any(p => key.StartsWith(p, StringComparison.Ordinal))) return Family.Accent;
                 if (key.StartsWith("Cold", StringComparison.Ordinal) || key.StartsWith("InputChip", StringComparison.Ordinal)) return Family.Secondary;
-                if (key.StartsWith("Wait", StringComparison.Ordinal)) return Family.Attention;
+                if (key.StartsWith("Wait", StringComparison.Ordinal) || key.StartsWith("SystemFillColorCaution", StringComparison.Ordinal)) return Family.Attention;
+                // A light's red, green and blue keep their hue in every look.
+                if (key.StartsWith("Channel", StringComparison.Ordinal)) return Family.None;
             }
             if (c.C < 0.012) return Family.Steel;
             if (c.H >= 15 && c.H < 68 && c.C >= 0.03) return Family.Accent;
@@ -270,12 +405,27 @@ namespace PadForge.Common.Themes
                 case Family.Secondary: mapped = Tinted(c, color, _refSecondary, _secondary, false); break;
                 case Family.Attention: mapped = Tinted(c, color, _refAttention, _attention, false); break;
                 case Family.Steel: mapped = Steel(color); break;
-                default: return color;
+                default:
+                    // A color of no family keeps itself, and text of no
+                    // family is still held where it reads.
+                    if (key == null || !TextKeys.Contains(key)) return color;
+                    mapped = color;
+                    break;
             }
             if (key != null && color.A == 255)
             {
                 if (TextKeys.Contains(key)) mapped = Held(mapped, TextContrast);
                 if (SteelText.TryGetValue(key, out double ratio)) mapped = Held(mapped, ratio);
+                if (WaitTextKeys.Contains(key))
+                {
+                    // Also where gold words stand: in a wait box and on the
+                    // wait tint over a card. Each step moves the text the
+                    // base's way, lighter on dark and darker on light, so it
+                    // undoes none of the hold on a card and the page.
+                    Color tint = Map("WaitTintBrush", StockWaitTint(_dark));
+                    mapped = ThemeColor.Reads(mapped, Map("WaitWellBrush", StockWaitWell(_dark)), TextContrast, _dark);
+                    mapped = ThemeColor.Reads(mapped, Over(tint, _card), TextContrast, _dark);
+                }
             }
             return Color.FromArgb(color.A, mapped.R, mapped.G, mapped.B);
         }
@@ -289,13 +439,9 @@ namespace PadForge.Common.Themes
             double hue = seed.H + (c.H - reference.H);
             double chroma = Math.Min(c.C * (reference.C > 0.001 ? seed.C / reference.C : 1), Math.Max(seed.C * 1.3, 0.02));
             bool bright = _dark ? c.L >= 0.45 : c.L <= 0.80;
-            if (ink)
-            {
-                // Words on the accent's fill: the dark ink when it reads there, else white.
-                Color fill = seed.ToColor();
-                Color darkInk = ThemeColor.WithLuma(ThemeColor.Luma(color), Math.Min(chroma, 0.03), hue);
-                return ThemeColor.Contrast(darkInk, fill) >= TextContrast ? darkInk : Colors.White;
-            }
+            // Words on the accent's fills: the dark ink. Apply then takes
+            // white where the dark ink does not read on a fill (HoldButtonInk).
+            if (ink) return DarkInk();
             if (bright)
                 return new Lch(Math.Clamp(c.L + (seed.L - reference.L), 0.04, 0.985), chroma, hue).ToColor();
             return ThemeColor.WithLuma(Math.Clamp(ThemeColor.Luma(color) + (_groundLuma - _refGroundLuma), 0, 1), chroma, hue);

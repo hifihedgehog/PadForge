@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>在線</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>離線</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>未知</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>預設</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>瀏覽…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>繼續</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>引擎已停止。</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>錯誤：{0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>無法建立 {0}。</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>有裝置無法開啟、讀取或對應。診斷記錄會列出該裝置。</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} 發生錯誤。診斷記錄載有原因。</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>輸入引擎發生錯誤。診斷記錄載有原因。</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL 無法啟動。診斷記錄載有原因。</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro 無法完成設定。診斷記錄載有原因。</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>有虛擬控制器的 HIDMaestro 設定檔已遺失。診斷記錄會列出該控制器。</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} 無法套用自訂的身分與配置，改用其設定檔原有的設定。</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>已切換設定檔：{0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>已切換設定檔：預設</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>預設</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>體感伺服器連接埠</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>為 Cemu、Dolphin、Yuzu 等提供陀螺儀和加速度計數據。</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>遊戲模組</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>讓為 DSX 製作的遊戲模組可以設定你的 PlayStation 控制器的自適應扳機、光條、玩家指示燈和靜音燈。</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>讓為 DSX 製作的遊戲模組可以設定 DualSense 或 DualShock 4 的自適應扳機、光條、玩家指示燈和靜音燈。</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>接受 DSX 遊戲模組</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>遊戲模組連接埠</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>執行 DSX.exe 替身程式</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>部分模組（例如 DualSense4GTAV）在沒有名為 DSX 的程式執行時會自行關閉。伺服器監聽期間，這會執行一個同名的小型替身程式。</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>適用於為 DSX 製作的模組，例如 GTA V、Red Dead Redemption 2、Skyrim 和 Forza 的模組。伺服器監聽期間，PadForge 會把連接埠寫入這些模組查找的位置。</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>正在監聽 :{0}。{1} 正在傳送至虛擬控制器 {2}。</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>正在監聽 :{0}。{1} 正在傳送，但沒有任何虛擬控制器連接 PlayStation 控制器。</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>正在監聽 :{0}。{1} 正在傳送至控制器索引 {2}，但沒有任何接有 PlayStation 控制器的虛擬控制器使用該索引。</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>正在監聽 :{0}。{1} 正在傳送，但沒有任何虛擬控制器連接 DualSense 或 DualShock 4。</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>正在監聽 :{0}。{1} 正在傳送至控制器索引 {2}，但沒有任何接有 DualSense 或 DualShock 4 的虛擬控制器使用該索引。</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>連接埠 {0} 已被另一個程式（例如 DSX）佔用。請關閉該程式或選擇其他連接埠。</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>某個遊戲模組</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>適用於 OpenTrack 以及任何能傳送其 UDP 輸出或寫入 FreeTrack 2.0 共用記憶體的追蹤器，亦適用於這部電腦上能在背景執行工作階段的 OpenXR 執行階段。</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>找不到檔案</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>無法讀取</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>「{0}」的檔案已遺失或無法讀取。在檔案復原前，PadForge 會顯示深色。</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>「{0}」的檔案不含 PadForge 主題。在檔案含有主題前，PadForge 會顯示深色。</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>設定檔「{0}」正在使用其遊戲的外觀。切換到其他設定檔後，會恢復你的主題。</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge 主題 (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>該檔案不是 PadForge 主題。</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge 無法讀取該檔案。</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge 找不到該檔案。</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>不是主題</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>無法儲存主題。{0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>新增主題</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>建立主題時，PadForge 會即時套用。</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>正在從 Steam 取得圖片…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam 沒有這款遊戲的寬幅圖片。</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>無法連接 Steam。請檢查你的連線。</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge 無法讀取 Steam 提供的這款遊戲圖片。</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>位置</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>在視窗內上下移動圖片。</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>顯示遊戲標誌</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>控制器沒有接收讓它作好準備的指令，所以沒有傳送任何內容。請檢查它是否已連接，然後再次傳送。</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>傳送因 PadForge 的錯誤而停止。記錄檔有詳細資料。</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>圖片仍在傳送到控制器。要停止傳送嗎？</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>繼續傳送</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak 檔案 (*.mpk)|*.mpk|所有檔案 (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak 連接埠 {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>還原 Controller Pak</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脈動衰減</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>預設集</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>自訂</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0}（使用者建立）</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>搖桿</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳機</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV 帽</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>此控制器設有磁力計。把偏航錨定到磁北，可消除陀螺儀瞄準時緩慢的水平漂移。請先校準：按「校準」，以 8 字形轉動控制器數秒，讓它經過所有方向，然後再按一次。</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>把偏航錨定到指南針</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>加入一個細微的修正速率，把水平瞄準拉向磁航向，令漂移無法累積。需要已儲存的磁力計校準。受附近金屬或磁鐵干擾的樣本會自動剔除。</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>重設為預設值（關閉）</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>俯仰和橫滾模擬</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>由加速計推算俯仰和橫滾</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>此控制器的陀螺儀只能感應左右轉動。開啟模擬後，PadForge 會從加速度計推算俯仰和橫滾，並連同陀螺儀的偏航一併傳送到對應列和虛擬控制器的體感。加速度計無法分辨推動和傾斜，因此把控制器向側面或向前移動而沒有轉動時，會被讀成短暫的旋轉。</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>把搖桿沿邊緣轉一圈，以量度可到達的邊界，然後把它重塑為完整的圓形。</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>重設邊界校準</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>重設中心偏移 Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>重設為縮放徑向</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>重設死區 X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>重設死區 Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>重設反死區 X</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>重設 Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>每 360° 點數</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>鏡頭轉動一整圈 360° 所需的滑鼠計數。取決於遊戲的滑鼠靈敏度：若甩動後轉得不足便調高，轉得過多便調低。</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>重設為 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>甩動時間</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>完成一次完整 180° 甩動所需的時間，並帶有緩出效果。較小的轉向亦會在相同時間內完成。</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>重設為 0.1 秒</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>甩動閾值</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>開始甩動所需的搖桿推動幅度，以最大幅度的比例表示。甩動期間，放開點會降至此值的 90%。</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>重設為 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>貼齊角度</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>把甩動貼齊到固定角度，令轉向更一致。「只限正前方」會把每次甩動都貼齊到正前方。</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>不貼齊</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 度</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 度</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 度</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>重設為不貼齊</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>貼齊強度</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>甩動被拉向貼齊角度的強度。1 為完全貼齊，0 為停用貼齊，介乎兩者之間的數值則按比例混合。</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>重設為 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>正前方角度死區</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>與正前方相差在此角度以內的甩動不會轉向。讓你可以在不觸發甩動轉向的情況下開始沿邊轉動。</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>重設為 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>沿邊轉動平滑</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>平滑沿邊轉動時的雜訊。-1 會使用自動分級的時間窗，0 會關閉平滑，數值越大，可平滑每個週期越大的旋轉。</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>重設為自動（-1）</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>生效時允許甩動</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>旋轉偏移</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>把整個甩動方向對照轉動這個度數。正值為順時針。貼齊會在偏移之後套用。</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>重設旋轉偏移</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>當 Flick Stick 所在的層生效時，若搖桿已被推動，便立即執行甩動。關閉時鏡頭會保持不動，並由搖桿目前的角度開始追蹤旋轉。</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>重設生效時允許甩動</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>轉向極限回饋</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>搖桿在轉向模式下到達極限時的提示</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>當設為轉向模式的搖桿轉到盡頭的極限位置時，發出提示（震動、扳機或光條），讓你感受到極限。預設全部關閉。</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>在此控制器上播放 DualSense 觸覺回饋</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>當遊戲把此插槽當作虛擬 DualSense 驅動，並附有專門製作的觸覺音訊時，會在此控制器的致動器上播放該音軌。經 USB 或其專用接收器連接的 Steam Controller 2026，以及 Flydigi Apex 6 Pro，會直接播放該音軌。其他所有控制器，以及經藍牙連接的該 Steam Controller 2026，則會收到由音訊衍生的音調，只能近似設計者原本的手感，而非如實重現。</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>觸覺回饋增益</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>重設為預設值（關閉）</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>重設為預設值（100%）</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>致動器低通截止頻率</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>把 Steam Controller 的觸覺回饋串流保持在此頻率以下，令觸控板只會震動，而不會發出可聽見的聲音。到 250 Hz 左右，致動器便開始發出聲響。調高可得到更清晰的細節，調低則較安靜。</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>重設為 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>高於此頻率的音調會被截去或摺疊。預設的 800 Hz 可保留引擎和撞擊的震動，同時攔下高音的嗶聲。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>重設高音</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重設音調上限</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop 設定檔</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop 巨集</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>游標區域</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} 轉換</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>滾輪清單（{0}）</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>游標區域（{0}）</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>按住滑鼠{0}（{1}）</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>點按滑鼠{0}（{1}）</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>切換滑鼠{0}（{1}）</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>觸覺脈衝（{0}）</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0}（放開後段）</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>輕按 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>自動連發 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>按住 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>切換 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>連發 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>連按兩下 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>長按 {0}（{1}）</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>滾輪一格（{0}）</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>切換滾輪（{0}）</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>連發滾輪（{0}）</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>瞬移游標（{0}）</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>設定 LED（{0}）</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>重設陀螺儀中心（{0}）</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>微移游標（{0}）</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>螢幕截圖鍵（{0}）</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>螢幕鍵盤（{0}）</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>設定燈光顏色</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>重設鏡頭中心</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>瞬移游標</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>微移游標</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>螢幕截圖</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>螢幕鍵盤</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>切換轉換層</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>開啟轉換層</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>關閉轉換層</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>按住轉換層</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>更改玩家編號</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>未綁定</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>切換桌面模式</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam 系統鍵</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>切換放大鏡</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>調高亮度</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>調低亮度</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>關閉控制器電源</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>開啟 Steam 配置工具</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>開啟 Steam 快速選單</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>結束遊戲</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>切換觸覺回饋</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>切換 Steam HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>切換震動</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>強制按下 Guide 鍵</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>陀螺儀旋轉校正</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>轉向面對方向</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0}（按住）</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0}（放開）</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0}（放開）</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0}（進入）</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>選擇配置以查看會轉換哪些內容。</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>轉換內容</value></data>
@@ -4928,11 +4978,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>層</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>選擇容許此選單的層。「任何層」和「基礎層」在其他層生效時同樣容許此選單。已命名的層則必須與目前生效的層相符。</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>重設為「任何層」，並關閉由層保持開啟。</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0}（不在此插槽的清單內）</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>由層保持選單開啟</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>在其已命名的層生效期間保持此選單開啟。所選的實體輸入會操控醒目提示。「任何層」和「基礎層」則使用一般的表面開啟方式。</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>重設為在觸碰或推動時開啟。</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>操控輸入</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>層保持此選單開啟期間，用來操控醒目提示格子的實體輸入。</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>從指派到此插槽的實體控制器讀取。層負責開啟選單，而此輸入負責操控。選單的格子決定其輸出。</value></data>
@@ -5014,7 +5062,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>馬達</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>按方向分開</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中央死區</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>重設為左搖桿 X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>重設強度（50%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>重設中央死區（2%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>重設啟用轉向角度震動</value></data>
@@ -5681,6 +5728,25 @@
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>設定檔</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>層 {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>扳機：{0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>光條</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} 額外動作</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} 光條</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>啟動程式</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0}範圍</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>匯入的設定檔</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>匯入的巨集</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>預設集 {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>輪盤選單 {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>觸控選單 {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>滑鼠區域</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0}（{1}）</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>輕觸</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>按住</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>輕觸兩下</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>左扳機效果</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>右扳機效果</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>按鈕對應 {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>項目 {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>控制器</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>保留自身輸出</value></data>
@@ -6012,7 +6078,7 @@
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX 並未公開其「{0}」設定的作用，因此 PadForge 使用自己的方式。</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX 並未公開其輸入數字。已公開的 DSX 設定檔以 41 至 44 作為十字鍵，因此 PadForge 也按此讀取。</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX 不會寫出這樣的綁定，因此此檔案曾在 DSX 以外被修改。</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX 會透過快速鍵切換到此預設。其巨集已放在「巨集」頁面，可隨時綁定到按鈕。</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX 會透過快速鍵切換到此預設。其巨集已放在控制器的「巨集與選單」區段，可隨時綁定到按鈕。</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>已公開的 DSX 設定檔都沒有使用 {0}，因此 PadForge 無法得知它的作用。</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX 的直通開關開啟時，此項由遊戲自行設定，因此 PadForge 也交由遊戲處理。</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>在 Native Mode 下關閉 Send Data to Device 時，DSX 不會向控制器發送任何自己的資料，因此 PadForge 也將此項交由遊戲處理。</value></data>

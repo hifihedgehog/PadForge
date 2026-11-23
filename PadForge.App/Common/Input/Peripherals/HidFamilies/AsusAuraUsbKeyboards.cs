@@ -125,7 +125,7 @@ namespace PadForge.Common.Input.Peripherals
             var set = AsusAuraTables.KeyboardSet(setName);
             var layout = set?.Find(region);
             string product = ProductKey(productId, setName + ":" + region);
-            if (layout == null) return new LightMap(Array.Empty<LightInfo>(), "OpenRGB " + setName) { Product = product };
+            if (layout == null) return new LightMap(Array.Empty<LightInfo>()) { Product = product };
             var uk = set.Find(AsusAuraTables.RegionUk);
             var cells = AsusAuraTables.Cells(layout.Matrix, layout.Rows, layout.Cols, layout.Leds.Length);
             // OpenRGB's grid for the Strix Scope TKL numbers another order than its list of LEDs, so
@@ -148,7 +148,7 @@ namespace PadForge.Common.Input.Peripherals
                 var (row, col) = cells[i];
                 lights[i] = row < 0 || !placed ? light : light with { X = col, Y = row, Width = 1, Height = 1, HasPosition = true };
             }
-            return new LightMap(lights, "OpenRGB " + set.Source) { Product = product };
+            return new LightMap(lights) { Product = product };
         }
 
         private HidLightingModel Keyboard(string name, int productId, int release)

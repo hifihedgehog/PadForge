@@ -161,7 +161,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name,
-                Map = new LightMap(Lights(key), "OpenRGB ClevoKeyboardController")
+                Map = new LightMap(Lights(key))
                 {
                     Product = $"clevo:048D:{productId:X4}" + (key.Length > 0 && !ite829x ? ":" + key : ""),
                 },

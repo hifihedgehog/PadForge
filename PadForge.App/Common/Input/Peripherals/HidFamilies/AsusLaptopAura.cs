@@ -37,6 +37,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// <summary>The Scar 18 2026, ContainsModel("G835") (Aura.cs:737 at aa0037c5).</summary>
         public bool Scar18Lightbar => Has("G835");
 
+        /// <summary>The models G-Helper lays out as Strix18 (AuraKeyboardLayouts.cs:347 at
+        /// aa0037c5), whose front lightbar runs from LED 176 on the left to LED 177 on the
+        /// right (line 286).</summary>
+        public bool Strix18Layout => Has("G814", "G815", "G834", "G835");
+
         /// <summary>IsNoDirectRGB, with IsSlash and IsSlashLong (AppConfig.cs:570-573 and 495-503).</summary>
         public bool NoDirectColor => Has("GA503", "G533Q", "GU502", "GA403", "GU605", "GA605", "GA405", "GU405", "GU606", "GX651");
 
@@ -280,7 +285,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         private static string ProductKey(int productId, string detail) => $"asus:{VendorId:X4}:{productId:X4}:{detail}";
 
         internal static LightMap WholeMap(int productId, string detail = "laptop-whole")
-            => new(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }, "G-Helper app/USB/Aura.cs")
+            => new(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } })
             {
                 Product = ProductKey(productId, detail),
             };
@@ -293,15 +298,18 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             if (lightbar)
                 for (int i = 0; i < ZonesLightbarLights; i++)
                     lights.Add(new LightInfo(ZonesLightbarFirst + i, LightKind.Edge, 0, LightKeySource.None));
-            return new LightMap(lights, "G-Helper app/USB/Aura.cs") { Product = ProductKey(productId, lightbar ? "laptop-zones-bar" : "laptop-zones") };
+            return new LightMap(lights) { Product = ProductKey(productId, lightbar ? "laptop-zones-bar" : "laptop-zones") };
         }
 
         /// <summary>The lights of a per-key keyboard. On ISO, LED 96 is the key beside
         /// Enter and LED 106 the key beside Left Shift (G-Helper's packetMap names them #
-        /// and ISO\, Aura.cs:570-573). On ANSI they sit under Enter and Left Shift.</summary>
-        internal static LightMap PerKeyMap(int productId, PluginKeyTable table, bool iso, bool rearStrip)
+        /// and ISO\, Aura.cs:570-573). On ANSI they sit under Enter and Left Shift.
+        /// <paramref name="strix18Bar"/> adds the two ends of a Strix18 lightbar a table
+        /// leaves out (<see cref="Strix18BarEnds"/>).</summary>
+        internal static LightMap PerKeyMap(int productId, PluginKeyTable table, bool iso, bool rearStrip, bool strix18Bar = false)
         {
             var lights = PluginKeyNames.Lights(table).ToList();
+            if (strix18Bar) Strix18BarEnds(lights);
             if (iso)
             {
                 for (int i = 0; i < lights.Count; i++)
@@ -314,7 +322,36 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 for (int i = 0; i < RearStripLeds; i++)
                     lights.Add(new LightInfo(RearStripFirstAddress + i, LightKind.Edge, 0, LightKeySource.None));
             string detail = $"laptop-{table.Plugin}{(iso ? ":iso" : ":ansi")}{(rearStrip ? ":rear" : "")}";
-            return new LightMap(lights, table.Plugin) { Product = ProductKey(productId, detail) };
+            return new LightMap(lights) { Product = ProductKey(productId, detail) };
+        }
+
+        /// <summary>G-Helper's Strix18 lightbar, left to right: 176, then the six LEDs
+        /// asusctl's g814ji layout places from its left end, 174, to its right end, 169,
+        /// then 177 (AuraKeyboardLayouts.cs:286 at aa0037c5).</summary>
+        internal const int Strix18BarLeft = 176, Strix18BarRight = 177, AsusctlBarLeft = 174, AsusctlBarRight = 169;
+
+        /// <summary>Adds LEDs 176 and 177 where the lights lack them, as edge lights one
+        /// place past the ends of the bar the table places, on its row. Each goes into
+        /// the list beside its end of the bar, so edge lights, numbered in list order,
+        /// number the bar from left to right in G-Helper's order.</summary>
+        private static void Strix18BarEnds(List<LightInfo> lights)
+        {
+            void Add(int address, int neighbor, float step)
+            {
+                if (lights.Exists(l => l.Address == address)) return;
+                var light = new LightInfo(address, LightKind.Edge, 0, LightKeySource.None);
+                int at = lights.FindIndex(l => l.Address == neighbor);
+                if (at < 0)
+                {
+                    lights.Add(light);
+                    return;
+                }
+                if (lights[at].HasPosition)
+                    light = light with { X = lights[at].X + step, Y = lights[at].Y, Width = lights[at].Width, Height = lights[at].Height, HasPosition = true };
+                lights.Insert(step < 0 ? at : at + 1, light);
+            }
+            Add(Strix18BarLeft, AsusctlBarLeft, -1);
+            Add(Strix18BarRight, AsusctlBarRight, 1);
         }
 
         /// <summary>The table of a per-key keyboard: its row's layout, or every LED
@@ -326,7 +363,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         internal static LightMap FirstMap(int productId, AsusLaptopMachine machine)
         {
             var row = BoardOf(machine.Board, productId);
-            return row?.PerKey == true ? PerKeyMap(productId, PerKeyTable(row), false, false) : WholeMap(productId);
+            return row?.PerKey == true ? PerKeyMap(productId, PerKeyTable(row), false, false, machine.Strix18Layout) : WholeMap(productId);
         }
 
         /// <summary>One light through BC 01 01.</summary>
@@ -452,7 +489,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             bool rearStrip = kind == Kind.PerKey && (features & FeatureRearStrip) != 0;
             LightMap map = kind switch
             {
-                Kind.PerKey => PerKeyMap(productId, PerKeyTable(row), answer?.Layout == AsusAuraCoreLighting.LaptopIso, rearStrip),
+                Kind.PerKey => PerKeyMap(productId, PerKeyTable(row), answer?.Layout == AsusAuraCoreLighting.LaptopIso, rearStrip, machine.Strix18Layout),
                 Kind.Zones => ZonesMap(productId, (features & FeatureLightbar) != 0 || OldStrix(answer, machine)),
                 _ => WholeMap(productId),
             };

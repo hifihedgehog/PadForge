@@ -705,12 +705,7 @@
   <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Molema</value></data>
   <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Moja</value></data>
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Morago</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Busetsa go 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Busetsa go 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Busetsa go 0.9</value></data>
   <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Pele fela</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Busetsa go 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Busetsa go 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Mmala wa lightbar</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Busetsa wheel</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Modumo</value></data>
@@ -723,8 +718,6 @@
   <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Emisa medumo</value></data>
   <data name="Macro_Sound_File_Label" xml:space="preserve"><value>Faele ya modumo</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Ka metlha</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Busetsa go default (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Busetsa go 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faele eno ga se porofaele ya PadForge e e ka balwang.</value></data>
@@ -918,7 +911,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motoro</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Kgaoganya ka ntlha</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone ya bogare</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Busetsa go Stick ya molema X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Busetsa maatla (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Busetsa deadzone ya bogare (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Porofaele</value></data>
@@ -1198,6 +1190,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Boloka khopi…</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tlosa mo lenaneong. Faele e sala fa e leng gone.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Faele ya “{0}” ga e yo kgotsa ga e kgone go balwa. PadForge e bontsha Lefifi go fitlha e boa.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Faele ya “{0}” ga e na setlhogo sa PadForge. PadForge e bontsha Lefifi go fitlha e nna le sone.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Leina</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Thimi ya me</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Motheo</value></data>
@@ -1212,4 +1205,6 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Tsamaisana le setshwantsho</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E tsaya mebala e mene mo setshwantshong.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele tsotlhe (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala setshwantsho sa Steam sa motshameko o.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tswelela o romela</value></data>
 </root>

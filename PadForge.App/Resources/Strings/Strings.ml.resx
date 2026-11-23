@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ഓൺലൈൻ</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ഓഫ്ലൈൻ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>അജ്ഞാതം</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>സ്ഥിരസ്ഥിതി</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>ബ്രൗസ് ചെയ്യുക…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>തുടരുക</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>നിർത്തുക</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>എഞ്ചിൻ നിർത്തി.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>പിശക്: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} സൃഷ്ടിക്കാനായില്ല.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>ഒരു ഉപകരണം തുറക്കാനോ വായിക്കാനോ മാപ്പ് ചെയ്യാനോ കഴിഞ്ഞില്ല. ഡയഗ്നോസ്റ്റിക്സ് ലോഗിൽ അതിന്റെ പേരുണ്ട്.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}-ൽ ഒരു പിശക് ഉണ്ടായി. ഡയഗ്നോസ്റ്റിക്സ് ലോഗിൽ കാരണമുണ്ട്.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>ഇൻപുട്ട് എഞ്ചിനിൽ ഒരു പിശക് ഉണ്ടായി. ഡയഗ്നോസ്റ്റിക്സ് ലോഗിൽ കാരണമുണ്ട്.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ആരംഭിക്കാൻ കഴിഞ്ഞില്ല. ഡയഗ്നോസ്റ്റിക്സ് ലോഗിൽ കാരണമുണ്ട്.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro സജ്ജീകരിക്കാൻ കഴിഞ്ഞില്ല. ഡയഗ്നോസ്റ്റിക്സ് ലോഗിൽ കാരണമുണ്ട്.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ഒരു വെർച്വൽ കൺട്രോളറിന്റെ HIDMaestro പ്രൊഫൈൽ കാണുന്നില്ല. ഡയഗ്നോസ്റ്റിക്സ് ലോഗിൽ അതിന്റെ പേരുണ്ട്.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0}-ന് ഇഷ്ടാനുസൃതമാക്കിയ ഐഡന്റിറ്റിയും ലേഔട്ടും സ്വീകരിക്കാൻ കഴിഞ്ഞില്ല, അതിനാൽ അതിന്റെ പ്രൊഫൈലിന്റേത് ഉപയോഗിക്കുന്നു.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>പ്രൊഫൈൽ മാറ്റി: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>പ്രൊഫൈൽ മാറ്റി: സ്ഥിരസ്ഥിതി</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>സ്ഥിരസ്ഥിതി</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>മോഷൻ സെർവർ പോർട്ട്</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu തുടങ്ങിയവയ്ക്ക് ഗൈറോ, ആക്സിലറോമീറ്റർ ഡാറ്റ നൽകുന്നു.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>ഗെയിം മോഡുകൾ</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-നായി നിർമ്മിച്ച ഗെയിം മോഡുകളെ നിങ്ങളുടെ PlayStation കൺട്രോളറുകളുടെ അഡാപ്റ്റീവ് ട്രിഗറുകൾ, ലൈറ്റ്ബാർ, പ്ലെയർ ലൈറ്റുകൾ, മ്യൂട്ട് ലൈറ്റ് എന്നിവ സജ്ജമാക്കാൻ അനുവദിക്കുന്നു.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-നായി നിർമ്മിച്ച ഗെയിം മോഡുകളെ DualSense-ന്റെയോ DualShock 4-ന്റെയോ അഡാപ്റ്റീവ് ട്രിഗറുകൾ, ലൈറ്റ്ബാർ, പ്ലെയർ ലൈറ്റുകൾ, മ്യൂട്ട് ലൈറ്റ് എന്നിവ സജ്ജമാക്കാൻ അനുവദിക്കുന്നു.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX ഗെയിം മോഡുകൾ സ്വീകരിക്കുക</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>ഗെയിം മോഡ് പോർട്ട്</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe സ്റ്റാൻഡ്-ഇൻ പ്രവർത്തിപ്പിക്കുക</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV പോലുള്ള ചില മോഡുകൾ, DSX എന്ന പേരിൽ ഒരു പ്രോഗ്രാം പ്രവർത്തിക്കുന്നില്ലെങ്കിൽ സ്വയം ഓഫ് ആകും. സെർവർ കേൾക്കുന്ന സമയത്ത് ആ പേരിൽ ഒരു ചെറിയ സ്റ്റാൻഡ്-ഇൻ ഇത് പ്രവർത്തിപ്പിക്കുന്നു.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>GTA V, Red Dead Redemption 2, Skyrim, Forza എന്നിവയ്ക്കുള്ളതുപോലെ DSX-നായി നിർമ്മിച്ച മോഡുകളുമായി പ്രവർത്തിക്കുന്നു. സെർവർ കേൾക്കുന്ന സമയത്ത്, ആ മോഡുകൾ തിരയുന്ന സ്ഥലത്ത് PadForge അതിന്റെ പോർട്ട് എഴുതുന്നു.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0}-ൽ കേൾക്കുന്നു. {1} വെർച്വൽ കൺട്രോളർ {2}-ലേക്ക് അയയ്ക്കുന്നു.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0}-ൽ കേൾക്കുന്നു. {1} അയയ്ക്കുന്നുണ്ട്, പക്ഷേ ഒരു വെർച്വൽ കൺട്രോളറിലും PlayStation കൺട്രോളർ ഇല്ല.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}-ൽ കേൾക്കുന്നു. {1} കൺട്രോളർ ഇൻഡക്സ് {2}-ലേക്ക് അയയ്ക്കുന്നു, PlayStation കൺട്രോളർ ഉള്ള ഒരു വെർച്വൽ കൺട്രോളറിനും ആ ഇൻഡക്സ് ഇല്ല.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0}-ൽ കേൾക്കുന്നു. {1} അയയ്ക്കുന്നുണ്ട്, പക്ഷേ ഒരു വെർച്വൽ കൺട്രോളറിലും DualSense അല്ലെങ്കിൽ DualShock 4 ഇല്ല.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}-ൽ കേൾക്കുന്നു. {1} കൺട്രോളർ ഇൻഡക്സ് {2}-ലേക്ക് അയയ്ക്കുന്നു, DualSense അല്ലെങ്കിൽ DualShock 4 ഉള്ള ഒരു വെർച്വൽ കൺട്രോളറിനും ആ ഇൻഡക്സ് ഇല്ല.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>പോർട്ട് {0} DSX പോലുള്ള മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുന്നു. അത് അടയ്ക്കുക അല്ലെങ്കിൽ മറ്റൊരു പോർട്ട് തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ഒരു ഗെയിം മോഡ്</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-നോടും, UDP ഔട്ട്പുട്ട് അയയ്ക്കുകയോ FreeTrack 2.0 ഷെയേർഡ് മെമ്മറിയിലേക്ക് എഴുതുകയോ ചെയ്യുന്ന ഏത് ട്രാക്കറിനോടും, പശ്ചാത്തലത്തിൽ സെഷൻ പ്രവർത്തിപ്പിക്കാൻ കഴിയുന്ന, ഈ മെഷീനിലെ OpenXR റൺടൈമിനോടും പ്രവർത്തിക്കുന്നു.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ഫയൽ കണ്ടെത്തിയില്ല</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>വായിക്കാൻ കഴിയില്ല</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” എന്നതിന്റെ ഫയൽ കാണുന്നില്ല അല്ലെങ്കിൽ വായിക്കാൻ കഴിയുന്നില്ല. അത് തിരികെ വരുന്നതുവരെ PadForge ഡാർക്ക് കാണിക്കും.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” എന്നതിന്റെ ഫയലിൽ PadForge തീം ഇല്ല. ഉണ്ടാകുന്നതുവരെ PadForge ഡാർക്ക് കാണിക്കും.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” എന്ന പ്രൊഫൈൽ അതിന്റെ ഗെയിമിന്റെ രൂപം സ്വീകരിച്ചിരിക്കുന്നു. മറ്റൊരു പ്രൊഫൈൽ സജീവമാകുമ്പോൾ നിങ്ങളുടെ തീം തിരികെ വരും.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ഇൻപുട്ട് എഞ്ചിൻ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>പോളിംഗ് സ്വഭാവവും പശ്ചാത്തല പ്രോസസ്സിംഗും ക്രമീകരിക്കുക.</value></data>
@@ -1045,6 +1052,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>കൺട്രോളറിനെ തയ്യാറാക്കുന്ന കമാൻഡ് അത് സ്വീകരിച്ചില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല. അത് കണക്റ്റ് ചെയ്തിട്ടുണ്ടോ എന്ന് പരിശോധിച്ച് വീണ്ടും അയയ്ക്കുക.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge ലെ ഒരു പിശക് കാരണം അയയ്ക്കൽ നിലച്ചു. വിശദാംശങ്ങൾ ലോഗ് ഫയലിലുണ്ട്.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ഒരു ചിത്രം ഇപ്പോഴും കൺട്രോളറിലേക്ക് പോകുന്നു. അയയ്ക്കൽ നിർത്തട്ടേ?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>അയയ്ക്കുന്നത് തുടരുക</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>കൺട്രോളർ പാക് ഫയലുകൾ (*.mpk)|*.mpk|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>കൺട്രോളർ പാക് പോർട്ട് {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>കൺട്രോളർ പാക് പുനഃസ്ഥാപിക്കുക</value></data>
@@ -1432,6 +1440,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>പൾസ് ക്ഷയം</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>പ്രീസെറ്റ്</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>ഇഷ്ടാനുസൃതം</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (ഉപയോക്താവ് സൃഷ്ടിച്ചത്)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>സ്റ്റിക്കുകൾ</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ട്രിഗറുകൾ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-കൾ</value></data>
@@ -2412,7 +2421,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ഈ കൺട്രോളറിൽ ഒരു മാഗ്നെറ്റോമീറ്റർ ഉണ്ട്. യോയെ കാന്തിക വടക്കിൽ ഉറപ്പിക്കുന്നത് ഗൈറോ ലക്ഷ്യത്തിലെ മന്ദഗതിയിലുള്ള തിരശ്ചീന ഡ്രിഫ്റ്റ് ഇല്ലാതാക്കുന്നു. ആദ്യം കാലിബ്രേറ്റ് ചെയ്യുക: കാലിബ്രേറ്റ് അമർത്തുക, കുറച്ച് സെക്കൻഡ് കൺട്രോളറിനെ 8 ആകൃതിയിൽ എല്ലാ ദിശകളിലൂടെയും തിരിക്കുക, തുടർന്ന് വീണ്ടും അമർത്തുക.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>യോ കോമ്പസിൽ ഉറപ്പിക്കുക</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>ഡ്രിഫ്റ്റ് കൂടിവരാതിരിക്കാൻ തിരശ്ചീന ലക്ഷ്യത്തെ കാന്തിക ദിശയിലേക്ക് വലിക്കുന്ന ചെറിയ തിരുത്തൽ നിരക്ക് ചേർക്കുന്നു. സംഭരിച്ച മാഗ്നെറ്റോമീറ്റർ കാലിബ്രേഷൻ ആവശ്യമാണ്. സമീപത്തെ ലോഹമോ കാന്തമോ മൂലം തടസ്സപ്പെട്ട സാമ്പിളുകൾ സ്വയമേവ നിരസിക്കപ്പെടും.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക (ഓഫ്)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>പിച്ച്, റോൾ സിമുലേഷൻ</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ആക്സിലറോമീറ്ററിൽ നിന്ന് കണ്ടെത്തുന്ന പിച്ചും റോളും</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ഈ കൺട്രോളറിന്റെ ഗൈറോ ഇടത്തോട്ടും വലത്തോട്ടുമുള്ള തിരിവ് മാത്രമേ അറിയുന്നുള്ളൂ. സിമുലേഷൻ ഓൺ ആയിരിക്കുമ്പോൾ, PadForge ആക്സിലറോമീറ്ററിൽ നിന്ന് പിച്ചും റോളും കണ്ടെത്തി, ഗൈറോയുടെ യോയ്ക്കൊപ്പം മാപ്പിംഗ് വരികളിലേക്കും വെർച്വൽ കൺട്രോളറിന്റെ മോഷനിലേക്കും അയയ്ക്കുന്നു. തള്ളലും ചരിവും ആക്സിലറോമീറ്ററിന് വേർതിരിച്ചറിയാൻ കഴിയില്ല, അതിനാൽ കൺട്രോളർ തിരിക്കാതെ വശത്തേക്കോ മുന്നോട്ടോ നീക്കുന്നത് ഒരു ചെറിയ ഭ്രമണമായി വായിക്കപ്പെടുന്നു.</value></data>
@@ -2803,7 +2811,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>എത്തിച്ചേരാവുന്ന അതിർത്തി മാപ്പ് ചെയ്യാൻ സ്റ്റിക്ക് അതിന്റെ അരികിലൂടെ ചുറ്റിക്കുക, തുടർന്ന് അതിനെ പൂർണ്ണ വൃത്തമാക്കി മാറ്റും.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>അതിർത്തി കാലിബ്രേഷൻ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>സെന്റർ ഓഫ്സെറ്റ് Y പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>സ്കെയിൽഡ് റേഡിയലിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>ഡെഡ് സോൺ X പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>ഡെഡ് സോൺ Y പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>ആന്റി-ഡെഡ് സോൺ X പുനഃസജ്ജമാക്കുക</value></data>
@@ -3225,13 +3232,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ഫ്ലിക്ക് സ്റ്റിക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°-ക്ക് ഡോട്ടുകൾ</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ഒരു പൂർണ്ണ 360° ക്യാമറ തിരിവിനുള്ള മൗസ് കൗണ്ടുകൾ. ഗെയിമിന്റെ മൗസ് സെൻസിറ്റിവിറ്റിയെ ആശ്രയിച്ചിരിക്കുന്നു: ഫ്ലിക്ക് കുറച്ചേ തിരിയുന്നുള്ളൂവെങ്കിൽ കൂട്ടുക, കൂടുതൽ തിരിയുന്നുവെങ്കിൽ കുറയ്ക്കുക.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400-ലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ഫ്ലിക്ക് സമയം</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>ഈസ്-ഔട്ടോടെ ഒരു പൂർണ്ണ 180° ഫ്ലിക്ക് പൂർത്തിയാകാൻ എടുക്കുന്ന സമയം. ചെറിയ തിരിവുകളും ഇതേ സമയത്തിൽ തീരും.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s-ലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ഫ്ലിക്ക് ത്രെഷോൾഡ്</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ഫ്ലിക്ക് തുടങ്ങുന്ന സ്റ്റിക്ക് വ്യതിയാനം, പൂർണ്ണ വ്യതിയാനത്തിന്റെ ഒരു അംശമായി. ഫ്ലിക്ക് ചെയ്യുമ്പോൾ വിടുന്ന പോയിന്റ് ഇതിന്റെ 90% ആയി താഴും.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9-ലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>സ്നാപ്പ് ആംഗിൾ</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>കൂടുതൽ സ്ഥിരതയുള്ള തിരിവുകൾക്കായി ഫ്ലിക്കിനെ നിശ്ചിത കോണുകളിലേക്ക് സ്നാപ്പ് ചെയ്യുക. "മുന്നോട്ട് മാത്രം" ഓരോ ഫ്ലിക്കിനെയും നേരെ മുന്നിലേക്ക് സ്നാപ്പ് ചെയ്യും.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>സ്നാപ്പിംഗ് ഇല്ല</value></data>
@@ -3240,22 +3244,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 ഡിഗ്രി</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 ഡിഗ്രി</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 ഡിഗ്രി</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>സ്നാപ്പിംഗ് ഇല്ല എന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>സ്നാപ്പ് ശക്തി</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ഫ്ലിക്ക് സ്നാപ്പ് ചെയ്ത കോണിലേക്ക് എത്ര ശക്തമായി വലിക്കുന്നു എന്നത്. 1 പൂർണ്ണമായി സ്നാപ്പ് ചെയ്യും, 0 സ്നാപ്പിംഗ് ഒഴിവാക്കും, ഇടയിലുള്ള മൂല്യങ്ങൾ കലർത്തും.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0-ലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>മുൻ ആംഗിൾ ഡെഡ് സോൺ</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>നേരെ മുന്നിൽ നിന്ന് ഈ കോണിനുള്ളിലുള്ള ഫ്ലിക്ക് ഒന്നും തിരിക്കില്ല. ഫ്ലിക്ക്-തിരിവ് ഇല്ലാതെ ഒരു സ്വീപ്പ് തുടങ്ങാൻ ഇത് സഹായിക്കും.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0°-ലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>സ്വീപ്പ് സ്മൂത്തിംഗ്</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>റിം-സ്വീപ്പ് നോയ്സ് മൃദുവാക്കുന്നു. -1 സ്വയമേവയുള്ള തട്ടുതട്ടായ വിൻഡോ ഉപയോഗിക്കുന്നു, 0 സ്മൂത്തിംഗ് ഓഫ് ചെയ്യുന്നു, വലിയ മൂല്യങ്ങൾ ഓരോ ടിക്കിലെയും വലിയ തിരിവുകളെ മൃദുവാക്കുന്നു.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>സ്വയമേവ (-1) എന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>സജീവമാകുമ്പോൾ ഫ്ലിക്ക് അനുവദിക്കുക</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>റൊട്ടേഷൻ ഓഫ്സെറ്റ്</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>മുഴുവൻ ഫ്ലിക്ക് മാപ്പും ഇത്ര ഡിഗ്രി തിരിക്കുന്നു. പോസിറ്റീവ് എന്നാൽ ഘടികാരദിശയിൽ. ഓഫ്സെറ്റിന് ശേഷമാണ് സ്നാപ്പിംഗ് പ്രയോഗിക്കുന്നത്.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>റൊട്ടേഷൻ ഓഫ്സെറ്റ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ഫ്ലിക്ക് സ്റ്റിക്ക് ഉള്ള ലെയർ, സ്റ്റിക്ക് ഇതിനകം ചരിഞ്ഞിരിക്കെ സജീവമാകുമ്പോൾ, ഫ്ലിക്ക് ഉടൻ പ്രവർത്തിപ്പിക്കുക. ഓഫ് ആണെങ്കിൽ ക്യാമറ അനങ്ങാതെ നിൽക്കുകയും നിലവിലെ സ്റ്റിക്ക് കോണിൽ നിന്ന് തിരിവ് പിന്തുടരുകയും ചെയ്യും.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>സജീവമാകുമ്പോൾ ഫ്ലിക്ക് അനുവദിക്കുക പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ലോക്ക് ഫീഡ്ബാക്ക്</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>സ്റ്റിയറിംഗ് മോഡിലെ സ്റ്റിക്ക് പൂർണ്ണ ലോക്കിലെത്തുമ്പോൾ ഒരു സൂചന</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>സ്റ്റിയറിംഗ് മോഡിലുള്ള ഒരു സ്റ്റിക്ക് പൂർണ്ണ ലോക്കിലേക്ക് തിരിക്കുമ്പോൾ, പരിധി അനുഭവിക്കാൻ ഒരു സൂചന (റംബിൾ, ട്രിഗർ, അല്ലെങ്കിൽ ലൈറ്റ്ബാർ) പ്ലേ ചെയ്യുക. എല്ലാം സ്ഥിരസ്ഥിതിയായി ഓഫ് ആണ്.</value></data>
@@ -3445,11 +3443,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ഈ കൺട്രോളറിൽ DualSense ഹാപ്റ്റിക്സ് പ്ലേ ചെയ്യുക</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ഒരു ഗെയിം ഈ സ്ലോട്ടിനെ രചിച്ച ഹാപ്റ്റിക് ഓഡിയോ ഉള്ള വെർച്വൽ DualSense ആയി ഓടിക്കുമ്പോൾ, ആ ട്രാക്ക് ഈ കൺട്രോളറിന്റെ ആക്ച്വേറ്ററുകളിൽ പ്ലേ ചെയ്യുക. USB വഴിയോ ഡോംഗിൾ വഴിയോ ഉള്ള Steam Controller 2026 ഉം Flydigi Apex 6 Pro ഉം ട്രാക്ക് സ്വയം പ്ലേ ചെയ്യും. മറ്റെല്ലാ കൺട്രോളറുകൾക്കും, ബ്ലൂടൂത്ത് വഴിയുള്ള ആ Steam Controller-നും, ഓഡിയോയിൽ നിന്ന് ഉരുത്തിരിഞ്ഞ ടോണുകൾ ലഭിക്കും. അവ ഡിസൈനറുടെ അനുഭവം പുനർനിർമ്മിക്കുന്നതിനു പകരം ഏകദേശം അനുകരിക്കുന്നു.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ഹാപ്റ്റിക്സ് ഗെയിൻ</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക (ഓഫ്)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>ആക്ച്വേറ്റർ ലോ-പാസ് കട്ട്ഓഫ്</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>ഈ ആവൃത്തിക്ക് താഴെ മാത്രം Steam Controller ഹാപ്റ്റിക് സ്ട്രീമിംഗ് നിർത്തുന്നു, അങ്ങനെ പാഡുകൾ ശബ്ദം കേൾപ്പിക്കുന്നതിനു പകരം വൈബ്രേറ്റ് ചെയ്യും. ഏകദേശം 250 Hz-ൽ ആക്ച്വേറ്ററുകൾ കേൾക്കാവുന്നതാകാൻ തുടങ്ങും. കൂടുതൽ വ്യക്തമായ വിശദാംശത്തിന് കൂട്ടുക, കൂടുതൽ നിശ്ശബ്ദമായ പ്ലേയ്ക്ക് കുറയ്ക്കുക.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz-ലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>ഈ ആവൃത്തിക്ക് മുകളിലുള്ള ടോണുകൾ മുറിക്കുകയോ മടക്കുകയോ ചെയ്യും. സ്ഥിരസ്ഥിതിയായ 800 Hz എൻജിൻ, ഇടി റംബിൾ നിലനിർത്തുകയും ഉയർന്ന സ്ഥായിയിലുള്ള ബീപ്പുകൾ പിടികൂടുകയും ചെയ്യുന്നു.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ഉയർന്ന ടോണുകൾ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ടോൺ പരിധി പുനഃസജ്ജമാക്കുക</value></data>
@@ -4018,8 +4013,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop പ്രൊഫൈൽ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop മാക്രോ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>കഴ്സർ റീജിയൻ</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} ഷിഫ്റ്റ്</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>വീൽ ലിസ്റ്റ് ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>കഴ്സർ മേഖല ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>മൗസ് {0} അമർത്തിപ്പിടിക്കുക ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>മൗസ് {0} ക്ലിക്ക് ചെയ്യുക ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>മൗസ് {0} ടോഗിൾ ചെയ്യുക ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>ഹാപ്റ്റിക് പൾസ് ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (റിലീസ് ടെയിൽ)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} ടാപ്പ് ചെയ്യുക ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>ഓട്ടോഫയർ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} അമർത്തിപ്പിടിക്കുക ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} ടോഗിൾ ചെയ്യുക ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>ടർബോ {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} ഇരട്ട അമർത്തൽ ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} ദീർഘ അമർത്തൽ ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>വീൽ ടിക്ക് ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>വീൽ ടോഗിൾ ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>ടർബോ വീൽ ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>കഴ്സർ വാർപ്പ് ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED സജ്ജമാക്കുക ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ഗൈറോ റീസെന്റർ ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>കഴ്സർ നീക്കുക ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>സ്ക്രീൻഷോട്ട് കീ ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>ഓൺ-സ്ക്രീൻ കീബോർഡ് ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ലൈറ്റ് നിറം സജ്ജമാക്കുക</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>ക്യാമറ റീസെന്റർ ചെയ്യുക</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>കഴ്സർ വാർപ്പ്</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>കഴ്സർ നീക്കുക</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>സ്ക്രീൻഷോട്ട്</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>ഓൺ-സ്ക്രീൻ കീബോർഡ്</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>ഷിഫ്റ്റ് ലെയർ മാറ്റുക</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓണാക്കുക</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓഫാക്കുക</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ അമർത്തിപ്പിടിക്കുക</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>പ്ലെയർ നമ്പർ മാറ്റുക</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>ബന്ധിപ്പിച്ചിട്ടില്ല</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>ഡെസ്ക്ടോപ്പ് മോഡ് ടോഗിൾ ചെയ്യുക</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam സിസ്റ്റം കീ</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>മാഗ്നിഫയർ ടോഗിൾ ചെയ്യുക</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>തെളിച്ചം കൂട്ടുക</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>തെളിച്ചം കുറയ്ക്കുക</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>കൺട്രോളർ ഓഫാക്കുക</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam കോൺഫിഗറേറ്റർ തുറക്കുക</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam ക്വിക്ക് മെനു തുറക്കുക</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>ഗെയിം അടയ്ക്കുക</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>ഹാപ്റ്റിക്സ് ടോഗിൾ ചെയ്യുക</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD ടോഗിൾ ചെയ്യുക</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>റംബിൾ ടോഗിൾ ചെയ്യുക</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide ബട്ടൺ നിർബന്ധമായി അമർത്തുക</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>ഗൈറോ കാലിബ്രേഷൻ സ്പിൻ</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>ദിശയിലേക്ക് തിരിയുക</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (അമർത്തിപ്പിടിക്കൽ)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (വിടുമ്പോൾ)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (വിടുമ്പോൾ)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (എൻഗേജ്)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>എന്തെല്ലാം വരുന്നു എന്ന് കാണാൻ ഒരു കോൺഫിഗ് തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>എന്തെല്ലാം വരുന്നു</value></data>
@@ -4627,11 +4673,9 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>ലെയർ</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>ഈ മെനു അനുവദിക്കുന്ന ലെയർ തിരഞ്ഞെടുക്കുക. ഏത് ലെയറും, ബേസും മറ്റ് സജീവ ലെയറുകൾക്ക് കീഴിലും ഇത് അനുവദിക്കുന്നു. പേരുള്ള ഒരു ലെയർ നിലവിൽ സജീവമായ ലെയറുമായി പൊരുത്തപ്പെടണം.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>ഏത് ലെയറും എന്നതിലേക്ക് പുനഃസജ്ജമാക്കി ലെയർ-ഹോൾഡ് തുറക്കൽ ഓഫാക്കുക.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ഈ സ്ലോട്ടിൽ ലിസ്റ്റ് ചെയ്തിട്ടില്ല)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>ലെയർ മെനു തുറന്നുവയ്ക്കുന്നു</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>പേരുള്ള ലെയർ സജീവമായിരിക്കുന്നിടത്തോളം ഈ മെനു തുറന്നുവയ്ക്കുക. തിരഞ്ഞെടുത്ത ഫിസിക്കൽ ഇൻപുട്ട് ഹൈലൈറ്റിനെ നയിക്കുന്നു. ഏത് ലെയറും, ബേസും സാധാരണ സർഫേസ് തുറക്കൽ ഉപയോഗിക്കുന്നു.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>സ്പർശനത്തിലോ വ്യതിയാനത്തിലോ തുറക്കുന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>ഇതുകൊണ്ട് നയിക്കുക</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ലെയർ ഈ മെനു തുറന്നുവയ്ക്കുമ്പോൾ ഹൈലൈറ്റ് ചെയ്ത സെല്ലിനെ നയിക്കുന്ന ഫിസിക്കൽ ഇൻപുട്ട്.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ഈ സ്ലോട്ടിലേക്ക് അസൈൻ ചെയ്ത ഫിസിക്കൽ കൺട്രോളറുകളിൽ നിന്ന് വായിക്കുന്നു. ലെയർ മെനു തുറക്കുന്നു, ഈ ഇൻപുട്ട് അതിനെ നയിക്കുന്നു. അത് എന്ത് ഔട്ട്പുട്ട് ചെയ്യുന്നുവെന്ന് അതിന്റെ സെല്ലുകൾ പറയുന്നു.</value></data>
@@ -4711,7 +4755,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>മോട്ടോർ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>ദിശ അനുസരിച്ച് വിഭജിക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>മധ്യ ഡെഡ് സോൺ</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ഇടത് സ്റ്റിക്ക് X എന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ശക്തി പുനഃസജ്ജമാക്കുക (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>മധ്യ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ആംഗിൾ റംബിൾ പ്രവർത്തനക്ഷമമാക്കൽ പുനഃസജ്ജമാക്കുക</value></data>
@@ -5228,6 +5271,9 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_LanguageRefs" xml:space="preserve"><value>ക്ലിംഗൺ, സിൻഡാരിൻ റഫറൻസുകൾ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ക്ലിംഗൺ, സിൻഡാരിൻ വിവർത്തനങ്ങളിലെ വാക്കുകൾ boQwI'-യുടെ പിന്നിലെ നിഘണ്ടുവായ klingon-assistant-data (Apache-2.0), Paul Strack-ന്റെ എൽവിഷ് ലെക്സിക്കണായ Eldamo (CC BY 4.0) എന്നിവയുമായി ഒത്തുനോക്കി. നിഘണ്ടു ഡാറ്റ മാത്രം, അതിൽ ഒന്നും ഉൾപ്പെടുന്നില്ല.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ആ ഫയൽ ഒരു PadForge തീം അല്ല.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge-ന് ആ ഫയൽ വായിക്കാൻ കഴിയില്ല.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge-ന് ആ ഫയൽ കണ്ടെത്താൻ കഴിയില്ല.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>തീം അല്ല</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>തീം സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>പുതിയ തീം</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>നിങ്ങൾ നിർമ്മിക്കുമ്പോൾ PadForge ആ തീം അണിയുന്നു.</value></data>
@@ -5242,6 +5288,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam-ൽ നിന്ന് ചിത്രം എടുക്കുന്നു…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>ഈ ഗെയിമിന് Steam-ൽ വീതിയുള്ള ചിത്രമില്ല.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-നെ ബന്ധപ്പെടാൻ കഴിഞ്ഞില്ല. നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>ഈ ഗെയിമിനുള്ള Steam-ന്റെ ചിത്രം PadForge-ന് വായിക്കാൻ കഴിയില്ല.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>സ്ഥാനം</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ചിത്രത്തെ അതിന്റെ ജാലകത്തിൽ മുകളിലേക്കോ താഴേക്കോ നീക്കുന്നു.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ഗെയിമിന്റെ ലോഗോ കാണിക്കുക</value></data>
@@ -5282,4 +5329,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>യഥാർത്ഥ സ്റ്റാർ ട്രെക്ക് പരമ്പരയ്ക്കായി ചിത്രീകരിച്ച മോഡൽ, അത് സൂക്ഷിക്കുന്ന Smithsonian National Air and Space Museum എടുത്ത ഫോട്ടോ: സ്റ്റാർ ട്രെക്ക് തീം LCARS-ന്റെ ചിത്രം.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>തീം ചിത്രം: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>സ്റ്റാർ ട്രെക്ക്: ദ നെക്സ്റ്റ് ജനറേഷനിലെ ഒരു ഫ്രെയിം: സ്റ്റാർ ട്രെക്ക് തീം Starfleet-ന്റെ ചിത്രം. Memory Alpha-യിൽ കണ്ടെത്തി.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>ലൈറ്റ്ബാർ</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ലൈറ്റ്ബാർ</value></data>
 </root>

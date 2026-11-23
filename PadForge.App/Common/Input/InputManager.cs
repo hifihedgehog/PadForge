@@ -22,7 +22,7 @@ namespace PadForge.Common.Input
     ///   Step 3: Map CustomInputState → OutputState via PadSetting rules
     ///   Step 4: Combine multiple devices per virtual controller slot
     ///   Step 5: Feed virtual controllers (HIDMaestro for Xbox / PlayStation / Extended, plus MIDI and KB+M)
-    ///   Step 6: Copy combined output states for UI display
+    ///   Step 6: Publish each slot's steering angle frame
     /// 
     /// Thread safety: the background thread writes UserDevice.InputState (atomic reference swap).
     /// The UI thread reads it. Collection modifications to UserDevices use SyncRoot locking.
@@ -587,11 +587,11 @@ namespace PadForge.Common.Input
         public Vibration[] FinalVibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
-        /// Per-slot vibration scaled by the Force Feedback group dropdown's currently-
-        /// selected device's PadSetting (gain/balance/swap, audio rumble,
-        /// constant force). Drives the Force Feedback group's Motor Activity meter.
-        /// That meter MUST be device-specific so users editing one
-        /// device's settings see the effective output for THAT device,
+        /// Per-slot vibration scaled by the PadSetting of the device picked
+        /// in the header's Driven by list (gain/balance/swap, audio rumble,
+        /// constant force). Drives the Motor Activity bars of the Force
+        /// Feedback and Impulse Triggers groups. Those bars MUST be
+        /// device-specific so users editing one device's settings see the effective output for THAT device,
         /// not the slot-wide max. Falls back to zero when no device is
         /// selected. Populated in the same loop as
         /// <see cref="FinalVibrationStates"/> by
@@ -600,13 +600,13 @@ namespace PadForge.Common.Input
         public Vibration[] SelectedDeviceVibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
-        /// Per-slot InstanceGuid of the device the user has selected on
-        /// the slot's Force Feedback group. Drives (a) the audio-bass detector's
+        /// Per-slot InstanceGuid of the device picked in the header's
+        /// Driven by list. Drives (a) the audio-bass detector's
         /// per-tick Sensitivity / CutoffHz settings via
         /// <c>ApplyDetectorSettingsForTick</c> and (b) which device's
         /// scaled vibration lands in
-        /// <see cref="SelectedDeviceVibrationStates"/> for the Force Feedback group
-        /// meter. Updated by <c>InputService.SyncViewModelToPadSettings</c>
+        /// <see cref="SelectedDeviceVibrationStates"/> for the Motor Activity
+        /// bars. Updated by <c>InputService.SyncViewModelToPadSettings</c>
         /// at 30 Hz. <see cref="Guid.Empty"/> when no device is selected.
         /// </summary>
         public Guid[] SelectedDeviceGuids { get; } = new Guid[MaxPads];
@@ -955,7 +955,7 @@ namespace PadForge.Common.Input
             // below. The answer of an SDL_Init that failed.
             if (DirectDeviceAccess.RefusesAll)
             {
-                RaiseError("SDL_Init failed: the test host starts no device layer", null);
+                RaiseError(PadForge.Resources.Strings.Strings.Instance.Status_SdlFailed, "SDL_Init failed: the test host starts no device layer", null);
                 return false;
             }
 
@@ -997,7 +997,7 @@ namespace PadForge.Common.Input
                 // and DS4Windows carries zero 146B entries. PID-scoped:
                 // other Nacon PIDs stay untouched until a report proves
                 // they share the wedge. The fork's xusb gates
-                // (60ed78a3ac + ae750868c8) are defense in depth beside
+                // (4d8d780457 + 921dc47c7e) are defense in depth beside
                 // this seatbelt; both stay.
                 SDL_SetHint(SDL_HINT_HIDAPI_IGNORE_DEVICES, HidapiIgnoreDevices);
 
@@ -1039,7 +1039,7 @@ namespace PadForge.Common.Input
                 // contract.
 
                 // Enable the SDL3 fork's Joy-Con 2 optical mouse axes (issue
-                // #154, hifihedgehog/SDL#8, fork commit 9b32ec13b8). With the
+                // #154, hifihedgehog/SDL#8, fork commit 14148059ce). With the
                 // hint on, the BLE driver enables the sensor via the feature
                 // init+enable frames at connect and posts the absolute 16-bit
                 // counters on joystick axes 6/7 (raw axis count 8 signals
@@ -1048,7 +1048,7 @@ namespace PadForge.Common.Input
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE, "1");
 
                 // Enable the fork's frequency-shaped Switch rumble (#271
-                // item 4, hifihedgehog/SDL#25, fork commit cfcdeb26e0).
+                // item 4, hifihedgehog/SDL#25, fork commit a0e83bbb33).
                 // Upstream SDL drives the Switch LRAs at two fixed carrier
                 // frequencies with amplitude-only tables; with the hint on,
                 // each motor's intensity also sweeps its frequency band
@@ -1180,7 +1180,7 @@ namespace PadForge.Common.Input
                 if (!SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMEPAD | SDL_INIT_VIDEO | SDL_INIT_HAPTIC))
                 {
                     string error = SDL_GetError();
-                    RaiseError($"SDL_Init failed: {error}", null);
+                    RaiseError(PadForge.Resources.Strings.Strings.Instance.Status_SdlFailed, $"SDL_Init failed: {error}", null);
                     return false;
                 }
 
@@ -1264,13 +1264,12 @@ namespace PadForge.Common.Input
             }
             catch (DllNotFoundException ex)
             {
-                RaiseError("SDL3.dll not found. Place SDL3.dll next to the exe. " +
-                           "Download from https://github.com/libsdl-org/SDL/releases", ex);
+                RaiseError(PadForge.Resources.Strings.Strings.Instance.Status_SdlFailed, "SDL3.dll could not be loaded", ex);
                 return false;
             }
             catch (Exception ex)
             {
-                RaiseError("Failed to initialize SDL3.", ex);
+                RaiseError(PadForge.Resources.Strings.Strings.Instance.Status_SdlFailed, "Failed to initialize SDL3.", ex);
                 return false;
             }
         }
@@ -2288,7 +2287,7 @@ namespace PadForge.Common.Input
                         }
                         catch (Exception ex)
                         {
-                            RaiseError("Idle polling error", ex);
+                            RaiseEngineError("Idle polling error", ex);
                         }
 
                         // Twenty passes a second need no fine clock, and an
@@ -2310,7 +2309,7 @@ namespace PadForge.Common.Input
                     if (ApplyFocusSuspension())
                     {
                         try { PublishLayerGatedHookKeys(evaluating: false); }
-                        catch (Exception ex) { RaiseError("Focus-suspend hook release", ex); }
+                        catch (Exception ex) { RaiseEngineError("Focus-suspend hook release", ex); }
                         HoldFineClock(ref fineClock, false);
                         CurrentFrequency = 0;
                         _rateMeter.Reset();
@@ -2460,7 +2459,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Polling loop error", ex);
+                        RaiseEngineError("Polling loop error", ex);
                     }
 
                     // Until the next pass is due. The schedule answers 0
@@ -4172,7 +4171,7 @@ namespace PadForge.Common.Input
                     }
                     Array.Copy(keptDsu, DsuMotionSnapshots, keptDsu.Length);
                 }
-                catch (Exception ex) { RaiseError("Idle neutral edge", ex); }
+                catch (Exception ex) { RaiseEngineError("Idle neutral edge", ex); }
             }
             var server = DsuServer;
             if (server == null) return true;
@@ -4189,7 +4188,7 @@ namespace PadForge.Common.Input
                 for (int padIndex = 0; padIndex < DsuMotionSnapshots.Length; padIndex++)
                     server.BroadcastMotion(padIndex, neutral, IsSlotActive(padIndex));
             }
-            catch (Exception ex) { RaiseError("Idle DSU delivery", ex); }
+            catch (Exception ex) { RaiseEngineError("Idle DSU delivery", ex); }
             return true;
         }
 
@@ -4217,7 +4216,7 @@ namespace PadForge.Common.Input
                     if (submitControllers == null) UpdateVirtualDevices();
                     else submitControllers();
                 }
-                catch (Exception ex) { RaiseError("Focus-suspend neutral edge", ex); }
+                catch (Exception ex) { RaiseEngineError("Focus-suspend neutral edge", ex); }
                 finally
                 {
                     try
@@ -4225,7 +4224,7 @@ namespace PadForge.Common.Input
                         if (releaseKeys == null) ReleaseAllLatchedMacroKeys();
                         else releaseKeys();
                     }
-                    catch (Exception ex) { RaiseError("Focus-suspend macro-key release", ex); }
+                    catch (Exception ex) { RaiseEngineError("Focus-suspend macro-key release", ex); }
                 }
                 Engine.SdlDiagLog.WriteLine("ENGINE suspended: unfocused and background polling disabled");
             }
@@ -4242,12 +4241,12 @@ namespace PadForge.Common.Input
                 if (submitControllers == null) UpdateVirtualDevices();
                 else submitControllers();
             }
-            catch (Exception ex) { RaiseError("Focus-suspend VC upkeep", ex); }
+            catch (Exception ex) { RaiseEngineError("Focus-suspend VC upkeep", ex); }
 
             // Repeat neutral packets at the suspended loop's 10 Hz cadence.
             // A controller submission failure must not prevent network delivery.
             try { BroadcastDsuMotion(); }
-            catch (Exception ex) { RaiseError("Focus-suspend DSU delivery", ex); }
+            catch (Exception ex) { RaiseEngineError("Focus-suspend DSU delivery", ex); }
             return true;
         }
         /// <summary>Zeroes every combined output surface Step 5 submits.
@@ -4429,7 +4428,23 @@ namespace PadForge.Common.Input
         //  Error helper
         // ─────────────────────────────────────────────
 
-        private void RaiseError(string message, Exception ex) => RaiseError(message, message, ex);
+        /// <summary>A device that could not be opened, read or mapped: the
+        /// Strings line on the message line, <paramref name="logLine"/>, in
+        /// English and naming the device, in the log.</summary>
+        private void RaiseDeviceError(string logLine, Exception ex)
+            => RaiseError(PadForge.Resources.Strings.Strings.Instance.Status_DeviceFailed, logLine, ex);
+
+        /// <summary>A virtual controller's pass that threw: the slot by the
+        /// name the interface shows on the message line,
+        /// <paramref name="logLine"/> in the log.</summary>
+        private void RaiseSlotError(int padIndex, string logLine, Exception ex)
+            => RaiseError(string.Format(PadForge.Resources.Strings.Strings.Instance.Status_SlotFailed_Format, SlotLabel(padIndex)), logLine, ex);
+
+        /// <summary>A pass of the engine's own that threw: the Strings line
+        /// on the message line, <paramref name="logLine"/> in the
+        /// log.</summary>
+        private void RaiseEngineError(string logLine, Exception ex)
+            => RaiseError(PadForge.Resources.Strings.Strings.Instance.Status_EngineFailed, logLine, ex);
 
         /// <summary>Raises a failure with a diagnostics log line of its own:
         /// <paramref name="message"/> is the status text, in the UI language,
@@ -4445,8 +4460,6 @@ namespace PadForge.Common.Input
             PadForge.Engine.SdlDiagLog.WriteLine($"ERROR {logLine}: {ex}");
             ErrorOccurred?.Invoke(this, new InputExceptionEventArgs(message, ex));
         }
-
-        private void RaiseErrorResolved(string message) => RaiseErrorResolved(message, message);
 
         /// <summary>Clears a failure raised with a log line of its own, with
         /// the same two texts.</summary>

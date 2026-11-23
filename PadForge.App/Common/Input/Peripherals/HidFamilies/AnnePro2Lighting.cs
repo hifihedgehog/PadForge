@@ -69,7 +69,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registrations[0].Name,
-                    Map = new LightMap(Lights(), "OpenRGB RGBController_AnnePro2.cpp")
+                    Map = new LightMap(Lights())
                     {
                         Product = $"annepro2:{collection.VendorId:X4}:{collection.ProductId:X4}",
                     },

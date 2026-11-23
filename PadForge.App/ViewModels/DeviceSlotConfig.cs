@@ -8,7 +8,7 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// Per-slot PlayStation output configuration. Drives the
-    /// <c>Adaptive Triggers</c> and <c>Lighting</c> tabs on PlayStation
+    /// <c>Adaptive Triggers</c> and <c>Lighting</c> groups on PlayStation
     /// virtual controller slots. Lives parallel to
     /// <see cref="ExtendedSlotConfig"/> — same shape (ObservableObject,
     /// XML round-trip via a paired data record), different content.
@@ -226,7 +226,7 @@ namespace PadForge.ViewModels
         private byte _lightbarBlue = 0xFF;
         /// <summary>Lightbar blue channel. Default 0xFF — Sony's stock
         /// player-1 indicator color is solid blue, so a fresh slot lights
-        /// the bar blue rather than dark when the user opens the tab.</summary>
+        /// the bar blue rather than dark when the user opens the Lighting group.</summary>
         public byte LightbarBlue
         {
             get => _lightbarBlue;
@@ -474,11 +474,13 @@ namespace PadForge.ViewModels
         }
 
         private bool _audioPersonaHapticsEnabled;
-        /// <summary>#271 item 1: render the virtual DualSense's authored
+        /// <summary>#271 item 1: play the virtual DualSense's authored
         /// haptic audio (persona UAC channels 3/4) on this device's
-        /// actuators through the haptic-tone chain. Off by default: the
-        /// derived tones approximate the designer's track, and the toggle
-        /// must be the user's choice per device.</summary>
+        /// actuators. The track joins the device's haptic mix, which a tone
+        /// sink plays as tones derived from the audio and a PcmCapable sink
+        /// plays as samples. Off by default: on a tone sink the derived
+        /// tones only approximate the designer's track, and the toggle is
+        /// the user's choice per device.</summary>
         public bool AudioPersonaHapticsEnabled
         {
             get => _audioPersonaHapticsEnabled;
@@ -487,8 +489,9 @@ namespace PadForge.ViewModels
 
         private int _audioPersonaHapticsGain = 100;
         /// <summary>Input gain for the persona-haptics render, percent
-        /// (25-300, default 100). Applied before the tone reducer so a
-        /// quiet authored track can still reach the actuators.</summary>
+        /// (25-300, default 100). Applied to the persona input before it
+        /// joins the device's haptic mix, so a quiet authored track can
+        /// still reach the actuators.</summary>
         public int AudioPersonaHapticsGain
         {
             get => _audioPersonaHapticsGain;
@@ -1018,7 +1021,7 @@ namespace PadForge.ViewModels
         /// lighting while it lights it (#494), the Lighting group's Lighting
         /// Hold. It qualifies <see cref="PeripheralLightingEnabled"/> for
         /// the same (slot, device) pair and starts at the lowest hold, so a
-        /// device is asked for nothing but its colors until its own tab
+        /// device is asked for nothing but its colors until its own group
         /// says more. Only a device that offers a hold shows the choice,
         /// and a backend holds a device at no more than it offers. A vendor
         /// row and a unit row have no such choice and ask for colors alone.
@@ -2388,7 +2391,7 @@ namespace PadForge.ViewModels
     /// as it is lit, for a device whose own behavior takes the color away
     /// at the step below. The number is the level a lighting claim carries
     /// (<see cref="PadForge.Common.Input.Peripherals.PeripheralOutputs.SetLighting"/>)
-    /// and the place of the option in the tab's picker, and the clipboard
+    /// and the place of the option in the group's picker, and the clipboard
     /// carries it, so a member is appended and never renumbered. The saved
     /// form is the name.</summary>
     public enum PeripheralClaimLevel

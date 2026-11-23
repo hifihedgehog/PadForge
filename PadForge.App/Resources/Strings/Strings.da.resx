@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ukendt</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Standard</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Gennemse…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Fortsæt</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motoren er stoppet.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Fejl: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} kunne ikke oprettes.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>En enhed kunne ikke åbnes, læses eller tilknyttes. Diagnosticeringsloggen nævner den.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} stødte på en fejl. Diagnosticeringsloggen har årsagen.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Inputmotoren stødte på en fejl. Diagnosticeringsloggen har årsagen.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL kunne ikke starte. Diagnosticeringsloggen har årsagen.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro kunne ikke sættes op. Diagnosticeringsloggen har årsagen.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>En virtuel controllers HIDMaestro-profil mangler. Diagnosticeringsloggen nævner den.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} kunne ikke få sin tilpassede identitet og layout og bruger i stedet sin profils egne.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil skiftet: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil skiftet: Standard</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Standard</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Port til bevægelsesserver</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Leverer gyro- og accelerometerdata til Cemu, Dolphin, Yuzu osv.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Spilmods</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lader spilmods lavet til DSX styre adaptive triggere, lysbjælke, spillerlys og mute-lys på dine PlayStation-controllere.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lader spilmods lavet til DSX styre adaptive triggere, lysbjælke, spillerlys og mute-lys på en DualSense eller DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Accepter DSX-spilmods</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Spilmod-port</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Kør en DSX.exe-stedfortræder</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Nogle mods, f.eks. DualSense4GTAV, slår sig selv fra, medmindre et program med navnet DSX kører. Dette kører en lille stedfortræder med det navn, mens serveren lytter.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Fungerer med mods lavet til DSX, f.eks. til GTA V, Red Dead Redemption 2, Skyrim og Forza. Mens serveren lytter, skriver PadForge sin port dér, hvor de leder efter den.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Lytter på :{0}. {1} sender til virtuel controller {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Lytter på :{0}. {1} sender, men ingen virtuel controller har en PlayStation-controller tilknyttet.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lytter på :{0}. {1} sender til controllerindeks {2}, og ingen virtuel controller med en PlayStation-controller har det indeks.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Lytter på :{0}. {1} sender, men ingen virtuel controller har en DualSense eller DualShock 4 tilknyttet.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lytter på :{0}. {1} sender til controllerindeks {2}, og ingen virtuel controller med en DualSense eller DualShock 4 har det indeks.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} er i brug af et andet program, f.eks. DSX. Luk det, eller vælg en anden port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Et spilmod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Fungerer med OpenTrack og ethvert sporingsprogram, der sender sit UDP-output eller skriver til delt hukommelse i FreeTrack 2.0-formatet, og med et OpenXR-kørselsmiljø på denne maskine, der kan køre en session i baggrunden.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Filen blev ikke fundet</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Kan ikke læses</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Filen til ”{0}” mangler eller kan ikke læses. PadForge viser Mørkt, indtil den er tilbage.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Filen til ”{0}” indeholder intet PadForge-tema. PadForge viser Mørkt, indtil den gør.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profilen ”{0}” bruger sit spils udseende. Dit tema vender tilbage, når en anden profil er aktiv.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-temaer (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Den fil er ikke et PadForge-tema.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge kan ikke læse den fil.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge kan ikke finde den fil.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Ikke et tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Temaet kunne ikke gemmes. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nyt tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge viser temaet, mens du bygger det.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Henter billedet fra Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam har intet bredt billede til dette spil.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Kunne ikke nå Steam. Tjek din forbindelse.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge kan ikke læse Steams billede til dette spil.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Placering</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Flytter billedet op eller ned i sit vindue.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Vis spillets logo</value></data>
@@ -1094,6 +1105,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Controlleren modtog ikke den kommando, der gør den klar, så intet blev sendt. Kontrollér, at den er tilsluttet, og send igen.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Afsendelsen stoppede på grund af en fejl i PadForge. Logfilen har detaljerne.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Et billede er stadig på vej til controlleren. Stop afsendelsen?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Fortsæt med at sende</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-filer (*.mpk)|*.mpk|Alle filer (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Gendan Controller Pak</value></data>
@@ -1657,6 +1669,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Udtoning af puls</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Forudindstilling</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Brugerdefineret</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (brugeroprettet)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggere</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV'er</value></data>
@@ -2638,7 +2651,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Denne controller har et magnetometer. Når drejningen forankres til magnetisk nord, fjernes langsom vandret drift fra gyrosigtet. Kalibrer først: tryk på Kalibrer, drej controlleren gennem alle retninger i et ottetal i et par sekunder, og tryk så igen.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Forankr drejning til kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Tilføjer en lille korrigerende hastighed, der trækker det vandrette sigte mod den magnetiske kurs, så drift ikke kan hobe sig op. Kræver en gemt kalibrering af magnetometeret. Målinger, der forstyrres af metal eller magneter i nærheden, afvises automatisk.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Nulstil til standard (fra)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulering af tipning og krængning</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Tipning og krængning beregnet ud fra accelerometeret</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Gyroen i denne controller registrerer kun drejning til venstre og højre. Når simulering er slået til, udleder PadForge tipning og krængning fra accelerometeret og sender dem sammen med gyroens drejning til tildelingsrækkerne og den virtuelle controllers bevægelse. Et accelerometer kan ikke skelne et skub fra en hældning, så hvis controlleren flyttes sidelæns eller fremad uden at blive drejet, aflæses det som en kort rotation.</value></data>
@@ -3035,7 +3047,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Kør sticken rundt langs kanten for at kortlægge den grænse, den kan nå, og omform den derefter til en fuld cirkel.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Nulstil grænsekalibrering</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Nulstil centerforskydning Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Nulstil til skaleret radial</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Nulstil dødzone X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Nulstil dødzone Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Nulstil anti-dødzone X</value></data>
@@ -3487,13 +3498,10 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Nulstil flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkter pr. 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Antal musetællinger for én fuld kameradrejning på 360°. Afhænger af spillets musefølsomhed: hæv det, hvis et svirp drejer for lidt, og sænk det, hvis det drejer for meget.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Nulstil til 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Svirptid</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Hvor lang tid et fuldt svirp på 180° tager med en blød afslutning. Kortere vendinger afsluttes på samme tid.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Nulstil til 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Svirptærskel</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Det stickudslag, der starter et svirp, som en brøkdel af fuldt udslag. Under et svirp falder slippunktet til 90% af dette.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Nulstil til 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Vinkellåsning</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Lås svirpet til faste vinkler for mere ensartede vendinger. Kun fremad låser hvert svirp til lige fremad.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Ingen låsning</value></data>
@@ -3502,22 +3510,16 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 grader</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 grader</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 grader</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Nulstil til Ingen låsning</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Låsningsstyrke</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Hvor kraftigt et svirp trækkes mod den låste vinkel. 1 låser helt, 0 slår låsning fra, værdier imellem blander.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Nulstil til 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Dødzone for vinkel forude</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Et svirp inden for denne vinkel fra lige fremad drejer intet. Lader dig starte en bevægelse langs kanten uden en svirpvending.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Nulstil til 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Udjævning af kantbevægelse</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Udjævner støj ved bevægelse langs kanten. -1 bruger det automatiske trinvise vindue, 0 slår udjævning fra, større værdier udjævner større rotationer pr. cyklus.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Nulstil til automatisk (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Tillad svirp ved aktivering</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotationsforskydning</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Drejer hele svirpkortet så mange grader. Positiv er med uret. Låsning anvendes efter forskydningen.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Nulstil rotationsforskydning</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Når laget med Flick stick aktiveres, mens sticken allerede har udslag, udløses svirpet med det samme. Fra holder kameraet stille og følger rotationen fra stickens aktuelle vinkel.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Nulstil Tillad svirp ved aktivering</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback ved fuldt styreudslag</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Et signal ved fuldt udslag for en stick i en styringstilstand</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Når en stick i en styringstilstand drejes helt til fuldt styreudslag, afspilles et signal (vibration, trigger eller lysbjælke), så du mærker grænsen. Alle er slået fra som standard.</value></data>
@@ -3707,11 +3709,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Afspil DualSense-haptik på denne controller</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Når et spil styrer denne plads som en virtuel DualSense med særskilt designet haptisk lyd, afspilles det spor på denne controllers aktuatorer. En Steam Controller 2026 via USB eller dens dongle og en Flydigi Apex 6 Pro afspiller selve sporet. Alle andre controllere, og den Steam Controller via Bluetooth, får toner udledt af lyden, som tilnærmer sig designerens fornemmelse i stedet for at gengive den.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptisk forstærkning</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Nulstil til standard (fra)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Nulstil til standard (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Lavpasafskæring for aktuator</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Holder den haptiske streaming til Steam Controller under denne frekvens, så padsene vibrerer i stedet for at afspille hørbar lyd. Omkring 250 Hz begynder aktuatorerne at blive hørbare. Hæv den for skarpere detaljer, sænk den for mere stille spil.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Nulstil til 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Toner over denne frekvens skæres fra eller foldes. Standarden på 800 Hz bevarer rumlen fra motorer og nedslag og fanger samtidig høje bip.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Nulstil høje toner</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Nulstil tonegrænse</value></data>
@@ -4312,8 +4311,59 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Markørområde</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0}-skift</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Hjulliste ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Markørområde ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Hold mus {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klik med mus {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Skift mus {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptisk puls ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (efter slip)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Tryk kort på {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Autofire {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Hold {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Skift {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Dobbelttryk {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Langt tryk {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Hjultrin ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Skift hjul ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbohjul ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Flyt markør ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Indstil LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Centrer gyro igen ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Skub markør ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Skærmbilledtast ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Skærmtastatur ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Indstil lysfarve</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Centrer kamera igen</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Flyt markør</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Skub markør</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Skærmbillede</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Skærmtastatur</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Skift skiftelag</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Slå et skiftelag til</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Slå et skiftelag fra</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Hold et skiftelag</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Skift spillernummer</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Ikke tilknyttet</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Skift skrivebordstilstand</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam-systemtast</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Skift forstørrelsesglas</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Lysere skærm</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Mørkere skærm</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Sluk controller</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Åbn Steam-konfiguration</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Åbn Steams hurtigmenu</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Afslut spil</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Skift haptik</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Skift Steam-HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Skift vibration</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Fremtving Guide-knap</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Gyrokalibrering med drejning</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Vend mod retning</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hold)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (slip)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (slip)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivér)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Vælg en konfiguration for at se, hvad der overføres.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Hvad der overføres</value></data>
@@ -4928,11 +4978,9 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Lag</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Vælg det lag, der tillader denne menu. Alle lag og Basis tillader den begge under andre aktive lag. Et navngivet lag skal svare til det aktuelt aktive lag.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Nulstil til Alle lag, og slå åbning, mens laget holdes, fra.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ikke på listen for denne plads)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Laget holder menuen åben</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Hold denne menu åben, mens dens navngivne lag er aktivt. Det valgte fysiske input styrer markeringen. Alle lag og Basis bruger normal åbning fra fladen.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Nulstil til åbning ved berøring eller udslag.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Styr med</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Det fysiske input, der styrer den markerede celle, mens laget holder denne menu åben.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Læses fra de fysiske controllere, der er tildelt denne plads. Laget åbner menuen, og dette input styrer den. Dens celler angiver, hvad den sender ud.</value></data>
@@ -5014,7 +5062,6 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Delt efter retning</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dødzone i midten</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Nulstil til venstre stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Nulstil styrke (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Nulstil dødzone i midten (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Nulstil Aktiver vibration efter styrevinkel</value></data>
@@ -5681,6 +5728,25 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiler</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Lag {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Triggere: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Lysbjælke</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} ekstra</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} lysbjælke</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Start program</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} rækkevidde</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Importeret profil</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Importeret makro</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Forudindstilling {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Radialmenu {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Berøringsmenu {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Musområde</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>tryk</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>hold</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>dobbelttryk</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Venstre triggereffekt</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Højre triggereffekt</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Knaptilknytning {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Punkt {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Beholder egne outputs</value></data>
@@ -6012,7 +6078,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX offentliggør ikke, hvordan dets indstilling {0} virker, så PadForge bruger sin egen.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX offentliggør ikke sine inputnumre. Offentliggjorte DSX-profiler bruger 41 til 44 som D-pad, så PadForge læser dem sådan.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX skriver ikke en binding som denne, så filen er ændret uden for DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX skifter til denne preset fra en genvej. Dens makro ligger på siden Makroer, klar til at blive knyttet til en knap.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX skifter til denne preset fra en genvej. Dens makro ligger i controllerens afsnit Makroer og menuer, klar til at blive knyttet til en knap.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Ingen offentliggjort DSX-profil bruger {0}, så PadForge kan ikke afgøre, hvad den gør.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX lader spillet bestemme dette, mens dets videresendelseskontakt er slået til, så PadForge overlader det også til spillet.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>I Native Mode med Send Data to Device slået fra sender DSX intet eget til controlleren, så PadForge overlader også dette til spillet.</value></data>

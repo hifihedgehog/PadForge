@@ -40,7 +40,7 @@ namespace PadForge.Tests
             new LightInfo(2, LightKind.Key, 0, LightKeySource.None),
             new LightInfo(3, LightKind.Edge, 0, LightKeySource.None),
             new LightInfo(4, LightKind.Key, 0, LightKeySource.None),
-        }, "test") { Product = product };
+        }) { Product = product };
 
         // ── The names ──
 
@@ -231,7 +231,7 @@ namespace PadForge.Tests
             {
                 new LightInfo(0, LightKind.Key, 0x31, LightKeySource.Device),
                 new LightInfo(1, LightKind.Key, 0, LightKeySource.None),
-            }, "test") { Product = Product };
+            }) { Product = Product };
             PeripheralLightMaps.Publish(Path, iso);
             using var vm = new MapKeyLightsViewModel(Path, "Bench");
             Assert.Equal(0x32, vm.Choose(new ushort[] { 0x31, 0x32 }));
@@ -256,7 +256,7 @@ namespace PadForge.Tests
             {
                 new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 },
                 new LightInfo(1, LightKind.Zone, 0, LightKeySource.None) { Zone = 2 },
-            }, "test") { Product = Product });
+            }) { Product = Product });
             using var zones = new MapKeyLightsViewModel(Path, "Bench");
             Assert.False(zones.CanLearn);
         }

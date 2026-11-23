@@ -82,7 +82,6 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Birahagarara…</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Byanze gutangira</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ntibizwi</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Mburabuzi</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Shakisha…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Komeza</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hagarika</value></data>
@@ -185,15 +184,15 @@
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, ukuboko kw'ibumoso</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, ukuboko kw'iburyo</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod z'imikino</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Yemerera mod z'imikino zakorewe DSX gushyiraho adaptive trigger, lightbar, amatara y'abakinnyi n'itara rya mute bya kontorola zawe za PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Yemerera mod z'imikino zakorewe DSX gushyiraho adaptive trigger, lightbar, amatara y'abakinnyi n'itara rya mute bya DualSense cyangwa DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Emera mod z'imikino za DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port ya mod z'imikino</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Tangiza igisimbura cya DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Mod zimwe, nka DualSense4GTAV, zirahagarara keretse hari porogaramu yitwa DSX irimo gukora. Ibi bitangiza igisimbura gito gifite iryo zina mu gihe seriveri irimo kumviriza.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Ikora na mod zakorewe DSX, nk'izakorewe GTA V, Red Dead Redemption 2, Skyrim na Forza. Mu gihe seriveri irimo kumviriza, PadForge yandika port yayo aho izo mod ziyishakira.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Irimo kumviriza kuri :{0}. {1} irimo kohereza kuri kontorola y'ikoranabuhanga ya {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Irimo kumviriza kuri :{0}. {1} irimo kohereza, ariko nta kontorola y'ikoranabuhanga ifite kontorola ya PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Irimo kumviriza kuri :{0}. {1} irimo kohereza kuri kontorola ya nimero {2}, kandi nta kontorola y'ikoranabuhanga iriho kontorola ya PlayStation ifite iyo nimero.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Irimo kumviriza kuri :{0}. {1} irimo kohereza, ariko nta kontorola y'ikoranabuhanga ifite DualSense cyangwa DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Irimo kumviriza kuri :{0}. {1} irimo kohereza kuri kontorola ya nimero {2}, kandi nta kontorola y'ikoranabuhanga iriho DualSense cyangwa DualShock 4 ifite iyo nimero.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} irimo gukoreshwa n'indi porogaramu, nka DSX. Yifunge cyangwa uhitemo indi port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod y'umukino</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Huza</value></data>
@@ -225,6 +224,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Dosiye ntiyabonetse</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ntishobora gusomwa</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Dosiye ya “{0}” irabura cyangwa ntishobora gusomwa. PadForge irerekana Umwijima kugeza igarutse.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Dosiye ya “{0}” ntirimo insanganyamatsiko ya PadForge. PadForge irerekana Umwijima kugeza iyibonetsemo.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Umwirondoro “{0}” urimo kwerekana isura y'umukino wawo. Insanganyamatsiko yawe igaruka iyo undi mwirondoro ukora.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Idirishya</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tangiza PadForge mu buryo bwikora iyo winjiye muri Windows.</value></data>
@@ -479,6 +479,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ongeraho ibara</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Byihariye</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Byakozwe n'ukoresha)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Uduti</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -1211,15 +1212,10 @@
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick stick (touchpad {0})</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Igenamiterere ry'injiza za Flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Subiza kuri 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Subiza kuri 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Subiza kuri 0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>Dogere 180</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>Dogere 90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>Dogere 60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>Dogere 45</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Subiza kuri 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Subiza kuri 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Ibara rya lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Ivolani</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Subiza ivolani uko yari iri</value></data>
@@ -1243,9 +1239,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Ingano y'ijwi</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Buri gihe</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Bifunze</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Subiza kuri mburabuzi (bifunze)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Subiza kuri mburabuzi (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Subiza kuri 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Ohereza hanze…</value></data>
@@ -1974,6 +1967,9 @@
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad yo kuri web yihariye igumana intera iri hagati ya buri tsinda ry'ibigenzura n'uruhande rwa ecran rurirwegereye kuri ecran yagutse kurushaho, nk'uko overlays za RetroArch zitandukanya ibice byazo byombi. Byasomwe nk'inyandiko gusa, nta code ya GPL ishyirwamo.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Iyo dosiye si insanganyamatsiko ya PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ntishobora gusoma iyo dosiye.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ntishobora kubona iyo dosiye.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Si insanganyamatsiko</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Insanganyamatsiko ntiyashoboye kubikwa. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Insanganyamatsiko nshya</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge yambara insanganyamatsiko uko uyikora.</value></data>
@@ -2005,4 +2001,6 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Amafoto (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Dosiye zose (*.*)|*.*</value></data>
   <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ntishobora gusoma iyo dosiye nk'ifoto.</value></data>
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Ifoto: ishusho y'isomero rya Steam ya {0}.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ntishobora gusoma ifoto ya Steam y'uyu mukino.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Komeza kohereza</value></data>
 </root>

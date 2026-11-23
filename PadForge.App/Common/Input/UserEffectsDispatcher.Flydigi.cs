@@ -16,8 +16,9 @@ namespace PadForge.Common.Input
     /// <para>The order, first one present wins: a game's effect on the
     /// slot's virtual DualSense, a game mod's hold (#529), a macro's
     /// effect (#531), the Impulse Triggers levels as a vibration, the
-    /// steering lock's pulse and resistance (#94) on a trigger the tab
-    /// leaves off, and the Adaptive Triggers group. The first three come
+    /// steering lock's pulse and resistance (#94) on a trigger the
+    /// Adaptive Triggers group leaves off, and the Adaptive Triggers
+    /// group. The first three come
     /// latched from <see cref="TryGetInboundTriggerEffects(int, Span{byte}, Span{byte}, out bool, out bool)"/>:
     /// a trigger effect is set once and holds until it is replaced, on
     /// a DualSense and on these pads alike.</para>

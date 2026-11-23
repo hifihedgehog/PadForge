@@ -67,8 +67,7 @@ namespace PadForge.Common.Input.Peripherals
         private static HidLightingModel Mk850Model(string name)
         {
             var lights = Mk850Lights();
-            return lights == null ? null : NewModel(name, Mk850, lights, "OpenRGB CMKeyboardDevices.cpp, SignalRGB",
-                (io, _) => BeginMk850(io));
+            return lights == null ? null : NewModel(name, Mk850, lights, (io, _) => BeginMk850(io));
         }
 
         /// <summary>OpenRGB's ANSI layout, with the plugin's Num Lock LED and

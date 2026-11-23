@@ -147,7 +147,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// of each std::map, which sorts its regions by value.</summary>
         internal static readonly RoccatVulcanLayout[] All =
         {
-            new("RoccatVulcan120AimoLayouts", 0, 6, 24, RoccatVulcan120AimoLayoutKeys104, "RoccatVulcanKeyboardLayouts.h:267", new RoccatVulcanLed[]
+            new("RoccatVulcan120AimoLayouts", 0, 6, 24, RoccatVulcan120AimoLayoutKeys104, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:267
             {
                 new("Key: Escape", 0x00),
                 new("Key: `", 0x01),
@@ -254,7 +254,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Number Pad +", 0x82),
                 new("Key: Number Pad Enter", 0x83),
             }),
-            new("RoccatVulcan120AimoLayouts", 2, 6, 24, RoccatVulcan120AimoLayoutKeys105, "RoccatVulcanKeyboardLayouts.h:130", new RoccatVulcanLed[]
+            new("RoccatVulcan120AimoLayouts", 2, 6, 24, RoccatVulcan120AimoLayoutKeys105, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:130
             {
                 new("Key: Escape", 0x00),
                 new("Key: `", 0x01),
@@ -362,7 +362,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Number Pad +", 0x82),
                 new("Key: Number Pad Enter", 0x83),
             }),
-            new("RoccatPyroLayouts", 0, 6, 24, RoccatVulcan120AimoLayoutKeys104, "RoccatVulcanKeyboardLayouts.h:544", new RoccatVulcanLed[]
+            new("RoccatPyroLayouts", 0, 6, 24, RoccatVulcan120AimoLayoutKeys104, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:544
             {
                 new("Key: Escape", 0x02),
                 new("Key: `", 0x03),
@@ -469,7 +469,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Number Pad +", 0x73),
                 new("Key: Number Pad Enter", 0x75),
             }),
-            new("RoccatPyroLayouts", 2, 6, 24, RoccatVulcan120AimoLayoutKeys105, "RoccatVulcanKeyboardLayouts.h:407", new RoccatVulcanLed[]
+            new("RoccatPyroLayouts", 2, 6, 24, RoccatVulcan120AimoLayoutKeys105, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:407
             {
                 new("Key: Escape", 0x02),
                 new("Key: `", 0x03),
@@ -577,7 +577,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Number Pad +", 0x73),
                 new("Key: Number Pad Enter", 0x75),
             }),
-            new("RoccatVulcanIILayouts", 2, 6, 24, RoccatVulcanIiLayoutKeys105, "RoccatVulcanKeyboardLayouts.h:684", new RoccatVulcanLed[]
+            new("RoccatVulcanIILayouts", 2, 6, 24, RoccatVulcanIiLayoutKeys105, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:684
             {
                 new("Key: Escape", 0x02),
                 new("Key: `", 0x03),
@@ -688,7 +688,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Media Play/Pause", 0x78),
                 new("Key: Media Next", 0x79),
             }),
-            new("RoccatVulcanIIMaxLayouts", 0, 6, 24, RoccatVulcanIiMaxLayoutKeysAnsi, "RoccatVulcanKeyboardLayouts.h:849", new RoccatVulcanLed[]
+            new("RoccatVulcanIIMaxLayouts", 0, 6, 24, RoccatVulcanIiMaxLayoutKeysAnsi, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:849
             {
                 new("Key: Escape", 0x02),
                 new("Key: `", 0x03),
@@ -839,7 +839,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Palm Rest LED 15", 0x99),
                 new("Palm Rest LED 16", 0x93),
             }),
-            new("RoccatVulcanIIMaxLayouts", 6, 6, 24, RoccatVulcanIiMaxLayoutKeysJis, "RoccatVulcanKeyboardLayouts.h:1058", new RoccatVulcanLed[]
+            new("RoccatVulcanIIMaxLayouts", 6, 6, 24, RoccatVulcanIiMaxLayoutKeysJis, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1058
             {
                 new("Key: Escape", 0x02),
                 new("Key: E/J", 0x03) { Under = "Key: `" },
@@ -993,7 +993,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Palm Rest LED 15", 0x99),
                 new("Palm Rest LED 16", 0x93),
             }),
-            new("RoccatVulcanTKLLayouts", 0, 6, 19, RoccatVulcanTklLayoutKeys104, "RoccatVulcanKeyboardLayouts.h:1388", new RoccatVulcanLed[]
+            new("RoccatVulcanTKLLayouts", 0, 6, 19, RoccatVulcanTklLayoutKeys104, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1388
             {
                 new("Key: Escape", 0x02),
                 new("Key: `", 0x03),
@@ -1081,7 +1081,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Page Down", 0x5E),
                 new("Key: Right Arrow", 0x5F),
             }),
-            new("RoccatVulcanTKLLayouts", 2, 6, 19, RoccatVulcanTklLayoutKeys105, "RoccatVulcanKeyboardLayouts.h:1274", new RoccatVulcanLed[]
+            new("RoccatVulcanTKLLayouts", 2, 6, 19, RoccatVulcanTklLayoutKeys105, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1274
             {
                 new("Key: Escape", 0x02),
                 new("Key: `", 0x03),
@@ -1170,7 +1170,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Page Down", 0x5E),
                 new("Key: Right Arrow", 0x5F),
             }),
-            new("TurtleBeachVulcanIITKLProLayouts", 2, 6, 19, TurtleBeachVulcanIiTklProLayoutKeys105, "RoccatVulcanKeyboardLayouts.h:1505", new RoccatVulcanLed[]
+            new("TurtleBeachVulcanIITKLProLayouts", 2, 6, 19, TurtleBeachVulcanIiTklProLayoutKeys105, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1505
             {
                 new("Key: Escape", 0x00),
                 new("Key: F1", 0x01),
@@ -1258,7 +1258,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: End", 0x56),
                 new("Key: Page Down", 0x57),
             }),
-            new("RoccatVulcanIIMiniLayouts", 0, 5, 15, RoccatVulcanIiMiniLayoutKeys104, "RoccatVulcanKeyboardLayouts.h:1692", new RoccatVulcanLed[]
+            new("RoccatVulcanIIMiniLayouts", 0, 5, 15, RoccatVulcanIiMiniLayoutKeys104, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1692
             {
                 new("Key: Escape", 0x00),
                 new("Key: Tab", 0x01),
@@ -1330,7 +1330,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Page Down", 0x43),
                 new("Key: Right Arrow", 0x44),
             }),
-            new("RoccatVulcanIIMiniLayouts", 2, 5, 15, RoccatVulcanIiMiniLayoutKeys105, "RoccatVulcanKeyboardLayouts.h:1612", new RoccatVulcanLed[]
+            new("RoccatVulcanIIMiniLayouts", 2, 5, 15, RoccatVulcanIiMiniLayoutKeys105, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1612
             {
                 new("Key: Escape", 0x00),
                 new("Key: Tab", 0x01),
@@ -1402,7 +1402,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 new("Key: Page Down", 0x43),
                 new("Key: Right Arrow", 0x44),
             }),
-            new("RoccatMagmaLayouts", 0, 1, 5, RoccatMagmaLayoutKeys, "RoccatVulcanKeyboardLayouts.h:1776", new RoccatVulcanLed[]
+            new("RoccatMagmaLayouts", 0, 1, 5, RoccatMagmaLayoutKeys, new RoccatVulcanLed[] // RoccatVulcanKeyboardLayouts.h:1776
             {
                 new("Keyboard LED 1", 0x00),
                 new("Keyboard LED 2", 0x01),

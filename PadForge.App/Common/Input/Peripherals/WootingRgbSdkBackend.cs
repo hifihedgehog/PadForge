@@ -276,7 +276,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (path.Family != OutputFamily.WootingRgbSdk || units.ContainsKey(path.Key)) continue;
                 if (Describe(path.Key, present) is not { } found) continue;
                 var unit = new Unit { Key = path.Key, Protocol = found.Protocol, Type = found.Type };
-                unit.Map = new LightMap(WootingKeyboardLighting.Lights(found.Type), "wooting-rgb-sdk matrix, OpenRGB RGBController_WootingKeyboard.cpp");
+                unit.Map = new LightMap(WootingKeyboardLighting.Lights(found.Type));
                 units.Add(path.Key, unit);
                 PeripheralLightMaps.Publish(unit.Path, unit.Map);
             }

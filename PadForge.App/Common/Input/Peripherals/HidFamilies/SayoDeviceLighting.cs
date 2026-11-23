@@ -75,8 +75,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                "OpenRGB RGBController_SayoDevice.cpp")
+            Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } })
             {
                 Product = $"sayo:{VendorId:X4}:{productId:X4}",
             },

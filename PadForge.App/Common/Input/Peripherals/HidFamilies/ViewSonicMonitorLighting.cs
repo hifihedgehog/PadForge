@@ -98,7 +98,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), qc ? "OpenRGB RGBController_XG270QC.cpp" : "OpenRGB RGBController_XG270QG.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"viewsonic:{vendorId:X4}:{productId:X4}",
             },

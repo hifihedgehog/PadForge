@@ -144,4 +144,47 @@ namespace PadForge.Tests
             Assert.Null(unparsed);
         }
     }
+
+    /// <summary>An imported profile is stored under the device's own name.
+    /// The "(User Generated)" mark is the interface's, drawn where the
+    /// Preset picker names the profile (HMaestroProfileCatalog.DisplayName),
+    /// so it follows the language. The import wrote the English mark into
+    /// the stored name, and a store or a file from then is read without
+    /// it.</summary>
+    [Collection("SettingsManagerStatics")]
+    public class UserProfileNameTests
+    {
+        private const string OldMark = " (User Generated)";
+
+        [Fact]
+        public void AnImportStoresTheDevicesOwnName()
+        {
+            var settings = new SettingsService(new MainViewModel());
+            string json = UserProfileProblemTests.ProfileJson("padforge-test-name");
+            string name = JsonNode.Parse(json)["name"].GetValue<string>();
+            Assert.False(string.IsNullOrWhiteSpace(name));
+
+            Assert.Equal("padforge-test-name" + HMaestroProfileCatalog.UserProfileIdSuffix, settings.AddUserProfile(json, out string problem));
+            Assert.Null(problem);
+            Assert.Equal(name, Assert.Single(settings.GetUserProfileRows()).Name);
+
+            // A file exported with the old mark in its name comes back without it.
+            string marked = UserProfileProblemTests.ProfileJson("padforge-test-name", edit: r => r["name"] = name + OldMark);
+            Assert.NotNull(settings.AddUserProfile(marked, out _));
+            Assert.Equal(name, Assert.Single(settings.GetUserProfileRows()).Name);
+        }
+
+        [Fact]
+        public void AStoredOldMarkIsTakenOffOnLoad()
+        {
+            string marked = UserProfileProblemTests.ProfileJson("padforge-test-name-user", edit: r => r["name"] = "Pad" + OldMark);
+            var root = JsonNode.Parse(SettingsService.WithoutOldUserGeneratedName(marked)).AsObject();
+            Assert.Equal("Pad", root["name"].GetValue<string>());
+            Assert.Equal("padforge-test-name-user", root["id"].GetValue<string>());
+            // A name without the mark, and JSON that does not parse, are left as they are.
+            string plain = UserProfileProblemTests.ProfileJson("padforge-test-name-user", edit: r => r["name"] = "Pad");
+            Assert.Same(plain, SettingsService.WithoutOldUserGeneratedName(plain));
+            Assert.Equal("{ not json", SettingsService.WithoutOldUserGeneratedName("{ not json"));
+        }
+    }
 }

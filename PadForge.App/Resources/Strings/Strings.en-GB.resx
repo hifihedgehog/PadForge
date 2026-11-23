@@ -640,4 +640,8 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Takes the four colours from the picture.</value></data>
   <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pick a Colour</value></data>
   <data name="Profile_GameLook_Tip" xml:space="preserve"><value>While this profile is active, PadForge shows the game’s picture and colours. Your theme returns when another profile is active.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} could not take its customised identity and layout and uses its profile’s own.</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Recentre gyro ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Set light colour</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentre camera</value></data>
 </root>

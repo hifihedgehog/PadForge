@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Առցանց</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Անցանց</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Անծանօթ</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Լռելեայն</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Զննել…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Շարունակել</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Կեցնել</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Շարժիչը կեցաւ։</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Սխալ: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} չկրցաւ ստեղծուիլ։</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Սարք մը կարելի չեղաւ բանալ, կարդալ կամ նշանակել։ Ախտորոշման արձանագրութիւնը կը նշէ զայն։</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} սխալի մը հանդիպեցաւ։ Պատճառը ախտորոշման արձանագրութեան մէջ է։</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Մուտքի շարժիչը սխալի մը հանդիպեցաւ։ Պատճառը ախտորոշման արձանագրութեան մէջ է։</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL-ը չկրցաւ սկսիլ։ Պատճառը ախտորոշման արձանագրութեան մէջ է։</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro-ն կարելի չեղաւ կարգաւորել։ Պատճառը ախտորոշման արձանագրութեան մէջ է։</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Վիրթուալ կառավարիչի մը HIDMaestro փրոֆիլը կը պակսի։ Ախտորոշման արձանագրութիւնը կը նշէ զայն։</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} չկրցաւ ստանալ իր անհատական ինքնութիւնը եւ դասաւորութիւնը, ու կը գործածէ իր փրոֆիլին սեփականը։</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Փրոֆիլը փոխուեցաւ: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Փրոֆիլը փոխուեցաւ: Սկզբնական</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Սկզբնական</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Շարժման սպասարկիչի փորթ</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Ժիրոսքոփի եւ արագացման չափիչի տուեալներ կը տրամադրէ Cemu-ին, Dolphin-ին, Yuzu-ին եւ այլն։</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Խաղի յաւելուածներ</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Թոյլ կու տայ, որ DSX-ի համար շինուած խաղի յաւելուածները կարգաւորեն ձեր PlayStation կառավարիչներուն յարմարուող ձգանները, լուսաշերտը, խաղացողի լոյսերը եւ ձայնանջատման լոյսը։</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Թոյլ կու տայ, որ DSX-ի համար շինուած խաղի յաւելուածները կարգաւորեն DualSense-ի կամ DualShock 4-ի յարմարուող ձգանները, լուսաշերտը, խաղացողի լոյսերը եւ ձայնանջատման լոյսը։</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Ընդունիլ DSX խաղի յաւելուածները</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Խաղի յաւելուածներու փորթ</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Գործարկել DSX.exe փոխարինող մը</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Կարգ մը յաւելուածներ, օրինակ՝ DualSense4GTAV, իրենք զիրենք կ'անջատեն, եթէ DSX անունով ծրագիր մը չ'աշխատիր։ Ասիկա այդ անունով փոքր փոխարինող մը կը գործարկէ, մինչ սպասարկիչը կ'ունկնդրէ։</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Կ'աշխատի DSX-ի համար շինուած յաւելուածներու հետ, օրինակ՝ GTA V, Red Dead Redemption 2, Skyrim եւ Forza խաղերուն համար շինուածներուն։ Մինչ սպասարկիչը կ'ունկնդրէ, PadForge իր փորթը կը գրէ հոն, ուր այդ յաւելուածները զայն կը փնտռեն։</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Կ՚ունկնդրէ՝ :{0}։ {1} կը ղրկէ վիրթուալ կառավարիչ {2}-ին։</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Կ՚ունկնդրէ՝ :{0}։ {1} կը ղրկէ, բայց ոչ մէկ վիրթուալ կառավարիչի վրայ PlayStation կառավարիչ կայ։</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Կ՚ունկնդրէ՝ :{0}։ {1} կը ղրկէ {2} համարով կառավարիչին, բայց PlayStation կառավարիչ ունեցող վիրթուալ կառավարիչներէն ոչ մէկը այդ համարը չունի։</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Կ՚ունկնդրէ՝ :{0}։ {1} կը ղրկէ, բայց ոչ մէկ վիրթուալ կառավարիչի վրայ DualSense կամ DualShock 4 կայ։</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Կ՚ունկնդրէ՝ :{0}։ {1} կը ղրկէ {2} համարով կառավարիչին, բայց DualSense կամ DualShock 4 ունեցող վիրթուալ կառավարիչներէն ոչ մէկը այդ համարը չունի։</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} փորթը կը գործածուի ուրիշ ծրագրի մը կողմէ, օրինակ՝ DSX-ի։ Գոցեցէք զայն կամ ուրիշ փորթ մը ընտրեցէք։</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Խաղի յաւելուած մը</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Կ՚աշխատի OpenTrack-ի եւ որեւէ հետեւիչի հետ, որ իր UDP ելքը կը ղրկէ կամ FreeTrack 2.0 համատեղ յիշողութեան մէջ կը գրէ, ինչպէս նաեւ այս համակարգիչին վրայ OpenXR գործարկման միջավայրի մը հետ, որ կրնայ նիստ մը գործարկել խորքին մէջ։</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Նիշքը չգտնուեցաւ</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Կարելի չէ կարդալ</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>«{0}»-ի նիշքը կը պակսի կամ կարելի չէ կարդալ։ PadForge-ը Մութ ոճը կը ցուցադրէ, մինչեւ որ նիշքը վերադառնայ։</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>«{0}»-ի նիշքը PadForge ոճ չի պարունակեր։ PadForge-ը Մութ ոճը կը ցուցադրէ, մինչեւ որ նիշքը ոճ մը պարունակէ։</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>«{0}» փրոֆիլը իր խաղին տեսքը կը կրէ։ Ձեր ոճը կը վերադառնայ, երբ ուրիշ փրոֆիլ մը գործօն ըլլայ։</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Մուտքի շարժիչ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Կարգաւորեցէք հարցման վարքագիծը եւ խորքի մշակումը։</value></data>
@@ -1045,6 +1052,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Կառավարիչը չընդունեց զայն պատրաստող հրահանգը, ուստի ոչինչ ղրկուեցաւ։ Ստուգեցէք, որ ան միացուած է, եւ նորէն ղրկեցէք։</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Ղրկումը կասեցաւ PadForge-ի մէջ սխալի մը պատճառով։ Մանրամասնութիւնները արձանագրութեան ֆայլին մէջ են։</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Պատկեր մը տակաւին կառավարիչին կը ղրկուի։ Կասեցնե՞լ ղրկումը։</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Շարունակել ղրկելը</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak նիշքեր (*.mpk)|*.mpk|Բոլոր նիշքերը (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak փորթ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Վերականգնել Controller Pak-ը</value></data>
@@ -1432,6 +1440,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Բաբախումի մարում</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Նախադրուած արժէքներ</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Անհատական</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Գործածողի ստեղծած)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Լծակներ</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ձգաններ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ներ</value></data>
@@ -2409,7 +2418,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Այս կառավարիչը մագնիսաչափ ունի։ Աջ-ձախ դարձը մագնիսական հիւսիսին կապելը կը վերացնէ ժիրոսքոփով նշանառութեան դանդաղ հորիզոնական սահքը։ Նախ չափաբերեցէք՝ սեղմեցէք «Չափաբերել», քանի մը վայրկեան կառավարիչը բոլոր ուղղութիւններով դարձուցէք 8 թիւի ձեւով, ապա կրկին սեղմեցէք։</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Աջ-ձախ դարձը կապել կողմնացոյցին</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Կ'աւելցնէ փոքր ուղղիչ արագութիւն մը, որ հորիզոնական նշանառութիւնը կը քաշէ դէպի մագնիսական ուղղութիւնը, որպէսզի սահքը չկարենայ կուտակուիլ։ Կը պահանջէ պահուած մագնիսաչափի չափաբերում։ Մօտակայ մետաղէն կամ մագնիսներէն խանգարուած նմուշները ինքնաշխատօրէն կը մերժուին։</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Վերակայել լռելեայնին (անջատ)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Առաջ-ետ եւ կողային թեքման նմանակում</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Առաջ-ետ եւ կողային թեքում՝ արագացման չափիչէն</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Այս կառավարիչին ժիրոսքոփը կը զգայ միայն աջ ու ձախ դառնալը։ Նմանակումը միացած ըլլալով՝ PadForge առաջ-ետ եւ կողային թեքումը կը հանէ արագացման չափիչէն եւ զանոնք ժիրոսքոփին աջ-ձախ դարձին հետ կը ղրկէ համապատասխանեցման տողերուն եւ վիրթուալ կառավարիչին շարժումին։ Արագացման չափիչը չի կրնար հրումը թեքումէն զանազանել, ուստի կառավարիչը կողքի կամ առաջ շարժելը՝ առանց դարձնելու, կը կարդացուի որպէս կարճ պտոյտ։</value></data>
@@ -2801,7 +2809,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Լծակը պտտցուցէք իր եզրին շուրջ՝ հասանելի սահմանը որոշելու համար, ապա անիկա պիտի վերաձեւուի լման շրջանի։</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Վերակայել սահմանի չափաբերումը</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Վերակայել կեդրոնի շեղումը Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Վերակայել՝ սանդղաւորուած շառաւղային</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Վերակայել մեռեալ գօտին X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Վերակայել մեռեալ գօտին Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Վերակայել հակամեռեալ գօտին X</value></data>
@@ -3224,13 +3231,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Վերակայել ֆլիք լծակը</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Կէտեր 360°-ի համար</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Մուկի հաշուարկներ տեսախցիկի մէկ ամբողջական 360° դարձին համար։ Կախեալ է խաղին մուկի զգայնութենէն. բարձրացուցէք, եթէ ֆլիքը պակաս կը դառնայ, իջեցուցէք, եթէ աւելի կը դառնայ։</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Վերակայել՝ 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Ֆլիքի տեւողութիւն</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Որքան ժամանակ կը տեւէ ամբողջական 180° ֆլիքը՝ վերջաւորութեան դանդաղումով։ Աւելի կարճ դարձերը նոյն ժամանակին մէջ կ'աւարտին։</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Վերակայել՝ 0.1 վրկ</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Ֆլիքի սեմ</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Լծակի շեղումը, որ կը սկսի ֆլիք մը, որպէս ամբողջական շեղման մաս։ Ֆլիքի ընթացքին ազատման կէտը կ'իջնէ անոր 90%-ին։</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Վերակայել՝ 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Կլորացման անկիւն</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Ֆլիքը կը կլորացնէ հաստատուն անկիւններու՝ աւելի կայուն դարձերու համար։ «Միայն առաջ» կերպը իւրաքանչիւր ֆլիք կը կլորացնէ ուղիղ դէպի առաջ։</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Առանց կլորացման</value></data>
@@ -3239,22 +3243,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 աստիճան</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 աստիճան</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 աստիճան</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Վերակայել՝ առանց կլորացման</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Կլորացման ուժ</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Որքան ուժգին ֆլիքը կը քաշուի դէպի կլորացուած անկիւնը։ 1-ը ամբողջովին կը կլորացնէ, 0-ն կ'անջատէ կլորացումը, միջանկեալ արժէքները կը խառնեն երկուքը։</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Վերակայել՝ 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Առջեւի անկիւնի մեռեալ գօտի</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Ուղիղ առաջէն այս անկիւնին մէջ եղող ֆլիքը ոչինչ կը դարձնէ։ Կը թոյլատրէ սահեցում սկսիլ առանց ֆլիք դարձի։</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Վերակայել՝ 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Սահեցման հարթեցում</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Կը հարթեցնէ եզերքի սահեցման աղմուկը։ -1-ը կը գործածէ ինքնաշխատ աստիճանային պատուհանը, 0-ն կ'անջատէ հարթեցումը, աւելի մեծ արժէքները կը հարթեցնեն իւրաքանչիւր քայլի աւելի մեծ պտոյտներ։</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Վերակայել՝ ինքնաշխատ (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Թոյլատրել ֆլիք գործարկման պահուն</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Պտոյտի շեղում</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Ամբողջ ֆլիքի քարտէսը կը պտտցնէ այսքան աստիճանով։ Դրական արժէքը ժամացոյցի սլաքի ուղղութեամբ է։ Կլորացումը կը կիրարկուի շեղումէն ետք։</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Վերակայել պտոյտի շեղումը</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Երբ ֆլիք լծակը պարունակող շերտը կը գործարկուի, եւ լծակը արդէն շեղուած է, ֆլիքը անմիջապէս կը գործէ։ Անջատ ըլլալու պարագային տեսախցիկը անշարժ կը մնայ, եւ պտոյտը կը հետեւի լծակի ներկայ անկիւնէն։</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Վերակայել «Թոյլատրել ֆլիք գործարկման պահուն»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ղեկի սահմանի արձագանգ</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ազդանշան սահմանին՝ ղեկի կերպով լծակի համար</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Երբ ղեկի կերպով լծակը ամբողջովին կը դարձուի մինչեւ սահմանը, ազդանշան մը կը տրուի (թրթռում, ձգան կամ լուսաշերտ), որպէսզի սահմանը զգաք։ Լռելեայն բոլորը անջատ են։</value></data>
@@ -3444,11 +3442,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Հնչեցնել DualSense-ի հպական արձագանգը այս կառավարիչին վրայ</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Երբ խաղ մը այս խցիկը կը վարէ որպէս վիրթուալ DualSense՝ պատրաստուած հպական ձայնով, այդ ձայնագրութիւնը կը հնչէ այս կառավարիչի թրթռիչներուն վրայ։ Steam Controller 2026-ը USB-ով կամ իր ընդունիչով, ինչպէս նաեւ Flydigi Apex 6 Pro-ն, ձայնագրութիւնը իրենք կը հնչեցնեն։ Միւս բոլոր կառավարիչները, ինչպէս նաեւ այդ Steam Controller-ը Bluetooth-ով, կը ստանան ձայնէն ստացուած հնչերանգներ, որոնք մօտաւորապէս կը վերարտադրեն դիզայներին զգացողութիւնը, բայց ոչ ճշգրիտ։</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Հպական արձագանգի ուժեղացում</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Վերակայել լռելեայնին (անջատ)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Վերակայել լռելեայնին (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Թրթռիչներու ցածրանցիկ սահման</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller-ի հպական հոսքը կը պահէ այս հաճախականութենէն ցած, որպէսզի վահանակները թրթռան, ոչ թէ լսելի ձայն արձակեն։ Մօտաւորապէս 250 Hz-ի շուրջ թրթռիչները կը սկսին լսելի դառնալ։ Բարձրացուցէք աւելի յստակ մանրամասնութեան համար, իջեցուցէք աւելի հանդարտ աշխատանքի համար։</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Վերակայել՝ 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Այս հաճախականութենէն բարձր հնչերանգները կը կտրուին կամ կ'իջեցուին։ Լռելեայն 800 Hz-ը կը պահէ շարժիչի եւ հարուածի թրթռումը, մինչ կը բռնէ բարձր ազդանշանները։</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Վերակայել բարձր հնչերանգները</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Վերակայել հնչերանգի սահմանը</value></data>
@@ -4017,8 +4012,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Արհեստանոցի փրոֆիլ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Արհեստանոցի մաքրօ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Նշորդի տարածք</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} փոխաշերտ</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Անիւի ցանկ ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Նշացոյցի շրջան ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Պահել մուկի {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Սեղմել մուկի {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Փոխանջատել մուկի {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Թրթռումի զարկ ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (արձակման մաս)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Կարճ սեղմում {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Ինքնակրակ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Պահել {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Փոխանջատել {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Թուրպօ {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Կրկնակի սեղմում {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Երկար սեղմում {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Անիւի քայլ ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Փոխանջատել անիւը ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Թուրպօ անիւ ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Նշացոյցի ցատկ ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Կարգաւորել LED-ը ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Վերակեդրոնացնել գիրոսկոպը ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Նշացոյցի թեթեւ շարժում ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Պաստառի պատկերի ստեղն ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Պաստառի ստեղնաշար ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Կարգաւորել լոյսի գոյնը</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Վերակեդրոնացնել տեսախցիկը</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Նշացոյցի ցատկ</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Նշացոյցի թեթեւ շարժում</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Պաստառի պատկեր</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Պաստառի ստեղնաշար</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Փոխել փոխաշերտը</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Միացնել փոխաշերտ մը</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Անջատել փոխաշերտ մը</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Պահել փոխաշերտ մը</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Փոխել խաղացողի համարը</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Կապուած չէ</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Փոխանջատել գրասեղանի կերպը</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam-ի դրութեան ստեղն</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Փոխանջատել խոշորացոյցը</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Պայծառութիւն վեր</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Պայծառութիւն վար</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Անջատել կառավարիչը</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Բանալ Steam-ի կարգաւորիչը</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Բանալ Steam-ի արագ ցանկը</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Ելլել խաղէն</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Փոխանջատել թրթռումային հետադարձը</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Փոխանջատել Steam HUD-ը</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Փոխանջատել ցնցումը</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Ստիպողաբար սեղմել Guide կոճակը</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Գիրոսկոպի չափաբերման պտոյտ</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Դառնալ ուղղութեան դէմ</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (պահում)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (արձակում)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (արձակում)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (միացում)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Ընտրեցէք կազմաձեւ մը՝ տեսնելու համար, թէ ինչ կը փոխանցուի։</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ինչ կը փոխանցուի</value></data>
@@ -4618,11 +4664,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Շերտ</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Ընտրեցէք շերտը, որ կը թոյլատրէ այս ցանկը։ «Որեւէ շերտ» եւ «Հիմնական» երկուքն ալ կը թոյլատրեն զայն այլ գործօն շերտերու տակ։ Անուանուած շերտ մը պէտք է համապատասխանէ ներկայիս գործօն շերտին։</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Վերակայել որպէս «Որեւէ շերտ» եւ անջատել շերտով բաց պահելը։</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (այս խցիկին վրայ նշուած չէ)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Շերտը ցանկը բաց կը պահէ</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Այս ցանկը բաց պահել, մինչ անոր անուանուած շերտը գործօն է։ Ընտրուած ֆիզիքական մուտքը կը շարժէ ընդգծումը։ «Որեւէ շերտ» եւ «Հիմնական» կը գործածեն մակերեսի սովորական բացումը։</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Վերակայել՝ հպումով կամ շեղումով բացման։</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Ուղղորդիչ մուտք</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Ֆիզիքական մուտքը, որ կ'ուղղորդէ ընդգծուած բջիջը, մինչ շերտը այս ցանկը բաց կը պահէ։</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Կը կարդացուի այս խցիկին նշանակուած ֆիզիքական կառավարիչներէն։ Շերտը կը բանայ ցանկը, եւ այս մուտքը կ'ուղղորդէ զայն։ Ցանկին բջիջները կ'որոշեն անոր ելքը։</value></data>
@@ -4701,7 +4745,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Մոթոր</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Բաժնուած ըստ ուղղութեան</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Կեդրոնի մեռեալ գօտի</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Վերակայել (ձախ լծակ X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Վերակայել ուժգնութիւնը (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Վերակայել կեդրոնի մեռեալ գօտին (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Վերակայել ղեկի անկիւնի թրթռումի միացումը</value></data>
@@ -5215,6 +5258,9 @@
   <data name="About_LanguageRefs" xml:space="preserve"><value>Քլինկոներէնի եւ Սինտարիներէնի աղբիւրներ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Քլինկոներէն եւ Սինտարիներէն թարգմանութիւններուն բառերը ստուգուած են klingon-assistant-data (Apache-2.0) բառարանով, որ boQwI'-ի հիմքն է, եւ Eldamo (CC BY 4.0) բառագիրքով, որ Paul Strack-ի էլֆական լեզուներու բառագիրքն է։ Միայն բառարանային տուեալներ, անոնցմէ ոչինչ չի ներառուիր։</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Այդ նիշքը PadForge-ի ոճ չէ։</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge-ը չի կրնար կարդալ այդ նիշքը։</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge-ը չի կրնար գտնել այդ նիշքը։</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Ոճ չէ</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Ոճը կարելի չեղաւ պահել։ {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Նոր ոճ</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge-ը ոճը կը կրէ, մինչ զայն կը կառուցէք։</value></data>
@@ -5229,6 +5275,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Պատկերը կը բերուի Steam-էն…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-ը այս խաղին համար լայն պատկեր չունի։</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-ին հասնիլ կարելի չեղաւ։ Ստուգեցէք ձեր կապը։</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge-ը չի կրնար կարդալ այս խաղին Steam-ի պատկերը։</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Դիրք</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Պատկերը իր պատուհանին մէջ վեր կամ վար կը շարժէ։</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ցուցադրել խաղին լոկօն</value></data>
@@ -5269,4 +5316,6 @@
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Star Trek-ի առաջին շարքին համար նկարահանուած մոտէլը, լուսանկարուած զայն պահող Smithsonian National Air and Space Museum-ի կողմէ՝ Star Trek-ի LCARS ոճին պատկերը։</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Ոճի պատկեր՝ USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation-էն կադր մը՝ Star Trek-ի Starfleet ոճին պատկերը։ Գտնուած է Memory Alpha-ի մէջ։</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Լուսաշերտ</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} լուսաշերտ</value></data>
 </root>

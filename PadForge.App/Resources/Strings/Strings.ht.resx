@@ -98,7 +98,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Konekte</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Dekonekte</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Enkoni</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Pa defo</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Chèche…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Kontinye</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Kanpe</value></data>
@@ -264,6 +263,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motè a kanpe.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Erè: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Yo pa t ka kreye {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Yo pa t kapab louvri, li oswa mape yon aparèy. Jounal dyagnostik la bay non li.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} rankontre yon erè. Jounal dyagnostik la gen kòz la.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Motè antre a rankontre yon erè. Jounal dyagnostik la gen kòz la.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL pa t kapab demare. Jounal dyagnostik la gen kòz la.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Yo pa t kapab konfigire HIDMaestro. Jounal dyagnostik la gen kòz la.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Pwofil HIDMaestro yon kontwolè vityèl manke. Jounal dyagnostik la bay non li.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} pa t kapab pran idantite ak dispozisyon pèsonalize li yo, kidonk li sèvi ak pa pwofil li a.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Pwofil chanje: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Pwofil chanje: Pa defo</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Pa defo</value></data>
@@ -434,15 +440,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Pò sèvè mouvman</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Bay done jiwoskòp ak akselewomèt pou Cemu, Dolphin, Yuzu, elatriye.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod jwèt</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Pèmèt mod jwèt ki fèt pou DSX yo regle gachèt adaptatif yo, ba limyè a, limyè jwè yo ak limyè mute la sou kontwolè PlayStation ou yo.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Pèmèt mod jwèt ki fèt pou DSX yo regle gachèt adaptatif yo, ba limyè a, limyè jwè yo ak limyè mute la sou yon DualSense oswa yon DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Aksepte mod jwèt DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pò mod jwèt</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Lanse yon ranplasan DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Gen kèk mod, tankou DualSense4GTAV, ki etenn tèt yo si yon pwogram ki rele DSX p ap mache. Opsyon sa a lanse yon ti ranplasan ki gen non sa a pandan sèvè a ap koute.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Mache ak mod ki fèt pou DSX, tankou sa yo pou GTA V, Red Dead Redemption 2, Skyrim ak Forza. Pandan sèvè a ap koute, PadForge ekri pò li a kote mod sa yo chèche l.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Ap koute sou :{0}. {1} ap voye bay kontwolè vityèl {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ap koute sou :{0}. {1} ap voye, men pa gen okenn kontwolè vityèl ki gen yon kontwolè PlayStation sou li.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ap koute sou :{0}. {1} ap voye bay kontwolè nimewo {2}, men okenn kontwolè vityèl ki gen yon kontwolè PlayStation sou li pa gen nimewo sa a.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Ap koute sou :{0}. {1} ap voye, men pa gen okenn kontwolè vityèl ki gen yon DualSense oswa yon DualShock 4 sou li.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ap koute sou :{0}. {1} ap voye bay kontwolè nimewo {2}, men okenn kontwolè vityèl ki gen yon DualSense oswa yon DualShock 4 sou li pa gen nimewo sa a.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Yon lòt pwogram, tankou DSX, ap itilize pò {0}. Fèmen l oswa chwazi yon lòt pò.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Yon mod jwèt</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
@@ -516,6 +522,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Pa jwenn fichye a</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Pa ka li l</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fichye tèm “{0}” la manke oswa yo pa ka li l. PadForge montre Fonse jiskaske li tounen.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fichye tèm “{0}” la pa gen okenn tèm PadForge ladan l. PadForge montre Fonse jiskaske li genyen youn.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Pwofil “{0}” la ap montre aparans jwèt li a. Tèm ou a ap tounen lè yon lòt pwofil aktif.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motè antre</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Demare motè a otomatikman lè pwogram nan louvri</value></data>
@@ -852,6 +859,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontwolè a pa t pran kòmand ki prepare l la, kidonk anyen pa t voye. Verifye li konekte epi voye ankò.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Voye a kanpe sou yon erè nan PadForge. Fichye jounal la gen detay yo.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Yon imaj toujou ap ale nan kontwolè a. Kanpe voye a?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kontinye voye</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fichye Controller Pak (*.mpk)|*.mpk|Tout fichye (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak pò {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Retabli Controller Pak</value></data>
@@ -1218,6 +1226,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Ranplase palèt aktyèl la ak kat koulè pa defo yo (wouj, vèt, ble, jòn).</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Prereglaj</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pèsonalize</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Kreye pa itilizatè)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gachèt</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2076,7 +2085,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Kontwolè sa a gen yon mayetomèt. Lè ou mare yaw la sou nò mayetik, sa retire deriv orizontal dousman nan vize ak jiwoskòp. Kalibre an premye: peze Kalibre, vire kontwolè a nan tout direksyon tankou yon 8 pandan kèk segonn, epi peze ankò.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Mare yaw sou bousòl</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Ajoute yon ti koreksyon ki rale vize orizontal la vè direksyon mayetik la, konsa deriv pa ka akimile. Li bezwen yon kalibrasyon mayetomèt ki anrejistre. Echantiyon ki gen metal oswa leman toupre ki deranje yo rejte otomatikman.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reyinisyalize pa defo (etenn)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulasyon pitch ak roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch ak roll kalkile apati akselewomèt la</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Jiwoskòp kontwolè sa a detekte sèlman lè l vire agoch ak adwat. Lè simulasyon an aktive, PadForge kalkile pitch ak roll apati akselewomèt la epi li voye yo ansanm ak yaw jiwoskòp la bay liy asiyasyon yo ak mouvman kontwolè vityèl la. Yon akselewomèt pa ka fè diferans ant yon pouse ak yon panche, kidonk si ou deplase kontwolè a sou kote oswa devan san ou pa vire l, sa parèt tankou yon ti wotasyon.</value></data>
@@ -2718,13 +2726,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reyinisyalize Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pwen pou 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Kantite mouvman sourit pou yon vire kamera konplè 360°. Sa depann de sansiblite sourit nan jwèt la: ogmante l si yon flick pa vire ase, bese l si li vire twòp.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reyinisyalize a 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Tan flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Konbyen tan yon flick konplè 180° pran pou fini, ak yon ralanti nan fen an. Vire ki pi kout yo fini nan menm tan an.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Reyinisyalize a 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Papòt flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Deplasman stick ki kòmanse yon flick, kòm yon fraksyon deplasman total la. Pandan flick la, pwen lage a desann a 90% valè sa a.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Reyinisyalize a 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Ang fiks</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Fikse flick la sou ang fiks pou vire yo pi regilye. Devan sèlman fikse chak flick tou dwat devan.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Pa gen ang fiks</value></data>
@@ -2733,21 +2738,15 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 degre</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 degre</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 degre</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Reyinisyalize a Pa gen ang fiks</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Fòs fiksasyon</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Konbyen fòs yon flick rale vè ang fiks la. 1 fikse nèt, 0 dezaktive fiksasyon, valè ant de yo melanje.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Reyinisyalize a 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zòn mò ang devan</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Yon flick nan ang sa a toupre devan pa vire anyen. Sa pèmèt ou kòmanse yon bale san yon vire flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Reyinisyalize a 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Adousisman bale</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Reyinisyalize a Otomatik (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Pèmèt flick lè l aktive</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Dekalaj wotasyon</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Vire tout kat flick la pa kantite degre sa a. Pozitif se nan direksyon zegui mont. Fiksasyon an aplike apre dekalaj la.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Reyinisyalize dekalaj wotasyon</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Lè kouch ki gen Flick Stick la aktive pandan stick la deja deplase, deklanche flick la touswit. Etenn kenbe kamera a fiks epi swiv wotasyon an apati ang stick la kounye a.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Reyinisyalize Pèmèt flick lè l aktive</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Siyal limit direksyon</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Yon siyal nan limit pou yon stick nan mòd direksyon</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Lè yon stick ki nan yon mòd direksyon vire jouk nan limit la, jwe yon siyal (vibrasyon, gachèt oswa ba limyè) pou w santi limit la. Tout etenn pa defo.</value></data>
@@ -2933,9 +2932,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Jwe aptik DualSense sou kontwolè sa a</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Lè yon jwèt kontwole plas sa a kòm yon DualSense vityèl ak odyo aptik ki prepare pou li, jwe tras sa a sou aktyatè kontwolè sa a. Yon Steam Controller 2026 sou USB oswa sou dongle li, ak yon Flydigi Apex 6 Pro, jwe tras la yo menm. Tout lòt kontwolè, ak Steam Controller sa a sou Bluetooth, resevwa son ki soti nan odyo a, ki apwoche santiman konseptè a san yo pa repwodui l egzakteman.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Fòs aptik</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reyinisyalize pa defo (Etenn)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reyinisyalize pa defo (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reyinisyalize a 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Son ki pi wo pase frekans sa a koupe oswa desann. Valè pa defo 800 Hz la kenbe vibrasyon motè ak chòk yo, epi li bare bip ki wo yo.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Reyinisyalize son wo</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reyinisyalize limit son</value></data>
@@ -3392,6 +3388,57 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Pwofil kominote</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makwo kominote</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Zòn kisè</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Kouch altènatif {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Lis wou sourit ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Zòn kisè ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Kenbe sourit {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klike sourit {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Altène sourit {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Ti vibrasyon ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (fen apre lage)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Tape {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Tire otomatik {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Kenbe {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Altène {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Peze de fwa {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Peze lontan {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Yon etap wou sourit ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Altène wou sourit ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Wou sourit turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Voye kisè dirèk ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Regle LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Resantre jiwoskòp ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Deplase kisè yon ti kras ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Touch kapti ekran ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Klavye sou ekran ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Regle koulè limyè</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Resantre kamera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Voye kisè dirèk</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Deplase kisè yon ti kras</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Kapti ekran</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Klavye sou ekran</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Chanje kouch altènatif</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Aktive yon kouch altènatif</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Dezaktive yon kouch altènatif</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Kenbe yon kouch altènatif</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Chanje nimewo jwè</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Pa asiyen</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Altène mòd biwo</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Touch sistèm Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Altène loup</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Plis klète</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Mwens klète</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Etenn kontwolè a</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Louvri konfigiratè Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Louvri meni rapid Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Kite jwèt la</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Altène retou haptik</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Altène HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Altène vibrasyon</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Fòse bouton Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Kalibrasyon jiwoskòp pa wotasyon</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Vire fas nan direksyon an</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Pwòp</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Pasyèl</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Sote</value></data>
@@ -3851,11 +3898,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Kouch</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Chwazi kouch ki pèmèt meni sa a. « Nenpòt kouch » ak « Base » toude pèmèt li anba lòt kouch aktif. Yon kouch ki gen non dwe koresponn ak kouch ki aktif kounye a.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Remèt « Nenpòt kouch » epi etenn ouvèti lè kouch la kenbe.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (pa nan lis plas sa a)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Kouch la kenbe meni an louvri</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Kenbe meni sa a louvri pandan kouch li a aktif. Antre fizik ou chwazi a dirije seleksyon an. « Nenpòt kouch » ak « Base » louvri meni an nòmalman.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Remèt ouvèti lè w manyen oswa lè w deplase stick la.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Dirije ak</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Antre fizik ki dirije selil ki an evidans lan pandan kouch la kenbe meni sa a louvri.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Li soti nan kontwolè fizik ki atribiye ak plas sa a. Kouch la louvri meni an, epi antre sa a dirije l. Se selil li yo ki di sa li voye.</value></data>
@@ -3935,7 +3980,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motè</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Separe selon direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zòn mò sant</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Remèt sou Stick gòch X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reyinisyalize fòs (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reyinisyalize zòn mò sant (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Reyinisyalize Aktive vibrasyon selon ang direksyon</value></data>
@@ -4598,6 +4642,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referans Klingon ak Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Mo tradiksyon Klingon ak Sindarin yo, verifye ak klingon-assistant-data (Apache-2.0), diksyonè ki dèyè boQwI', ak Eldamo (CC BY 4.0), leksik elfik Paul Strack. Done diksyonè sèlman, okenn ladan yo pa enkli.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Fichye sa a se pa yon tèm PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge pa ka li fichye sa a.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge pa ka jwenn fichye sa a.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Se pa yon tèm</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Pa t kapab anrejistre tèm nan. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nouvo tèm</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge montre tèm nan sou pwòp paj li pandan w ap kreye l.</value></data>
@@ -4612,6 +4659,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>N ap pran imaj la sou Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam pa gen yon imaj laj pou jwèt sa a.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Pa t kapab rive jwenn Steam. Tcheke koneksyon ou.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge pa ka li imaj Steam la pou jwèt sa a.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Pozisyon</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Deplase imaj la anwo oswa anba nan fenèt li.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Montre logo jwèt la</value></data>

@@ -34,7 +34,7 @@ namespace PadForge.Tests
             new LightInfo(3, LightKind.Key, 0x21, LightKeySource.Device),   // 4
             new LightInfo(4, LightKind.Key, 0x04, LightKeySource.Device),   // A
             new LightInfo(5, LightKind.Logo, 0, LightKeySource.None),
-        }, "test");
+        });
 
         private static KeyColorTarget[] Row => KeyColorTarget.Parse("k1E,k1F,k20,k21");
 

@@ -90,7 +90,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_XPGSummoner.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"xpg:{VendorId:X4}:{productId:X4}",
             },

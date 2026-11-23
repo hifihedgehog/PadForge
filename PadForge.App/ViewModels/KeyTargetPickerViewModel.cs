@@ -271,7 +271,7 @@ namespace PadForge.ViewModels
                 lights.Add(new LightInfo(lights.Count, kind, 0, LightKeySource.None));
             for (int zone = 1; zone <= zones; zone++)
                 lights.Add(new LightInfo(lights.Count, LightKind.Zone, 0, LightKeySource.None) { Zone = zone });
-            return new LightMap(lights, "generic");
+            return new LightMap(lights);
         }
     }
 }

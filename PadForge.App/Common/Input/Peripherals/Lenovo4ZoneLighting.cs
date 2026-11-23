@@ -126,7 +126,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(Lights(), "OpenRGB LenovoDevices4Zone.h") { Product = product },
+                Map = new LightMap(Lights()) { Product = product },
                 Programs = VendorPrograms.Lenovo4Zone,
                 HoldMs = 0,
                 RepaintMs = RepaintMs,

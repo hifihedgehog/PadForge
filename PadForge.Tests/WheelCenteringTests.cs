@@ -839,47 +839,69 @@ public sealed class WheelCenteringTests(ITestOutputHelper output)
         Assert.Equal(1.0, steady.Factor);
     }
 
-    /// <summary>The curve is sampled at steps of speed and grip. A
-    /// game's speed or grip that wavers on the edge of two steps keeps
-    /// one curve, and one that keeps changing, a car braking hard,
-    /// rebuilds the same curve in place, so the polling thread allocates
-    /// nothing for it (audit C6-1).</summary>
-    [Fact]
-    public void AChangingSpeedRebuildsTheCurveInPlace_AndAWaveringOneKeepsIt()
+    /// <summary>The curve's allocation test, in a collection that runs
+    /// beside no other test (<see cref="AllocationMeasurementsCollection"/>):
+    /// its windows are 2000 polls long, and in a full run a pause landed
+    /// in every one of a hundred.</summary>
+    [Collection("AllocationMeasurements")]
+    public sealed class CurveAllocation
     {
-        var s = Settings(SteeringVehicle.Sedan, 8.0);
-        var centering = new WheelCentering();
-        long tick = 10_000;
-        centering.Step(s, null, 0.05, 20.12, 0.509, tick++);
-        var curve = centering.Curve;
-        double speed = curve.Speed, grip = curve.Grip;
-        for (int i = 0; i < 200; i++)
+        /// <summary>The curve is sampled at steps of speed and grip. A
+        /// game's speed or grip that wavers on the edge of two steps keeps
+        /// one curve, and one that keeps changing, a car braking hard,
+        /// rebuilds the same curve in place, so the polling thread allocates
+        /// nothing for it (audit C6-1).</summary>
+        [Fact]
+        public void AChangingSpeedRebuildsTheCurveInPlace_AndAWaveringOneKeepsIt()
         {
-            bool odd = (i & 1) != 0;
-            centering.Step(s, null, 0.05, odd ? 20.12 : 20.13, odd ? 0.509 : 0.511, tick++);
-            Assert.Equal(speed, centering.Curve.Speed);
-            Assert.Equal(grip, centering.Curve.Grip);
+            var s = Settings(SteeringVehicle.Sedan, 8.0);
+            var centering = new WheelCentering();
+            long tick = 10_000;
+            centering.Step(s, null, 0.05, 20.12, 0.509, tick++);
+            var curve = centering.Curve;
+            double speed = curve.Speed, grip = curve.Grip;
+            for (int i = 0; i < 200; i++)
+            {
+                bool odd = (i & 1) != 0;
+                centering.Step(s, null, 0.05, odd ? 20.12 : 20.13, odd ? 0.509 : 0.511, tick++);
+                Assert.Equal(speed, centering.Curve.Speed);
+                Assert.Equal(grip, centering.Curve.Grip);
+            }
+
+            // A speed and a grip well into another step move the curve, in the same tables.
+            centering.Step(s, null, 0.05, 21.0, 0.60, tick++);
+            Assert.Equal(21.0, centering.Curve.Speed);
+            Assert.Equal(0.60, centering.Curve.Grip, 9);
+            Assert.Same(curve, centering.Curve);
+            var fresh = new SteeringCurve(s.Car, s.Car.Feel.Scaled(s.WeightPercent, s.OnCenterPercent, s.AssistPercent), 21.0, 0.60,
+                s.Range * Math.PI / 360.0);
+            Assert.Equal(fresh.SteepestSlope, centering.Curve.SteepestSlope);
+            Assert.Equal(fresh.Torque(10 * Deg), centering.Curve.Torque(10 * Deg));
+
+            // Braking at 1 g with a poll a millisecond crosses a quarter meter a second every 25 polls.
+            double braking = 40;
+            foreach (long bytes in AllocationWindow.Clean(() =>
+            {
+                braking -= 0.00981;
+                if (braking < 5) braking = 40;
+                centering.Step(s, null, 0.05, braking, 1.0, tick++);
+            }, 2000))
+                Assert.Equal(0, bytes);
         }
 
-        // A speed and a grip well into another step move the curve, in the same tables.
-        centering.Step(s, null, 0.05, 21.0, 0.60, tick++);
-        Assert.Equal(21.0, centering.Curve.Speed);
-        Assert.Equal(0.60, centering.Curve.Grip, 9);
-        Assert.Same(curve, centering.Curve);
-        var fresh = new SteeringCurve(s.Car, s.Car.Feel.Scaled(s.WeightPercent, s.OnCenterPercent, s.AssistPercent), 21.0, 0.60,
-            s.Range * Math.PI / 360.0);
-        Assert.Equal(fresh.SteepestSlope, centering.Curve.SteepestSlope);
-        Assert.Equal(fresh.Torque(10 * Deg), centering.Curve.Torque(10 * Deg));
-
-        // Braking at 1 g with a poll a millisecond crosses a quarter meter a second every 25 polls.
-        double braking = 40;
-        foreach (long bytes in AllocationWindow.Clean(() =>
+        /// <summary>The collection is what keeps the windows clear. A change
+        /// that drops its DisableParallelization, or moves this class to a
+        /// collection other classes run beside, fails here.</summary>
+        [Fact]
+        public void TheMeasurementRunsInACollectionNoOtherRunsBeside()
         {
-            braking -= 0.00981;
-            if (braking < 5) braking = 40;
-            centering.Step(s, null, 0.05, braking, 1.0, tick++);
-        }, 2000))
-            Assert.Equal(0, bytes);
+            var collection = Assert.Single(typeof(CurveAllocation).GetCustomAttributesData(),
+                data => data.AttributeType == typeof(CollectionAttribute));
+            Assert.Equal("AllocationMeasurements", collection.ConstructorArguments[0].Value);
+            var definition = (CollectionDefinitionAttribute)Assert.Single(
+                typeof(AllocationMeasurementsCollection).GetCustomAttributes(typeof(CollectionDefinitionAttribute), false));
+            Assert.True(definition.DisableParallelization);
+        }
     }
 
     /// <summary>The stability rule runs on the delay the Release Test

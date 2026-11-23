@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Prisijungta</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Atsijungta</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Nežinoma</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Numatytasis</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Naršyti…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tęsti</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stabdyti</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Variklis sustabdytas.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Klaida: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Nepavyko sukurti: {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Nepavyko atidaryti, nuskaityti ar susieti įrenginio. Diagnostikos žurnale nurodytas jo pavadinimas.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} susidūrė su klaida. Diagnostikos žurnale yra priežastis.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Įvesties variklis susidūrė su klaida. Diagnostikos žurnale yra priežastis.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Nepavyko paleisti SDL. Diagnostikos žurnale yra priežastis.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Nepavyko nustatyti HIDMaestro. Diagnostikos žurnale yra priežastis.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Virtualaus valdiklio HIDMaestro profilio nėra. Diagnostikos žurnale nurodytas jo pavadinimas.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} nepavyko pritaikyti pakeistos tapatybės ir išdėstymo, todėl naudojami jo profilio nustatymai.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profilis perjungtas: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profilis perjungtas: Numatytasis</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Numatytasis</value></data>
@@ -538,15 +544,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Judesio serverio prievadas</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Teikia giroskopo ir akselerometro duomenis „Cemu“, „Dolphin“, „Yuzu“ ir kitoms programoms.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Žaidimų modifikacijos</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Leidžia DSX skirtoms žaidimų modifikacijoms valdyti jūsų „PlayStation“ valdiklių adaptyviuosius gaidukus, šviesos juostą, žaidėjo lemputes ir nutildymo lemputę.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Leidžia DSX skirtoms žaidimų modifikacijoms valdyti „DualSense“ ar „DualShock 4“ valdiklio adaptyviuosius gaidukus, šviesos juostą, žaidėjo lemputes ir nutildymo lemputę.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Priimti DSX žaidimų modifikacijas</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Žaidimų modifikacijų prievadas</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Paleisti DSX.exe pakaitalą</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Kai kurios modifikacijos, pavyzdžiui, DualSense4GTAV, išsijungia, jei neveikia programa, vadinama DSX. Ši parinktis paleidžia mažą tokio pavadinimo pakaitalą, kol serveris klausosi.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Veikia su DSX skirtomis modifikacijomis, pavyzdžiui, skirtomis GTA V, Red Dead Redemption 2, Skyrim ir Forza. Kol serveris klausosi, PadForge įrašo savo prievadą ten, kur tų modifikacijų ieškoma.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Klausomasi adresu :{0}. {1} siunčia į virtualų valdiklį {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Klausomasi adresu :{0}. {1} siunčia, bet nė vienam virtualiam valdikliui nepriskirtas „PlayStation“ valdiklis.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Klausomasi adresu :{0}. {1} siunčia į valdiklio indeksą {2}, bet nė vienas virtualus valdiklis su „PlayStation“ valdikliu tokio indekso neturi.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Klausomasi adresu :{0}. {1} siunčia, bet nė vienam virtualiam valdikliui nepriskirtas „DualSense“ ar „DualShock 4“ valdiklis.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Klausomasi adresu :{0}. {1} siunčia į valdiklio indeksą {2}, bet nė vienas virtualus valdiklis su „DualSense“ ar „DualShock 4“ valdikliu tokio indekso neturi.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Prievadą {0} naudoja kita programa, pavyzdžiui, DSX. Uždarykite ją arba pasirinkite kitą prievadą.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Žaidimo modifikacija</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Veikia su „OpenTrack“ ir bet kuriuo sekikliu, kuris siunčia UDP išvestį arba rašo į FreeTrack 2.0 bendrąją atmintį, taip pat su šio kompiuterio OpenXR vykdymo aplinka, galinčia vykdyti seansą fone.</value></data>
@@ -636,6 +642,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Failas nerastas</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Neįskaitoma</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Temos „{0}“ failo nėra arba jo nepavyksta perskaityti. „PadForge“ rodo temą Tamsi, kol failas negrįš.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Temos „{0}“ faile nėra „PadForge“ temos. „PadForge“ rodo temą Tamsi, kol ji ten nebus.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profilis „{0}“ rodo savo žaidimo išvaizdą. Jūsų tema sugrįš, kai bus aktyvus kitas profilis.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Įvesties variklis</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigūruokite apklausą ir apdorojimą fone.</value></data>
@@ -1041,6 +1048,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Valdiklis nepriėmė komandos, kuri jį paruošia, todėl nieko nebuvo išsiųsta. Patikrinkite, ar jis prijungtas, ir siųskite dar kartą.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Siuntimas sustojo dėl „PadForge“ klaidos. Išsami informacija yra žurnalo faile.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Paveikslėlis dar siunčiamas į valdiklį. Sustabdyti siuntimą?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tęsti siuntimą</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>„Controller Pak“ failai (*.mpk)|*.mpk|Visi failai (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak prievadas {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Atkurti „Controller Pak“</value></data>
@@ -1428,6 +1436,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulso slopimas</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Šablonas</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pasirinktinis</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (sukurta naudotojo)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Svirtelės</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gaidukai</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV jungikliai</value></data>
@@ -2408,7 +2417,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Šiame valdiklyje yra magnetometras. Susiejus posūkį su magnetine šiaure, pašalinamas lėtas horizontalus giroskopo taikymo dreifas. Pirmiausia kalibruokite: spustelėkite kalibravimo mygtuką, kelias sekundes sukite valdiklį visomis kryptimis aštuoniuke, tada spustelėkite dar kartą.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Susieti posūkį su kompasu</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Prideda nedidelį korekcinį greitį, kuris traukia horizontalų taikymą magnetinės krypties link, todėl dreifas negali kauptis. Reikia išsaugoto magnetometro kalibravimo. Netoliese esančio metalo ar magnetų iškreipti mėginiai atmetami automatiškai.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Atkurti numatytąjį (išjungta)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Polinkio ir posvyrio imitavimas</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Polinkis ir posvyris apskaičiuojami pagal akselerometrą</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Šio valdiklio giroskopas jaučia tik pasukimą į kairę ir dešinę. Įjungus imitavimą, „PadForge“ apskaičiuoja polinkį ir posvyrį pagal akselerometrą ir siunčia juos kartu su giroskopo posūkiu į priskyrimų eilutes ir virtualaus valdiklio judesį. Akselerometras negali atskirti stūmimo nuo pakreipimo, todėl valdiklio judinimas į šoną ar į priekį jo nesukant užfiksuojamas kaip trumpas pasisukimas.</value></data>
@@ -2804,7 +2812,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Apveskite svirtele visą jos kraštą, kad būtų išmatuota pasiekiama riba, tada ji perskaičiuojama į visą apskritimą.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Nustatyti ribos kalibravimą iš naujo</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Nustatyti centro poslinkį Y iš naujo</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Atkurti „Mastelinė radialinė“</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Nustatyti nejautros zoną X iš naujo</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Nustatyti nejautros zoną Y iš naujo</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Nustatyti nejautros zonos kompensaciją X iš naujo</value></data>
@@ -3251,13 +3258,10 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Nustatyti mostelėjimo svirtelę iš naujo</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Taškų per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Pelės taškų skaičius vienam visam 360° kameros apsisukimui. Priklauso nuo žaidimo pelės jautrumo: padidinkite, jei mostelėjimas pasuka per mažai, sumažinkite, jei per daug.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Atkurti 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Mostelėjimo trukmė</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Kiek laiko trunka visas 180° mostelėjimas su lėtėjimu pabaigoje. Trumpesni posūkiai baigiami per tą patį laiką.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Atkurti 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Mostelėjimo slenkstis</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Svirtelės nuokrypis, nuo kurio prasideda mostelėjimas, kaip viso nuokrypio dalis. Mostelėjimo metu atleidimo taškas sumažėja iki 90% šios reikšmės.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Atkurti 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Pritraukimo kampas</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Pritraukia mostelėjimą prie fiksuotų kampų, kad posūkiai būtų nuoseklesni. „Tik į priekį“ kiekvieną mostelėjimą pritraukia tiesiai į priekį.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Be pritraukimo</value></data>
@@ -3266,22 +3270,16 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 laipsnių</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 laipsnių</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 laipsniai</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Atkurti „Be pritraukimo“</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Pritraukimo stiprumas</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Kaip stipriai mostelėjimas traukiamas prie pritraukimo kampo. 1 pritraukia visiškai, 0 išjungia pritraukimą, tarpinės reikšmės sumaišo.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Atkurti 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Priekinio kampo nejautros zona</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Mostelėjimas šiuo kampu nuo krypties tiesiai į priekį nieko nesuka. Leidžia pradėti vesti kraštu be mostelėjimo posūkio.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Atkurti 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Vedimo glotninimas</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Glotnina vedimo kraštu triukšmą. -1 naudoja automatinį pakopinį langą, 0 išjungia glotninimą, didesnės reikšmės glotnina didesnius posūkius per ciklą.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Atkurti automatinį (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Leisti mostelėjimą įsijungiant</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Sukimo poslinkis</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Pasuka visą mostelėjimo žemėlapį tiek laipsnių. Teigiama reikšmė – pagal laikrodžio rodyklę. Pritraukimas taikomas po poslinkio.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Nustatyti sukimo poslinkį iš naujo</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kai mostelėjimo svirtelę turintis sluoksnis įsijungia, o svirtelė jau pakreipta, mostelėjimas įvykdomas iš karto. Išjungus kamera lieka nejudanti, o sukimas sekamas nuo dabartinio svirtelės kampo.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Nustatyti „Leisti mostelėjimą įsijungiant“ iš naujo</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Kraštinės vairo padėties signalas</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signalas kraštinėje padėtyje vairavimo režimo svirtelei</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kai vairavimo režimu nustatyta svirtelė pasukama iki galo į kraštinę padėtį, pateikiamas signalas (vibracija, gaidukas ar šviesos juosta), kad pajustumėte ribą. Pagal numatytuosius nustatymus viskas išjungta.</value></data>
@@ -3471,11 +3469,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Leisti „DualSense“ haptiką šiame valdiklyje</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kai žaidimas valdo šį lizdą kaip virtualų „DualSense“ su sukurtu haptiniu garsu, tas takelis leidžiamas šio valdiklio vykdikliais. „Steam Controller 2026“, prijungtas per USB ar savo imtuvą, ir „Flydigi Apex 6 Pro“ leidžia patį takelį. Visi kiti valdikliai, taip pat ir tas „Steam Controller“ per „Bluetooth“, gauna iš garso išvestus tonus, kurie apytiksliai perteikia kūrėjo sumanytą pojūtį, bet jo neatkuria.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikos stiprinimas</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Atkurti numatytąjį (išjungta)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Atkurti numatytąjį (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Vykdiklių žemųjų dažnių filtro riba</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Išlaiko „Steam Controller“ haptinį srautą žemiau šio dažnio, kad skydeliai vibruotų, o ne girdimai leistų garsą. Apie 250 Hz vykdikliai pradeda girdėtis. Padidinkite, jei norite ryškesnių detalių, sumažinkite, jei norite tylesnio veikimo.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Atkurti 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Šį dažnį viršijantys tonai nukerpami arba perkeliami. Numatytoji 800 Hz reikšmė išlaiko variklio ir smūgių vibraciją, bet sugauna aukštus pyptelėjimus.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Nustatyti aukštus tonus iš naujo</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Nustatyti tono ribą iš naujo</value></data>
@@ -4044,8 +4039,59 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profilis</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makrokomanda</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Žymeklio sritis</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} poslinkis</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Ratuko sąrašas ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Žymeklio sritis ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Laikyti pelės {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Spustelėti pelės {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Perjungti pelės {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptinis impulsas ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (atleidimo tęsinys)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Trumpai paspausti {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Automatinis šaudymas {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Laikyti {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Perjungti {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Dvigubas {0} paspaudimas ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Ilgas {0} paspaudimas ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Ratuko žingsnis ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Ratuko perjungimas ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo ratukas ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Perkelti žymeklį ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Nustatyti lemputę ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Centruoti giroskopą ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Pastumti žymeklį ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Ekrano nuotraukos klavišas ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Ekrano klaviatūra ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Nustatyti šviesos spalvą</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Centruoti kamerą</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Perkelti žymeklį</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Pastumti žymeklį</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Ekrano nuotrauka</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Ekrano klaviatūra</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Perjungti poslinkio lygmenį</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Įjungti poslinkio lygmenį</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Išjungti poslinkio lygmenį</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Laikyti poslinkio lygmenį</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Keisti žaidėjo numerį</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Nepriskirta</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Perjungti darbalaukio režimą</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>„Steam“ sistemos klavišas</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Perjungti didintuvą</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Didinti ryškumą</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Mažinti ryškumą</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Išjungti valdiklį</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Atidaryti „Steam“ konfigūratorių</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Atidaryti „Steam“ sparčiąjį meniu</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Išeiti iš žaidimo</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Perjungti haptiką</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Perjungti „Steam“ HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Perjungti vibraciją</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Priverstinai paspausti mygtuką „Guide“</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Giroskopo kalibravimo sukimas</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Atsukti į kryptį</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (laikymas)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (atleidimas)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (atleidimas)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (įjungimas)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pasirinkite konfigūraciją, kad pamatytumėte, kas perkeliama.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kas perkeliama</value></data>
@@ -4653,11 +4699,9 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Sluoksnis</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Pasirinkite sluoksnį, kuriame leidžiamas šis meniu. „Bet kuris sluoksnis“ ir „Bazinis“ leidžia jį ir esant aktyviems kitiems sluoksniams. Pavadintas sluoksnis turi sutapti su šiuo metu aktyviu sluoksniu.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Atkurti „Bet kuris sluoksnis“ ir išjungti atidarymą sluoksniu.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (šiame lizde nėra)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Sluoksnis laiko meniu atidarytą</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Laikyti šį meniu atidarytą, kol aktyvus jo pavadintas sluoksnis. Pažymėjimą valdo pasirinkta fizinė įvestis. „Bet kuris sluoksnis“ ir „Bazinis“ naudoja įprastą atidarymą paviršiumi.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Atkurti atidarymą palietus arba pakreipus.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Valdyti su</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Fizinė įvestis, valdanti pažymėtą langelį, kol sluoksnis laiko šį meniu atidarytą.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Skaitoma iš šiam lizdui priskirtų fizinių valdiklių. Sluoksnis atidaro meniu, o ši įvestis jį valdo. Ką meniu išveda, nurodo jo langeliai.</value></data>
@@ -4737,7 +4781,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Variklis</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Padalyti pagal kryptį</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Centro nejautros zona</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atkurti „Kairioji svirtelė X“</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Nustatyti stiprumą iš naujo (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Nustatyti centro nejautros zoną iš naujo (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Nustatyti „Įjungti vibraciją pagal vairo kampą“ iš naujo</value></data>
@@ -5258,6 +5301,9 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_LanguageRefs" xml:space="preserve"><value>Klingonų ir sindarinų kalbų nuorodos</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingonų ir sindarinų kalbų vertimų žodžiai patikrinti pagal klingon-assistant-data (Apache-2.0), žodyną, kuriuo remiasi boQwI', ir Eldamo (CC BY 4.0), Paul Strack sudarytą elfų kalbų žodyną. Tik žodyno duomenys, nė vienas neįtraukiamas.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Šis failas nėra „PadForge“ tema.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>„PadForge“ nepavyksta perskaityti to failo.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>„PadForge“ nepavyksta rasti to failo.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Ne tema</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Temos nepavyko išsaugoti. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nauja tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>„PadForge“ rodo temą, kol ją kuriate.</value></data>
@@ -5272,6 +5318,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Gaunamas paveikslėlis iš „Steam“…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>„Steam“ neturi plataus paveikslėlio šiam žaidimui.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nepavyko pasiekti „Steam“. Patikrinkite ryšį.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>„PadForge“ nepavyksta perskaityti „Steam“ paveikslėlio šiam žaidimui.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Padėtis</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Perkelia paveikslėlį aukštyn arba žemyn jo lange.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Rodyti žaidimo logotipą</value></data>
@@ -5312,4 +5359,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Originaliam serialui „Žvaigždžių kelias“ nufilmuotas modelis, kurį nufotografavo jį saugantis Smithsonian National Air and Space Museum: Žvaigždžių kelio temos LCARS paveikslėlis.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Temos paveikslėlis: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Serialo „Žvaigždžių kelias: Naujoji karta“ kadras: Žvaigždžių kelio temos Starfleet paveikslėlis. Rasta „Memory Alpha“.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Šviesos juosta</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} šviesos juosta</value></data>
 </root>

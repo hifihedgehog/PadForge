@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -127,19 +126,7 @@ namespace PadForge.Common.Input.Flydigi
             text = (text ?? string.Empty).Trim();
             int margin = Math.Max(4, Format.Width / 20);
             double maxWidth = Format.Width - 2 * margin, maxHeight = Format.Height - 2 * margin;
-            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-            FormattedText fitted = null;
-            for (double size = maxHeight; size >= 6; size -= 1)
-            {
-                var candidate = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                    typeface, size, Brushes.White, 1.0)
-                {
-                    MaxTextWidth = maxWidth,
-                    TextAlignment = TextAlignment.Center,
-                };
-                fitted = candidate;
-                if (candidate.MinWidth <= maxWidth && candidate.Height <= maxHeight) break;
-            }
+            FormattedText fitted = KeyboardScreens.KeyboardScreenRenderer.FitText(text, Brushes.White, maxWidth, maxHeight);
             var visual = new DrawingVisual();
             TextOptions.SetTextRenderingMode(visual, TextRenderingMode.Grayscale);
             using (var dc = visual.RenderOpen())

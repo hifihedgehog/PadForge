@@ -85,7 +85,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Toora irra</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Toora ala</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Hin beekamne</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Durtii</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Barbaadi…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Itti fufi</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Dhaabi</value></data>
@@ -449,6 +448,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Halluu dabali</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Qindaa'ina dursee</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Dhuunfaa</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Fayyadamaan uume)</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Qabduulee</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Baasi…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Haqi</value></data>
@@ -834,7 +834,6 @@
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Roolii garagalchi (X)</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Yaawu garagalchuu deebisi</value></data>
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Roolii garagalchuu deebisi</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Gara durtiitti deebisi (Cufaa)</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Kaalibireeshinii xumuri</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Qabadhu</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Jijjiiri</value></data>
@@ -1277,15 +1276,10 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Qindaa'ina galtee Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick stick deebisi</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Gara 14400tti deebisi</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Gara 0.1 s tti deebisi</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Gara 0.9tti deebisi</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>Digirii 180</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>Digirii 90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>Digirii 60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>Digirii 45</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Gara 1.0tti deebisi</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Gara 0°tti deebisi</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Halluu lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Geengoo konkolaataa</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Geengoo konkolaataa deebisi</value></data>
@@ -1314,9 +1308,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Sagalee olka'iinsa</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Yeroo hunda</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Cufaa</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Gara durtiitti deebisi (Cufaa)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Gara durtiitti deebisi (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Gara 250 Hz tti deebisi</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Al-ergi…</value></data>
@@ -2148,6 +2139,7 @@
   <data name="Settings_ThemeEdit" xml:space="preserve"><value>Teemii gulaali</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tarree irraa balleessi. Faayilli bakka jirutti hafa.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Faayilli “{0}” hin jiru ykn dubbifamuu hin danda'u. PadForge hanga inni deebi'utti Dukkana agarsiisa.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Faayilli “{0}” teemii PadForge hin qabu. PadForge hanga inni qabaatutti Dukkana agarsiisa.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Maqaa</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Teemii koo</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Bu'uura</value></data>
@@ -2164,4 +2156,8 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Suuraa wajjin walsimsiisi</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Halluu afran suuraa irraa fudhata.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Fakkiiwwan (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faayiloota hunda (*.*)|*.*</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge faayila sana dubbisuu hin danda'u.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge faayila sana argachuu hin danda'u.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge suuraa Steam tapha kanaa dubbisuu hin danda'u.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Erguu itti fufi</value></data>
 </root>

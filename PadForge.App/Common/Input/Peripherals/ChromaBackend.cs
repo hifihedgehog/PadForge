@@ -419,7 +419,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>No session stands. With Synapse running that is its answer,
-        /// which the tab names in place of a wait for it to start.</summary>
+        /// which the Lighting group names in place of a wait for it to start.</summary>
         private static void ReportRefusal()
             => PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory,
                 PeripheralOutputs.Presence.RazerSoftwareRunning ? ProgramRefusal.Everything : null);

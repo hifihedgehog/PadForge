@@ -34,6 +34,13 @@ namespace PadForge.Common.Input.Peripherals
         /// set. No answer in time gets the write, as a plugin's comparison of an empty
         /// read does.</summary>
         OutputUnlessRead,
+
+        /// <summary>Drops the reports already waiting, so the read after the next
+        /// write takes that write's own answer, as G-Helper drains until nothing
+        /// waits before each write whose answer it reads (WriteForResponseLocked,
+        /// AsusKeyboard.cs:337, and WindowsUsbProvider.Drain, at aa0037c5). At most
+        /// <c>DrainReports</c>.</summary>
+        Drain,
     }
 
     /// <summary>One step of a plugin device's frames.</summary>
@@ -46,6 +53,7 @@ namespace PadForge.Common.Input.Peripherals
         public static PluginStep Wait(int ms) => new(PluginStepKind.Wait, null, ms);
         public static PluginStep OutputUnlessRead(byte[] ask, int ms, Func<byte[], bool> settled, byte[] frame)
             => new(PluginStepKind.OutputUnlessRead, frame, ms, ask, settled);
+        public static PluginStep Drain() => new(PluginStepKind.Drain, null, 0);
     }
 
     /// <summary>A keyboard's keys as a plugin lists them
@@ -366,8 +374,6 @@ namespace PadForge.Common.Input.Peripherals
             return new Session(device, picture, siblings, variant);
         }
 
-        private static string SourceOf(PluginDevice device) => (device.Source ?? "SignalRGB") + " " + device.Plugin;
-
         private static string ProductOf(PluginDevice device) => $"plugin:{device.VendorId:X4}:{device.ProductId:X4}";
 
         /// <summary>A device's lights. For strips: the count set for a strip
@@ -375,9 +381,8 @@ namespace PadForge.Common.Input.Peripherals
         /// default LEDs.</summary>
         internal static LightMap MapOf(PluginDevice device, IReadOnlyList<int> counts)
         {
-            string source = SourceOf(device);
             string product = ProductOf(device);
-            if (device.StripMaxLeds.Count == 0) return new LightMap(device.Lights, source) { Product = product };
+            if (device.StripMaxLeds.Count == 0) return new LightMap(device.Lights) { Product = product };
             var lights = new List<LightInfo>();
             var strips = new LightStrip[device.StripMaxLeds.Count];
             for (int s = 0; s < strips.Length; s++)
@@ -387,7 +392,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (leds == 0) lights.Add(Zone(s * StripSpan, s + 1));
                 else for (int l = 0; l < leds; l++) lights.Add(Edge(s * StripSpan + l));
             }
-            return new LightMap(lights, source) { Product = product, Strips = strips };
+            return new LightMap(lights) { Product = product, Strips = strips };
         }
 
         /// <summary>A strip's colors from the colors by address, one per LED.</summary>
@@ -482,7 +487,7 @@ namespace PadForge.Common.Input.Peripherals
                 _slots = variant?.Slots ?? device.Slots;
                 _siblings = siblings ?? Array.Empty<IHidReportChannel>();
                 _map = variant != null
-                    ? new LightMap(variant.Lights, SourceOf(device)) { Product = ProductOf(device) }
+                    ? new LightMap(variant.Lights) { Product = ProductOf(device) }
                     : device.StripMaxLeds.Count > 0 ? MapOf(device, _counts) : null;
                 _pictureHolds = variant?.PictureHolds == true;
                 // The crash path sends the hand-back's reports, which may be of another kind than
@@ -575,6 +580,12 @@ namespace PadForge.Common.Input.Peripherals
             /// <summary>The waiting reports one step drops, at most.</summary>
             private const int StaleReports = 8;
 
+            /// <summary>The waiting reports a <see cref="PluginStepKind.Drain"/> step
+            /// drops, at most: twice the 32 input reports Windows keeps for a handle
+            /// by default, so a queue of answers left by pictures that read none is
+            /// emptied. G-Helper's drain has no bound. PadForge's.</summary>
+            private const int DrainReports = 64;
+
             /// <summary>Runs one step. False when a write failed. A read that
             /// brings nothing is no failure, as in the plugins, which use the
             /// read to pace and to keep the answers from piling up.</summary>
@@ -597,13 +608,23 @@ namespace PadForge.Common.Input.Peripherals
                         return true;
                     case PluginStepKind.OutputUnlessRead:
                         var answer = new byte[Math.Max(io.InputReportLength, 1)];
-                        for (int i = 0; i < StaleReports && io.ReadInput(answer, 0) > 0; i++) { }
+                        DropWaiting(io, answer, StaleReports);
                         if (!io.WriteOutput(step.Ask)) return false;
                         wait?.Invoke(step.Value);
                         return io.ReadInput(answer, AnswerMs) > 0 && step.Settled(answer) || io.WriteOutput(step.Bytes);
+                    case PluginStepKind.Drain:
+                        DropWaiting(io, new byte[Math.Max(io.InputReportLength, 1)], DrainReports);
+                        return true;
                     default:
                         return true;
                 }
+            }
+
+            /// <summary>Reads away the reports already waiting, at most
+            /// <paramref name="most"/>.</summary>
+            private static void DropWaiting(IHidReportChannel io, byte[] buffer, int most)
+            {
+                for (int i = 0; i < most && io.ReadInput(buffer, 0) > 0; i++) { }
             }
         }
     }

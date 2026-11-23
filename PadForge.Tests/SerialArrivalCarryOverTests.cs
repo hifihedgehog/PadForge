@@ -9,7 +9,7 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// #562: a Wii Remote on a Mayflash DolphinBar had no serial until fork
-    /// b8afb934a2 (hifihedgehog/SDL#47) gave it one from its EEPROM
+    /// f1caa192db (hifihedgehog/SDL#47) gave it one from its EEPROM
     /// calibration, so its saved entry is keyed by the bar slot's path. The
     /// first time a remote arrives with a serial it takes the offline entry of
     /// the slot it sits in. The same-product fallback alone would hand it the

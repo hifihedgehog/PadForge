@@ -124,7 +124,7 @@ namespace PadForge.Common.Input.Peripherals
             var zones = mouse?.Zones ?? Array.Empty<byte>();
             var lights = new LightInfo[zones.Length];
             for (int i = 0; i < zones.Length; i++) lights[i] = MouseLight(zones[i], 1);
-            return new LightMap(lights, "OpenRGB AsusAuraMouseDevices.h") { Product = ProductKey(productId) };
+            return new LightMap(lights) { Product = ProductKey(productId) };
         }
 
         private HidLightingModel Mouse(string name, int productId)
@@ -317,7 +317,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private HidLightingModel StrixEvolve(string name, int productId)
             => Model(name, productId,
-                new LightMap(new[] { Edge(0) }, "OpenRGB RGBController_AsusROGStrixEvolve.cpp") { Product = ProductKey(productId) },
+                new LightMap(new[] { Edge(0) }) { Product = ProductKey(productId) },
                 (io, wait) => BeginGen1(io, productId, spatha: false),
                 io => io.SetFeature(Gen1ResetFrame()));
 
@@ -325,7 +325,7 @@ namespace PadForge.Common.Input.Peripherals
         /// (RGBController_AsusROGSpatha.cpp:127).</summary>
         private HidLightingModel Spatha(string name, int productId)
             => Model(name, productId,
-                new LightMap(new[] { Edge(0), Zone(1, 1), Logo(2) }, "OpenRGB RGBController_AsusROGSpatha.cpp")
+                new LightMap(new[] { Edge(0), Zone(1, 1), Logo(2) })
                 {
                     Product = ProductKey(productId),
                 },

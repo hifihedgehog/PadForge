@@ -168,5 +168,61 @@ namespace PadForge.Tests
                 }
             }, TimeSpan.FromMinutes(2), "the Workshop callout test timed out");
         }
+
+        /// <summary>The Deck's back paddles stand in the margin every leader
+        /// on their side crosses to reach the pad. A leader runs under the
+        /// lit controls, as it did before the callouts moved out of the
+        /// scaled art, so the touchpad's leader never draws over a lit
+        /// paddle. Its run over the pad is drawn 1 wide at the frame's
+        /// size.</summary>
+        [Fact]
+        public void ALeaderRunsUnderTheLitControlsItCrosses()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                var (frame, preview) = Frame(app, "controller_neptune",
+                    new[] { ("Paddle2", "Back Left Upper"), ("LeftTouchpadClick", "Left Trackpad Click") });
+                Lay(frame, 618);
+                Picture(frame, "workshop-callouts-neptune-paddle-and-pad.png");
+                var model = (Canvas)preview.FindName("ModelCanvas");
+                var over = (Canvas)preview.FindName("CalloutCanvas");
+
+                var lit = model.Children.OfType<System.Windows.Shapes.Rectangle>()
+                    .Where(r => Panel.GetZIndex(r) == 5)
+                    .Select(r => r.TransformToVisual(over).TransformBounds(new Rect(r.RenderSize)))
+                    .ToList();
+                Assert.Equal(2, lit.Count);
+
+                foreach (var line in over.Children.OfType<System.Windows.Shapes.Polyline>())
+                {
+                    var pts = line.Points;
+                    for (int i = 1; i < pts.Count; i++)
+                        for (int k = 0; k <= 200; k++)
+                        {
+                            Point p = pts[i - 1] + (pts[i] - pts[i - 1]) * (k / 200.0);
+                            foreach (var at in lit)
+                            {
+                                var inside = at;
+                                inside.Inflate(-1, -1);
+                                Assert.False(!inside.IsEmpty && inside.Contains(p),
+                                    $"a leader drawn over the lit controls crosses {at} at {p}");
+                            }
+                        }
+                }
+
+                // Each callout's run over the pad is under the lit controls,
+                // over the body, and 1 wide where it is drawn.
+                var under = model.Children.OfType<System.Windows.Shapes.Polyline>().ToList();
+                Assert.Equal(2, under.Count);
+                var toOver = model.TransformToVisual(over);
+                double scale = toOver.Transform(new Point(0, 1)).Y - toOver.Transform(new Point(0, 0)).Y;
+                foreach (var line in under)
+                {
+                    Assert.Equal(3, Panel.GetZIndex(line));
+                    Assert.True(Math.Abs(line.StrokeThickness * scale - 1) < 0.01,
+                        $"a leader over the pad is drawn {line.StrokeThickness * scale:0.###} wide");
+                }
+            }, TimeSpan.FromMinutes(2), "the Workshop callout test timed out");
+        }
     }
 }

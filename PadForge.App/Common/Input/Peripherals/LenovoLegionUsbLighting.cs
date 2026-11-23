@@ -135,7 +135,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(lights, "OpenRGB LenovoDevices.h") { Product = product },
+                Map = new LightMap(lights) { Product = product },
                 LitBesideWindows = true,
                 Programs = VendorPrograms.LenovoLegionUsb,
                 HoldMs = 0,
@@ -349,7 +349,7 @@ namespace PadForge.Common.Input.Peripherals
             }
             var board = BoardOf(productId, info1, info4, info7);
             var lights = Lights(productId, board);
-            return new Session(product, board, new LightMap(lights, $"OpenRGB LenovoDevices.h, {board}") { Product = product });
+            return new Session(product, board, new LightMap(lights) { Product = product });
         }
 
         /// <summary>Hands back a keyboard an earlier run left in software

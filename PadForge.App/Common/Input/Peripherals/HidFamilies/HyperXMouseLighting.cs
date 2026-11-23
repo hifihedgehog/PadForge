@@ -147,7 +147,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = registration.Name,
-                Map = new LightMap(Lights(protocol), "OpenRGB HyperXMouseController")
+                Map = new LightMap(Lights(protocol))
                 {
                     Product = $"hyperx:{registration.VendorId:X4}:{productId:X4}",
                 },

@@ -121,7 +121,7 @@ namespace PadForge.Common.Input
                         row.Dispose();
                         TouchSenseTable.Forget(row.Channel);
                         _touchSenseRetry[row.DevicePath] = (now + TouchSenseReopenMs, row.Channel, false);
-                        RaiseError($"Error registering the row of '{row.Name}'", ex);
+                        RaiseDeviceError($"Error registering the row of '{row.Name}'", ex);
                     }
                 }
                 _touchSensePending.Clear();
@@ -147,7 +147,7 @@ namespace PadForge.Common.Input
                         }
                         catch (Exception ex)
                         {
-                            RaiseError($"Error registering the row of '{row.Name}'", ex);
+                            RaiseDeviceError($"Error registering the row of '{row.Name}'", ex);
                         }
                     }
                 }

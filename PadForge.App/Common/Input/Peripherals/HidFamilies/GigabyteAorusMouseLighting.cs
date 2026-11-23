@@ -72,7 +72,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_GigabyteAorusMouse.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"aorusmouse:{VendorId:X4}:{productId:X4}",
             },

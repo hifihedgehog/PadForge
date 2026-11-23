@@ -111,7 +111,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     Family = this,
                     Name = vendor == Darfon ? "Alienware Laptop Keyboard" : vendor == Primax ? "Alienware Mouse"
                         : vendor == Chicony ? "Alienware Keyboard" : "Alienware Lighting",
-                    Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }, "alienfx-tools AlienFX_SDK.cpp")
+                    Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } })
                     {
                         Product = $"alienfx:{vendor:X4}:{product:X4}",
                     },

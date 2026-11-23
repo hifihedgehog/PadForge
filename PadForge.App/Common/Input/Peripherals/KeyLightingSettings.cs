@@ -84,7 +84,7 @@ namespace PadForge.Common.Input.Peripherals
     /// as DeviceSlotConfig saves them: one line of text, so it rides the
     /// settings file, profiles and the clipboard the way the equalizer
     /// bands do. Made whole and never changed, so the dispatcher can read
-    /// it on its own thread while the tab edits a copy.
+    /// it on its own thread while the Key Colors card edits a copy.
     ///
     /// <para>The text: layers split by "|", a layer as its shift layer's
     /// LayerMask, "&gt;", then its items split by ",". An item is

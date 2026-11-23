@@ -186,7 +186,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (channel >= Channels || strips[channel].Leds == 0 || light.Address % ChannelLeds < strips[channel].Leds)
                     lights.Add(light);
             }
-            return new LightMap(lights, table.Source) { Product = table.Product, Strips = strips };
+            return new LightMap(lights) { Product = table.Product, Strips = strips };
         }
 
         /// <summary>razer_create_addressable_size_report

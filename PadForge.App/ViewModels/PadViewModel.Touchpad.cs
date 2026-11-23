@@ -16,10 +16,11 @@ namespace PadForge.ViewModels
     /// surfaced to the Touchpad group. Mirrors the same load/sync rhythm as
     /// the gyro tuning partial — Load* reads PadSetting.TouchpadSettings[]
     /// into VM fields under <c>_loadingTouchpadGestures</c> guard, setters
-    /// push back to the same entry. The push to the live gesture engine
-    /// happens at the setter tail (PushIfNotLoading) and on the device-tab
-    /// switch in MainWindow, NOT from InputService.SyncViewModelToPadSetting,
-    /// which never calls it.
+    /// push back to the same entry. The write to that entry, which the
+    /// live gesture engine reads, happens at the setter tail
+    /// (PushIfNotLoading) and in MainWindow's PropertyChanged hook for the
+    /// Touchpad group's fields, NOT from
+    /// InputService.SyncViewModelToPadSetting, which never calls it.
     /// </summary>
     public partial class PadViewModel
     {
@@ -29,13 +30,11 @@ namespace PadForge.ViewModels
 
         private int _selectedTouchpadIndex;
 
-        /// <summary>Which pad on the active device the recorder / input
-        /// preview targets (0..MaxTouchpadIndex-1). Devices with one pad
-        /// pin this to 0 and hide the pivot. Gesture / gating settings are
-        /// per-device now (enabling one applies to every pad the device
-        /// enumerates), so changing this no longer repivots the settings
-        /// cards; it only redirects the recorder and the live input
-        /// preview to the chosen pad.</summary>
+        /// <summary>Which pad of the active device the Touchpad group shows
+        /// and edits (0..MaxTouchpadIndex-1), and where the recorder and the
+        /// live input preview point. Settings are per (device, pad), so a
+        /// change reloads the chosen pad's settings into every card. Devices
+        /// with one pad pin this to 0 and hide the pivot.</summary>
         public int SelectedTouchpadIndex
         {
             get => _selectedTouchpadIndex;
@@ -45,7 +44,7 @@ namespace PadForge.ViewModels
                 if (!SetProperty(ref _selectedTouchpadIndex, value)) return;
                 // EVERY card pivots on this. Settings are per (device, pad),
                 // so switching pads must pull that pad's whole bundle in or
-                // the tab would show the previous pad's values and the next
+                // the group would show the previous pad's values and the next
                 // edit would write them onto the wrong pad.
                 if (!_loadingTouchpadGestures) LoadTouchpadGestureSettingsForActiveDevice();
             }
@@ -1182,7 +1181,8 @@ namespace PadForge.ViewModels
 
         /// <summary>Update <see cref="MaxTouchpadIndex"/> from the
         /// currently selected device. Touchpad-incapable devices set it
-        /// to 0 (which hides the tab via SyncTabVisibility).</summary>
+        /// to 0 (SyncTabVisibility hides the Touchpad group for such a
+        /// device).</summary>
         public void RecomputeTouchpadCountForActiveDevice(int padCount)
         {
             MaxTouchpadIndex = Math.Max(0, padCount);
@@ -1192,18 +1192,18 @@ namespace PadForge.ViewModels
 
         // ─── Load / sync against PadSetting.TouchpadSettings ──────
 
-        /// <summary>Reads the per-device gesture settings from
+        /// <summary>Reads the per-(device, pad) gesture settings from
         /// <see cref="PadSetting.TouchpadSettings"/> into VM fields,
-        /// resolving the active device's winning entry via
-        /// <see cref="TouchpadGestureSettings.ResolveForDevice"/>. Called
-        /// when the active device / slot / tab changes. Sets
+        /// resolving the active device's entry for the selected pad via
+        /// <see cref="TouchpadGestureSettings.ResolveEntryForPad"/>. Called
+        /// when the device pick, the slot or the selected pad changes. Sets
         /// <see cref="_loadingTouchpadGestures"/> for the duration so
         /// setters don't ping-pong back to PadSetting.</summary>
         public void LoadTouchpadGestureSettingsForActiveDevice()
         {
             var us = GetActiveUserSettingForTouchpad(out var guid);
             var ps = us?.GetPadSetting();
-            // Per (device, PAD): every card on this tab belongs to the
+            // Per (device, PAD): every card of the Touchpad group belongs to the
             // selected pad, so the whole bundle resolves by pad.
             var s = TouchpadGestureSettings.ResolveEntryForPad(
                         ps?.TouchpadSettings, guid.ToString(), _selectedTouchpadIndex)?.Settings
@@ -1424,7 +1424,7 @@ namespace PadForge.ViewModels
             var list = ps.TouchpadSettings != null
                 ? new List<TouchpadSettingsEntry>(ps.TouchpadSettings)
                 : new List<TouchpadSettingsEntry>();
-            // Per (device, PAD). Every card on the tab belongs to the pad the
+            // Per (device, PAD). Every card of the group belongs to the pad the
             // selector names, so a controller's left and right pads carry
             // independent tuning, not just independent screen regions.
             int pad = _selectedTouchpadIndex;

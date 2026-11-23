@@ -68,7 +68,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
-                        RaiseError("Error opening Twitch chat device", ex);
+                        RaiseDeviceError("Error opening Twitch chat device", ex);
                     }
                 }
             }

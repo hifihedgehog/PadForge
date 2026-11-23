@@ -696,7 +696,7 @@ namespace PadForge.Tests
             var bound = new PadSetting { ButtonA = B(5) };
             var us = statics.Assign(port, 0, bound);
 
-            Assert.False(DeviceService.FillEmptyPressureMappingsForSlot(0, "dualshock-3-full"));
+            Assert.False(DeviceService.FillEmptyPresetMappingsForSlot(0, "dualshock-3", "dualshock-3-full"));
             Assert.Equal(BlissBoxOwedMapping.Pressure, us.BlissBoxOwed);
             DeviceService.KeepAuthoredRow(0, "Base", "ButtonB", null);
             DeviceService.KeepAuthoredRow(0, "Base", MappingSetMigrator.PressureTargets[0], null);
@@ -1040,7 +1040,7 @@ namespace PadForge.Tests
             Assert.Equal(1, CountOf(devices, "BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: true);"));
             Assert.Equal(1, CountOf(devices, "BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: false);"));
             Assert.Contains("us.BlissBoxOwed |= BlissBoxOwedMapping.Default;", Body(devices, "public static void FillEmptyAutoMappingsForSlot("));
-            Assert.Contains("us.BlissBoxOwed |= BlissBoxOwedMapping.Pressure;", Body(devices, "private static bool FillEmptyPlayStationMappingsForSlot("));
+            Assert.Contains("us.BlissBoxOwed |= BlissBoxOwedMapping.Pressure;", Body(devices, "public static bool FillEmptyPresetMappingsForSlot("));
             string manager = System.IO.File.ReadAllText(RepoPath("PadForge.App", "Common", "SettingsManager.cs"));
             Assert.Contains("BlissBoxRuntime.NoteOwedDefault(us, ud, fresh: true);", Body(manager, "public static void ReAutoMapSlot("));
 

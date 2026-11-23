@@ -84,7 +84,7 @@ namespace PadForge.Common.Input.Peripherals
             Family = Instance,
             Name = name,
             // One zone, "Mouse" (RGBController_Areson.cpp:133-152).
-            Map = new LightMap(SinowealthLighting.OneLight(), "OpenRGB RGBController_Areson.cpp")
+            Map = new LightMap(SinowealthLighting.OneLight())
             {
                 Product = $"areson:{AresonVid:X4}:{productId:X4}",
             },

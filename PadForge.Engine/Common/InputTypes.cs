@@ -173,8 +173,8 @@ namespace PadForge.Engine
         /// handheld's learned hidden buttons, a Logitech keyboard's G-keys, a media strip's usages and a
         /// tablet's pen state all start at index 0, so read through the
         /// wildcard they impersonate the gamepad layout (#431: a resting
-        /// tracker held both triggers at half pull). These are the same
-        /// six rows the mapping list names instead of numbering. A named
+        /// tracker held both triggers at half pull). The mapping list also
+        /// names these rows' controls instead of numbering them. A named
         /// source on any of them still reads. An analog keyboard leaves its
         /// numbered arrays at zero and publishes its keys on their own
         /// sub-state, and a zeroed trigger axis reads as half pull through

@@ -54,9 +54,17 @@ namespace PadForge.Common.Input.Peripherals
     /// memory and pictures are held and spaced as the Lenovo Gen 10 keyboard's
     /// stored writes are (<see cref="LenovoLegionLighting"/>).</para>
     ///
-    /// <para>Hand-back. OpenRGB's Shutdown writes nothing (lines 57-60), and no
-    /// reference gives these keyboards back their own effect: the hand-back sends
-    /// nothing and the keyboard keeps the Custom mode and the last picture.</para>
+    /// <para>Hand-back. OpenRGB's Shutdown writes nothing (lines 57-60). Before it
+    /// writes Custom, a session reads the profile's effect register and Custom's ten
+    /// bytes with the read OpenRGB makes of the active profile, one byte a read:
+    /// READ_REG, the address and the length 1, the byte at 6 of the answer, what
+    /// input waits read away first (lines 118-139). The hand-back writes back the
+    /// effect, when the keyboard named one of OpenRGB's (cm_keyboard_v3_effect,
+    /// CMKeyboardV3Controller.h:38-57), then Custom's ten bytes, in SetMode's order
+    /// (lines 305 and 325), and the crash path sends the same reports. An effect
+    /// that does not answer leaves nothing to write back. No reference reads the
+    /// colors WRITE_CUSTOM_RGB stores, so Custom keeps PadForge's last
+    /// picture.</para>
     /// </summary>
     internal sealed partial class CoolerMasterLighting
     {
@@ -100,8 +108,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = V3KeyboardLights(productId);
             if (lights == null) return null;
             bool dongle = IsV3Dongle(productId);
-            return NewModel(name, productId, lights, "SignalRGB CoolerMaster_CK721_Keyboard.js and OpenRGB CMKeyboardDevices.cpp",
-                (io, wait) => BeginV3Keyboard(io, wait, dongle),
+            return NewModel(name, productId, lights, (io, wait) => BeginV3Keyboard(io, wait, dongle),
                 repaintMs: LenovoLegionLighting.RepaintMs, holdMs: LenovoLegionLighting.HoldMs);
         }
 
@@ -151,8 +158,43 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The active profile's read (line 126).</summary>
-        internal static byte[] V3ProfileQuery(bool dongle)
-            => V3Frames(dongle, V3ReadRegister, new byte[] { V3ProfileRegister & 0xFF, V3ProfileRegister >> 8, 0x01, 0x00 })[0];
+        internal static byte[] V3ProfileQuery(bool dongle) => V3ByteQuery(dongle, V3ProfileRegister);
+
+        /// <summary>A read of one byte at a register, as the active profile's read
+        /// makes it (line 126).</summary>
+        internal static byte[] V3ByteQuery(bool dongle, int address)
+            => V3Frames(dongle, V3ReadRegister, new byte[] { (byte)address, (byte)(address >> 8), 0x01, 0x00 })[0];
+
+        /// <summary>The effects cm_keyboard_v3_effect names, Static to Water Ripple
+        /// and Off (CMKeyboardV3Controller.h:38-57).</summary>
+        internal static bool IsV3Effect(byte effect) => effect <= 0x0F || effect == 0x13;
+
+        /// <summary>The byte in an answer to <see cref="V3ByteQuery"/>, as hidapi hands
+        /// it over, or null for no read's answer (lines 128-129).</summary>
+        internal static byte? V3ByteOf(byte[] answer)
+            => answer != null && answer.Length > 6 && answer[0] == V3ReadRegister ? answer[6] : null;
+
+        /// <summary>Reads away what input waits, asks for the byte at a register
+        /// and reads the answer (lines 122-129). Null when none came.</summary>
+        private static byte? V3ReadByte(IHidReportChannel io, Action<int> wait, bool dongle, int address)
+        {
+            var scratch = new byte[Math.Max(V3WiredWriteSize, io.InputReportLength)];
+            for (int i = 0; i < V3MaxClearReads && io.ReadInput(scratch, 0) > 0; i++) { }
+            if (!V3Send(io, wait, new[] { V3ByteQuery(dongle, address) }, dongle)) return null;
+            return V3ByteOf(Read(io, V3ReadMs));
+        }
+
+        /// <summary>The writes that give a profile back the effect and Custom's ten
+        /// bytes read before the session wrote them: none without an effect read,
+        /// and the effect alone when Custom's bytes did not all answer.</summary>
+        internal static byte[][] V3HandBack(bool dongle, int profile, byte? effect, byte[] custom)
+        {
+            if (effect is not byte mode || !IsV3Effect(mode)) return Array.Empty<byte[]>();
+            int start = profile * V3ProfileSize;
+            var frames = V3Register(dongle, start + V3EffectModeRegister, mode);
+            if (custom != null) frames.AddRange(V3Register(dongle, start + V3Custom * V3EffectSize, custom));
+            return frames.ToArray();
+        }
 
         /// <summary>SetMode's writes for the Custom mode on a profile
         /// (lines 303-326).</summary>
@@ -187,7 +229,7 @@ namespace PadForge.Common.Input.Peripherals
         /// hidapi hands it over, or null for no read's answer or a profile past the
         /// four (lines 128-131).</summary>
         internal static byte? V3ProfileOf(byte[] answer)
-            => answer != null && answer.Length > 6 && answer[0] == V3ReadRegister && answer[6] < V3ProfileCount ? answer[6] : null;
+            => V3ByteOf(answer) is byte profile && profile < V3ProfileCount ? profile : null;
 
         /// <summary>Writes each report with the wait after it. False when one failed.</summary>
         private static bool V3Send(IHidReportChannel io, Action<int> wait, IEnumerable<byte[]> frames, bool dongle)
@@ -207,15 +249,45 @@ namespace PadForge.Common.Input.Peripherals
             for (int i = 0; i < V3MaxClearReads && io.ReadInput(scratch, 0) > 0; i++) { }
             if (!V3Send(io, wait, new[] { V3ProfileQuery(dongle) }, dongle)) return null;
             int profile = V3ProfileOf(Read(io, V3ReadMs)) ?? 0;
+            int start = profile * V3ProfileSize;
+            byte? effect = V3ReadByte(io, wait, dongle, start + V3EffectModeRegister);
+            byte[] custom = null;
+            if (effect != null)
+            {
+                custom = new byte[V3EffectSize];
+                for (int i = 0; i < V3EffectSize && custom != null; i++)
+                {
+                    if (V3ReadByte(io, wait, dongle, start + V3Custom * V3EffectSize + i) is byte value) custom[i] = value;
+                    else custom = null;
+                }
+            }
             if (!V3Send(io, wait, V3CustomMode(dongle, profile), dongle)) return null;
-            return new V3KeyboardSession(dongle);
+            return new V3KeyboardSession(dongle, V3HandBack(dongle, profile, effect, custom));
         }
 
         internal sealed class V3KeyboardSession : Session
         {
             private readonly bool _dongle;
+            private Action<int> _wait;
 
-            public V3KeyboardSession(bool dongle) => _dongle = dongle;
+            /// <summary>The Custom mode is written before the first picture, so the
+            /// hand-back is owed from the start.</summary>
+            public V3KeyboardSession(bool dongle, byte[][] handBack)
+            {
+                _dongle = dongle;
+                SetHandBack(handBack);
+                Owe();
+            }
+
+            /// <summary>The reports with the wait after each, and no read, as every
+            /// V3 command goes out.</summary>
+            protected override bool SendHandBack(IHidReportChannel io) => V3Send(io, _wait, HandBackFrames, _dongle);
+
+            public override bool HandBack(IHidReportChannel io, Action<int> wait)
+            {
+                _wait = wait;
+                return base.HandBack(io, wait);
+            }
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)

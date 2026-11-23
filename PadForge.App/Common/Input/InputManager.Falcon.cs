@@ -82,7 +82,7 @@ namespace PadForge.Common.Input
                     catch (Exception ex)
                     {
                         DisposeFalconAsync(dev);
-                        RaiseError("Error registering a Novint Falcon", ex);
+                        RaiseDeviceError("Error registering a Novint Falcon", ex);
                     }
                 }
                 _falconPending.Clear();

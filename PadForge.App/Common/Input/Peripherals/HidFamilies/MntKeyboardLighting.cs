@@ -101,9 +101,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(Lights(pocket), pocket
-                    ? "OpenRGB RGBController_MNTPocketReformKeyboard.cpp"
-                    : "OpenRGB RGBController_MNTReformKeyboard.cpp")
+                Map = new LightMap(Lights(pocket))
                 {
                     Product = $"mnt:{VendorId:X4}:{productId:X4}",
                 },

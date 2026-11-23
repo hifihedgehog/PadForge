@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Në linjë</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Jashtë linje</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>I panjohur</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Parazgjedhje</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Shfleto…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Vazhdo</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ndalo</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motori u ndal.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Gabim: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} nuk mund të krijohej.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Një pajisje nuk u hap, nuk u lexua ose nuk u përshtat. Regjistri i diagnostikimit e emërton.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} hasi një gabim. Regjistri i diagnostikimit ka shkakun.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Motori i hyrjes hasi një gabim. Regjistri i diagnostikimit ka shkakun.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL nuk mundi të niset. Regjistri i diagnostikimit ka shkakun.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro nuk mundi të konfigurohet. Regjistri i diagnostikimit ka shkakun.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Profili HIDMaestro i një kontrolluesi virtual mungon. Regjistri i diagnostikimit e emërton.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} nuk mundi të merrte identitetin dhe paraqitjen e personalizuar dhe përdor ato të profilit të vet.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profili u ndërrua: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profili u ndërrua: Parazgjedhje</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Parazgjedhje</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Porta e serverit të lëvizjes</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Ofron të dhëna xhiroje dhe akselerometri për Cemu, Dolphin, Yuzu etj.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Modet e lojës</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lejon modet e lojërave të bëra për DSX të vendosin këmbëzat adaptive, shiritin e dritës, dritat e lojtarit dhe dritën e heshtjes të kontrollueseve tuaj PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lejon modet e lojërave të bëra për DSX të vendosin këmbëzat adaptive, shiritin e dritës, dritat e lojtarit dhe dritën e heshtjes të një DualSense ose DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Prano modet e lojës DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Porta e modit të lojës</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Ekzekuto një zëvendësues DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Disa mode, si DualSense4GTAV, çaktivizohen vetë nëse nuk po punon një program me emrin DSX. Kjo ekzekuton një zëvendësues të vogël me këtë emër ndërsa serveri dëgjon.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Punon me mode të bëra për DSX, si ato për GTA V, Red Dead Redemption 2, Skyrim dhe Forza. Ndërsa serveri dëgjon, PadForge shkruan portën e tij aty ku i kërkojnë këto mode.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Dëgjon te :{0}. {1} po dërgon te kontrolluesi virtual {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Dëgjon te :{0}. {1} po dërgon, por asnjë kontrollues virtual nuk ka një kontrollues PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Dëgjon te :{0}. {1} po dërgon te indeksi {2} i kontrolluesit, dhe asnjë kontrollues virtual me kontrollues PlayStation nuk e ka atë indeks.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Dëgjon te :{0}. {1} po dërgon, por asnjë kontrollues virtual nuk ka një DualSense ose DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Dëgjon te :{0}. {1} po dërgon te indeksi {2} i kontrolluesit, dhe asnjë kontrollues virtual me një DualSense ose DualShock 4 nuk e ka atë indeks.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Porta {0} është në përdorim nga një program tjetër, si DSX. Mbylle ose zgjidh një portë tjetër.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Një mod loje</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funksionon me OpenTrack dhe çdo gjurmues që dërgon daljen e vet UDP ose shkruan memorie të përbashkët FreeTrack 2.0, dhe me një runtime OpenXR në këtë kompjuter që mund të ekzekutojë një seancë në sfond.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Skedari nuk u gjet</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nuk lexohet</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Skedari i temës “{0}” mungon ose nuk lexohet. PadForge shfaq “E errët” derisa të kthehet.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Skedari i temës “{0}” nuk përmban temë të PadForge. PadForge shfaq “E errët” derisa të përmbajë.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profili “{0}” po mban pamjen e lojës së tij. Tema jote kthehet kur aktivizohet një profil tjetër.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motori i hyrjes</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguro sjelljen e sondazhit dhe përpunimin në sfond.</value></data>
@@ -1046,6 +1053,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolluesi nuk e pranoi komandën që e përgatit, ndaj nuk u dërgua asgjë. Kontrollo që është i lidhur dhe dërgo përsëri.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Dërgimi u ndal nga një gabim në PadForge. Skedari i regjistrit ka detajet.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Një imazh po shkon ende te kontrolluesi. Të ndalohet dërgimi?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Vazhdo dërgimin</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Skedarë Controller Pak (*.mpk)|*.mpk|Të gjithë skedarët (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porta {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Rikthe Controller Pak</value></data>
@@ -1433,6 +1441,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Zbehja e pulsimit</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Paravendosja</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>E personalizuar</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Krijuar nga përdoruesi)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Levat</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Këmbëzat</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2413,7 +2422,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Ky kontrollues ka një magnetometër. Ankorimi i kthimit te veriu magnetik heq zhvendosjen e ngadaltë horizontale nga synimi me xhirë. Kalibroni së pari: shtypni Kalibro, rrotulloni kontrolluesin në të gjitha orientimet në formë 8-she për disa sekonda, pastaj shtypni sërish.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ankoro kthimin te busulla</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Shton një shpejtësi të vogël korrigjuese që e tërheq synimin horizontal drejt drejtimit magnetik, kështu që zhvendosja nuk mund të grumbullohet. Kërkon një kalibrim të ruajtur të magnetometrit. Kampionët e shqetësuar nga metali ose magnetët aty pranë hidhen poshtë automatikisht.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Rivendos në parazgjedhje (joaktiv)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulimi i animit dhe rrotullimit</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Animi dhe rrotullimi nga akselerometri</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Xhira e këtij kontrolluesi ndien vetëm kthimin majtas e djathtas. Me simulimin aktiv, PadForge nxjerr animin dhe rrotullimin nga akselerometri dhe i dërgon me kthimin e xhirës te rreshtat e hartëzimit dhe te lëvizja e kontrolluesit virtual. Një akselerometër nuk e dallon shtytjen nga pjerrja, prandaj lëvizja anash ose përpara e kontrolluesit pa e kthyer lexohet si rrotullim i shkurtër.</value></data>
@@ -3206,13 +3214,10 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Rivendos Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pika për 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Njësitë e mausit për një kthim të plotë të kamerës 360°. Varet nga ndjeshmëria e mausit në lojë: rrite nëse flick-u kthen pak, ule nëse kthen shumë.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Rivendos në 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Koha e flick-ut</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Sa zgjat një flick i plotë 180°, me ngadalësim në fund. Kthimet më të vogla mbarojnë në të njëjtën kohë.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Rivendos në 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Pragu i flick-ut</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Devijimi i levës që nis një flick, si pjesë e devijimit të plotë. Gjatë flick-ut, pika e lëshimit bie në 90% të këtij.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Rivendos në 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Këndi i kapjes</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Kap flick-un në kënde fikse për kthime më të qëndrueshme. "Vetëm përpara" e kap çdo flick drejt përpara.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Pa kapje</value></data>
@@ -3221,22 +3226,16 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 gradë</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 gradë</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 gradë</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Rivendos në Pa kapje</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Forca e kapjes</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Sa fort e tërheq një flick drejt këndit të kapur. 1 kap plotësisht, 0 çaktivizon kapjen, vlerat ndërmjet përzihen.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Rivendos në 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zona e vdekur e këndit të përparmë</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Një flick brenda këtij këndi nga drejt përpara nuk kthen asgjë. Të lejon ta nisësh një fshirje pa kthim flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Rivendos në 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Zbutja e fshirjes</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Zbut zhurmën e fshirjes së buzës. -1 përdor dritaren automatike me nivele, 0 çaktivizon zbutjen, vlerat më të mëdha zbusin rrotullime më të mëdha për tik.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Rivendos në Automatike (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Lejo flick-un në aktivizim</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Zhvendosja e rrotullimit</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>E kthen gjithë hartën e flick-ut me kaq gradë. Pozitive është në drejtim orar. Kapja zbatohet pas zhvendosjes.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Rivendos zhvendosjen e rrotullimit</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kur shtresa që strehon Flick Stick aktivizohet me levën tashmë të devijuar, flick-u zhvillohet menjëherë. Joaktiv e mban kamerën të qetë dhe ndjek rrotullimin nga këndi aktual i levës.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Rivendos Lejo flick-un në aktivizim</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Reagimi i kyçjes së drejtimit</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal në kyçje të plotë për një levë në mënyrë drejtimi</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kur një levë me mënyrë drejtimi kthehet deri në kyçje të plotë, luaj një sinjal (dridhje, këmbëz ose shirit drite) që ta ndiesh kufirin. Të gjitha joaktive si parazgjedhje.</value></data>
@@ -3426,11 +3425,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Luaj haptikën DualSense në këtë kontrollues</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kur një lojë e drejton këtë slot si DualSense virtual me audio haptike të autorizuar, luaj atë pistë në aktuatorët e këtij kontrolluesi. Një Steam Controller 2026 me USB ose me dongle, dhe një Flydigi Apex 6 Pro, luajnë vetë pistën. Çdo kontrollues tjetër, edhe ai Steam Controller me Bluetooth, merr tone të nxjerra nga audioja, që i përafrojnë ndjesinë e dizajnerit në vend që ta riprodhojnë.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Përforcimi i haptikës</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Rivendos në parazgjedhje (Joaktiv)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Rivendos në parazgjedhje (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Prerja e kalimit të ulët të aktuatorit</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>E mban transmetimin haptik të Steam Controller nën këtë frekuencë, që jastëkët të dridhen në vend që të luajnë zë të dëgjueshëm. Rreth 250 Hz aktuatorët fillojnë të dëgjohen. Rite për detaje më të mprehta, ule për luajtje më të qetë.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Rivendos në 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonet mbi këtë frekuencë priten ose palosen. Parazgjedhja 800 Hz ruan dridhjen e motorit dhe goditjeve duke kapur bipat e theksuar.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Rivendos tonet e larta</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Rivendos kufirin e tonit</value></data>
@@ -3999,8 +3995,59 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Zona e kursorit</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Ndërrimi {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Lista e rrotës ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Zona e kursorit ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Mbaj miun {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Kliko miun {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Ndërro miun {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Impuls haptik ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (pjesa e lëshimit)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Prek {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Zjarr automatik {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Mbaj {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Ndërro {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Shtypje e dyfishtë {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Shtypje e gjatë {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Hap i rrotës ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Ndërro rrotën ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Rrota turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Hidh kursorin ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Vendos dritën LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Ricentro xhiron ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Lëviz kursorin pak ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Tasti i pamjes së ekranit ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Tastiera në ekran ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Vendos ngjyrën e dritës</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Ricentro kamerën</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Hidh kursorin</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Lëviz kursorin pak</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Pamje ekrani</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Tastiera në ekran</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Ndërro shtresën e ndërrimit</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ndiz një shtresë ndërrimi</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Fik një shtresë ndërrimi</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Mbaj një shtresë ndërrimi</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Ndrysho numrin e lojtarit</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Pa lidhje</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Ndërro modalitetin e desktopit</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Tasti i sistemit Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Ndërro zmadhuesin</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Rrit shkëlqimin</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Ul shkëlqimin</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Fik kontrolluesin</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Hap konfiguruesin e Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Hap menynë e shpejtë të Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Dil nga loja</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Ndërro haptikën</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Ndërro HUD të Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Ndërro dridhjen</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Detyro butonin Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Rrotullim për kalibrimin e xhiros</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Kthehu nga drejtimi</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (mbajtje)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lëshim)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lëshim)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivizim)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Zgjidh një konfigurim për të parë çfarë kalon.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Çfarë kalon</value></data>
@@ -4608,11 +4655,9 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Shtresa</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Zgjidhni shtresën që lejon këtë meny. Çdo shtresë dhe Baza e lejojnë nën shtresa të tjera aktive. Një shtresë e emërtuar duhet të përputhet me shtresën aktive aktualisht.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Rivendos te Çdo shtresë dhe fik hapjen e mbajtur nga shtresa.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (nuk është në listë në këtë slot)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Shtresa e mban menynë të hapur</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Mbaje këtë meny të hapur ndërsa shtresa e saj e emërtuar është aktive. Hyrja fizike e zgjedhur drejton theksimin. Çdo shtresë dhe Baza përdorin hapjen normale nga sipërfaqja.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Rivendos te hapja me prekje ose devijim.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Drejto me</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Hyrja fizike që drejton qelizën e theksuar ndërsa shtresa e mban këtë meny të hapur.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Lexohet nga kontrolluesit fizikë të caktuar në këtë slot. Shtresa e hap menynë dhe kjo hyrje e drejton atë. Qelizat e saj tregojnë çfarë jep ajo.</value></data>
@@ -4692,7 +4737,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motori</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Ndarë sipas drejtimit</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona e vdekur e qendrës</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Rivendos te Leva e majtë X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Rivendos forcën (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Rivendos zonën e vdekur të qendrës (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Rivendos Aktivizo dridhjen e këndit të drejtimit</value></data>
@@ -5206,6 +5250,9 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referencat e klingonishtes dhe sindarinishtes</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Fjalët e përkthimeve në klingonisht dhe sindarinisht, të kontrolluara me klingon-assistant-data (Apache-2.0), fjalorin pas boQwI', dhe me Eldamo (CC BY 4.0), leksikun elfik të Paul Strack. Vetëm të dhëna fjalori, asnjë nuk përfshihet.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ai skedar nuk është temë e PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge nuk e lexon dot atë skedar.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge nuk e gjen dot atë skedar.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Nuk është temë</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema nuk u ruajt. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Temë e re</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge e vesh temën ndërkohë që e ndërton.</value></data>
@@ -5220,6 +5267,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Po merret imazhi nga Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nuk ka imazh të gjerë për këtë lojë.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nuk u arrit Steam. Kontrollo lidhjen.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge nuk e lexon dot imazhin e Steam për këtë lojë.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Pozicioni</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E lëviz imazhin lart ose poshtë në dritaren e tij.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Shfaq logon e lojës</value></data>
@@ -5260,4 +5308,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Modeli i filmuar për serialin origjinal Star Trek, fotografuar nga Smithsonian National Air and Space Museum, që e ruan: imazhi i temës LCARS të Star Trek.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imazhi i temës: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Një kuadër nga Star Trek: The Next Generation: imazhi i temës Starfleet të Star Trek. Gjetur në Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Shiriti i dritës</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Shiriti i dritës {0}</value></data>
 </root>

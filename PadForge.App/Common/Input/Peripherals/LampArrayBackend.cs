@@ -1045,7 +1045,7 @@ namespace PadForge.Common.Input.Peripherals
                     foreach (var lamp in lamps.Values) Describe(run, lamp, ref pass);
 
                     // Names learned with Map Key Lights since the maps were
-                    // made (#557) reach them, and the tab, here.
+                    // made (#557) reach them, and the Lighting group, here.
                     int learned = LearnedKeyMaps.Version;
                     if (learned != seenLearned)
                     {
@@ -1865,7 +1865,7 @@ namespace PadForge.Common.Input.Peripherals
             // descriptions where PadForge reads them, with the names Map Key
             // Lights learned for the model.
             var fromLamps = unit.DescribesLamps ? LampArrayProtocol.LightMapOf(lamp.Descriptions, unit.Kind) : null;
-            var deviceMap = fromLamps == null ? null : new LightMap(fromLamps.Lights, fromLamps.Source) { Product = unit.Product };
+            var deviceMap = fromLamps == null ? null : new LightMap(fromLamps.Lights) { Product = unit.Product };
             var map = LearnedKeyMaps.Apply(deviceMap);
             lamp.Unit = unit with { Runs = runs, LampLevels = levels, Map = map, DeviceMap = deviceMap };
             lamp.Descriptions = null;

@@ -67,7 +67,7 @@ namespace PadForge.Common.Input.Peripherals
         public int PacketSize { get; init; } = CorsairLights.PacketLength;
 
         /// <summary>The handle a picture is written on. OpenRGB opens handle 1 for
-        /// every device of its list (SetLEDs, CorsairPeripheralV2Controller.cpp:390-398,
+        /// every device of its list (SetLEDs, CorsairPeripheralV2Controller.cpp:392-400 at 6b681e3c,
         /// since 4f2d8920). A device only SignalRGB's plugin lists takes handle 0, which
         /// the plugin opens for lighting (Corsair_Bragi_Device.js:1705-1706 and 2458), as ckb-next does
         /// (BRAGI_LIGHTING_HANDLE, bragi_proto.h:70).</summary>
@@ -205,7 +205,7 @@ namespace PadForge.Common.Input.Peripherals
     /// starts, and stays in it until it is handed back or re-enumerates:
     /// OpenRGB's V2 controller hands the device back in its destructor
     /// because "the mode persists until the next USB enumeration if it is
-    /// never reverted" (CorsairPeripheralV2Controller.cpp:142-150). So a
+    /// never reverted" (CorsairPeripheralV2Controller.cpp:144-152 at 6b681e3c). So a
     /// session records the device as owed in <see cref="KeyboardProfileBackups"/>
     /// before its first picture, as the Lenovo Y740 to Y760 session does
     /// (<see cref="LenovoLegionUsbLighting"/>), under the device's own key

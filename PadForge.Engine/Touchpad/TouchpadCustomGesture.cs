@@ -36,9 +36,10 @@ namespace PadForge.Engine.Touchpad
         /// from settings; otherwise this value supersedes it.</summary>
         [XmlAttribute] public float Threshold { get; set; }
 
-        /// <summary>Per-gesture enable toggle surfaced in the Touchpad
-        /// group. Lets the user keep a gesture configured but temporarily
-        /// stop it firing without deleting the recording.</summary>
+        /// <summary>Per-gesture enable flag, read from the saved gesture.
+        /// Off stops the gesture firing and keeps its recording. No control
+        /// sets it: the Touchpad group's Custom Gestures list shows a
+        /// gesture's name, its finger count and Remove.</summary>
         [XmlAttribute] public bool Enabled { get; set; } = true;
 
         /// <summary>The recorded finger paths. One <see cref="FingerPath"/>

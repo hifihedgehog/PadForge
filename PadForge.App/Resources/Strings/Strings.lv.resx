@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Tiešsaistē</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Bezsaistē</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Nezināms</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Noklusējums</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Pārlūkot…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Turpināt</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Apturēt</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Dzinējs apturēts.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Kļūda: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Neizdevās izveidot: {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Ierīci nevarēja atvērt, nolasīt vai kartēt. Diagnostikas žurnālā ir norādīts, kuru.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} sastapa kļūdu. Diagnostikas žurnālā ir norādīts cēlonis.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Ievades dzinējs sastapa kļūdu. Diagnostikas žurnālā ir norādīts cēlonis.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL nevarēja startēt. Diagnostikas žurnālā ir norādīts cēlonis.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro nevarēja iestatīt. Diagnostikas žurnālā ir norādīts cēlonis.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Kāda virtuālā kontrollera HIDMaestro profila nav. Diagnostikas žurnālā ir norādīts, kura.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} nevarēja izveidot pielāgoto identitāti un izkārtojumu, tāpēc izmanto sava profila izkārtojumu.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profils pārslēgts: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profils pārslēgts: Noklusējums</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Noklusējums</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Kustību servera ports</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Nodrošina žiroskopa un akselerometra datus emulatoriem Cemu, Dolphin, Yuzu u. c.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Spēļu modifikācijas</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ļauj spēļu modifikācijām, kas paredzētas DSX, iestatīt jūsu PlayStation kontrolleru adaptīvās mēlītes, gaismas joslu, spēlētāja gaismiņas un mikrofona izslēgšanas gaismiņu.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ļauj spēļu modifikācijām, kas paredzētas DSX, iestatīt DualSense vai DualShock 4 adaptīvās mēlītes, gaismas joslu, spēlētāja gaismiņas un mikrofona izslēgšanas gaismiņu.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Pieņemt DSX spēļu modifikācijas</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Spēļu modifikāciju ports</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Palaist DSX.exe aizstājēju</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Dažas modifikācijas, piemēram, DualSense4GTAV, izslēdzas pašas, ja nedarbojas programma ar nosaukumu DSX. Šī opcija palaiž nelielu aizstājēju ar šādu nosaukumu, kamēr serveris klausās.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Darbojas ar DSX paredzētajām modifikācijām, piemēram, spēlēm GTA V, Red Dead Redemption 2, Skyrim un Forza. Kamēr serveris klausās, PadForge ieraksta savu portu tur, kur šīs modifikācijas to meklē.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Klausās :{0}. {1} sūta uz virtuālo kontrolleri {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Klausās :{0}. {1} sūta, bet nevienam virtuālajam kontrolleram nav pievienots PlayStation kontrolleris.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Klausās :{0}. {1} sūta uz kontrollera indeksu {2}, un nevienam virtuālajam kontrolleram ar PlayStation kontrolleri nav šāda indeksa.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Klausās :{0}. {1} sūta, bet nevienam virtuālajam kontrolleram nav pievienots DualSense vai DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Klausās :{0}. {1} sūta uz kontrollera indeksu {2}, un nevienam virtuālajam kontrolleram ar DualSense vai DualShock 4 nav šāda indeksa.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Portu {0} izmanto cita programma, piemēram, DSX. Aizveriet to vai izvēlieties citu portu.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Spēles modifikācija</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Darbojas ar OpenTrack un jebkuru izsekotāju, kas sūta savu UDP izvadi vai raksta FreeTrack 2.0 koplietojamajā atmiņā, kā arī ar šī datora OpenXR izpildlaiku, kas spēj darbināt sesiju fonā.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fails nav atrasts</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nevar nolasīt</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Motīva „{0}” fails ir pazudis vai nav nolasāms. PadForge rāda motīvu Tumšs, līdz fails atgriežas.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Motīva „{0}” failā nav PadForge motīva. PadForge rāda motīvu Tumšs, līdz tajā tāds ir.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profils „{0}” valkā savas spēles izskatu. Jūsu motīvs atgriežas, kad ir aktīvs cits profils.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge motīvi (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Šis fails nav PadForge motīvs.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge nevar nolasīt šo failu.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge nevar atrast šo failu.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Nav motīvs</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Motīvu nevarēja saglabāt. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Jauns motīvs</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge valkā motīvu, kamēr to veidojat.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Notiek attēla iegūšana no Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nav plata attēla šai spēlei.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nevarēja sasniegt Steam. Pārbaudiet savienojumu.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge nevar nolasīt Steam attēlu šai spēlei.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Novietojums</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Pārvieto attēlu augšup vai lejup tā logā.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Rādīt spēles logotipu</value></data>
@@ -1094,6 +1105,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolleris nepieņēma komandu, kas to sagatavo, tāpēc nekas netika nosūtīts. Pārbaudiet, vai tas ir pievienots, un nosūtiet vēlreiz.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Sūtīšana apstājās PadForge kļūdas dēļ. Informācija ir žurnāla failā.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Attēls vēl tiek sūtīts uz kontrolleri. Vai apturēt nosūtīšanu?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Turpināt sūtīt</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak faili (*.mpk)|*.mpk|Visi faili (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ports {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Atjaunot Controller Pak</value></data>
@@ -1657,6 +1669,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulsa izdzišana</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Sagatave</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pielāgots</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (lietotāja izveidots)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sviras</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mēlītes</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2638,7 +2651,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Šim kontrollerim ir magnetometrs. Noenkurojot pagriezienu pie magnētiskajiem ziemeļiem, tiek novērsts lēns horizontālais dreifs žiroskopa tēmēšanā. Vispirms kalibrējiet: nospiediet „Kalibrēt magnetometru”, dažas sekundes grieziet kontrolleri visos virzienos, zīmējot astotnieku, pēc tam nospiediet vēlreiz.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Noenkurot pagriezienu pie kompasa</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Pievieno nelielu korekcijas ātrumu, kas virza horizontālo tēmējumu uz magnētisko kursu, lai dreifs nevarētu uzkrāties. Nepieciešama saglabāta magnetometra kalibrēšana. Paraugi, ko traucē tuvumā esošs metāls vai magnēti, tiek automātiski noraidīti.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Atiestatīt uz noklusējumu (izslēgts)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Slīpuma un sānsveres simulācija</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Slīpums un sānsvere, aprēķināti no akselerometra</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Šī kontrollera žiroskops uztver tikai pagriešanos pa kreisi un pa labi. Kad simulācija ir ieslēgta, PadForge iegūst slīpumu un sānsveri no akselerometra un sūta tos kopā ar žiroskopa pagriezienu uz piesaistes rindām un virtuālā kontrollera kustību. Akselerometrs nevar atšķirt grūdienu no sasvēršanās, tāpēc kontrollera pārvietošana uz sāniem vai uz priekšu bez pagriešanas tiek nolasīta kā īslaicīga rotācija.</value></data>
@@ -3035,7 +3047,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Apvelciet sviru pa tās malu, lai izmērītu sasniedzamo robežu, un pēc tam pārveidojiet to par pilnu apli.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Atiestatīt robežas kalibrēšanu</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Atiestatīt centra nobīdi Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Atiestatīt uz „Mērogota radiāla”</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Atiestatīt nejutības zonu X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Atiestatīt nejutības zonu Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Atiestatīt nejutības zonas kompensāciju X</value></data>
@@ -3487,13 +3498,10 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Atiestatīt rāviena sviru</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkti uz 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Peles skaitījumi vienam pilnam kameras pagriezienam par 360°. Atkarīgs no spēles peles jutības: palieliniet, ja rāviens pagriež par maz, samaziniet, ja par daudz.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Atiestatīt uz 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Rāviena laiks</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Cik ilgi ilgst pilns 180° rāviens ar palēnināšanos beigās. Īsāki pagriezieni tiek pabeigti tikpat ilgā laikā.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Atiestatīt uz 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Rāviena slieksnis</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Sviras novirze, kas sāk rāvienu, kā daļa no pilnas novirzes. Rāviena laikā atlaišanas punkts samazinās līdz 90% no šīs vērtības.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Atiestatīt uz 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Leņķa fiksēšana</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Fiksē rāvienu pie noteiktiem leņķiem, lai pagriezieni būtu vienmērīgāki. „Tikai uz priekšu” fiksē katru rāvienu tieši uz priekšu.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Bez fiksēšanas</value></data>
@@ -3502,22 +3510,16 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 grādi</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 grādi</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 grādi</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Atiestatīt uz „Bez fiksēšanas”</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Fiksēšanas stiprums</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Cik spēcīgi rāviens tiek pievilkts fiksētajam leņķim. 1 fiksē pilnībā, 0 atspējo fiksēšanu, starpvērtības sajauc.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Atiestatīt uz 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Priekšējā leņķa nejutības zona</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Rāviens šajā leņķī no taisnā virziena uz priekšu neko nepagriež. Ļauj sākt vilkšanu pa malu bez rāviena pagrieziena.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Atiestatīt uz 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Vilkšanas izlīdzināšana</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Izlīdzina troksni, velkot pa malu. -1 izmanto automātisko pakāpenisko logu, 0 izslēdz izlīdzināšanu, lielākas vērtības izlīdzina lielākas rotācijas katrā ciklā.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Atiestatīt uz automātisko (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Atļaut rāvienu aktivizējot</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotācijas nobīde</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Pagriež visu rāvienu karti par šo grādu skaitu. Pozitīvas vērtības pagriež pulksteņrādītāja virzienā. Fiksēšana tiek piemērota pēc nobīdes.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Atiestatīt rotācijas nobīdi</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ja slānis ar rāviena sviru tiek aktivizēts, kad svira jau ir novirzīta, rāviens tiek izpildīts nekavējoties. Izslēgtā stāvoklī kamera paliek nekustīga, un rotācija tiek izsekota no pašreizējā sviras leņķa.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Atiestatīt „Atļaut rāvienu aktivizējot”</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Stūres galējā stāvokļa atgriezeniskā saite</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signāls galējā stāvoklī sviras stūrēšanas režīmā</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kad svira stūrēšanas režīmā ir pagriezta līdz galējam stāvoklim, tiek atskaņots signāls (vibrācija, mēlīte vai gaismas josla), lai jūs sajustu robežu. Pēc noklusējuma viss ir izslēgts.</value></data>
@@ -3707,11 +3709,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Atskaņot DualSense haptiku šajā kontrollerī</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kad spēle vada šo slotu kā virtuālu DualSense ar izveidotu haptisko audio, šis celiņš tiek atskaņots šī kontrollera izpildmehānismos. Steam Controller 2026, kas pievienots ar USB vai savu uztvērēju, un Flydigi Apex 6 Pro atskaņo pašu celiņu. Visi citi kontrolleri, kā arī šis Steam Controller, ja pievienots ar Bluetooth, saņem no audio iegūtus toņus, kas tikai aptuveni atveido dizainera iecerēto sajūtu.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikas pastiprinājums</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Atiestatīt uz noklusējumu (izslēgts)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Atiestatīt uz noklusējumu (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Izpildmehānisma zemfrekvenču filtra robeža</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Uztur Steam Controller haptisko straumi zem šīs frekvences, lai paliktņi vibrētu, nevis dzirdami atskaņotu skaņu. Ap 250 Hz izpildmehānismi sāk kļūt dzirdami. Palieliniet to asākām detaļām, samaziniet klusākai darbībai.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Atiestatīt uz 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Toņi virs šīs frekvences tiek nogriezti vai pazemināti. Noklusējuma 800 Hz saglabā dzinēja un triecienu vibrāciju, vienlaikus apstrādājot augstus pīkstienus.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Atiestatīt augstos toņus</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atiestatīt toņu robežu</value></data>
@@ -4312,8 +4311,59 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profils</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makross</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kursora apgabals</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} pārslēgs</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Ritenīša saraksts ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Kursora apgabals ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Turēt peles {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klikšķināt peles {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Pārslēgt peles {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptiskais impulss ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (atlaišanas daļa)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Piesist {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Automātiska šaušana {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Turēt {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Pārslēgt {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Dubultnospiešana {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Ilga nospiešana {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Ritenīša solis ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Pārslēgt ritenīti ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo ritenītis ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Pārlēkt ar kursoru ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Iestatīt LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Atkārtoti centrēt žiroskopu ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Pabīdīt kursoru ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Ekrānuzņēmuma taustiņš ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Ekrāna tastatūra ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Iestatīt gaismas krāsu</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Atkārtoti centrēt kameru</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Pārlēkt ar kursoru</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Pabīdīt kursoru</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Ekrānuzņēmums</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Ekrāna tastatūra</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Mainīt pārslēga slāni</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Ieslēgt pārslēga slāni</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Izslēgt pārslēga slāni</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Turēt pārslēga slāni</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Mainīt spēlētāja numuru</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Nepiesaistīts</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Pārslēgt darbvirsmas režīmu</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam sistēmas poga</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Pārslēgt lupu</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Palielināt spilgtumu</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Samazināt spilgtumu</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Izslēgt kontrolleri</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Atvērt Steam konfigurētāju</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Atvērt Steam ātro izvēlni</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Iziet no spēles</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Pārslēgt haptiku</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Pārslēgt Steam HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Pārslēgt vibrāciju</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Piespiest Guide pogu</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Žiroskopa kalibrēšanas griešana</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Pagriezties virzienā</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (turēšana)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (atlaišana)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (atlaišana)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivizēšana)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Izvēlieties konfigurāciju, lai redzētu, kas tiek pārnests.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kas tiek pārnests</value></data>
@@ -4928,11 +4978,9 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Slānis</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Izvēlieties slāni, kurā šī izvēlne ir atļauta. „Jebkurš slānis” un „Pamata” to atļauj arī tad, ja aktīvi ir citi slāņi. Nosauktam slānim jāsakrīt ar pašlaik aktīvo slāni.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Atiestatīt uz „Jebkurš slānis” un izslēgt atvēršanu ar slāni.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (nav šī slota sarakstā)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Slānis notur izvēlni atvērtu</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Turēt šo izvēlni atvērtu, kamēr tās nosauktais slānis ir aktīvs. Atlasītā fiziskā ievade vada iezīmējumu. „Jebkurš slānis” un „Pamata” izmanto parasto atvēršanu ar virsmu.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Atiestatīt uz atvēršanu ar pieskārienu vai novirzi.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Vadīt ar</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Fiziskā ievade, kas vada iezīmēto šūnu, kamēr slānis tur šo izvēlni atvērtu.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Tiek nolasīts no šim slotam piešķirtajiem fiziskajiem kontrolleriem. Slānis atver izvēlni, un šī ievade to vada. Tās šūnas nosaka, ko tā izvada.</value></data>
@@ -5014,7 +5062,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motors</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Sadalīt pēc virziena</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Centra nejutības zona</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atiestatīt uz „Kreisā svira X”</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Atiestatīt stiprumu (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Atiestatīt centra nejutības zonu (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Atiestatīt „Iespējot stūrēšanas leņķa vibrāciju”</value></data>
@@ -5681,6 +5728,25 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profili</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Slānis {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Mēlītes: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Gaismas josla</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} papildiespējas</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} gaismas josla</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Palaist programmu</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} diapazons</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Importēts profils</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Importēts makross</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Sagatave {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Radiālā izvēlne {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Skārienizvēlne {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Peles apgabals</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>piesitiens</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>turēšana</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>dubultpiesitiens</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Kreisās mēlītes efekts</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Labās mēlītes efekts</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Pogu kartēšana {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Vienums {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Kontrolieris</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Saglabā savas izvades</value></data>
@@ -6012,7 +6078,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX nepublicē, kā darbojas tā iestatījums {0}, tāpēc PadForge izmanto savu.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX nepublicē savus ievades numurus. Publicētie DSX profili izmanto 41 līdz 44 kā D-pad, tāpēc PadForge tos nolasa šādi.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX šādu piesaisti neraksta, tāpēc fails ir mainīts ārpus DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX uz šo sagatavi pārslēdzas ar saīsni. Tās makross ir lapā Makrosi, gatavs piesaistei pogai.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX uz šo sagatavi pārslēdzas ar saīsni. Tās makross ir kontrollera sadaļā Makrosi un izvēlnes, gatavs piesaistei pogai.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Neviens publicētais DSX profils neizmanto {0}, tāpēc PadForge nevar noteikt, ko tas dara.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX ļauj spēlei to iestatīt, kamēr tā tiešās pārsūtīšanas slēdzis ir ieslēgts, tāpēc PadForge to arī atstāj spēlei.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Režīmā Native Mode ar izslēgtu Send Data to Device DSX kontrolleram nesūta neko savu, tāpēc PadForge to arī atstāj spēlei.</value></data>

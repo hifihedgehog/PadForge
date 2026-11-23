@@ -448,14 +448,14 @@ namespace PadForge.Tests
         [Fact]
         public void TheY760Tables_NameTheirKeysByTheirPlaces()
         {
-            var ansi = new LightMap(LenovoLegionUsbLighting.Lights(LenovoLegionUsbLighting.LegionY760, LenovoLegionUsbLighting.Board.Ansi), "t");
+            var ansi = new LightMap(LenovoLegionUsbLighting.Lights(LenovoLegionUsbLighting.LegionY760, LenovoLegionUsbLighting.Board.Ansi));
             // The # legend over 3 is KEY_EN_POUND in OpenRGB's table
             // (LenovoDevices.h:191), and is not the ISO # key.
             Assert.Equal(0, UsageAt(ansi, 0x119));
             Assert.Equal(0x20, UsageAt(ansi, 0x12E));   // 3
             // Three lights under Backspace (lines 220-222).
             Assert.Equal(3, ansi.IndexesOf(0x2A).Count);
-            var jp = new LightMap(LenovoLegionUsbLighting.Lights(LenovoLegionUsbLighting.LegionY760, LenovoLegionUsbLighting.Board.Japan), "t");
+            var jp = new LightMap(LenovoLegionUsbLighting.Lights(LenovoLegionUsbLighting.LegionY760, LenovoLegionUsbLighting.Board.Japan));
             Assert.Equal(0x2F, UsageAt(jp, 0x161));   // KEY_JP_AT
             Assert.Equal(0x30, UsageAt(jp, 0x162));   // [
             Assert.Equal(0x32, UsageAt(jp, 0x178));   // ]
@@ -467,7 +467,7 @@ namespace PadForge.Tests
             Assert.Equal(0x35, UsageAt(jp, 0x116));   // KEY_JP_ZENKAKU
             Assert.Equal(0, UsageAt(jp, 0x121));      // the = legend
             Assert.Equal(0, UsageAt(jp, 0x14C));      // the ` legend
-            var iso = new LightMap(LenovoLegionUsbLighting.Lights(LenovoLegionUsbLighting.LegionY760, LenovoLegionUsbLighting.Board.Iso), "t");
+            var iso = new LightMap(LenovoLegionUsbLighting.Lights(LenovoLegionUsbLighting.LegionY760, LenovoLegionUsbLighting.Board.Iso));
             Assert.Equal(0x32, UsageAt(iso, 0x178));  // KEY_EN_POUND, the ISO # key
             Assert.Equal(0x64, UsageAt(iso, 0x181));  // KEY_EN_ISO_BACK_SLASH
             // Legend lights no table names wait for Map Key Lights.

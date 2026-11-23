@@ -168,7 +168,7 @@ def main():
         out.append("")
         out.append("        /// <summary>%s, %d rows of %d, each cell an index into the LEDs or -1." % (source, rows, cols))
         out.append("        /// %d LEDs.</summary>" % count)
-        out.append("        internal static readonly MatrixLayout %s = new(%s, %d, %d, %d, new short[]" % (cs, cs_str(source), rows, cols, count))
+        out.append("        internal static readonly MatrixLayout %s = new(%d, %d, %d, new short[]" % (cs, rows, cols, count))
         out.append("        {")
         for r in range(rows):
             part = cells[r * cols:(r + 1) * cols]

@@ -247,7 +247,9 @@ namespace PadForge.Tests
         [Fact]
         public void TriggerPresets_BecomeMacrosToBind()
         {
-            var r = Import(Dsx(sections: "\"controller_adaptive_triggers\":{\"lt_type\":\"OFF\",\"rt_type\":\"OFF\"},"
+            // The active section holds the preset in force, named as its
+            // list entry is, so that entry comes across as the active one.
+            var r = Import(Dsx(sections: "\"controller_adaptive_triggers\":{\"preset_name\":\"Base\",\"lt_type\":\"OFF\",\"rt_type\":\"OFF\"},"
                 + "\"controller_adaptive_triggers_active_preset\":0,"
                 + "\"controller_adaptive_triggers_preset_list\":[{\"preset_name\":\"Base\",\"lt_type\":\"OFF\",\"rt_type\":\"OFF\"},"
                 + "{\"preset_name\":\"Aim\",\"lt_type\":\"OFF\",\"rt_type\":\"WEAPON\",\"rt_weapon_start\":2,\"rt_weapon_end\":6,\"rt_weapon_resist\":8}]"));
@@ -643,6 +645,216 @@ namespace PadForge.Tests
         [InlineData(0x4000)]
         [InlineData(0x4100)]
         public void Output_OtherwiseIsUnknown(int hash) => Assert.Null(DsxTranslator.DsxOutput(hash));
+
+        // ── Settings every mode carries ─────────────────────────────────
+
+        private static System.Collections.Generic.IEnumerable<MappingSource> Sources(ProfileData p)
+            => p.SlotMappingSets.Where(s => s != null).SelectMany(s => s.Rows).SelectMany(r => r.Sources);
+
+        [Theory]
+        [InlineData("MOTION_TO_KEYBOARD", "\"motion_to_keyboard_control_scheme\":\"WASD\",\"motion_to_keyboard_is_use_x_axis\":false,\"motion_to_keyboard_is_use_z_axis\":true", "KbmKey41")]
+        [InlineData("MOTION_TO_CONTROLLER_BUTTONS", "\"motion_to_controller_buttons_control_scheme\":\"D_PAD\",\"motion_to_controller_buttons_is_use_x_axis\":false,\"motion_to_controller_buttons_is_use_z_axis\":true", "DPadLeft")]
+        public void MotionToKeysOrButtons_BindsOnlyTheAxesDsxUses_AndSaysItsZAxis(string mode, string keys, string yawTarget)
+        {
+            var r = Import(Dsx(sections: "\"controller_motion\":{\"motion_mode\":\"" + mode + "\"," + keys + "}"));
+            Assert.DoesNotContain(Sources(r.Profile), s => s.Descriptor == "Gyro Pitch");
+            Assert.Contains(Row(r.Profile, yawTarget).Sources, s => s.Descriptor == "Gyro Yaw");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.DsxShaping && e.Binding == "Z axis");
+        }
+
+        [Theory]
+        [InlineData("MOTION_TO_KEYBOARD", "motion_to_keyboard_", "\"motion_to_keyboard_control_scheme\":\"WASD\",\"motion_to_keyboard_is_use_mmo_mode\":true")]
+        [InlineData("MOTION_TO_CONTROLLER_BUTTONS", "motion_to_controller_buttons_", "\"motion_to_controller_buttons_control_scheme\":\"D_PAD\"")]
+        [InlineData("MOTION_TO_MOUSE", "motion_to_mouse_", "\"motion_to_mouse_is_use_mmo_mode\":true")]
+        [InlineData("MOTION_TO_RIGHT_JOYSTICK", "motion_to_right_stick_", "\"motion_to_right_stick_max_output_speed_deg_s\":180")]
+        public void MotionModeWithNoXOrYAxis_BindsNothing_AndSaysSoInOneLine(string mode, string prefix, string keys)
+        {
+            var r = Import(Dsx(sections: "\"controller_motion\":{\"motion_mode\":\"" + mode + "\"," + keys
+                + ",\"" + prefix + "is_use_x_axis\":false,\"" + prefix + "is_use_y_axis\":false}"));
+            Assert.DoesNotContain(Sources(r.Profile), s => s.Descriptor != null && s.Descriptor.StartsWith("Gyro", StringComparison.Ordinal));
+            Assert.False(r.ReadsKeyboard);
+            Assert.False(r.ReadsMouse);
+            var line = Assert.Single(r.Report.Entries, e => e.SourcePath == "Motion");
+            Assert.Equal(TranslationStatus.Clean, line.Status);
+            Assert.Equal(mode + ": X and Y axes off", line.Binding);
+        }
+
+        [Theory]
+        [InlineData("\"controller_sticks\":{\"ls_mode_updated\":\"STICK_TO_WASD\",\"ls_stick_to_wasd_control_scheme\":\"WASD\",\"ls_stick_to_wasd_is_use_mmo_mode\":true,\"ls_stick_to_wasd_is_use_lmb_for_mmo_mode\":true}",
+            "KbmMBtn0", "Gamepad LeftStickY", 4)]
+        [InlineData("\"controller_motion\":{\"motion_mode\":\"MOTION_TO_MOUSE\",\"motion_to_mouse_is_use_mmo_mode\":true,\"motion_to_mouse_is_use_lmb_for_mmo_mode\":false}",
+            "KbmMBtn1", "Gyro Pitch", 4)]
+        [InlineData("\"controller_motion\":{\"motion_mode\":\"MOTION_TO_KEYBOARD\",\"motion_to_keyboard_control_scheme\":\"WASD\",\"motion_to_keyboard_is_use_mmo_mode\":true,\"motion_to_keyboard_is_use_lmb_for_mmo_mode\":false,\"motion_to_keyboard_is_use_x_axis\":false}",
+            "KbmMBtn1", "Gyro Yaw", 2)]
+        public void MmoMode_HoldsItsMouseButtonOnTheModesDirections(string sections, string target, string descriptor, int count)
+        {
+            var r = Import(Dsx(sections: sections));
+            var row = Row(r.Profile, target);
+            Assert.NotNull(row);
+            Assert.Equal(count, row.Sources.Count);
+            Assert.Contains(row.Sources, s => s.Descriptor == descriptor && s.HalfAxis);
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.DsxUnit && e.Binding == "MMO mode");
+            Assert.True(r.ReadsMouse);
+        }
+
+        [Fact]
+        public void DisabledTouchpadStickAndMotion_SendNothingToTheVirtualController()
+        {
+            var r = Import(Dsx("DUALSENSE", sections: "\"controller_touchpad\":{\"TouchpadMode\":\"DISABLED\"},"
+                + "\"controller_sticks\":{\"ls_mode_updated\":\"DISABLED\"},\"controller_motion\":{\"motion_mode\":\"DISABLED\"}"));
+            Assert.Null(Row(r.Profile, "TouchpadX1"));
+            Assert.Null(Row(r.Profile, "LeftThumbAxisX"));
+            Assert.Null(Row(r.Profile, "MotionGyro"));
+            // The right stick, left at NONE, still passes through.
+            Assert.NotNull(Row(r.Profile, "RightThumbAxisX"));
+            Assert.Equal(3, r.Report.Entries.Count(e => e.Status == TranslationStatus.Clean && e.Binding == "DISABLED"));
+            Assert.DoesNotContain(r.Report.Entries, e => e.Binding == "Passthrough");
+        }
+
+        [Fact]
+        public void LightsWithNoColorMode_AreSkipped_NotABlackLightbar()
+        {
+            var r = Import("{\"profile_type\":\"CONTROLLER\",\"controller_general\":{},\"controller_led\":{\"brightness\":100}}");
+            Assert.DoesNotContain(r.Profile.Macros, m => m.Name == "Lightbar");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.Binding == "colormode");
+        }
+
+        [Fact]
+        public void NativeModeWithNoData_StampsNoVolumeOrRumble()
+        {
+            var r = Import(Dsx("NATIVE_MODE", "\"SendOutputData\":false",
+                "\"controller_sticks\":{\"ls_mode_updated\":\"STICK_TO_MOUSE\"},"
+                + "\"controller_haptics\":{\"rumble\":{\"enabled\":false},\"output\":{\"headset_volume\":0,\"speaker_volume\":50}}"));
+            Assert.All(r.Profile.SlotMappingSets.Where(s => s != null), s =>
+            {
+                Assert.True(string.IsNullOrEmpty(s.WorkshopHeadphoneVolume));
+                Assert.True(string.IsNullOrEmpty(s.WorkshopRumblePercent));
+            });
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.DsxNoData && e.SourcePath == "Headset volume");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.DsxNoData && e.SourcePath == "Speaker volume");
+            Assert.DoesNotContain(r.Report.Entries, e => e.SourcePath == "Headset volume" && e.Status == TranslationStatus.Clean);
+        }
+
+        [Theory]
+        [InlineData("{\"rumble_isenabled\":false}", "0")]
+        [InlineData("{\"rumble_isenabled\":true,\"rumble_intensity\":8}", "")]
+        public void OlderRumbleSection_ReadsItsRumbleSwitch(string section, string percent)
+        {
+            var r = Import("{\"profile_type\":\"CONTROLLER\",\"controller_general\":{\"ActiveVirtualDevice\":\"XBOX_360\"},\"controller_haptics_rumble\":" + section + "}");
+            Assert.Equal(percent, r.Profile.SlotMappingSets[0].WorkshopRumblePercent);
+        }
+
+        [Theory]
+        [InlineData("{\"touchpad_haptics_enabled\":true}", true)]
+        [InlineData("{\"touchpad_haptics_enabled\":false}", false)]
+        public void OlderSectionsTouchpadHaptics_PointsToPadForgesOwn(string section, bool line)
+        {
+            var r = Import("{\"profile_type\":\"CONTROLLER\",\"controller_general\":{\"ActiveVirtualDevice\":\"DUALSENSE\"},\"controller_haptics_rumble\":" + section + "}");
+            Assert.Equal(line, r.Report.Entries.Any(e => e.ReasonKey == ImportReasons.TouchpadShape && e.SourcePath == "Haptics" && e.Binding == "Touchpad to haptics"));
+        }
+
+        [Fact]
+        public void TriggerPresets_AllComeAcross_WhenNoneIsInForce()
+        {
+            var r = Import(Dsx(sections: "\"controller_adaptive_triggers\":{\"preset_name\":\"- NONE -\",\"lt_type\":\"OFF\",\"rt_type\":\"OFF\"},"
+                + "\"controller_adaptive_triggers_active_preset\":0,"
+                + "\"controller_adaptive_triggers_preset_list\":[{\"preset_name\":\"Base\",\"lt_type\":\"OFF\",\"rt_type\":\"OFF\"},"
+                + "{\"preset_name\":\"Aim\",\"lt_type\":\"OFF\",\"rt_type\":\"WEAPON\",\"rt_weapon_start\":2,\"rt_weapon_end\":6,\"rt_weapon_resist\":8},3]"));
+            Assert.Contains(r.Profile.Macros, m => m.Name == "Triggers: Base");
+            Assert.Contains(r.Profile.Macros, m => m.Name == "Triggers: Aim");
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.DsxEdited && e.SourcePath == "Trigger preset" && e.Binding == "Preset 3");
+        }
+
+        [Fact]
+        public void CustomKeyOfAnUnknownType_GetsALine()
+        {
+            var r = Import(Dsx(sections: "\"controller_sticks\":{\"ls_mode_updated\":\"STICK_TO_WASD\",\"ls_stick_to_wasd_control_scheme\":\"CUSTOM\","
+                + "\"left_stick_to_keyboard_custom_up_direction\":{\"KeyboardMappingType\":\"ACTION\",\"ActionID\":5,\"ModifierKey\":\"None\",\"HotKey\":\"None\"}}"));
+            var line = Assert.Single(r.Report.Entries, e => e.SourcePath == "Left stick up");
+            Assert.Equal(ImportReasons.DsxModeName, line.ReasonKey);
+            Assert.Equal("ACTION", line.ReasonArgs[0]);
+        }
+
+        [Fact]
+        public void MixedKeyWithNoKey_BindsNothing_AndGetsNoLine()
+        {
+            var r = Import(Dsx(sections: "\"controller_sticks\":{\"ls_mode_updated\":\"STICK_TO_WASD\",\"ls_stick_to_wasd_control_scheme\":\"CUSTOM\","
+                + "\"left_stick_to_keyboard_custom_up_direction\":{\"KeyboardMappingType\":\"MIX_MATCH\",\"MixMatchModifierKeys\":\"None\","
+                + "\"MixMatchHotKey1\":\"None\",\"MixMatchHotKey2\":\"None\",\"MixMatchHotKey3\":\"None\"}}"));
+            Assert.DoesNotContain(r.Report.Entries, e => e.SourcePath == "Left stick up");
+            Assert.DoesNotContain(r.Profile.Macros, m => m.Name == "Left stick up");
+        }
+
+        [Fact]
+        public void HotKeyWithNoKey_BindsNothing_AndGetsNoLine()
+        {
+            var r = Import(Dsx(sections: "\"controller_sticks\":{\"ls_mode_updated\":\"STICK_TO_WASD\",\"ls_stick_to_wasd_control_scheme\":\"CUSTOM\","
+                + "\"left_stick_to_keyboard_custom_up_direction\":{\"KeyboardMappingType\":\"HOTKEY\",\"ModifierKey\":\"None\",\"HotKey\":\"None\"}}"));
+            Assert.DoesNotContain(r.Report.Entries, e => e.SourcePath == "Left stick up");
+            Assert.DoesNotContain(r.Profile.Macros, m => m.Name == "Left stick up");
+        }
+
+        [Fact]
+        public void AdvancedOutputWithNoOutputs_GetsALine()
+        {
+            var r = Import(Dsx(sections: Lab(Binding(new[] { 41 }, "Single", "{\"mode\":\"hold_until_release\",\"kind\":\"advanced\",\"outputs\":[]}"))));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.DsxEdited && e.Binding == "41 Single");
+        }
+
+        [Fact]
+        public void DuplicatedActivators_AreCapped()
+        {
+            string one = "\"Release\":{\"output\":{\"mode\":\"single\",\"kind\":\"mapping\",\"mappingHash\":16422},\"muteInput\":false,\"settings\":null}";
+            string binding = "{\"input\":{\"mode\":\"combo\",\"comboHash\":" + DsxTranslator.ComboHash(new[] { 41 }).ToString(System.Globalization.CultureInfo.InvariantCulture)
+                + ",\"inputHashes\":[41]},\"activators\":{" + string.Join(",", Enumerable.Repeat(one, 1000)) + "}}";
+            string mode = "\"m\":{\"enabled\":true}";
+            var r = Import(Dsx(sections: Lab(binding) + ",\"controller_haptics\":{\"modes\":{" + string.Join(",", Enumerable.Repeat(mode, 1000)) + "}}"));
+            Assert.InRange(r.Profile.Macros.Count(m => m.TriggerMode == MacroTriggerMode.OnRelease), 1, 16);
+            Assert.InRange(r.Report.Entries.Count(e => e.SourcePath == "Haptics" && e.Binding == "M"), 1, 16);
+        }
+
+        [Fact]
+        public void MissingKeys_GiveNoLineWithAnEmptyBinding()
+        {
+            var r = Import("{\"profile_type\":\"CONTROLLER\",\"controller_general\":{},\"controller_motion\":{\"motion_mode\":\"MOTION_TO_KEYBOARD\"}}");
+            Assert.DoesNotContain(r.Report.Entries, e => string.IsNullOrEmpty(e.Binding));
+            Assert.Contains(r.Report.Entries, e => e.ReasonKey == ImportReasons.ControllerSetting && e.Binding == "ActiveVirtualDevice");
+            Assert.NotNull(Row(r.Profile, SteamInputVkTable.KbmKeyTarget(0x57)));
+        }
+
+        [Fact]
+        public void ActiveLightAndHapticsPresets_AreNotCalledLost()
+        {
+            var r = Import(Dsx(sections: "\"controller_led\":{\"preset_name\":\"Red\",\"colormode\":\"STATIC_COLOR\",\"static_color\":\"#FF0000\"},"
+                + "\"controller_led_preset_list\":[{\"preset_name\":\"Red\"},{\"preset_name\":\"Blue\"},{}],"
+                + "\"controller_haptics\":{\"preset_id\":\"abc\",\"preset_name\":\"- NONE -\"},"
+                + "\"controller_haptics_preset_list\":[{\"preset_id\":\"abc\",\"preset_name\":\"Strong\"},{\"preset_id\":\"def\",\"preset_name\":\"Soft\"}]"));
+            var lights = r.Report.Entries.Where(e => e.SourcePath == "Lightbar preset").Select(e => e.Binding).ToList();
+            Assert.Equal(new[] { "Blue", "Preset 3" }, lights);
+            var haptics = r.Report.Entries.Where(e => e.SourcePath == "Haptics preset").Select(e => e.Binding).ToList();
+            Assert.Equal(new[] { "Soft" }, haptics);
+        }
+
+        [Fact]
+        public void GameFeedbackPassthroughOff_GetsALine()
+        {
+            var r = Import(Dsx("DUALSENSE", "\"UseGameFeedbackPassthrough\":false"));
+            var line = Assert.Single(r.Report.Entries, e => e.Binding == "UseGameFeedbackPassthrough");
+            Assert.Equal(TranslationStatus.Skipped, line.Status);
+            // Filed under the section the key is read from, which names no
+            // rumble scope for it.
+            Assert.Equal("Virtual controller", line.SourcePath);
+        }
+
+        [Fact]
+        public void TriggerEndAtOrBelowItsStart_IsNotStatedAsARange()
+        {
+            var r = Import(Dsx(sections: "\"controller_deadzone\":{\"lt_start\":60,\"lt_end\":40}"));
+            var clean = Assert.Single(r.Report.Entries, e => e.SourcePath == "Left trigger" && e.Status == TranslationStatus.Clean);
+            Assert.DoesNotContain("40 %", clean.Binding);
+            Assert.Contains(r.Report.Entries, e => e.SourcePath == "Left trigger" && e.Status == TranslationStatus.Skipped
+                                                   && e.ReasonKey == ImportReasons.ControllerSetting);
+        }
 
         // ── The stamps' fold ────────────────────────────────────────────
 

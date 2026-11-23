@@ -147,6 +147,9 @@ namespace PadForge.Views.Controls
         {
             if (e.PropertyName is nameof(SettingsViewModel.SelectedThemeIndex) or nameof(SettingsViewModel.SelectedThemeId))
                 SelectPicked();
+            // The note names the profile that wears the look, which a rename changes.
+            else if (e.PropertyName == nameof(SettingsViewModel.ActiveProfileInfo))
+                ShowNote();
         }
 
         /// <summary>The tiles, in the gallery's order.</summary>
@@ -167,6 +170,7 @@ namespace PadForge.Views.Controls
                 {
                     ThemeFault.Missing => s.Settings_ThemeMissing,
                     ThemeFault.Unreadable => s.Settings_ThemeUnreadable,
+                    ThemeFault.NotATheme => s.Settings_ThemeNotATheme,
                     _ => null,
                 };
                 string spoken = theme.Name;
@@ -263,15 +267,27 @@ namespace PadForge.Views.Controls
             var picked = ThemeManager.Find(ThemeManager.SelectedId);
             if (ThemeManager.GameLook != null && ReferenceEquals(ThemeManager.Current, ThemeManager.GameLook))
                 text = string.Format(s.Settings_ThemeProfileNote_Format, Settings?.ActiveProfileInfo ?? string.Empty);
-            else if (picked != null && picked.Fault != ThemeFault.None)
-                text = string.Format(s.Settings_ThemeFaultNote_Format, picked.Name);
+            else
+                text = FaultNoteText(picked);
             Note.Text = text ?? string.Empty;
             Note.Visibility = text == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        /// <summary>The note under a picked theme that cannot be shown, in the words of its fault.
+        /// Null when the theme has no fault, and under Windows' high contrast, where the
+        /// contrast theme shows in place of Dark and the tile names the fault.</summary>
+        internal static string FaultNoteText(ThemeDefinition picked)
+        {
+            if (picked == null || picked.Fault == ThemeFault.None || ThemeManager.HighContrastOn()) return null;
+            var s = Strings.Instance;
+            return string.Format(picked.Fault == ThemeFault.NotATheme ? s.Settings_ThemeNotAThemeNote_Format : s.Settings_ThemeFaultNote_Format, picked.Name);
+        }
+
+        /// <summary>Enter and Delete on a theme file's tile. A key pressed
+        /// on one of the tile's buttons is that button's.</summary>
         private void Tiles_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (Tiles.SelectedItem is not ThemeTile tile || !tile.IsFile) return;
+            if (e.OriginalSource is not ListBoxItem { Content: ThemeTile tile } || !tile.IsFile) return;
             if (e.Key == Key.Delete)
             {
                 Remove(tile.Id);
@@ -327,13 +343,25 @@ namespace PadForge.Views.Controls
             var s = Strings.Instance;
             var dialog = new OpenFileDialog { Filter = s.Settings_ThemeFileFilter, CheckFileExists = true };
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
-            var theme = ThemeManager.Register(dialog.FileName);
+            var theme = ThemeManager.Register(dialog.FileName, out ThemeFault fault);
             if (theme == null)
             {
-                ConfirmDialog.Notice(Window.GetWindow(this), s.Settings_Theme, s.Settings_ThemeAddFailed);
+                ConfirmDialog.Notice(Window.GetWindow(this), s.Settings_Theme, AddFailedText(fault));
                 return;
             }
             if (Settings != null) Settings.SetTheme(Settings.SelectedThemeIndex, theme.Id);
+        }
+
+        /// <summary>Why Add Theme could not list a file, in the words of its fault.</summary>
+        internal static string AddFailedText(ThemeFault fault)
+        {
+            var s = Strings.Instance;
+            return fault switch
+            {
+                ThemeFault.Missing => s.Settings_ThemeAddMissing,
+                ThemeFault.Unreadable => s.Settings_ThemeAddUnreadable,
+                _ => s.Settings_ThemeAddFailed,
+            };
         }
 
         /// <summary>Save a Copy: writes the picked theme as a file to change
@@ -391,10 +419,12 @@ namespace PadForge.Views.Controls
             };
         }
 
-        /// <summary>PadForge's own look as a theme: its four colors on the ground in force.</summary>
+        /// <summary>PadForge's own look as a theme: the four colors of the
+        /// look the user picked. Not the look in force, which a profile's
+        /// game look or a picked file that is gone can make Dark.</summary>
         private static ThemeDefinition StockCopy(string name)
         {
-            bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() != Wpf.Ui.Appearance.ApplicationTheme.Light;
+            bool dark = StockIsDark(ThemeManager.StockIndex);
             return new ThemeDefinition
             {
                 Kind = ThemeKind.File,
@@ -406,6 +436,17 @@ namespace PadForge.Views.Controls
                 Attention = ThemeEngine.StockAttention(dark),
             };
         }
+
+        /// <summary>Whether a stock look draws on the dark ground: Dark,
+        /// and System when Windows is dark, as Wpf.Ui's ApplySystemTheme
+        /// decides it.</summary>
+        private static bool StockIsDark(int stockIndex) => stockIndex switch
+        {
+            2 => true,
+            1 => false,
+            _ => Wpf.Ui.Appearance.ApplicationThemeManager.GetSystemTheme()
+                is Wpf.Ui.Appearance.SystemTheme.Dark or Wpf.Ui.Appearance.SystemTheme.CapturedMotion or Wpf.Ui.Appearance.SystemTheme.Glow,
+        };
 
         internal static string SafeFileName(string name)
         {

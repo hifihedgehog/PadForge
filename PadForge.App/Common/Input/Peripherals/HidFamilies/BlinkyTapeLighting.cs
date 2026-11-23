@@ -72,8 +72,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "BlinkyTape",
-                Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } },
-                    "OpenRGB RGBController_BlinkyTape.cpp") { Product = $"blinkinlabs:{VendorId:X4}:{ProductId:X4}" },
+                Map = new LightMap(new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } }) { Product = $"blinkinlabs:{VendorId:X4}:{ProductId:X4}" },
                 RepaintMs = RepaintMs,
                 Open = key => _open(key),
                 OpenFoundHeld = () => OwnLightingChannels.SerialDenied,

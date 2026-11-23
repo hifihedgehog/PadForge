@@ -259,7 +259,7 @@ namespace PadForge.Common.Input.Peripherals
                 LightRenderer.Fill(want.Rgb, want.Keys));
         }
 
-        /// <summary>The worker's state for the tabs. A worker whose run has
+        /// <summary>The worker's state for the groups. A worker whose run has
         /// ended reports nothing: Stop reports Idle after it, and a worker
         /// left inside the SDK by a Stop that timed out must not report
         /// over that, or over the run after it.</summary>
@@ -268,7 +268,7 @@ namespace PadForge.Common.Input.Peripherals
             if (!run.Ended) PeripheralOutputs.SetBackendState(Family, state);
         }
 
-        /// <summary>What the program answered, for the tabs, by the same rule
+        /// <summary>What the program answered, for the groups, by the same rule
         /// as <see cref="Report"/>: <paramref name="everything"/> for a session
         /// it will not hold, else the paths it refused inside one.</summary>
         private void ReportRefusal(Run run, bool everything = false)

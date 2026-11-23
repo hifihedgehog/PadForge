@@ -213,7 +213,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error reopening device (instance {id})", ex);
+                    RaiseDeviceError($"Error reopening device (instance {id})", ex);
                 }
                 finally
                 {

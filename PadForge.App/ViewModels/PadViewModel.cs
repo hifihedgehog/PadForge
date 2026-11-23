@@ -167,9 +167,9 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PictureHintText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
             // The Engage card's Gyro On pickers and button names are read
-            // off Strings.Instance as they are built.
+            // off Strings.Instance as they are built. Showing the layer
+            // raises both lists and then the picks.
             ShowGyroActivationLayer();
-            OnPropertyChanged(nameof(GyroActivationNeedsChoices));
             // The line under the picture and the folded SOCD line's value
             // are worded from the string table the same way (#574).
             OnPropertyChanged(nameof(PictureLineText));
@@ -602,12 +602,20 @@ namespace PadForge.ViewModels
 
         /// <summary>One entry of the Preset picker: a profile's id and the
         /// name PadForge shows for it (<see cref="HMaestroProfileCatalog.DisplayName"/>),
-        /// which is also its spoken name. Equal by id, so a list made again
-        /// for a new language keeps the pick.</summary>
-        public sealed class PresetChoice
+        /// which is also its spoken name. A change of language renames the
+        /// entry in place: the closed picker shows its picked entry, and a
+        /// list made again left it holding the old entry with the old
+        /// language's name. Equal by id, so a list made again for a new set
+        /// of profiles keeps the pick.</summary>
+        public sealed class PresetChoice : ObservableObject
         {
+            private string _name;
             public string Id { get; init; }
-            public string Name { get; init; }
+            public string Name
+            {
+                get => _name;
+                set => SetProperty(ref _name, value);
+            }
             public override string ToString() => Name;
             public override bool Equals(object obj) => obj is PresetChoice o
                 && string.Equals(o.Id, Id, System.StringComparison.OrdinalIgnoreCase);
@@ -619,22 +627,27 @@ namespace PadForge.ViewModels
         private PresetChoice[] _presetChoices;
 
         /// <summary><see cref="AvailableProfiles"/> as the Preset picker lists
-        /// them, made again when the list or the language changes and raised
-        /// with them.</summary>
+        /// them, made again when the list changes and renamed in place when
+        /// the language changes, and raised with both.</summary>
         public System.Collections.Generic.IReadOnlyList<PresetChoice> PresetChoices
         {
             get
             {
                 var profiles = AvailableProfiles;
                 string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                if (_presetChoices == null || !ReferenceEquals(_presetChoicesFrom, profiles)
-                    || !string.Equals(_presetChoicesCulture, culture, System.StringComparison.Ordinal))
+                if (_presetChoices == null || !ReferenceEquals(_presetChoicesFrom, profiles))
                 {
                     var choices = new PresetChoice[profiles.Count];
                     for (int i = 0; i < choices.Length; i++)
                         choices[i] = new PresetChoice { Id = profiles[i].Id, Name = HMaestroProfileCatalog.DisplayName(profiles[i]) };
                     _presetChoices = choices;
                     _presetChoicesFrom = profiles;
+                    _presetChoicesCulture = culture;
+                }
+                else if (!string.Equals(_presetChoicesCulture, culture, System.StringComparison.Ordinal))
+                {
+                    for (int i = 0; i < _presetChoices.Length; i++)
+                        _presetChoices[i].Name = HMaestroProfileCatalog.DisplayName(profiles[i]);
                     _presetChoicesCulture = culture;
                 }
                 return _presetChoices;
@@ -6340,7 +6353,7 @@ namespace PadForge.ViewModels
             });
 
         /// <summary>VC-level Copy From (#112): pull macros from another virtual
-        /// controller into this one, mirroring Buttons' Copy From. MainWindow
+        /// controller into this one, mirroring the header More's Copy From. MainWindow
         /// shows the VC picker and does the copy.</summary>
         public event EventHandler CopyMacroFromRequested;
         private RelayCommand _copyMacroFromCommand;
@@ -6681,11 +6694,13 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True when the SELECTED assigned device plays haptic TONES
-        /// (Joy-Con, Switch Pro, Steam family) rather than real speaker audio.
-        /// Gates the mirror engage row (#185): the engage gate exists because a
-        /// resonant actuator buzzing with music is intrusive in a way a real
-        /// speaker is not, so Sony / Wii speaker devices do not show it.</summary>
+        /// <summary>True when the SELECTED assigned device has actuators
+        /// PadForge plays audio on (a HapticToneService family, a Flydigi
+        /// Apex 6 Pro included) rather than real speaker audio. Gates the
+        /// mirror engage row (#185) and the persona haptics and low-pass
+        /// panel. The engage gate exists because a resonant actuator buzzing
+        /// with music is intrusive in a way a real speaker is not, so Sony /
+        /// Wii speaker devices do not show it.</summary>
         public bool SelectedDeviceHasHapticTones
         {
             get
@@ -7513,7 +7528,7 @@ namespace PadForge.ViewModels
         /// <summary>Tab number of the Bass Shakers group (#236).</summary>
         public const int BassShakersTabIndex = 16;
 
-        /// <summary>Tab number of the output cards under Buttons' picture (#270 follow-up:
+        /// <summary>Tab number of the output cards under the Mappings picture (#270 follow-up:
         /// SOCD + Keep Controller Awake moved off the Mappings tab).</summary>
         public const int OutputTabIndex = 17;
 
@@ -8919,8 +8934,8 @@ namespace PadForge.ViewModels
                 return;
             }
 
-            // Switch to Buttons' picture (tab 0) for stick axes so the 3D arrow is visible.
-            // The 3D model shows only in Buttons' picture. If Map All was started from the
+            // Switch to the Mappings picture (tab 0) for stick axes so the 3D arrow is visible.
+            // The 3D model shows only in the Mappings picture. If Map All was started from the
             // mapping list, the user wouldn't see the directional arrows otherwise.
             if (mapping.HasNegDirection)
                 SelectedConfigTab = 0;
@@ -9083,9 +9098,10 @@ namespace PadForge.ViewModels
 
             if (selectedDeviceVibration != null)
             {
-                // SelectedDeviceVibrationStates: the Force Feedback group dropdown's
-                // selected device's own scaled output. Feeds the Force Feedback group
-                // motor bar (device-specific by design).
+                // SelectedDeviceVibrationStates: the own scaled output of the
+                // device picked in the header's Driven by list. Feeds the
+                // Motor Activity bars of the Force Feedback and Impulse
+                // Triggers groups (device-specific by design).
                 DeviceLeftMotorDisplay = selectedDeviceVibration.LeftMotorSpeed / 65535.0;
                 DeviceRightMotorDisplay = selectedDeviceVibration.RightMotorSpeed / 65535.0;
                 DeviceLeftTriggerMotorDisplay = selectedDeviceVibration.LeftTriggerMotorSpeed / 65535.0;

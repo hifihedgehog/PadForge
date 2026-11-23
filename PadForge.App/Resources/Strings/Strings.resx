@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Unknown</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Default</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Browse…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Proceed</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine stopped.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} could not be created.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>A device could not be opened, read or mapped. The diagnostics log names it.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} ran into an error. The diagnostics log has the cause.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>The input engine ran into an error. The diagnostics log has the cause.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL could not start. The diagnostics log has the cause.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro could not be set up. The diagnostics log has the cause.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>A virtual controller’s HIDMaestro profile is missing. The diagnostics log names it.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} could not take its customized identity and layout and uses its profile’s own.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profile switched: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profile switched: Default</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Default</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Motion Server Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Provides gyro and accelerometer data to Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Game Mods</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lets game mods made for DSX set the adaptive triggers, lightbar, player lights and mute light of your PlayStation controllers.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lets game mods made for DSX set the adaptive triggers, lightbar, player lights and mute light of a DualSense or DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Accept DSX Game Mods</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Game Mod Port</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Run a DSX.exe Stand-In</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Some mods, such as DualSense4GTAV, turn themselves off unless a program named DSX is running. This runs a small stand-in by that name while the server listens.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Works with mods made for DSX, such as those for GTA V, Red Dead Redemption 2, Skyrim and Forza. While the server listens, PadForge writes its port where those mods look for it.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Listening on :{0}. {1} is sending to virtual controller {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Listening on :{0}. {1} is sending, but no virtual controller has a PlayStation controller on it.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Listening on :{0}. {1} is sending to controller index {2}, and no virtual controller with a PlayStation controller on it has that index.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Listening on :{0}. {1} is sending, but no virtual controller has a DualSense or DualShock 4 on it.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Listening on :{0}. {1} is sending to controller index {2}, and no virtual controller with a DualSense or DualShock 4 on it has that index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} is in use by another program, such as DSX. Close it or choose another port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>A game mod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Works with OpenTrack and any tracker that sends its UDP output or writes FreeTrack 2.0 shared memory, and with an OpenXR runtime on this machine that can run a session in the background.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>File not found</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Can’t be read</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>The file of “{0}” is missing or can’t be read. PadForge shows Dark until it is back.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>The file of “{0}” holds no PadForge theme. PadForge shows Dark until it does.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>The profile “{0}” is wearing its game’s look. Your theme returns when another profile is active.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge Themes (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>That file is not a PadForge theme.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge can’t read that file.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge can’t find that file.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Not a theme</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>The theme could not be saved. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>New Theme</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge wears the theme while you build it.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Getting the picture from Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam has no wide picture for this game.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Couldn’t reach Steam. Check your connection.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge can’t read Steam’s picture for this game.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Position</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Moves the picture up or down in its window.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Show the Game’s Logo</value></data>
@@ -1094,6 +1105,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>The controller did not take the command that readies it, so nothing was sent. Check that it is connected and send again.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>The send stopped on an error in PadForge. The log file has the details.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>A picture is still going to the controller. Stop the send?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Keep Sending</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak Files (*.mpk)|*.mpk|All Files (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restore Controller Pak</value></data>
@@ -1411,7 +1423,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ForceFeedback_RouteGameSense" xml:space="preserve"><value>Rumble plays through the tactile handler in SteelSeries GG.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseShared" xml:space="preserve"><value>SteelSeries GG drives every tactile Rival at once, so the one on Virtual Controller {0} sets their rumble.</value></data>
   <data name="Pad_ForceFeedback_RouteGameSenseWaiting" xml:space="preserve"><value>Waiting for SteelSeries GG. Rumble plays once GG runs.</value></data>
-  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG is running and does not answer PadForge. Rumble plays once it does.</value><comment>Route line on the Force Feedback tab while GG runs and its GameSense server does not take PadForge's requests.</comment></data>
+  <data name="Pad_ForceFeedback_RouteGameSenseRefused" xml:space="preserve"><value>SteelSeries GG is running and does not answer PadForge. Rumble plays once it does.</value><comment>Route line in the Force Feedback group while GG runs and its GameSense server does not take PadForge's requests.</comment></data>
   <data name="Pad_ForceFeedback_RouteSensa" xml:space="preserve"><value>Rumble plays on your Razer Sensa HD devices through Razer Synapse.</value></data>
   <data name="Pad_ForceFeedback_RouteSensaWaiting" xml:space="preserve"><value>Waiting for Sensa HD Haptics in Razer Synapse 4. Set the device’s Haptic Source to Sensa HD Games in Synapse.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
@@ -1435,7 +1447,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Resistance ramps from light at the start position to full at the end position. Past the end position the trigger holds at peak strength.</value></data>
   <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Stuttering vibration. Short buzz bursts spaced across the start-to-end range. Pulling the trigger feels like crossing distinct vibration zones, not one continuous buzz.</value></data>
   <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Fills Range and Strength with values that match the physical click-feel of a real GameCube trigger (start ~56%, end ~63%, max force). Tweak the sliders afterward if you want a different feel.</value></data>
-  <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
+  <!-- Lighting group (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
@@ -1462,17 +1474,17 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Peripheral_SerialDeviceOnPort" xml:space="preserve"><value>Serial device on {0}</value></data>
   <data name="Pad_Lighting_RouteRefused" xml:space="preserve"><value>This device is connected and did not take PadForge’s colors. PadForge tries again each minute.</value></data>
   <data name="Pad_Lighting_RouteWindowsHolds" xml:space="preserve"><value>Windows holds this device as a keyboard or mouse and refuses the report that sets its colors, so PadForge cannot light it on Windows.</value></data>
-  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Another program has this device open, so PadForge cannot light it. PadForge lights it once that program closes.</value><comment>Route line on the Lighting tab of a device that is plugged in while another program holds its lighting collection exclusively. PadForge cannot tell which program.</comment></data>
+  <data name="Pad_Lighting_RouteHeldByProgram" xml:space="preserve"><value>Another program has this device open, so PadForge cannot light it. PadForge lights it once that program closes.</value><comment>Route line in the Lighting group of a device that is plugged in while another program holds its lighting collection exclusively. PadForge cannot tell which program.</comment></data>
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>This device has not answered yet. Its colors show once it wakes up.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Colors go through {0}.</value></data>
   <data name="Pad_Lighting_RouteThroughOrDirect" xml:space="preserve"><value>Colors go through {0}, which lights every device of this kind at once. While {0} is not running, PadForge lights this device on its own.</value></data>
-  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value><comment>Route line on the Lighting tab of a device whose maker's program is running and lighting it, with no way for PadForge to send colors through that program. {0} is the program's product name, such as Lenovo Vantage or Legion Space, never translated. Same voice as Pad_Lighting_RouteThroughOrDirect.</comment></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB’s SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value><comment>Route line on the Lighting tab of a device the program OpenRGB holds, which PadForge lights by itself once OpenRGB is closed. OpenRGB is a product name, never translated. SDK Server is the name of a tab in OpenRGB's window: use the name OpenRGB's own translation gives that tab in this language, or keep SDK Server.</comment></data>
-  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB’s SDK Server.</value><comment>Route line on the Lighting tab of a device only OpenRGB can light. Keep OpenRGB and SDK Server as in Pad_Lighting_RouteThroughOpenRgb.</comment></data>
-  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value><comment>Route line on the Lighting tab of a device OpenRGB holds but cannot take colors from PadForge for. Direct is the name of a lighting mode in OpenRGB: use the name OpenRGB's own translation gives it, or keep Direct. OpenRGB is never translated.</comment></data>
-  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB is running and its SDK Server does not answer on port {0}, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value><comment>Route line on the Lighting tab of a device OpenRGB lights while nothing answers at OpenRGB's SDK Server (a tab and a switch in OpenRGB's window). {0} is a port number. Keep OpenRGB and SDK Server as in Pad_Lighting_RouteThroughOpenRgb.</comment></data>
-  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE is running with its SDK turned off. Turn on iCUE SDK in iCUE’s settings and PadForge lights the device through it.</value><comment>Route line on the Lighting tab while iCUE refuses SDK clients. iCUE SDK is the name of the switch in iCUE's SDK settings, which stays in English.</comment></data>
-  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} is running and would not let PadForge light its devices. PadForge keeps asking.</value><comment>Route line on the Lighting tab while a vendor's program runs and its lighting SDK refuses PadForge. {0} is the program's name.</comment></data>
+  <data name="Pad_Lighting_RouteLeftToProgram" xml:space="preserve"><value>{0} lights this device while it runs. While {0} is not running, PadForge lights it on its own.</value><comment>Route line in the Lighting group of a device whose maker's program is running and lighting it, with no way for PadForge to send colors through that program. {0} is the program's product name, such as Lenovo Vantage or Legion Space, never translated. Same voice as Pad_Lighting_RouteThroughOrDirect.</comment></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgb" xml:space="preserve"><value>Colors go through OpenRGB’s SDK Server. While OpenRGB is not running, PadForge lights this device on its own.</value><comment>Route line in the Lighting group of a device the program OpenRGB holds, which PadForge lights by itself once OpenRGB is closed. OpenRGB is a product name, never translated. SDK Server is the name of a tab in OpenRGB's window: use the name OpenRGB's own translation gives that tab in this language, or keep SDK Server.</comment></data>
+  <data name="Pad_Lighting_RouteThroughOpenRgbOnly" xml:space="preserve"><value>Colors go through OpenRGB’s SDK Server.</value><comment>Route line in the Lighting group of a device only OpenRGB can light. Keep OpenRGB and SDK Server as in Pad_Lighting_RouteThroughOpenRgb.</comment></data>
+  <data name="Pad_Lighting_RouteLeftToOpenRgb" xml:space="preserve"><value>OpenRGB holds this device and has no Direct mode for it, so its lighting stays with OpenRGB.</value><comment>Route line in the Lighting group of a device OpenRGB holds but cannot take colors from PadForge for. Direct is the name of a lighting mode in OpenRGB: use the name OpenRGB's own translation gives it, or keep Direct. OpenRGB is never translated.</comment></data>
+  <data name="Pad_Lighting_RouteOpenRgbServerNoAnswer" xml:space="preserve"><value>OpenRGB is running and its SDK Server does not answer on port {0}, so PadForge leaves this device to OpenRGB. Turn on the SDK Server in OpenRGB and PadForge lights the device through it.</value><comment>Route line in the Lighting group of a device OpenRGB lights while nothing answers at OpenRGB's SDK Server (a tab and a switch in OpenRGB's window). {0} is a port number. Keep OpenRGB and SDK Server as in Pad_Lighting_RouteThroughOpenRgb.</comment></data>
+  <data name="Pad_Lighting_RouteIcueSdkOff" xml:space="preserve"><value>Corsair iCUE is running with its SDK turned off. Turn on iCUE SDK in iCUE’s settings and PadForge lights the device through it.</value><comment>Route line in the Lighting group while iCUE refuses SDK clients. iCUE SDK is the name of the switch in iCUE's SDK settings, which stays in English.</comment></data>
+  <data name="Pad_Lighting_RouteProgramRefused" xml:space="preserve"><value>{0} is running and would not let PadForge light its devices. PadForge keeps asking.</value><comment>Route line in the Lighting group while a vendor's program runs and its lighting SDK refuses PadForge. {0} is the program's name.</comment></data>
   <data name="Pad_Lighting_RouteShared" xml:space="preserve"><value>{0} lights every device of this kind at once, so the one on Virtual Controller {1} sets their color.</value></data>
   <data name="Pad_Lighting_RouteSharedVendorRow" xml:space="preserve"><value>{0} lights every device of this kind at once, so the {1} row on Virtual Controller {2} sets their color.</value></data>
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Virtual Controller {0} also lights this device, and its color shows.</value></data>
@@ -1607,7 +1619,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset Palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
   <data name="Pad_Lighting_KeyColors" xml:space="preserve"><value>Key Colors</value></data>
-  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED Strips</value><comment>Title of a settings card on a device's Lighting tab. An LED strip is a strip of addressable lights plugged into a header on the device.</comment></data>
+  <data name="Pad_Lighting_LedStrips" xml:space="preserve"><value>LED Strips</value><comment>Title of a settings card in a device's Lighting group. An LED strip is a strip of addressable lights plugged into a header on the device.</comment></data>
   <data name="Pad_Lighting_LedStrips_Description" xml:space="preserve"><value>How many LEDs each addressable header drives. With a count, each LED takes its own color. At 0, the header lights without one.</value><comment>Sentence under the LED Strips card title. A header is the connector on the device that a strip or fan plugs into.</comment></data>
   <data name="Pad_Lighting_LedStrips_Header_Format" xml:space="preserve"><value>Header {0}</value><comment>Label of one row, {0} is the header's number. A header is the connector a strip or fan plugs into. Keep it short.</comment></data>
   <data name="Pad_Lighting_LedStrips_Tooltip" xml:space="preserve"><value>The number of LEDs on what is plugged into this header. Leave it at 0 if you do not know.</value><comment>Tooltip of the number box in one row.</comment></data>
@@ -1658,6 +1670,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (User Generated)</value><comment>Preset picker name of a preset imported from a connected device or a file. {0} is the device's own product name, never translated.</comment></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -2639,7 +2652,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>This controller carries a magnetometer. Anchoring the yaw to magnetic north removes slow horizontal drift from gyro aiming. Calibrate first: press Calibrate, rotate the controller through all orientations in a figure-8 for a few seconds, then press again.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anchor Yaw to Compass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adds a small corrective rate that pulls the horizontal aim toward the magnetic heading, so drift cannot accumulate. Requires a stored magnetometer calibration. Samples disturbed by nearby metal or magnets are rejected automatically.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reset to Default (Off)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pitch and Roll Simulation</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch and roll worked out from the accelerometer</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>This controller’s gyro senses only turning left and right. With simulation on, PadForge derives pitch and roll from the accelerometer and sends them with the gyro’s yaw to the mapping rows and the virtual controller’s motion. An accelerometer can’t tell a push from a tilt, so moving the controller sideways or forward without turning it reads as a brief rotation.</value></data>
@@ -2668,7 +2680,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Release to Aim</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Engage Stick</value></data>
-  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Which stick’s deflection the Easy Aim threshold gates on. Right (the default) keeps existing profiles unchanged. Either gates on whichever stick moves further.</value></data>
+  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Which stick’s deflection the Easy Aim threshold gates on. Right (the default) keeps existing profiles unchanged. Either gates on whichever stick moves farther.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Right Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Left Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Either Stick</value></data>
@@ -3049,7 +3061,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sweep the stick around its rim to map the reachable boundary, then reshape it to a full circle.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reset Boundary Calibration</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Reset Center Offset Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Reset to Scaled Radial</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Reset Deadzone X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Reset Deadzone Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Reset Anti-Deadzone X</value></data>
@@ -3501,13 +3512,10 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Dots per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Mouse counts for one full 360&#176; camera turn. Depends on the game’s mouse sensitivity: raise it if a flick under-rotates, lower it if it over-rotates.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reset to 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Flick Time</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>How long a full 180&#176; flick takes to complete, with an ease-out. Shorter turns finish in the same time.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Reset to 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick Threshold</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Stick deflection that starts a flick, as a fraction of full deflection. While flicking, the release point drops to 90% of this.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Reset to 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Snap Angle</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Snap the flick to fixed angles for more consistent turns. Forward Only snaps every flick to dead ahead.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>No Snapping</value></data>
@@ -3516,22 +3524,16 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Degrees</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Degrees</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Degrees</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Reset to No Snapping</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Snap Strength</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>How strongly a flick pulls toward the snapped angle. 1 snaps fully, 0 disables snapping, values between blend.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Reset to 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Front Angle Deadzone</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>A flick within this angle of dead ahead turns nothing. Lets you start a sweep without a flick-turn.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Reset to 0&#176;</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Sweep Smoothing</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Smooths rim-sweep noise. -1 uses the automatic tiered window, 0 turns smoothing off, larger values smooth bigger per-tick rotations.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Reset to Automatic (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Allow Flick on Engage</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotation Offset</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Turns the whole flick map by this many degrees. Positive is clockwise. Snapping applies after the offset.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Reset Rotation Offset</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>When the layer hosting Flick Stick engages with the stick already deflected, fire the flick immediately. Off keeps the camera still and tracks rotation from the current stick angle.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Reset Allow Flick on Engage</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>A cue at full lock for a stick in a steering mode</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
@@ -3721,11 +3723,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense Haptics on This Controller</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller’s actuators. A Steam Controller 2026 over USB or its dongle, and a Flydigi Apex 6 Pro, play the track itself. Every other controller, and that Steam Controller over Bluetooth, gets tones derived from the audio, which approximate the designer’s feel rather than reproduce it.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptics Gain</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to Default (Off)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset to Default (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Actuator Low-Pass Cutoff</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Keeps Steam Controller haptic streaming below this frequency so the pads vibrate instead of audibly playing sound. Around 250 Hz the actuators start to become audible. Raise it for sharper detail, lower it for quieter play.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reset to 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tones above this frequency are cut or folded. The default 800 Hz keeps engine and impact rumble while catching high-pitched beeps.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Reset High Tones</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reset Tone Limit</value></data>
@@ -4326,8 +4325,59 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop Profile</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop Macro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Cursor Region</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} shift</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Wheel list ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Cursor region ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Hold mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Click mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Toggle mouse {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptic pulse ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (release tail)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Tap {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Autofire {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Hold {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Toggle {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Double press {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Long press {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Wheel tick ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Toggle wheel ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo wheel ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Warp cursor ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Set LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Recenter gyro ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Nudge cursor ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Screenshot key ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>On-screen keyboard ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Set light color</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recenter camera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Warp cursor</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Nudge cursor</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Screenshot</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>On-screen keyboard</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Switch shift layer</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Turn on a shift layer</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Turn off a shift layer</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Hold a shift layer</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Change player number</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Unbound</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Toggle desktop mode</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam system key</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Toggle magnifier</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Brightness up</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Brightness down</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Power off controller</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Open Steam configurator</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Open Steam quick menu</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Quit game</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Toggle haptics</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Toggle Steam HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Toggle rumble</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Force Guide button</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Gyro calibration spin</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Turn to face direction</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hold)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (release)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (release)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (engage)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pick a config to see what comes across.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>What Comes Across</value></data>
@@ -4975,11 +5025,9 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Choose the layer that permits this menu. Any Layer and Base both allow it under other active layers. A named layer must match the currently active layer.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Reset to Any Layer and turn off layer-held opening.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (not listed on this slot)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Layer Holds the Menu Open</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Keep this menu open while its named layer is active. The selected physical input steers the highlight. Any Layer and Base use normal surface opening.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Reset to opening on touch or deflection.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Steer With</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>The physical input that steers the highlighted cell while the layer keeps this menu open.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Read from the physical controllers assigned to this slot. The layer opens the menu, and this input steers it. Its cells say what it outputs.</value></data>
@@ -5061,7 +5109,6 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Split by Direction</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Center Deadzone</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reset to Left Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reset Strength (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reset Center Deadzone (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Reset Enable Steering Angle Rumble</value></data>
@@ -5765,7 +5812,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX does not publish what its {0} setting does, so PadForge uses its own.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX does not publish its input numbers. Published DSX profiles use 41 to 44 as the D-pad, so PadForge reads them that way.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX does not write a binding like this one, so the file was changed outside DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX switches to this preset from a shortcut. Its macro is on the Macros page, ready to bind to a button.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX switches to this preset from a shortcut. Its macro is in the controller’s Macros &amp; Menus section, ready to bind to a button.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>No published DSX profile uses {0}, so PadForge cannot tell what it does.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX lets the game set this while its passthrough switch is on, so PadForge leaves it to the game too.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>In Native Mode with Send Data to Device off, DSX sends nothing of its own to the controller, so PadForge leaves this to the game too.</value></data>
@@ -5776,6 +5823,25 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge keeps {0} in its app settings, outside any profile.</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Layer {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Triggers: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} extras</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} lightbar</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Launch Program</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} range</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Imported profile</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Imported macro</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Preset {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Radial Menu {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Touch Menu {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Mouse region</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>tap</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>hold</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>double tap</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Left trigger effect</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Right trigger effect</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Button Mapping {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Item {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Controller</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Keeps its own outputs</value></data>

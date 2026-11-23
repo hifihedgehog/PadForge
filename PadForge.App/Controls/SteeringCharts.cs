@@ -45,6 +45,9 @@ namespace PadForge.Controls
             // The labels take the body face by resource reference, so a chart
             // redraws in the face of the interface language (#590).
             PadForge.Common.TextFaces.Follow(this, PadForge.Common.TextFaces.BodyKey);
+            // The colors are read while it draws, which records no resource
+            // reference, so a look put on while it shows draws it again (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, InvalidateVisual);
         }
 
         // The plot's fill and its edge, the grid a step fainter than the

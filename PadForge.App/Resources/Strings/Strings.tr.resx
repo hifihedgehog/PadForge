@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Çevrimiçi</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Çevrimdışı</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Bilinmiyor</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Varsayılan</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Gözat…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Devam et</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Durdur</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor durduruldu.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hata: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} oluşturulamadı.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Bir aygıt açılamadı, okunamadı veya eşlenemedi. Tanılama günlüğünde adı yazıyor.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} bir hatayla karşılaştı. Nedeni tanılama günlüğünde.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Giriş motoru bir hatayla karşılaştı. Nedeni tanılama günlüğünde.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL başlatılamadı. Nedeni tanılama günlüğünde.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro kurulamadı. Nedeni tanılama günlüğünde.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Bir sanal kontrolcünün HIDMaestro profili eksik. Tanılama günlüğünde adı yazıyor.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} özelleştirilmiş kimliğini ve düzenini alamadı, kendi profilinin kimliğini ve düzenini kullanıyor.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil değiştirildi: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil değiştirildi: Varsayılan</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Varsayılan</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Hareket sunucusu portu</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu vb. için jiroskop ve ivmeölçer verisi sağlar.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Oyun modları</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX için hazırlanmış oyun modlarının PlayStation kontrolcülerinizin uyarlanabilir tetiklerini, ışık çubuğunu, oyuncu ışıklarını ve sessize alma ışığını ayarlamasına izin verir.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX için hazırlanmış oyun modlarının bir DualSense veya DualShock 4 kontrolcünün uyarlanabilir tetiklerini, ışık çubuğunu, oyuncu ışıklarını ve sessize alma ışığını ayarlamasına izin verir.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX oyun modlarını kabul et</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Oyun modu portu</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe vekili çalıştır</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV gibi bazı modlar, DSX adlı bir program çalışmıyorsa kendilerini kapatır. Bu seçenek, sunucu dinlerken bu adla küçük bir vekil program çalıştırır.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX için hazırlanmış modlarla çalışır, örneğin GTA V, Red Dead Redemption 2, Skyrim ve Forza için olanlarla. Sunucu dinlerken PadForge, portunu bu modların aradığı yere yazar.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} dinleniyor. {1}, {2} numaralı sanal kontrolcüye gönderiyor.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} dinleniyor. {1} gönderiyor ama hiçbir sanal kontrolcüde PlayStation kontrolcüsü yok.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} dinleniyor. {1}, {2} dizinli kontrolcüye gönderiyor ve üzerinde PlayStation kontrolcüsü bulunan hiçbir sanal kontrolcünün bu dizini yok.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} dinleniyor. {1} gönderiyor ama hiçbir sanal kontrolcüde DualSense veya DualShock 4 yok.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} dinleniyor. {1}, {2} dizinli kontrolcüye gönderiyor ve üzerinde DualSense veya DualShock 4 bulunan hiçbir sanal kontrolcünün bu dizini yok.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0}, DSX gibi başka bir program tarafından kullanılıyor. Onu kapatın veya başka bir port seçin.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Bir oyun modu</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack ile, OpenTrack'in UDP çıkışını gönderen veya FreeTrack 2.0 paylaşılan belleğine yazan her izleyiciyle ve bu makinede arka planda oturum çalıştırabilen bir OpenXR çalışma zamanıyla çalışır.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Dosya bulunamadı</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Okunamıyor</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” temasının dosyası eksik veya okunamıyor. Dosya geri gelene kadar PadForge Koyu görünümü gösterir.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” temasının dosyasında PadForge teması yok. Dosyada tema olana kadar PadForge Koyu görünümü gösterir.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” profili oyununun görünümünü giyiyor. Başka bir profil etkin olunca temanız geri gelir.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge Temaları (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Bu dosya bir PadForge teması değil.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge bu dosyayı okuyamıyor.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge bu dosyayı bulamıyor.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Tema değil</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema kaydedilemedi. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Yeni tema</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Siz tema oluştururken PadForge temayı giyer.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Resim Steam'den alınıyor…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam'de bu oyun için geniş bir resim yok.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam'e ulaşılamadı. Bağlantınızı denetleyin.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge, Steam'in bu oyun için verdiği resmi okuyamıyor.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Konum</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Resmi penceresinde yukarı ya da aşağı kaydırır.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Oyunun logosunu göster</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolcü, onu hazırlayan komutu almadı, bu yüzden hiçbir şey gönderilmedi. Bağlı olduğundan emin olun ve yeniden gönderin.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Gönderim, PadForge'daki bir hata yüzünden durdu. Ayrıntılar günlük dosyasında.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kontrolcüye hâlâ bir resim gidiyor. Gönderme durdurulsun mu?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Göndermeyi sürdür</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak dosyaları (*.mpk)|*.mpk|Tüm dosyalar (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak'i geri yükle</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Darbe sönümü</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Ön ayar</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Özel</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Kullanıcı oluşturdu)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Çubuklar</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Tetikler</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV'lar</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Bu kontrolcüde bir manyetometre var. Sapmayı manyetik kuzeye sabitlemek, jiroskopla nişan almadaki yavaş yatay kaymayı giderir. Önce kalibre edin: Kalibre et'e basın, kontrolcüyü birkaç saniye boyunca 8 çizerek tüm yönlere döndürün, ardından tekrar basın.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Sapmayı pusulaya sabitle</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Yatay nişanı manyetik yöne doğru çeken küçük bir düzeltme hızı ekler, böylece kayma birikemez. Kayıtlı bir manyetometre kalibrasyonu gerektirir. Yakındaki metal veya mıknatıslardan etkilenen örnekler otomatik olarak reddedilir.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Varsayılana sıfırla (kapalı)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Yunuslama ve yuvarlanma simülasyonu</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>İvmeölçerden hesaplanan yunuslama ve yuvarlanma</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Bu kontrolcünün jiroskopu yalnızca sağa sola dönmeyi algılar. Simülasyon açıkken PadForge yunuslama ve yuvarlanmayı ivmeölçerden türetir ve bunları jiroskopun sapmasıyla birlikte eşleme satırlarına ve sanal kontrolcünün hareketine gönderir. İvmeölçer bir itmeyi eğimden ayırt edemez, bu yüzden kontrolcüyü döndürmeden yana veya ileri hareket ettirmek kısa bir dönüş olarak okunur.</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Ulaşılabilir sınırı çıkarmak için çubuğu kenarı boyunca gezdirin, ardından sınırı tam bir daireye yeniden şekillendirin.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Sınır kalibrasyonunu sıfırla</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Merkez ofseti Y değerini sıfırla</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Ölçekli dairesele sıfırla</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Ölü bölge X değerini sıfırla</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Ölü bölge Y değerini sıfırla</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Anti ölü bölge X değerini sıfırla</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick ayarlarını sıfırla</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° başına nokta</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Kameranın tam 360° dönüşü için fare sayımı. Oyunun fare hassasiyetine bağlıdır: flick eksik dönüyorsa artırın, fazla dönüyorsa azaltın.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 değerine sıfırla</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Flick süresi</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Tam 180°'lik bir flick'in yavaşlayarak tamamlanma süresi. Daha kısa dönüşler de aynı sürede biter.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 sn değerine sıfırla</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick eşiği</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Bir flick'i başlatan çubuk itme miktarı (tam itmenin kesri olarak). Flick sırasında bırakma noktası bunun %90'ına düşer.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 değerine sıfırla</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Hizalama açısı</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Daha tutarlı dönüşler için flick'i sabit açılara hizalar. Yalnızca ileri, her flick'i tam ileriye hizalar.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Hizalama yok</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 derece</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 derece</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 derece</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Hizalama yok değerine sıfırla</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Hizalama gücü</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Bir flick'in hizalanan açıya ne kadar güçlü çekileceği. 1 tam hizalar, 0 hizalamayı devre dışı bırakır, aradaki değerler harmanlar.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 değerine sıfırla</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Ön açı ölü bölgesi</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Tam ilerinin bu açı kadar yakınındaki bir flick hiçbir şeyi döndürmez. Flick dönüşü olmadan bir gezdirme başlatmanızı sağlar.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° değerine sıfırla</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Gezdirme yumuşatması</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Kenar gezdirme gürültüsünü yumuşatır. -1 otomatik kademeli pencereyi kullanır, 0 yumuşatmayı kapatır, daha büyük değerler adım başına daha büyük dönüşleri yumuşatır.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Otomatik (-1) değerine sıfırla</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Devreye girerken flick'e izin ver</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Dönüş ofseti</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Tüm flick haritasını bu kadar derece döndürür. Pozitif değer saat yönündedir. Hizalama ofsetten sonra uygulanır.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Dönüş ofsetini sıfırla</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick'i barındıran katman, çubuk zaten itilmişken devreye girerse flick hemen tetiklenir. Kapalıyken kamera sabit kalır ve dönüş geçerli çubuk açısından itibaren izlenir.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Devreye girerken flick'e izin ver ayarını sıfırla</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Tam kilit geri bildirimi</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tam kilitte, yönlendirme modundaki çubuk için bir işaret</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Yönlendirme moduna ayarlı bir çubuk sonuna kadar (tam kilit) çevrildiğinde, sınırı hissetmeniz için bir işaret (titreşim, tetik veya ışık çubuğu) oynatır. Varsayılan olarak hepsi kapalıdır.</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense haptiğini bu kontrolcüde çal</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Bir oyun bu yuvayı, özel hazırlanmış haptik sesle sanal DualSense olarak kullandığında o parçayı bu kontrolcünün aktüatörlerinde çalar. USB veya kendi alıcısı üzerinden bağlı bir Steam Controller 2026 ve bir Flydigi Apex 6 Pro parçanın kendisini çalar. Diğer tüm kontrolcüler ve Bluetooth üzerinden bağlı o Steam Controller, sesten türetilen tonlar alır. Bu tonlar tasarımcının hissini birebir üretmez, ona yaklaşır.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptik kazancı</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Varsayılana sıfırla (kapalı)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Varsayılana sıfırla (%100)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Aktüatör alçak geçiren kesim frekansı</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller haptik akışını bu frekansın altında tutar, böylece yüzeyler duyulur şekilde ses çalmak yerine titreşir. Aktüatörler 250 Hz civarında duyulmaya başlar. Daha keskin ayrıntı için artırın, daha sessiz çalışma için azaltın.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz değerine sıfırla</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Bu frekansın üzerindeki tonlar kesilir veya katlanır. Varsayılan 800 Hz, motor ve darbe titreşimini korurken tiz bip seslerini yakalar.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Yüksek tonları sıfırla</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ton sınırını sıfırla</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profili</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makrosu</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>İmleç bölgesi</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} kaydırma</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Tekerlek listesi ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>İmleç bölgesi ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Fare tuşunu basılı tut: {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Fare tuşuna tıkla: {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Fare tuşunu aç/kapat: {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Dokunsal darbe ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (bırakma kuyruğu)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Dokun: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Otomatik ateş: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Basılı tut: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Aç/kapat: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo: {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Çift basış: {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Uzun basış: {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Tekerlek adımı ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Tekerleği aç/kapat ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo tekerlek ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>İmleci ışınla ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED ayarla ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Jiroskobu yeniden ortala ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>İmleci kıpırdat ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Ekran görüntüsü tuşu ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Ekran klavyesi ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Işık rengini ayarla</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Kamerayı yeniden ortala</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>İmleci ışınla</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>İmleci kıpırdat</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Ekran görüntüsü</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Ekran klavyesi</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Kaydırma katmanını değiştir</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Kaydırma katmanını aç</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Kaydırma katmanını kapat</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Kaydırma katmanını basılı tut</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Oyuncu numarasını değiştir</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Atanmamış</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Masaüstü modunu aç/kapat</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam sistem tuşu</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Büyüteci aç/kapat</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Parlaklığı artır</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Parlaklığı azalt</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Kontrolcüyü kapat</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam yapılandırıcısını aç</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam hızlı menüsünü aç</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Oyundan çık</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Dokunsal geri bildirimi aç/kapat</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD'ını aç/kapat</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Titreşimi aç/kapat</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide düğmesini zorla</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Jiroskop kalibrasyonu dönüşü</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Yöne dön</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (basılı tutma)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (bırakma)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (bırakma)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (devreye alma)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Nelerin aktarılacağını görmek için bir yapılandırma seçin.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Aktarılanlar</value></data>
@@ -4928,11 +4978,9 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Katman</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Bu menüye izin veren katmanı seçin. Herhangi bir katman ve Temel seçeneklerinin ikisi de menüye diğer etkin katmanlar altında izin verir. Adlandırılmış bir katmanın o anda etkin olan katmanla eşleşmesi gerekir.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Herhangi bir katman değerine sıfırlar ve katmanla açık tutmayı kapatır.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (bu yuvada listelenmiyor)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Katman menüyü açık tutar</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Adlandırılmış katmanı etkinken bu menüyü açık tutar. Seçili fiziksel giriş vurguyu yönlendirir. Herhangi bir katman ve Temel, normal yüzeyle açmayı kullanır.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Dokunma veya itme ile açılmaya sıfırlar.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Yönlendiren giriş</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Katman bu menüyü açık tutarken vurgulanan hücreyi yönlendiren fiziksel giriş.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Bu yuvaya atanmış fiziksel kontrolcülerden okunur. Menüyü katman açar, bu giriş de onu yönlendirir. Çıkışını menünün hücreleri belirler.</value></data>
@@ -5014,7 +5062,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Yöne göre ayır</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Merkez ölü bölgesi</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Sol çubuk X değerine sıfırla</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Gücü sıfırla (%50)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Merkez ölü bölgesini sıfırla (%2)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Direksiyon açısı titreşimini etkinleştir ayarını sıfırla</value></data>
@@ -5681,6 +5728,25 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profiller</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Katman {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Tetikler: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Işık çubuğu</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} ekstraları</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ışık çubuğu</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Program Başlat</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} aralığı</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>İçe aktarılan profil</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>İçe aktarılan makro</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Ön ayar {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Dairesel Menü {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Dokunmatik Menü {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Fare bölgesi</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>dokunma</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>basılı tutma</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>çift dokunma</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Sol tetik efekti</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Sağ tetik efekti</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Düğme Eşlemesi {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Öğe {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Denetleyici</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Kendi çıkışlarını korur</value></data>
@@ -6012,7 +6078,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX {0} ayarının nasıl çalıştığını yayımlamaz, bu yüzden PadForge kendi yöntemini kullanır.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX giriş numaralarını yayımlamaz. Yayımlanmış DSX profilleri 41 ile 44 arasını yön tuşları olarak kullanır, bu yüzden PadForge onları öyle okur.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX buna benzer bir atama yazmaz, bu yüzden dosya DSX dışında değiştirilmiş.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX bu ön ayara bir kısayolla geçer. Makrosu Makrolar sayfasında, bir düğmeye atanmaya hazır.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX bu ön ayara bir kısayolla geçer. Makrosu kontrolcünün Makrolar ve Menüler bölümünde, bir düğmeye atanmaya hazır.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Yayımlanmış hiçbir DSX profili {0} kullanmıyor, bu yüzden PadForge ne yaptığını anlayamaz.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX doğrudan aktarma anahtarı açıkken bunu oyunun ayarlamasına bırakır, bu yüzden PadForge da bunu oyuna bırakır.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode açıkken ve Send Data to Device kapalıyken DSX kontrolcüye kendinden hiçbir şey göndermez, bu yüzden PadForge da bunu oyuna bırakır.</value></data>

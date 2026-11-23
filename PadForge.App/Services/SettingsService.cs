@@ -471,8 +471,9 @@ namespace PadForge.Services
                 {
                     foreach (var p in data.AppSettings.UserProfiles)
                     {
-                        if (p != null && !string.IsNullOrWhiteSpace(p.Json))
-                            _userProfiles.Add(p);
+                        if (p == null || string.IsNullOrWhiteSpace(p.Json)) continue;
+                        p.Json = WithoutOldUserGeneratedName(p.Json);
+                        _userProfiles.Add(p);
                     }
                 }
                 Common.Input.HMaestroProfileCatalog.UserProfilesProvider =
@@ -1223,8 +1224,14 @@ namespace PadForge.Services
                         else if (mapping.IsCustomCombine) rebuiltSources.Add(new MappingSource());
                     }
 
-                    // Publish the finished row in one atomic reference assignment.
-                    row.Sources = rebuiltSources;
+                    // Every stamp below lands on the rebuilt list before the row
+                    // publishes it. The poll thread reads row.Sources without a
+                    // lock, so a stamp made after the publish let a pass read the
+                    // steered axis as a plain Direct read, or as a winding stick
+                    // with no Y axis yet. The stamps run on a staging row that
+                    // holds the new list, and the row takes the finished list in
+                    // one reference assignment at the end.
+                    var staged = new MappingRow { Target = row.Target, LayerMask = row.LayerMask, Sources = rebuiltSources };
 
                     // Steering source kind (#94): steering is a per-stick GLOBAL, not a
                     // per-layer mapping, so it has to live on the Base row that normal
@@ -1233,24 +1240,27 @@ namespace PadForge.Services
                     // authoring a shift layer. Persists on MappingSource (survives clones
                     // via Clone()).
                     if (string.Equals(activeMask, "Base", StringComparison.Ordinal))
-                        ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm, slot);
+                        ApplySteeringKindToRow(staged, mapping.TargetSettingName, padVm, slot);
 
                     // Motion Lean tuning rides every layer's rows (the descriptor is a
                     // normal input, not a Base-only steering mode).
-                    ApplyMotionLeanParamsToRow(row, padVm, slot);
-                    ApplyGyroTiltParamsToRow(row, padVm, slot);
+                    ApplyMotionLeanParamsToRow(staged, padVm, slot);
+                    ApplyGyroTiltParamsToRow(staged, padVm, slot);
 
                     // Flick stick tuning (#225) rides every layer's rows the same
                     // way: the descriptor is a normal input and #225's headline is
                     // the shift-layer host, so layer rows must carry the card's
                     // knobs too.
-                    ApplyFlickStickParamsToRow(row, padVm, slot, preservedFlick);
+                    ApplyFlickStickParamsToRow(staged, padVm, slot, preservedFlick);
 
                     // Restore the absolute-pointer region geometry captured
                     // before the rebuild (#9 B-15). No card sources these, so
                     // the pre-rebuild values are re-stamped onto the matching
                     // rebuilt pointer sources.
-                    ApplyTouchpadPointerParamsToRow(row, preservedPointer);
+                    ApplyTouchpadPointerParamsToRow(staged, preservedPointer);
+
+                    // Publish the finished row in one atomic reference assignment.
+                    row.Sources = rebuiltSources;
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -1274,8 +1284,17 @@ namespace PadForge.Services
                             { baseRow = r; break; }
                         }
                         if (baseRow?.Sources == null || baseRow.Sources.Count == 0) continue;
+                        // The Base row is live on the poll thread, so the stamp goes
+                        // onto copies of its sources and the row takes them in one
+                        // reference assignment, as the rebuilt rows above do.
                         // Per-source stamp handles revert of non-steered sources internally.
-                        ApplySteeringKindToRow(baseRow, target, padVm, slot);
+                        var staged = new MappingRow
+                        {
+                            Target = baseRow.Target, LayerMask = baseRow.LayerMask,
+                            Sources = baseRow.Sources.Select(src => src?.Clone()).ToList(),
+                        };
+                        ApplySteeringKindToRow(staged, target, padVm, slot);
+                        baseRow.Sources = staged.Sources;
                     }
                 }
             }
@@ -2382,7 +2401,14 @@ namespace PadForge.Services
                 ? appSettings.PollingRateHz
                 : PadForge.Common.Input.InputManager.DefaultPollingRateHz;
             vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
+            // The theme files were read again above. The same pick puts no
+            // look on through SetTheme, so it goes on here: a picked file
+            // that was missing and is back, or that changed, shows.
+            bool samePick = vm.SelectedThemeIndex == appSettings.ThemeIndex
+                && string.Equals(vm.SelectedThemeId, appSettings.ThemeId ?? string.Empty, StringComparison.Ordinal);
             vm.SetTheme(appSettings.ThemeIndex, appSettings.ThemeId);
+            if (samePick)
+                PadForge.Common.Themes.ThemeManager.Apply(appSettings.ThemeIndex, appSettings.ThemeId);
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
             vm.FlydigiEnhancedProtocol = appSettings.FlydigiEnhancedProtocol;
@@ -2703,7 +2729,7 @@ namespace PadForge.Services
             vm.MainWindowFullScreen = appSettings.MainWindowFullScreen;
         }
 
-        /// <summary>Copy From companion: clones the per-slot config tabs
+        /// <summary>Copy From companion: clones the per-slot config groups
         /// (Lighting, custom Extended layout, MIDI CC/note layout) from
         /// <paramref name="srcSlot"/> to <paramref name="dstSlot"/>.
         /// Device features (lightbar / adaptive triggers / mic LED /
@@ -2715,11 +2741,11 @@ namespace PadForge.Services
         /// Control This Device's Lighting switch and Lighting Hold (#494),
         /// so a copy never starts or stops a controller lighting a mouse or
         /// keyboard the source never had, and never holds one more firmly
-        /// than its own tab says. Extended custom layouts and MIDI CC/note
+        /// than its own group says. Extended custom layouts and MIDI CC/note
         /// ranges are slot-shape data, so they only copy when both source
         /// and destination share that output type. Mappings and per-device
         /// tuning live on PadSetting and are handled separately by the
-        /// InputService copy path. This method fills the gap for tabs that
+        /// InputService copy path. This method fills the gap for groups that
         /// live on PadViewModel.</summary>
         public void CopySlotConfigsAcrossSlots(int srcSlot, int dstSlot)
         {
@@ -6171,7 +6197,14 @@ namespace PadForge.Services
             SettingsManager.EnableExternalControl = false;
             SettingsManager.ExternalProfilePinActive = false;
             SettingsManager.ActiveProfileId = null;
+            // Every game look's picture goes with the profiles: no profile
+            // wears one after the reset (#591).
+            var lookGames = new List<int>();
+            foreach (var profile in SettingsManager.Profiles)
+                if (profile.GameLook != null && profile.GameLook.AppId > 0 && !lookGames.Contains(profile.GameLook.AppId))
+                    lookGames.Add(profile.GameLook.AppId);
             SettingsManager.Profiles.Clear();
+            foreach (int appId in lookGames) PadForge.Common.Themes.GameLooks.Release(appId);
             settingsVm.ProfileItems.Clear();
             settingsVm.ProfileItems.Add(new ViewModels.ProfileListItem
             {
@@ -6219,9 +6252,8 @@ namespace PadForge.Services
         /// <summary>
         /// Snapshot of the current user-profile store for UI presentation
         /// in the Manage Profiles dialog. Returns id + display name pairs
-        /// (the name is pulled from each profile's JSON "name" field,
-        /// which already carries the "(User Generated)" suffix applied on
-        /// import).
+        /// (the name is pulled from each profile's JSON "name" field, the
+        /// device's own name).
         /// </summary>
         public IReadOnlyList<Views.ManageProfilesDialog.ImportedProfileRow> GetUserProfileRows()
         {
@@ -6329,9 +6361,12 @@ namespace PadForge.Services
 
         /// <summary>
         /// Persist a newly-extracted HIDMaestro profile JSON into the user
-        /// profile store. Applies the "-user" id suffix and the
-        /// " (User Generated)" name suffix (forcing uniqueness against the
-        /// built-in catalog), deduplicates by Id so re-importing the same
+        /// profile store. Applies the "-user" id suffix (keeping the id clear
+        /// of the built-in catalog's) and keeps the device's own name, with
+        /// the old English " (User Generated)" mark taken off a file that
+        /// carries it: the Preset picker marks the name in the interface's
+        /// language (HMaestroProfileCatalog.DisplayName). Deduplicates by
+        /// Id so re-importing the same
         /// device overwrites the prior capture, triggers a catalog reload
         /// so the Extended dropdown picks up the new entry, and marks
         /// settings dirty. Returns the suffixed id so the caller can set
@@ -6360,10 +6395,10 @@ namespace PadForge.Services
                 string baseName = root["name"]?.GetValue<string>();
                 if (string.IsNullOrWhiteSpace(baseId)) return null;
 
-                if (!baseId.EndsWith("-user", StringComparison.OrdinalIgnoreCase))
-                    baseId += "-user";
-                if (!string.IsNullOrEmpty(baseName) && !baseName.Contains("(User Generated)"))
-                    baseName = $"{baseName} (User Generated)";
+                string suffix = Common.Input.HMaestroProfileCatalog.UserProfileIdSuffix;
+                if (!baseId.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+                    baseId += suffix;
+                baseName = WithoutOldMark(baseName);
 
                 root["id"] = baseId;
                 if (baseName != null) root["name"] = baseName;
@@ -6397,6 +6432,43 @@ namespace PadForge.Services
             Common.Input.HMaestroProfileCatalog.Reload();
             MarkDirty();
             return id;
+        }
+
+        /// <summary>The mark the import once wrote into an imported
+        /// profile's stored name, in English. The Preset picker draws the
+        /// mark in the interface's language now
+        /// (HMaestroProfileCatalog.DisplayName).</summary>
+        private const string OldUserGeneratedMark = " (User Generated)";
+
+        /// <summary>The name with the old English mark taken off its end,
+        /// or the name as it was.</summary>
+        private static string WithoutOldMark(string name) =>
+            name != null && name.EndsWith(OldUserGeneratedMark, StringComparison.Ordinal)
+                ? name.Substring(0, name.Length - OldUserGeneratedMark.Length)
+                : name;
+
+        /// <summary>A stored profile JSON with the old English mark taken off
+        /// its "name", or the same string when its name has none or it does
+        /// not parse. A store written before the mark moved into the picker
+        /// is read this way, so its presets are named in the interface's
+        /// language too.</summary>
+        internal static string WithoutOldUserGeneratedName(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return json;
+            try
+            {
+                var root = System.Text.Json.Nodes.JsonNode.Parse(json)?.AsObject();
+                if (root?["name"] is not System.Text.Json.Nodes.JsonValue value
+                    || !value.TryGetValue(out string name)) return json;
+                string bare = WithoutOldMark(name);
+                if (ReferenceEquals(bare, name)) return json;
+                root["name"] = bare;
+                return root.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
+            }
+            catch
+            {
+                return json;
+            }
         }
 
         /// <summary>How many <see cref="MirrorOnly"/> calls are open, and the

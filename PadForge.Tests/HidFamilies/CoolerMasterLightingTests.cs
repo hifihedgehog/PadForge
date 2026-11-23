@@ -187,27 +187,30 @@ namespace PadForge.Tests
         /// (lines 105-108 and 208-327, Custom's row at 335-336, MODE_DIRECTION_LEFT 0 in
         /// RGBControllerInterface.h:84). A picture is WRITE_CUSTOM_RGB, 0A, at register 0:
         /// 284 bytes of R, G, B and FF for 71 LEDs, 62 to a 65-byte frame, 3 ms after each
-        /// (lines 66-99 and 199). OpenRGB's Shutdown writes nothing (lines 57-60), so nor
-        /// does the hand-back.</summary>
+        /// (lines 66-99 and 199). The read of the effect register the hand-back needs goes
+        /// out between the profile's read and the writes
+        /// (<see cref="AV3Session_HandsBackTheEffectAndCustomItRead"/>), and a keyboard that
+        /// does not answer it is handed back nothing.</summary>
         [Fact]
         public void AWiredV3Session_ReadsTheProfile_SetsCustom_AndPaintsInFiveFrames()
         {
             var device = new CoolerMasterDevice();
-            device.Answer = report => report[1] == 0x02
+            device.Answer = report => report[1] == 0x02 && report[3] == 0x24 && report[4] == 0x03
                 ? new byte[] { 0x02, 0x81, 0x24, 0x03, 0x01, 0x00, 0x02 }
                 : null;
             var model = ModelOf(0x016F);
             var waits = new List<int>();
             var session = model.Begin(device.Channel, waits.Add);
             Assert.NotNull(session);
-            // Profile 2: its block starts at 2 * 0xC9 = 0x192.
+            // Profile 2: its block starts at 2 * 0xC9 = 0x192, its effect register at 0x25A.
             Same(new[]
             {
                 V3(65, 0x02, 0x81, 0x24, 0x03, 0x01, 0x00),
+                V3(65, 0x02, 0x81, 0x5A, 0x02, 0x01, 0x00),
                 V3(65, 0x01, 0x81, 0x5A, 0x02, 0x01, 0x00, 0x04),
                 V3(65, 0x01, 0x81, 0xBA, 0x01, 0x0A, 0x00, 0xFF, 0xFF, 0x12, 0, 0, 0, 0, 0, 0, 0x06),
             }, device.Outs);
-            Assert.Equal(new[] { 3, 3, 3 }, waits);
+            Assert.Equal(new[] { 3, 3, 3, 3 }, waits);
             device.Clear();
             waits.Clear();
             var lights = model.Map.Lights;
@@ -236,17 +239,20 @@ namespace PadForge.Tests
         public void AV3DongleSession_Writes33ByteFrames_AndTakesProfile0WithoutAnAnswer()
         {
             var device = new CoolerMasterDevice();
-            device.Answer = report => report[1] == 0x02 ? new byte[] { 0x02, 0x81, 0x24, 0x03, 0x01, 0x00, 0x07 } : null;
+            device.Answer = report => report[1] == 0x02 && report[3] == 0x24 && report[4] == 0x03
+                ? new byte[] { 0x02, 0x81, 0x24, 0x03, 0x01, 0x00, 0x07 }
+                : null;
             var model = ModelOf(0x0183);
             var waits = new List<int>();
             var session = model.Begin(device.Channel, waits.Add);
             Same(new[]
             {
                 V3(33, 0x02, 0x81, 0x24, 0x03, 0x01, 0x00),
+                V3(33, 0x02, 0x81, 0xC8, 0x00, 0x01, 0x00),
                 V3(33, 0x01, 0x81, 0xC8, 0x00, 0x01, 0x00, 0x04),
                 V3(33, 0x01, 0x81, 0x28, 0x00, 0x0A, 0x00, 0xFF, 0xFF, 0x12, 0, 0, 0, 0, 0, 0, 0x06),
             }, device.Outs);
-            Assert.Equal(new[] { 20, 20, 20 }, waits);
+            Assert.Equal(new[] { 20, 20, 20, 20 }, waits);
             device.Clear();
             session.Paint(device.Channel, NoWait, model.Map.Lights, model.Map.Lights.Select(_ => 0x010203).ToList());
             // 288 bytes, 20 to a frame: 15 frames, the first 8F.
@@ -256,6 +262,62 @@ namespace PadForge.Tests
             Assert.Equal("00 0A 8F 00 00 1C 01 01 02 03 FF", Hex(frames[0].Take(11).ToArray()));
             Assert.Equal("00 0A 0E", Hex(frames[14].Take(3).ToArray()));
             Assert.All(frames, f => Assert.All(f.Skip(23), b => Assert.Equal(0, b)));
+        }
+
+        /// <summary>A V3 keyboard is handed back the effect and Custom's ten bytes it held
+        /// before the session wrote Custom. Each is read as OpenRGB reads the active profile:
+        /// READ_REG, 02, the address low byte first and the length 1, and the byte at 6 of the
+        /// answer (CMKeyboardV3Controller.cpp:118-139). The hand-back writes them with
+        /// WRITE_REG in SetMode's order, the effect register, 0xC8 past the profile's start,
+        /// then Custom's bytes, 4 times 10 past it (lines 105-108 and 303-326), 3 ms after each
+        /// wired report and no read. The crash path holds the same reports from the start,
+        /// since Custom is written before any picture.</summary>
+        [Fact]
+        public void AV3Session_HandsBackTheEffectAndCustomItRead()
+        {
+            var device = new CoolerMasterDevice();
+            // Profile 1, whose block starts at 0xC9: its effect register is 0x191, holding
+            // 01, Wave, and Custom's bytes start at 0xF1.
+            device.Answer = report =>
+            {
+                if (report[1] != 0x02) return null;
+                int address = report[3] | report[4] << 8;
+                byte value = address switch
+                {
+                    0x324 => 0x01,
+                    0x191 => 0x01,
+                    >= 0xF1 and < 0xFB => (byte)(0x30 + address - 0xF1),
+                    _ => 0xEE,
+                };
+                return new byte[] { 0x02, 0x81, report[3], report[4], 0x01, 0x00, value };
+            };
+            var model = ModelOf(0x016F);
+            var session = model.Begin(device.Channel, NoWait);
+            Assert.NotNull(session);
+            var reads = device.Outs.Where(f => f[1] == 0x02).Select(f => f[3] | f[4] << 8).ToList();
+            Assert.Equal(new[] { 0x324, 0x191 }.Concat(Enumerable.Range(0xF1, 10)), reads);
+            var back = new[]
+            {
+                V3(65, 0x01, 0x81, 0x91, 0x01, 0x01, 0x00, 0x01),
+                V3(65, 0x01, 0x81, 0xF1, 0x00, 0x0A, 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39),
+            };
+            Same(back, session.CrashFrames);
+            device.Clear();
+            var waits = new List<int>();
+            Assert.True(session.HandBack(device.Channel, waits.Add));
+            Same(back, device.Outs);
+            Assert.Equal(0, device.Reads);
+            Assert.Equal(new[] { 3, 3 }, waits);
+            // Handed back once.
+            device.Clear();
+            Assert.True(session.HandBack(device.Channel, NoWait));
+            Assert.Empty(device.Outs);
+
+            // An effect OpenRGB does not name, or none at all, leaves nothing to write back,
+            // and Custom's bytes that did not all answer leave the effect alone.
+            Assert.Empty(CoolerMasterLighting.V3HandBack(false, 1, 0xEE, null));
+            Assert.Empty(CoolerMasterLighting.V3HandBack(false, 1, null, new byte[10]));
+            Assert.Single(CoolerMasterLighting.V3HandBack(false, 1, 0x01, null));
         }
 
         // ── The keyboards OpenRGB's V2 detector leaves out ──
@@ -1013,7 +1075,7 @@ namespace PadForge.Tests
 
         /// <summary>OpenRGB makes a controller only for the firmware the
         /// serial string names (CoolerMasterControllerDetect.cpp:86-111 and
-        /// 321-346, CMARGBController.cpp:60-80, CMSmallARGBController.cpp:90-106,
+        /// 355-380, CMARGBController.cpp:60-80, CMSmallARGBController.cpp:90-106,
         /// the strings at CMARGBController.h:31-32 and CMSmallARGBController.h:64).</summary>
         [Fact]
         public void TheArgbControllers_AreListedOnlyOnTheFirmwareTheirSerialNames()

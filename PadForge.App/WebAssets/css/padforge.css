@@ -25,10 +25,12 @@
     --ember-pick: #1d1611;  /* EmberPickBrush */
     --ember-tint: rgba(255, 107, 44, 0.10);  /* EmberTintBrush */
     --ember-glow: rgba(255, 107, 44, 0.30);  /* ember, as the light around a lit tile */
+    --ember-dot: rgba(255, 107, 44, 0.60);   /* ember, as a touchpad's first finger */
     --dot-ring: #3a475a;    /* SteelMarkBrush */
     --cold: #7cc7ea;        /* ColdBrush */
     --cold-tint: rgba(124, 199, 234, 0.10);  /* ColdTintBrush */
     --cold-line: rgba(124, 199, 234, 0.62);  /* ColdMutedBrush */
+    --cold-dot: rgba(124, 199, 234, 0.60);   /* cold, as a touchpad's second finger */
     --wait: #f2b84b;        /* WaitBrush */
     --focus: #7cc7ea;       /* ColdBrush */
     --veil: rgba(10, 14, 21, 0.82);  /* the ground, over a picture or a page */

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Mtandaoni</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Nje ya mtandao</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Haijulikani</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Chaguomsingi</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Vinjari…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Endelea</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Simamisha</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Injini imesimamishwa.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hitilafu: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} haikuweza kuundwa.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Kifaa kimeshindwa kufunguliwa, kusomwa au kuoanishwa. Kumbukumbu za uchunguzi zinakitaja.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} imekutana na hitilafu. Kumbukumbu za uchunguzi zina chanzo.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Injini ya ingizo imekutana na hitilafu. Kumbukumbu za uchunguzi zina chanzo.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL imeshindwa kuanza. Kumbukumbu za uchunguzi zina chanzo.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro imeshindwa kusanidiwa. Kumbukumbu za uchunguzi zina chanzo.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Wasifu wa HIDMaestro wa kidhibiti pepe haupo. Kumbukumbu za uchunguzi zinautaja.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} imeshindwa kupokea utambulisho na mpangilio wake maalum na inatumia wa wasifu wake wenyewe.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Wasifu umebadilishwa: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Wasifu umebadilishwa: Chaguomsingi</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Chaguomsingi</value></data>
@@ -538,15 +544,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Mlango wa seva ya mwendo</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Hutoa data ya gyro na accelerometer kwa Cemu, Dolphin, Yuzu, n.k.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod za Michezo</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Huruhusu mod za michezo zilizotengenezwa kwa DSX kuweka vichochezi vinavyojirekebisha, lightbar, taa za mchezaji na taa ya kunyamazisha ya vidhibiti vyako vya PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Huruhusu mod za michezo zilizotengenezwa kwa DSX kuweka vichochezi vinavyojirekebisha, lightbar, taa za mchezaji na taa ya kunyamazisha ya DualSense au DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Kubali Mod za Michezo za DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Mlango wa Mod za Michezo</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Endesha Mbadala wa DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Baadhi ya mod, kama DualSense4GTAV, hujizima isipokuwa programu iitwayo DSX inaendeshwa. Hii huendesha mbadala mdogo wa jina hilo seva inaposikiliza.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Hufanya kazi na mod zilizotengenezwa kwa DSX, kama zile za GTA V, Red Dead Redemption 2, Skyrim na Forza. Seva inaposikiliza, PadForge huandika mlango wake mahali ambapo mod hizo huutafuta.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}. {1} inatuma kwa kidhibiti pepe {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}. {1} inatuma, lakini hakuna kidhibiti pepe chenye kidhibiti cha PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}. {1} inatuma kwa faharasa ya kidhibiti {2}, na hakuna kidhibiti pepe chenye kidhibiti cha PlayStation juu yake kinachotumia faharasa hiyo.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}. {1} inatuma, lakini hakuna kidhibiti pepe chenye DualSense au DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}. {1} inatuma kwa faharasa ya kidhibiti {2}, na hakuna kidhibiti pepe chenye DualSense au DualShock 4 juu yake kinachotumia faharasa hiyo.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Mlango {0} unatumiwa na programu nyingine, kama DSX. Ifunge au chagua mlango mwingine.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ya mchezo</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Inafanya kazi na OpenTrack na kifuatiliaji chochote kinachotuma towe lake la UDP au kuandika kumbukumbu ya pamoja ya FreeTrack 2.0, na pia na runtime ya OpenXR kwenye kompyuta hii inayoweza kuendesha kipindi chinichini.</value></data>
@@ -636,6 +642,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Faili haipatikani</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Haiwezi kusomwa</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Faili ya “{0}” haipo au haiwezi kusomwa. PadForge huonyesha Giza hadi itakaporudi.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Faili ya “{0}” haina mandhari ya PadForge. PadForge huonyesha Giza hadi iwe nayo.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Wasifu “{0}” umevaa mwonekano wa mchezo wake. Mandhari yako itarudi wasifu mwingine ukiwa amilifu.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Injini ya ingizo</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Sanidi tabia ya ukaguzi na uchakataji wa chinichini.</value></data>
@@ -1040,6 +1047,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kidhibiti hakikupokea amri inayokiandaa, kwa hiyo hakuna kilichotumwa. Hakikisha kimeunganishwa kisha utume tena.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Utumaji ulisimama kwa hitilafu ndani ya PadForge. Faili ya kumbukumbu ina maelezo.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Picha bado inaelekea kwenye kidhibiti. Simamisha kutuma?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Endelea Kutuma</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Faili za Controller Pak (*.mpk)|*.mpk|Faili Zote (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak mlango {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Rejesha Controller Pak</value></data>
@@ -1427,6 +1435,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Kufifia kwa Mpigo</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Mipangilio Iliyowekwa Tayari</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Maalum</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Imetengenezwa na Mtumiaji)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Vijiti</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Vichochezi</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2407,7 +2416,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Kidhibiti hiki kina magnetometer. Kutia nanga yaw kwenye kaskazini ya sumaku huondoa kuteleza polepole kwa mlalo kwenye kulenga kwa gyro. Sawazisha kwanza: bofya Sawazisha, zungusha kidhibiti katika mielekeo yote kwa umbo la 8 kwa sekunde chache, kisha bofya tena.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Tia nanga yaw kwenye dira</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Huongeza kasi ndogo ya kusahihisha inayovuta lengo la mlalo kuelekea mwelekeo wa sumaku, ili kuteleza kusijikusanye. Inahitaji usawazishaji wa magnetometer uliohifadhiwa. Sampuli zinazovurugwa na chuma au sumaku zilizo karibu hukataliwa kiotomatiki.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Weka upya hadi chaguomsingi (imezimwa)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Uigaji wa pitch na roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pitch na roll zinazokokotolewa kutoka kwenye accelerometer</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Gyro ya kidhibiti hiki hutambua kugeuka kushoto na kulia tu. Uigaji ukiwashwa, PadForge hupata pitch na roll kutoka kwenye accelerometer na kuzituma pamoja na yaw ya gyro kwa safu za ramani na mwendo wa kidhibiti pepe. Accelerometer haiwezi kutofautisha kusukuma na kuinamisha, kwa hivyo kusogeza kidhibiti kando au mbele bila kukigeuza husomwa kama mzunguko mfupi.</value></data>
@@ -2787,7 +2795,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Zungusha kijiti kwenye ukingo wake kupima mpaka unaoweza kufikiwa, kisha ukiumbe upya kuwa duara kamili.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Weka upya usawazishaji wa mpaka</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Weka upya mkengeuko wa kituo Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Weka upya kuwa Scaled Radial</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Weka upya deadzone X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Weka upya deadzone Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Weka upya anti-deadzone X</value></data>
@@ -3197,13 +3204,10 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Weka Upya Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Nukta kwa kila 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Hesabu za kipanya kwa mgeuko mmoja kamili wa kamera wa 360°. Inategemea unyeti wa kipanya wa mchezo: ongeza ikiwa flick inazungusha pungufu, punguza ikiwa inazungusha kupita kiasi.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Weka Upya hadi 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Muda wa Flick</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Muda ambao flick kamili ya 180° huchukua kukamilika, kwa kupungua kasi mwishoni. Mgeuko mfupi hukamilika kwa muda uleule.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Weka Upya hadi 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Kizingiti cha Flick</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Mkengeuko wa kijiti unaoanzisha flick, kama sehemu ya mkengeuko kamili. Wakati wa flick, kiwango cha kuachilia hushuka hadi 90% ya hiki.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Weka Upya hadi 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Pembe ya Kunasa</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Nasa flick kwenye pembe zisizobadilika kwa mgeuko thabiti zaidi. Mbele Pekee hunasa kila flick moja kwa moja mbele.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Bila Kunasa</value></data>
@@ -3212,22 +3216,16 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>Digrii 90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>Digrii 60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>Digrii 45</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Weka Upya hadi Bila Kunasa</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Nguvu ya Kunasa</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Jinsi flick inavyovutwa kwa nguvu kuelekea pembe iliyonaswa. 1 hunasa kikamilifu, 0 huzima kunasa, thamani za kati huchanganya.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Weka Upya hadi 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Deadzone ya Pembe ya Mbele</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Flick ndani ya pembe hii kutoka mbele moja kwa moja haigeuzi chochote. Hukuwezesha kuanza kufagia bila mgeuko wa flick.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Weka Upya hadi 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Ulainishaji wa Kufagia</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Hulainisha kelele ya kufagia ukingo. -1 hutumia dirisha la viwango la kiotomatiki, 0 huzima ulainishaji, thamani kubwa zaidi hulainisha mizunguko mikubwa zaidi kwa kila tiki.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Weka Upya hadi Kiotomatiki (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Ruhusu Flick Wakati wa Kuwasha</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Marekebisho ya Mzunguko</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Hugeuza ramani nzima ya flick kwa digrii hizi. Chanya ni mwendo wa saa. Kunasa hutumika baada ya marekebisho.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Weka Upya Marekebisho ya Mzunguko</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Tabaka linalohifadhi Flick Stick likiwashwa kijiti kikiwa tayari kimekengeushwa, tekeleza flick mara moja. Ikizimwa, kamera hubaki tuli na hufuatilia mzunguko kutoka pembe ya sasa ya kijiti.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Weka Upya Ruhusu Flick Wakati wa Kuwasha</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Mrejesho wa Kufunga Usukani</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ishara ya kufunga kikamilifu kwa kijiti cha usukani</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kijiti kilichowekwa hali ya usukani kikigeuzwa hadi kufunga kikamilifu, cheza ishara (mtetemo, kichochezi, au lightbar) ili uhisi kikomo. Vyote vimezimwa kwa chaguomsingi.</value></data>
@@ -3417,11 +3415,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Cheza Haptics za DualSense kwenye Kidhibiti Hiki</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Mchezo unapoendesha nafasi hii kama DualSense pepe yenye sauti ya haptics iliyoandaliwa, cheza wimbo huo kwenye actuator za kidhibiti hiki. Steam Controller 2026 kupitia USB au dongle yake, na Flydigi Apex 6 Pro, hucheza wimbo wenyewe. Kila kidhibiti kingine, na Steam Controller hicho kupitia Bluetooth, hupata toni zinazotokana na sauti, ambazo hukadiria hisia ya mbunifu badala ya kuirudia.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ukuzaji wa Haptics</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Weka Upya hadi Chaguomsingi (Imezimwa)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Weka Upya hadi Chaguomsingi (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Kikomo cha Low-Pass cha Actuator</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Huweka utiririshaji wa haptics za Steam Controller chini ya masafa haya ili pedi zitetemeke badala ya kucheza sauti inayosikika. Karibu 250 Hz actuator huanza kusikika. Ongeza kwa undani mkali zaidi, punguza kwa uchezaji tulivu zaidi.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Weka Upya hadi 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Toni zilizo juu ya masafa haya hukatwa au kukunjwa. Chaguomsingi la 800 Hz huhifadhi mtetemo wa injini na mgongano huku likinasa milio ya juu.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Weka Upya Toni za Juu</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Weka Upya Kikomo cha Toni</value></data>
@@ -3990,8 +3985,59 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Wasifu wa Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro ya Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Eneo la kielekezi</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Shift ya {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Orodha ya gurudumu ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Eneo la kielekezi ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Shikilia kipanya {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Bofya kipanya {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Badilisha kipanya {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Mtetemo mfupi ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (mkia wa kuachia)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Gusa {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Ufyatuaji otomatiki {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Shikilia {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Badilisha {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Bonyeza mara mbili {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Bonyeza kwa muda mrefu {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Hatua ya gurudumu ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Badilisha gurudumu ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Gurudumu la turbo ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Ruka kielekezi ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Weka LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Rudisha gyro katikati ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Sogeza kielekezi kidogo ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Kitufe cha picha ya skrini ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Kibodi ya skrini ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Weka rangi ya taa</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Rudisha kamera katikati</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Ruka kielekezi</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Sogeza kielekezi kidogo</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Picha ya skrini</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Kibodi ya skrini</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Badilisha safu ya shift</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Washa safu ya shift</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Zima safu ya shift</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Shikilia safu ya shift</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Badilisha nambari ya mchezaji</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Haijafungwa</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Badilisha hali ya eneo-kazi</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Kitufe cha mfumo cha Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Badilisha kikuza</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Ongeza mwangaza</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Punguza mwangaza</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Zima kidhibiti</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Fungua kisanidi cha Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Fungua menyu ya haraka ya Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Toka kwenye mchezo</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Badilisha haptics</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Badilisha HUD ya Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Badilisha mtetemo</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Lazimisha kitufe cha Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Mzunguko wa kusawazisha gyro</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Geukia mwelekeo</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (shikilia)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (achilia)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (achilia)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (washa)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chagua usanidi ili uone kinachovuka.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kinachovuka</value></data>
@@ -4596,11 +4642,9 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Tabaka</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Chagua tabaka linaloruhusu menyu hii. Tabaka Lolote na Msingi zote huiruhusu chini ya matabaka mengine yanayotumika. Tabaka lenye jina lazima lilingane na tabaka linalotumika sasa.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Weka upya kuwa Tabaka Lolote na uzime ufunguzi unaoshikiliwa na tabaka.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (haijaorodheshwa kwenye nafasi hii)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Tabaka Hushikilia Menyu Wazi</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Weka menyu hii wazi tabaka lake lenye jina linapotumika. Ingizo halisi lililochaguliwa huongoza mwangaza. Tabaka Lolote na Msingi hutumia ufunguzi wa kawaida wa uso.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Weka upya kuwa ufunguzi kwa mguso au mkengeuko.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Elekeza Kwa</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Ingizo halisi linaloelekeza kisanduku kilichoangaziwa tabaka linaposhikilia menyu hii wazi.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Husomwa kutoka vidhibiti halisi vilivyokabidhiwa nafasi hii. Tabaka hufungua menyu, na ingizo hili huielekeza. Seli zake huonyesha kile inachotoa.</value></data>
@@ -4680,7 +4724,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Gawanya kwa Mwelekeo</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone ya Kituo</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Weka Upya kuwa Kijiti cha Kushoto X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Weka Upya Nguvu (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Weka Upya Deadzone ya Kituo (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Weka Upya Washa Mtetemo wa Pembe ya Usukani</value></data>
@@ -5193,6 +5236,9 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_LanguageRefs" xml:space="preserve"><value>Marejeo ya Kiklingon na Kisindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Maneno ya tafsiri za Kiklingon na Kisindarin, yaliyokaguliwa dhidi ya klingon-assistant-data (Apache-2.0), kamusi iliyo nyuma ya boQwI', na Eldamo (CC BY 4.0), leksikoni ya Kielfu ya Paul Strack. Data ya kamusi pekee, hakuna inayosafirishwa.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Faili hiyo si mandhari ya PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge haiwezi kusoma faili hiyo.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge haiwezi kupata faili hiyo.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Si mandhari</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Mandhari haikuweza kuhifadhiwa. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Mandhari Mpya</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge huvaa mandhari wakati unaitengeneza.</value></data>
@@ -5207,6 +5253,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Inapata picha kutoka Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam haina picha pana ya mchezo huu.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Haikuweza kufikia Steam. Angalia muunganisho wako.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge haiwezi kusoma picha ya Steam ya mchezo huu.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Nafasi</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Husogeza picha juu au chini ndani ya dirisha lake.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Onyesha Nembo ya Mchezo</value></data>
@@ -5247,4 +5294,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Kielelezo kilichorekodiwa kwa mfululizo wa awali wa Star Trek, kilichopigwa picha na Smithsonian National Air and Space Museum, inayokihifadhi: picha ya mandhari ya Star Trek LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Picha ya Mandhari: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Fremu ya Star Trek: The Next Generation: picha ya mandhari ya Star Trek Starfleet. Ilipatikana kwenye Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar ya {0}</value></data>
 </root>

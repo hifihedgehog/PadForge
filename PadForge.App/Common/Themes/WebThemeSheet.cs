@@ -34,8 +34,9 @@ namespace PadForge.Common.Themes
         internal const string StockGround = "#0a0e15";
 
         /// <summary>The colors a page made from another: the ember's light
-        /// around a lit tile, and the ground as a veil over a page.</summary>
-        private const double GlowAlpha = 0.30, VeilAlpha = 0.82;
+        /// around a lit tile, a touchpad's two finger dots in the ember and
+        /// the cold, and the ground as a veil over a page.</summary>
+        private const double GlowAlpha = 0.30, DotAlpha = 0.60, VeilAlpha = 0.82;
 
         /// <summary>What the server adds: the rule that follows the sheet, and the ground's color.</summary>
         internal sealed record Dressing(string Css, string Ground);
@@ -101,6 +102,8 @@ namespace PadForge.Common.Themes
             Color backdrop = dark ? Colors.Black : Colors.White;
             Color ground = Over(Of("SteelGroundBrush") ?? ThemeEngine.StockGround(dark), backdrop);
             Color ember = Over(Of("EmberBrush") ?? ThemeEngine.StockAccent, ground);
+            Color cold = Over(Of("ColdBrush") ?? ThemeEngine.StockSecondary(dark), ground);
+            static Color Faint(Color color, double alpha) => Color.FromArgb((byte)Math.Round(alpha * 255), color.R, color.G, color.B);
 
             var css = new StringBuilder();
             css.Append("\n/* The theme in force (#591): the names above, with its values. */\n:root {\n");
@@ -115,8 +118,10 @@ namespace PadForge.Common.Themes
                     if (color == null) continue;
                     value = solid ? Hex(Over(color.Value, ground)) : Rgba(color.Value);
                 }
-                else if (row.Name == "--ember-glow") value = Rgba(Color.FromArgb((byte)Math.Round(GlowAlpha * 255), ember.R, ember.G, ember.B));
-                else if (row.Name == "--veil") value = Rgba(Color.FromArgb((byte)Math.Round(VeilAlpha * 255), ground.R, ground.G, ground.B));
+                else if (row.Name == "--ember-glow") value = Rgba(Faint(ember, GlowAlpha));
+                else if (row.Name == "--ember-dot") value = Rgba(Faint(ember, DotAlpha));
+                else if (row.Name == "--cold-dot") value = Rgba(Faint(cold, DotAlpha));
+                else if (row.Name == "--veil") value = Rgba(Faint(ground, VeilAlpha));
                 else continue;
                 css.Append("    ").Append(row.Name).Append(": ").Append(value).Append(";\n");
             }

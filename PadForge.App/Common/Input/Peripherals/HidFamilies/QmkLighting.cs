@@ -154,7 +154,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = registration.Name,
-                Map = new LightMap(Array.Empty<LightInfo>(), keychron ? "QMK Keychron, from the keyboard" : "QMK VialRGB, from the keyboard")
+                Map = new LightMap(Array.Empty<LightInfo>())
                 {
                     Product = product,
                 },
@@ -484,7 +484,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (valid[led]) light = light with { X = drawCols[led], Y = drawRows[led], Width = 1, Height = 1, HasPosition = true };
                     lights.Add(light);
                 }
-                var map = new LightMap(lights, "QMK Keychron, from the keyboard") { Product = Product(vendorId, pid) };
+                var map = new LightMap(lights) { Product = Product(vendorId, pid) };
 
                 // What the keyboard shows now (via.c:684-708,
                 // keychron_rgb.c:164-169). A read with no answer is no state to set
@@ -679,7 +679,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 var mode = VialState(io);
                 if (mode == null) return null;
-                var map = new LightMap(new[] { QmkRawHidLighting.WholeLight() }, "QMK VialRGB, from the keyboard") { Product = product };
+                var map = new LightMap(new[] { QmkRawHidLighting.WholeLight() }) { Product = product };
                 return new VialSolidSession(map, mode);
             }
 
@@ -781,7 +781,7 @@ namespace PadForge.Common.Input.Peripherals
                 var mode = VialState(io);
                 if (mode == null) return null;
                 var original = ((ushort)(mode[0] | mode[1] << 8), mode[2], mode[3], mode[4], mode[5]);
-                var map = new LightMap(lights, "QMK VialRGB, from the keyboard") { Product = product };
+                var map = new LightMap(lights) { Product = product };
                 return new VialSession(count, map, original);
             }
 

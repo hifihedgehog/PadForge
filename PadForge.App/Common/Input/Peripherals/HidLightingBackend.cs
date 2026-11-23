@@ -738,7 +738,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (model == null) continue;
                     // A device that talks through more collections is one OpenRGB
                     // makes only once it found each of them
-                    // (RoccatControllerDetect.cpp:155-201).
+                    // (RoccatControllerDetect.cpp:158-204 at 6b681e3c).
                     if (!SiblingsPresent(walk, model, collection)) continue;
                     // A plugin that tries the collections of its list takes the first the
                     // device has, and the others stay out of its way.

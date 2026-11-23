@@ -27,6 +27,8 @@ namespace PadForge.Views
         private PadViewModel _vm;
         private bool _dirty;
         private bool _layoutBuilt;
+        // The look the lit parts were last painted in (#591).
+        private int _paintedLook;
 
         // Theme-aware brush keys — re-resolved by WPF on theme switch via
         // SetResourceReference. Dark-mode literals here used to leave the
@@ -814,6 +816,16 @@ namespace PadForge.Views
             // catches up.
             // Iconic gate: IsVisible stays TRUE while minimized.
             if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
+            // A look put on while the rig shows (#591): every lit part holds
+            // the last look's glow, so all of them are painted again, the
+            // buttons too, which otherwise repaint only on a press or release.
+            int look = PadForge.Common.Themes.ThemeLook.Version;
+            if (look != _paintedLook)
+            {
+                _paintedLook = look;
+                _dirty = true;
+                foreach (var w in _buttonWidgets) w.LastPressed = -1;
+            }
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 

@@ -13,8 +13,10 @@ namespace PadForge.Common.Input.Peripherals
     /// matched by OpenRGB's rules, and the detector a collection answers to
     /// picks the protocol.
     ///
-    /// <para>Every frame is an output report of 65 bytes with report ID 0,
-    /// as every controller of the family writes it with hid_write. Where
+    /// <para>Every frame is an output report with report ID 0, as every
+    /// controller of the family writes it with hid_write, and 65 bytes long
+    /// except behind a V3 keyboard's dongle, where it is 33
+    /// (CoolerMasterKeyboardsV3.cs). Where
     /// OpenRGB reads an answer after a write, PadForge reads one too. A read
     /// OpenRGB makes with hid_read and no time limit (the keyboards and the
     /// mousepad) waits up to <see cref="AnswerMs"/> here, and no answer in
@@ -47,9 +49,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>COOLERMASTER_VID (CoolerMasterControllerDetect.cpp:36).</summary>
         internal const ushort VendorId = 0x2516;
 
-        /// <summary>The length of every frame, the report ID included
-        /// (CM_KEYBOARD_WRITE_SIZE, CMKeyboardAbstractController.h:27, and the
-        /// PACKET_SIZE or PACKET_LENGTH of every other controller).</summary>
+        /// <summary>The length of every frame but a V3 keyboard's, the report ID
+        /// included (CM_KEYBOARD_WRITE_SIZE, CMKeyboardAbstractController.h:27,
+        /// and the PACKET_SIZE or PACKET_LENGTH of every other controller). A V3
+        /// keyboard's frames are <see cref="V3WiredWriteSize"/> wired and
+        /// <see cref="V3DongleWriteSize"/> behind its dongle.</summary>
         internal const int PacketLength = 65;
 
         /// <summary>The bound OpenRGB gives a read after a write
@@ -132,13 +136,13 @@ namespace PadForge.Common.Input.Peripherals
         internal static string Product(ushort productId) => $"coolermaster:{VendorId:X4}:{productId:X4}";
 
         private static HidLightingModel NewModel(string name, ushort productId, IReadOnlyList<LightInfo> lights,
-            string source, Func<IHidReportChannel, Action<int>, HidLightingSession> begin,
+            Func<IHidReportChannel, Action<int>, HidLightingSession> begin,
             int repaintMs = RepaintMs, int holdMs = 0)
             => new()
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(lights, source) { Product = Product(productId) },
+                Map = new LightMap(lights) { Product = Product(productId) },
                 Programs = new[] { VendorPrograms.MasterPlus },
                 RepaintMs = repaintMs,
                 HoldMs = holdMs,

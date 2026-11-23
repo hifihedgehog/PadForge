@@ -7,7 +7,8 @@ namespace PadForge.Views
 {
     /// <summary>A picture of a slot's controls that can say where a control
     /// is drawn, so the page can ring the picked one (#574). Every picture
-    /// of the Buttons section is one: the 3D and 2D models, the schematic,
+    /// of a slot's first section (Mappings on a controller) is one: the 3D
+    /// and 2D models, the schematic,
     /// the keyboard and mouse, the MIDI board, the two VR hands, and the
     /// touch sensors' capsules.</summary>
     internal interface IPictureWithPick

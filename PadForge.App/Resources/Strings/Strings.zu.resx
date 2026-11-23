@@ -92,7 +92,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Ku-inthanethi</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Ngaphandle kwe-inthanethi</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Akwaziwa</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Okuzenzakalelayo</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Phequlula…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Qhubeka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Misa</value></data>
@@ -298,13 +297,13 @@
   <data name="Dashboard_Port" xml:space="preserve"><value>Imbobo</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>Imbobo yesilawuli sewebhu</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ama-mod emidlalo</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ivumela ama-mod emidlalo enzelwe i-DSX ukuthi alawule ama-adaptive trigger, ibha yokukhanya, izibani zomdlali nesibani sokuthulisa ezilawulini zakho ze-PlayStation.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Ivumela ama-mod emidlalo enzelwe i-DSX ukuthi alawule ama-adaptive trigger, ibha yokukhanya, izibani zomdlali nesibani sokuthulisa se-DualSense noma se-DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Yamukela ama-mod emidlalo e-DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Imbobo yama-mod emidlalo</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Qalisa i-DSX.exe engumbambeli</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Amanye ama-mod, njenge-DualSense4GTAV, ayazicisha uma uhlelo olubizwa ngokuthi i-DSX lungasebenzi. Lokhu kuqalisa uhlelo oluncane olunalelo gama ngesikhathi iseva ilalele.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Isebenza nama-mod enzelwe i-DSX, njengalawo enzelwe i-GTA V, i-Red Dead Redemption 2, i-Skyrim ne-Forza. Ngesikhathi iseva ilalele, i-PadForge ibhala imbobo yayo lapho lawo ma-mod ayifuna khona.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kulalelwa embobeni :{0}. {1} ithumela kunombolo yesilawuli {2}, futhi asikho isilawuli esibonakalayo esinesilawuli se-PlayStation esinaleyo nombolo.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kulalelwa embobeni :{0}. {1} ithumela kunombolo yesilawuli {2}, futhi asikho isilawuli esibonakalayo esine-DualSense noma i-DualShock 4 esinaleyo nombolo.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Imbobo {0} isetshenziswa ngolunye uhlelo, njenge-DSX. Luvale noma ukhethe enye imbobo.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>I-mod yomdlalo</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Isilawuli sewebhu</value></data>
@@ -347,6 +346,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Ifayela alitholakalanga</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Alifundeki</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ifayela letimu “{0}” alikho noma alifundeki. I-PadForge ibonisa “Kumnyama” kuze libuye.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Ifayela letimu “{0}” alinayo itimu ye-PadForge. I-PadForge ibonisa “Kumnyama” kuze libe nayo.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Iphrofayela “{0}” isebenzisa ukubukeka komdlalo wayo. Itimu yakho iyabuya uma kusebenza enye iphrofayela.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Fihla amadivayisi kumageyimu</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Iwindi</value></data>
@@ -714,6 +714,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Engeza umbala</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Okusethwe ngaphambili</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Okwezifiso</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Kwenziwe ngumsebenzisi)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Izinduku</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Amathrigha</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ama-POV</value></data>
@@ -1261,7 +1262,6 @@
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Setha kabusha ukuphendula i-roll</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Ikhampasi</value></data>
   <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Igcina i-yaw ibheke enyakatho kazibuthe</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Setha kabusha kokuzenzakalelayo (kuvaliwe)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Ukulingisa i-pitch ne-roll</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>I-pitch ne-roll okubalwa nge-accelerometer</value></data>
   <data name="Settings_GyroSimulation" xml:space="preserve"><value>Lingisa i-pitch ne-roll</value></data>
@@ -1772,15 +1772,10 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>I-flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ukulungisa okokufaka kwe-flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Setha kabusha i-flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Setha kabusha kube ngu-14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Setha kabusha kube ngu-0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Setha kabusha kube ngu-0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>Amadigri angu-180</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>Amadigri angu-90</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>Amadigri angu-60</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>Amadigri angu-45</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Setha kabusha kube ngu-1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Setha kabusha kube ngu-0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Umbala webha yokukhanya</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Isondo</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Setha kabusha isondo</value></data>
@@ -1809,9 +1804,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Ivolumu</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Njalo</value></data>
   <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Valiwe</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Setha kabusha kube okuzenzakalelayo (Valiwe)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Setha kabusha kube okuzenzakalelayo (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Setha kabusha kube ngu-250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Khipha…</value></data>
@@ -2808,6 +2800,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Isilawuli asamukelanga umyalo osilungiselelayo, ngakho akukho okuthunyelwe. Hlola ukuthi sixhunyiwe bese uthumela futhi.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Ukuthumela kumiswe yiphutha ku-PadForge. Ifayela lelogi linemininingwane.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Isithombe sisathunyelwa esilawulini. Misa ukuthumela?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Qhubeka uthumela</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
@@ -2818,6 +2811,9 @@
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Isilawuli sewebhu esenziwe ngokwakho sigcina ibanga leqembu ngalinye lezilawuli ukusuka emaphethelweni aseduze esikrini esibanzi, njengoba izembozo ze-RetroArch zihambisa izingxenye zazo ezimbili. Kufundwe njengemibhalo kuphela, ayikho ikhodi ye-GPL efakiwe.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Lelo fayela akuyona itimu ye-PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda lelo fayela.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>I-PadForge ayikwazi ukuthola lelo fayela.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Akuyona itimu</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Itimu ayikwazanga ukulondolozwa. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Itimu entsha</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>I-PadForge ibonisa itimu ngesikhathi uyakha.</value></data>
@@ -2849,4 +2845,12 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Izithombe (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Wonke amafayela (*.*)|*.*</value></data>
   <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda lelo fayela njengesithombe.</value></data>
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Isithombe: ubuciko bomtapo we-Steam bomdlalo {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Idivayisi ayikwazanga ukuvulwa, ukufundwa noma ukumaphwa. Ilogi yokuxilonga isho igama layo.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Kuvele iphutha ku-{0}. Imbangela ikulogi yokuxilonga.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Kuvele iphutha enjinini yokufaka. Imbangela ikulogi yokuxilonga.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>I-SDL ayikwazanga ukuqala. Imbangela ikulogi yokuxilonga.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>I-HIDMaestro ayikwazanga ukusethwa. Imbangela ikulogi yokuxilonga.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Iphrofayela ye-HIDMaestro yesilawuli esibonakalayo ayikho. Ilogi yokuxilonga isho igama laso.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ayikwazanga ukuthatha ubuyena nesakhiwo sayo okwenziwe ngokwezifiso, ngakho isebenzisa okwephrofayela yayo.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda isithombe se-Steam salo mdlalo.</value></data>
 </root>

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>መስመር ላይ</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ከመስመር ውጭ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>ያልታወቀ</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>ነባሪ</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>አስስ…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ቀጥል</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>አቁም</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>ሞተሩ ቆሟል።</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>ስህተት፦ {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ሊፈጠር አልቻለም።</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>አንድ መሣሪያ ሊከፈት፣ ሊነበብ ወይም ሊመደብ አልቻለም። የምርመራ መዝገቡ ስሙን ይገልጻል።</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} ስህተት አጋጥሞታል። ምክንያቱ በምርመራ መዝገቡ ውስጥ አለ።</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>የግብዓት ሞተሩ ስህተት አጋጥሞታል። ምክንያቱ በምርመራ መዝገቡ ውስጥ አለ።</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ሊጀመር አልቻለም። ምክንያቱ በምርመራ መዝገቡ ውስጥ አለ።</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro ሊዋቀር አልቻለም። ምክንያቱ በምርመራ መዝገቡ ውስጥ አለ።</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>የአንድ ምናባዊ መቆጣጠሪያ HIDMaestro መገለጫ ጠፍቷል። የምርመራ መዝገቡ ስሙን ይገልጻል።</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ብጁ ማንነቱን እና አቀማመጡን መውሰድ ስላልቻለ የመገለጫውን የራሱን ይጠቀማል።</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>መገለጫ ተቀይሯል፦ {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>መገለጫ ተቀይሯል፦ ነባሪ</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ነባሪ</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>የእንቅስቃሴ አገልጋይ ወደብ</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>ለCemu፣ Dolphin፣ Yuzu እና ለሌሎችም የጋይሮ እና የአክስሌሮሜትር ውሂብ ያቀርባል።</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>የጨዋታ ሞዶች</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ለDSX የተሠሩ የጨዋታ ሞዶች የPlayStation መቆጣጠሪያዎችዎን አዳፕቲቭ ትሪገሮች፣ የብርሃን አሞሌ፣ የተጫዋች መብራቶች እና የድምጸ-ከል መብራት እንዲያዘጋጁ ያስችላል።</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ለDSX የተሠሩ የጨዋታ ሞዶች የDualSense ወይም DualShock 4 አዳፕቲቭ ትሪገሮች፣ የብርሃን አሞሌ፣ የተጫዋች መብራቶች እና የድምጸ-ከል መብራት እንዲያዘጋጁ ያስችላል።</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>የDSX የጨዋታ ሞዶችን ተቀበል</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>የጨዋታ ሞድ ወደብ</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>የDSX.exe ተተኪ አሂድ</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>አንዳንድ ሞዶች፣ ለምሳሌ DualSense4GTAV፣ DSX የሚባል ፕሮግራም ካልሠራ ራሳቸውን ያቦዝናሉ። ይህ አገልጋዩ በሚያዳምጥበት ጊዜ በዚያ ስም ትንሽ ተተኪ ያሂዳል።</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>ለDSX ከተሠሩ ሞዶች ጋር ይሠራል፣ ለምሳሌ ለGTA V፣ Red Dead Redemption 2፣ Skyrim እና Forza ከተሠሩት ጋር። አገልጋዩ በሚያዳምጥበት ጊዜ PadForge ወደቡን እነዚያ ሞዶች በሚፈልጉት ቦታ ይጽፋል።</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ። {1} ወደ ምናባዊ መቆጣጠሪያ {2} እየላከ ነው።</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ። {1} እየላከ ነው፣ ነገር ግን የPlayStation መቆጣጠሪያ የተመደበለት ምናባዊ መቆጣጠሪያ የለም።</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ። {1} ወደ መቆጣጠሪያ ቁጥር {2} እየላከ ነው፣ ነገር ግን PlayStation መቆጣጠሪያ ያለበት ምንም ምናባዊ መቆጣጠሪያ ያንን ቁጥር የለውም።</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ። {1} እየላከ ነው፣ ነገር ግን DualSense ወይም DualShock 4 የተመደበለት ምናባዊ መቆጣጠሪያ የለም።</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ። {1} ወደ መቆጣጠሪያ ቁጥር {2} እየላከ ነው፣ ነገር ግን DualSense ወይም DualShock 4 ያለበት ምንም ምናባዊ መቆጣጠሪያ ያንን ቁጥር የለውም።</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ወደብ {0} በሌላ ፕሮግራም፣ ለምሳሌ በDSX፣ በጥቅም ላይ ነው። ያንን ፕሮግራም ዝጋ ወይም ሌላ ወደብ ምረጥ።</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>አንድ የጨዋታ ሞድ</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ከOpenTrack እና የUDP ውጽዓቱን ከሚልክ ወይም የFreeTrack 2.0 የጋራ ማህደረ ትውስታ ከሚጽፍ ማንኛውም መከታተያ ጋር ይሠራል፣ እንዲሁም በዚህ ኮምፒውተር ላይ ክፍለ ጊዜን ከበስተጀርባ ማስኬድ ከሚችል የOpenXR ራንታይም ጋር ይሠራል።</value></data>
@@ -641,6 +647,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ፋይሉ አልተገኘም</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ሊነበብ አይችልም</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>የ«{0}» ፋይል ጠፍቷል ወይም ሊነበብ አይችልም። ፋይሉ እስኪመለስ ድረስ PadForge የ«ጨለማ» ገጽታን ያሳያል።</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>የ«{0}» ፋይል ምንም PadForge ገጽታ አልያዘም። ፋይሉ ገጽታ እስኪይዝ ድረስ PadForge የ«ጨለማ» ገጽታን ያሳያል።</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>መገለጫው «{0}» የጨዋታውን መልክ እያሳየ ነው። ሌላ መገለጫ ንቁ ሲሆን ገጽታዎ ይመለሳል።</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>የግብዓት ሞተር</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>የንባብ ባህሪን እና የበስተጀርባ ሂደትን ያዋቅሩ።</value></data>
@@ -1046,6 +1053,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>መቆጣጠሪያው እሱን የሚያዘጋጀውን ትዕዛዝ አልተቀበለም፣ ስለዚህ ምንም አልተላከም። መገናኘቱን አረጋግጥና እንደገና ላክ።</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>መላኩ PadForge ውስጥ በተፈጠረ ስህተት ቆሟል። ዝርዝሩ በምዝግብ ፋይሉ ውስጥ አለ።</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ምስል አሁንም ወደ መቆጣጠሪያው እየሄደ ነው። መላኩ ይቁም?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>መላኩን ቀጥል</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>የController Pak ፋይሎች (*.mpk)|*.mpk|ሁሉም ፋይሎች (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ወደብ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak መልስ</value></data>
@@ -1433,6 +1441,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>የምት መደብዘዝ</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>ቅድመ-ቅንብር</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>ብጁ</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (በተጠቃሚ የተፈጠረ)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>ስቲኮች</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ትሪገሮች</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2413,7 +2422,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ይህ መቆጣጠሪያ ማግኔቶሜትር አለው። ያውን ከመግነጢሳዊ ሰሜን ጋር ማያያዝ ከጋይሮ ማነጣጠር ዝግተኛ አግድም መንሸራተትን ያስወግዳል። መጀመሪያ አስተካክል፦ «አስተካክል»ን ተጫን፣ መቆጣጠሪያውን ለጥቂት ሰከንዶች በ8 ቅርጽ በሁሉም አቅጣጫዎች አሽከርክር፣ ከዚያ እንደገና ተጫን።</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ያውን ከኮምፓስ ጋር አያይዝ</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>አግድም አላማውን ወደ መግነጢሳዊው አቅጣጫ የሚጎትት ትንሽ የማስተካከያ ፍጥነት ያክላል፣ ስለዚህ መንሸራተት ሊከማች አይችልም። የተቀመጠ የማግኔቶሜትር ማስተካከያ ያስፈልገዋል። በአቅራቢያ ባለ ብረት ወይም ማግኔት የተረበሹ ናሙናዎች በራስ-ሰር ውድቅ ይደረጋሉ።</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>ወደ ነባሪ ዳግም አስጀምር (ጠፍቷል)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>የፒች እና ሮል ማስመሰል</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ከአክስሌሮሜትሩ የሚሰሉ ፒች እና ሮል</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>የዚህ መቆጣጠሪያ ጋይሮ የሚገነዘበው ወደ ግራ እና ወደ ቀኝ መዞርን ብቻ ነው። ማስመሰል ሲበራ PadForge ፒች እና ሮልን ከአክስሌሮሜትሩ ያወጣና ከጋይሮው ያው ጋር ወደ ማዛመጃ ረድፎች እና ወደ ምናባዊ መቆጣጠሪያው እንቅስቃሴ ይልካቸዋል። አክስሌሮሜትር መግፋትን ከማዘንበል መለየት ስለማይችል፣ መቆጣጠሪያውን ሳታዞር ወደ ጎን ወይም ወደ ፊት ማንቀሳቀስ እንደ አጭር ማሽከርከር ይነበባል።</value></data>
@@ -3223,13 +3231,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ፍሊክ ስቲክን ዳግም አስጀምር</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>ነጥቦች በ360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ለአንድ ሙሉ 360° የካሜራ ዙር የሚያስፈልጉ የመዳፊት ቆጠራዎች። በጨዋታው የመዳፊት ትብነት ላይ ይወሰናል፦ ፍሊክ ከሚገባው ያነሰ ከዞረ ይጨምሩት፣ ከሚገባው በላይ ከዞረ ይቀንሱት።</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>ወደ 14400 ዳግም አስጀምር</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>የፍሊክ ጊዜ</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>አንድ ሙሉ 180° ፍሊክ ለመጠናቀቅ የሚወስደው ጊዜ፣ በመጨረሻው እየቀዘቀዘ። አጠር ያሉ ዙሮችም በተመሳሳይ ጊዜ ይጠናቀቃሉ።</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>ወደ 0.1 ሰከንድ ዳግም አስጀምር</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>የፍሊክ ገደብ</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ፍሊክን የሚጀምር የስቲክ ማፈንገጥ፣ ከሙሉ ማፈንገጥ አንጻር እንደ ክፍልፋይ። ፍሊክ በሚደረግበት ጊዜ የመልቀቂያ ነጥቡ ወደዚህ እሴት 90% ይወርዳል።</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>ወደ 0.9 ዳግም አስጀምር</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>የማሰለፊያ ማዕዘን</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>ወጥ የሆኑ ዙሮችን ለማግኘት ፍሊኩን ወደ ቋሚ ማዕዘኖች ያሰልፉ። «ወደፊት ብቻ» እያንዳንዱን ፍሊክ በቀጥታ ወደ ፊት ያሰልፋል።</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>ማሰለፍ የለም</value></data>
@@ -3238,22 +3243,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 ዲግሪ</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 ዲግሪ</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 ዲግሪ</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>ወደ «ማሰለፍ የለም» ዳግም አስጀምር</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>የማሰለፍ ጥንካሬ</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ፍሊክ ወደ ተሰለፈው ማዕዘን ምን ያህል በጥንካሬ እንደሚሳብ። 1 ሙሉ በሙሉ ያሰልፋል፣ 0 ማሰለፍን ያሰናክላል፣ በመካከል ያሉ እሴቶች ሁለቱን ያቀላቅላሉ።</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>ወደ 1.0 ዳግም አስጀምር</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>የፊት ማዕዘን የሞተ ቀጠና</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>ከቀጥታ ፊት በዚህ ማዕዘን ውስጥ ያለ ፍሊክ ምንም አያዞርም። ያለ ፍሊክ ዙር ማንሸራተት እንዲጀምሩ ያስችላል።</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>ወደ 0° ዳግም አስጀምር</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>የማንሸራተት ማለስለሻ</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>የጠርዝ ማንሸራተት ጫጫታን ያለሰልሳል። -1 ራስ-ሰር ደረጃ ያለው መስኮትን ይጠቀማል፣ 0 ማለስለስን ያጠፋል፣ ትላልቅ እሴቶች በእያንዳንዱ ምት የሚደረጉ ትላልቅ ዙሮችን ያለሰልሳሉ።</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>ወደ ራስ-ሰር (-1) ዳግም አስጀምር</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>ሲነቃ ፍሊክ ፍቀድ</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>የማዞሪያ ማካካሻ</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>መላውን የፍሊክ ካርታ በዚህ ያህል ዲግሪ ያዞራል። አዎንታዊ እሴት በሰዓት አቅጣጫ ነው። ማሰለፍ ከማካካሻው በኋላ ይተገበራል።</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>የማዞሪያ ማካካሻን ዳግም አስጀምር</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ፍሊክ ስቲክን የያዘው ንብርብር ስቲኩ አስቀድሞ ተገፍቶ እያለ ሲነቃ፣ ፍሊኩ ወዲያውኑ ይፈጸማል። ሲጠፋ ካሜራው ሳይንቀሳቀስ ይቆያል፣ ዙሩንም ከአሁኑ የስቲክ ማዕዘን ጀምሮ ይከታተላል።</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>«ሲነቃ ፍሊክ ፍቀድ»ን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>የመሪ መቆለፊያ ግብረመልስ</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>በመሪ ሁነታ ያለ ስቲክ ሙሉ መቆለፊያ ሲደርስ የሚጫወት ምልክት</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ወደ መሪ ሁነታ የተዘጋጀ ስቲክ እስከ ሙሉ መቆለፊያ ድረስ ሲዞር፣ ገደቡ እንዲሰማዎት ምልክት (ንዝረት፣ ትሪገር ወይም የብርሃን አሞሌ) ይጫወታል። ሁሉም በነባሪ ጠፍተዋል።</value></data>
@@ -3443,11 +3442,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense ሃፕቲክስን በዚህ መቆጣጠሪያ ላይ አጫውት</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>አንድ ጨዋታ ይህን ቦታ እንደ ምናባዊ DualSense በተዘጋጀ የሃፕቲክ ድምጽ ሲነዳ፣ ያንን ትራክ በዚህ መቆጣጠሪያ አንቀሳቃሾች ላይ ያጫውታል። Steam Controller 2026 በUSB ወይም በዶንግሉ ሲገናኝ፣ እንዲሁም Flydigi Apex 6 Pro፣ ትራኩን ራሳቸው ያጫውታሉ። ሌሎች መቆጣጠሪያዎች ሁሉ፣ እንዲሁም ያ Steam Controller በBluetooth ሲገናኝ፣ ከድምጹ የተገኙ ቃናዎችን ያገኛሉ። እነዚህ ቃናዎች የንድፍ አውጪውን ስሜት ይገምታሉ እንጂ በትክክል አይደግሙትም።</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>የሃፕቲክስ ማጉላት</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ወደ ነባሪ ዳግም አስጀምር (ጠፍቷል)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ወደ ነባሪ ዳግም አስጀምር (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>የአንቀሳቃሽ ዝቅተኛ ድግግሞሽ ማጣሪያ ወሰን</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>የSteam Controller ሃፕቲክ ዥረትን ከዚህ ድግግሞሽ በታች ያቆያል፣ ስለዚህ ሰሌዳዎቹ ድምጽ ከማሰማት ይልቅ ይንዘረዘራሉ። በ250 Hz አካባቢ የአንቀሳቃሾቹ ድምጽ መሰማት ይጀምራል። ለጠራ ዝርዝር ይጨምሩት፣ ለጸጥ ያለ አሠራር ይቀንሱት።</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>ወደ 250 Hz ዳግም አስጀምር</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>ከዚህ ድግግሞሽ በላይ ያሉ ቃናዎች ይቆረጣሉ ወይም ይታጠፋሉ። ነባሪው 800 Hz የኤንጂንና የግጭት ንዝረትን ያቆያል፣ ከፍ ያለ ቃና ያላቸውን ቢፖች ግን ይይዛል።</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ከፍተኛ ቃናዎችን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>የቃና ገደብን ዳግም አስጀምር</value></data>
@@ -4016,8 +4012,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>የወርክሾፕ መገለጫ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>የወርክሾፕ ማክሮ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>የጠቋሚ ክልል</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>የ{0} ሽግግር</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>የጎማ ዝርዝር ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>የጠቋሚ ክልል ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>የመዳፊት {0} ያዝ ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>የመዳፊት {0} ጠቅ አድርግ ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>የመዳፊት {0} ቀያይር ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>የንዝረት ምት ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ከተለቀቀ በኋላ)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} መታ አድርግ ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} ራስ ሰር ተኩስ ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} ያዝ ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} ቀያይር ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} ቱርቦ ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} ድርብ ጫን ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} ረጅም ጫን ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>የጎማ እርምጃ ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>ጎማ ቀያይር ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>ቱርቦ ጎማ ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>ጠቋሚን አዛውር ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED አዘጋጅ ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ጋይሮን እንደገና አማክል ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>ጠቋሚን በጥቂቱ አንቀሳቅስ ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>የቅጽበታዊ ገጽ እይታ ቁልፍ ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>የማያ ገጽ ቁልፍ ሰሌዳ ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>የብርሃን ቀለም አዘጋጅ</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>ካሜራን እንደገና አማክል</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>ጠቋሚን አዛውር</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>ጠቋሚን በጥቂቱ አንቀሳቅስ</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>ቅጽበታዊ ገጽ እይታ</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>የማያ ገጽ ቁልፍ ሰሌዳ</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>የሽግግር ንብርብር ቀይር</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>የሽግግር ንብርብር አብራ</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>የሽግግር ንብርብር አጥፋ</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>የሽግግር ንብርብር ያዝ</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>የተጫዋች ቁጥር ቀይር</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>ያልተመደበ</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>የዴስክቶፕ ሁነታን ቀያይር</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>የSteam ሥርዓት ቁልፍ</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>ማጉያን ቀያይር</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>ብሩህነት ጨምር</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>ብሩህነት ቀንስ</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>መቆጣጠሪያውን አጥፋ</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>የSteam ማዋቀሪያን ክፈት</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>የSteam ፈጣን ምናሌን ክፈት</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>ከጨዋታ ውጣ</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>ሃፕቲክስን ቀያይር</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>የSteam HUD ቀያይር</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>ንዝረትን ቀያይር</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>የGuide አዝራርን አስገድድ</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>የጋይሮ ልኬት ሽክርክሪት</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>ወደ አቅጣጫው ዙር</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (መያዝ)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (መልቀቅ)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (መልቀቅ)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ማንቃት)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>የሚተላለፈውን ለማየት ውቅር ይምረጡ።</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>የሚተላለፈው</value></data>
@@ -4625,11 +4672,9 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>ንብርብር</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>ይህን ምናሌ የሚፈቅደውን ንብርብር ይምረጡ። «ማንኛውም ንብርብር» እና «መሠረት» ሁለቱም በሌሎች ንቁ ንብርብሮች ስር ይፈቅዱታል። የተሰየመ ንብርብር አሁን ካለው ንቁ ንብርብር ጋር መመሳሰል አለበት።</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>ወደ «ማንኛውም ንብርብር» ዳግም አስጀምር እና በንብርብር የሚያዝ መክፈትን አጥፋ።</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (በዚህ ቦታ ላይ አልተዘረዘረም)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>ንብርብሩ ምናሌውን ክፍት ያቆያል</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>የተሰየመው ንብርብሩ ንቁ ሆኖ ሳለ ይህን ምናሌ ክፍት ያቆያል። የተመረጠው አካላዊ ግብዓት ማድመቂያውን ይመራል። «ማንኛውም ንብርብር» እና «መሠረት» መደበኛውን የገጽ መክፈቻ ይጠቀማሉ።</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>በመንካት ወይም በማፈንገጥ ወደ መክፈት ዳግም አስጀምር።</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>መምሪያ ግብዓት</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ንብርብሩ ይህን ምናሌ ክፍት በሚያቆይበት ጊዜ የደመቀውን ሕዋስ የሚመራው አካላዊ ግብዓት።</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ለዚህ ቦታ ከተመደቡት አካላዊ መቆጣጠሪያዎች ይነበባል። ንብርብሩ ምናሌውን ይከፍታል፣ ይህ ግብዓት ደግሞ ይመራዋል። የምናሌው ሕዋሶች ምን እንደሚያወጣ ይገልጻሉ።</value></data>
@@ -4709,7 +4754,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>ሞተር</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>በአቅጣጫ የተከፈለ</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>የመሃል የሞተ ቀጠና</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ወደ «የግራ ስቲክ X» ዳግም አስጀምር</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ጥንካሬን ዳግም አስጀምር (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>የመሃል የሞተ ቀጠናን ዳግም አስጀምር (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>«የመሪ ማዕዘን ንዝረትን አንቃ» ዳግም አስጀምር</value></data>
@@ -5232,6 +5276,9 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ማጉያ (ተጭኖ ሲያዝ)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ይህ ማክሮ ተጭኖ ሲያዝ በዕይታ መነጽር ለማነጣጠር ማጉያውን ያሳያል። በ«ማጉያ» ገጽ ላይ ያዘጋጁት።</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ያ ፋይል PadForge የሚጠቀምበት ገጽታ አይደለም።</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ያንን ፋይል ማንበብ አይችልም።</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ያንን ፋይል ማግኘት አይችልም።</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>ገጽታ አይደለም</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ገጽታው ሊቀመጥ አልቻለም። {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>አዲስ ገጽታ</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>ገጽታውን እየሠሩ ሳሉ PadForge ገጽታውን ለብሶ ያሳያል።</value></data>
@@ -5246,6 +5293,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>ምስሉን ከSteam በማምጣት ላይ…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ለዚህ ጨዋታ ሰፊ ምስል የለውም።</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>ከSteam ጋር መገናኘት አልተቻለም። ግንኙነትዎን ይፈትሹ።</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ለዚህ ጨዋታ ከSteam የመጣውን ምስል ማንበብ አይችልም።</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>ቦታ</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ምስሉን በመስኮቱ ውስጥ ወደ ላይ ወይም ወደ ታች ያንቀሳቅሳል።</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>የጨዋታውን አርማ አሳይ</value></data>
@@ -5286,4 +5334,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ለመጀመሪያው የስታር ትሬክ ተከታታይ የተቀረጸው ሞዴል፣ ሞዴሉን በያዘው Smithsonian National Air and Space Museum የተነሣ ፎቶ፦ የስታር ትሬክ ገጽታ LCARS ምስል።</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>የገጽታ ምስል፦ USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ከስታር ትሬክ፦ ዘ ኔክስት ጀነሬሽን የተወሰደ ፍሬም፦ የስታር ትሬክ ገጽታ Starfleet ምስል። በMemory Alpha ላይ የተገኘ።</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>የብርሃን አሞሌ</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>የ{0} የብርሃን አሞሌ</value></data>
 </root>

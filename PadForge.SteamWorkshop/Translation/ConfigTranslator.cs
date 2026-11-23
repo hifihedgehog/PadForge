@@ -2366,7 +2366,7 @@ namespace PadForge.SteamWorkshop.Translation
                     };
                 var cycle = new TranslatedMacro
                 {
-                    Name = $"Wheel list ({SlotDisplayName(slot)})",
+                    Name = Named(run, TranslationNames.WheelList, SlotDisplayName(slot)),
                     Action = TranslatedMacroAction.CycleList,
                     TriggerMode = "OnPress",
                     ConsumeTrigger = false,
@@ -2942,7 +2942,7 @@ namespace PadForge.SteamWorkshop.Translation
                 entry.Items.Add(new PadForge.Engine.Menus.MenuItemDefinition
                 {
                     Index = cell.Index,
-                    Label = CellLabel(cell.Input),
+                    Label = CellLabel(cell.Input, run.Options.NameFormat),
                     Icon = icon,
                 });
                 if (unresolvedRef != null)
@@ -2986,7 +2986,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// the binding carries one (the second comma field), else the
         /// binding's own parameter ("F5", "A"), matching how Steam falls
         /// back to the command glyph when no label is set.</summary>
-        private static string CellLabel(SteamInputInput input)
+        private static string CellLabel(SteamInputInput input, Func<string, string> nameFormat)
         {
             foreach (var act in input.Activators)
             {
@@ -3008,7 +3008,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // to plain spelling for a key or button parameter
                     // ("F5" and "A" stay themselves, which is what Steam
                     // shows when no label is set).
-                    return SteamVocabulary.CommandLabel(p) ?? SteamVocabulary.SpellToken(p);
+                    return SteamVocabulary.CommandLabel(p, nameFormat) ?? SteamVocabulary.SpellToken(p);
                 }
             }
             return "";
@@ -3223,7 +3223,7 @@ namespace PadForge.SteamWorkshop.Translation
 
             var macro = new TranslatedMacro
             {
-                Name = $"Cursor region ({SlotDisplayName(slot)})",
+                Name = Named(run, TranslationNames.CursorRegion, SlotDisplayName(slot)),
                 Action = TranslatedMacroAction.MouseLimitRegion,
                 TriggerMode = "WhileHeld", // semantic; materializer lowers to an on/off toggle pair
                 ConsumeTrigger = false,
@@ -4898,7 +4898,7 @@ namespace PadForge.SteamWorkshop.Translation
                         }
                         var macro = new TranslatedMacro
                         {
-                            Name = $"Hold mouse {SteamVocabulary.SpellToken(FirstToken(binding.Param))} ({SteamVocabulary.MemberLabel(source?.Descriptor, input.Name)})",
+                            Name = Named(run, TranslationNames.HoldMouse, SteamVocabulary.SpellToken(FirstToken(binding.Param)), SteamVocabulary.MemberLabel(source?.Descriptor, input.Name)),
                             Action = TranslatedMacroAction.HoldMouseButton,
                             TriggerMode = "DoublePress",
                             // Never consumed: the OnRelease twin reads the
@@ -5113,7 +5113,7 @@ namespace PadForge.SteamWorkshop.Translation
 
             var macro = new TranslatedMacro
             {
-                Name = $"Haptic pulse ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.HapticPulse, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.RumblePulse,
                 TriggerMode = holdMs > 0 ? "HoldForMs" : triggerMode,
                 TriggerHoldMs = holdMs,
@@ -5286,7 +5286,7 @@ namespace PadForge.SteamWorkshop.Translation
                         {
                             var ext = new TranslatedMacro
                             {
-                                Name = $"{m.Name} (release tail)",
+                                Name = Named(run, TranslationNames.ReleaseTail, m.Name),
                                 Action = m.Action == TranslatedMacroAction.HoldVcButton
                                     ? TranslatedMacroAction.VcButtonTap
                                     : TranslatedMacroAction.VcAxisTap,
@@ -5607,7 +5607,7 @@ namespace PadForge.SteamWorkshop.Translation
             }
             var macro = new TranslatedMacro
             {
-                Name = $"Hold mouse {SteamVocabulary.SpellToken(FirstToken(binding.Param))} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.HoldMouse, SteamVocabulary.SpellToken(FirstToken(binding.Param)), SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.HoldMouseButton,
                 TriggerMode = triggerMode,
                 TriggerHoldMs = holdMs,
@@ -6129,10 +6129,10 @@ namespace PadForge.SteamWorkshop.Translation
             // The vk above already carries the identity, so the token has
             // no job left except to be read. Spell it.
             keyName = SteamInputVkTable.KeyDisplayName(keyName);
-            string verb = shape.Action == TranslatedMacroAction.KeyTap ? "Tap" : "Autofire";
+            string verbKey = shape.Action == TranslatedMacroAction.KeyTap ? TranslationNames.Tap : TranslationNames.Autofire;
             var macro = new TranslatedMacro
             {
-                Name = $"{verb} {keyName} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, verbKey, keyName, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = shape.Action,
                 TriggerMode = shape.TriggerMode,
                 TriggerHoldMs = holdMs,
@@ -6163,7 +6163,7 @@ namespace PadForge.SteamWorkshop.Translation
             keyName = SteamInputVkTable.KeyDisplayName(keyName);
             var macro = new TranslatedMacro
             {
-                Name = $"Hold {keyName} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Hold, keyName, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.HoldKey,
                 TriggerMode = triggerMode,
                 TriggerHoldMs = holdMs,
@@ -6189,7 +6189,7 @@ namespace PadForge.SteamWorkshop.Translation
             SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int btn);
             var macro = new TranslatedMacro
             {
-                Name = $"Click mouse {SteamVocabulary.SpellToken(FirstToken(binding.Param))} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.ClickMouse, SteamVocabulary.SpellToken(FirstToken(binding.Param)), SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.MouseButtonTap,
                 TriggerMode = triggerMode,
                 ConsumeTrigger = false,
@@ -6210,7 +6210,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Tap {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Tap, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.VcButtonTap,
                 TriggerMode = triggerMode,
                 TargetXboxButtons = xt.XboxButtonBit,
@@ -6233,7 +6233,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Tap {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Tap, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.VcAxisTap,
                 TriggerMode = triggerMode,
                 ConsumeTrigger = false,
@@ -6260,7 +6260,7 @@ namespace PadForge.SteamWorkshop.Translation
             bool dbl = triggerMode == "DoublePress";
             var macro = new TranslatedMacro
             {
-                Name = $"{(dbl ? "Double press" : "Long press")} {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, dbl ? TranslationNames.DoublePress : TranslationNames.LongPress, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.HoldVcAxis,
                 TriggerMode = triggerMode,
                 TriggerHoldMs = holdMs,
@@ -6289,7 +6289,7 @@ namespace PadForge.SteamWorkshop.Translation
             bool horizontal = wheel.Target == "KbmScrollH";
             var macro = new TranslatedMacro
             {
-                Name = $"Wheel tick ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.WheelTick, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.MouseWheelTap,
                 TriggerMode = triggerMode,
                 TriggerHoldMs = holdMs,
@@ -6567,7 +6567,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Toggle {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Toggle, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.ToggleVcButton,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : "OnPress"),
                 TriggerHoldMs = holdMs,
@@ -6612,7 +6612,7 @@ namespace PadForge.SteamWorkshop.Translation
             keyName = SteamInputVkTable.KeyDisplayName(keyName);
             var macro = new TranslatedMacro
             {
-                Name = $"Toggle {keyName} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Toggle, keyName, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.ToggleKey,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : (onRelease ? "OnRelease" : "OnPress")),
                 TriggerHoldMs = holdMs,
@@ -6639,7 +6639,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Toggle mouse {SteamVocabulary.SpellToken(FirstToken(binding.Param))} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.ToggleMouse, SteamVocabulary.SpellToken(FirstToken(binding.Param)), SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.ToggleMouseButton,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : (onRelease ? "OnRelease" : "OnPress")),
                 TriggerHoldMs = holdMs,
@@ -6667,7 +6667,7 @@ namespace PadForge.SteamWorkshop.Translation
             bool horizontal = wheel.Target == "KbmScrollH";
             var macro = new TranslatedMacro
             {
-                Name = $"Toggle wheel ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.ToggleWheel, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.ToggleWheel,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : (onRelease ? "OnRelease" : "OnPress")),
                 TriggerHoldMs = holdMs,
@@ -6698,7 +6698,7 @@ namespace PadForge.SteamWorkshop.Translation
             bool horizontal = wheel.Target == "KbmScrollH";
             var macro = new TranslatedMacro
             {
-                Name = $"Turbo wheel ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.TurboWheel, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.RepeatWheelWhileHeld,
                 TriggerMode = "WhileHeld",
                 ConsumeTrigger = false,
@@ -6723,7 +6723,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Toggle {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Toggle, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.ToggleVcAxis,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : "OnPress"),
                 TriggerHoldMs = holdMs,
@@ -6750,7 +6750,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Turbo {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Turbo, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.RepeatVcAxisWhileHeld,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : "WhileHeld"),
                 TriggerHoldMs = holdMs,
@@ -6779,7 +6779,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var macro = new TranslatedMacro
             {
-                Name = $"Turbo {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, TranslationNames.Turbo, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.RepeatVcButtonWhileHeld,
                 TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : "WhileHeld"),
                 TriggerHoldMs = holdMs,
@@ -6806,7 +6806,7 @@ namespace PadForge.SteamWorkshop.Translation
             bool dbl = triggerMode == "DoublePress";
             var macro = new TranslatedMacro
             {
-                Name = $"{(dbl ? "Double press" : "Long press")} {xt.Target} ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                Name = Named(run, dbl ? TranslationNames.DoublePress : TranslationNames.LongPress, xt.Target, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                 Action = TranslatedMacroAction.HoldVcButton,
                 TriggerMode = triggerMode,
                 TriggerHoldMs = holdMs,
@@ -6865,7 +6865,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // The layer's DISPLAY name (ShiftActivator.LayerName), which
                 // the shift-layer flyout puts on screen. LayerMask above is
                 // the identity and keeps the raw token; this does not.
-                LayerName = $"{PhysicalSlotResolver.SlotDisplayName(slotToken)} shift",
+                LayerName = Named(run, TranslationNames.ModeShiftLayer, PhysicalSlotResolver.SlotDisplayName(slotToken)),
                 // The activator toggle setting latches the shift instead of
                 // holding it (wave 2A); the engine's Toggle mode is the
                 // same construct. A one-shot flick host (v15) has no held
@@ -6921,7 +6921,7 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     var warp = new TranslatedMacro
                     {
-                        Name = $"Warp cursor ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                        Name = Named(run, TranslationNames.WarpCursor, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                         Action = TranslatedMacroAction.MoveMouseToScreenPosition,
                         // Long_Press warps fire at the hold threshold, the
                         // SET_LED / camera_reset shape (v24).
@@ -7136,7 +7136,7 @@ namespace PadForge.SteamWorkshop.Translation
                     int satPct = sat > 100 ? (int)Math.Round(sat * 100.0 / 255.0) : sat;
                     var led = new TranslatedMacro
                     {
-                        Name = $"Set LED ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                        Name = Named(run, TranslationNames.SetLed, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                         Action = TranslatedMacroAction.SetLightbarColor,
                         // Long_Press set_led fires at the hold threshold,
                         // same shape as camera_reset (v10 G10).
@@ -7177,7 +7177,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // surgery and are dropped.
                     var macro = new TranslatedMacro
                     {
-                        Name = $"Recenter gyro ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                        Name = Named(run, TranslationNames.RecenterGyro, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                         Action = TranslatedMacroAction.GyroRecenter,
                         TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
                             : onRelease ? "OnRelease" : "OnPress"),
@@ -7228,7 +7228,7 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     var nudge = new TranslatedMacro
                     {
-                        Name = $"Nudge cursor ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                        Name = Named(run, TranslationNames.NudgeCursor, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                         Action = TranslatedMacroAction.MouseNudge,
                         TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
                             : onRelease ? "OnRelease" : "OnPress"),
@@ -7264,7 +7264,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // the SteamClientActions set below.
                     var shot = new TranslatedMacro
                     {
-                        Name = $"Screenshot key ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                        Name = Named(run, TranslationNames.ScreenshotKey, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                         Action = TranslatedMacroAction.KeyTap,
                         // Long_Press taps at the hold threshold (v24).
                         TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
@@ -7290,7 +7290,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // Silent since v17, the SCREENSHOT ruling.
                     var osk = new TranslatedMacro
                     {
-                        Name = $"On-screen keyboard ({SteamVocabulary.MemberLabel(source?.Descriptor, inputName)})",
+                        Name = Named(run, TranslationNames.OnScreenKeyboard, SteamVocabulary.MemberLabel(source?.Descriptor, inputName)),
                         Action = TranslatedMacroAction.ShowOnScreenKeyboard,
                         // Long_Press launches at the hold threshold (v24).
                         TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
@@ -7371,12 +7371,25 @@ namespace PadForge.SteamWorkshop.Translation
         {
             if (run.PresetNames.TryGetValue(presetId, out var n)) return n;
             var preset = run.Config.Presets.FirstOrDefault(p => p.Id == presetId);
-            return preset != null ? PresetDisplayName(run, preset) : $"Preset {presetId}";
+            return preset != null ? PresetDisplayName(run, preset) : Named(run.Options, TranslationNames.UnnamedPreset, presetId);
         }
+
+        /// <summary>A name the translator stores, in the run's language: the
+        /// options' format for the key, or the key's English when the options
+        /// have none.</summary>
+        private static string Named(TranslationOptions options, string key, params object[] args)
+        {
+            string format = options?.NameFormat?.Invoke(key);
+            if (string.IsNullOrEmpty(format) || format == key) format = TranslationNames.English[key];
+            return string.Format(CultureInfo.CurrentCulture, format, args);
+        }
+
+        private static string Named(Run run, string key, params object[] args)
+            => Named(run.Options, key, args);
 
         /// <summary>The menu's name in the Menus list: the author's group
         /// name qualified by the preset that hosts it ("Menu (Menu save)"),
-        /// or the generated fallback when the group is unnamed.
+        /// or the string table's name for an unnamed radial or touch menu.
         ///
         /// <para>The qualifier is not decoration. A group name is unique only
         /// within its preset, and the list is flat, so two presets carrying a
@@ -7387,7 +7400,7 @@ namespace PadForge.SteamWorkshop.Translation
             SteamInputGroup group, bool radial, int menuId, string layer)
         {
             string bare = string.IsNullOrWhiteSpace(group.Name)
-                ? $"{(radial ? "Radial" : "Touch")} Menu {menuId}"
+                ? Named(run, radial ? TranslationNames.UnnamedRadialMenu : TranslationNames.UnnamedTouchMenu, menuId)
                 : group.Name.Trim();
 
             if (run.Config?.Presets == null || run.Config.Presets.Count < 2) return bare;
@@ -7411,17 +7424,24 @@ namespace PadForge.SteamWorkshop.Translation
         /// the display title behind it, often a <c>#token</c> into the
         /// config's localization (Valve's TF2 config titles its sets
         /// <c>#MenuControls</c>-style, community layers carry plain titles
-        /// such as "Secondary"). Falls back to the raw token.</summary>
+        /// such as "Secondary"). Falls back to the raw token, and an unnamed
+        /// preset to the string table's name for it.</summary>
         private static string PresetDisplayName(Run run, SteamInputPreset preset)
+            => PresetDisplayName(run.Config, preset, run.Options);
+
+        /// <summary>The name a translation run with these options gives the
+        /// preset in its layers, menus and report. The browser's preset chips
+        /// read it here so they match what the import writes.</summary>
+        public static string PresetDisplayName(SteamInputConfig config, SteamInputPreset preset,
+            TranslationOptions options)
         {
-            string raw = string.IsNullOrWhiteSpace(preset.Name)
-                ? $"Preset {preset.Id}" : preset.Name;
-            if (!string.IsNullOrWhiteSpace(preset.Name)
-                && run.Config.ActionSetTitles.TryGetValue(preset.Name.Trim(), out var title))
-            {
-                return ResolveText(run, title, preset.Name.Trim(), raw);
-            }
-            return raw;
+            if (config == null) throw new ArgumentNullException(nameof(config));
+            if (preset == null) throw new ArgumentNullException(nameof(preset));
+            string token = (preset.Name ?? "").Trim();
+            if (token.Length == 0) return Named(options, TranslationNames.UnnamedPreset, preset.Id);
+            if (config.ActionSetTitles.TryGetValue(token, out var title))
+                return ResolveText(config, options, title, token, preset.Name);
+            return preset.Name;
         }
 
         /// <summary>Steam's CHANGE_PRESET sentinel ids (v20). These are
@@ -8010,8 +8030,8 @@ namespace PadForge.SteamWorkshop.Translation
             var profile = run.Profile;
             profile.Name = !string.IsNullOrWhiteSpace(run.Options.ProfileNameOverride)
                 ? run.Options.ProfileNameOverride
-                : ResolveText(run, run.Config.Title, "title", "Steam Workshop Config");
-            profile.Description = ResolveText(run, run.Config.Description, "description", "");
+                : ResolveText(run.Config, run.Options, run.Config.Title, "title", Named(run, TranslationNames.UntitledConfig));
+            profile.Description = ResolveText(run.Config, run.Options, run.Config.Description, "description", "");
             run.Report.ConfigTitle = profile.Name;
 
             // Matched-side implicit analog outputs (trigger pulls, stick
@@ -8606,7 +8626,18 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        private static string ResolveText(Run run, string rootValue, string field, string fallback)
+        /// <summary>The config's languages to read, best first: the options'
+        /// preferred languages, then English.</summary>
+        private static IEnumerable<string> ReadingLanguages(TranslationOptions options)
+        {
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (string lang in options?.PreferredLanguages ?? Array.Empty<string>())
+                if (!string.IsNullOrWhiteSpace(lang) && seen.Add(lang)) yield return lang;
+            if (seen.Add("english")) yield return "english";
+        }
+
+        private static string ResolveText(SteamInputConfig config, TranslationOptions options,
+            string rootValue, string field, string fallback)
         {
             // Root wins when it is a real string; template-derived configs
             // carry a #token or empty root and localize per language.
@@ -8614,39 +8645,39 @@ namespace PadForge.SteamWorkshop.Translation
             if (root.Length > 0 && !root.StartsWith("#", StringComparison.Ordinal))
                 return root;
 
-            string lang = string.IsNullOrWhiteSpace(run.Options.PreferredLanguage)
-                ? "english" : run.Options.PreferredLanguage;
+            var languages = ReadingLanguages(options).ToList();
+            var localization = config.Localization;
 
             // A '#token' root names a key in the config's OWN localization
             // block. Ground truth: Valve's official TF2 config (1172518660)
             // carries title "#Title_TF2Default" and localization
             // english/Title_TF2Default "Team Fortress 2 Defaults".
-            // Preferred language first, then english, then any language in
+            // Preferred languages first, then english, then any language in
             // ordinal order for determinism. Steam-library tokens such as
             // #Library_ControllerSaveDefaultTitle (770509247) match nothing
             // in the config and fall through to the fallback.
             if (root.Length > 1 && root.StartsWith("#", StringComparison.Ordinal))
             {
                 string token = root.Substring(1);
-                foreach (var candidate in new[] { lang, "english" })
+                foreach (var candidate in languages)
                 {
-                    if (run.Config.Localization.TryGetValue(candidate, out var map)
+                    if (localization.TryGetValue(candidate, out var map)
                         && map.TryGetValue(token, out var v)
                         && !string.IsNullOrWhiteSpace(v))
                         return v.Trim();
                 }
-                foreach (var language in run.Config.Localization.Keys
+                foreach (var language in localization.Keys
                     .OrderBy(k => k, StringComparer.Ordinal))
                 {
-                    if (run.Config.Localization[language].TryGetValue(token, out var v)
+                    if (localization[language].TryGetValue(token, out var v)
                         && !string.IsNullOrWhiteSpace(v))
                         return v.Trim();
                 }
             }
 
-            foreach (var candidate in new[] { lang, "english" })
+            foreach (var candidate in languages)
             {
-                if (run.Config.Localization.TryGetValue(candidate, out var map)
+                if (localization.TryGetValue(candidate, out var map)
                     && map.TryGetValue(field, out var v)
                     && !string.IsNullOrWhiteSpace(v))
                     return v.Trim();

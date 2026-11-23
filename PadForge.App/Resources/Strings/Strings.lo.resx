@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ອອນລາຍ</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ອອບລາຍ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>ບໍ່ຮູ້ຈັກ</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>ຊອກຫາ…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ດຳເນີນການຕໍ່</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ຢຸດ</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>ເອັນຈິນຢຸດແລ້ວ.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>ຂໍ້ຜິດພາດ: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>ບໍ່ສາມາດສ້າງ {0} ໄດ້.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>ບໍ່ສາມາດເປີດ, ອ່ານ ຫຼື ແມັບອຸປະກອນໜຶ່ງໄດ້. ບັນທຶກການວິນິດໄສລະບຸຊື່ອຸປະກອນນັ້ນໄວ້.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} ເກີດຂໍ້ຜິດພາດ. ບັນທຶກການວິນິດໄສມີສາເຫດ.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>ເອັນຈິນອິນພຸດເກີດຂໍ້ຜິດພາດ. ບັນທຶກການວິນິດໄສມີສາເຫດ.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ບໍ່ສາມາດເລີ່ມໄດ້. ບັນທຶກການວິນິດໄສມີສາເຫດ.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>ບໍ່ສາມາດຕັ້ງຄ່າ HIDMaestro ໄດ້. ບັນທຶກການວິນິດໄສມີສາເຫດ.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ໂປຣໄຟລ໌ HIDMaestro ຂອງຕົວຄວບຄຸມສະເໝືອນໜຶ່ງຫາຍໄປ. ບັນທຶກການວິນິດໄສລະບຸຊື່ໄວ້.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ບໍ່ສາມາດໃຊ້ຕົວຕົນ ແລະ ໂຄງຮ່າງທີ່ກຳນົດເອງໄດ້ ຈຶ່ງໃຊ້ຂອງໂປຣໄຟລ໌ຕົນເອງແທນ.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>ປ່ຽນໂປຣໄຟລ໌ແລ້ວ: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>ປ່ຽນໂປຣໄຟລ໌ແລ້ວ: ຄ່າເລີ່ມຕົ້ນ</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>ພອດເຊີບເວີການເຄື່ອນໄຫວ</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>ສົ່ງຂໍ້ມູນໄຈໂຣ ແລະ ເຊັນເຊີວັດຄວາມເລັ່ງໃຫ້ Cemu, Dolphin, Yuzu ແລະ ອື່ນໆ.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>ມອດເກມ</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ໃຫ້ມອດເກມທີ່ສ້າງສຳລັບ DSX ຕັ້ງທຣິກເກີປັບຕົວ, ແຖບໄຟ, ໄຟຜູ້ຫຼິ້ນ ແລະ ໄຟປິດສຽງ ຂອງຕົວຄວບຄຸມ PlayStation ຂອງທ່ານ.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ໃຫ້ມອດເກມທີ່ສ້າງສຳລັບ DSX ຕັ້ງທຣິກເກີປັບຕົວ, ແຖບໄຟ, ໄຟຜູ້ຫຼິ້ນ ແລະ ໄຟປິດສຽງ ຂອງ DualSense ຫຼື DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>ຮັບມອດເກມ DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>ພອດມອດເກມ</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>ເປີດ DSX.exe ຕົວແທນ</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>ບາງມອດ ເຊັ່ນ DualSense4GTAV ຈະປິດຕົວເອງ ຖ້າບໍ່ມີໂປຣແກຣມຊື່ DSX ກຳລັງເຮັດວຽກຢູ່. ຕົວເລືອກນີ້ເປີດໂປຣແກຣມຕົວແທນຂະໜາດນ້ອຍທີ່ມີຊື່ນັ້ນ ໃນຂະນະທີ່ເຊີບເວີກຳລັງຟັງຢູ່.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບມອດທີ່ສ້າງສຳລັບ DSX ເຊັ່ນ ມອດສຳລັບ GTA V, Red Dead Redemption 2, Skyrim ແລະ Forza. ໃນຂະນະທີ່ເຊີບເວີກຳລັງຟັງຢູ່, PadForge ຈະຂຽນພອດຂອງມັນໄວ້ບ່ອນທີ່ມອດເຫຼົ່ານັ້ນຊອກຫາ.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}. {1} ກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມສະເໝືອນ {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}. {1} ກຳລັງສົ່ງ, ແຕ່ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນໃດທີ່ມີຕົວຄວບຄຸມ PlayStation ຢູ່.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}. {1} ກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມໝາຍເລກ {2} ແຕ່ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນທີ່ເປັນຕົວຄວບຄຸມ PlayStation ໃດມີໝາຍເລກນັ້ນ.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}. {1} ກຳລັງສົ່ງ, ແຕ່ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນໃດທີ່ມີ DualSense ຫຼື DualShock 4 ຢູ່.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}. {1} ກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມໝາຍເລກ {2} ແຕ່ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນທີ່ມີ DualSense ຫຼື DualShock 4 ໃດມີໝາຍເລກນັ້ນ.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ພອດ {0} ຖືກໃຊ້ຢູ່ໂດຍໂປຣແກຣມອື່ນ ເຊັ່ນ DSX. ປິດໂປຣແກຣມນັ້ນ ຫຼື ເລືອກພອດອື່ນ.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ມອດເກມໜຶ່ງ</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບ OpenTrack ແລະ ຕົວຕິດຕາມໃດໆທີ່ສົ່ງເອົາພຸດ UDP ຫຼື ຂຽນໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack 2.0, ແລະ ກັບຣັນທາມ OpenXR ໃນເຄື່ອງນີ້ທີ່ສາມາດແລ່ນເຊດຊັນໃນພື້ນຫຼັງໄດ້.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ບໍ່ພົບໄຟລ໌</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ອ່ານບໍ່ໄດ້</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ໄຟລ໌ຂອງ “{0}” ຫາຍໄປ ຫຼື ອ່ານບໍ່ໄດ້. PadForge ຈະສະແດງ “ມືດ” ຈົນກວ່າໄຟລ໌ຈະກັບມາ.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>ໄຟລ໌ຂອງ “{0}” ບໍ່ມີທີມ PadForge. PadForge ຈະສະແດງ “ມືດ” ຈົນກວ່າໄຟລ໌ຈະມີທີມ.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ໂປຣໄຟລ໌ “{0}” ກຳລັງໃຊ້ຮູບລັກສະນະຂອງເກມຂອງມັນ. ທີມຂອງທ່ານຈະກັບມາເມື່ອໂປຣໄຟລ໌ອື່ນເປີດໃຊ້ງານ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ຕັ້ງຄ່າພຶດຕິກຳການອ່ານ ແລະ ການປະມວນຜົນໃນພື້ນຫຼັງ.</value></data>
@@ -1046,6 +1053,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>ຕົວຄວບຄຸມບໍ່ຮັບຄຳສັ່ງທີ່ກຽມມັນໃຫ້ພ້ອມ, ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ກວດເບິ່ງວ່າມັນເຊື່ອມຕໍ່ຢູ່ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>ການສົ່ງຢຸດລົງຍ້ອນຂໍ້ຜິດພາດໃນ PadForge. ໄຟລ໌ບັນທຶກມີລາຍລະອຽດ.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ຮູບຍັງກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມ. ຢຸດການສົ່ງບໍ?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>ສົ່ງຕໍ່ໄປ</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ໄຟລ໌ Controller Pak (*.mpk)|*.mpk|ທຸກໄຟລ໌ (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ພອດ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>ກູ້ຄືນ Controller Pak</value></data>
@@ -1433,6 +1441,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>ການຈາງຂອງຈັງຫວະ</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>ພຣີເຊັດ</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>ກຳນົດເອງ</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (ຜູ້ໃຊ້ສ້າງ)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>ສະຕິກ</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ທຣິກເກີ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2413,7 +2422,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ຕົວຄວບຄຸມນີ້ມີເຊັນເຊີແມ່ເຫຼັກ. ການຍຶດການຫັນຊ້າຍຂວາກັບທິດເໜືອແມ່ເຫຼັກຈະລົບການເລື່ອນແນວນອນແບບຊ້າໆ ອອກຈາກການເລັງດ້ວຍໄຈໂຣ. ປັບທຽບກ່ອນ: ກົດ ປັບທຽບ, ໝູນຕົວຄວບຄຸມໄປທຸກທິດທາງເປັນຮູບເລກ 8 ສອງສາມວິນາທີ, ແລ້ວກົດອີກຄັ້ງ.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ຍຶດການຫັນຊ້າຍຂວາກັບເຂັມທິດ</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>ເພີ່ມອັດຕາແກ້ໄຂນ້ອຍໆ ທີ່ດຶງທິດເລັງແນວນອນເຂົ້າຫາທິດແມ່ເຫຼັກ, ສະນັ້ນການເລື່ອນຈະບໍ່ສະສົມ. ຕ້ອງມີການປັບທຽບເຊັນເຊີແມ່ເຫຼັກທີ່ບັນທຶກໄວ້. ຕົວຢ່າງທີ່ຖືກລົບກວນຈາກໂລຫະ ຫຼື ແມ່ເຫຼັກໃກ້ຄຽງຈະຖືກປະຕິເສດອັດຕະໂນມັດ.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>ຄືນເປັນຄ່າເລີ່ມຕົ້ນ (ປິດ)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>ການຈຳລອງການກົ້ມເງີຍ ແລະ ການອຽງຂ້າງ</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ການກົ້ມເງີຍ ແລະ ການອຽງຂ້າງ ທີ່ຄຳນວນຈາກເຊັນເຊີວັດຄວາມເລັ່ງ</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ໄຈໂຣຂອງຕົວຄວບຄຸມນີ້ຮັບຮູ້ໄດ້ສະເພາະການຫັນຊ້າຍ ແລະ ຂວາ. ເມື່ອເປີດການຈຳລອງ, PadForge ຈະຄຳນວນການກົ້ມເງີຍ ແລະ ການອຽງຂ້າງຈາກເຊັນເຊີວັດຄວາມເລັ່ງ ແລ້ວສົ່ງພວກມັນພ້ອມກັບການຫັນຊ້າຍຂວາຂອງໄຈໂຣໄປຫາແຖວການແມັບ ແລະ ການເຄື່ອນໄຫວຂອງຕົວຄວບຄຸມສະເໝືອນ. ເຊັນເຊີວັດຄວາມເລັ່ງບໍ່ສາມາດແຍກການຍູ້ອອກຈາກການອຽງໄດ້, ສະນັ້ນການເລື່ອນຕົວຄວບຄຸມໄປຂ້າງ ຫຼື ໄປໜ້າໂດຍບໍ່ໝູນ ຈະອ່ານເປັນການໝູນຊົ່ວຄາວ.</value></data>
@@ -2803,7 +2811,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>ໝຸນສະຕິກໄປຮອບຂອບຂອງມັນເພື່ອວັດຂອບເຂດທີ່ເຂົ້າເຖິງໄດ້ ແລ້ວປັບຮູບໃຫ້ເປັນວົງມົນເຕັມ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>ຄືນຄ່າການປັບທຽບຂອບ</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>ຄືນຄ່າການຊົດເຊີຍຈຸດກາງ Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>ຄືນຄ່າເປັນແບບລັດສະໝີປັບສັດສ່ວນ</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນ X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນ Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>ຄືນຄ່າແອນຕີເດດໂຊນ X</value></data>
@@ -3243,13 +3250,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ຄືນຄ່າຟລິກສະຕິກ</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>ຈຸດຕໍ່ 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ຈຳນວນການນັບຂອງເມົ້າສຳລັບການຫັນກ້ອງຄົບ 360°. ຂຶ້ນກັບຄວາມອ່ອນໄຫວເມົ້າຂອງເກມ: ເພີ່ມຂຶ້ນຖ້າການຟລິກຫັນບໍ່ພໍ, ຫຼຸດລົງຖ້າຫັນເກີນ.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>ຄືນຄ່າເປັນ 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ເວລາຟລິກ</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>ເວລາທີ່ການຟລິກ 180° ເຕັມໃຊ້ຈົນສຳເລັດ, ໂດຍຊ້າລົງຕອນທ້າຍ. ການຫັນທີ່ສັ້ນກວ່າສຳເລັດໃນເວລາດຽວກັນ.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>ຄືນຄ່າເປັນ 0.1 ວິນາທີ</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ຄ່າເກນການຟລິກ</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ການເບນຂອງສະຕິກທີ່ເລີ່ມການຟລິກ, ເປັນສັດສ່ວນຂອງການເບນເຕັມ. ຂະນະຟລິກ, ຈຸດປ່ອຍຈະຫຼຸດລົງເປັນ 90% ຂອງຄ່ານີ້.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>ຄືນຄ່າເປັນ 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>ມຸມສະແນັບ</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>ສະແນັບການຟລິກໄປຫາມຸມຄົງທີ່ ເພື່ອໃຫ້ການຫັນສະໝ່ຳສະເໝີກວ່າ. ໄປໜ້າເທົ່ານັ້ນ ຈະສະແນັບທຸກການຟລິກໄປທາງໜ້າຊື່.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>ບໍ່ສະແນັບ</value></data>
@@ -3258,22 +3262,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 ອົງສາ</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 ອົງສາ</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 ອົງສາ</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>ຄືນຄ່າເປັນ ບໍ່ສະແນັບ</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>ຄວາມແຮງການສະແນັບ</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ລະດັບທີ່ການຟລິກຖືກດຶງເຂົ້າຫາມຸມສະແນັບ. 1 ສະແນັບເຕັມທີ່, 0 ປິດການສະແນັບ, ຄ່າລະຫວ່າງນັ້ນຈະປະສົມກັນ.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>ຄືນຄ່າເປັນ 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>ເດດໂຊນມຸມດ້ານໜ້າ</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>ການຟລິກພາຍໃນມຸມນີ້ຈາກທາງໜ້າຊື່ຈະບໍ່ຫັນຫຍັງ. ໃຫ້ທ່ານເລີ່ມການປັດໄດ້ໂດຍບໍ່ມີການຟລິກຫັນ.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>ຄືນຄ່າເປັນ 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>ການເຮັດໃຫ້ການປັດລຽບ</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>ເຮັດໃຫ້ສັນຍານລົບກວນຂອງການປັດຕາມຂອບລຽບຂຶ້ນ. -1 ໃຊ້ໜ້າຕ່າງແບບຂັ້ນອັດຕະໂນມັດ, 0 ປິດການເຮັດໃຫ້ລຽບ, ຄ່າທີ່ໃຫຍ່ກວ່າຈະເຮັດໃຫ້ການໝຸນຕໍ່ຮອບທີ່ໃຫຍ່ກວ່າລຽບຂຶ້ນ.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>ຄືນຄ່າເປັນ ອັດຕະໂນມັດ (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>ອະນຸຍາດຟລິກເມື່ອເປີດໃຊ້</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>ການຊົດເຊີຍການໝຸນ</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>ໝຸນແຜນຜັງຟລິກທັງໝົດຕາມຈຳນວນອົງສານີ້. ຄ່າບວກແມ່ນຕາມເຂັມໂມງ. ການສະແນັບມີຜົນຫຼັງການຊົດເຊີຍ.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>ຄືນຄ່າການຊົດເຊີຍການໝຸນ</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ເມື່ອຊັ້ນທີ່ມີຟລິກສະຕິກເປີດໃຊ້ຂະນະທີ່ສະຕິກເບນຢູ່ແລ້ວ, ໃຫ້ຟລິກທັນທີ. ປິດ ຈະໃຫ້ກ້ອງຢູ່ນິ່ງ ແລະ ຕິດຕາມການໝຸນຈາກມຸມສະຕິກປັດຈຸບັນ.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>ຄືນຄ່າ ອະນຸຍາດຟລິກເມື່ອເປີດໃຊ້</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ການແຈ້ງເຕືອນເມື່ອລ້ຽວສຸດ</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ສັນຍານເມື່ອສະຕິກໂໝດບັງຄັບລ້ຽວໝຸນຈົນສຸດ</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ເມື່ອສະຕິກທີ່ຕັ້ງເປັນໂໝດບັງຄັບລ້ຽວຖືກໝຸນໄປຈົນສຸດ, ໃຫ້ຫຼິ້ນສັນຍານ (ການສັ່ນ, ທຣິກເກີ ຫຼື ແຖບໄຟ) ເພື່ອໃຫ້ທ່ານຮູ້ສຶກເຖິງຂີດຈຳກັດ. ປິດທັງໝົດເປັນຄ່າເລີ່ມຕົ້ນ.</value></data>
@@ -3463,11 +3461,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ຫຼິ້ນແຮັບຕິກ DualSense ໃນຕົວຄວບຄຸມນີ້</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ເມື່ອເກມຂັບຊ່ອງນີ້ເປັນ DualSense ສະເໝືອນທີ່ມີສຽງແຮັບຕິກທີ່ອອກແບບໄວ້, ໃຫ້ຫຼິ້ນແທຣັກນັ້ນໃນຕົວສັ່ນຂອງຕົວຄວບຄຸມນີ້. Steam Controller 2026 ຜ່ານ USB ຫຼື ດອງເກິນຂອງມັນ ແລະ Flydigi Apex 6 Pro ຈະຫຼິ້ນແທຣັກນັ້ນເອງ. ຕົວຄວບຄຸມອື່ນທັງໝົດ, ແລະ Steam Controller ນັ້ນເມື່ອຜ່ານ Bluetooth, ຈະໄດ້ໂທນທີ່ສ້າງຈາກສຽງ ເຊິ່ງໃກ້ຄຽງກັບຄວາມຮູ້ສຶກທີ່ຜູ້ອອກແບບຕັ້ງໃຈ ແຕ່ບໍ່ໄດ້ສ້າງຄືນມັນແທ້.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ອັດຕາຂະຫຍາຍແຮັບຕິກ</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ຄືນເປັນຄ່າເລີ່ມຕົ້ນ (ປິດ)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ຄືນເປັນຄ່າເລີ່ມຕົ້ນ (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>ຄວາມຖີ່ຕັດຂອງຕົວກອງຄວາມຖີ່ຕ່ຳຂອງຕົວສັ່ນ</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>ຈຳກັດການສະຕຣີມແຮັບຕິກຂອງ Steam Controller ໃຫ້ຕ່ຳກວ່າຄວາມຖີ່ນີ້ ເພື່ອໃຫ້ແຜ່ນສັ່ນ ແທນທີ່ຈະດັງເປັນສຽງທີ່ໄດ້ຍິນ. ປະມານ 250 Hz ຕົວສັ່ນເລີ່ມໄດ້ຍິນເປັນສຽງ. ເພີ່ມຂຶ້ນເພື່ອລາຍລະອຽດທີ່ຄົມຂຶ້ນ, ຫຼຸດລົງເພື່ອໃຫ້ງຽບຂຶ້ນ.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>ຄືນຄ່າເປັນ 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>ໂທນທີ່ສູງກວ່າຄວາມຖີ່ນີ້ຈະຖືກຕັດ ຫຼື ພັບລົງ. ຄ່າເລີ່ມຕົ້ນ 800 Hz ຮັກສາການສັ່ນຂອງເຄື່ອງຈັກ ແລະ ການກະທົບໄວ້ ໃນຂະນະທີ່ດັກສຽງບີບແຫຼມ.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ຄືນຄ່າໂທນສູງ</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ຄືນຄ່າຂີດຈຳກັດໂທນ</value></data>
@@ -4034,8 +4029,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>ໂປຣໄຟລ໌ເວີກຊັອບ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ມາໂຄຣເວີກຊັອບ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ພື້ນທີ່ຕົວຊີ້</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>ຊັ້ນສະຫຼັບ {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>ລາຍການລໍ້ ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>ພື້ນທີ່ເຄີເຊີ ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>ກົດຄ້າງເມົ້າ {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>ຄລິກເມົ້າ {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>ສະຫຼັບເມົ້າ {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>ການສັ່ນສັ້ນ ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ສ່ວນຫຼັງປ່ອຍ)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>ແຕະ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>ຍິງອັດຕະໂນມັດ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>ກົດຄ້າງ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>ສະຫຼັບ {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>ເທີໂບ {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>ກົດສອງເທື່ອ {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>ກົດຄ້າງດົນ {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>ໝຸນລໍ້ໜຶ່ງຂັ້ນ ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>ສະຫຼັບລໍ້ ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>ລໍ້ເທີໂບ ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>ຍ້າຍເຄີເຊີທັນທີ ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>ຕັ້ງ LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ຕັ້ງກາງໄຈໂຣໃໝ່ ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>ຂະຫຍັບເຄີເຊີ ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>ປຸ່ມຖ່າຍໜ້າຈໍ ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>ແປ້ນພິມເທິງໜ້າຈໍ ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ຕັ້ງສີໄຟ</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>ຕັ້ງກາງກ້ອງໃໝ່</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>ຍ້າຍເຄີເຊີທັນທີ</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>ຂະຫຍັບເຄີເຊີ</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>ຖ່າຍໜ້າຈໍ</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>ແປ້ນພິມເທິງໜ້າຈໍ</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>ປ່ຽນຊັ້ນສະຫຼັບ</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>ເປີດຊັ້ນສະຫຼັບ</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>ປິດຊັ້ນສະຫຼັບ</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>ຄ້າງຊັ້ນສະຫຼັບ</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>ປ່ຽນໝາຍເລກຜູ້ຫຼິ້ນ</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>ບໍ່ໄດ້ກຳນົດ</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>ສະຫຼັບໂໝດເດັສທັອບ</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>ປຸ່ມລະບົບ Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>ສະຫຼັບແວ່ນຂະຫຍາຍ</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>ເພີ່ມຄວາມສະຫວ່າງ</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>ຫຼຸດຄວາມສະຫວ່າງ</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>ປິດຕົວຄວບຄຸມ</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>ເປີດຕົວຕັ້ງຄ່າ Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>ເປີດເມນູດ່ວນ Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>ອອກຈາກເກມ</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>ສະຫຼັບແຮັບຕິກ</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>ສະຫຼັບ HUD ຂອງ Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>ສະຫຼັບການສັ່ນ</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>ບັງຄັບປຸ່ມ Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>ໝຸນປັບທຽບໄຈໂຣ</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>ຫັນໜ້າໄປຕາມທິດທາງ</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ກົດຄ້າງ)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ປ່ອຍ)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ປ່ອຍ)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ເຂົ້າ)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ເລືອກຄອນຟິກເພື່ອເບິ່ງສິ່ງທີ່ນຳເຂົ້າມາໄດ້.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ສິ່ງທີ່ນຳເຂົ້າມາໄດ້</value></data>
@@ -4643,11 +4689,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>ຊັ້ນ</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>ເລືອກຊັ້ນທີ່ອະນຸຍາດເມນູນີ້ “ຊັ້ນໃດກໍໄດ້” ແລະ “ພື້ນຖານ” ຕ່າງກໍອະນຸຍາດມັນພາຍໃຕ້ຊັ້ນອື່ນທີ່ເປີດໃຊ້ຢູ່ ຊັ້ນທີ່ມີຊື່ຕ້ອງກົງກັບຊັ້ນທີ່ເປີດໃຊ້ຢູ່ໃນປັດຈຸບັນ</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>ຄືນຄ່າເປັນ “ຊັ້ນໃດກໍໄດ້” ແລະ ປິດການເປີດເມນູຄ້າງໄວ້ດ້ວຍຊັ້ນ</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ບໍ່ມີໃນລາຍການຂອງຊ່ອງນີ້)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>ຊັ້ນເປີດເມນູຄ້າງໄວ້</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>ເປີດເມນູນີ້ຄ້າງໄວ້ໃນຂະນະທີ່ຊັ້ນທີ່ມີຊື່ຂອງມັນເປີດໃຊ້ຢູ່ ອິນພຸດທາງກາຍະພາບທີ່ເລືອກຈະບັງຄັບການເນັ້ນ “ຊັ້ນໃດກໍໄດ້” ແລະ “ພື້ນຖານ” ໃຊ້ການເປີດທາງພື້ນຜິວແບບປົກກະຕິ</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>ຄືນຄ່າເປັນການເປີດເມື່ອແຕະ ຫຼື ເມື່ອເບນ</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>ບັງຄັບດ້ວຍ</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ອິນພຸດທາງກາຍະພາບທີ່ບັງຄັບເຊວທີ່ຖືກເນັ້ນ ໃນຂະນະທີ່ຊັ້ນເປີດເມນູນີ້ຄ້າງໄວ້</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ອ່ານຈາກຕົວຄວບຄຸມທາງກາຍະພາບທີ່ກຳນົດໃຫ້ຊ່ອງນີ້. ຊັ້ນເປັນຕົວເປີດເມນູ ແລະ ອິນພຸດນີ້ເປັນຕົວບັງຄັບມັນ. ເຊວຂອງມັນບອກວ່າມັນສົ່ງອອກຫຍັງ.</value></data>
@@ -4727,7 +4771,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>ມໍເຕີ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>ແຍກຕາມທິດທາງ</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>ເດດໂຊນຈຸດກາງ</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ຄືນຄ່າເປັນສະຕິກຊ້າຍ X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ຄືນຄ່າຄວາມແຮງ (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນຈຸດກາງ (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>ຄືນຄ່າ “ເປີດໃຊ້ການສັ່ນຕາມມຸມພວງມາໄລ”</value></data>
@@ -5243,6 +5286,9 @@
   <data name="About_LanguageRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງພາສາຄລິງກອນ ແລະ ຊິນດາຣິນ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ຄຳສັບຂອງການແປພາສາຄລິງກອນ ແລະ ຊິນດາຣິນ, ກວດສອບກັບ klingon-assistant-data (Apache-2.0), ວັດຈະນານຸກົມເບື້ອງຫຼັງ boQwI', ແລະ Eldamo (CC BY 4.0), ພົດຈະນານຸກົມພາສາເອວຟ໌ຂອງ Paul Strack. ເປັນຂໍ້ມູນວັດຈະນານຸກົມເທົ່ານັ້ນ, ບໍ່ມີສ່ວນໃດຖືກລວມມາ.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ໄຟລ໌ນັ້ນບໍ່ແມ່ນທີມ PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ອ່ານໄຟລ໌ນັ້ນບໍ່ໄດ້.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ບໍ່ພົບໄຟລ໌ນັ້ນ.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>ບໍ່ແມ່ນທີມ</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ບໍ່ສາມາດບັນທຶກທີມໄດ້. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ທີມໃໝ່</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ສະແດງທີມນີ້ທັນທີໃນຂະນະທີ່ທ່ານສ້າງມັນ.</value></data>
@@ -5257,6 +5303,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>ກຳລັງດຶງຮູບຈາກ Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ບໍ່ມີຮູບກວ້າງສຳລັບເກມນີ້.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບ Steam. ກວດເບິ່ງການເຊື່ອມຕໍ່ຂອງທ່ານ.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ອ່ານຮູບຂອງ Steam ສຳລັບເກມນີ້ບໍ່ໄດ້.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>ຕຳແໜ່ງ</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ເລື່ອນຮູບຂຶ້ນ ຫຼື ລົງພາຍໃນກອບຂອງມັນ.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ສະແດງໂລໂກ້ຂອງເກມ</value></data>
@@ -5297,4 +5344,6 @@
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ໂມເດວທີ່ໃຊ້ຖ່າຍທຳຊີຣີ Star Trek ຕົ້ນສະບັບ, ຖ່າຍຮູບໂດຍ Smithsonian National Air and Space Museum ເຊິ່ງເກັບຮັກສາມັນໄວ້: ຮູບຂອງທີມ LCARS ຂອງ Star Trek.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>ຮູບທີມ: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ເຟຣມໜຶ່ງຈາກ Star Trek: The Next Generation: ຮູບຂອງທີມ Starfleet ຂອງ Star Trek. ພົບໃນ Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>ແຖບໄຟ</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>ແຖບໄຟ {0}</value></data>
 </root>

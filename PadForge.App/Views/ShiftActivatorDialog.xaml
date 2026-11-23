@@ -422,7 +422,7 @@
                                     AutomationProperties.Name="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                     <controls:SettingRow MinHeight="40">
-                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                         <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"
                                 AutomationProperties.Name="R"/>
                         <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DialogValueEdit}" MinWidth="30"
@@ -434,7 +434,7 @@
                         </ui:Button>
                     </controls:SettingRow>
                     <controls:SettingRow MinHeight="40">
-                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                         <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"
                                 AutomationProperties.Name="G"/>
                         <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DialogValueEdit}" MinWidth="30"
@@ -446,7 +446,7 @@
                         </ui:Button>
                     </controls:SettingRow>
                     <controls:SettingRow MinHeight="40">
-                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                         <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"
                                 AutomationProperties.Name="B"/>
                         <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DialogValueEdit}" MinWidth="30"

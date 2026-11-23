@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ऑनलाइन</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ऑफलाइन</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>अज्ञात</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>डिफॉल्ट</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>ब्राउझ करा…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>पुढे जा</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>थांबवा</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>इंजिन थांबले.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>त्रुटी: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} तयार करता आले नाही.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>एखादे डिव्हाइस उघडता, वाचता किंवा मॅप करता आले नाही. डायग्नोस्टिक्स लॉगमध्ये त्याचे नाव आहे.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} मध्ये त्रुटी आली. डायग्नोस्टिक्स लॉगमध्ये कारण आहे.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>इनपुट इंजिनमध्ये त्रुटी आली. डायग्नोस्टिक्स लॉगमध्ये कारण आहे.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL सुरू होऊ शकले नाही. डायग्नोस्टिक्स लॉगमध्ये कारण आहे.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro सेट करता आले नाही. डायग्नोस्टिक्स लॉगमध्ये कारण आहे.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>एका व्हर्च्युअल कंट्रोलरचा HIDMaestro प्रोफाइल सापडत नाही. डायग्नोस्टिक्स लॉगमध्ये त्याचे नाव आहे.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ला त्याची कस्टमाइझ केलेली ओळख आणि लेआउट घेता आले नाही, म्हणून ते आपल्या प्रोफाइलची स्वतःची वापरते.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>प्रोफाइल बदलले: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>प्रोफाइल बदलले: डिफॉल्ट</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>डिफॉल्ट</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>मोशन सर्व्हर पोर्ट</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu इत्यादींना जायरो आणि ॲक्सेलेरोमीटर डेटा पुरवतो.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>गेम मॉड्स</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX साठी बनवलेल्या गेम मॉड्सना तुमच्या PlayStation कंट्रोलरचे अडॅप्टिव्ह ट्रिगर, लाइटबार, प्लेयर लाइट आणि म्यूट लाइट सेट करू देते.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX साठी बनवलेल्या गेम मॉड्सना DualSense किंवा DualShock 4 चे अडॅप्टिव्ह ट्रिगर, लाइटबार, प्लेयर लाइट आणि म्यूट लाइट सेट करू देते.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX गेम मॉड्स स्वीकारा</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>गेम मॉड पोर्ट</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe स्टँड-इन चालवा</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV सारखे काही मॉड DSX नावाचा प्रोग्राम चालू नसेल तर स्वतःला बंद करतात. सर्व्हर ऐकत असताना हे त्या नावाचा एक छोटा स्टँड-इन चालवते.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX साठी बनवलेल्या मॉडसोबत चालते, जसे GTA V, Red Dead Redemption 2, Skyrim आणि Forza साठीचे. सर्व्हर ऐकत असताना PadForge त्याचा पोर्ट तिथे लिहितो जिथे ते मॉड तो शोधतात.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} वर ऐकत आहे. {1} व्हर्च्युअल कंट्रोलर {2} ला पाठवत आहे.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} वर ऐकत आहे. {1} पाठवत आहे, पण कोणत्याही व्हर्च्युअल कंट्रोलरवर PlayStation कंट्रोलर नाही.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} वर ऐकत आहे. {1} कंट्रोलर इंडेक्स {2} ला पाठवत आहे, आणि PlayStation कंट्रोलर असलेल्या कोणत्याही व्हर्च्युअल कंट्रोलरचा तो इंडेक्स नाही.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} वर ऐकत आहे. {1} पाठवत आहे, पण कोणत्याही व्हर्च्युअल कंट्रोलरवर DualSense किंवा DualShock 4 नाही.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} वर ऐकत आहे. {1} कंट्रोलर इंडेक्स {2} ला पाठवत आहे, आणि DualSense किंवा DualShock 4 असलेल्या कोणत्याही व्हर्च्युअल कंट्रोलरचा तो इंडेक्स नाही.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>पोर्ट {0} DSX सारख्या दुसऱ्या प्रोग्रामकडून वापरात आहे. तो बंद करा किंवा दुसरा पोर्ट निवडा.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>एक गेम मॉड</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack सोबत आणि त्याचे UDP आउटपुट पाठवणाऱ्या किंवा FreeTrack 2.0 शेअर्ड मेमरी लिहिणाऱ्या कोणत्याही ट्रॅकरसोबत चालते, तसेच या मशीनवरील, पार्श्वभूमीत सत्र चालवू शकणाऱ्या OpenXR रनटाइमसोबतही.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>फाइल सापडली नाही</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>वाचता आली नाही</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ची फाइल सापडत नाही किंवा वाचता येत नाही. ती परत येईपर्यंत PadForge डार्क दाखवते.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” च्या फाइलमध्ये PadForge थीम नाही. तोपर्यंत PadForge डार्क दाखवते.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>प्रोफाइल “{0}” त्याच्या गेमचे रूप धारण करत आहे. दुसरे प्रोफाइल सक्रिय झाल्यावर तुमची थीम परत येते.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>इनपुट इंजिन</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>पोलिंग वर्तन आणि पार्श्वभूमी प्रक्रिया कॉन्फिगर करा.</value></data>
@@ -1044,6 +1051,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>कंट्रोलरने त्याला तयार करणारी आज्ञा स्वीकारली नाही, म्हणून काहीही पाठवले गेले नाही. तो जोडलेला आहे का ते तपासा आणि पुन्हा पाठवा.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge मधील त्रुटीमुळे पाठवणे थांबले. तपशील लॉग फाइलमध्ये आहेत.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>कंट्रोलरकडे अजून चित्र जात आहे. पाठवणे थांबवायचे?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>पाठवत राहा</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak फाइल (*.mpk)|*.mpk|सर्व फाइल (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak पोर्ट {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak पुनर्संचयित करा</value></data>
@@ -1431,6 +1439,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>पल्स ओसरणे</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>प्रीसेट</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>कस्टम</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (यूजरने बनवलेले)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>स्टिक</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ट्रिगर</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -2411,7 +2420,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>या कंट्रोलरमध्ये मॅग्नेटोमीटर आहे. यॉ चुंबकीय उत्तरेला जोडल्याने जायरो लक्ष्यातील संथ आडवा ड्रिफ्ट दूर होतो. आधी कॅलिब्रेट करा: कॅलिब्रेट दाबा, काही सेकंद कंट्रोलर सर्व दिशांमध्ये आठच्या आकारात फिरवा, मग पुन्हा दाबा.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>यॉ होकायंत्राला जोडा</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>आडवे लक्ष्य चुंबकीय दिशेकडे ओढणारा लहान सुधारक दर जोडतो, त्यामुळे ड्रिफ्ट साचू शकत नाही. साठवलेले मॅग्नेटोमीटर कॅलिब्रेशन आवश्यक आहे. जवळच्या धातू किंवा चुंबकांमुळे बिघडलेले नमुने आपोआप नाकारले जातात.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>डिफॉल्टवर रीसेट करा (बंद)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>पिच आणि रोल सिम्युलेशन</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>ॲक्सेलेरोमीटरवरून काढलेले पिच आणि रोल</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>या कंट्रोलरचा जायरो फक्त डावीकडे आणि उजवीकडे वळणे ओळखतो. सिम्युलेशन चालू असताना PadForge ॲक्सेलेरोमीटरवरून पिच आणि रोल काढतो आणि जायरोच्या यॉसह मॅपिंग पंक्तींना आणि व्हर्च्युअल कंट्रोलरच्या मोशनला पाठवतो. ॲक्सेलेरोमीटर धक्का आणि झुकाव यातील फरक ओळखू शकत नाही, त्यामुळे कंट्रोलर न फिरवता बाजूला किंवा पुढे हलवल्यास तो थोडा वेळ फिरण्यासारखा वाचला जातो.</value></data>
@@ -2807,7 +2815,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>पोहोचता येणारी सीमा नकाशित करण्यासाठी स्टिक तिच्या कडेने फिरवा, मग तिला पूर्ण वर्तुळाचा आकार द्या.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>सीमा कॅलिब्रेशन रीसेट करा</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>केंद्र ऑफसेट Y रीसेट करा</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>स्केल्ड रेडियलवर रीसेट करा</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>डेडझोन X रीसेट करा</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>डेडझोन Y रीसेट करा</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>अँटी-डेडझोन X रीसेट करा</value></data>
@@ -3250,13 +3257,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>फ्लिक स्टिक रीसेट करा</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>प्रति 360° डॉट्स</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>संपूर्ण 360° कॅमेरा वळणासाठी माउस काउंट. गेमच्या माउस संवेदनशीलतेवर अवलंबून असते: फ्लिकमध्ये वळण कमी पडल्यास वाढवा, जास्त झाल्यास कमी करा.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 वर रीसेट करा</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>फ्लिक वेळ</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>संपूर्ण 180° फ्लिक पूर्ण होण्यास किती वेळ लागतो, इज-आउटसह. लहान वळणे त्याच वेळेत पूर्ण होतात.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s वर रीसेट करा</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>फ्लिक थ्रेशोल्ड</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>फ्लिक सुरू करणारे स्टिक विचलन, पूर्ण विचलनाचा अपूर्णांक म्हणून. फ्लिक चालू असताना सोडण्याचा बिंदू याच्या 90% पर्यंत खाली येतो.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 वर रीसेट करा</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>स्नॅप कोन</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>अधिक सुसंगत वळणांसाठी फ्लिक निश्चित कोनांवर स्नॅप करा. फक्त पुढे हा पर्याय प्रत्येक फ्लिक थेट समोर स्नॅप करतो.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>स्नॅपिंग नाही</value></data>
@@ -3265,22 +3269,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 अंश</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 अंश</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 अंश</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>स्नॅपिंग नाहीवर रीसेट करा</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>स्नॅप ताकद</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>फ्लिक स्नॅप केलेल्या कोनाकडे किती जोराने खेचला जातो. 1 पूर्णपणे स्नॅप करतो, 0 स्नॅपिंग बंद करतो, मधली मूल्ये मिश्रण करतात.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 वर रीसेट करा</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>पुढील कोनाचा डेडझोन</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>थेट समोरापासून या कोनाच्या आतला फ्लिक काहीही वळवत नाही. त्यामुळे फ्लिक-वळणाशिवाय स्वीप सुरू करता येतो.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° वर रीसेट करा</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>स्वीप स्मूदिंग</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>कडेवरील स्वीपमधील नॉइज गुळगुळीत करते. -1 स्वयंचलित टप्प्यांची विंडो वापरते, 0 स्मूदिंग बंद करते, मोठी मूल्ये प्रत्येक टिकमधील मोठी वळणे गुळगुळीत करतात.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>स्वयंचलितवर रीसेट करा (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>एंगेज होताना फ्लिकला परवानगी द्या</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>रोटेशन ऑफसेट</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>संपूर्ण फ्लिक नकाशा इतक्या अंशांनी फिरवतो. धन मूल्य घड्याळाच्या दिशेने असते. स्नॅपिंग ऑफसेटनंतर लागू होते.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>रोटेशन ऑफसेट रीसेट करा</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>फ्लिक स्टिक असलेला लेयर स्टिक आधीच झुकलेली असताना एंगेज झाल्यास, फ्लिक लगेच कार्यान्वित करा. बंद असल्यास कॅमेरा स्थिर राहतो आणि सध्याच्या स्टिक कोनापासून रोटेशन मागोवले जाते.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>एंगेज होताना फ्लिकला परवानगी द्या रीसेट करा</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>स्टीअरिंग लॉक फीडबॅक</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>स्टीअरिंग मोडमधील स्टिक पूर्ण लॉकवर पोहोचल्यावर संकेत</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>स्टीअरिंग मोडवर सेट केलेली स्टिक पूर्ण लॉकपर्यंत फिरवली की एक संकेत (कंपन, ट्रिगर किंवा लाइटबार) वाजतो, म्हणजे मर्यादा जाणवते. डिफॉल्टनुसार सर्व बंद.</value></data>
@@ -3470,11 +3468,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>या कंट्रोलरवर DualSense हॅप्टिक्स वाजवा</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>गेम हा स्लॉट व्हर्च्युअल DualSense म्हणून चालवत असेल आणि त्यात तयार केलेला हॅप्टिक ऑडिओ असेल, तर तो ट्रॅक या कंट्रोलरच्या ॲक्ट्युएटरवर वाजवा. USB किंवा डोंगलवरील Steam Controller 2026 आणि Flydigi Apex 6 Pro तो ट्रॅक स्वतः वाजवतात. इतर प्रत्येक कंट्रोलरला, आणि ब्लूटूथवरील त्या Steam Controller लाही, ऑडिओवरून काढलेले टोन मिळतात, जे डिझाइनरच्या अनुभवाचा अंदाज देतात, तो जसाच्या तसा पुनर्निर्मित करत नाहीत.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>हॅप्टिक्स गेन</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>डिफॉल्टवर रीसेट करा (बंद)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>डिफॉल्टवर रीसेट करा (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>ॲक्ट्युएटर लो-पास कटऑफ</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller चे हॅप्टिक स्ट्रीमिंग या वारंवारतेच्या खाली ठेवते, म्हणजे पॅड आवाज वाजवण्याऐवजी कंपन करतात. सुमारे 250 Hz वर ॲक्ट्युएटर ऐकू येऊ लागतात. अधिक तपशिलासाठी वाढवा, शांत वापरासाठी कमी करा.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz वर रीसेट करा</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>या वारंवारतेच्या वरील टोन कापले किंवा दुमडले जातात. डिफॉल्ट 800 Hz इंजिन आणि आघाताचे कंपन टिकवते आणि उंच बीप पकडते.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>उंच टोन रीसेट करा</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>टोन मर्यादा रीसेट करा</value></data>
@@ -4043,8 +4038,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop प्रोफाइल</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop मॅक्रो</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>कर्सर क्षेत्र</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} शिफ्ट</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>व्हील यादी ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>कर्सर क्षेत्र ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>माउस {0} धरून ठेवा ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>माउस {0} क्लिक ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>माउस {0} टॉगल ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>हॅप्टिक स्पंद ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (सोडल्यानंतरचा भाग)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} टॅप ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} ऑटोफायर ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} धरून ठेवा ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} टॉगल ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} टर्बो ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} दोनदा दाबा ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} दीर्घ दाब ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>व्हील टिक ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>व्हील टॉगल ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>टर्बो व्हील ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>कर्सर वार्प ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED सेट करा ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>जायरो पुन्हा मध्यावर आणा ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>कर्सर सरकवा ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>स्क्रीनशॉट की ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>ऑनस्क्रीन कीबोर्ड ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>लाइटचा रंग सेट करा</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>कॅमेरा पुन्हा मध्यावर आणा</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>कर्सर वार्प</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>कर्सर सरकवा</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>स्क्रीनशॉट</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>ऑनस्क्रीन कीबोर्ड</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>शिफ्ट लेयर बदला</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>शिफ्ट लेयर चालू करा</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>शिफ्ट लेयर बंद करा</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>शिफ्ट लेयर धरून ठेवा</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>प्लेयर क्रमांक बदला</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>जोडलेले नाही</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>डेस्कटॉप मोड टॉगल करा</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam सिस्टम की</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>मॅग्निफायर टॉगल करा</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>ब्राइटनेस वाढवा</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>ब्राइटनेस कमी करा</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>कंट्रोलर बंद करा</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam कॉन्फिगरेटर उघडा</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam क्विक मेनू उघडा</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>गेममधून बाहेर पडा</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>हॅप्टिक्स टॉगल करा</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD टॉगल करा</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>रंबल टॉगल करा</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>गाइड बटण सक्तीने दाबा</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>जायरो कॅलिब्रेशन फिरवणे</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>दिशेकडे तोंड फिरवा</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (धरून)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (सोडणे)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (सोडणे)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (एंगेज)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>काय येते ते पाहण्यासाठी कॉन्फिग निवडा.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>काय येते</value></data>
@@ -4649,11 +4695,9 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>लेयर</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>हा मेनू परवानगी देणारा लेयर निवडा. कोणताही लेयर आणि बेस दोन्ही इतर सक्रिय लेयरखाली त्याला परवानगी देतात. नाव दिलेला लेयर सध्या सक्रिय लेयरशी जुळला पाहिजे.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>कोणत्याही लेयरवर रीसेट करा आणि लेयरने धरून ठेवलेले उघडणे बंद करा.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (या स्लॉटवर सूचीत नाही)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>लेयर मेनू उघडा ठेवतो</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>नाव दिलेला लेयर सक्रिय असताना हा मेनू उघडा ठेवा. निवडलेले भौतिक इनपुट हायलाइट चालवते. कोणताही लेयर आणि बेस सामान्य पृष्ठभाग-उघडणे वापरतात.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>स्पर्श किंवा विचलनावर उघडण्यावर रीसेट करा.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>यावरून चालवा</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>लेयर हा मेनू उघडा ठेवत असताना हायलाइट केलेला सेल चालवणारे भौतिक इनपुट.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>या स्लॉटला नेमलेल्या भौतिक कंट्रोलरवरून वाचले जाते. लेयर मेनू उघडतो आणि हे इनपुट तो चालवते. तो काय आउटपुट देतो ते त्याचे सेल सांगतात.</value></data>
@@ -4733,7 +4777,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>मोटर</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>दिशेनुसार विभाजन</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>केंद्र डेडझोन</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>डावी स्टिक X वर रीसेट करा</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ताकद रीसेट करा (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>केंद्र डेडझोन रीसेट करा (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>स्टीअरिंग कोन कंपनाचे सक्षम करणे रीसेट करा</value></data>
@@ -5243,6 +5286,9 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_LanguageRefs" xml:space="preserve"><value>क्लिंगन आणि सिंडारिन संदर्भ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>क्लिंगन आणि सिंडारिन भाषांतरांतील शब्द klingon-assistant-data (Apache-2.0) शी, म्हणजे boQwI' मागील शब्दकोशाशी, आणि Eldamo (CC BY 4.0) शी, म्हणजे Paul Strack यांच्या एल्विश शब्दकोशाशी पडताळले. फक्त शब्दकोश डेटा, त्यातील काहीही समाविष्ट नाही.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ती फाइल PadForge थीम नाही.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ही फाइल वाचू शकत नाही.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ला ही फाइल सापडत नाही.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>थीम नाही</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>थीम जतन करता आली नाही. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>नवीन थीम</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>तुम्ही थीम तयार करत असताना PadForge ती परिधान करते.</value></data>
@@ -5257,6 +5303,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam वरून चित्र मिळवत आहे…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>या गेमसाठी Steam कडे रुंद चित्र नाही.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam शी संपर्क साधता आला नाही. तुमचे कनेक्शन तपासा.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge या गेमसाठी Steam चे चित्र वाचू शकत नाही.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>स्थान</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>चित्र त्याच्या चौकटीत वर किंवा खाली हलवते.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>गेमचा लोगो दाखवा</value></data>
@@ -5297,4 +5344,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>मूळ स्टार ट्रेक मालिकेसाठी चित्रित केलेले मॉडेल, ते जतन करणाऱ्या Smithsonian National Air and Space Museum ने काढलेले छायाचित्र: स्टार ट्रेक थीम LCARS चे चित्र.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>थीम चित्र: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>स्टार ट्रेक: द नेक्स्ट जनरेशन मधील एक फ्रेम: स्टार ट्रेक थीम Starfleet चे चित्र. Memory Alpha वर सापडले.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>लाइटबार</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} लाइटबार</value></data>
 </root>

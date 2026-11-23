@@ -255,9 +255,9 @@ namespace PadForge.Views
 
         private void FileDropZone_Click(object sender, RoutedEventArgs e) => ChooseFile();
 
-        /// <summary>The Open dialog of profile files: PadForge's, reWASD's and
-        /// DS4Windows', the three together first, with the folders the other
-        /// tools keep their profiles in as places.</summary>
+        /// <summary>The Open dialog of profile files: PadForge's, reWASD's,
+        /// DS4Windows' and DSX's, the four together first, with the folders
+        /// the other tools keep their profiles in as places.</summary>
         private void ChooseFile()
         {
             var dlg = new Microsoft.Win32.OpenFileDialog

@@ -92,7 +92,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Family = this,
                         Name = registrations[0].Name,
-                        Map = new LightMap(lights, "OpenRGB A4TechController") { Product = $"a4tech:09DA:{collection.ProductId:X4}" },
+                        Map = new LightMap(lights) { Product = $"a4tech:09DA:{collection.ProductId:X4}" },
                         RepaintMs = RepaintMs,
                         Begin = (_, _) => new Session(keyboard),
                     };

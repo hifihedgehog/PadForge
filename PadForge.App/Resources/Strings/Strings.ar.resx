@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>متصل</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>غير متصل</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>غير معروف</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>افتراضي</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>استعراض…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>متابعة</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>إيقاف</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>توقف المحرك.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>خطأ: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>تعذر إنشاء {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>تعذر فتح جهاز أو قراءته أو ربطه. سجل التشخيص يذكر اسمه.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>واجه {0} خطأ. سجل التشخيص يذكر السبب.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>واجه محرك الإدخال خطأ. سجل التشخيص يذكر السبب.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>تعذر بدء SDL. سجل التشخيص يذكر السبب.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>تعذر إعداد HIDMaestro. سجل التشخيص يذكر السبب.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ملف تعريف HIDMaestro الخاص بوحدة تحكم ظاهرية مفقود. سجل التشخيص يذكر اسمها.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>تعذر على {0} اعتماد هويته وتخطيطه المخصصين، فيستخدم ما في ملف تعريفه.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>تم تبديل ملف التعريف: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>تم تبديل ملف التعريف: الافتراضي</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>افتراضي</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>منفذ خادم الحركة</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>يوفر بيانات الجيروسكوب ومقياس التسارع لبرامج Cemu وDolphin وYuzu وغيرها.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>تعديلات الألعاب</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>تتيح لتعديلات الألعاب المصممة لبرنامج DSX التحكم في الأزندة التكيفية وشريط الإضاءة وأضواء اللاعب وضوء الكتم في وحدات تحكم PlayStation لديك.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>تتيح لتعديلات الألعاب المصممة لبرنامج DSX التحكم في الأزندة التكيفية وشريط الإضاءة وأضواء اللاعب وضوء الكتم في وحدة تحكم DualSense أو DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>قبول تعديلات ألعاب DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>منفذ تعديلات الألعاب</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>تشغيل بديل لبرنامج DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>بعض التعديلات، مثل DualSense4GTAV، توقف نفسها ما لم يكن برنامج باسم DSX قيد التشغيل. يشغّل هذا الخيار بديلا صغيرا بهذا الاسم أثناء استماع الخادم.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>يعمل مع التعديلات المصممة لبرنامج DSX، مثل تعديلات GTA V وRed Dead Redemption 2 وSkyrim وForza. أثناء استماع الخادم، يكتب PadForge منفذه في المكان الذي تبحث عنه تلك التعديلات.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>يستمع على :{0}. يرسل {1} إلى وحدة التحكم الظاهرية {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>يستمع على :{0}. يرسل {1}، لكن لا توجد وحدة تحكم ظاهرية عليها وحدة تحكم PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>يستمع على :{0}. يرسل {1} إلى فهرس وحدة التحكم {2}، ولا توجد وحدة تحكم ظاهرية عليها وحدة تحكم PlayStation بهذا الفهرس.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>يستمع على :{0}. يرسل {1}، لكن لا توجد وحدة تحكم ظاهرية عليها وحدة DualSense أو DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>يستمع على :{0}. يرسل {1} إلى فهرس وحدة التحكم {2}، ولا توجد وحدة تحكم ظاهرية عليها وحدة DualSense أو DualShock 4 بهذا الفهرس.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>المنفذ {0} قيد الاستخدام من برنامج آخر، مثل DSX. أغلقه أو اختر منفذا آخر.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>تعديل لعبة</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>يعمل مع OpenTrack وأي متتبع يرسل مخرجاته عبر UDP أو يكتب في الذاكرة المشتركة FreeTrack 2.0، ومع وقت تشغيل OpenXR على هذا الجهاز يستطيع تشغيل جلسة في الخلفية.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>الملف غير موجود</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>تعذرت قراءته</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ملف «{0}» مفقود أو تعذرت قراءته. يعرض PadForge المظهر داكن إلى أن يعود.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>ملف «{0}» لا يحتوي على سمة PadForge. يعرض PadForge المظهر داكن إلى أن يحتوي على سمة.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ملف التعريف «{0}» يرتدي مظهر لعبته. تعود سمتك عندما يصبح ملف تعريف آخر نشطا.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>محرك الإدخال</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>إعداد سلوك الاستقصاء والمعالجة في الخلفية.</value></data>
@@ -1047,6 +1054,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>لم تقبل وحدة التحكم الأمر الذي يجهزها، لذا لم يُرسل شيء. تأكد من اتصالها ثم أرسل مجددا.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>توقف الإرسال بسبب خطأ في PadForge. تجد التفاصيل في ملف السجل.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>لا تزال صورة في طريقها إلى وحدة التحكم. هل توقف الإرسال؟</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>متابعة الإرسال</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ملفات Controller Pak (*.mpk)|*.mpk|كل الملفات (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak المنفذ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>استعادة Controller Pak</value></data>
@@ -1434,6 +1442,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>اضمحلال النبضة</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>إعداد مسبق</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>مخصص</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (من إنشاء المستخدم)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>العصي</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>الأزندة</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>مفاتيح POV</value></data>
@@ -2414,7 +2423,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>تحتوي وحدة التحكم هذه على مقياس مغناطيسية. تثبيت الانعراج على الشمال المغناطيسي يزيل الانجراف الأفقي البطيء من التصويب بالجيروسكوب. عاير أولا: اضغط «معايرة»، ثم أدر وحدة التحكم في كل الاتجاهات على شكل الرقم 8 لبضع ثوان، ثم اضغط مرة أخرى.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>تثبيت الانعراج على البوصلة</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>يضيف معدلا تصحيحيا صغيرا يسحب التصويب الأفقي نحو الاتجاه المغناطيسي، فلا يتراكم الانجراف. يتطلب معايرة مخزنة لمقياس المغناطيسية. العينات التي يشوشها معدن أو مغناطيس قريب يتم رفضها تلقائيا.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>إعادة الضبط إلى الافتراضي (متوقف)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>محاكاة الانحدار والدحرجة</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>الانحدار والدحرجة من مقياس التسارع</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>جيروسكوب وحدة التحكم هذه لا يستشعر سوى الدوران يمينا ويسارا. عند تشغيل المحاكاة، يشتق PadForge الانحدار والدحرجة من مقياس التسارع ويرسلهما مع انعراج الجيروسكوب إلى صفوف التعيين وإلى حركة وحدة التحكم الظاهرية. مقياس التسارع لا يميز الدفع من الإمالة، لذا تحريك وحدة التحكم جانبا أو إلى الأمام دون تدويرها يقرأ كدوران وجيز.</value></data>
@@ -2809,7 +2817,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>حرّك العصا حول حافتها لرسم الحدود التي يمكن بلوغها، ثم أعد تشكيلها إلى دائرة كاملة.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>إعادة ضبط معايرة الحدود</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>إعادة ضبط إزاحة المركز Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>إعادة الضبط إلى «شعاعي محجم»</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>إعادة ضبط مضاد المنطقة الميتة X</value></data>
@@ -3261,13 +3268,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>إعادة ضبط عصا الالتفات السريع</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>نقاط لكل 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>عدد نقاط الماوس لدورة كاملة للكاميرا 360°. يعتمد على حساسية الماوس في اللعبة: ارفعه إذا كان الالتفات أقل من المطلوب، واخفضه إذا كان أكثر.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>إعادة الضبط إلى 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>مدة الالتفات</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>المدة التي يستغرقها التفات كامل 180°، مع تباطؤ في النهاية. الالتفاتات الأقصر تنتهي في المدة نفسها.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>إعادة الضبط إلى 0.1 ثانية</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>عتبة الالتفات</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>انحراف العصا الذي يبدأ الالتفات، كنسبة من الانحراف الكامل. أثناء الالتفات، تنخفض نقطة التحرير إلى 90% من هذه القيمة.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>إعادة الضبط إلى 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>زاوية المحاذاة</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>محاذاة الالتفات إلى زوايا ثابتة لالتفاتات أكثر اتساقا. «للأمام فقط» يحاذي كل التفات إلى الأمام مباشرة.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>بلا محاذاة</value></data>
@@ -3276,22 +3280,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 درجة</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 درجة</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 درجة</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>إعادة الضبط إلى «بلا محاذاة»</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>شدة المحاذاة</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>مدى قوة انجذاب الالتفات نحو زاوية المحاذاة. 1 يحاذي كليا، 0 يعطل المحاذاة، والقيم بينهما تمزج.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>إعادة الضبط إلى 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>المنطقة الميتة للزاوية الأمامية</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>الالتفات ضمن هذه الزاوية من الأمام مباشرة لا يدير شيئا. يتيح لك بدء المسح على الحافة دون التفات.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>إعادة الضبط إلى 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>تنعيم المسح</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>ينعّم تشويش المسح على الحافة. -1 يستخدم النافذة المتدرجة التلقائية، 0 يوقف التنعيم، والقيم الأكبر تنعّم دورانات أكبر في كل دورة تحديث.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>إعادة الضبط إلى التلقائي (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>السماح بالالتفات عند التفعيل</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>إزاحة الدوران</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>يدير خريطة الالتفات كلها بهذا العدد من الدرجات. الموجب مع عقارب الساعة. تسري المحاذاة بعد الإزاحة.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>إعادة ضبط إزاحة الدوران</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>عندما تتفعل الطبقة التي تحتوي عصا الالتفات السريع والعصا منحرفة بالفعل، ينطلق الالتفات فورا. الإيقاف يبقي الكاميرا ثابتة ويتتبع الدوران من زاوية العصا الحالية.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>إعادة ضبط السماح بالالتفات عند التفعيل</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ردود فعل أقصى انعطاف</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>إشارة عند أقصى انعطاف لعصا في وضع توجيه</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>عند إدارة عصا مضبوطة على وضع توجيه حتى أقصى انعطاف، يتم تشغيل إشارة (اهتزاز أو زناد أو شريط إضاءة) لتشعر بالحد. كلها متوقفة افتراضيا.</value></data>
@@ -3481,11 +3479,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>تشغيل ردود فعل DualSense اللمسية على وحدة التحكم هذه</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>عندما تشغّل لعبة هذه الخانة كوحدة DualSense ظاهرية بصوت لمسي معد خصيصا، يتم تشغيل ذلك المسار على مشغلات وحدة التحكم هذه. وحدة Steam Controller 2026 عبر USB أو جهاز الاستقبال الخاص بها، ووحدة Flydigi Apex 6 Pro، تشغّل المسار نفسه. كل وحدة تحكم أخرى، ووحدة Steam Controller تلك عبر Bluetooth، تحصل على نغمات مشتقة من الصوت، تقارب الإحساس الذي أراده المصمم ولا تعيد إنتاجه.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>كسب ردود الفعل اللمسية</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>إعادة الضبط إلى الافتراضي (متوقف)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>إعادة الضبط إلى الافتراضي (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>تردد قطع مرشح التمرير المنخفض للمشغل</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>يبقي البث اللمسي في Steam Controller دون هذا التردد فتهتز اللوحات بدلا من إصدار صوت مسموع. عند نحو 250 هرتز تبدأ المشغلات تصبح مسموعة. ارفعه لتفاصيل أوضح، واخفضه لتشغيل أهدأ.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>إعادة الضبط إلى 250 هرتز</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>النغمات فوق هذا التردد يتم قطعها أو طيها. القيمة الافتراضية 800 هرتز تبقي اهتزاز المحركات والاصطدامات وتلتقط الصفارات الحادة.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>إعادة ضبط النغمات العالية</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>إعادة ضبط حد النغمة</value></data>
@@ -4054,8 +4049,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>ملف تعريف Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ماكرو Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>منطقة المؤشر</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>تبديل {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>قائمة العجلة ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>منطقة المؤشر ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>إمساك زر الماوس {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>نقر زر الماوس {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>تبديل زر الماوس {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>نبضة لمسية ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ذيل الإفلات)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>نقرة على {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>إطلاق تلقائي {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>إمساك {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>تبديل {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>تيربو {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>ضغطتان على {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>ضغطة مطولة على {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>خطوة العجلة ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>تبديل العجلة ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>عجلة تيربو ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>نقل المؤشر ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>ضبط LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>إعادة توسيط الجيروسكوب ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>تحريك المؤشر قليلا ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>مفتاح لقطة الشاشة ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>لوحة المفاتيح على الشاشة ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ضبط لون الإضاءة</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>إعادة توسيط الكاميرا</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>نقل المؤشر</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>تحريك المؤشر قليلا</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>لقطة شاشة</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>لوحة المفاتيح على الشاشة</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>تبديل طبقة التحويل</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>تشغيل طبقة تحويل</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>إيقاف طبقة تحويل</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>إمساك طبقة تحويل</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>تغيير رقم اللاعب</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>غير معين</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>تبديل وضع سطح المكتب</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>مفتاح نظام Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>تبديل المكبر</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>زيادة السطوع</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>خفض السطوع</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>إيقاف تشغيل وحدة التحكم</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>فتح أداة إعداد Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>فتح قائمة Steam السريعة</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>إنهاء اللعبة</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>تبديل الاهتزاز اللمسي</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>تبديل HUD الخاص بـ Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>تبديل الاهتزاز</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>فرض زر Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>دوران معايرة الجيروسكوب</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>الالتفات نحو الاتجاه</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ضغط)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (تحرير)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (تحرير)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (تفعيل)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>اختر تكوينا لترى ما ينتقل.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ما الذي ينتقل</value></data>
@@ -4663,11 +4709,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>الطبقة</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>اختر الطبقة التي تسمح بهذه القائمة. «أي طبقة» و«الأساسية» كلتاهما تسمحان بها تحت طبقات نشطة أخرى. الطبقة المسماة يجب أن تطابق الطبقة النشطة حاليا.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>إعادة الضبط إلى «أي طبقة» وإيقاف الفتح المرتبط بالطبقة.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (غير مدرجة في هذه الخانة)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>الطبقة تبقي القائمة مفتوحة</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>إبقاء هذه القائمة مفتوحة ما دامت طبقتها المسماة نشطة. المدخل الفعلي المحدد يوجه التمييز. «أي طبقة» و«الأساسية» تستخدمان الفتح العادي بالسطح.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>إعادة الضبط إلى الفتح عند اللمس أو الانحراف.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>التوجيه بواسطة</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>المدخل الفعلي الذي يوجه الخلية المميزة ما دامت الطبقة تبقي هذه القائمة مفتوحة.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>يقرأ من وحدات التحكم الفعلية المعينة لهذه الخانة. الطبقة تفتح القائمة، وهذا المدخل يوجهها. خلاياها تحدد ما تخرجه.</value></data>
@@ -4747,7 +4791,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>المحرك</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>تقسيم حسب الاتجاه</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>المنطقة الميتة المركزية</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>إعادة الضبط إلى «العصا اليسرى X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>إعادة ضبط الشدة (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة المركزية (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>إعادة ضبط تفعيل اهتزاز زاوية التوجيه</value></data>
@@ -5271,6 +5314,9 @@
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>المكبر (أثناء الضغط المستمر)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>يُظهر المكبر ما دام هذا الماكرو مضغوطا، للتصويب عبر المنظار. اضبطه في صفحة المكبر.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>هذا الملف ليس سمة PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>لا يستطيع PadForge قراءة هذا الملف.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>لا يستطيع PadForge العثور على هذا الملف.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>ليس سمة</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>تعذر حفظ السمة. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>سمة جديدة</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>يرتدي PadForge السمة أثناء إنشائك لها.</value></data>
@@ -5285,6 +5331,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>جارٍ جلب الصورة من Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>لا توفر Steam صورة عريضة لهذه اللعبة.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>تعذر الوصول إلى Steam. تحقق من اتصالك.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>لا يستطيع PadForge قراءة صورة Steam لهذه اللعبة.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>الموضع</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>يحرك الصورة لأعلى أو لأسفل داخل إطارها.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>إظهار شعار اللعبة</value></data>
@@ -5325,4 +5372,6 @@
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>النموذج الذي صُوّر لسلسلة ستار تريك الأصلية، التقطت صورته Smithsonian National Air and Space Museum التي تحتفظ به: صورة سمة ستار تريك LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>صورة السمة: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>لقطة من ستار تريك: الجيل التالي: صورة سمة ستار تريك Starfleet. وُجدت على Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>شريط الإضاءة</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>شريط إضاءة {0}</value></data>
 </root>

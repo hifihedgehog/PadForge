@@ -99,8 +99,7 @@ namespace PadForge.Common.Input.Peripherals
             Name = name,
             // One zone, "Mouse" or "Mousemat" (RGBController_HoltekA070.cpp:62-77,
             // RGBController_HoltekA1FA.cpp:90-105).
-            Map = new LightMap(SinowealthLighting.OneLight(),
-                mat ? "OpenRGB RGBController_HoltekA1FA.cpp" : "OpenRGB RGBController_HoltekA070.cpp")
+            Map = new LightMap(SinowealthLighting.OneLight())
             {
                 Product = $"holtek:{HoltekVid:X4}:{productId:X4}",
             },

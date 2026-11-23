@@ -103,7 +103,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         Family = this,
                         Name = registration.Name,
-                        Map = new LightMap(keyboard ? KeyboardLights() : BacklightLights(), "OpenRGB GigabyteAorusLaptopController")
+                        Map = new LightMap(keyboard ? KeyboardLights() : BacklightLights())
                         {
                             Product = $"gigabyte:0414:{collection.ProductId:X4}",
                         },

@@ -69,6 +69,10 @@ namespace PadForge.Views
             DataContextChanged += (s, e) => { if (IsLoaded) Attach(DataContext as PadViewModel); };
             Loaded += (s, e) => Attach(DataContext as PadViewModel);
             Unloaded += (s, e) => Attach(null);
+            // A lit, hovered or flashing capsule holds the look's brushes, so
+            // a look put on while the strip shows paints every capsule again
+            // (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, PaintAll);
             // Each capsule carries its label as text, so a language switch
             // rebuilds them: the view model's own refresh raises none of the
             // properties the strip rebuilds on. Held weakly by Strings.
@@ -228,6 +232,11 @@ namespace PadForge.Views
             bool flashing = _flashRole == role && _flashOn;
             capsule.Background = flashing ? FlashBrush : IsOn(role) ? LitBrush : RestBrush;
             capsule.BorderBrush = _hovered.Contains(role) || _flashRole == role ? HoverBrush : EdgeBrush;
+        }
+
+        private void PaintAll()
+        {
+            foreach (string role in _capsules.Keys) Paint(role);
         }
 
         private void UpdateFlash(string recordingTarget)

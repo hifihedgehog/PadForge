@@ -35,13 +35,13 @@ namespace PadForge.Tests
             new LightInfo(1, LightKind.Key, 0x04, LightKeySource.Device),   // A
             new LightInfo(2, LightKind.Key, 0x1A, LightKeySource.Device),   // W
             new LightInfo(3, LightKind.Key, 0x16, LightKeySource.Device),   // S
-        }, "test");
+        });
 
         private static readonly LightMap EdgeOnly = new(new[]
         {
             new LightInfo(0, LightKind.Edge, 0, LightKeySource.None),
             new LightInfo(1, LightKind.Edge, 0, LightKeySource.None),
-        }, "test");
+        });
 
         private static ShiftLayerInfo Base() => new() { LayerMask = "Base", LayerName = "Base" };
 

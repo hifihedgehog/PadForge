@@ -87,7 +87,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     new LightInfo(1, LightKind.Edge, 0, LightKeySource.None),
                     new LightInfo(2, LightKind.Edge, 0, LightKeySource.None),
                     new LightInfo(3, LightKind.Edge, 0, LightKeySource.None),
-                }, "libratbag src/driver-roccat-kone-emp.c") { Product = Product },
+                }) { Product = Product },
                 Programs = new[] { VendorPrograms.RoccatSwarm },
                 HoldMs = LenovoLegionLighting.HoldMs,
                 RepaintMs = LenovoLegionLighting.RepaintMs,

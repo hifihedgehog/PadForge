@@ -79,7 +79,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_WushiL50USB.cpp") { Product = $"jsaux:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"jsaux:{vendorId:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(true, ZoneCount, colors => new[] { Report(colors) }),
         };

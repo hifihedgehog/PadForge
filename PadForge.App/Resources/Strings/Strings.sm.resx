@@ -116,7 +116,7 @@
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod o taʻaloga</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Talia mod o taʻaloga mo DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port o mod o taʻaloga</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>O loʻo faʻalogo i le :{0}. O loʻo auina atu e {1} i le numera controller {2}, ae leai se controller faʻafoliga o loʻo i ai se controller PlayStation e iai lena numera.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>O loʻo faʻalogo i le :{0}. O loʻo auina atu e {1} i le numera controller {2}, ae leai se controller faʻafoliga o loʻo i ai se DualSense po o se DualShock 4 e iai lena numera.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>O loʻo faʻaaogā le port {0} e se isi polokalame, e pei o DSX. Tapuni pe filifili se isi port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Se mod o taʻaloga</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Fesoʻotaʻi</value></data>
@@ -720,15 +720,10 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Faʻatulagaga mo le Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Toe setiina le flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Toe setiina i le 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Toe setiina i le 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Toe setiina i le 0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 tikeri</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 tikeri</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 tikeri</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 tikeri</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Toe setiina i le 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Toe setiina i le 0°</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lanu o le lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Foeuli</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Toe setiina le foeuli</value></data>
@@ -741,8 +736,6 @@
   <data name="Macro_Sound_Browse" xml:space="preserve"><value>Suʻe…</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Leo</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>I taimi uma</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Toe setiina i le masani (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Toe setiina i le 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
@@ -1027,7 +1020,6 @@
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick taumatau Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Afi</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone ogatotonu</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Toe setiina i le stick agavale X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Toe setiina le malosi (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Toe setiina le deadzone ogatotonu (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
@@ -1310,6 +1302,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Faʻasao se kopi…</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Aveʻese mai le lisi. E tumau pea le faila i lona nofoaga.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>O le faila o “{0}” ua leiloa pe le mafai ona faitau. E faʻaali e PadForge le Pogisa seʻia toe maua.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>O le faila o “{0}” e leai se autu PadForge i totonu. E faʻaali e PadForge le Pogisa seʻia iai.</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Loʻu autu</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Faʻavae</value></data>
   <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>O le eleele e tū ai le autu. O se autu pogisa e malamalama ona tusitusiga, ae o se autu malamalama e pogisa ona tusitusiga.</value></data>
@@ -1324,4 +1317,6 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Fetaui ma le ata</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E aumai lanu e fā mai le ata.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ata (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faila uma (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>E le mafai e PadForge ona faitau le ata a Steam mo lenei taʻaloga.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Faʻaauau le Auina Atu</value></data>
 </root>

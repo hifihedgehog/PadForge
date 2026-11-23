@@ -357,8 +357,9 @@ namespace PadForge.Services
             return true;
         }
 
-        /// <summary>What a reWASD or DS4Windows import set for the device (#561),
-        /// each kept where the user has not chosen something.</summary>
+        /// <summary>What an import (reWASD, DS4Windows, DSX or a Steam profile)
+        /// set for the device (#561, #589), each kept where the user has not
+        /// chosen something.</summary>
         private static bool FoldImportStamps(MappingSet set, PadSetting ps, string deviceGuid, HashSet<string> kept)
         {
             bool changed = false;

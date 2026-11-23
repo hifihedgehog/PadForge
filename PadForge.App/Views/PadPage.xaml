@@ -431,8 +431,6 @@
             <Setter Property="Margin" Value="12,0,0,0"/>
         </Style>
 
-        <!-- The label of a row whose switch stands at its end: it takes the
-             room the row has and wraps there (SettingRow.Ends). -->
         <!-- What a picker of one input holds, drawn inside its box over a
              picker whose list has no item for it: the saved input or
              Unassigned, where the picker's own text stands, and the
@@ -452,6 +450,8 @@
             </Style.Triggers>
         </Style>
 
+        <!-- The label of a row whose switch stands at its end: it takes the
+             room the row has and wraps there (SettingRow.Ends). -->
         <Style x:Key="EndsLabel" TargetType="TextBlock">
             <Setter Property="Margin" Value="0,0,12,0"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -4915,13 +4915,13 @@
                                                 <Grid Width="200" Height="200">
                                                     <!-- Radar ground (#175 artifact): near-black plot
                                                          with steel rings at 33/66/100%. -->
-                                                    <Ellipse Width="200" Height="200" Fill="Transparent" Stroke="#FF253049" StrokeThickness="1"/>
-                                                    <Ellipse Width="66" Height="66" Stroke="#FF1E2739" StrokeThickness="1" Fill="Transparent"
+                                                    <Ellipse Width="200" Height="200" Fill="Transparent" Stroke="{DynamicResource RadarRingBrush}" StrokeThickness="1"/>
+                                                    <Ellipse Width="66" Height="66" Stroke="{DynamicResource RadarGridBrush}" StrokeThickness="1" Fill="Transparent"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <Ellipse Width="132" Height="132" Stroke="#FF1E2739" StrokeThickness="1" Fill="Transparent"
+                                                    <Ellipse Width="132" Height="132" Stroke="{DynamicResource RadarGridBrush}" StrokeThickness="1" Fill="Transparent"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <Line FlowDirection="LeftToRight" X1="100" Y1="6" X2="100" Y2="194" Stroke="#FF1E2739" StrokeThickness="1"/>
-                                                    <Line FlowDirection="LeftToRight" X1="6" Y1="100" X2="194" Y2="100" Stroke="#FF1E2739" StrokeThickness="1"/>
+                                                    <Line FlowDirection="LeftToRight" X1="100" Y1="6" X2="100" Y2="194" Stroke="{DynamicResource RadarGridBrush}" StrokeThickness="1"/>
+                                                    <Line FlowDirection="LeftToRight" X1="6" Y1="100" X2="194" Y2="100" Stroke="{DynamicResource RadarGridBrush}" StrokeThickness="1"/>
                                                     <Canvas FlowDirection="LeftToRight">
                                                         <!-- Measured boundary (#174): the reachable rim from the
                                                              last (or in-progress) sweep, in the ember grammar,
@@ -4933,7 +4933,7 @@
                                                                  Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.5"
                                                                  Fill="{DynamicResource Ember14Brush}" IsHitTestVisible="False"/>
                                                         <!-- Legacy stock rings removed (#175 close-out item 25):
-                                                             the radar keeps the #1E2739 rings + crosshair above.
+                                                             the radar keeps the RadarGridBrush rings + crosshair above.
                                                              Below sit the DZ steel fill, the dashed ember DZ
                                                              circle, and the anti-DZ ember ring. -->
 <!-- Dead zone geometry (#175, user direction 2026-07-04:
@@ -4946,7 +4946,7 @@
                                                              over non-radial shapes. Converters are the proven
                                                              legacy pair. -->
                                                         <!-- Axial: cross arms - snapped to axis (partial tier). -->
-                                                        <Path Fill="#18253049" Stroke="{DynamicResource EmberDeep5ABrush}" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Path Fill="{DynamicResource DeadZoneFaintFillBrush}" Stroke="{DynamicResource EmberDeep5ABrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                               IsHitTestVisible="False"
                                                               Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Path.Data>
@@ -4957,7 +4957,7 @@
                                                             </Path.Data>
                                                         </Path>
                                                         <!-- Axial: center rectangle - fully dead. -->
-                                                        <Rectangle Fill="#2E253049" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Rectangle Fill="{DynamicResource DeadZoneFillBrush}" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                                    IsHitTestVisible="False"
                                                                    Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Rectangle.Width>
@@ -4980,7 +4980,7 @@
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Rectangle>
                                                         <!-- Radial pair + Hybrid's radial stage: ellipse - fully dead. -->
-                                                        <Ellipse Fill="#2E253049" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Ellipse Fill="{DynamicResource DeadZoneFillBrush}" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                                  IsHitTestVisible="False">
                                                             <Ellipse.Style>
                                                                 <Style TargetType="Ellipse">
@@ -5015,7 +5015,7 @@
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
                                                         <!-- Sloped pair + Hybrid: wedges - snapped to axis (partial tier). -->
-                                                        <Path Fill="#18253049" Stroke="{DynamicResource EmberDeep5ABrush}" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Path Fill="{DynamicResource DeadZoneFaintFillBrush}" Stroke="{DynamicResource EmberDeep5ABrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                               IsHitTestVisible="False"
                                                               Visibility="{Binding HasSlopedWedges, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Path.Data>
@@ -5127,7 +5127,7 @@
                                                         <StackPanel Orientation="Horizontal">
                                                             <!-- Swatch mirrors the plot: steel fill + ember edge. -->
                                                             <Rectangle Width="7" Height="5" RadiusX="1" RadiusY="1"
-                                                                       Fill="#2E253049" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1"
+                                                                       Fill="{DynamicResource DeadZoneFillBrush}" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <TextBlock Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" FontSize="12"
                                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
@@ -5248,7 +5248,7 @@
                                                     <ComboBoxItem Content="{Binding Pad_DZSlopedScaledAxial, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding Pad_DZSlopedAxial, Source={x:Static strings:Strings.Instance}}"/>
                                                 </ComboBox>
-                                                <ui:Button Command="{Binding ResetDeadZoneShapeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetDeadZoneShape, Source={x:Static strings:Strings.Instance}}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetDeadZoneShapeCommand}" SettingLabel="{Binding Pad_DeadZoneShape, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" MinHeight="44">
                                                 <TextBlock Text="{Binding Pad_DeadZoneX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -5307,7 +5307,7 @@
                                                  stick would be kinetic scrolling, its own feature).
                                                  Flick and release: the cursor coasts on the touchpad
                                                  Momentum's constant-deceleration physics. -->
-                                            <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44"
+                                            <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44"
                                                         Visibility="{Binding IsMouseStick, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{Binding Pad_StickMomentum, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                                 <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_StickMomentum, Source={x:Static strings:Strings.Instance}}"
@@ -5632,25 +5632,25 @@
                                     <!-- Each channel is a checkbox + its own reset (off), so every row
                                          in the card has a reset like the sliders below. Visibility is
                                          gated per row by SyncTabVisibility to the device's capability. -->
-                                    <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44" x:Name="LockRumbleRow">
+                                    <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44" x:Name="LockRumbleRow">
                                         <TextBlock Text="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                                   Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
                                         <ui:Button Command="{Binding ResetSteeringLockRumbleCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Rumble, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44" x:Name="LockTriggerVibRow">
+                                    <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44" x:Name="LockTriggerVibRow">
                                         <TextBlock Text="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                                   Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
                                         <ui:Button Command="{Binding ResetSteeringLockTriggerVibCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44" x:Name="LockLightbarRow">
+                                    <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44" x:Name="LockLightbarRow">
                                         <TextBlock Text="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                                   Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
                                         <ui:Button Command="{Binding ResetSteeringLockLightbarCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
-                                    <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44" x:Name="LockResistanceRow">
+                                    <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44" x:Name="LockResistanceRow">
                                         <TextBlock Text="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                                   Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
@@ -5724,19 +5724,19 @@
                                                 </DockPanel>
                                             </Grid>
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                 <Slider Value="{Binding SteeringLockColorR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                 <TextBox Text="{Binding SteeringLockColorR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                 <ui:Button Command="{Binding ResetSteeringLockColorRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                 <Slider Value="{Binding SteeringLockColorG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                 <TextBox Text="{Binding SteeringLockColorG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                 <ui:Button Command="{Binding ResetSteeringLockColorGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                 <Slider Value="{Binding SteeringLockColorB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                 <TextBox Text="{Binding SteeringLockColorB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                 <ui:Button Command="{Binding ResetSteeringLockColorBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -5796,17 +5796,17 @@
                                                                          ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             </Grid>
                                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                                <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                                <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                                 <Slider Value="{Binding R, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                 <TextBox Text="{Binding R, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             </StackPanel>
                                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                                <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                                <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                                 <Slider Value="{Binding G, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                 <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             </StackPanel>
                                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                                                <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                                <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                                 <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                 <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             </StackPanel>
@@ -5871,7 +5871,7 @@
                                                        ToolTip="{Binding Settings_FlickCountsPer360_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding FlickCountsPer360, Mode=TwoWay}" Minimum="100" Maximum="100000" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickCountsPer360, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                            <ui:Button Command="{Binding ResetFlickCountsPer360Command}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickCountsPer360, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickCountsPer360Command}" SettingLabel="{Binding Settings_FlickCountsPer360, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickTime, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
@@ -5883,14 +5883,14 @@
                                             <Slider Value="{Binding FlickTime, Mode=TwoWay}" Minimum="0.01" Maximum="2" TickFrequency="0.01" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                             <TextBlock Text="{Binding Common_Seconds, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
-                                            <ui:Button Command="{Binding ResetFlickTimeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickTime, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickTimeCommand}" SettingLabel="{Binding Settings_FlickTime, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Settings_FlickThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding FlickThreshold, Mode=TwoWay}" Minimum="0.1" Maximum="1" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                            <ui:Button Command="{Binding ResetFlickThresholdCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickThresholdCommand}" SettingLabel="{Binding Settings_FlickThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickSnapMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
@@ -5903,14 +5903,14 @@
                                                 <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Sixths, Source={x:Static strings:Strings.Instance}}" Tag="Sixths"/>
                                                 <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Eight, Source={x:Static strings:Strings.Instance}}" Tag="Eight"/>
                                             </ComboBox>
-                                            <ui:Button Command="{Binding ResetFlickSnapModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSnapMode, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickSnapModeCommand}" SettingLabel="{Binding Settings_FlickSnapMode, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickSnapStrength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Settings_FlickSnapStrength_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding FlickSnapStrength, Mode=TwoWay}" Minimum="0" Maximum="1" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickSnapStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                            <ui:Button Command="{Binding ResetFlickSnapStrengthCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSnapStrength, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickSnapStrengthCommand}" SettingLabel="{Binding Settings_FlickSnapStrength, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickForwardDeadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
@@ -5918,32 +5918,32 @@
                                             <Slider Value="{Binding FlickForwardDeadzone, Mode=TwoWay}" Minimum="0" Maximum="180" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickForwardDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                             <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
-                                            <ui:Button Command="{Binding ResetFlickForwardDeadzoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickForwardDeadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickForwardDeadzoneCommand}" SettingLabel="{Binding Settings_FlickForwardDeadzone, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickSmoothing, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Settings_FlickSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding FlickSmoothing, Mode=TwoWay}" Minimum="-1" Maximum="0.5" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickSmoothing, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                            <ui:Button Command="{Binding ResetFlickSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSmoothing, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickSmoothingCommand}" SettingLabel="{Binding Settings_FlickSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickRotationOffset, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Settings_FlickRotationOffset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding FlickRotationOffset, Mode=TwoWay}" Minimum="-180" Maximum="180" Style="{StaticResource DzSlider}"/>
                                             <TextBox Text="{Binding FlickRotationOffset, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                            <ui:Button Command="{Binding ResetFlickRotationOffsetCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickRotationOffset, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickRotationOffsetCommand}" SettingLabel="{Binding Settings_FlickRotationOffset, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <!-- One on/off setting: a switch row, as the
                                              page's other switches are. -->
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"
                                                        ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                       Content="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding FlickOnEngage, Mode=TwoWay}" VerticalAlignment="Center"
                                                       ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ui:Button Command="{Binding ResetFlickOnEngageCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickOnEngage, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetFlickOnEngageCommand}" SettingLabel="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                     </StackPanel>
                                 </StackPanel>
@@ -6200,7 +6200,7 @@
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_ResetMouseGestures, Source={x:Static strings:Strings.Instance}}"/>
                                 </DockPanel>
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_MouseGestures_Enabled, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_MouseGestures_Enabled, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding MouseGesturesEnabled, Mode=TwoWay}"
@@ -6689,8 +6689,8 @@
                                                         <ComboBoxItem Content="{Binding Pad_SteeringAngleRumble_RX, Source={x:Static strings:Strings.Instance}}"/>
                                                         <ComboBoxItem Content="{Binding Pad_SteeringAngleRumble_RY, Source={x:Static strings:Strings.Instance}}"/>
                                                     </ComboBox>
-                                                    <ui:Button x:Name="SteeringAngleRumbleAxisReset" Command="{Binding ResetSteeringAngleRumbleAxisCommand}" Style="{StaticResource ResetButton}"
-                                                               ToolTip="{Binding Pad_SteeringAngleRumble_ResetAxis, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <reset:SettingResetButton x:Name="SteeringAngleRumbleAxisReset" Command="{Binding ResetSteeringAngleRumbleAxisCommand}"
+                                                               SettingLabel="{Binding Pad_SteeringAngleRumble_Axis, Source={x:Static strings:Strings.Instance}}"/>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
                                                     <TextBlock Text="{Binding Pad_SteeringAngleRumble_Motor,Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"/>
@@ -8662,7 +8662,7 @@
                                 <!-- Per-axis invert toggles. Independent from per-source
                                      Invert flags on the mapping table. Steam-style top-level
                                      convenience. -->
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Settings_GyroInvertPitch, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroInvertPitch, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroInvertPitch, Mode=TwoWay}"
@@ -8671,7 +8671,7 @@
                                     <ui:Button Command="{Binding ResetGyroInvertPitchCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroInvertPitch, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Settings_GyroInvertYaw, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroInvertYaw, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroInvertYaw, Mode=TwoWay}"
@@ -8680,7 +8680,7 @@
                                     <ui:Button Command="{Binding ResetGyroInvertYawCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroInvertYaw, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Settings_GyroInvertRoll, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroInvertRoll, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroInvertRoll, Mode=TwoWay}"
@@ -8944,16 +8944,20 @@
                                                  picker does, and the label and the reset center on that box. -->
                                             <ListBox ItemsSource="{Binding GyroActivationButtons}" MaxHeight="160" MaxWidth="260" Margin="0,6,0,6"
                                                      controls:SettingRow.Fills="True" HorizontalAlignment="Left"
+                                                     KeyboardNavigation.TabNavigation="Continue"
                                                      AutomationProperties.Name="{Binding Pad_GyroActivation_Buttons, Source={x:Static strings:Strings.Instance}}"
                                                      ToolTip="{Binding Pad_GyroActivation_Buttons_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                                 <!-- A list of check boxes: each item is its check box,
                                                      with no pad of the library's 12 around it and no fill
                                                      for a pick, which a check list has none of, so a
                                                      button takes a check box's height and its box starts
-                                                     at the row's control column. -->
+                                                     at the row's control column. The item takes no
+                                                     focus and the list lets Tab through, so Tab lands on
+                                                     each check box, which draws the focus ring, and
+                                                     Space ticks it. -->
                                                 <ListBox.ItemContainerStyle>
                                                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                                        <Setter Property="Padding" Value="0"/>
+                                                        <Setter Property="Focusable" Value="False"/>
                                                         <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate TargetType="ListBoxItem">
@@ -8988,7 +8992,7 @@
                                         </controls:SettingRow>
                                         <!-- One on/off setting: a switch row, as the
                                              page's other switches are. -->
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_GyroRecenterOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"
                                                        ToolTip="{Binding Pad_GyroRecenterOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -9275,8 +9279,8 @@
                                                       IsChecked="{Binding GyroCompassYaw, Mode=TwoWay}"
                                                       VerticalAlignment="Center"
                                                       ToolTip="{Binding Settings_GyroCompassYaw_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ui:Button Command="{Binding ResetGyroCompassYawCommand}" Style="{StaticResource ResetButton}"
-                                                    ToolTip="{Binding Pad_ResetGyroCompassYaw, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetGyroCompassYawCommand}"
+                                                    SettingLabel="{Binding Settings_GyroCompassYaw, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                     </controls:FoldCard.Switch>
                                     <StackPanel>
@@ -9383,7 +9387,7 @@
                                                     ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
 
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_MouseJitterReduction, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseJitterReduction, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadMouseJitterReduction, Mode=TwoWay}"
@@ -9425,7 +9429,7 @@
                                                   Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                   Hint="{Binding Pad_More_TouchpadMouse, Source={x:Static strings:Strings.Instance}}">
                                     <StackPanel>
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseInvertX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseInvertX, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadMouseInvertX, Mode=TwoWay}"
@@ -9435,7 +9439,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouseInvertX, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
 
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseInvertY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseInvertY, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadMouseInvertY, Mode=TwoWay}"
@@ -9445,7 +9449,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouseInvertY, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
 
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseMomentum, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseMomentum, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadMouseMomentum, Mode=TwoWay}"
@@ -9562,7 +9566,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMomentumMaxSpeed, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
 
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44"
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44"
                                             IsEnabled="{Binding TouchpadMouseMomentum}">
                                     <TextBlock Text="{Binding Pad_Touchpad_MomentumStacking, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Touchpad_MomentumStacking, Source={x:Static strings:Strings.Instance}}"
@@ -9905,7 +9909,7 @@
                                                    Style="{StaticResource CardDescription}"
                                                    Visibility="{Binding TouchpadInBoxSectionEnabled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_TouchSpots, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_TouchSpots, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_Touchpad_TouchSpots_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -9913,14 +9917,14 @@
                                             <ui:Button Command="{Binding ResetTouchpadEnableTouchSpotsCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadTouchSpots, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableFourWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetTouchpadEnableFourWaySwipesCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadFourWaySwipes, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableEightWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -9943,7 +9947,7 @@
                                                     ToolTip="{Binding Pad_ResetTouchpadSwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
 
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_Touchpad_RadialZones_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -9969,7 +9973,7 @@
                                                     ToolTip="{Binding Pad_ResetTouchpadRadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
 
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableTaps, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -10002,7 +10006,7 @@
                                                     ToolTip="{Binding Pad_ResetTouchpadTapMaxMotion, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
 
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableLongPress, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -10027,7 +10031,7 @@
                                                     ToolTip="{Binding Pad_ResetTouchpadLongPressMaxMotion, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
 
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableTwoFingerSwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -10043,7 +10047,7 @@
                                             <ui:Button Command="{Binding ResetTouchpadTwoFingerSwipeAngularToleranceCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadTwoFingerSwipeAngularTolerance, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnablePinchSpread, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -10059,7 +10063,7 @@
                                             <ui:Button Command="{Binding ResetTouchpadPinchThresholdCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadPinchThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableRotate, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -10075,28 +10079,28 @@
                                             <ui:Button Command="{Binding ResetTouchpadRotateThresholdDegreesCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadRotateThresholdDegrees, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableThreeFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetTouchpadEnableThreeFingerGesturesCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadThreeFinger, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableFourFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetTouchpadEnableFourFingerGesturesCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadFourFinger, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableFiveFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetTouchpadEnableFiveFingerGesturesCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadFiveFinger, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding TouchpadEnableShapeGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
@@ -10572,7 +10576,7 @@
                                                 <ui:Button Command="{Binding DeviceConfig.ResetScreenColorSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetScreenColorSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <!-- Only a device with more than one light has anything to spread across. -->
-                                            <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44"
+                                            <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44"
                                                         Visibility="{Binding KeyColors.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{Binding Pad_Lighting_ScreenSpread, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                                 <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.ScreenColorSpread, Mode=TwoWay}"
@@ -10582,7 +10586,7 @@
                                         </StackPanel>
 
                                         <!-- Smooth toggle (ColorCycle): blend or hop between palette colors -->
-                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44" Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}">
+                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44" Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}">
                                             <TextBlock Text="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
                                                       Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"/>
@@ -10647,17 +10651,17 @@
                                                                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                                 </Grid>
                                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                                     <Slider Value="{Binding R, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                     <TextBox Text="{Binding R, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                                 </StackPanel>
                                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                                     <Slider Value="{Binding G, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                     <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                                 </StackPanel>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                                     <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                     <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                                 </StackPanel>
@@ -10920,19 +10924,19 @@
                                                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 </Grid>
                                                 <controls:SettingRow MinHeight="44">
-                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <ui:Button Command="{Binding DeviceConfig.ResetLightbarRedCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
-                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <ui:Button Command="{Binding DeviceConfig.ResetLightbarGreenCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <ui:Button Command="{Binding DeviceConfig.ResetLightbarBlueCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -10984,7 +10988,7 @@
                                                             </Border>
                                                         </Grid>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.LightbarBatteryLowR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.LightbarBatteryLowR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowRCommand}" Style="{StaticResource ResetButtonTight}">
@@ -10998,7 +11002,7 @@
                                                             </ui:Button>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.LightbarBatteryLowG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.LightbarBatteryLowG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowGCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11012,7 +11016,7 @@
                                                             </ui:Button>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.LightbarBatteryLowB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.LightbarBatteryLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowBCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11059,7 +11063,7 @@
                                                             </Border>
                                                         </Grid>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.LightbarBatteryHighR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.LightbarBatteryHighR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighRCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11073,7 +11077,7 @@
                                                             </ui:Button>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.LightbarBatteryHighG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.LightbarBatteryHighG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighGCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11087,7 +11091,7 @@
                                                             </ui:Button>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.LightbarBatteryHighB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.LightbarBatteryHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighBCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11154,19 +11158,19 @@
                                                             </DockPanel>
                                                         </Grid>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioLowR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioLowR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioLowRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioLowR, Source={x:Static strings:Strings.Instance}}"/>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioLowG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioLowG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioLowGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioLowG, Source={x:Static strings:Strings.Instance}}"/>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioLowB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioLowBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioLowB, Source={x:Static strings:Strings.Instance}}"/>
@@ -11213,19 +11217,19 @@
                                                             </DockPanel>
                                                         </Grid>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioMidR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioMidR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioMidRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioMidR, Source={x:Static strings:Strings.Instance}}"/>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioMidG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioMidG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioMidGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioMidG, Source={x:Static strings:Strings.Instance}}"/>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioMidB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioMidB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioMidBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioMidB, Source={x:Static strings:Strings.Instance}}"/>
@@ -11272,19 +11276,19 @@
                                                             </DockPanel>
                                                         </Grid>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioHighR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioHighR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioHighRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioHighR, Source={x:Static strings:Strings.Instance}}"/>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioHighG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioHighG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioHighGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioHighG, Source={x:Static strings:Strings.Instance}}"/>
                                                         </controls:SettingRow>
                                                         <controls:SettingRow MinHeight="44">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                             <Slider Value="{Binding DeviceConfig.AudioHighB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding DeviceConfig.AudioHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                             <ui:Button Command="{Binding DeviceConfig.ResetAudioHighBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioHighB, Source={x:Static strings:Strings.Instance}}"/>
@@ -11406,17 +11410,17 @@
                                                                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                                 </Grid>
                                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                                     <Slider Value="{Binding R, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                     <TextBox Text="{Binding R, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                                 </StackPanel>
                                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                                     <Slider Value="{Binding G, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                     <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                                 </StackPanel>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                                     <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                                     <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                                 </StackPanel>
@@ -11462,7 +11466,7 @@
                                                     Green="{Binding DeviceConfig.InputReactiveG, Mode=TwoWay}"
                                                     Blue="{Binding DeviceConfig.InputReactiveB, Mode=TwoWay}"/>
                                                 <controls:SettingRow MinHeight="44">
-                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                                     <Slider Value="{Binding DeviceConfig.InputReactiveR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.InputReactiveR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveRCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11476,7 +11480,7 @@
                                                     </ui:Button>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
-                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                                     <Slider Value="{Binding DeviceConfig.InputReactiveG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.InputReactiveG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveGCommand}" Style="{StaticResource ResetButtonTight}">
@@ -11490,7 +11494,7 @@
                                                     </ui:Button>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                                     <Slider Value="{Binding DeviceConfig.InputReactiveB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.InputReactiveB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveBCommand}" Style="{StaticResource ResetButtonTight}">
@@ -12120,17 +12124,17 @@
                                                      ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </Grid>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                             <Slider Value="{Binding KeyColors.BackgroundRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding KeyColors.BackgroundRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                             <Slider Value="{Binding KeyColors.BackgroundGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding KeyColors.BackgroundGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                             <Slider Value="{Binding KeyColors.BackgroundBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding KeyColors.BackgroundBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         </StackPanel>
@@ -12243,17 +12247,17 @@
                                                      ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </Grid>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelRedBrush}"/>
                                             <Slider Value="{Binding KeyColors.PaintRed, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding KeyColors.PaintRed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelGreenBrush}"/>
                                             <Slider Value="{Binding KeyColors.PaintGreen, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding KeyColors.PaintGreen, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="{DynamicResource ChannelBlueBrush}"/>
                                             <Slider Value="{Binding KeyColors.PaintBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding KeyColors.PaintBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         </StackPanel>
@@ -12349,7 +12353,7 @@
                                 <!-- Per assigned device, by convention: this toggle (and the
                                      speaker routing of macro sounds) follows the device picked
                                      under Driven by. No output picker. -->
-                                <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44"
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44"
                                             Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay}"
@@ -12548,16 +12552,18 @@
                                             Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <!-- Persona haptics on the actuators (#271 item 1):
                                          when a game drives this slot's virtual DualSense
-                                         with authored haptic audio, render it here through
-                                         the tone chain. -->
-                                    <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                         with authored haptic audio, the track joins this
+                                         pad's haptic mix and plays as tones on a pad that
+                                         plays tones and as samples on a pad that plays
+                                         samples. -->
+                                    <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_PersonaHaptics_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   Content="{Binding Pad_Audio_PersonaHaptics_Label, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Pad_Audio_PersonaHaptics_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                   IsChecked="{Binding DeviceConfig.AudioPersonaHapticsEnabled, Mode=TwoWay}"/>
-                                        <ui:Button Command="{Binding ResetPersonaHapticsCommand}" Style="{StaticResource ResetButton}"
-                                                ToolTip="{Binding Pad_ResetPersonaHaptics, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetPersonaHapticsCommand}"
+                                                SettingLabel="{Binding Pad_Audio_PersonaHaptics_Label, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                 Visibility="{Binding DeviceConfig.AudioPersonaHapticsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -12567,8 +12573,8 @@
                                         <TextBox Text="{Binding DeviceConfig.AudioPersonaHapticsGain, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                        <ui:Button Command="{Binding ResetPersonaHapticsGainCommand}" Style="{StaticResource ResetButton}"
-                                                ToolTip="{Binding Pad_ResetPersonaHapticsGain, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetPersonaHapticsGainCommand}"
+                                                SettingLabel="{Binding Pad_Audio_PersonaHapticsGain_Label, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <!-- #381: Steam Controller 2026 PCM low-pass. Only
                                          the PCM-capable transports (wired / dongle) show
@@ -12584,8 +12590,8 @@
                                         <TextBox Text="{Binding DeviceConfig.AudioTritonLowPassHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
                                         <TextBlock Text="{Binding Common_Hz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
-                                        <ui:Button Command="{Binding ResetTritonLowPassCommand}" Style="{StaticResource ResetButton}"
-                                                ToolTip="{Binding Pad_ResetTritonLowPass, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetTritonLowPassCommand}"
+                                                SettingLabel="{Binding Pad_Audio_TritonLowPass_Label, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                 </StackPanel>
 
@@ -16754,7 +16760,7 @@
                                               SelectedValue="{Binding LayerMask, Mode=TwoWay}"
                                               SelectedValuePath="LayerMask"
                                               DisplayMemberPath="LayerName"/>
-                                    <ui:Button controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetLayerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Menu_Reset_Layer, Source={x:Static strings:Strings.Instance}}"/>
+                                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetLayerCommand}" SettingLabel="{Binding Menu_Layer, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:FlexLinePanel>
                             </StackPanel>
                             <!-- Stay-open (#413): the layer holds the menu open and the
@@ -16766,7 +16772,7 @@
                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Menu_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}" ToolTip="{Binding Menu_LayerHoldsOpen_Tip, Source={x:Static strings:Strings.Instance}}"/>
                                 <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Menu_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}" ToolTip="{Binding Menu_LayerHoldsOpen_Tip, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding LayerHoldsOpen, Mode=TwoWay}"/>
-                                <ui:Button controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetLayerHoldsOpenCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Menu_Reset_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetLayerHoldsOpenCommand}" SettingLabel="{Binding Menu_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"/>
                             </controls:FlexLinePanel>
                             <!-- Web Menus (#471): a Touch Grid menu can be a page on the
                                  web controller's phone deck. A radial menu cannot, so

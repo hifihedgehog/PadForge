@@ -432,7 +432,7 @@ namespace PadForge.Tests
         public void MicLane_IsOn_WithAnSdlBuildThatKeepsInputFlowing(string arch)
         {
             // An armed microphone sends state in reports 0x12 to 0x19, which
-            // SDL dropped until fork e0b84e3498 (hifihedgehog/SDL#41) checked
+            // SDL dropped until fork d947fad309 (hifihedgehog/SDL#41) checked
             // each report's CRC at its own length. Its table of those lengths
             // is the fingerprint: no earlier SDL3.dll holds that run of bytes.
             Assert.True(AudioPassthroughService.EnableDs4BtMic);

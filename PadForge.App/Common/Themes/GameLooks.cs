@@ -18,6 +18,10 @@ namespace PadForge.Common.Themes
         NoArt,
         /// <summary>PadForge may not ask Steam, and has no copy of the picture.</summary>
         LookupOff,
+        /// <summary>Steam could not be reached, and PadForge has no copy of the picture.</summary>
+        Unreached,
+        /// <summary>The picture Steam gave is no picture PadForge can read.</summary>
+        Unreadable,
     }
 
     /// <summary>
@@ -148,17 +152,17 @@ namespace PadForge.Common.Themes
         /// <summary>
         /// Makes a game's look: gets its library picture and logo, takes the
         /// four colors from the picture, and makes the picture fit. With no
-        /// picture to be had there is no look, and the fault says whether
-        /// Steam has none or PadForge may not ask. Awaited on the UI thread,
-        /// where it draws.
+        /// picture to be had there is no look, and the fault says why.
+        /// Awaited on the UI thread, where it draws.
         /// </summary>
         internal static async Task<Made> MakeAsync(SteamGameArt art, int appId, string game, CancellationToken ct)
         {
             if (art == null || appId <= 0) return new Made { Fault = GameLookFault.NoArt };
-            var (hero, logo) = await art.FetchAsync(appId, ct);
+            var (hero, logo, unreached) = await art.FetchAsync(appId, ct);
             ct.ThrowIfCancellationRequested();
-            BitmapSource photo = hero != null ? ThemePicture.DecodeSource(hero) : null;
-            if (photo == null) return new Made { Fault = art.IsOn ? GameLookFault.NoArt : GameLookFault.LookupOff };
+            if (hero == null) return new Made { Fault = FaultOfNoPicture(art.IsOn, unreached) };
+            BitmapSource photo = ThemePicture.DecodeSource(hero);
+            if (photo == null) return new Made { Fault = GameLookFault.Unreadable };
             BitmapSource mark = logo != null ? BoundedBitmap.FromBytes(logo, 1280, 720, scaleUp: false) : null;
 
             var colors = ThemePalette.Suggest(photo, dark: true);
@@ -175,6 +179,26 @@ namespace PadForge.Common.Themes
                     Attention = ThemeColor.Format(colors.Attention),
                 },
                 Picture = ThemePicture.EncodePng(picture),
+            };
+        }
+
+        /// <summary>Why a game has no picture: PadForge may not ask Steam,
+        /// Steam could not be reached, or Steam answered and has none.</summary>
+        internal static GameLookFault FaultOfNoPicture(bool lookupOn, bool unreached)
+            => !lookupOn ? GameLookFault.LookupOff : unreached ? GameLookFault.Unreached : GameLookFault.NoArt;
+
+        /// <summary>The line that says why a look could not be made, or
+        /// null when nothing went wrong.</summary>
+        internal static string FaultText(GameLookFault fault)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            return fault switch
+            {
+                GameLookFault.NoArt => s.ThemeBuilder_NoArt,
+                GameLookFault.LookupOff => s.Profile_GameLook_LookupOff,
+                GameLookFault.Unreached => s.ThemeBuilder_SearchFailed,
+                GameLookFault.Unreadable => s.ThemeBuilder_ArtUnreadable,
+                _ => null,
             };
         }
 

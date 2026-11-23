@@ -21,18 +21,19 @@ namespace PadForge.Common.Themes
         private static readonly Dictionary<(string Key, double Blur, double Opacity), DropShadowEffect> s_toneGlows = new();
         private static int s_version;
 
-        static ThemeLook()
+        /// <summary>Lets go of what was made from the last look. The look's
+        /// refresh calls it before it tells anyone, so a view that redraws on
+        /// the change reads the new look whatever its place among the
+        /// handlers.</summary>
+        internal static void Invalidate()
         {
-            ThemeTokens.Changed += (_, _) =>
+            lock (s_lock)
             {
-                lock (s_lock)
-                {
-                    s_glows.Clear();
-                    s_toneGlows.Clear();
-                    s_brushes.Clear();
-                    s_version++;
-                }
-            };
+                s_glows.Clear();
+                s_toneGlows.Clear();
+                s_brushes.Clear();
+                s_version++;
+            }
         }
 
         /// <summary>A count that rises each time a look is put on. A view

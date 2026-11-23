@@ -847,6 +847,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Tereka kkopi…</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Ggyawo ku lukalala. Fayiro esigala w’eri.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fayiro ya “{0}” ebula oba tesobola kusomebwa. PadForge eraga Ekizikiza okutuusa lw’eneekomawo.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Fayiro ya “{0}” temuli ndabika ya PadForge. PadForge eraga Ekizikiza okutuusa lw’eneebaamu endabika.</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Omusingi</value></data>
   <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Omusingi endabika kw’etudde. Endabika ey’ekizikiza erina ebiwandiiko ebyakaayakana, ate endabika ey’ekitangaala erina ebiwandiiko ebiddugavu.</value></data>
   <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Ekifaananyi</value></data>
@@ -857,4 +858,5 @@
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Laga akabonero k’omuzannyo</value></data>
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kwataganya n’ekifaananyi</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Eggya langi ennya mu kifaananyi.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Weyongere okusindika</value></data>
 </root>

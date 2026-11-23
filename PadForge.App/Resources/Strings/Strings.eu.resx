@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Linean</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Lineaz kanpo</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ezezaguna</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Lehenetsia</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Arakatu…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jarraitu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Gelditu</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motorra gelditu da.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Errorea: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Ezin izan da {0} sortu.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Gailu bat ezin izan da ireki, irakurri edo mapatu. Diagnostiko-erregistroak adierazten du zein.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} akats batekin topo egin du. Diagnostiko-erregistroan dago zergatia.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Sarrera-motorrak akats batekin topo egin du. Diagnostiko-erregistroan dago zergatia.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ezin izan da abiarazi. Diagnostiko-erregistroan dago zergatia.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro ezin izan da konfiguratu. Diagnostiko-erregistroan dago zergatia.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Kontrolagailu birtual baten HIDMaestro profila falta da. Diagnostiko-erregistroak adierazten du zein.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ezin izan da bere nortasun eta diseinu pertsonalizatuarekin sortu, eta bere profilaren berberak erabiltzen ditu.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profila aldatu da: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profila aldatu da: Lehenetsia</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Lehenetsia</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Mugimendu-zerbitzariaren ataka</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Giroskopio- eta azelerometro-datuak ematen dizkie Cemu, Dolphin, Yuzu eta abarrei.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Joko-modak</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-rako egindako joko-modei zure PlayStation kontrolagailuen katu moldagarriak, argi-barra, jokalari-argiak eta mutu-argia ezartzen uzten die.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-rako egindako joko-modei DualSense edo DualShock 4 baten katu moldagarriak, argi-barra, jokalari-argiak eta mutu-argia ezartzen uzten die.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Onartu DSX joko-modak</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Joko-moden ataka</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Exekutatu DSX.exe ordezkoa</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV bezalako mod batzuk beren burua desaktibatzen dute DSX izeneko programa bat martxan ez badago. Honek izen horretako ordezko txiki bat exekutatzen du zerbitzariak entzuten duen bitartean.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX-rako egindako modekin dabil, hala nola GTA V, Red Dead Redemption 2, Skyrim eta Forza jokoetarakoekin. Zerbitzariak entzuten duen bitartean, PadForge-k bere ataka mod horiek bilatzen duten tokian idazten du.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} {2}. kontrolagailu birtualera bidaltzen ari da.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} bidaltzen ari da, baina ez dago PlayStation kontrolagailurik duen kontrolagailu birtualik.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} {2}. kontrolagailu-indizera bidaltzen ari da, eta PlayStation kontrolagailu bat duen kontrolagailu birtualik ez dago indize horrekin.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} bidaltzen ari da, baina ez dago DualSense edo DualShock 4 duen kontrolagailu birtualik.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} {2}. kontrolagailu-indizera bidaltzen ari da, eta DualSense edo DualShock 4 bat duen kontrolagailu birtualik ez dago indize horrekin.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} ataka beste programa batek erabiltzen du, DSX adibidez. Itxi programa hori edo aukeratu beste ataka bat.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Joko-mod bat</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-ekin funtzionatzen du, baita UDP irteera bidaltzen duen edo FreeTrack 2.0 memoria partekatuan idazten duen edozein jarraitzailerekin ere, eta ordenagailu honetan saio bat atzeko planoan exekuta dezakeen OpenXR exekuzio-ingurune batekin.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fitxategia ez da aurkitu</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ezin da irakurri</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>«{0}» gaiaren fitxategia falta da edo ezin da irakurri. PadForge-k Iluna erakusten du berriro agertu arte.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>«{0}» gaiaren fitxategiak ez dauka PadForge-ko gairik. PadForge-k Iluna erakusten du izan arte.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>«{0}» profilak bere jokoaren itxura darama. Zure gaia itzultzen da beste profil bat aktibo dagoenean.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Sarrera-motorra</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguratu galdeketaren portaera eta atzeko planoko prozesamendua.</value></data>
@@ -1047,6 +1054,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolagailuak ez du prestatzen duen agindua hartu, beraz ez da ezer bidali. Egiaztatu konektatuta dagoela eta bidali berriro.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Bidalketa PadForge-ren errore batean gelditu da. Log fitxategian dago xehetasunen berri.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Irudi bat oraindik kontrolagailura doa. Bidalketa gelditu?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Jarraitu bidaltzen</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak fitxategiak (*.mpk)|*.mpk|Fitxategi guztiak (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ataka {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Leheneratu Controller Pak-a</value></data>
@@ -1434,6 +1442,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pultsuaren iraungitzea</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Aurrezarpena</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pertsonalizatua</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Erabiltzaileak sortua)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Palankak</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Katuak</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ak</value></data>
@@ -2414,7 +2423,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Kontrolagailu honek magnetometro bat du. Ezker-eskuineko biraketa ipar magnetikoari ainguratzeak giroskopio bidezko apuntatzearen deriba horizontal motela kentzen du. Kalibratu lehenik: sakatu Kalibratu, biratu kontrolagailua orientazio guztietan zortzi formako mugimenduan segundo batzuetan, eta sakatu berriro.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ainguratu ezker-eskuineko biraketa iparrorratzari</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Zuzenketa-abiadura txiki bat gehitzen du, apuntatze horizontala norabide magnetikorantz erakartzen duena, deriba meta ez dadin. Gordetako magnetometro-kalibrazio bat behar du. Inguruko metalek edo imanek nahastutako laginak automatikoki baztertzen dira.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Berrezarri lehenetsira (desaktibatuta)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Aurrera-atzerako eta alboko makurduren simulazioa</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Azelerometrotik kalkulatutako aurrera-atzerako eta alboko makurdurak</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Kontrolagailu honen giroskopioak ezkerrera eta eskuinera biratzea soilik hautematen du. Simulazioa aktibatuta dagoenean, PadForge-k aurrera-atzerako makurdura eta alboko makurdura azelerometrotik ateratzen ditu, eta giroskopioaren ezker-eskuineko biraketarekin batera bidaltzen ditu esleipen-errenkadetara eta kontrolagailu birtualaren mugimendura. Azelerometro batek ezin du bultzada bat makurdura batetik bereizi. Beraz, kontrolagailua alboetara edo aurrera biratu gabe mugitzea biraketa labur gisa irakurtzen da.</value></data>
@@ -2805,7 +2813,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Ekortu palanka bere ertzean zehar irits daitekeen muga neurtzeko, eta gero zirkulu oso bihurtzeko.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Berrezarri mugaren kalibrazioa</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Berrezarri erdigunearen desplazamendua Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Berrezarri erradial eskalatura</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Berrezarri gune hila X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Berrezarri gune hila Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Berrezarri gune hilaren konpentsazioa X</value></data>
@@ -3252,13 +3259,10 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Berrezarri Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Puntuak 360° bakoitzeko</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Kameraren 360°-ko bira oso baterako sagu-puntuak. Jokoaren sagu-sentikortasunaren araberakoa da: igo ezazu flick batek gutxiegi biratzen badu, eta jaitsi gehiegi biratzen badu.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Berrezarri 14400 baliora</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Flick denbora</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>180°-ko flick oso batek osatzeko behar duen denbora, amaieran moteltzen dela. Bira laburragoak denbora berean amaitzen dira.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Berrezarri 0.1 s baliora</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick atalasea</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Flick bat hasten duen palanka-desbideratzea, desbideratze osoaren zatiki gisa. Flick-a egiten ari den bitartean, askatze-puntua balio horren %90era jaisten da.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Berrezarri 0.9 baliora</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Doitze-angelua</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Doitu flick-a angelu finkoetara, bira koherenteagoak lortzeko. Aurrera soilik aukerak flick guztiak zuzen aurrera doitzen ditu.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Doitzerik gabe</value></data>
@@ -3267,22 +3271,16 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 gradu</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 gradu</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 gradu</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Berrezarri «Doitzerik gabe» aukerara</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Doitze-indarra</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Flick batek doitutako angelurantz zenbateko indarrez tiratzen duen. 1 balioak guztiz doitzen du, 0 balioak doitzea desgaitzen du, eta tarteko balioek nahasten dute.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Berrezarri 1.0 baliora</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Aurreko angeluaren gune hila</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Zuzen aurreratik angelu honen barruan dagoen flick batek ez du ezer biratzen. Ekortze bat flick-birarik gabe hasteko aukera ematen du.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Berrezarri 0° baliora</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Ekortzearen leuntzea</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Ertz-ekortzearen zarata leuntzen du. -1 balioak leiho mailakatu automatikoa erabiltzen du, 0 balioak leuntzea desaktibatzen du, eta balio handiagoek tiketako biraketa handiagoak leuntzen dituzte.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Berrezarri automatikora (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Baimendu flick-a aktibatzean</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Biraketa-desplazamendua</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Flick-mapa osoa gradu kopuru honetan biratzen du. Positiboa erlojuaren norabidean da. Doitzea desplazamenduaren ondoren aplikatzen da.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Berrezarri biraketa-desplazamendua</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick duen geruza palanka dagoeneko desbideratuta dagoela aktibatzen denean, abiarazi flick-a berehala. Desaktibatuta badago, kamera geldi mantentzen da, eta biraketa palankaren uneko angelutik jarraitzen da.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Berrezarri «Baimendu flick-a aktibatzean»</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Bolantearen muturraren erantzuna</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Seinalea palanka muturrera iristean gidatze-moduan</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Gidatze-modu batean ezarritako palanka bat muturreraino biratzen denean, erreproduzitu seinale bat (bibrazioa, katua edo argi-barra), muga nabaritzeko. Denak desaktibatuta lehenespenez.</value></data>
@@ -3472,11 +3470,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Erreproduzitu DualSense haptika kontrolagailu honetan</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Joko batek zirrikitu hau DualSense birtual gisa kontrolatzen duenean, egileak sortutako audio haptikoarekin, erreproduzitu pista hori kontrolagailu honen eragingailuetan. Steam Controller 2026 batek, USB bidez edo bere hartzailearekin, eta Flydigi Apex 6 Pro batek pista bera erreproduzitzen dute. Gainerako kontrolagailuek, eta Steam Controller hori bera Bluetooth bidez, audiotik eratorritako tonuak jasotzen dituzte, diseinatzailearen sentsazioa hurbiltzen dutenak, ez zehazki erreproduzitzen dutenak.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikaren irabazia</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Berrezarri lehenetsira (desaktibatuta)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Berrezarri lehenetsira (%100)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Eragingailuaren behe-paseko ebaketa</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller-en transmisio haptikoa maiztasun honen azpitik mantentzen du, panelek bibra dezaten soinu entzungarria erreproduzitu beharrean. 250 Hz inguruan eragingailuak entzuten hasten dira. Igo xehetasun zorrotzagoa lortzeko, edo jaitsi jokaldi isilagoa lortzeko.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Berrezarri 250 Hz baliora</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Maiztasun honen gaineko tonuak moztu edo tolestu egiten dira. 800 Hz-eko balio lehenetsiak motorren eta kolpeen bibrazioa gordetzen du, eta bip zorrotzak harrapatzen ditu.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Berrezarri tonu altuak</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Berrezarri tonu-muga</value></data>
@@ -4045,8 +4040,59 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profila</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makroa</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kurtsore-eskualdea</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} aldaketa</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Gurpil-zerrenda ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Kurtsore-eremua ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Eutsi saguaren {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Egin klik saguaren {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Txandakatu saguaren {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Pultsu haptikoa ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (askatze-hondarra)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Ukitu {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Tiro automatikoa {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Eutsi {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Txandakatu {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Sakatze bikoitza {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Sakatze luzea {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Gurpil-pausoa ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Txandakatu gurpila ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbo gurpila ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Saltatu kurtsorea ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Ezarri LEDa ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Zentratu giroskopioa berriro ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Bultzatu kurtsorea ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Pantaila-argazkiaren tekla ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Pantaila-teklatua ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Ezarri argiaren kolorea</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Zentratu kamera berriro</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Saltatu kurtsorea</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Bultzatu kurtsorea</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Pantaila-argazkia</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Pantaila-teklatua</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Aldatu aldaketa-geruza</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Aktibatu aldaketa-geruza</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Desaktibatu aldaketa-geruza</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Eutsi aldaketa-geruzari</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Aldatu jokalari-zenbakia</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Loturarik gabe</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Txandakatu mahaigain modua</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam sistema-tekla</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Txandakatu lupa</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Distira igo</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Distira jaitsi</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Itzali kontrolagailua</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Ireki Steam konfiguratzailea</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Ireki Steam menu azkarra</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Irten jokotik</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Txandakatu haptikoak</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Txandakatu Steam HUDa</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Txandakatu dardara</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Behartu Guide botoia</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Giroskopioaren kalibrazio-biraketa</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Biratu norabidera begira</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (mantendu)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (askatu)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (askatu)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktibatu)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Hautatu konfigurazio bat zer etortzen den ikusteko.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Zer etortzen den</value></data>
@@ -4654,11 +4700,9 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Geruza</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Aukeratu menu hau baimentzen duen geruza. Edozein geruza eta Oinarria aukerek baimentzen dute beste geruza aktibo batzuen azpian ere. Izendun geruza batek unean aktibo dagoen geruzarekin bat etorri behar du.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Berrezarri Edozein geruza aukerara eta desaktibatu geruzak eutsitako irekiera.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ez dago zirrikitu honetan)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Geruzak menua irekita mantentzen du</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Mantendu menu hau irekita bere izendun geruza aktibo dagoen bitartean. Hautatutako sarrera fisikoak nabarmendutakoa gidatzen du. Edozein geruza eta Oinarria aukerek ohiko irekiera erabiltzen dute.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Berrezarri ukitzean edo desbideratzean irekitzera.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Gidatu honekin</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Geruzak menu hau irekita mantentzen duen bitartean nabarmendutako gelaxka gidatzen duen sarrera fisikoa.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Zirrikitu honi esleitutako kontrolagailu fisikoetatik irakurtzen da. Geruzak menua irekitzen du, eta sarrera honek gidatzen du. Menuaren gelaxkek adierazten dute zer igortzen duen.</value></data>
@@ -4738,7 +4782,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motorra</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Banatu norabidearen arabera</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Erdiko gune hila</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Berrezarri Ezkerreko palanka X-ra</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Berrezarri intentsitatea (%50)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Berrezarri erdiko gune hila (%2)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Berrezarri Gaitu gidatze-angeluaren bibrazioa</value></data>
@@ -5255,6 +5298,9 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_LanguageRefs" xml:space="preserve"><value>Klingon eta Sindarin erreferentziak</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingon eta Sindarin itzulpenen hitzak hauen aurka egiaztatu dira: klingon-assistant-data (Apache-2.0), boQwI'-ren atzean dagoen hiztegia, eta Eldamo (CC BY 4.0), Paul Strack-en lexiko elfikoa. Hiztegiko datuak soilik, ez da bat ere banatzen.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Fitxategi hori ez da PadForge gai bat.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge-k ezin du fitxategi hori irakurri.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge-k ezin du fitxategi hori aurkitu.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Ez da gaia</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Ezin izan da gaia gorde. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Gai berria</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge-k gaia janzten du eraikitzen duzun bitartean.</value></data>
@@ -5269,6 +5315,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Irudia Steam-etik lortzen…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-ek ez dauka irudi zabalik joko honetarako.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ezin izan da Steam-era iritsi. Egiaztatu zure konexioa.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge-k ezin du irakurri Steam-ek joko honetarako duen irudia.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Kokapena</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Irudia gora edo behera mugitzen du bere leihoan.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Erakutsi jokoaren logotipoa</value></data>
@@ -5309,4 +5356,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Star Trek serie originalerako filmatutako maketa, Smithsonian National Air and Space Museum-ek argazkitua, berak gordetzen baitu: Star Trek gaiaren irudia, LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Gaiaren irudia: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation serieko fotograma bat: Star Trek gaiaren irudia, Starfleet. Memory Alpha-n aurkitua.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Argi-barra</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} argi-barra</value></data>
 </root>

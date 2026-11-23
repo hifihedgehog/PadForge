@@ -102,8 +102,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(),
-                gxt114 ? "OpenRGB RGBController_TrustGXT114.cpp" : "OpenRGB RGBController_TrustGXT180.cpp")
+            Map = new LightMap(Lights())
             {
                 Product = $"trust:{VendorId:X4}:{productId:X4}",
             },

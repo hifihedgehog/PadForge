@@ -164,7 +164,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = new LightInfo[zones];
             for (int i = 0; i < zones; i++)
                 lights[i] = new LightInfo(i, LightKind.Zone, 0, LightKeySource.None) { Zone = i + 1 };
-            return new LightMap(lights, "ASUS Aura SDK, " + category + " lights");
+            return new LightMap(lights);
         }
 
         private static LightMap BuildKeyboard(int zones, IReadOnlyList<ExtraLight> extras)
@@ -181,7 +181,7 @@ namespace PadForge.Common.Input.Peripherals
                 lights.Add(new LightInfo(ExtraBase + extra.Index, extra.Kind, extra.Usage,
                     extra.Usage != 0 ? LightKeySource.Vendor : LightKeySource.None) { Label = extra.Label });
             lights.Sort((a, b) => a.Address.CompareTo(b.Address));
-            return new LightMap(lights, "ASUS Aura SDK, RGB.NET.Devices.Asus LedMappings.KeyboardMapping");
+            return new LightMap(lights);
         }
     }
 

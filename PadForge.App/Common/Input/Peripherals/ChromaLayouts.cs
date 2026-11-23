@@ -60,12 +60,12 @@ namespace PadForge.Common.Input.Peripherals
 
         private static Dictionary<string, LightMap> BuildMaps() => new(StringComparer.Ordinal)
         {
-            ["keyboard"] = new LightMap(KeyboardLights(), "Chroma SDK RzChromaSDKTypes.h, RZKEY grid"),
-            ["mouse"] = new LightMap(MouseLights(), "Chroma SDK RzChromaSDKTypes.h, RZLED2 grid"),
-            ["headset"] = new LightMap(Zones(HeadsetLeds), "Chroma SDK RzChromaSDKTypes.h, headset LEDs"),
-            ["mousepad"] = new LightMap(Zones(MousepadLeds), "Chroma SDK RzChromaSDKTypes.h, mousepad LEDs"),
-            ["keypad"] = new LightMap(Zones(KeypadRows * KeypadColumns), "Chroma SDK RzChromaSDKTypes.h, keypad grid"),
-            ["chromalink"] = new LightMap(Zones(ChromaLinkLeds), "Chroma SDK RzChromaSDKTypes.h, Chroma Link LEDs"),
+            ["keyboard"] = new LightMap(KeyboardLights()),
+            ["mouse"] = new LightMap(MouseLights()),
+            ["headset"] = new LightMap(Zones(HeadsetLeds)),
+            ["mousepad"] = new LightMap(Zones(MousepadLeds)),
+            ["keypad"] = new LightMap(Zones(KeypadRows * KeypadColumns)),
+            ["chromalink"] = new LightMap(Zones(ChromaLinkLeds)),
         };
 
         /// <summary>A keyboard cell's index in the grid, row by row.</summary>

@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ismeretlen</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Alapértelmezett</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Tallózás…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Folytatás</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Leállítás</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>A bemeneti motor leállt.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hiba: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Nem sikerült létrehozni: {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Egy eszközt nem sikerült megnyitni, beolvasni vagy leképezni. A diagnosztikai napló megnevezi.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} hibába ütközött. A diagnosztikai napló tartalmazza az okot.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>A bemeneti motor hibába ütközött. A diagnosztikai napló tartalmazza az okot.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>Az SDL nem tudott elindulni. A diagnosztikai napló tartalmazza az okot.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>A HIDMaestro beállítása nem sikerült. A diagnosztikai napló tartalmazza az okot.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Egy virtuális kontroller HIDMaestro-profilja hiányzik. A diagnosztikai napló megnevezi.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} nem tudta felvenni az egyéni azonosítóját és kiosztását, ezért a profilja eredeti beállításait használja.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profilváltás: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profilváltás: Alapértelmezett</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Alapértelmezett</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Mozgáskiszolgáló portja</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Giroszkóp- és gyorsulásmérő-adatokat szolgáltat a Cemu, a Dolphin, a Yuzu és más programok számára.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Játékmodok</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lehetővé teszi, hogy a DSX-hez készült játékmodok beállítsák a PlayStation kontrollerek adaptív ravaszait, fénysávját, játékosjelző fényeit és némításjelző fényét.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lehetővé teszi, hogy a DSX-hez készült játékmodok beállítsák egy DualSense vagy DualShock 4 adaptív ravaszait, fénysávját, játékosjelző fényeit és némításjelző fényét.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX-játékmodok fogadása</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Játékmod-port</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe helyettesítő futtatása</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Egyes modok, például a DualSense4GTAV, kikapcsolják magukat, ha nem fut DSX nevű program. Ez egy ilyen nevű kis helyettesítőt futtat, amíg a kiszolgáló figyel.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>A DSX-hez készült modokkal működik, például a GTA V, a Red Dead Redemption 2, a Skyrim és a Forza modjaival. Amíg a kiszolgáló figyel, a PadForge oda írja a portját, ahol a modok keresik.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Figyel a :{0} porton. {1} a(z) {2}. virtuális kontrollerre küld.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Figyel a :{0} porton. {1} küld, de egyik virtuális kontrolleren sincs PlayStation kontroller.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Figyel a :{0} porton. {1} a(z) {2}. indexű kontrollerre küld, és egyetlen PlayStation kontrollerrel rendelkező virtuális kontrollernek sincs ilyen indexe.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Figyel a :{0} porton. {1} küld, de egyik virtuális kontrolleren sincs DualSense vagy DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Figyel a :{0} porton. {1} a(z) {2}. indexű kontrollerre küld, és egyetlen DualSense vagy DualShock 4 kontrollerrel rendelkező virtuális kontrollernek sincs ilyen indexe.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>A(z) {0} portot egy másik program használja, például a DSX. Zárja be, vagy válasszon másik portot.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Egy játékmod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Együttműködik az OpenTrack programmal és minden olyan követővel, amely elküldi az UDP-kimenetét vagy FreeTrack 2.0 megosztott memóriába ír, valamint a gépen lévő olyan OpenXR-futtatókörnyezettel, amely a háttérben is tud munkamenetet futtatni.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>A fájl nem található</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nem olvasható</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>A(z) „{0}” téma fájlja hiányzik, vagy nem olvasható. A PadForge addig a Sötét megjelenést mutatja, amíg a fájl vissza nem kerül.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>A(z) „{0}” téma fájljában nincs PadForge-téma. A PadForge addig a Sötét megjelenést mutatja, amíg nem lesz benne.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>A(z) „{0}” profil a játéka megjelenését viseli. A saját témája visszatér, amint másik profil lesz aktív.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-témák (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ez a fájl nem PadForge-téma.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>A PadForge nem tudja beolvasni ezt a fájlt.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>A PadForge nem találja ezt a fájlt.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Nem téma</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>A témát nem sikerült menteni. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Új téma</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>A PadForge viseli a témát, amíg Ön készíti.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>A kép lekérése a Steamről…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>A Steamnek nincs széles képe ehhez a játékhoz.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nem sikerült elérni a Steamet. Ellenőrizze a kapcsolatot.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>A PadForge nem tudja beolvasni a Steam képét ehhez a játékhoz.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Helyzet</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>A képet felfelé vagy lefelé mozgatja az ablakában.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>A játék logójának megjelenítése</value></data>
@@ -1094,6 +1105,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>A kontroller nem fogadta el az előkészítő parancsot, ezért semmi sem lett elküldve. Ellenőrizze, hogy csatlakoztatva van-e, és küldje újra.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>A küldést a PadForge egyik hibája állította le. A naplófájl tartalmazza a részleteket.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Még folyamatban van egy kép küldése a kontrollerre. Leállítja a küldést?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Küldés folytatása</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak fájlok (*.mpk)|*.mpk|Minden fájl (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak {0}. port.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak visszaállítása</value></data>
@@ -1657,6 +1669,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulzus lecsengése</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Előbeállítás</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Egyéni</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (felhasználó által létrehozott)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Karok</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ravaszok</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-kapcsolók</value></data>
@@ -2638,7 +2651,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Ebben a kontrollerben magnetométer van. A legyezés mágneses északhoz rögzítése megszünteti a giroszkópos célzás lassú vízszintes elmászását. Először kalibráljon: nyomja meg a Kalibrálás gombot, néhány másodpercig forgassa a kontrollert nyolcas alakban minden irányba, majd nyomja meg újra.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Legyezés rögzítése az iránytűhöz</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Kis korrekciós sebességet ad hozzá, amely a vízszintes célzást a mágneses irány felé húzza, így az elmászás nem halmozódhat fel. Tárolt magnetométer-kalibrálás szükséges hozzá. A közeli fém vagy mágnes által megzavart mintákat a program automatikusan elveti.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Visszaállítás az alapértelmezettre (ki)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Bólintás és orsózás szimulálása</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Bólintás és orsózás a gyorsulásmérőből számolva</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Ennek a kontrollernek a giroszkópja csak a balra-jobbra fordulást érzékeli. Bekapcsolt szimuláció mellett a PadForge a bólintást és az orsózást a gyorsulásmérőből származtatja, és a giroszkóp legyezésével együtt küldi a hozzárendelési soroknak és a virtuális kontroller mozgásának. A gyorsulásmérő nem tudja megkülönböztetni a lökést a döntéstől, ezért ha a kontrollert elfordítás nélkül oldalra vagy előre mozdítja, az rövid elfordulásként jelenik meg.</value></data>
@@ -3035,7 +3047,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Vezesse körbe a kart a peremén az elérhető határ feltérképezéséhez, majd alakítsa teljes körré.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Határkalibrálás visszaállítása</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Középpont-eltolás Y visszaállítása</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Visszaállítás Skálázott radiálisra</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Holtzóna X visszaállítása</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Holtzóna Y visszaállítása</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Antiholtzóna X visszaállítása</value></data>
@@ -3487,13 +3498,10 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick stick visszaállítása</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pont 360°-onként</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Az egér számlálóértéke egy teljes, 360°-os kamerafordulathoz. A játék egérérzékenységétől függ: növelje, ha a flick a kelleténél kevesebbet fordul, és csökkentse, ha többet.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Visszaállítás 14400-ra</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Flick ideje</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Mennyi ideig tart egy teljes, 180°-os flick, a végén lassulva. A rövidebb fordulások ugyanennyi idő alatt fejeződnek be.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Visszaállítás 0.1 s-ra</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick küszöbe</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Az a karkitérés, amely elindítja a flicket, a teljes kitérés hányadában. Flick közben a felengedési pont ennek 90%-ára csökken.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Visszaállítás 0.9-re</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Illesztési szög</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>A flicket rögzített szögekhez illeszti az egyenletesebb fordulások érdekében. A Csak előre minden flicket pontosan előre illeszt.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Nincs illesztés</value></data>
@@ -3502,22 +3510,16 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 fok</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 fok</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 fok</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Visszaállítás Nincs illesztésre</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Illesztés erőssége</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Milyen erősen húz a flick az illesztett szög felé. 1 esetén teljesen illeszt, 0 esetén nincs illesztés, a köztes értékek kevernek.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Visszaállítás 1.0-ra</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Elülső szög holtzónája</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Az egyenesen előre iránytól ekkora szögön belüli flick semmit sem fordít. Így flick-fordulás nélkül kezdhet körbeforgatást.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Visszaállítás 0°-ra</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Körbeforgatás simítása</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Simítja a perem menti körbeforgatás zaját. -1 esetén az automatikus, lépcsős ablak érvényes, 0 esetén nincs simítás, a nagyobb értékek a ciklusonként nagyobb elfordulásokat is simítják.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Visszaállítás automatikusra (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Flick engedélyezése aktiváláskor</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Elforgatási eltolás</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>A teljes flick-térképet ennyi fokkal forgatja el. A pozitív érték az óramutató járásával megegyező. Az illesztés az eltolás után érvényesül.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Elforgatási eltolás visszaállítása</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ha a Flick sticket tartalmazó réteg úgy aktiválódik, hogy a kar már ki van térítve, a flick azonnal végrehajtódik. Kikapcsolva a kamera mozdulatlan marad, és a program a kar aktuális szögétől követi az elfordulást.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>A Flick engedélyezése aktiváláskor visszaállítása</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Visszajelzés kormányvégállásnál</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Jelzés végállásnál kormányzási módú karhoz</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Amikor egy kormányzási módra állított kart egészen a végállásig fordít, a program jelzést ad (rezgés, ravasz vagy fénysáv), hogy érezze a határt. Alapértelmezés szerint mind ki van kapcsolva.</value></data>
@@ -3707,11 +3709,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptika lejátszása ezen a kontrolleren</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ha egy játék virtuális DualSense-ként hajtja ezt a foglalatot, előre megírt haptikus hanggal, a program ezt a sávot ennek a kontrollernek az aktuátorain játssza le. A Steam Controller 2026 USB-n vagy a saját vevőegységén keresztül, valamint a Flydigi Apex 6 Pro magát a sávot játssza le. Minden más kontroller, és Bluetooth-on az a Steam Controller is, a hangból származtatott hangokat kap, amelyek csak megközelítik a tervező által szánt érzetet, nem adják vissza pontosan.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptika erősítése</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Visszaállítás az alapértelmezettre (ki)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Visszaállítás az alapértelmezettre (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Aktuátor aluláteresztő vágási frekvenciája</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>A Steam Controller haptikus adatfolyamát e frekvencia alatt tartja, így a padek rezegnek ahelyett, hogy hallhatóan hangot adnának. Körülbelül 250 Hz-nél az aktuátorok kezdenek hallhatóvá válni. Növelje az élesebb részletekért, csökkentse a csendesebb működésért.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Visszaállítás 250 Hz-re</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Az e frekvencia fölötti hangokat a program levágja vagy lejjebb hajtja. Az alapértelmezett 800 Hz megtartja a motorok és az ütközések rezgését, a magas sípolásokat viszont elkapja.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Magas hangok visszaállítása</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Hanghatár visszaállítása</value></data>
@@ -4312,8 +4311,59 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makró</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kurzorrégió</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} váltás</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Görgőlista ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Kurzorterület ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Egérgomb nyomva tartása: {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Egérkattintás: {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Egérgomb kapcsolása: {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptikus impulzus ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (elengedési szakasz)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Koppintás: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Önműködő tüzelés: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Nyomva tartás: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Kapcsolás: {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbó: {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Dupla lenyomás: {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Hosszú lenyomás: {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Görgőlépés ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Görgő kapcsolása ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turbó görgő ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Kurzor ugratása ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED beállítása ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Giroszkóp újraközpontosítása ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Kurzor megbökése ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Képernyőkép-billentyű ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Képernyő-billentyűzet ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Fényszín beállítása</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Kamera újraközpontosítása</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Kurzor ugratása</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Kurzor megbökése</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Képernyőkép</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Képernyő-billentyűzet</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Váltórétegre váltás</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Váltóréteg bekapcsolása</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Váltóréteg kikapcsolása</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Váltóréteg tartása</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Játékosszám módosítása</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Nincs hozzárendelve</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Asztali mód kapcsolása</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam-rendszergomb</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Nagyító kapcsolása</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Fényerő növelése</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Fényerő csökkentése</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Kontroller kikapcsolása</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam-konfigurátor megnyitása</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam gyorsmenü megnyitása</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Kilépés a játékból</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Haptika kapcsolása</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD kapcsolása</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Rezgés kapcsolása</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide gomb kényszerítése</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Giroszkóp-kalibráló forgatás</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Fordulás az irány felé</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tartás)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (elengedés)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (elengedés)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktiválás)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Válasszon ki egy konfigurációt, hogy lássa, mi kerül át.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ami átkerül</value></data>
@@ -4928,11 +4978,9 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Réteg</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Válassza ki azt a réteget, amely engedélyezi ezt a menüt. A Bármely réteg és az Alap egyaránt engedélyezi más aktív rétegek mellett is. Az elnevezett rétegnek egyeznie kell a jelenleg aktív réteggel.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Visszaállítás Bármely rétegre, és a réteghez kötött nyitva tartás kikapcsolása.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (nem szerepel ezen a foglalaton)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>A réteg nyitva tartja a menüt</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>A menü nyitva tartása, amíg az elnevezett rétege aktív. A kiválasztott fizikai bemenet irányítja a kijelölést. A Bármely réteg és az Alap a szokásos, felületről történő megnyitást használja.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Visszaállítás érintésre vagy kitérésre történő megnyitásra.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Irányítás ezzel</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Az a fizikai bemenet, amely a kijelölt cellát irányítja, amíg a réteg nyitva tartja a menüt.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>A foglalathoz rendelt fizikai kontrollerekről olvasva. A réteg megnyitja a menüt, és ez a bemenet irányítja. A kimenetét a cellái határozzák meg.</value></data>
@@ -5014,7 +5062,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Irányonként külön</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Középső holtzóna</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Visszaállítás Bal kar X-re</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Erősség visszaállítása (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Középső holtzóna visszaállítása (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>A Kormányszögtől függő rezgés engedélyezése visszaállítása</value></data>
@@ -5681,6 +5728,25 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>Profilok</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>{0}. réteg</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Ravaszok: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Fénysáv</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} extrák</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} fénysáv</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Program indítása</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} tartomány</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Importált profil</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Importált makró</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Előbeállítás {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Sugármenü {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Érintőmenü {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Egérterület</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>koppintás</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>nyomva tartás</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>dupla koppintás</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Bal ravasz hatása</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Jobb ravasz hatása</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Gombkiosztás {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>{0}. elem</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Vezérlő</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Megtartja a saját kimeneteit</value></data>
@@ -6012,7 +6078,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>A DSX nem közli, hogyan működik a(z) {0} beállítása, ezért a PadForge a saját módszerét használja.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>A DSX nem közli a bemeneti számait. A közzétett DSX-profilok a 41 és 44 közötti számokat használják D-padként, ezért a PadForge így olvassa őket.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>A DSX nem ír ilyen hozzárendelést, ezért a fájlt a DSX-en kívül módosították.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>A DSX egy gyorsbillentyűvel vált erre az előbeállításra. A makrója a Makrók oldalon van, készen áll arra, hogy egy gombhoz rendelje.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>A DSX egy gyorsbillentyűvel vált erre az előbeállításra. A makrója a kontroller Makrók és menük szakaszában van, készen áll arra, hogy egy gombhoz rendelje.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Egyetlen közzétett DSX-profil sem használja ezt: {0}, ezért a PadForge nem tudja megállapítani, mit csinál.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>A DSX a játékra bízza ennek beállítását, amíg az átengedési kapcsolója be van kapcsolva, ezért a PadForge is a játékra bízza.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Ha a Native Mode be van kapcsolva, a Send Data to Device pedig ki, a DSX semmit sem küld a saját részéről a kontrollernek, ezért a PadForge ezt is a játékra bízza.</value></data>

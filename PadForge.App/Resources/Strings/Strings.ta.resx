@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ஆன்லைன்</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ஆஃப்லைன்</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>தெரியாதது</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>இயல்புநிலை</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>உலாவு…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>தொடர்</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>நிறுத்து</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>இன்ஜின் நிறுத்தப்பட்டது.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>பிழை: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}-ஐ உருவாக்க முடியவில்லை.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>ஒரு சாதனத்தைத் திறக்கவோ படிக்கவோ இணைக்கவோ முடியவில்லை. கண்டறிதல் பதிவில் அதன் பெயர் உள்ளது.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}-இல் பிழை ஏற்பட்டது. காரணம் கண்டறிதல் பதிவில் உள்ளது.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>உள்ளீட்டு இன்ஜினில் பிழை ஏற்பட்டது. காரணம் கண்டறிதல் பதிவில் உள்ளது.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL-ஐத் தொடங்க முடியவில்லை. காரணம் கண்டறிதல் பதிவில் உள்ளது.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro-வை அமைக்க முடியவில்லை. காரணம் கண்டறிதல் பதிவில் உள்ளது.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியின் HIDMaestro சுயவிவரம் இல்லை. கண்டறிதல் பதிவில் அதன் பெயர் உள்ளது.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0}-ஆல் தனிப்பயனாக்கிய அடையாளத்தையும் அமைப்பையும் ஏற்க முடியவில்லை, அதனால் அதன் சுயவிவரத்தின் சொந்த அமைப்பைப் பயன்படுத்துகிறது.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>சுயவிவரம் மாற்றப்பட்டது: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>சுயவிவரம் மாற்றப்பட்டது: இயல்புநிலை</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>இயல்புநிலை</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>அசைவுச் சேவையக போர்ட்</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu போன்றவற்றுக்குக் கைரோ மற்றும் முடுக்கமானித் தரவை வழங்குகிறது.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>கேம் மோட்கள்</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-க்காக உருவாக்கப்பட்ட கேம் மோட்கள், உங்கள் PlayStation கட்டுப்படுத்திகளின் அடாப்டிவ் டிரிகர்கள், லைட்பார், பிளேயர் விளக்குகள், ஒலியடக்க விளக்கு ஆகியவற்றை அமைக்க அனுமதிக்கிறது.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-க்காக உருவாக்கப்பட்ட கேம் மோட்கள், DualSense அல்லது DualShock 4-இன் அடாப்டிவ் டிரிகர்கள், லைட்பார், பிளேயர் விளக்குகள், ஒலியடக்க விளக்கு ஆகியவற்றை அமைக்க அனுமதிக்கிறது.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX கேம் மோட்களை ஏற்று</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>கேம் மோட் போர்ட்</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe மாற்றுநிரலை இயக்கு</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV போன்ற சில மோட்கள், DSX என்ற பெயரில் ஒரு நிரல் இயங்காவிட்டால் தாமாகவே அணைந்துவிடும். சேவையகம் செவிமடுக்கும் வரை, அதே பெயரில் ஒரு சிறிய மாற்றுநிரலை இது இயக்குகிறது.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>GTA V, Red Dead Redemption 2, Skyrim, Forza போன்றவற்றுக்காக DSX-க்கு உருவாக்கப்பட்ட மோட்களுடன் செயல்படும். சேவையகம் செவிமடுக்கும்போது, அந்த மோட்கள் தேடும் இடத்தில் PadForge தன் போர்ட்டை எழுதுகிறது.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0}-இல் செவிமடுக்கிறது. {1} மெய்நிகர் கட்டுப்படுத்தி {2}-க்கு அனுப்புகிறது.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0}-இல் செவிமடுக்கிறது. {1} அனுப்புகிறது, ஆனால் எந்த மெய்நிகர் கட்டுப்படுத்தியிலும் PlayStation கட்டுப்படுத்தி இல்லை.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}-இல் செவிமடுக்கிறது. {1} கட்டுப்படுத்தி குறியீட்டெண் {2}-க்கு அனுப்புகிறது, PlayStation கட்டுப்படுத்தி உள்ள எந்த மெய்நிகர் கட்டுப்படுத்திக்கும் அந்தக் குறியீட்டெண் இல்லை.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0}-இல் செவிமடுக்கிறது. {1} அனுப்புகிறது, ஆனால் எந்த மெய்நிகர் கட்டுப்படுத்தியிலும் DualSense அல்லது DualShock 4 இல்லை.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}-இல் செவிமடுக்கிறது. {1} கட்டுப்படுத்தி குறியீட்டெண் {2}-க்கு அனுப்புகிறது, DualSense அல்லது DualShock 4 உள்ள எந்த மெய்நிகர் கட்டுப்படுத்திக்கும் அந்தக் குறியீட்டெண் இல்லை.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>போர்ட் {0}-ஐ DSX போன்ற வேறொரு நிரல் பயன்படுத்துகிறது. அதை மூடவும் அல்லது வேறு போர்ட்டைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ஒரு கேம் மோட்</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack உடனும், தன் UDP வெளியீட்டை அனுப்பும் அல்லது FreeTrack 2.0 பகிர்ந்த நினைவகத்தில் எழுதும் எந்த டிராக்கருடனும், பின்னணியில் ஓர் அமர்வை இயக்கக்கூடிய இந்தக் கணினியிலுள்ள OpenXR ரன்டைமுடனும் வேலை செய்யும்.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>கோப்பு இல்லை</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>படிக்க இயலவில்லை</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” தீமின் கோப்பு இல்லை அல்லது படிக்க முடியாது. அது திரும்பும் வரை PadForge அடர் தோற்றத்தைக் காட்டும்.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” தீமின் கோப்பில் PadForge தீம் இல்லை. அது இருக்கும் வரை PadForge அடர் தோற்றத்தைக் காட்டும்.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” சுயவிவரம் தன் கேமின் தோற்றத்தை அணிந்துள்ளது. வேறொரு சுயவிவரம் செயலில் இருக்கும்போது உங்கள் தீம் திரும்பும்.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge தீம்கள் (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>அந்தக் கோப்பு PadForge தீம் அல்ல.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>அந்தக் கோப்பை PadForge-ஆல் படிக்க முடியவில்லை.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>அந்தக் கோப்பை PadForge-ஆல் கண்டுபிடிக்க முடியவில்லை.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>தீம் அல்ல</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>தீமைச் சேமிக்க முடியவில்லை. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>புதிய தீம்</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>நீங்கள் உருவாக்கும்போதே PadForge அந்த தீமை அணிந்து காட்டும்.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam-இலிருந்து படத்தைப் பெறுகிறது…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>இந்த கேமுக்கு Steam-இல் அகலப் படம் இல்லை.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-ஐ அணுக முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்க்கவும்.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>இந்த கேமுக்கான Steam படத்தை PadForge-ஆல் படிக்க முடியவில்லை.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>நிலை</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>படத்தை அதன் சாளரத்தில் மேலும் கீழும் நகர்த்தும்.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>கேமின் லோகோவைக் காட்டு</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>படத்துக்குத் தயார்படுத்தும் கட்டளையைக் கட்டுப்படுத்தி ஏற்கவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை. அது இணைக்கப்பட்டுள்ளதா எனச் சரிபார்த்து மீண்டும் அனுப்பவும்.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge-இல் ஏற்பட்ட பிழையால் அனுப்புதல் நின்றது. விவரங்கள் பதிவுக் கோப்பில் உள்ளன.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ஒரு படம் இன்னும் கட்டுப்படுத்திக்குச் சென்றுகொண்டிருக்கிறது. அனுப்புவதை நிறுத்தவா?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>தொடர்ந்து அனுப்பு</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak கோப்புகள் (*.mpk)|*.mpk|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak போர்ட் {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak-ஐ மீட்டெடு</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>துடிப்புத் தேய்வு</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>முன்னமைவு</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>தனிப்பயன்</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (பயனர் உருவாக்கியது)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>ஸ்டிக்குகள்</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>டிரிகர்கள்</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-கள்</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியில் காந்தமானி உள்ளது. யா அச்சைக் காந்த வடக்குடன் நங்கூரமிடுவது, கைரோ குறிவைப்பில் ஏற்படும் மெதுவான கிடைமட்ட டிரிஃப்டை நீக்கும். முதலில் அளவுத்திருத்தவும்: அளவுத்திருத்து என்பதை அழுத்தி, கட்டுப்படுத்தியைச் சில வினாடிகளுக்கு 8 வடிவில் எல்லாத் திசையமைவுகளிலும் சுழற்றி, பிறகு மீண்டும் அழுத்தவும்.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>யா அச்சைத் திசைகாட்டியுடன் நங்கூரமிடு</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>கிடைமட்டக் குறிவைப்பைக் காந்தத் திசையை நோக்கி இழுக்கும் ஒரு சிறிய திருத்த வீதத்தைச் சேர்க்கும், அதனால் டிரிஃப்ட் சேர முடியாது. சேமிக்கப்பட்ட காந்தமானி அளவுத்திருத்தம் தேவை. அருகிலுள்ள உலோகம் அல்லது காந்தங்களால் பாதிக்கப்பட்ட மாதிரிகள் தானாகவே நிராகரிக்கப்படும்.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>இயல்புநிலைக்கு மீட்டமை (ஆஃப்)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>பிட்ச் மற்றும் ரோல் உருவகப்படுத்தல்</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>முடுக்கமானியிலிருந்து கணிக்கப்படும் பிட்ச் மற்றும் ரோல்</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியின் கைரோ இடம் வலமாகத் திரும்புவதை மட்டுமே உணரும். உருவகப்படுத்தல் ஆன் ஆக இருக்கும்போது, PadForge முடுக்கமானியிலிருந்து பிட்ச் மற்றும் ரோலைக் கணித்து, கைரோவின் யா உடன் சேர்த்து மேப்பிங் வரிசைகளுக்கும் மெய்நிகர் கட்டுப்படுத்தியின் அசைவுக்கும் அனுப்பும். முடுக்கமானியால் தள்ளுதலையும் சாய்த்தலையும் வேறுபடுத்த முடியாது, எனவே கட்டுப்படுத்தியைத் திருப்பாமல் பக்கவாட்டிலோ முன்னோக்கியோ நகர்த்தினால், அது ஒரு சிறு சுழற்சியாகப் படிக்கப்படும்.</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>எட்டக்கூடிய எல்லையை வரையறுக்க ஸ்டிக்கை அதன் விளிம்பைச் சுற்றி நகர்த்தவும், பிறகு அது முழு வட்டமாக மறுவடிவமைக்கப்படும்.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>எல்லை அளவுத்திருத்தத்தை மீட்டமை</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>மைய ஆஃப்செட் Y-ஐ மீட்டமை</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>அளவுமாற்றிய ஆரவழிக்கு மீட்டமை</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>டெட்ஜோன் X-ஐ மீட்டமை</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>டெட்ஜோன் Y-ஐ மீட்டமை</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>ஆன்டி-டெட்ஜோன் X-ஐ மீட்டமை</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக்கை மீட்டமை</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°-க்கான புள்ளிகள்</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ஒரு முழு 360° கேமரா திருப்பத்துக்கான சுட்டி எண்ணிக்கைகள். கேமின் சுட்டி உணர்திறனைப் பொறுத்தது: ஃபிளிக் குறைவாகச் சுழன்றால் இதை உயர்த்தவும், அதிகமாகச் சுழன்றால் குறைக்கவும்.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400-க்கு மீட்டமை</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ஃபிளிக் நேரம்</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>ஒரு முழு 180° ஃபிளிக் முடிய எவ்வளவு நேரம் ஆகும் என்பது, இறுதியில் மெதுவாகும் வகையில். குறுகிய திருப்பங்களும் அதே நேரத்தில் முடியும்.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s-க்கு மீட்டமை</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ஃபிளிக் வரம்பு</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ஃபிளிக்கைத் தொடங்கும் ஸ்டிக் விலகல், முழு விலகலின் பின்னமாக. ஃபிளிக் நடக்கும்போது, விடுவிப்புப் புள்ளி இதன் 90%-க்குக் குறையும்.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9-க்கு மீட்டமை</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>ஸ்னாப் கோணம்</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>மேலும் சீரான திருப்பங்களுக்கு ஃபிளிக்கை நிலையான கோணங்களுக்கு ஸ்னாப் செய்யும். முன்னோக்கி மட்டும் என்பது ஒவ்வொரு ஃபிளிக்கையும் நேர் முன்னோக்கி ஸ்னாப் செய்யும்.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>ஸ்னாப் இல்லை</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 டிகிரி</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 டிகிரி</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 டிகிரி</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>ஸ்னாப் இல்லை என்பதற்கு மீட்டமை</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>ஸ்னாப் வலிமை</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ஃபிளிக் ஸ்னாப் கோணத்தை நோக்கி எவ்வளவு வலுவாக இழுக்கப்படும் என்பது. 1 முழுமையாக ஸ்னாப் செய்யும், 0 ஸ்னாப்பை முடக்கும், இடைப்பட்ட மதிப்புகள் கலக்கும்.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0-க்கு மீட்டமை</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>முன் கோண டெட்ஜோன்</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>நேர் முன்னோக்கிய திசையிலிருந்து இந்தக் கோணத்துக்குள் உள்ள ஃபிளிக் எதையும் திருப்பாது. ஃபிளிக்-திருப்பம் இல்லாமல் ஒரு சுற்று நகர்வைத் தொடங்க இது உதவும்.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0°-க்கு மீட்டமை</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>சுற்று நகர்வு மென்மையாக்கம்</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>விளிம்புச் சுற்று நகர்வின் இரைச்சலை மென்மையாக்கும். -1 தானியங்கிப் படிநிலைக் காலத்தைப் பயன்படுத்தும், 0 மென்மையாக்கத்தை ஆஃப் செய்யும், பெரிய மதிப்புகள் ஒவ்வொரு டிக்கிலும் பெரிய சுழற்சிகளை மென்மையாக்கும்.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>தானியங்கிக்கு மீட்டமை (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>செயல்படும்போது ஃபிளிக்கை அனுமதி</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>சுழற்சி ஆஃப்செட்</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>முழு ஃபிளிக் வரைபடத்தையும் இத்தனை டிகிரி திருப்பும். நேர்மறை என்பது கடிகாரத் திசை. ஆஃப்செட்டுக்குப் பிறகு ஸ்னாப் பொருந்தும்.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>சுழற்சி ஆஃப்செட்டை மீட்டமை</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் உள்ள அடுக்கு, ஸ்டிக் ஏற்கெனவே விலகியிருக்கும் நிலையில் செயல்பட்டால், ஃபிளிக்கை உடனே தூண்டும். ஆஃப் எனில் கேமரா அசையாது, தற்போதைய ஸ்டிக் கோணத்திலிருந்து சுழற்சி கண்காணிக்கப்படும்.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>செயல்படும்போது ஃபிளிக்கை அனுமதி என்பதை மீட்டமை</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ஸ்டீயரிங் லாக் ஃபீட்பேக்</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ஸ்டீயரிங் பயன்முறை ஸ்டிக் முழு லாக்கில் ஒரு குறிப்பு</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ஸ்டீயரிங் பயன்முறைக்கு அமைக்கப்பட்ட ஸ்டிக் முழு லாக் வரை திருப்பப்படும்போது, வரம்பை நீங்கள் உணரும்படி ஒரு குறிப்பை (அதிர்வு, டிரிகர் அல்லது லைட்பார்) இயக்கும். இயல்பாக அனைத்தும் ஆஃப்.</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியில் DualSense ஹாப்டிக்ஸை இயக்கு</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ஒரு கேம் இந்த ஸ்லாட்டை, உருவாக்கப்பட்ட ஹாப்டிக் ஆடியோவுடன் மெய்நிகர் DualSense ஆக இயக்கும்போது, அந்த டிராக்கை இந்தக் கட்டுப்படுத்தியின் ஆக்சுவேட்டர்களில் இயக்கும். USB அல்லது அதன் டாங்கிள் வழியாக இணைந்த Steam Controller 2026, மற்றும் Flydigi Apex 6 Pro, அந்த டிராக்கையே இயக்கும். மற்ற எல்லாக் கட்டுப்படுத்திகளும், Bluetooth வழியாக இணைந்த அந்த Steam Controller உம், ஆடியோவிலிருந்து பெறப்பட்ட தொனிகளைப் பெறும், அவை வடிவமைப்பாளர் உருவாக்கிய உணர்வை அப்படியே மீளுருவாக்காமல் தோராயமாகத் தரும்.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ஹாப்டிக்ஸ் கெயின்</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>இயல்புநிலைக்கு மீட்டமை (ஆஃப்)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>இயல்புநிலைக்கு மீட்டமை (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>ஆக்சுவேட்டர் லோ-பாஸ் கட்ஆஃப்</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller ஹாப்டிக் ஸ்ட்ரீமிங்கை இந்த அதிர்வெண்ணுக்குக் கீழே வைத்திருக்கும், அதனால் பேடுகள் கேட்கும்படி ஒலி எழுப்பாமல் அதிரும். சுமார் 250 Hz-இல் ஆக்சுவேட்டர்கள் கேட்கத் தொடங்கும். கூர்மையான விவரங்களுக்கு இதை உயர்த்தவும், அமைதியான இயக்கத்துக்குக் குறைக்கவும்.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz-க்கு மீட்டமை</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>இந்த அதிர்வெண்ணுக்கு மேலான தொனிகள் துண்டிக்கப்படும் அல்லது மடிக்கப்படும். இயல்புநிலையான 800 Hz, இன்ஜின் மற்றும் மோதல் அதிர்வுகளைத் தக்கவைத்து, உயர் சுருதி பீப் ஒலிகளைப் பிடிக்கும்.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>உயர் தொனிகளை மீட்டமை</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>தொனி வரம்பை மீட்டமை</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop சுயவிவரம்</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop மேக்ரோ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>கர்சர் பகுதி</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} ஷிப்ட்</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>சக்கரப் பட்டியல் ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>கர்சர் பகுதி ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>மவுஸ் {0} பிடி ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>மவுஸ் {0} கிளிக் ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>மவுஸ் {0} மாற்று ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>அதிர்வுத் துடிப்பு ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (விடுவிப்புப் பகுதி)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} தட்டு ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} தானியங்கிச் சுடுதல் ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} பிடி ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} மாற்று ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} டர்போ ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} இரட்டை அழுத்தம் ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} நீண்ட அழுத்தம் ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>சக்கரக் கட்டம் ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>சக்கரம் மாற்று ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>டர்போ சக்கரம் ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>கர்சர் தாவல் ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED அமை ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>கைரோ மையப்படுத்து ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>கர்சரைத் தள்ளு ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>ஸ்கிரீன்ஷாட் விசை ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>திரை விசைப்பலகை ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ஒளி நிறத்தை அமை</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>கேமராவை மையப்படுத்து</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>கர்சர் தாவல்</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>கர்சரைத் தள்ளு</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>ஸ்கிரீன்ஷாட்</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>திரை விசைப்பலகை</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>ஷிப்ட் அடுக்கை மாற்று</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>ஷிப்ட் அடுக்கை இயக்கு</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>ஷிப்ட் அடுக்கை அணை</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>ஷிப்ட் அடுக்கைப் பிடி</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>பிளேயர் எண்ணை மாற்று</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>பிணைக்கப்படவில்லை</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>டெஸ்க்டாப் பயன்முறையை மாற்று</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam சிஸ்டம் விசை</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>உருப்பெருக்கியை மாற்று</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>பிரகாசம் கூட்டு</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>பிரகாசம் குறை</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>கட்டுப்படுத்தியை அணை</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam கன்ஃபிகரேட்டரைத் திற</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam விரைவு மெனுவைத் திற</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>கேமை விட்டு வெளியேறு</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>ஹாப்டிக்ஸை மாற்று</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD-ஐ மாற்று</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>அதிர்வை மாற்று</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide பொத்தானை வலுக்கட்டாயமாக அழுத்து</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>கைரோ அளவீட்டுச் சுழற்சி</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>திசையை நோக்கித் திரும்பு</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (பிடிப்பு)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (விடுவிப்பு)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (விடுவிப்பு)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (செயல்படுத்தல்)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>வந்து சேர்வதைக் காண ஓர் உள்ளமைவைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>எவை வந்து சேரும்</value></data>
@@ -4928,11 +4978,9 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>அடுக்கு</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>இந்த மெனுவை அனுமதிக்கும் அடுக்கைத் தேர்ந்தெடுக்கவும். எந்த அடுக்கும், அடிப்படை ஆகிய இரண்டும் பிற செயலில் உள்ள அடுக்குகளின் கீழும் இதை அனுமதிக்கும். பெயரிடப்பட்ட அடுக்கு, தற்போது செயலில் உள்ள அடுக்குடன் பொருந்த வேண்டும்.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>எந்த அடுக்கும் என்பதற்கு மீட்டமைத்து, அடுக்கு-பிடிப்புத் திறப்பை ஆஃப் செய்யும்.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (இந்த ஸ்லாட்டில் பட்டியலிடப்படவில்லை)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>அடுக்கு மெனுவைத் திறந்தே வைத்திருக்கும்</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>இந்த மெனுவின் பெயரிடப்பட்ட அடுக்கு செயலில் இருக்கும்போது இதைத் திறந்தே வைத்திருக்கும். தேர்ந்தெடுத்த இயற்பியல் உள்ளீடு தனிப்படுத்தலைச் செலுத்தும். எந்த அடுக்கும், அடிப்படை ஆகியவை வழக்கமான பரப்புத் திறப்பைப் பயன்படுத்தும்.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>தொடுதல் அல்லது விலகல் மூலம் திறக்கும் நிலைக்கு மீட்டமைக்கும்.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>இதைக் கொண்டு செலுத்து</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>அடுக்கு இந்த மெனுவைத் திறந்து வைத்திருக்கும்போது, தனிப்படுத்தப்பட்ட கலத்தைச் செலுத்தும் இயற்பியல் உள்ளீடு.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். அடுக்கு மெனுவைத் திறக்கும், இந்த உள்ளீடு அதைச் செலுத்தும். அது எதை வெளியீடாகத் தரும் என்பதை அதன் கலங்கள் சொல்லும்.</value></data>
@@ -5014,7 +5062,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>மோட்டார்</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>திசைப்படி பிரிப்பு</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>மைய டெட்ஜோன்</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>இடது ஸ்டிக் X-க்கு மீட்டமை</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>வலிமையை மீட்டமை (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>மைய டெட்ஜோனை மீட்டமை (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>ஸ்டீயரிங் கோண அதிர்வை இயக்கு என்பதை மீட்டமை</value></data>
@@ -5681,6 +5728,25 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>சுயவிவரங்கள்</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>அடுக்கு {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>ஷிப்ட் {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>டிரிகர்கள்: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>லைட்பார்</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>{0} கூடுதல்கள்</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} லைட்பார்</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>நிரலைத் தொடங்கு</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>{0} வரம்பு</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>இறக்குமதி செய்த சுயவிவரம்</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>இறக்குமதி செய்த மேக்ரோ</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>முன்னமைவு {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>ரேடியல் மெனு {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>தொடு மெனு {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>மவுஸ் பகுதி</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>தட்டல்</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>பிடிப்பு</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>இரட்டைத் தட்டல்</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>இடது டிரிகர் விளைவு</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>வலது டிரிகர் விளைவு</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>பொத்தான் இணைப்பு {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>உருப்படி {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>கண்ட்ரோலர்</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>தனது சொந்த வெளியீடுகளை வைத்திருக்கும்</value></data>
@@ -6012,7 +6078,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX-இன் {0} அமைப்பு எப்படிச் செயல்படுகிறது என்பதை DSX வெளியிடுவதில்லை, எனவே PadForge தனது சொந்த முறையைப் பயன்படுத்துகிறது.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX தனது உள்ளீட்டு எண்களை வெளியிடுவதில்லை. வெளியிடப்பட்ட DSX சுயவிவரங்கள் 41 முதல் 44 வரையிலானவற்றை டி-பேட் ஆகப் பயன்படுத்துகின்றன, எனவே PadForge அவற்றை அவ்வாறே படிக்கிறது.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>இதைப் போன்ற பிணைப்பை DSX எழுதுவதில்லை, எனவே இந்தக் கோப்பு DSX-க்கு வெளியே மாற்றப்பட்டுள்ளது.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX ஒரு குறுக்குவழி மூலம் இந்த முன்னமைவுக்கு மாறுகிறது. அதன் மேக்ரோ மேக்ரோக்கள் பக்கத்தில் உள்ளது, ஒரு பொத்தானுடன் பிணைக்கத் தயாராக உள்ளது.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX ஒரு குறுக்குவழி மூலம் இந்த முன்னமைவுக்கு மாறுகிறது. அதன் மேக்ரோ கட்டுப்படுத்தியின் மேக்ரோக்கள் &amp; மெனுக்கள் பிரிவில் உள்ளது, ஒரு பொத்தானுடன் பிணைக்கத் தயாராக உள்ளது.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>வெளியிடப்பட்ட எந்த DSX சுயவிவரமும் {0}-ஐப் பயன்படுத்துவதில்லை, எனவே அது என்ன செய்கிறது என்பதை PadForge அறிய முடியாது.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX-இன் பாஸ்த்ரூ சுவிட்ச் இயக்கத்தில் இருக்கும்போது இதை கேம் அமைக்க DSX அனுமதிக்கிறது, எனவே PadForge-உம் இதை கேமுக்கே விட்டுவிடுகிறது.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode இயக்கத்தில் Send Data to Device அணைக்கப்பட்டிருந்தால், DSX தனது சொந்தமாக எதையும் கட்டுப்படுத்திக்கு அனுப்புவதில்லை, எனவே PadForge-உம் இதை கேமுக்கே விட்டுவிடுகிறது.</value></data>

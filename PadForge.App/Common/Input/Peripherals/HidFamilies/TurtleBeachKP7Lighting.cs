@@ -170,7 +170,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_TurtleBeachKP7.cpp") { Product = $"kp7:{VendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"kp7:{VendorId:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
             KeepAliveMs = KeepAliveMs,
             Programs = VendorPrograms.TurtleBeach,

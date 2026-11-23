@@ -681,6 +681,7 @@ namespace PadForge.ViewModels
             WindRangeDeg = 900; WindPower = 1; WindUnwindRate = 1800;
             AngleInnerDz = 0; AngleOuterDz = 10;
             SteerStickDeadZone = 15;
+            MomentumEnabled = false; MomentumGlide = 0.90;
         });
 
         private ICommand _resetDeadZoneShapeCommand;

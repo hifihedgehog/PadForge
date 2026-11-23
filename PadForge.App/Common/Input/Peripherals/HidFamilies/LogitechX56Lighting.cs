@@ -72,7 +72,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB LogitechX56Controller") { Product = product },
+            Map = new LightMap(Lights()) { Product = product },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new Session(),
         };

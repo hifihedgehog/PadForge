@@ -220,6 +220,18 @@
                     <SolidColorBrush x:Key="WaitMutedBrush" Color="#CDB98D"/>
                     <SolidColorBrush x:Key="DashLineBrush" Color="#344154"/>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1E2734"/>
+                    <!-- The R, G and B of a lighting card's rows (EmberTheme
+                         sets each look's, which read on its card). -->
+                    <SolidColorBrush x:Key="ChannelRedBrush" Color="#EF5350"/>
+                    <SolidColorBrush x:Key="ChannelGreenBrush" Color="#66BB6A"/>
+                    <SolidColorBrush x:Key="ChannelBlueBrush" Color="#42A5F5"/>
+                    <!-- A stick's radar: the outer ring, the inner rings and
+                         crosshair, and the dead zone's fill and its fainter
+                         fill where a zone only snaps to an axis. -->
+                    <SolidColorBrush x:Key="RadarRingBrush" Color="#253049"/>
+                    <SolidColorBrush x:Key="RadarGridBrush" Color="#1E2739"/>
+                    <SolidColorBrush x:Key="DeadZoneFillBrush" Color="#2E253049"/>
+                    <SolidColorBrush x:Key="DeadZoneFaintFillBrush" Color="#18253049"/>
                     <!-- The type chip of a controller's pill and card, and
                          the type bar's lit choice, code-built: a rounded
                          tile whose fill the code sets and no state swaps
@@ -1590,9 +1602,10 @@
                 an ember tint instead of the stock system blue. SelectionBrush
                 composites under the text at SelectionOpacity, so raw ember
                 works on both grounds. Covers plain TextBox and uictrl:TextBox
-                (each has its own default style key); keyed styles based
-                directly on DefaultTextBoxStyle (PadPage DzValueEdit family)
-                bypass this and keep stock selection.
+                (each has its own default style key). The keyed DzValueEdit
+                style here and PadPage's FieldValueEdit and its DzValueEdit
+                copies have their own template and no BasedOn on this style,
+                so they bypass it and keep stock selection.
             -->
             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
                 <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>

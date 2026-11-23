@@ -261,7 +261,7 @@ namespace PadForge.Engine
         /// (SDL_hidapi_wii.c SetJoystickSensorsEnabled, EnableIR), so a
         /// bounce is one more start, and the toggle sets the driver's own
         /// retry delays back to the first (hifihedgehog/SDL#39). Since SDL
-        /// 77cf0379f5 neither edge waits on the remote (hifihedgehog/SDL#40),
+        /// 93f0824226 neither edge waits on the remote (hifihedgehog/SDL#40),
         /// see <see cref="StepIrCameraCheck"/>. A right Joy-Con's NIR camera
         /// needs no bounce: the fork follows its hint on every update
         /// (SDL_hidapi_switch.c UpdateIR).
@@ -508,7 +508,7 @@ namespace PadForge.Engine
         /// what <see cref="BuildInstanceGuid"/> gives the path with no serial,
         /// or Guid.Empty for a device with no serial, no path, or an SDL
         /// XInput slot path, which names no device of its own. A Wii Remote
-        /// on a Mayflash DolphinBar had no serial until fork b8afb934a2 gave
+        /// on a Mayflash DolphinBar had no serial until fork f1caa192db gave
         /// it one from its calibration (hifihedgehog/SDL#47), so its saved
         /// entry is keyed by the bar slot's path, and this finds it the first
         /// time the remote arrives with a serial.</summary>
@@ -781,7 +781,7 @@ namespace PadForge.Engine
             // (PID 0x0306), so the board is told apart by its SDL name. Enabling the
             // accel sensor above also powers the IR camera in the SDL hidapi_wii
             // driver, which posts the two IR dots on dedicated joystick axes 6-9
-            // (SDL#6 follow-up commit 41909fdc4e), working for a bare remote AND for
+            // (SDL#6 follow-up commit 24ce4472a7), working for a bare remote AND for
             // one with a Nunchuk or Classic Controller (report 0x37, Basic IR).
             bool isWiiVendor = VendorId == 0x057E;
             IsBalanceBoard = isWiiVendor && !string.IsNullOrEmpty(Name)
@@ -801,7 +801,7 @@ namespace PadForge.Engine
             // Right Joy-Con NIR camera (issue #151). The SDL fork's hidapi_switch
             // gives a STANDALONE right Joy-Con (VID 0x057E PID 0x2007, not a
             // combined pair) one extra joystick axis beyond the six gamepad axes
-            // (raw axis count 7, SDL#7 commit a31980950a) and posts the MCU's
+            // (raw axis count 7, SDL#7 commit 97638584d3) and posts the MCU's
             // average-intensity byte there once the camera powers (hint + sensors
             // enabled). Same detection idiom as the Wii IR axes above: the raw
             // joystick axis count is the stable signal the SDL contract defines.
@@ -836,7 +836,7 @@ namespace PadForge.Engine
             // 6/7 for a Joy-Con 2 L (PID 0x2067) or R (PID 0x2066) when its mouse
             // hint is set (SDL#8, raw axis count 8). Same raw-naxes contract idiom
             // as the Wii IR axes and the Joy-Con NIR scalar above.
-            // Switch 2 magnetometer (#271 item 5, SDL#25 fork cfcdeb26e0).
+            // Switch 2 magnetometer (#271 item 5, SDL#25 fork a0e83bbb33).
             // The BLE driver posts the raw int16 sample on the three axes
             // AFTER whichever mouse axes exist; the raw axis count is the
             // availability contract (6 neither, 8 mouse, 9 magnetometer,
@@ -1108,7 +1108,7 @@ namespace PadForge.Engine
                 : GetJoystickState();
 
             // Wii Remote IR pointer rides dedicated raw joystick axes 6-9 (SDL#6
-            // follow-up 41909fdc4e), which the gamepad mapping does not surface, so
+            // follow-up 24ce4472a7), which the gamepad mapping does not surface, so
             // it is read joystick-direct here regardless of which path built the state.
             if (HasIrCamera && state != null)
                 ReadIrPointer(state);
@@ -1393,7 +1393,7 @@ namespace PadForge.Engine
 
         // The SDL fork posts the right Joy-Con MCU's average-intensity byte
         // (buf[53], 0-255) on dedicated joystick axis 6, scaled 0..32767
-        // (SDL_hidapi_switch.c HandleMcuIRReport, SDL#7 commit a31980950a). The
+        // (SDL_hidapi_switch.c HandleMcuIRReport, SDL#7 commit 97638584d3). The
         // axis reads 0 while the camera is off, so no sentinel handling is
         // needed: normalize the positive range to 0..1 and clamp any negative
         // (never posted by the fork) to 0.
@@ -1538,7 +1538,7 @@ namespace PadForge.Engine
         }
 
         // The SDL hidapi_wii driver posts the two IR dots on DEDICATED joystick
-        // axes 6-9 (SDL#6 follow-up 41909fdc4e), separate from the gamepad sticks so
+        // axes 6-9 (SDL#6 follow-up 24ce4472a7), separate from the gamepad sticks so
         // an extension (Nunchuk/Classic) keeps axes 0-3: axis6 = dot0_x (0..1023),
         // axis7 = dot0_y (0..767), axis8 = dot1_x, axis9 = dot1_y, with -1 meaning
         // "dot not detected". The two dots are the two sensor-bar LEDs; their
@@ -1639,13 +1639,13 @@ namespace PadForge.Engine
         // The fork starts a Wii Remote's camera from the sensor-enable edge:
         // reports 0x13 and 0x1a and five register writes, each sent once the
         // remote acknowledges the one before it (SDL_hidapi_wii.c EnableIR,
-        // SendCameraStep). Before SDL c2eb7a5f2a a write that timed out left
+        // SendCameraStep). Before SDL db3d0e47c5 a write that timed out left
         // the camera off for the connection, since only the next sensor
         // toggle or a reopen tried again and Open enables the sensors once:
         // the aim lost after a remote reconnected while every button worked
         // (discussion #484). The driver now starts a failed camera again
         // after 1, 2 and 4 s and then every 8 s, and reads the camera bit in
-        // a status report (hifihedgehog/SDL#39). Since 77cf0379f5 the start
+        // a status report (hifihedgehog/SDL#39). Since 93f0824226 the start
         // runs on the driver's update loop and waits on nothing
         // (hifihedgehog/SDL#40). This check stays as a backstop that records
         // the start in the log. The fork posts every IR report on axes 6-9 as
@@ -1721,7 +1721,7 @@ namespace PadForge.Engine
         private double IrCameraSeconds(long now) => (now - _irCheckStart) / (double)System.Diagnostics.Stopwatch.Frequency;
 
         /// <summary>Bounces the sensors on a worker, one bounce at a time.
-        /// Before SDL 77cf0379f5 the driver's camera start waited on
+        /// Before SDL 93f0824226 the driver's camera start waited on
         /// acknowledged writes under SDL's joystick lock. It waits on nothing
         /// now (hifihedgehog/SDL#40), and the worker only keeps the sensor
         /// calls off the poll thread.</summary>

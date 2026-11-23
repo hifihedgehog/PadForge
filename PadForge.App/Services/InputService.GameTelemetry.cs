@@ -127,19 +127,24 @@ namespace PadForge.Services
         };
 
         /// <summary>The selected row's line on the Devices page, rebuilt only
-        /// when the row says its status moved, the head tracker's cache.</summary>
-        private static void UpdateGameTelemetryDevicePanel(DevicesViewModel devVm, UserDevice ud)
+        /// when the row says its status moved or the forward port changed,
+        /// Home's cache. The forward port is set on Extras and bumps no
+        /// StatusVersion.</summary>
+        internal static void UpdateGameTelemetryDevicePanel(DevicesViewModel devVm, UserDevice ud)
         {
             if (!devVm.IsGameTelemetryDevice) return;
             if (ud.Device is GameTelemetryDevice row)
             {
                 int version = row.StatusVersion;
+                int forward = GameTelemetryRuntime.ForwardPort;
                 if (!ReferenceEquals(devVm.GameTelemetryStatusDevice, row)
                     || devVm.GameTelemetryStatusVersion != version
+                    || devVm.GameTelemetryStatusForward != forward
                     || string.IsNullOrEmpty(devVm.GameTelemetryStatus))
                 {
                     devVm.GameTelemetryStatusDevice = row;
                     devVm.GameTelemetryStatusVersion = version;
+                    devVm.GameTelemetryStatusForward = forward;
                     devVm.GameTelemetryStatus = BuildGameTelemetryStatus(row.Status, row.Format);
                 }
             }

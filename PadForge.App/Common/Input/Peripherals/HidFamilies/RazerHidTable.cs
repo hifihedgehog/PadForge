@@ -24,7 +24,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     /// its frame of rows and columns, and its zones in the order OpenRGB
     /// lists their LEDs (RazerDevices.h, struct razer_device).</summary>
     internal sealed record RazerHidDevice(ushort ProductId, string Name, byte TransactionId, byte LedId, int Rows,
-        int Columns, RazerHidZone[] Zones, string Source);
+        int Columns, RazerHidZone[] Zones);
 
     /// <summary>
     /// The Razer devices OpenRGB lights through controllers of their own,
@@ -122,8 +122,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             var lights = device != null
                 ? Lights(device.Zones)
                 : new[] { new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 } };
-            string source = device != null ? "OpenRGB " + device.Source : "OpenRGB RazerControllerDetect.cpp";
-            return new LightMap(lights, source) { Product = Product(productId) };
+            return new LightMap(lights) { Product = Product(productId) };
         }
     }
 }

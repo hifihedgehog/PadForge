@@ -89,7 +89,7 @@ namespace PadForge.Common.Input.Peripherals
         internal static LightMap Map(bool full, ushort productId)
         {
             var layout = KeyboardLayouts.Build(full ? "gk8120_offset_values" : "gk8110_offset_values", KeyboardLayout.AnsiQwerty);
-            return new LightMap(KeyboardLedNames.FromLayout(layout), "OpenRGB RGBController_WitmodKeyboard.cpp")
+            return new LightMap(KeyboardLedNames.FromLayout(layout))
             {
                 Product = $"witmod:{VendorId:X4}:{productId:X4}:{(full ? "gk8120" : "gk8110")}",
             };

@@ -66,7 +66,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(Lights(), "OpenRGB RGBController_Luxafor.cpp") { Product = $"luxafor:{vendorId:X4}:{productId:X4}" },
+            Map = new LightMap(Lights()) { Product = $"luxafor:{vendorId:X4}:{productId:X4}" },
             Programs = new[] { VendorPrograms.LuxaforApp },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new ReportsSession(false, LedCount, Frames),

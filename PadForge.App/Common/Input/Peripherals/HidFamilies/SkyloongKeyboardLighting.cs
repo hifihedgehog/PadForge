@@ -79,7 +79,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(KeyboardLedNames.FromLayout(Layout()), "OpenRGB RGBController_SkyloongGK104Pro.cpp")
+            Map = new LightMap(KeyboardLedNames.FromLayout(Layout()))
             {
                 Product = $"skyloong:{VendorId:X4}:{productId:X4}",
             },

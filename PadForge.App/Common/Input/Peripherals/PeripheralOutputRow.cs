@@ -63,7 +63,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <see cref="ISdlInputDevice"/> with a fixed path and an id hashed from
     /// it, registered by a Step 1 phase. The row opens whenever the vendor's
     /// software is installed, so it can be assigned before that software
-    /// runs. Whether it answers shows on the row's tab.</para>
+    /// runs. Whether it answers shows on the row's Lighting or Force Feedback group.</para>
     /// </summary>
     internal sealed class PeripheralOutputRow : ISdlInputDevice, IOutputOnlyRow
     {

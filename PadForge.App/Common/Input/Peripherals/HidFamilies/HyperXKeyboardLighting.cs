@@ -141,7 +141,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = registration.Name,
-                Map = new LightMap(lights, "OpenRGB HyperXKeyboardController") { Product = product },
+                Map = new LightMap(lights) { Product = product },
                 Programs = new[] { VendorPrograms.Ngenuity },
                 RepaintMs = RepaintMs,
                 KeepAliveMs = protocol == Protocol.Elite2 ? Elite2KeepAliveMs : KeepAliveMs,
@@ -484,7 +484,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (answer == null) return null;
                 var region = CoreRegionOf(answer);
                 if (region != KeyboardLayout.AnsiQwerty)
-                    map = new LightMap(Lights(protocol, productId, region), "OpenRGB HyperXKeyboardController")
+                    map = new LightMap(Lights(protocol, productId, region))
                     {
                         Product = product,
                     };

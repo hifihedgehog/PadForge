@@ -411,6 +411,29 @@ namespace PadForge.Tests
             Assert.Equal((14f, 5f), (bars.Single(l => l.Address == 73).X, bars.Single(l => l.Address == 73).Y));
         }
 
+        /// <summary>SignalRGB's Bragi plugin places LEDs 63 and 64 of the K70 PRO MINI
+        /// WIRELESS's top bar on one cell, [9, 1] twice in its ledPositions
+        /// (Corsair_Bragi_Device.js at 9511979f, "K70 Pro Mini"). The two split that cell along
+        /// the row, 63 on its left half and 64 on its right, so no two lights of the key
+        /// picture sit on one spot and each can be picked.</summary>
+        [Theory]
+        [InlineData(0x1BB6)]
+        [InlineData(0x1BD3)]
+        public void TheK70ProMiniWirelessBars_EachHaveASpotOfTheirOwn(int product)
+        {
+            var device = CorsairPeripheralV2Lighting.DeviceOf((uint)product);
+            var lights = CorsairPeripheralV2Lighting.MapOf(device, KeyboardLayout.AnsiQwerty, out _).Lights
+                .Where(l => l.HasPosition).ToList();
+            var spots = lights.GroupBy(l => (l.X, l.Y)).Where(g => g.Count() > 1).Select(g => string.Join(",", g.Select(l => l.Address)));
+            Assert.Empty(spots);
+            var left = lights.Single(l => l.Address == 63);
+            var right = lights.Single(l => l.Address == 64);
+            Assert.Equal(left.Y, right.Y);
+            Assert.Equal(0.5f, left.Width);
+            Assert.Equal(0.5f, right.Width);
+            Assert.Equal(left.X + left.Width, right.X);
+        }
+
         /// <summary>The K70 RGB PRO's ID only SignalRGB's plugin lists, 1BD4, takes OpenRGB's
         /// K70 RGB PRO table and the plugin's rule for its reports: the collection's write length
         /// (Corsair_Bragi_Device.js at 95031635, lines 1862-1864 and 2446-2474). OpenRGB's 129 for

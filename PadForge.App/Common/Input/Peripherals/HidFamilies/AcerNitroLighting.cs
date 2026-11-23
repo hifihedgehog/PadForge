@@ -66,7 +66,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = "AcerNitroHidKeyboardController",
-            Map = new LightMap(Lights(), "OpenRGB AcerNitroHidKeyboardController") { Product = "acer:0CF2:5130" },
+            Map = new LightMap(Lights()) { Product = "acer:0CF2:5130" },
             RepaintMs = RepaintMs,
             Begin = (_, _) => new Session(),
         });

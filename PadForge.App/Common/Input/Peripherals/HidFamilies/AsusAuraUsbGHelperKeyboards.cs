@@ -123,8 +123,8 @@ namespace PadForge.Common.Input.Peripherals
         {
             var table = GHelperKeyboardTables.Layout(layout);
             string product = ProductKey(productId, layout);
-            if (table == null) return new LightMap(Array.Empty<LightInfo>(), "G-Helper " + layout) { Product = product };
-            return new LightMap(PluginKeyNames.Lights(table), "G-Helper " + table.Plugin) { Product = product };
+            if (table == null) return new LightMap(Array.Empty<LightInfo>()) { Product = product };
+            return new LightMap(PluginKeyNames.Lights(table)) { Product = product };
         }
 
         /// <summary>ReadMultiLayout's query.</summary>

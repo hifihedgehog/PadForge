@@ -123,7 +123,7 @@ namespace PadForge.Common.Input.Peripherals
         public ushort ProductId { get; init; }
 
         /// <summary>The name the openrazer daemon gives the product, for
-        /// the diagnostics log. A tab names a device by its own row.</summary>
+        /// the diagnostics log. The Lighting group names a device by its own row.</summary>
         public string Name { get; init; }
         public RazerFamily Family { get; init; }
 

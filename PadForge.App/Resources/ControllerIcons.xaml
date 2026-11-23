@@ -11,25 +11,23 @@
 
 
     <!-- ═══════════════════════════════════════════
-         PadPage tab icons.
+         Controller shape icons: the stick and trigger shapes, the
+         steering wheel and the touchpad used as a stick.
 
-         Sticks and Triggers icons are derivative works built on the
+         The stick and trigger shapes are derivative works built on the
          outer-body geometry of "Xbox Series Button Icons and Controls"
          by Zacksly (CC BY 3.0,
          https://zacksly.itch.io/xbox-series-button-icons-and-controls).
          The originals' lettering is not used; the inner stick disc is
          a plain primitive and the blank trigger uses only the outer
          silhouette subpath. See Resources/ZackslyIcons/ATTRIBUTION.txt.
-
-         Force Feedback and Lighting icons come from Material Symbols
-         (Apache 2.0). Adaptive Triggers chevrons are hand-authored.
-         All Zacksly-derived icons use viewBox 0 0 512 512;
-         Material Symbols icons use viewBox 0 0 24 24.
+         The Zacksly shapes use viewBox 0 0 512 512.
          ═══════════════════════════════════════════ -->
 
-    <!-- Stick outer-ring geometry — verbatim from Zacksly Left/Right
-         Stick (path 2 in both files, identical). Reused below as the
-         shared shape for the Sticks group header. -->
+    <!-- Stick outer-ring geometry, verbatim from Zacksly Left/Right
+         Stick (path 2 in both files, identical). Composed below with
+         the inner disc into the stick whole, the icon of the Sticks &
+         Triggers section button and of the Home stage. -->
     <StreamGeometry x:Key="ZackslyStickOuterRingGeometry">M256,83A173,173,0,1,0,429,256,173,173,0,0,0,256,83Zm0,294.29A121.25,121.25,0,1,1,377.25,256,121.38,121.38,0,0,1,256,377.25Z</StreamGeometry>
 
     <!-- Stick inner disc — plain circle of radius 103.07 centered at

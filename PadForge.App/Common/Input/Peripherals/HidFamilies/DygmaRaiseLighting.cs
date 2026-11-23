@@ -83,7 +83,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = "Dygma Raise",
-                Map = new LightMap(Lights(), "OpenRGB DygmaRaiseController") { Product = "dygma:1209:2201" },
+                Map = new LightMap(Lights()) { Product = "dygma:1209:2201" },
                 Programs = new[] { VendorPrograms.Bazecor },
                 RepaintMs = RepaintMs,
                 Open = key => _open(key),

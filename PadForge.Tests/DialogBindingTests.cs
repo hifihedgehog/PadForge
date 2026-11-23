@@ -101,7 +101,7 @@ namespace PadForge.Tests
                 {
                     new LightInfo(0, LightKind.Key, 0x29, LightKeySource.Device),
                     new LightInfo(1, LightKind.Key, 0x04, LightKeySource.Device),
-                }, "dialog-binding-test"));
+                }));
                 AssertBindsCleanly(() => new MapKeyLightsDialog(path, "Keyboard"));
             }
             finally

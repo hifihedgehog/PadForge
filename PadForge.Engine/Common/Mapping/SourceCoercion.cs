@@ -7319,8 +7319,9 @@ namespace PadForge.Engine.Common.Mapping
         /// <item>Subsequent frames: return (current - prev) * scale,
         /// clamped to [-1, +1], and update prev=current.</item>
         /// </list>
-        /// <para>State is keyed by (DeviceGuid, fingerIdx, axisOffset).
-        /// Selected by <c>ReadAsBipolar</c> only when its caller flags
+        /// <para>State is keyed by (slot, effective device, pad, finger,
+        /// axis, half window), so two slots or two half windows on one
+        /// finger keep their own previous position. Selected by <c>ReadAsBipolar</c> only when its caller flags
         /// the target as relative-motion (KBM mouse / scroll). Absolute-
         /// position targets — touchpad-output passthrough, stick axes,
         /// extended axes — go through <c>TryReadTouchpadAxisAbsolute</c>
@@ -7346,12 +7347,7 @@ namespace PadForge.Engine.Common.Mapping
             // device-free source on a multi-device slot is evaluated once
             // per device each poll, so keying on the empty raw guid gave
             // both devices ONE tracker and the second device's delta was
-            // measured against the first device's previous position. This
-            // file's own GetMouseFeelState doc already calls that "the
-            // _touchpadDeltas pattern", describing behavior this key did
-            // not actually have (round 34).
-            // The pad's own cursor-feel card, same (slot, device, pad) key
-            // the region read uses.
+            // measured against the first device's previous position (round 34).
             // The pad's cursor-feel card, same (slot, device, pad) key the
             // region read uses. Acceleration is Simple-profile-only on BOTH
             // lanes: the Trackpad profile replaces it and the card hides the
@@ -7377,10 +7373,8 @@ namespace PadForge.Engine.Common.Mapping
             if (!pad.FingerDown[fingerIdx] || !FingerInTouchpadWindowForAxis(pad, fingerIdx, half, axisOffset))
             {
                 _touchpadDeltas.TryRemove(key, out _);
-                // v18 feel chain: with trackball stamped, the lift keeps
-                // the decaying momentum flowing; otherwise this is the
-                // same 0 the pre-v18 read returned (EMA of 0 included).
-                bipolar = ApplyTouchpadFeel(src, 0f, padAccel);
+                // A lifted finger reads 0. The feel chain (acceleration,
+                // then curve/range shaping) maps 0 to 0, so it is not run.
                 return true;
             }
 
@@ -7409,9 +7403,7 @@ namespace PadForge.Engine.Common.Mapping
             if (!_touchpadDeltas.TryGetValue(key, out var prev))
             {
                 _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, FrameSeq = _pollFrameSeq };
-                // Seed frame reads 0; the touch also kills any trackball
-                // momentum (catching the ball stops it).
-                bipolar = ApplyTouchpadFeel(src, 0f, padAccel);
+                // The seed frame reads 0, which the feel chain leaves at 0.
                 return true;
             }
             float delta;
@@ -7487,8 +7479,9 @@ namespace PadForge.Engine.Common.Mapping
             if (rowSens != 1f) bipolar *= rowSens;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
-            // v18 feel chain (threshold / accel / trackball / smoothing /
-            // curve shaping); every knob defaults off = pass-through.
+            // Feel chain: the pad's acceleration, the per-source
+            // acceleration, then curve/range shaping. Every knob defaults
+            // off, so the default reads through unchanged.
             bipolar = ApplyTouchpadFeel(src, bipolar, padAccel);
             return true;
         }

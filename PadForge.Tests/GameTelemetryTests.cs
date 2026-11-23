@@ -1254,6 +1254,35 @@ namespace PadForge.Tests
             Assert.Equal(TelemetrySource.ForzaHorizon, row.Status.Source);
         }
 
+        /// <summary>The Devices panel's line follows a Forward Port set on
+        /// Extras while the row stays selected. The port bumps no
+        /// StatusVersion, so a cache that kept only the version kept the old
+        /// line, while Home's, which keeps the port too, moved.</summary>
+        [Fact]
+        public void TheDevicesPanelLine_FollowsTheForwardPort()
+        {
+            int port = FreeLoopbackPort();
+            var clock = new Clock { Now = Environment.TickCount64 };
+            using var row = Row(GameTelemetryFormat.Auto, clock, port: port);
+            Assert.True(row.Open());
+            Assert.Equal(TelemetryListenState.Listening, row.Status.State);
+            var devVm = new DevicesViewModel { IsGameTelemetryDevice = true };
+            var ud = new PadForge.Engine.Data.UserDevice { Device = row, IsOnline = true };
+
+            InputService.UpdateGameTelemetryDevicePanel(devVm, ud);
+            string forwarding = string.Format(CultureInfo.CurrentCulture,
+                PadForge.Resources.Strings.Strings.Instance.Telemetry_Status_Forwarding_Format, port + 1);
+            Assert.DoesNotContain(forwarding, devVm.GameTelemetryStatus);
+
+            GameTelemetryRuntime.ForwardPort = port + 1;
+            InputService.UpdateGameTelemetryDevicePanel(devVm, ud);
+            Assert.EndsWith(forwarding, devVm.GameTelemetryStatus);
+
+            GameTelemetryRuntime.ForwardPort = 0;
+            InputService.UpdateGameTelemetryDevicePanel(devVm, ud);
+            Assert.DoesNotContain(forwarding, devVm.GameTelemetryStatus);
+        }
+
         private static int FreeLoopbackPort()
         {
             using var probe = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

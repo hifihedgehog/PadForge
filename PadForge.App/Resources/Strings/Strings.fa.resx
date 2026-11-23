@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>آنلاین</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>آفلاین</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>نامشخص</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>مرور…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ادامه</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>توقف</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>موتور متوقف شد.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>خطا: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>ایجاد {0} ممکن نشد.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>باز کردن، خواندن یا نگاشت یک دستگاه ممکن نشد. گزارش عیب‌یابی نام آن را می‌گوید.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} با خطا روبه‌رو شد. گزارش عیب‌یابی علت را دارد.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>موتور ورودی با خطا روبه‌رو شد. گزارش عیب‌یابی علت را دارد.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL راه‌اندازی نشد. گزارش عیب‌یابی علت را دارد.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro راه‌اندازی نشد. گزارش عیب‌یابی علت را دارد.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>پروفایل HIDMaestro یک کنترلر مجازی وجود ندارد. گزارش عیب‌یابی نام آن را می‌گوید.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} نتوانست هویت و چیدمان سفارشی‌شده‌اش را بگیرد و از هویت و چیدمان خود پروفایلش استفاده می‌کند.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>پروفایل تغییر کرد: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>پروفایل تغییر کرد: پیش‌فرض</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>پورت سرور حرکت</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>داده‌های ژیروسکوپ و شتاب‌سنج را در اختیار Cemu، Dolphin، Yuzu و مانند آن‌ها قرار می‌دهد.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>مودهای بازی</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>به مودهای بازی ساخته‌شده برای DSX اجازه می‌دهد ماشه‌های تطبیقی، نوار نوری، چراغ‌های بازیکن و چراغ بی‌صدا کنترلرهای PlayStation شما را تنظیم کنند.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>به مودهای بازی ساخته‌شده برای DSX اجازه می‌دهد ماشه‌های تطبیقی، نوار نوری، چراغ‌های بازیکن و چراغ بی‌صدای DualSense یا DualShock 4 را تنظیم کنند.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>پذیرفتن مودهای بازی DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>پورت مود بازی</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>اجرای جایگزین DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>برخی مودها، مانند DualSense4GTAV، تا زمانی که برنامه‌ای به نام DSX در حال اجرا نباشد خود را خاموش می‌کنند. این گزینه تا زمانی که سرور گوش می‌دهد، یک جایگزین کوچک با همین نام اجرا می‌کند.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>با مودهای ساخته‌شده برای DSX کار می‌کند، مانند مودهای GTA V، Red Dead Redemption 2، Skyrim و Forza. تا زمانی که سرور گوش می‌دهد، PadForge پورت خود را همان‌جا می‌نویسد که این مودها دنبالش می‌گردند.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}. {1} به کنترلر مجازی {2} می‌فرستد.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}. {1} می‌فرستد، اما هیچ کنترلر مجازی‌ای کنترلر PlayStation ندارد.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}. {1} به شماره کنترلر {2} می‌فرستد، و هیچ کنترلر مجازی دارای کنترلر PlayStation این شماره را ندارد.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}. {1} می‌فرستد، اما هیچ کنترلر مجازی‌ای DualSense یا DualShock 4 ندارد.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}. {1} به شماره کنترلر {2} می‌فرستد، و هیچ کنترلر مجازی دارای DualSense یا DualShock 4 این شماره را ندارد.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>پورت {0} توسط برنامه دیگری مانند DSX در حال استفاده است. آن را ببندید یا پورت دیگری انتخاب کنید.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>یک مود بازی</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>با OpenTrack و هر ردیابی که خروجی UDP آن را می‌فرستد یا در حافظه مشترک FreeTrack 2.0 می‌نویسد کار می‌کند، و نیز با یک محیط اجرای OpenXR روی همین رایانه که بتواند نشستی را در پس‌زمینه اجرا کند.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>فایل پیدا نشد</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>خوانده نمی‌شود</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>فایل «{0}» وجود ندارد یا خوانده نمی‌شود. PadForge تا بازگشت آن، تیره را نشان می‌دهد.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>فایل «{0}» تم PadForge ندارد. PadForge تا آن زمان، تیره را نشان می‌دهد.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>پروفایل «{0}» ظاهر بازی خود را پوشیده است. وقتی پروفایل دیگری فعال شود، تم شما برمی‌گردد.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>تم‌های PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>آن فایل یک تم PadForge نیست.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge نمی‌تواند آن فایل را بخواند.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge آن فایل را پیدا نمی‌کند.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>تم نیست</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>تم ذخیره نشد. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>تم جدید</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge همزمان با ساختن، تم را به خود می‌پوشد.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>در حال گرفتن تصویر از Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam برای این بازی تصویر عریض ندارد.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>اتصال به Steam ممکن نشد. اتصال خود را بررسی کنید.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge نمی‌تواند تصویر Steam برای این بازی را بخواند.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>موقعیت</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>تصویر را در پنجره‌اش بالا یا پایین می‌برد.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>نمایش لوگوی بازی</value></data>
@@ -1094,6 +1105,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>کنترلر فرمانی را که آن را آماده می‌کند نپذیرفت، پس چیزی ارسال نشد. بررسی کنید که وصل باشد و دوباره بفرستید.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>ارسال با خطایی در PadForge متوقف شد. جزئیات در فایل گزارش است.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>تصویر هنوز در حال رفتن به کنترلر است. ارسال متوقف شود؟</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>ادامه ارسال</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>فایل‌های Controller Pak (*.mpk)|*.mpk|همه فایل‌ها (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak پورت {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>بازیابی Controller Pak</value></data>
@@ -1657,6 +1669,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>میرایی تپش</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>پیش‌تنظیم</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (ساخته‌شده توسط کاربر)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>استیک‌ها</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ماشه‌ها</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVها</value></data>
@@ -2638,7 +2651,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>این کنترلر مغناطیس‌سنج دارد. لنگر کردن یاو به شمال مغناطیسی، دریفت افقی آهسته را از نشانه‌گیری با ژیروسکوپ حذف می‌کند. ابتدا کالیبره کنید: «کالیبره کردن» را فشار دهید، کنترلر را چند ثانیه به شکل عدد 8 در همه جهت‌ها بچرخانید و سپس دوباره فشار دهید.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>لنگر کردن یاو به قطب‌نما</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>نرخ اصلاحی کوچکی اضافه می‌کند که نشانه‌گیری افقی را به سمت جهت مغناطیسی می‌کشد تا دریفت انباشته نشود. به کالیبراسیون ذخیره‌شده مغناطیس‌سنج نیاز دارد. نمونه‌هایی که فلز یا آهنربای نزدیک آن‌ها را مختل کرده باشد به‌طور خودکار رد می‌شوند.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>بازنشانی به پیش‌فرض (خاموش)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>شبیه‌سازی پیچ و رول</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>پیچ و رول محاسبه‌شده از شتاب‌سنج</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ژیروسکوپ این کنترلر فقط چرخش به چپ و راست را حس می‌کند. با روشن بودن شبیه‌سازی، PadForge پیچ و رول را از شتاب‌سنج به دست می‌آورد و آن‌ها را همراه با یاو ژیروسکوپ به ردیف‌های نگاشت و حرکت کنترلر مجازی می‌فرستد. شتاب‌سنج نمی‌تواند هل دادن را از کج کردن تشخیص دهد، پس جابه‌جا کردن کنترلر به پهلو یا جلو بدون چرخاندن آن، چرخشی کوتاه خوانده می‌شود.</value></data>
@@ -3035,7 +3047,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>استیک را دور لبه‌اش بچرخانید تا مرز دسترس‌پذیر ثبت و سپس به دایره‌ای کامل تبدیل شود.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>بازنشانی کالیبراسیون مرز</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>بازنشانی آفست مرکز Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>بازنشانی به شعاعی مقیاس‌شده</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>بازنشانی ناحیه مرده X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>بازنشانی ناحیه مرده Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>بازنشانی ضد ناحیه مرده X</value></data>
@@ -3487,13 +3498,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>بازنشانی فلیک استیک</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>نقطه در هر 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>تعداد شمارش ماوس برای یک دور کامل 360° دوربین. به حساسیت ماوس بازی بستگی دارد: اگر فلیک کمتر از حد می‌چرخد آن را بالا ببرید و اگر بیش از حد می‌چرخد پایین بیاورید.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>بازنشانی به 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>زمان فلیک</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>یک فلیک کامل 180° چه مدت طول می‌کشد تا با کند شدن تدریجی در پایان کامل شود. چرخش‌های کوتاه‌تر هم در همین زمان تمام می‌شوند.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>بازنشانی به 0.1 ثانیه</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>آستانه فلیک</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>میزان انحراف استیک که فلیک را آغاز می‌کند، به‌صورت کسری از انحراف کامل. هنگام فلیک، نقطه رهاسازی به 90% این مقدار کاهش می‌یابد.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>بازنشانی به 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>زاویه چسبیدن</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>فلیک را برای چرخش‌های یکدست‌تر به زاویه‌های ثابت می‌چسباند. «فقط رو به جلو» هر فلیک را به روبه‌روی مستقیم می‌چسباند.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>بدون چسبیدن</value></data>
@@ -3502,22 +3510,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 درجه</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 درجه</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 درجه</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>بازنشانی به بدون چسبیدن</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>شدت چسبیدن</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>فلیک با چه شدتی به سمت زاویه چسبیده کشیده می‌شود. 1 کاملاً می‌چسباند، 0 چسبیدن را غیرفعال می‌کند و مقادیر میانی این دو را می‌آمیزند.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>بازنشانی به 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>ناحیه مرده زاویه جلو</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>فلیکی که در این زاویه از روبه‌روی مستقیم باشد چیزی را نمی‌چرخاند. به شما امکان می‌دهد بدون چرخش فلیکی، چرخاندن روی لبه را آغاز کنید.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>بازنشانی به 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>هموارسازی چرخش لبه</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>نویز چرخش روی لبه را هموار می‌کند. -1 پنجره چندسطحی خودکار را به کار می‌برد، 0 هموارسازی را خاموش می‌کند و مقادیر بزرگ‌تر چرخش‌های بزرگ‌تر در هر تیک را هموار می‌کنند.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>بازنشانی به خودکار (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>اجازه فلیک هنگام فعال شدن</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>آفست چرخش</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>کل نقشه فلیک را به این تعداد درجه می‌چرخاند. مثبت ساعت‌گرد است. چسبیدن پس از آفست اعمال می‌شود.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>بازنشانی آفست چرخش</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>وقتی لایه میزبان فلیک استیک در حالی فعال شود که استیک از پیش منحرف است، فلیک بی‌درنگ اجرا می‌شود. «خاموش» دوربین را ثابت نگه می‌دارد و چرخش را از زاویه کنونی استیک دنبال می‌کند.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>بازنشانی اجازه فلیک هنگام فعال شدن</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>بازخورد قفل هدایت</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نشانه‌ای در قفل کامل برای استیک در حالت هدایت</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>وقتی استیکی که روی یک حالت هدایت تنظیم شده تا انتها (قفل کامل) چرخانده شود، نشانه‌ای (لرزش، ماشه یا نوار نوری) پخش می‌شود تا این حد را حس کنید. به‌طور پیش‌فرض همه خاموش‌اند.</value></data>
@@ -3707,11 +3709,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>پخش هپتیک DualSense روی این کنترلر</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>وقتی بازی این اسلات را به‌عنوان DualSense مجازی با صدای هپتیک طراحی‌شده به کار می‌گیرد، آن ترک روی عملگرهای این کنترلر پخش می‌شود. Steam Controller 2026 از طریق USB یا دانگل خودش، و Flydigi Apex 6 Pro، خود ترک را پخش می‌کنند. هر کنترلر دیگر، و آن Steam Controller از طریق بلوتوث، تُن‌هایی برگرفته از صدا دریافت می‌کند که حس مورد نظر طراح را تقریب می‌زنند، نه اینکه بازتولیدش کنند.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>بهره هپتیک</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>بازنشانی به پیش‌فرض (خاموش)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>بازنشانی به پیش‌فرض (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>فرکانس قطع پایین‌گذر عملگر</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>جریان هپتیک Steam Controller را زیر این فرکانس نگه می‌دارد تا پدها به‌جای پخش صدای شنیدنی بلرزند. حدود 250 Hz عملگرها کم‌کم شنیدنی می‌شوند. برای جزئیات تیزتر آن را بالا ببرید و برای کارکرد بی‌صداتر پایین بیاورید.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>بازنشانی به 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>تُن‌های بالاتر از این فرکانس بریده یا پایین آورده می‌شوند. پیش‌فرض 800 Hz لرزش موتور و ضربه را نگه می‌دارد و بوق‌های زیر را می‌گیرد.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>بازنشانی تُن‌های زیر</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>بازنشانی حد تُن</value></data>
@@ -4312,8 +4311,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>پروفایل Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ماکروی Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ناحیه مکان‌نما</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>شیفت {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>فهرست چرخ ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>ناحیه نشانگر ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>نگه داشتن ماوس {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>کلیک ماوس {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>تغییر وضعیت ماوس {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>پالس لمسی ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (بخش پس از رها کردن)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>ضربه {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>شلیک خودکار {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>نگه داشتن {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>تغییر وضعیت {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>توربو {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>فشار دوبل {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>فشار طولانی {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>یک گام چرخ ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>تغییر وضعیت چرخ ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>چرخ توربو ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>جهش نشانگر ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>تنظیم LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>مرکزگیری مجدد ژیرو ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>جابه‌جایی جزئی نشانگر ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>کلید عکس صفحه ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>صفحه‌کلید روی صفحه ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>تنظیم رنگ نور</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>مرکزگیری مجدد دوربین</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>جهش نشانگر</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>جابه‌جایی جزئی نشانگر</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>عکس صفحه</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>صفحه‌کلید روی صفحه</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>تعویض لایه شیفت</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>روشن کردن یک لایه شیفت</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>خاموش کردن یک لایه شیفت</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>نگه داشتن یک لایه شیفت</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>تغییر شماره بازیکن</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>بدون اتصال</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>تغییر وضعیت حالت دسکتاپ</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>کلید سیستم Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>تغییر وضعیت ذره‌بین</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>افزایش روشنایی</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>کاهش روشنایی</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>خاموش کردن کنترلر</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>باز کردن پیکربندی Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>باز کردن منوی سریع Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>خروج از بازی</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>تغییر وضعیت بازخورد لمسی</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>تغییر وضعیت HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>تغییر وضعیت لرزش</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>اجبار دکمه Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>چرخش کالیبراسیون ژیرو</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>چرخش به سمت جهت</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (نگه داشتن)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (رها کردن)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (رها کردن)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (فعال‌سازی)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>یک پیکربندی را انتخاب کنید تا ببینید چه چیزی منتقل می‌شود.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>آنچه منتقل می‌شود</value></data>
@@ -4928,11 +4978,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>لایه</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>لایه‌ای را انتخاب کنید که این منو در آن مجاز باشد. «هر لایه» و «پایه» هر دو آن را در زیر لایه‌های فعال دیگر هم مجاز می‌کنند. یک لایه نام‌دار باید با لایه فعال کنونی یکی باشد.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>بازنشانی به «هر لایه» و خاموش کردن باز نگه داشتن منو توسط لایه.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (در این اسلات فهرست نشده است)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>لایه منو را باز نگه می‌دارد</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>تا وقتی لایه نام‌دار این منو فعال است، منو را باز نگه می‌دارد. ورودی فیزیکی انتخاب‌شده، برجسته‌سازی را هدایت می‌کند. «هر لایه» و «پایه» از باز شدن عادی با سطح استفاده می‌کنند.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>بازنشانی به باز شدن با لمس یا انحراف.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>هدایت با</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ورودی فیزیکی‌ای که تا وقتی لایه این منو را باز نگه داشته، خانه برجسته را هدایت می‌کند.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌یافته به این اسلات خوانده می‌شود. لایه منو را باز می‌کند و این ورودی آن را هدایت می‌کند. خانه‌های منو خروجی آن را تعیین می‌کنند.</value></data>
@@ -5014,7 +5062,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>موتور</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>تقسیم بر اساس جهت</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>ناحیه مرده مرکز</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>بازنشانی به استیک چپ X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>بازنشانی شدت (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>بازنشانی ناحیه مرده مرکز (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>بازنشانی «فعال کردن لرزش زاویه هدایت»</value></data>
@@ -5681,6 +5728,25 @@
   <data name="Profiles_ImportFilterAll" xml:space="preserve"><value>پروفایل‌ها</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>لایه {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>شیفت {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>ماشه‌ها: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>نوار نوری</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>موارد اضافی {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>نوار نوری {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>اجرای برنامه</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>برد {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>پروفایل واردشده</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>ماکروی واردشده</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>پیش‌تنظیم {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>منوی شعاعی {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>منوی لمسی {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>ناحیه ماوس</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>ضربه</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>نگه داشتن</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>ضربه دوبل</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>اثر ماشه چپ</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>اثر ماشه راست</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>نگاشت دکمه {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>مورد {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>کنترلر</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>خروجی‌های خودش را نگه می‌دارد</value></data>
@@ -6012,7 +6078,7 @@
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX نحوه کار تنظیم {0} خود را منتشر نکرده است، بنابراین PadForge از روش خودش استفاده می‌کند.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX اعداد ورودی خود را منتشر نکرده است. پروفایل‌های منتشرشده DSX از 41 تا 44 برای دکمه‌های جهتی استفاده می‌کنند، بنابراین PadForge آن‌ها را همین‌طور می‌خواند.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX چنین اتصالی نمی‌نویسد، بنابراین فایل بیرون از DSX تغییر داده شده است.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX از طریق یک میان‌بر به این پیش‌تنظیم تغییر می‌کند. ماکروی آن در صفحه ماکروها است و آماده است تا به یک دکمه اختصاص داده شود.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX از طریق یک میان‌بر به این پیش‌تنظیم تغییر می‌کند. ماکروی آن در بخش «ماکروها و منوها»ی کنترلر است و آماده است تا به یک دکمه اختصاص داده شود.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>هیچ پروفایل منتشرشده DSX از {0} استفاده نمی‌کند، بنابراین PadForge نمی‌تواند تشخیص دهد چه کاری انجام می‌دهد.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>تا وقتی کلید عبور مستقیم DSX روشن است، DSX اجازه می‌دهد بازی این مورد را تنظیم کند، بنابراین PadForge هم آن را به بازی می‌سپارد.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>در Native Mode با خاموش بودن Send Data to Device، DSX چیزی از خودش به کنترلر نمی‌فرستد، بنابراین PadForge هم این مورد را به بازی می‌سپارد.</value></data>

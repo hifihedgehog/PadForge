@@ -1411,8 +1411,8 @@ namespace PadForge.Services
             // in practice this is always a real GUID. THIS, and not whatever device the
             // header has picked, is the device the mapping
             // gets attached to. Do not let any caller override it with the
-            // dropdown selection (that was a regression; see the comment in
-            // MainWindow.RecordingCompleted).
+            // device picked in the header (that was a regression, see the
+            // comment in MainWindow.RecordingCompleted).
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
 
@@ -1488,7 +1488,7 @@ namespace PadForge.Services
                 // Prefix-encode the descriptor (legacy I/H form the
                 // MappingItem + Step 3 parser still consume) and tag the row
                 // with the winning device GUID — this is the authoritative
-                // device assignment for the row (NOT the dropdown selection).
+                // device assignment for the row (NOT the device picked in the header).
                 if (type == MapType.Axis || type == MapType.Slider)
                 {
                     // A centered axis on a button-like target records the half
@@ -1660,7 +1660,7 @@ namespace PadForge.Services
 
             string finalDescriptor;
             // Winning (firing) device — the authoritative device the mapping
-            // attaches to, regardless of the mapping list dropdown selection.
+            // attaches to, regardless of the device picked in the header.
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
 
@@ -1679,6 +1679,7 @@ namespace PadForge.Services
                     ExtraSource = extraSource,
                     Descriptor = finalDescriptor,
                     Type = MapType.Button,
+                    IsParamRecording = true,
                 });
                 return;
             }

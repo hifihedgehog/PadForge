@@ -1340,8 +1340,8 @@ namespace PadForge.ViewModels
         /// <see cref="ExtraSources"/> entry with Invert flipped.
         /// Called by the recording pipeline so the user sees both
         /// directions immediately after a two-phase recording, instead
-        /// of having to toggle the Device dropdown to trigger a load-
-        /// time migration. The new ExtraSource inherits its device
+        /// of having to change the device picked in the header to
+        /// trigger a load-time migration. The new ExtraSource inherits its device
         /// origin from <see cref="PrimarySourceDeviceGuid"/>, which
         /// <c>RecorderService.CompleteRecording</c> reliably stamps
         /// with the device that physically fired. Does nothing when

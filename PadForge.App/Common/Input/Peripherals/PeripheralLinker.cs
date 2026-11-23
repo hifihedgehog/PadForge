@@ -465,18 +465,18 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The unit's handle opens and its session was refused: the
         /// device is there and took no lighting from PadForge
         /// (<see cref="HidLightingBackend"/>, Fail). It reads asleep to the
-        /// link pass, and its tab says which of the two it is.</summary>
+        /// link pass, and its Lighting group says which of the two it is.</summary>
         public bool Refused { get; init; }
 
         /// <summary>A unit whose collection Windows holds as a keyboard or mouse
         /// (<see cref="HidCollectionInfo.WindowsHolds"/>), where the reports its
-        /// model sends do not pass, so its tab says that in place of the
+        /// model sends do not pass, so its Lighting group says that in place of the
         /// retry.</summary>
         public bool WindowsHolds { get; init; }
 
         /// <summary>A unit whose collection opens with no access right only,
         /// and that is no collection Windows holds: another program has it
-        /// open, so its tab says that in place of a line about waking it.</summary>
+        /// open, so its group says that in place of a line about waking it.</summary>
         public bool HeldByProgram { get; init; }
 
         /// <summary>The device stores each picture, so changing colors do not
@@ -863,7 +863,7 @@ namespace PadForge.Common.Input.Peripherals
                     // only the units that do are linked. A row whose own
                     // unit sleeps then holds no path, where falling through
                     // to the path that waits for the vendor's program would
-                    // name the wrong wait on its tab, and a unit Windows
+                    // name the wrong wait in its group, and a unit Windows
                     // lights keeps the device's own protocol closed whether
                     // or not it answers.
                     var openRgb = OpenRgbHolding(direct, row);
@@ -924,7 +924,7 @@ namespace PadForge.Common.Input.Peripherals
                 // OpenRGB's either waits for OpenRGB's server: one that has
                 // not answered, or that stopped while OpenRGB runs. The row
                 // is kept, so the table goes on naming its taken paths, and
-                // its tab names OpenRGB.
+                // its Lighting group names OpenRGB.
                 bool waitsForServer = taken.Length > 0 && lighting.Count == 0 && leftToProgram == null;
                 if (waitsForServer) leftToProgram = VendorPrograms.OpenRgb.Name;
                 if (haptics.Count == 0 && lighting.Count == 0 && leftToProgram == null && taken.Length == 0) continue;
@@ -1083,7 +1083,7 @@ namespace PadForge.Common.Input.Peripherals
         /// (uncoil apps/uncoild/src/conflicts.rs:34-37, which tells the user
         /// to quit Synapse). <paramref name="directWhenClosed"/> is then set
         /// when the row would be lit on its own without the program, for
-        /// the tab's line.</para>
+        /// the group's line.</para>
         ///
         /// <para>2. Windows Dynamic Lighting lights a LampArray unit of the
         /// device: the LampArray paths, which their backend leaves unpainted
@@ -1092,7 +1092,7 @@ namespace PadForge.Common.Input.Peripherals
         /// Logitech's LampArray driver, which Windows Update installs,
         /// repaints a mouse over HID++ about twice a second, and a 0x8070
         /// write beside it lasts one sample (OpenLogi issue 1129, where
-        /// SetSWControl made no difference). The row keeps its tab, whose
+        /// SetSWControl made no difference). The row keeps its Lighting group, whose
         /// line names Windows and the switch. Not where the device's own
         /// controller stays in charge beside Windows
         /// (<see cref="Candidate.BesideWindows"/>): a Lenovo Legion keyboard
@@ -1137,7 +1137,7 @@ namespace PadForge.Common.Input.Peripherals
         ///
         /// <para>6. The shared path again, where it waits for its program
         /// (<paramref name="sharedWaits"/>): a Razer or SteelSeries model
-        /// with no unit of its own keeps its tab and its "Waiting for" line.
+        /// with no unit of its own keeps its group and its "Waiting for" line.
         /// A Logitech row has no such step, since the LED SDK path is given
         /// only while G HUB runs.</para>
         /// </summary>
@@ -1327,7 +1327,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Links the OpenRGB controllers that answer and that
         /// PadForge colors. A device every answering controller of which has
-        /// no Direct mode is left to OpenRGB, and its tab names it
+        /// no Direct mode is left to OpenRGB, and its Lighting group names it
         /// (<see cref="DeviceLinks.LeftToProgram"/>). The one place both
         /// kinds of row link through OpenRGB.</summary>
         private static void LinkOpenRgb(List<Candidate> holders, List<OutputPath> lighting, ref string leftToProgram)
@@ -1692,7 +1692,7 @@ namespace PadForge.Common.Input.Peripherals
             orphans.RemoveAll(unit => unit.Asleep && !HasUnitRow(rows, unit.Path));
             // While OpenRGB runs and its server has not answered, every
             // device it may drive is left to it, so no new row opens. A row
-            // a unit has already stays, and its tab names OpenRGB.
+            // a unit has already stays, and its Lighting group names OpenRGB.
             if (inputs.OpenRgbUnanswered) orphans.RemoveAll(unit => !HasUnitRow(rows, unit.Path));
             return orphans;
         }

@@ -126,22 +126,28 @@ namespace PadForge.Common
 
         /// <summary>False for text this class has nothing to do with, such as
         /// a readout of digits that changes many times a second, so it costs
-        /// no dispatcher work: no letter and no number sign, or letters with
-        /// no bracket that the window's direction draws as they are, in a
-        /// block that does not trim. A block this class changed is
-        /// always looked at again.</summary>
+        /// no dispatcher work: text in a block no longer watched, as after a
+        /// switch from a right-to-left language, and text Apply would leave
+        /// as it is. Apply flips text with no right-to-left letter that has a
+        /// letter or a number sign and that the window's direction draws
+        /// differently, and takes over right-to-left text with a bracket.
+        /// So no letter and no number sign, letters with no bracket that the
+        /// window's direction draws as they are, in a block that does not
+        /// trim, and right-to-left letters with no bracket cost nothing. A
+        /// block this class changed is always looked at again.</summary>
         private static bool Interesting(TextBlock block, string text)
         {
             var state = (State)block.GetValue(StateProperty);
             if (state != null && (state.Owned || state.Flipped)) return true;
-            if (string.IsNullOrEmpty(text)) return false;
-            bool letter = false;
+            if (!GetWatch(block) || string.IsNullOrEmpty(text)) return false;
+            bool rightToLeft = false, leftToRight = false;
             foreach (char c in text)
             {
-                if (char.IsLetter(c)) { letter = true; break; }
+                if (IsRightToLeftLetter(c)) rightToLeft = true;
+                else if (char.IsLetter(c)) leftToRight = true;
             }
-            return (letter || HasNumberSign(text))
-                && (text.IndexOfAny(Brackets) >= 0 || NeedsLeftToRight(block, text));
+            if (rightToLeft) return text.IndexOfAny(Brackets) >= 0;
+            return (leftToRight || HasNumberSign(text)) && NeedsLeftToRight(block, text);
         }
 
         /// <summary>Applies once the change under way has finished, ahead of

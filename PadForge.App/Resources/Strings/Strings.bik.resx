@@ -270,6 +270,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Magdugang nin kolor</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pasadya</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Ginibo kan User)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Mga stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>
@@ -704,16 +705,10 @@
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Pag-ayos kan mga input kan Flick stick</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>I-reset an flick stick</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>I-reset sa 14400</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>I-reset sa 0.1 s</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>I-reset sa 0.9</value></data>
   <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 grado</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 grado</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 grado</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 grado</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>I-reset sa 1.0</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>I-reset sa 0°</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>I-reset sa awtomatiko (-1)</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Kolor kan lightbar</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Manibela</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>I-reset an manibela</value></data>
@@ -735,8 +730,6 @@
   <data name="Macro_Sound_File_Label" xml:space="preserve"><value>File nin tunog</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Pirmi</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset sa default (100%)</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset sa 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>I-export…</value></data>
@@ -1035,7 +1028,6 @@
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Tuong stick X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Tuong stick Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>I-reset sa kaliwang stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>I-reset an kusog (50%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
   <data name="ResetLabel_Formula" xml:space="preserve"><value>Pormula</value></data>
@@ -1399,6 +1391,7 @@
   <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>I-save an sarong kopya…</value></data>
   <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Hal-on sa listahan. Mamamalagi an file kun saen ini yaon.</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>An file kan “{0}” nawawara o dai mabasa. Madiklom an ipapahiling kan PadForge sagkod na mabalik ini.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Mayong tema nin PadForge an file kan “{0}”. Madiklom an ipapahiling kan PadForge sagkod na magkaigwa ini.</value></data>
   <data name="ThemeBuilder_Name" xml:space="preserve"><value>Pangaran</value></data>
   <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Sakong theme</value></data>
   <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pundasyon</value></data>
@@ -1414,4 +1407,6 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Iangay sa litrato</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Kinukua an apat na kolor hale sa litrato.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Gabos na file (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Dai mabasa kan PadForge an litrato kan Steam para sa game na ini.</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Padagos na Ipadara</value></data>
 </root>

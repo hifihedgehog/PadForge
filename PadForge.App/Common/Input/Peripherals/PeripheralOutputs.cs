@@ -7,7 +7,7 @@ namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>What a device row can do besides input, persisted on the row
     /// (<see cref="PadForge.Engine.Data.UserDevice.PeripheralOutputs"/>) so
-    /// its tabs stay up while it sleeps.</summary>
+    /// its groups stay up while it sleeps.</summary>
     [Flags]
     internal enum PeripheralOutputKinds
     {
@@ -70,7 +70,7 @@ namespace PadForge.Common.Input.Peripherals
         WootingRgbSdk,
     }
 
-    /// <summary>Where a backend stands, for the device tabs.</summary>
+    /// <summary>Where a backend stands, for the device groups.</summary>
     internal enum BackendState
     {
         /// <summary>Nothing assigned uses it, so it holds nothing.</summary>
@@ -264,7 +264,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Windows Dynamic Lighting lights a LampArray unit of the
         /// row's device, and the device's own controller lights the row
         /// beside it (<see cref="PeripheralLinker.ChooseLighting"/>), so
-        /// the tab can say what Windows takes.</summary>
+        /// the Lighting group can say what Windows takes.</summary>
         public bool WindowsLightsLampArray { get; init; }
 
         /// <summary>The row's device has a LampArray interface, whatever that
@@ -306,7 +306,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>OpenRGB took the row's paths and lights it through none
         /// of its own: its SDK server is off, has not answered yet, or
-        /// stopped answering while OpenRGB runs (#557). The row's tab names
+        /// stopped answering while OpenRGB runs (#557). The row's Lighting group names
         /// the server it waits for, and <see cref="LeftToProgram"/> is
         /// OpenRGB.</summary>
         public bool WaitsForOpenRgbServer { get; init; }
@@ -336,7 +336,7 @@ namespace PadForge.Common.Input.Peripherals
         public IReadOnlySet<OutputPath> TakenByOpenRgb { get; }
 
         /// <summary>The container the link pass found each row in, those with
-        /// no path too, whose tab says what became of a unit of theirs
+        /// no path too, whose Lighting group says what became of a unit of theirs
         /// (<see cref="PeripheralRouteText.Lighting"/>).</summary>
         public IReadOnlyDictionary<Guid, Guid> RowContainers { get; init; } = NoContainers;
 
@@ -495,7 +495,7 @@ namespace PadForge.Common.Input.Peripherals
                        || ud.CapType == PadForge.Engine.InputDeviceType.Keyboard));
 
         // ─────────────────────────────────────────────
-        //  What the tabs show
+        //  What the groups show
         // ─────────────────────────────────────────────
 
         private static PeripheralPresence s_presence = PeripheralPresence.None;
@@ -521,7 +521,7 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        /// <summary>The HID++ worker's latest units, for a tab naming the
+        /// <summary>The HID++ worker's latest units, for a group naming the
         /// device its row reaches. The worker builds a new snapshot on every
         /// scan and liveness check, so only one that differs raises
         /// <see cref="StatusChanged"/>.</summary>
@@ -536,7 +536,7 @@ namespace PadForge.Common.Input.Peripherals
             }
         }
 
-        /// <summary>The direct backends' latest units, for a tab naming the
+        /// <summary>The direct backends' latest units, for a group naming the
         /// device its row reaches and whether Windows Dynamic Lighting
         /// lights it. The link pass builds a new snapshot on every pass, so
         /// only one that differs raises <see cref="StatusChanged"/>.</summary>
@@ -649,13 +649,13 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>True while the peripheral host runs, which is while the
         /// engine runs. A stopped engine sends nothing to any device, and
-        /// every device goes back to its own software, so the tabs' route
+        /// every device goes back to its own software, so the groups' route
         /// lines say nothing then, the rule the other status lines follow on
         /// an engine stop (#469).</summary>
         public static bool Running => Volatile.Read(ref s_running) != 0;
 
         /// <summary>The host's start and stop. A change raises
-        /// <see cref="StatusChanged"/>, so a tab drops or restores its line.</summary>
+        /// <see cref="StatusChanged"/>, so a group drops or restores its line.</summary>
         internal static void SetRunning(bool running)
         {
             int next = running ? 1 : 0;
@@ -677,8 +677,8 @@ namespace PadForge.Common.Input.Peripherals
         /// dispatchers after, one slot at a time, so a slot can be without a
         /// dispatcher for a second or two while its controller is in place,
         /// and this stays true through it. The link pass prunes the claims of
-        /// a slot this answers false for, and the tabs read the same answer,
-        /// so a tab never names a route the pass has let go.</summary>
+        /// a slot this answers false for, and the groups read the same answer,
+        /// so a group never names a route the pass has let go.</summary>
         public static bool SlotLive(int slot)
             => UserEffectsDispatcher.HasLiveDispatcher(slot) || SlotHasController?.Invoke(slot) == true;
 
@@ -867,7 +867,7 @@ namespace PadForge.Common.Input.Peripherals
         public static event Action LightingChanged;
 
         /// <summary>Raised when a claim starts, ends or changes rank or
-        /// level, never for a color alone, so a tab naming the controller
+        /// level, never for a color alone, so a group naming the controller
         /// that rules a shared path can follow it without redrawing at
         /// animation speed. Any thread. The owner marshals.</summary>
         public static event Action ClaimsChanged;
@@ -915,7 +915,7 @@ namespace PadForge.Common.Input.Peripherals
                             || !KeyFrame.Same(claim.Keys, keys) || !StripCounts.Same(claim.Strips, strips)
                             || claim.KeepsChanging != keepsChanging)
                         {
-                            // A level that moves redraws the tab, as a rank
+                            // A level that moves redraws the group, as a rank
                             // does: its route line names what is held.
                             ranked = claim.Player != player || claim.Level != level;
                             claim.Player = player;
@@ -1047,7 +1047,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The color a lighting path shows, or false when nothing
         /// assigned claims it, which is the backend's cue to hand the device
         /// back to its own software. <paramref name="ruler"/> is the winning
-        /// claim, for a tab naming the controller that rules a shared path
+        /// claim, for a group naming the controller that rules a shared path
         /// and for a backend reading the level to hold the device at.</summary>
         public static bool TryResolveColor(OutputPath path, out int rgb, out Claimant ruler)
         {

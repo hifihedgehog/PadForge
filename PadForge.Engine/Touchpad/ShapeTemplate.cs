@@ -48,13 +48,10 @@ namespace PadForge.Engine.Touchpad
         public Vector2[] PointCloud;
 
         /// <summary>Pre-computed lookup table for the $Q recognizer.
-        /// Flat byte array of length
-        /// <see cref="LookupTableSize"/><c>²</c>; each entry is the
+        /// Flat ushort array of length
+        /// <see cref="LookupTableSize"/><c>²</c>. Each entry is the
         /// index into <see cref="PointCloud"/> of the template point
-        /// nearest the center of that grid cell. Storage is ushort
-        /// so multi-finger templates with cloud sizes above 255
-        /// (e.g. 5 fingers × 32 = 160 — still fits in byte, but
-        /// ushort future-proofs us against larger resample counts).</summary>
+        /// nearest the center of that grid cell.</summary>
         public ushort[] LookupTable;
 
         /// <summary>Edge count of the square lookup grid. Default 64
@@ -68,9 +65,10 @@ namespace PadForge.Engine.Touchpad
         /// can dial this independently of the global default.</summary>
         public float ThresholdOverride;
 
-        /// <summary>Per-template enable toggle. The Touchpad group UI
-        /// surfaces this so users can disable individual gestures
-        /// without deleting them.</summary>
+        /// <summary>Per-template enable flag. A custom gesture's comes from
+        /// its saved <see cref="TouchpadCustomGesture.Enabled"/>, which no
+        /// control sets, so only a hand-edited settings file turns one
+        /// off.</summary>
         public bool Enabled = true;
 
         /// <summary>True for user-recorded templates, false for in-box

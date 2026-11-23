@@ -20,7 +20,8 @@ namespace PadForge.Controls
     /// <para>The moving copy sits in a Canvas, which measures it unconstrained
     /// and clips it at its own bounds. A trimmed TextBlock would only slide
     /// its ellipsis. Reduced motion (SystemParameters.ClientAreaAnimation)
-    /// keeps the text trimmed, and the tooltip carries it.</para>
+    /// keeps the text trimmed, and the tooltip carries it. So does the app
+    /// standing behind another window (AmbientMotionProbe).</para>
     /// </summary>
     public sealed class MarqueeLabel : Grid
     {
@@ -51,6 +52,13 @@ namespace PadForge.Controls
             nameof(Active), typeof(bool), typeof(MarqueeLabel),
             new PropertyMetadata(false, OnActiveChanged));
 
+        /// <summary>Mirrors Windows' animation setting. A test sets it.</summary>
+        internal static Func<bool> MotionEnabled = () => SystemParameters.ClientAreaAnimation;
+
+        /// <summary>Whether the app is in front, where an endless slide may
+        /// run: the ambient motion probe's answer. A test sets it.</summary>
+        internal static Func<bool> AppInFront = () => Common.AmbientMotionProbe.Instance.IsAppActive;
+
         private readonly TextBlock _rest;
         private readonly Canvas _track;
         private readonly TextBlock _run;
@@ -69,8 +77,19 @@ namespace PadForge.Controls
             Children.Add(_rest);
             Children.Add(_track);
             SizeChanged += (_, _) => { if (Active) Restart(); };
-            Loaded += (_, _) => { if (Active) Restart(); };
-            Unloaded += (_, _) => Stop();
+            // Loaded can come again with no Unloaded between, so the probe
+            // is let go before it is taken.
+            Loaded += (_, _) =>
+            {
+                Common.AmbientMotionProbe.Instance.PropertyChanged -= OnAmbientMotionChanged;
+                Common.AmbientMotionProbe.Instance.PropertyChanged += OnAmbientMotionChanged;
+                if (Active) Restart();
+            };
+            Unloaded += (_, _) =>
+            {
+                Common.AmbientMotionProbe.Instance.PropertyChanged -= OnAmbientMotionChanged;
+                Stop();
+            };
         }
 
         /// <summary>The line shown, trimmed at rest.</summary>
@@ -113,10 +132,28 @@ namespace PadForge.Controls
             else label.Stop();
         }
 
+        private void OnAmbientMotionChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Common.AmbientMotionProbe.IsAppActive)) FollowApp();
+        }
+
+        /// <summary>The app came to the front or left it. The slide repeats
+        /// forever, so it is ambient motion and costs its frames whether or
+        /// not anyone can see it. A pointer left on the card while the user
+        /// switches away by keyboard sends no mouse leave, so Active stays
+        /// true: the slide stops while the app is behind another window,
+        /// minimized or in the tray, and starts again when the app is
+        /// back.</summary>
+        private void FollowApp()
+        {
+            if (Active) Restart();
+            else Stop();
+        }
+
         private void Restart()
         {
             Stop();
-            if (!SystemParameters.ClientAreaAnimation || !IsLoaded || ActualWidth <= 0) return;
+            if (!MotionEnabled() || !AppInFront() || !IsLoaded || ActualWidth <= 0) return;
 
             _run.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             double overflow = _run.DesiredSize.Width - ActualWidth;

@@ -301,8 +301,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = this,
                 Name = name,
-                Map = new LightMap(SinowealthLighting.OneLight(),
-                    xenon ? "OpenRGB RGBController_GenesisXenon200.cpp" : "OpenRGB RGBController_Sinowealth.cpp") { Product = product },
+                Map = new LightMap(SinowealthLighting.OneLight()) { Product = product },
                 Programs = productId == EternalProduct ? VendorPrograms.Glorious : Array.Empty<VendorProgram>(),
                 HoldMs = SinowealthLighting.StoredHoldMs,
                 RepaintMs = SinowealthLighting.StoredRepaintMs,

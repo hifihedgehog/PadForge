@@ -156,7 +156,7 @@ namespace PadForge.ViewModels
 
             // Refresh the active profile header when the default profile is active.
             if (string.IsNullOrEmpty(SettingsManager.ActiveProfileId))
-                _activeProfileInfo = Strings.Instance.Common_Default;
+                _activeProfileInfo = Strings.Instance.Profile_Default;
             OnPropertyChanged(nameof(ActiveProfileInfo));
         }
 
@@ -2117,7 +2117,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _selectedProfile, value);
         }
 
-        private string _activeProfileInfo = Strings.Instance.Common_Default;
+        private string _activeProfileInfo = Strings.Instance.Profile_Default;
 
         /// <summary>Display text for the currently active profile.</summary>
         public string ActiveProfileInfo
@@ -2125,7 +2125,7 @@ namespace PadForge.ViewModels
             get => _activeProfileInfo;
             set
             {
-                SetProperty(ref _activeProfileInfo, value ?? Strings.Instance.Common_Default);
+                SetProperty(ref _activeProfileInfo, value ?? Strings.Instance.Profile_Default);
 
                 // Every active-profile change flows through this setter (after
                 // SettingsManager.ActiveProfileId is updated), so recompute the

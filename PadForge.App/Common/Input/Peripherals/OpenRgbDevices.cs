@@ -228,7 +228,7 @@ namespace PadForge.Common.Input.Peripherals
                     light = light with { X = cells[i].Col, Y = cells[i].Row, Width = 1, Height = 1, HasPosition = true };
                 lights[i] = light;
             }
-            return new LightMap(lights, "OpenRGB SDK server: " + controller.Name);
+            return new LightMap(lights);
         }
 
         private static bool NamesLogo(string name)

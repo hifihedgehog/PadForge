@@ -167,8 +167,7 @@ namespace PadForge.Views
 
         private void RefreshThemeBrushes()
         {
-            bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
-                == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            bool isDark = PadForge.Common.EmberTheme.DarkGround;
 
             // Hover uses the app accent when resolvable, ember orange
             // otherwise (EmberTheme pins the accent, so this resolves in

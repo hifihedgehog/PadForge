@@ -108,8 +108,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Family = Instance,
             Name = name,
-            Map = new LightMap(HyperXKeyboardLighting.Named(OpenRgbLedNames.CougarKeyboard),
-                "OpenRGB RGBController_CougarKeyboard.cpp") { Product = $"cougar:{KeyboardVid:X4}:{productId:X4}" },
+            Map = new LightMap(HyperXKeyboardLighting.Named(OpenRgbLedNames.CougarKeyboard)) { Product = $"cougar:{KeyboardVid:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
             Begin = (io, wait) => io == null ? null : new KeyboardSession(),
         };
@@ -125,7 +124,7 @@ namespace PadForge.Common.Input.Peripherals
                 new LightInfo(0, LightKind.Edge, 0, LightKeySource.None),
                 new LightInfo(1, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 },
                 new LightInfo(2, LightKind.Logo, 0, LightKeySource.None),
-            }, "OpenRGB RGBController_CougarRevengerST.cpp") { Product = $"cougar:{MouseVid:X4}:{productId:X4}" },
+            }) { Product = $"cougar:{MouseVid:X4}:{productId:X4}" },
             RepaintMs = RepaintMs,
             HeldByWindows = true,
             Begin = (io, wait) => BeginMouse(io),

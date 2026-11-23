@@ -40,7 +40,7 @@ namespace PadForge.Tests
     /// also keeps it apart from every test that sets a profile active.
     /// </summary>
     [Collection("WpfApplicationSingleton")]
-    public class ThemeTests
+    public partial class ThemeTests
     {
         private static readonly TimeSpan Limit = TimeSpan.FromMinutes(3);
 
@@ -222,6 +222,38 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AColorWithASpaceAfterItsHashIsNoColor()
+        {
+            // Six characters after the hash, one of them a space: no color, though a hex number read with white space
+            // allowed takes it.
+            foreach (string bad in new[] { "# 12345", "#12345 ", "12345 ", " #12345 6", "#+12345", "#-12345" })
+                Assert.False(ThemeColor.TryParse(bad, out _), "\"" + bad + "\" was read as a color");
+            Assert.True(ThemeColor.TryParse("  #012345  ", out Color padded));
+            Assert.Equal(Color.FromRgb(0x01, 0x23, 0x45), padded);
+        }
+
+        [Fact]
+        public void AThemesTextIsOneLineWithNoDirectionMarksAndNoHalfOfAPair()
+        {
+            static string NameOf(string json) => ThemeFile.Parse(Encoding.UTF8.GetBytes(json), "f").Name;
+            // A line or paragraph separator would break a tile's name in two.
+            string separated = NameOf("{\"name\":\"A\\u2028B\\u2029C\"}");
+            Assert.Equal("A B C", separated);
+            // Direction overrides and isolates would turn the name, and Save a Copy's file name, around.
+            foreach (string mark in new[] { "\\u202A", "\\u202B", "\\u202C", "\\u202D", "\\u202E", "\\u2066", "\\u2067", "\\u2068", "\\u2069" })
+                Assert.Equal("A B", NameOf("{\"name\":\"A" + mark + "B\"}"));
+            // A name cut at its limit keeps no lone half of a pair: 79 letters, then a pair that the limit of 80 splits.
+            string cut = NameOf("{\"name\":\"" + new string('n', 79) + "\\uD83D\\uDE00\"}");
+            Assert.True(cut.Length <= 80, cut.Length + " characters");
+            for (int i = 0; i < cut.Length; i++)
+                Assert.False(char.IsSurrogate(cut[i]) && !(char.IsHighSurrogate(cut[i]) && i + 1 < cut.Length && char.IsLowSurrogate(cut[i + 1]))
+                             && !(char.IsLowSurrogate(cut[i]) && i > 0 && char.IsHighSurrogate(cut[i - 1])), "a lone half of a pair at " + i);
+            Assert.Equal(new string('n', 79), cut);
+            // A pair inside the limit stays whole.
+            Assert.Equal("n\U0001F600n", NameOf("{\"name\":\"n\\uD83D\\uDE00n\"}"));
+        }
+
+        [Fact]
         public void AColorIsMovedUntilItReadsAndLeftAloneWhenItDoes()
         {
             Color card = Color.FromRgb(0x12, 0x19, 0x25);
@@ -388,7 +420,7 @@ namespace PadForge.Tests
 
                 File.WriteAllText(path, "not a theme");
                 var broken = ThemeFile.Read(path, null);
-                Assert.Equal(ThemeFault.Unreadable, broken.Fault);
+                Assert.Equal(ThemeFault.NotATheme, broken.Fault);
                 Assert.Equal("gone", broken.Name);
 
                 // A path from a settings file edited by hand that is no path, such as one holding a null character.
@@ -676,11 +708,11 @@ namespace PadForge.Tests
                         Assert.Equal("Mine", ThemeManager.Current.Name);
                         Assert.Equal(ApplicationTheme.Light, ApplicationThemeManager.GetAppTheme());
 
-                        // The file goes: Dark, though the stock look set is Light, and the tile keeps its name.
+                        // The file goes: Dark, though the stock look set is Light, and the tile keeps its name. The
+                        // picked file is watched, so it is read again by itself.
                         ThemeManager.Apply(1, listed.Id);
                         File.Delete(path);
-                        ThemeManager.Reload(listed.Id);
-                        Assert.Null(ThemeManager.Current);
+                        Until(dispatcher, () => ThemeManager.Current == null, "the picked file's loss");
                         Assert.Equal(ApplicationTheme.Dark, ApplicationThemeManager.GetAppTheme());
                         var gone = ThemeManager.Find(listed.Id);
                         Assert.Equal(ThemeFault.Missing, gone.Fault);
@@ -689,8 +721,7 @@ namespace PadForge.Tests
 
                         // The file is back: the theme is.
                         ThemeFile.Write(path, mine);
-                        ThemeManager.Reload(listed.Id);
-                        Assert.Equal("Mine", ThemeManager.Current.Name);
+                        Until(dispatcher, () => ThemeManager.Current?.Name == "Mine", "the picked file's return");
 
                         // The saved list loads again, and loading tells no one the settings changed.
                         var saved = ThemeManager.SaveRegistry();
@@ -971,6 +1002,40 @@ namespace PadForge.Tests
                     BackToStock();
                 }
             }, Limit, "the live theme test timed out");
+        }
+
+        [Fact]
+        public void AViewThatRedrawsOnALookChangeReadsTheNewLookWhateverItsPlaceInTheQueue()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                Color seen = default;
+                EventHandler reader = (_, _) => seen = ((SolidColorBrush)ThemeLook.AccentLightBrush).Color;
+                object before = app.Resources.Contains("EmberLightColor") ? app.Resources["EmberLightColor"] : null;
+                // The event's handlers, as they stand: the test puts its reader first, as a view does that subscribes
+                // before anything in the run has read the look.
+                var field = typeof(ThemeTokens).GetField("Changed", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                Assert.NotNull(field);
+                var standing = (EventHandler)field.GetValue(null);
+                try
+                {
+                    _ = ThemeLook.AccentLightBrush;
+                    field.SetValue(null, null);
+                    ThemeTokens.Changed += reader;
+                    if (standing != null) ThemeTokens.Changed += standing;
+                    Color next = Color.FromRgb(0x12, 0xAB, 0x34);
+                    app.Resources["EmberLightColor"] = next;
+                    ThemeTokens.Instance.Refresh();
+                    Assert.Equal(next, seen);
+                }
+                finally
+                {
+                    field.SetValue(null, standing);
+                    if (before != null) app.Resources["EmberLightColor"] = before;
+                    else app.Resources.Remove("EmberLightColor");
+                    BackToStock();
+                }
+            }, Limit, "the look order test timed out");
         }
 
         // ─────────────────────────────────────────────
@@ -1562,9 +1627,9 @@ namespace PadForge.Tests
             string root = Regex.Match(sheet, @":root\s*\{(.*?)\n\}", RegexOptions.Singleline).Groups[1].Value;
             var named = Regex.Matches(root, @"(--[a-z0-9-]+)\s*:").Select(m => m.Groups[1].Value).Where(n => n != "--font").ToList();
             var rows = WebThemeSheet.Rows(sheet);
-            Assert.Equal(27, named.Count);
+            Assert.Equal(29, named.Count);
             Assert.Equal(named, rows.Select(r => r.Name));
-            Assert.Equal(new[] { "--ember-glow", "--veil" }, rows.Where(r => r.Brush == null).Select(r => r.Name));
+            Assert.Equal(new[] { "--ember-glow", "--ember-dot", "--cold-dot", "--veil" }, rows.Where(r => r.Brush == null).Select(r => r.Name));
         }
 
         [Fact]

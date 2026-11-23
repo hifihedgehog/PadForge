@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>အွန်လိုင်း</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>အော့ဖ်လိုင်း</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>မသိ</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>မူလ</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>ရှာဖွေ…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ဆက်လုပ်</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ရပ်</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>အင်ဂျင် ရပ်ပြီးပါပြီ။</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>အမှား: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ကို ဖန်တီး၍ မရပါ။</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>စက်ပစ္စည်းတစ်ခုကို ဖွင့်၍၊ ဖတ်၍ သို့မဟုတ် ချိတ်ဆက်သတ်မှတ်၍ မရပါ။ ပြဿနာရှာဖွေရေး မှတ်တမ်းတွင် ၎င်း၏ အမည် ပါသည်။</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} တွင် အမှားတစ်ခု ဖြစ်သွားသည်။ ပြဿနာရှာဖွေရေး မှတ်တမ်းတွင် အကြောင်းရင်း ပါသည်။</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>ထည့်သွင်းမှု အင်ဂျင်တွင် အမှားတစ်ခု ဖြစ်သွားသည်။ ပြဿနာရှာဖွေရေး မှတ်တမ်းတွင် အကြောင်းရင်း ပါသည်။</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ကို စတင်၍ မရပါ။ ပြဿနာရှာဖွေရေး မှတ်တမ်းတွင် အကြောင်းရင်း ပါသည်။</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro ကို တပ်ဆင်သတ်မှတ်၍ မရပါ။ ပြဿနာရှာဖွေရေး မှတ်တမ်းတွင် အကြောင်းရင်း ပါသည်။</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာတစ်ခု၏ HIDMaestro ပရိုဖိုင် ပျောက်နေသည်။ ပြဿနာရှာဖွေရေး မှတ်တမ်းတွင် ၎င်း၏ အမည် ပါသည်။</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} သည် စိတ်ကြိုက်ပြင်ထားသော အမှတ်အသားနှင့် အပြင်အဆင်ကို မယူနိုင်သဖြင့် ၎င်း၏ ပရိုဖိုင်၏ မူလ အရာများကို သုံးသည်။</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းပြီး: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းပြီး: မူလ</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>မူလ</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>လှုပ်ရှားမှု ဆာဗာ ပေါ့တ်</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu၊ Dolphin၊ Yuzu စသည်တို့သို့ ဂိုင်ရိုနှင့် အရှိန်တိုင်းကိရိယာ ဒေတာ ပေးသည်။</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>ဂိမ်းမော့ဒ်များ</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX အတွက် ပြုလုပ်ထားသော ဂိမ်းမော့ဒ်များကို သင့် PlayStation ကွန်ထရိုလာများ၏ အလိုက်သင့်ထရီဂါများ၊ အလင်းတန်း၊ ကစားသူမီးများနှင့် အသံပိတ်မီးကို သတ်မှတ်ခွင့်ပြုသည်။</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX အတွက် ပြုလုပ်ထားသော ဂိမ်းမော့ဒ်များကို DualSense သို့မဟုတ် DualShock 4 ၏ အလိုက်သင့်ထရီဂါများ၊ အလင်းတန်း၊ ကစားသူမီးများနှင့် အသံပိတ်မီးကို သတ်မှတ်ခွင့်ပြုသည်။</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX ဂိမ်းမော့ဒ်များကို လက်ခံရန်</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>ဂိမ်းမော့ဒ် ပေါ့တ်</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe အစားထိုး ပရိုဂရမ်ကို ဖွင့်ရန်</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV ကဲ့သို့သော မော့ဒ်အချို့သည် DSX အမည်ရှိ ပရိုဂရမ်တစ်ခု မလည်ပတ်နေပါက မိမိကိုယ်ကို ပိတ်လိုက်သည်။ ဤရွေးချယ်မှုသည် ဆာဗာ နားထောင်နေစဉ် ထိုအမည်ဖြင့် အစားထိုး ပရိုဂရမ်ငယ်တစ်ခုကို လည်ပတ်စေသည်။</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>GTA V၊ Red Dead Redemption 2၊ Skyrim နှင့် Forza အတွက် မော့ဒ်များကဲ့သို့ DSX အတွက် ပြုလုပ်ထားသော မော့ဒ်များနှင့် အလုပ်လုပ်သည်။ ဆာဗာ နားထောင်နေစဉ် PadForge သည် ၎င်း၏ ပေါ့တ်ကို ထိုမော့ဒ်များ ရှာဖွေသည့်နေရာတွင် ရေးထားပေးသည်။</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>:{0} တွင် နားထောင်နေသည်။ {1} သည် ဗာချွယ်ကွန်ထရိုလာ {2} သို့ ပို့နေသည်။</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} တွင် နားထောင်နေသည်။ {1} ပို့နေသော်လည်း မည်သည့် ဗာချွယ်ကွန်ထရိုလာတွင်မှ PlayStation ကွန်ထရိုလာ မရှိပါ။</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} တွင် နားထောင်နေသည်။ {1} သည် ကွန်ထရိုလာ နံပါတ် {2} သို့ ပို့နေသော်လည်း PlayStation ကွန်ထရိုလာပါသော ဗာချွယ်ကွန်ထရိုလာများတွင် ထိုနံပါတ် မရှိပါ။</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>:{0} တွင် နားထောင်နေသည်။ {1} ပို့နေသော်လည်း မည်သည့် ဗာချွယ်ကွန်ထရိုလာတွင်မှ DualSense သို့မဟုတ် DualShock 4 မရှိပါ။</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} တွင် နားထောင်နေသည်။ {1} သည် ကွန်ထရိုလာ နံပါတ် {2} သို့ ပို့နေသော်လည်း DualSense သို့မဟုတ် DualShock 4 ပါသော ဗာချွယ်ကွန်ထရိုလာများတွင် ထိုနံပါတ် မရှိပါ။</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ပေါ့တ် {0} ကို DSX ကဲ့သို့သော အခြားပရိုဂရမ်တစ်ခုက အသုံးပြုနေသည်။ ၎င်းကို ပိတ်ပါ သို့မဟုတ် အခြားပေါ့တ်တစ်ခု ရွေးပါ။</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ဂိမ်းမော့ဒ်တစ်ခု</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack နှင့်လည်းကောင်း၊ ၎င်း၏ UDP အထွက်ကို ပို့သော သို့မဟုတ် FreeTrack 2.0 မျှဝေမှတ်ဉာဏ်သို့ ရေးသော မည်သည့်ခြေရာခံကိရိယာနှင့်မဆိုလည်းကောင်း အလုပ်လုပ်သည်။ နောက်ခံတွင် ဆက်ရှင်တစ်ခု လည်ပတ်နိုင်သော ဤစက်ရှိ OpenXR ရန်တိုင်းနှင့်လည်း အလုပ်လုပ်သည်။</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ဖိုင် မတွေ့ပါ</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ဖတ်၍ မရပါ</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ၏ ဖိုင် ပျောက်နေသည် သို့မဟုတ် ဖတ်၍ မရပါ။ ၎င်း ပြန်ရှိလာသည်အထိ PadForge သည် အမှောင် ကို ပြသမည်။</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>“{0}” ၏ ဖိုင်တွင် PadForge သီမ် မပါပါ။ ပါလာသည်အထိ PadForge သည် အမှောင် ကို ပြသမည်။</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ပရိုဖိုင် “{0}” သည် ၎င်း၏ ဂိမ်း၏ အသွင်ကို ပြသနေသည်။ အခြား ပရိုဖိုင်တစ်ခု အသက်ဝင်သည့်အခါ သင့်သီမ် ပြန်လာမည်။</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>အဝင် အင်ဂျင်</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ဖတ်ယူခြင်း အပြုအမူနှင့် နောက်ခံ လုပ်ဆောင်ခြင်းကို စီစဉ်သတ်မှတ်ပါ။</value></data>
@@ -1047,6 +1054,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>ကွန်ထရိုလာက ၎င်းကို အသင့်ပြင်ပေးသော အမိန့်ကို လက်မခံသောကြောင့် ဘာမှ မပို့ခဲ့ပါ။ ချိတ်ဆက်ထားကြောင်း စစ်ဆေးပြီး ထပ်ပို့ပါ။</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge အတွင်း အမှားတစ်ခုကြောင့် ပို့ခြင်း ရပ်သွားသည်။ လော့ဂ်ဖိုင်တွင် အသေးစိတ် ပါရှိသည်။</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ပုံတစ်ပုံကို ကွန်ထရိုလာသို့ ပို့နေဆဲ ဖြစ်သည်။ ပို့ခြင်းကို ရပ်မလား?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>ဆက်ပို့</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ဖိုင်များ (*.mpk)|*.mpk|ဖိုင်အားလုံး (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ပေါ့တ် {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak ကို ပြန်ယူရန်</value></data>
@@ -1434,6 +1442,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>ပဲလ်စ် မှိန်ချိန်</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>ကြိုတင်သတ်မှတ်ချက်</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>စိတ်ကြိုက်</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (အသုံးပြုသူ ပြုလုပ်ထားသည်)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>စတစ်များ</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ထရီဂါများ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV များ</value></data>
@@ -2414,7 +2423,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ဤကွန်ထရိုလာတွင် သံလိုက်တိုင်းကိရိယာ ပါဝင်သည်။ ဘယ်ညာလှည့်ခြင်းကို သံလိုက်မြောက်ဘက်သို့ ချိတ်ထားခြင်းဖြင့် ဂိုင်ရို ချိန်ရွယ်မှုမှ နှေးကွေးသော အလျားလိုက် လွင့်မှုကို ဖယ်ရှားသည်။ ဦးစွာ ချိန်ညှိပါ- ချိန်ညှိ ကို နှိပ်ပြီး ကွန်ထရိုလာကို စက္ကန့်အနည်းငယ်ကြာ 8 ဂဏန်းပုံဖြင့် ဦးတည်ချက်အားလုံးသို့ လှည့်ပြီးနောက် ထပ်နှိပ်ပါ။</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ဘယ်ညာလှည့်ခြင်းကို သံလိုက်အိမ်မြှောင်သို့ ချိတ်ရန်</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>အလျားလိုက် ချိန်ရွယ်မှုကို သံလိုက် ဦးတည်ချက်ဘက်သို့ ဆွဲပေးသော သေးငယ်သည့် ပြင်ဆင်နှုန်းကို ထည့်သဖြင့် လွင့်မှု မစုပုံနိုင်ပါ။ သိမ်းထားသော သံလိုက်တိုင်းကိရိယာ ချိန်ညှိချက် လိုအပ်သည်။ အနီးရှိ သတ္တု သို့မဟုတ် သံလိုက်များကြောင့် နှောင့်ယှက်ခံရသော နမူနာများကို အလိုအလျောက် ပယ်သည်။</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>မူလ (ပိတ်) သို့ ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>ရှေ့နောက်စောင်းခြင်းနှင့် ဘေးစောင်းခြင်း အတုပြုခြင်း</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>အရှိန်တိုင်းကိရိယာမှ တွက်ယူသော ရှေ့နောက်စောင်းခြင်းနှင့် ဘေးစောင်းခြင်း</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ဤကွန်ထရိုလာ၏ ဂိုင်ရိုသည် ဘယ်ညာ လှည့်ခြင်းကိုသာ သိရှိသည်။ အတုပြုခြင်း ဖွင့်ထားလျှင် PadForge သည် အရှိန်တိုင်းကိရိယာမှ ရှေ့နောက်စောင်းခြင်းနှင့် ဘေးစောင်းခြင်းကို တွက်ယူပြီး ဂိုင်ရို၏ ဘယ်ညာလှည့်ခြင်းနှင့်အတူ မက်ပင်း အတန်းများနှင့် ဗာချွယ်ကွန်ထရိုလာ၏ လှုပ်ရှားမှုသို့ ပို့သည်။ အရှိန်တိုင်းကိရိယာသည် တွန်းခြင်းနှင့် စောင်းခြင်းကို ခွဲမခြားနိုင်သဖြင့် ကွန်ထရိုလာကို မလှည့်ဘဲ ဘေးသို့ သို့မဟုတ် ရှေ့သို့ ရွှေ့လျှင် ခဏတာ လှည့်မှုအဖြစ် ဖတ်သည်။</value></data>
@@ -3255,13 +3263,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ဖလစ်စတစ် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° လျှင် အစက်အရေအတွက်</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ကင်မရာ 360° အပြည့်လှည့်ရန် မောက်စ် အရေအတွက်။ ဂိမ်း၏ မောက်စ် အာရုံခံနိုင်စွမ်းပေါ် မူတည်သည်: ဖလစ်တစ်ခု လှည့်မလောက်လျှင် မြှင့်ပါ၊ လှည့်လွန်လျှင် လျှော့ပါ။</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ဖလစ် ကြာချိန်</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>180° ဖလစ်အပြည့် ပြီးဆုံးရန် ကြာချိန်၊ အဆုံးတွင် ဖြည်းဖြည်း ရပ်သည်။ ပိုတိုသော လှည့်မှုများလည်း အချိန်တူတွင် ပြီးဆုံးသည်။</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 စက္ကန့် သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ဖလစ် စတင်တန်ဖိုး</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ဖလစ်ကို စတင်စေသော စတစ် တွန်းရွှေ့မှုပမာဏ၊ အပြည့်တွန်းရွှေ့မှုပမာဏ၏ အစိတ်အပိုင်းအဖြစ်။ ဖလစ်လုပ်နေစဉ် လွှတ်မှတ်သည် ဤတန်ဖိုး၏ 90% သို့ ကျသည်။</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>ကပ်ညှိ ထောင့်</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>ပိုတသမတ်တည်းသော လှည့်မှုများအတွက် ဖလစ်ကို သတ်မှတ်ထောင့်များသို့ ကပ်ညှိသည်။ ရှေ့သို့သာ သည် ဖလစ်တိုင်းကို တည့်တည့်ရှေ့သို့ ကပ်ညှိသည်။</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>ကပ်ညှိခြင်း မရှိ</value></data>
@@ -3270,22 +3275,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 ဒီဂရီ</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 ဒီဂရီ</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 ဒီဂရီ</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>ကပ်ညှိခြင်း မရှိ သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>ကပ်ညှိ ပြင်းအား</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ဖလစ်တစ်ခုက ကပ်ညှိထောင့်ဆီသို့ မည်မျှ ပြင်းပြင်း ဆွဲသည်။ 1 သည် အပြည့် ကပ်ညှိသည်၊ 0 သည် ကပ်ညှိခြင်းကို ပိတ်သည်၊ ကြားတန်ဖိုးများက ရောစပ်သည်။</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>ရှေ့ထောင့် ဒက်ဇုန်</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>တည့်တည့်ရှေ့မှ ဤထောင့်အတွင်းရှိ ဖလစ်သည် ဘာမျှ မလှည့်ပါ။ ဖလစ်လှည့်မှု မပါဘဲ ဝှေ့ယမ်းမှု စတင်နိုင်စေသည်။</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>ဝှေ့ယမ်းမှု ချောမွေ့စေခြင်း</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>အနားသတ် ဝှေ့ယမ်းမှု၏ ဆူညံမှုကို ချောမွေ့စေသည်။ -1 သည် အလိုအလျောက် အဆင့်လိုက် အချိန်ဘောင်ကို သုံးသည်၊ 0 သည် ချောမွေ့စေခြင်းကို ပိတ်သည်၊ ပိုကြီးသော တန်ဖိုးများက အကြိမ်တစ်ခုစီ၏ ပိုကြီးသော လှည့်မှုများကို ချောမွေ့စေသည်။</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>အလိုအလျောက် (-1) သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>အသက်ဝင်ချိန်တွင် ဖလစ် ခွင့်ပြု</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>လှည့်ထောင့် အလွဲ</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>ဖလစ်မြေပုံတစ်ခုလုံးကို ဤဒီဂရီအရေအတွက်ဖြင့် လှည့်သည်။ အပေါင်းတန်ဖိုးသည် နာရီလက်တံအတိုင်း ဖြစ်သည်။ ကပ်ညှိခြင်းသည် အလွဲ ပြီးမှ သက်ရောက်သည်။</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>လှည့်ထောင့် အလွဲ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ဖလစ်စတစ် ပါသော အလွှာ အသက်ဝင်ချိန်တွင် စတစ်ကို တွန်းထားပြီး ဖြစ်လျှင် ဖလစ်ကို ချက်ချင်း လုပ်ဆောင်သည်။ ပိတ်ထားလျှင် ကင်မရာ ငြိမ်နေပြီး လက်ရှိ စတစ်ထောင့်မှ စ၍ လှည့်မှုကို ခြေရာခံသည်။</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>အသက်ဝင်ချိန်တွင် ဖလစ် ခွင့်ပြု ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>စတီယာရင် အဆုံးထိ တုံ့ပြန်မှု</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>စတီယာရင် မုဒ်ရှိ စတစ် အဆုံးထိရောက်ချိန် အချက်ပြမှု</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>စတီယာရင် မုဒ် သတ်မှတ်ထားသော စတစ်ကို အဆုံးထိ လှည့်လိုက်လျှင် ကန့်သတ်ချက်ကို ခံစားရစေရန် အချက်ပြမှု (တုန်ခါမှု၊ ထရီဂါ သို့မဟုတ် အလင်းတန်း) ကို ပြသည်။ မူလအားဖြင့် အားလုံး ပိတ်ထားသည်။</value></data>
@@ -3475,11 +3474,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ဤကွန်ထရိုလာတွင် DualSense ဟက်ပတစ် ဖွင့်</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ဂိမ်းတစ်ခုက ဤဆလော့ကို ဟက်ပတစ်အသံ ပါရှိသော ဗာချွယ် DualSense အဖြစ် မောင်းနှင်သည့်အခါ ထိုအသံလမ်းကြောင်းကို ဤကွန်ထရိုလာ၏ တုန်ခါကိရိယာများတွင် ဖွင့်သည်။ USB သို့မဟုတ် ၎င်း၏ လက်ခံကိရိယာဖြင့် ချိတ်ထားသော Steam Controller 2026 နှင့် Flydigi Apex 6 Pro တို့သည် အသံလမ်းကြောင်းကို ကိုယ်တိုင် ဖွင့်သည်။ အခြား ကွန်ထရိုလာတိုင်း နှင့် Bluetooth ဖြင့် ချိတ်ထားသော ထို Steam Controller သည် အသံမှ ထုတ်ယူထားသော အသံများကို ရရှိပြီး ၎င်းတို့က ဒီဇိုင်နာ၏ ခံစားမှုကို အတိအကျ ပြန်ထုတ်ခြင်း မဟုတ်ဘဲ ခန့်မှန်းခြေ ပေးသည်။</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ဟက်ပတစ် အမြှင့်အား</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>မူလ (ပိတ်) သို့ ပြန်လည်သတ်မှတ်</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>မူလ (100%) သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>တုန်ခါကိရိယာ နိမ့်ကြိမ်နှုန်း ဖြတ်မှတ်</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller ဟက်ပတစ် ထုတ်လွှင့်မှုကို ဤကြိမ်နှုန်းအောက်တွင် ထားသဖြင့် ပက်များသည် အသံထွက် မဖွင့်ဘဲ တုန်ခါသည်။ 250 Hz ခန့်တွင် တုန်ခါကိရိယာများကို စ၍ ကြားရလာသည်။ ပိုထက်မြက်သော အသေးစိတ်အတွက် မြှင့်ပါ၊ ပိုတိတ်ဆိတ်စွာ ဖွင့်ရန် လျှော့ပါ။</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>ဤကြိမ်နှုန်းထက် မြင့်သော အသံများကို ဖြတ် သို့မဟုတ် ခေါက်ချသည်။ မူလ 800 Hz သည် အင်ဂျင်နှင့် ထိခိုက်မှု တုန်ခါသံများကို ထိန်းထားပြီး အသံစူးသော တီ့သံများကို ဖမ်းယူသည်။</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>အသံမြင့်များ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>အသံ ကန့်သတ်ချက် ပြန်လည်သတ်မှတ်</value></data>
@@ -4047,8 +4043,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop ပရိုဖိုင်</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop မက်ခရို</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ညွှန်ပြမြား နယ်မြေ</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} ရှစ်ဖ်အလွှာ</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>ဘီး စာရင်း ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>ကာဆာ နယ်ပယ် ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>မောက်စ် {0} ဖိထား ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>မောက်စ် {0} နှိပ် ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>မောက်စ် {0} အဖွင့်အပိတ် ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>ဟက်ပတစ် တုန်ခါချက် ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (လွှတ်ပြီးနောက် အပိုင်း)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>{0} တစ်ချက်နှိပ် ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>{0} အလိုအလျောက် ပစ် ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>{0} ဖိထား ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>{0} အဖွင့်အပိတ် ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>{0} တာဘို ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>{0} နှစ်ချက်နှိပ် ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>{0} ကြာကြာနှိပ် ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>ဘီး တစ်ဆင့် ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>ဘီး အဖွင့်အပိတ် ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>ဘီး တာဘို ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>ကာဆာ ခုန်ရွှေ့ ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED သတ်မှတ် ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ဂိုင်ရို အလယ်ပြန်ထား ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>ကာဆာ အနည်းငယ်ရွှေ့ ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>ဖန်သားပြင်ဓာတ်ပုံ ကီး ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>ဖန်သားပြင် ကီးဘုတ် ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>မီးအရောင် သတ်မှတ်</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>ကင်မရာ အလယ်ပြန်ထား</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>ကာဆာ ခုန်ရွှေ့</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>ကာဆာ အနည်းငယ်ရွှေ့</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>ဖန်သားပြင်ဓာတ်ပုံ</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>ဖန်သားပြင် ကီးဘုတ်</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>ရှစ်ဖ်အလွှာ ပြောင်း</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>ရှစ်ဖ်အလွှာ ဖွင့်</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>ရှစ်ဖ်အလွှာ ပိတ်</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>ရှစ်ဖ်အလွှာ ဖိထား</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>ကစားသူ နံပါတ် ပြောင်း</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>သတ်မှတ်ထားခြင်း မရှိ</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>ဒက်စ်တော့ မုဒ် အဖွင့်အပိတ်</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam စနစ် ကီး</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>မှန်ဘီလူး အဖွင့်အပိတ်</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>အလင်းတိုး</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>အလင်းလျှော့</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>ကွန်ထရိုလာ ပိတ်</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam ကွန်ထရိုလာ ဖွဲ့စည်းပုံ ဖွင့်</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam အမြန် မီနူး ဖွင့်</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>ဂိမ်းမှ ထွက်</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>ဟက်ပတစ် အဖွင့်အပိတ်</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD အဖွင့်အပိတ်</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>တုန်ခါမှု အဖွင့်အပိတ်</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide ခလုတ် အတင်းနှိပ်</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>ဂိုင်ရို ချိန်ညှိ လှည့်ခြင်း</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>ညွှန်ရာ ဘက်သို့ လှည့်</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ဖိထား)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (လွှတ်)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (လွှတ်)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ဝင်ရောက်)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ပါလာမည့်အရာကို ကြည့်ရန် ဖွဲ့စည်းပုံတစ်ခုကို ရွေးပါ။</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ပါလာမည့်အရာ</value></data>
@@ -4652,11 +4699,9 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>အလွှာ</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>ဤမီနူးကို ခွင့်ပြုသော အလွှာကို ရွေးပါ။ “မည်သည့်အလွှာမဆို” နှင့် “အခြေခံ” နှစ်ခုလုံးသည် အခြား အသက်ဝင်နေသော အလွှာများအောက်တွင် ၎င်းကို ခွင့်ပြုသည်။ အမည်ပေးထားသော အလွှာသည် လက်ရှိ အသက်ဝင်နေသော အလွှာနှင့် ကိုက်ညီရမည်။</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>“မည်သည့်အလွှာမဆို” သို့ ပြန်လည်သတ်မှတ်ပြီး အလွှာဖိထားချိန် ဖွင့်ခြင်းကို ပိတ်ပါ။</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ဤဆလော့တွင် မပါဝင်ပါ)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>အလွှာက မီနူးကို ဖွင့်ထားသည်</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>၎င်း၏ အမည်ပေးထားသော အလွှာ အသက်ဝင်နေစဉ် ဤမီနူးကို ဖွင့်ထားပါ။ ရွေးထားသော ရုပ်ပိုင်းဆိုင်ရာ အဝင်က မီးမောင်းထိုးကို ရွှေ့သည်။ “မည်သည့်အလွှာမဆို” နှင့် “အခြေခံ” သည် ပုံမှန် မျက်နှာပြင်ဖွင့်ခြင်းကို အသုံးပြုသည်။</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>ထိခြင်း သို့မဟုတ် တွန်းရွှေ့ခြင်းဖြင့် ဖွင့်ခြင်းသို့ ပြန်လည်သတ်မှတ်ပါ။</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>ရွှေ့ရန် အဝင်</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>အလွှာက ဤမီနူးကို ဖွင့်ထားစဉ် မီးမောင်းထိုးထားသော ကွက်ကို ရွှေ့သည့် ရုပ်ပိုင်းဆိုင်ရာ အဝင်။</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ဤဆလော့သို့ သတ်မှတ်ထားသော ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများမှ ဖတ်သည်။ အလွှာက မီနူးကို ဖွင့်ပြီး ဤအဝင်က ၎င်းကို ရွှေ့သည်။ ၎င်း၏ အကွက်များက မီနူး၏ အထွက်ကို ဖော်ပြသည်။</value></data>
@@ -4736,7 +4781,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>မော်တာ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>ဦးတည်ရာအလိုက် ခွဲခြား</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>ဗဟို ဒက်ဇုန်</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ဘယ်စတစ် X သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ပြင်းအား ပြန်လည်သတ်မှတ် (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ဗဟို ဒက်ဇုန် ပြန်လည်သတ်မှတ် (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>“စတီယာရင်ထောင့် တုန်ခါမှု ဖွင့်ရန်” ပြန်လည်သတ်မှတ်</value></data>
@@ -5251,6 +5295,9 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_LanguageRefs" xml:space="preserve"><value>ကလင်ဂွန်နှင့် စင်ဒါရင် ကိုးကားချက်များ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ကလင်ဂွန်နှင့် စင်ဒါရင် ဘာသာပြန်ချက်များ၏ စကားလုံးများကို boQwI' ၏ နောက်ကွယ်ရှိ အဘိဓာန် klingon-assistant-data (Apache-2.0) နှင့် Paul Strack ၏ အဲလ်ဗ် ဝေါဟာရစာရင်း Eldamo (CC BY 4.0) တို့နှင့် တိုက်ဆိုင်စစ်ဆေးထားသည်။ အဘိဓာန်ဒေတာအဖြစ်သာ၊ မည်သည့်အပိုင်းမျှ မပါဝင်ပါ။</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ထိုဖိုင်သည် PadForge သီမ် မဟုတ်ပါ။</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge သည် ထိုဖိုင်ကို ဖတ်၍ မရပါ။</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge သည် ထိုဖိုင်ကို ရှာ၍ မတွေ့ပါ။</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>သီမ် မဟုတ်ပါ</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>သီမ်ကို သိမ်းဆည်း၍ မရပါ။ {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>သီမ်အသစ်</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>သင် ဖန်တီးနေစဉ် PadForge သည် ထိုသီမ်ဖြင့် ပြသနေသည်။</value></data>
@@ -5265,6 +5312,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam မှ ပုံကို ရယူနေသည်…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam တွင် ဤဂိမ်းအတွက် အကျယ်ပုံ မရှိပါ။</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam ကို ဆက်သွယ်၍ မရပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ဆေးပါ။</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge သည် ဤဂိမ်းအတွက် Steam ၏ ပုံကို ဖတ်၍ မရပါ။</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>နေရာ</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ပုံကို ၎င်း၏ ဘောင်အတွင်း အပေါ် သို့မဟုတ် အောက်သို့ ရွှေ့သည်။</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ဂိမ်း၏ လိုဂိုကို ပြရန်</value></data>
@@ -5305,4 +5353,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>မူလ Star Trek ဇာတ်လမ်းတွဲအတွက် ရိုက်ကူးခဲ့သော မော်ဒယ်၊ ၎င်းကို ထိန်းသိမ်းထားသည့် Smithsonian National Air and Space Museum က ရိုက်ကူးသော ဓာတ်ပုံ: Star Trek သီမ် LCARS ၏ ပုံ။</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>သီမ် ပုံ: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation မှ ရုပ်ကွက်တစ်ကွက်: Star Trek သီမ် Starfleet ၏ ပုံ။ Memory Alpha တွင် တွေ့ရှိသည်။</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>အလင်းတန်း</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} အလင်းတန်း</value></data>
 </root>

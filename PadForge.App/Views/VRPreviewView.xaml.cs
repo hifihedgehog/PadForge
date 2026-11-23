@@ -128,7 +128,17 @@ namespace PadForge.Views
         /// <summary>Keeps the room the 3D controller keeps around it clear
         /// around the hands, so their tops stand below the picture's top.
         /// The pick ring and the clicks find the hands through the layout,
-        /// so they follow them.</summary>
+        /// so they follow them. The room is set in the measure, from the
+        /// size the view is measured at, as ControllerModel2DView sets it.
+        /// The arrange's set changes nothing at that size and sets the room
+        /// only for a view measured with no bound.</summary>
+        protected override Size MeasureOverride(Size constraint)
+        {
+            if (!double.IsInfinity(constraint.Width) && !double.IsInfinity(constraint.Height))
+                VrBox.Margin = ControllerModelFraming.PictureRoom(constraint.Width, constraint.Height);
+            return base.MeasureOverride(constraint);
+        }
+
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
             VrBox.Margin = ControllerModelFraming.PictureRoom(arrangeBounds.Width, arrangeBounds.Height);

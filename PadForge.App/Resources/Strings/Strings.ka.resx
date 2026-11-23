@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>ონლაინ</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>ოფლაინ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>უცნობი</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>ნაგულისხმევი</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>დათვალიერება…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>გაგრძელება</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>გაჩერება</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>ძრავა გაჩერდა.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>შეცდომა: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ვერ შეიქმნა.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>მოწყობილობის გახსნა, წაკითხვა ან გადანაწილება ვერ მოხერხდა. დიაგნოსტიკის ჟურნალში მისი სახელია მითითებული.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0}-ში მოხდა შეცდომა. მიზეზი დიაგნოსტიკის ჟურნალშია.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>შეყვანის ძრავაში მოხდა შეცდომა. მიზეზი დიაგნოსტიკის ჟურნალშია.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL-ის გაშვება ვერ მოხერხდა. მიზეზი დიაგნოსტიკის ჟურნალშია.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro-ს მომზადება ვერ მოხერხდა. მიზეზი დიაგნოსტიკის ჟურნალშია.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>ვირტუალური კონტროლერის HIDMaestro პროფილი აკლია. დიაგნოსტიკის ჟურნალში მისი სახელია მითითებული.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0}-ისთვის მორგებული იდენტობისა და განლაგების შექმნა ვერ მოხერხდა და გამოიყენება მისი პროფილის საკუთარი.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>პროფილი გადაირთო: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>პროფილი გადაირთო: ნაგულისხმევი</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ნაგულისხმევი</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>მოძრაობის სერვერის პორტი</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>გადასცემს გიროსკოპისა და აქსელერომეტრის მონაცემებს Cemu-ს, Dolphin-ს, Yuzu-სა და სხვ.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>თამაშის მოდები</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>საშუალებას აძლევს DSX-ისთვის შექმნილ თამაშის მოდებს, მართონ თქვენი PlayStation კონტროლერების ადაპტური ტრიგერები, შუქის ზოლი, მოთამაშის ინდიკატორები და დადუმების ინდიკატორი.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>საშუალებას აძლევს DSX-ისთვის შექმნილ თამაშის მოდებს, მართონ DualSense-ის ან DualShock 4-ის ადაპტური ტრიგერები, შუქის ზოლი, მოთამაშის ინდიკატორები და დადუმების ინდიკატორი.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>DSX-ის თამაშის მოდების მიღება</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>თამაშის მოდის პორტი</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>DSX.exe-ის შემცვლელის გაშვება</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>ზოგიერთი მოდი, მაგალითად DualSense4GTAV, თავად ითიშება, თუ DSX სახელწოდების პროგრამა არ მუშაობს. ეს ამავე სახელწოდების პატარა შემცვლელს უშვებს, სანამ სერვერი ისმენს.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>მუშაობს DSX-ისთვის შექმნილ მოდებთან, მაგალითად GTA V-ის, Red Dead Redemption 2-ის, Skyrim-ისა და Forza-სთვის. სანამ სერვერი ისმენს, PadForge თავის პორტს იქ ჩაწერს, სადაც ამ მოდებს მისი ძებნა სჩვევია.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>ისმენს :{0}. {1} აგზავნის ვირტუალურ კონტროლერზე {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>ისმენს :{0}. {1} აგზავნის, მაგრამ არც ერთ ვირტუალურ კონტროლერზე PlayStation კონტროლერი არ არის.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>ისმენს :{0}. {1} აგზავნის კონტროლერის ინდექსზე {2}, ხოლო PlayStation-ის კონტროლერის მქონე არცერთ ვირტუალურ კონტროლერს ეს ინდექსი არ აქვს.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>ისმენს :{0}. {1} აგზავნის, მაგრამ არც ერთ ვირტუალურ კონტროლერზე DualSense ან DualShock 4 არ არის.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>ისმენს :{0}. {1} აგზავნის კონტროლერის ინდექსზე {2}, ხოლო DualSense-ის ან DualShock 4-ის მქონე არცერთ ვირტუალურ კონტროლერს ეს ინდექსი არ აქვს.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>პორტი {0} დაკავებულია სხვა პროგრამით, მაგალითად DSX-ით. დახურეთ ის ან აირჩიეთ სხვა პორტი.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>თამაშის მოდი</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>მუშაობს OpenTrack-თან და ნებისმიერ ტრეკერთან, რომელიც UDP გამოსვლას აგზავნის ან FreeTrack 2.0 გაზიარებულ მეხსიერებაში წერს, ასევე OpenXR გაშვების გარემოსთან ამ კომპიუტერზე, რომელსაც სესიის ფონზე გაშვება შეუძლია.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>ფაილი ვერ მოიძებნა</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ვერ იკითხება</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>„{0}“ თემის ფაილი არ არის ან ვერ იკითხება. სანამ ის დაბრუნდება, PadForge აჩვენებს მუქ იერს.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>„{0}“ თემის ფაილი PadForge-ის თემას არ შეიცავს. სანამ შეიცავს, PadForge აჩვენებს მუქ იერს.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>პროფილი „{0}“ თავისი თამაშის იერს ატარებს. თქვენი თემა დაბრუნდება, როცა სხვა პროფილი გახდება აქტიური.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>გამოკითხვის ქცევისა და ფონური დამუშავების გაწყობა.</value></data>
@@ -1047,6 +1054,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>კონტროლერმა მისი მომზადების ბრძანება არ მიიღო, ამიტომ არაფერი გაიგზავნა. შეამოწმეთ, რომ ის დაკავშირებულია, და თავიდან გააგზავნეთ.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>გაგზავნა შეჩერდა PadForge-ის შეცდომის გამო. დეტალები ჟურნალის ფაილშია.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>სურათი ჯერ კიდევ იგზავნება კონტროლერზე. შეწყდეს გაგზავნა?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>გაგზავნის გაგრძელება</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-ის ფაილები (*.mpk)|*.mpk|ყველა ფაილი (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak პორტი {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak-ის აღდგენა</value></data>
@@ -1434,6 +1442,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>პულსის გაქრობა</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>პრესეტი</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>საკუთარი</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (მომხმარებლის შექმნილი)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>სტიკები</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ტრიგერები</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ები</value></data>
@@ -2414,7 +2423,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ამ კონტროლერს მაგნიტომეტრი აქვს. იაუს მაგნიტურ ჩრდილოეთზე მიბმა გიროსკოპით დამიზნებისას ნელ ჰორიზონტალურ დრეიფს აქრობს. ჯერ დაკალიბრეთ: დააჭირეთ კალიბრაციას, რამდენიმე წამი ატრიალეთ კონტროლერი ყველა მიმართულებით რვიანის ფიგურით, შემდეგ დააჭირეთ ისევ.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>იაუს მიბმა კომპასთან</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>ამატებს მცირე გამასწორებელ სიჩქარეს, რომელიც ჰორიზონტალურ მიზანს მაგნიტური მიმართულებისკენ ექაჩება, ამიტომ დრეიფი ვერ დაგროვდება. საჭიროებს შენახულ მაგნიტომეტრის კალიბრაციას. ახლომდებარე ლითონის ან მაგნიტების მიერ დაბინძურებული ნიმუშები ავტომატურად უარიყოფა.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>საწყისზე დაბრუნება (გამორთულია)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>პიჩისა და როლის სიმულაცია</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>პიჩი და როლი აქსელერომეტრიდან გამოთვლილი</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>ამ კონტროლერის გიროსკოპი მხოლოდ მარცხნივ-მარჯვნივ შემობრუნებას გრძნობს. სიმულაციის ჩართვისას PadForge აქსელერომეტრიდან გამოითვლის პიჩსა და როლს და გიროსკოპის იაუსთან ერთად აგზავნის მიბმის სტრიქონებსა და ვირტუალური კონტროლერის მოძრაობაში. აქსელერომეტრი ვერ არჩევს ბიძგს დახრისგან, ამიტომ კონტროლერის გვერდზე ან წინ გადაადგილება შემობრუნების გარეშე მოკლე ბრუნვად ჩანს.</value></data>
@@ -2810,7 +2818,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>სტიკი გააბრუნეთ კიდეზე, რომ აღიწეროს მისაწვდომი საზღვარი, შემდეგ ის სრულ წრედ გადაკეთდება.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>საწყისზე დაბრუნება: საზღვრის კალიბრაცია</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>საწყისზე დაბრუნება: ცენტრის წანაცვლება Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>საწყისზე დაბრუნება: მასშტაბირებული რადიალური</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>საწყისზე დაბრუნება: მკვდარი ზონა X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>საწყისზე დაბრუნება: მკვდარი ზონა Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>საწყისზე დაბრუნება: ანტი-მკვდარი ზონა X</value></data>
@@ -3258,13 +3265,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ფლიკ-სტიკის საწყისზე დაბრუნება</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>წერტილი 360°-ზე</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>მაუსის ერთეულები კამერის ერთი სრული 360°-იანი შემობრუნებისთვის. დამოკიდებულია თამაშის მაუსის მგრძნობელობაზე: გაზარდეთ, თუ ფლიკი ნაკლებს ბრუნავს, შეამცირეთ, თუ მეტს.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400-ზე დაბრუნება</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>ფლიკის დრო</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>რამდენ ხანს გრძელდება სრული 180°-იანი ფლიკი შენელებით დასრულებით. უფრო მცირე შემობრუნებები იმავე დროში სრულდება.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 წმ-ზე დაბრუნება</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>ფლიკის ზღვარი</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>სტიკის გადახრა, რომლითაც ფლიკი იწყება, სრული გადახრის ნაწილად. ფლიკის დროს გაშვების წერტილი ამის 90%-მდე ეცემა.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9-ზე დაბრუნება</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>მიჯრის კუთხე</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>ფლიკი ფიქსირებულ კუთხეებზე მიეჯრება უფრო თანმიმდევრული შემობრუნებისთვის. „მხოლოდ წინ“ ყოველ ფლიკს პირდაპირ წინ მიმართავს.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>მიჯრის გარეშე</value></data>
@@ -3273,22 +3277,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 გრადუსი</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 გრადუსი</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 გრადუსი</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>დაბრუნება: მიჯრის გარეშე</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>მიჯრის სიძლიერე</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>რამდენად ძლიერად იზიდავს ფლიკს მიჯრის კუთხისკენ. 1 სრულად მიჯრის, 0 გამორთავს მიჯრას, შუალედური მნიშვნელობები ურევს.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0-ზე დაბრუნება</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>წინა კუთხის მკვდარი ზონა</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>ფლიკი პირდაპირ წინის ამ კუთხის ფარგლებში არაფერს აბრუნებს. საშუალებას გაძლევთ დაიწყოთ ძერა ფლიკ-შემობრუნების გარეშე.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0°-ზე დაბრუნება</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>ძერის გაგლუვება</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>აგლუვებს კიდის ძერის ხმაურს. -1 იყენებს ავტომატურ დონეებიან ფანჯარას, 0 გამორთავს გაგლუვებას, დიდი მნიშვნელობები აგლუვებს უფრო დიდ ბრუნებს თითო ტაქტზე.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>ავტომატურზე დაბრუნება (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>ფლიკის დაშვება ჩართვისას</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>შემობრუნების წანაცვლება</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>მთელ ფლიკ-რუკას ამდენი გრადუსით აბრუნებს. დადებითი არის საათის ისრის მიმართულებით. მიჯრა წანაცვლების შემდეგ მოქმედებს.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>შემობრუნების წანაცვლების საწყისზე დაბრუნება</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>როცა ფლიკ-სტიკის მასპინძელი შრე ჩაირთვება და სტიკი უკვე გადახრილია, ფლიკი მაშინვე გააქტიურდება. გამორთულის შემთხვევაში კამერა უძრავი რჩება და შემობრუნებას სტიკის მიმდინარე კუთხიდან აკვირდება.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>ფლიკის დაშვების ჩართვისას საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>მართვის ზღვარზე უკუკავშირი</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>სიგნალი სრულ ზღვარზე მართვის რეჟიმის სტიკისთვის</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>როცა მართვის რეჟიმზე დაყენებული სტიკი ბოლომდე, სრულ ზღვრამდე ბრუნდება, ირთვება სიგნალი (ვიბრაცია, ტრიგერი ან შუქის ზოლი), რათა ზღვარი იგრძნოთ. ნაგულისხმევად ყველა გამორთულია.</value></data>
@@ -3478,11 +3476,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-ის ჰაპტიკის დაკვრა ამ კონტროლერზე</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>როცა თამაში ამ სლოტს ვირტუალურ DualSense-ად მართავს და ავტორისეულ ჰაპტიკურ აუდიოს იყენებს, ეს ჩანაწერი ამ კონტროლერის აქტუატორებზე უკრავს. Steam Controller 2026 USB-ით ან დონგლით და Flydigi Apex 6 Pro ჩანაწერს თავად უკრავენ. ყველა სხვა კონტროლერი, და ის Steam Controller Bluetooth-ით, იღებს აუდიოდან გამოყვანილ ტონებს, რომლებიც დიზაინერის შეგრძნებას უახლოვდება და არ იმეორებს.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ჰაპტიკის გაძლიერება</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ნაგულისხმევზე დაბრუნება (გამორთული)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ნაგულისხმევზე დაბრუნება (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>აქტუატორის დაბალი სიხშირის ფილტრის ზღვარი</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller-ის ჰაპტიკურ ნაკადს ამ სიხშირეზე დაბლა ტოვებს, რათა პედები ზუზუნებდნენ და ხმას არ უკრავდნენ. დაახლოებით 250 Hz-ზე აქტუატორები ისმის. გაზარდეთ უფრო მკვეთრი დეტალისთვის, შეამცირეთ უფრო მშვიდი თამაშისთვის.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz-ზე დაბრუნება</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>ამ სიხშირეზე მაღალი ტონები იჭრება ან ჩამოიწევა. ნაგულისხმევი 800 Hz ტოვებს ძრავისა და დარტყმის ვიბრაციას და იჭერს მაღალი სიხშირის სიგნალებს.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>მაღალი ტონების საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ტონის ზღვრის საწყისზე დაბრუნება</value></data>
@@ -4051,8 +4046,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-ის პროფილი</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-ის მაკრო</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>კურსორის არე</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} გადართვა</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>ბორბლის სია ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>კურსორის არე ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>მაუსის დაჭერა {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>მაუსის დაწკაპუნება {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>მაუსის გადართვა {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>ჰაპტიკური იმპულსი ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (გაშვების ბოლო)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>შეხება {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>ავტოსროლა {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>დაჭერა {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>გადართვა {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>ტურბო {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>ორმაგი დაჭერა {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>გრძელი დაჭერა {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>ბორბლის დაწკაპუნება ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>ბორბლის გადართვა ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>ბორბლის ტურბო ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>კურსორის გადატანა ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>LED-ის დაყენება ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>გიროსკოპის ცენტრირება ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>კურსორის გადაწევა ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>ეკრანის ანაბეჭდის კლავიში ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>ეკრანული კლავიატურა ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>შუქის ფერის დაყენება</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>კამერის ცენტრირება</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>კურსორის გადატანა</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>კურსორის გადაწევა</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>ეკრანის ანაბეჭდი</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>ეკრანული კლავიატურა</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>გადამრთველი შრის შეცვლა</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>გადამრთველი შრის ჩართვა</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>გადამრთველი შრის გამორთვა</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>გადამრთველი შრის დაჭერა</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>მოთამაშის ნომრის შეცვლა</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>მიუბმელი</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>დესკტოპის რეჟიმის გადართვა</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steam-ის სისტემური კლავიში</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>გამადიდებლის გადართვა</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>სიკაშკაშის გაზრდა</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>სიკაშკაშის შემცირება</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>კონტროლერის გამორთვა</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Steam-ის კონფიგურატორის გახსნა</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Steam-ის სწრაფი მენიუს გახსნა</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>თამაშიდან გასვლა</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>ჰაპტიკის გადართვა</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Steam HUD-ის გადართვა</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>ვიბრაციის გადართვა</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Guide ღილაკის იძულებით დაჭერა</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>გიროსკოპის კალიბრაციის ტრიალი</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>მიმართულებისკენ შებრუნება</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (დაჭერისას)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (აშვებისას)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (აშვებისას)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ჩართვა)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>აირჩიეთ კონფიგურაცია, რომ ნახოთ რა გადმოდის.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>რა გადმოდის</value></data>
@@ -4657,11 +4703,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>შრე</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>აირჩიეთ შრე, რომელიც ამ მენიუს ნებას რთავს. „ნებისმიერი შრე“ და „ძირითადი“ ორივე ნებას რთავს სხვა აქტიური შრეების დროს. დასახელებული შრე უნდა ემთხვეოდეს ამჟამად აქტიურ შრეს.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>საწყისზე დაბრუნება ნებისმიერ შრეზე და შრით დაჭერილი გახსნის გამორთვა.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ამ სლოტზე არ არის ჩამოთვლილი)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>შრე ტოვებს მენიუს ღიად</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>ამ მენიუს ღიად ტოვებს, სანამ მისი დასახელებული შრე აქტიურია. არჩეული ფიზიკური შეყვანა მართავს გამოკვეთას. „ნებისმიერი შრე“ და „ძირითადი“ ჩვეულებრივ ზედაპირულ გახსნას იყენებს.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>საწყისზე დაბრუნება შეხებით ან გადახრით გახსნაზე.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>მართვა ამით</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ფიზიკური შეყვანა, რომელიც მართავს გამოკვეთილ უჯრედს, სანამ შრე მენიუს ღიად ინარჩუნებს.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>იკითხება ამ სლოტზე მიბმული ფიზიკური კონტროლერებიდან. შრე ხსნის მენიუს, ეს შეყვანა კი მართავს მას. მისი უჯრები განსაზღვრავს, რას გასცემს.</value></data>
@@ -4740,7 +4784,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>ძრავა</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>მიმართულების მიხედვით გაყოფა</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>ცენტრის მკვდარი ზონა</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>დაბრუნება: მარცხენა სტიკი X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>სიძლიერის საწყისზე დაბრუნება (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ცენტრის მკვდარი ზონის საწყისზე დაბრუნება (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>საჭის კუთხის ვიბრაციის ჩართვის საწყისზე დაბრუნება</value></data>
@@ -5244,6 +5287,9 @@
   <data name="About_LanguageRefs" xml:space="preserve"><value>კლინგონურისა და სინდარინის წყაროები</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>კლინგონური და სინდარინული თარგმანების სიტყვები შემოწმებულია შემდეგ წყაროებთან: klingon-assistant-data (Apache-2.0), boQwI'-ის ლექსიკონის მონაცემები, და Eldamo (CC BY 4.0), Paul Strack-ის ელფური ლექსიკონი. მხოლოდ ლექსიკონის მონაცემები, არცერთი არ შედის პროგრამაში.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ეს ფაილი PadForge-ის თემა არ არის.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge-ს ამ ფაილის წაკითხვა არ შეუძლია.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge-ს ეს ფაილი ვერ პოულობს.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>არ არის თემა</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>თემის შენახვა ვერ მოხერხდა. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ახალი თემა</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge თემას აჩვენებს, სანამ მას ქმნით.</value></data>
@@ -5258,6 +5304,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>სურათის მიღება Steam-იდან…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-ს ამ თამაშისთვის განიერი სურათი არ აქვს.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-თან დაკავშირება ვერ მოხერხდა. შეამოწმეთ კავშირი.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge-ს ამ თამაშისთვის Steam-ის სურათის წაკითხვა არ შეუძლია.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>მდებარეობა</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>სურათს თავის ფანჯარაში ზევით ან ქვევით ამოძრავებს.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>თამაშის ლოგოს ჩვენება</value></data>
@@ -5298,4 +5345,6 @@
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ვარსკვლავური გზის ორიგინალური სერიალისთვის გადაღებული მაკეტი, რომელიც გადაიღო Smithsonian National Air and Space Museum-მა, სადაც ის ინახება: ვარსკვლავური გზის თემის LCARS სურათი.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>თემის სურათი: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>კადრი სერიალიდან ვარსკვლავური გზა: შემდეგი თაობა: ვარსკვლავური გზის თემის Starfleet სურათი. ნაპოვნია Memory Alpha-ზე.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>შუქის ზოლი</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} შუქის ზოლი</value></data>
 </root>

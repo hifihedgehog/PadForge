@@ -92,13 +92,17 @@ namespace PadForge.ViewModels
 
         private string _gyroActivationMode = GyroActivationSameAsBase;
         /// <summary>How the shown layer turns the gyro on: Same as Base (no
-        /// entry), Always, Hold, Release or Toggle.</summary>
+        /// entry), Always, Hold, Release or Toggle. Reads null while the
+        /// pickers' lists are replaced (<see cref="ShowGyroActivationLayer"/>).
+        /// A null written back is ignored: the picker writes one only when
+        /// its pick falls out of its list, which never stands for a choice.</summary>
         public string GyroActivationMode
         {
-            get => _gyroActivationMode;
+            get => _clearingGyroActivationPicks ? null : _gyroActivationMode;
             set
             {
-                if (SetProperty(ref _gyroActivationMode, value ?? GyroActivationSameAsBase))
+                if (value == null) return;
+                if (SetProperty(ref _gyroActivationMode, value))
                 {
                     OnPropertyChanged(nameof(GyroActivationUsesButtons));
                     StoreGyroActivationLayer();
@@ -152,18 +156,21 @@ namespace PadForge.ViewModels
             new GyroActivationChoice("All", Strings.Instance.Pad_GyroActivation_NeedsAll),
         };
 
-        /// <summary>The Needs picker's value, "Any" or "All".</summary>
+        /// <summary>The Needs picker's value, "Any" or "All". Reads null and
+        /// ignores a null as <see cref="GyroActivationMode"/> does.</summary>
         public string GyroActivationNeeds
         {
-            get => _gyroActivationAll ? "All" : "Any";
+            get => _clearingGyroActivationPicks ? null : _gyroActivationAll ? "All" : "Any";
             set
             {
+                if (value == null) return;
                 GyroActivationAll = string.Equals(value, "All", StringComparison.Ordinal);
                 OnPropertyChanged();
             }
         }
 
         private bool _showingGyroActivation;
+        private bool _clearingGyroActivationPicks;
 
         /// <summary>Loads the shown layer's entry into the card's pickers and
         /// its button list.</summary>
@@ -179,11 +186,27 @@ namespace PadForge.ViewModels
                     : entry.Buttons.Length == 0
                         ? (string.Equals(_gyroActivationLayer, "Base", StringComparison.Ordinal) ? GyroActivationSameAsBase : GyroActivationAlways)
                         : entry.Mode;
-                SetProperty(ref _gyroActivationMode, mode, nameof(GyroActivationMode));
+                // Each list is made anew, in the current language, so a
+                // picker's pick is not in the list that replaces it. A pick
+                // that falls out of the list writes null back, and the
+                // picker takes the same value again from its binding without
+                // picking an item, so it shows nothing. The picks are cleared
+                // first, then the lists replaced, then the values raised,
+                // each of which picks its item in the new list.
+                _clearingGyroActivationPicks = true;
+                try
+                {
+                    OnPropertyChanged(nameof(GyroActivationMode));
+                    OnPropertyChanged(nameof(GyroActivationNeeds));
+                    OnPropertyChanged(nameof(GyroActivationModeChoices));
+                    OnPropertyChanged(nameof(GyroActivationNeedsChoices));
+                }
+                finally { _clearingGyroActivationPicks = false; }
+                _gyroActivationMode = mode;
+                OnPropertyChanged(nameof(GyroActivationMode));
                 SetProperty(ref _gyroActivationAll, entry?.All ?? false, nameof(GyroActivationAll));
                 OnPropertyChanged(nameof(GyroActivationNeeds));
                 OnPropertyChanged(nameof(GyroActivationUsesButtons));
-                OnPropertyChanged(nameof(GyroActivationModeChoices));
 
                 var on = new HashSet<string>(entry?.Buttons ?? Array.Empty<string>(), StringComparer.Ordinal);
                 GyroActivationButtons.Clear();

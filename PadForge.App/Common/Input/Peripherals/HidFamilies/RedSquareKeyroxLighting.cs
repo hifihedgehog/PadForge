@@ -69,7 +69,7 @@ namespace PadForge.Common.Input.Peripherals
                 {
                     Family = this,
                     Name = registrations[0].Name,
-                    Map = new LightMap(Lights(), "OpenRGB RGBController_RedSquareKeyrox.cpp")
+                    Map = new LightMap(Lights())
                     {
                         Product = $"keyrox:{collection.VendorId:X4}:{collection.ProductId:X4}",
                     },

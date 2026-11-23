@@ -30,7 +30,7 @@ namespace PadForge.Common.Input.Peripherals
     /// README.md:173-175). Here an LED that refuses before it ever took a
     /// color gets its own state back, is logged once and is left out for the
     /// session, and the others are lit. A path whose every LED refuses says so
-    /// on its tab (<see cref="SdkCategoryBackend.NotePathRefused"/>). The
+    /// in its Lighting group (<see cref="SdkCategoryBackend.NotePathRefused"/>). The
     /// session ends on an answer that means the program is gone,
     /// MLAPI_TIMEOUT or MLAPI_NOT_INITIALIZED (mystic_light.rs:186-188), and
     /// on a refusal from an LED that took a color before, which no style
@@ -151,7 +151,7 @@ namespace PadForge.Common.Input.Peripherals
             var lights = new LightInfo[leds.Count];
             for (int i = 0; i < leds.Count; i++)
                 lights[i] = new LightInfo(i, LightKind.Zone, 0, LightKeySource.None) { Zone = i + 1 };
-            return new LightMap(lights, "MSI Mystic Light SDK, " + category + " LEDs");
+            return new LightMap(lights);
         }
 
         protected override bool Paint(string category, SdkPicture picture, SdkPicture last)

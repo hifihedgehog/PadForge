@@ -1070,7 +1070,7 @@ namespace PadForge.Tests
                 new LightInfo(1, LightKind.Key, 0x05, LightKeySource.Device) { X = 8, Y = 8, Width = 2, Height = 2, HasPosition = true },
                 new LightInfo(2, LightKind.Key, 0x06, LightKeySource.Device) { X = 4, Y = 0, Width = 2, Height = 10, HasPosition = true },
                 new LightInfo(3, LightKind.Logo, 0, LightKeySource.None),
-            }, "positions");
+            });
             var places = LightPlacement.Of(map);
             Assert.Equal(new[] { 0.1f, 0.1f, 0.9f, 0.9f, 0.5f, 0.5f }, places.Take(6));
             Assert.True(float.IsNaN(places[6]) && float.IsNaN(places[7]));
@@ -1086,7 +1086,7 @@ namespace PadForge.Tests
                 new LightInfo(1, LightKind.Key, 0x04, LightKeySource.Device),
                 new LightInfo(2, LightKind.Key, 0x4F, LightKeySource.Device),
                 new LightInfo(3, LightKind.Key, 0, LightKeySource.None),
-            }, "layout");
+            });
             var places = LightPlacement.Of(map);
             // Esc is at the top left, A is left of center, the arrow is right of A.
             Assert.InRange(places[0], 0f, 0.1f);
@@ -1110,7 +1110,7 @@ namespace PadForge.Tests
                 new LightInfo(4, LightKind.Edge, 0, LightKeySource.None),
                 new LightInfo(5, LightKind.Edge, 0, LightKeySource.None),
                 new LightInfo(6, LightKind.Logo, 0, LightKeySource.None),
-            }, "zones");
+            });
             var places = LightPlacement.Of(map);
             Assert.Equal(0.75f, places[0]);
             Assert.Equal(0.25f, places[2]);
@@ -1125,18 +1125,18 @@ namespace PadForge.Tests
         [Fact]
         public void ADeviceWithOneLightKindAndNoPlaces_HasNoPlaces()
         {
-            var map = new LightMap(new[] { new LightInfo(0, LightKind.Logo, 0, LightKeySource.None) }, "logo");
+            var map = new LightMap(new[] { new LightInfo(0, LightKind.Logo, 0, LightKeySource.None) });
             Assert.All(LightPlacement.Of(map), v => Assert.True(float.IsNaN(v)));
         }
 
         [Fact]
         public void TheBestLayoutIsTheOneHoldingTheMostKeys_AndTheSmallerOfATie()
         {
-            var numpadKey = new LightMap(new[] { new LightInfo(0, LightKind.Key, 0x59, LightKeySource.Device) }, "numpad");
+            var numpadKey = new LightMap(new[] { new LightInfo(0, LightKind.Key, 0x59, LightKeySource.Device) });
             var layout = LightPlacement.BestLayout(numpadKey);
             Assert.Contains(layout, k => k.Page == 0x07 && k.Id == 0x59);
 
-            var onlyA = new LightMap(new[] { new LightInfo(0, LightKind.Key, 0x04, LightKeySource.Device) }, "a");
+            var onlyA = new LightMap(new[] { new LightInfo(0, LightKind.Key, 0x04, LightKeySource.Device) });
             int smallest = new[]
             {
                 PadForge.Views.KeyboardFamilies.FullsizeAnsi, PadForge.Views.KeyboardFamilies.Tkl,
@@ -1144,7 +1144,7 @@ namespace PadForge.Tests
             }.Min(l => l.Length);
             Assert.True(LightPlacement.BestLayout(onlyA).Length <= smallest);
 
-            Assert.Null(LightPlacement.BestLayout(new LightMap(new[] { new LightInfo(0, LightKind.Logo, 0, LightKeySource.None) }, "logo")));
+            Assert.Null(LightPlacement.BestLayout(new LightMap(new[] { new LightInfo(0, LightKind.Logo, 0, LightKeySource.None) })));
         }
     }
 
@@ -1156,7 +1156,7 @@ namespace PadForge.Tests
             new LightInfo(0, LightKind.Zone, 0, LightKeySource.None) { Zone = 1 },
             new LightInfo(1, LightKind.Zone, 0, LightKeySource.None) { Zone = 2 },
             new LightInfo(2, LightKind.Logo, 0, LightKeySource.None),
-        }, "render");
+        });
 
         private static readonly ScreenPicture LeftRight = new(2, 1, new[] { 0x110000, 0x220000 });
 

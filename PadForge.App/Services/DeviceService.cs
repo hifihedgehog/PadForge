@@ -570,15 +570,6 @@ namespace PadForge.Services
                 nameof(PadSetting.TouchpadClick),
             }.Concat(MappingSetMigrator.PressureTargets).ToArray();
 
-        /// <summary>Fills the empty button pressure fields (discussion #476)
-        /// of every device on a slot from that device's default mapping under
-        /// <paramref name="profileId"/>. Only those ten.
-        ///
-        /// <returns>True when a field was filled, so the caller merges the
-        /// slot's set only when there is something to merge.</returns></summary>
-        public static bool FillEmptyPressureMappingsForSlot(int padIndex, string profileId)
-            => FillEmptyPlayStationMappingsForSlot(padIndex, null, profileId, MappingSetMigrator.PressureTargets);
-
         /// <summary>Fills, for a live change from one PlayStation preset to
         /// another, the empty fields of every device on a slot that the new
         /// preset's default maps and the outgoing preset's default leaves
@@ -586,19 +577,13 @@ namespace PadForge.Services
         /// withheld at assign, and the DualShock 3 Full's pressure rows. A
         /// field the outgoing default mapped and the user cleared on that
         /// wire stays cleared, and every other binding stays as the user left
-        /// it.
+        /// it. The slot is snapshot under the UserSettings lock and its devices
+        /// resolved outside it, the order <see cref="FillEmptyAutoMappingsForSlot"/>
+        /// gives for the same reason.
         ///
         /// <returns>True when a field was filled, so the caller merges the
         /// slot's set only when there is something to merge.</returns></summary>
         public static bool FillEmptyPresetMappingsForSlot(int padIndex, string fromProfileId, string toProfileId)
-            => FillEmptyPlayStationMappingsForSlot(padIndex, fromProfileId, toProfileId, PresetGatedPlayStationTargets);
-
-        /// <summary>Snapshot under the UserSettings lock and resolve devices
-        /// outside it, the order <see cref="FillEmptyAutoMappingsForSlot"/>
-        /// gives for the same reason. A null <paramref name="fromProfileId"/>
-        /// excludes nothing.</summary>
-        private static bool FillEmptyPlayStationMappingsForSlot(int padIndex, string fromProfileId,
-            string toProfileId, System.Collections.Generic.IReadOnlyList<string> targets)
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
@@ -619,16 +604,15 @@ namespace PadForge.Services
                 // A Bliss-Box port with no placement answers no pressure yet,
                 // so the ten rows are owed until it can be placed, filled
                 // where empty then.
-                if (PadForge.Common.Input.BlissBoxRuntime.DefaultOwed(ud)
-                    && targets.Any(MappingSetMigrator.IsPressureTarget))
+                if (PadForge.Common.Input.BlissBoxRuntime.DefaultOwed(ud))
                     us.BlissBoxOwed |= BlissBoxOwedMapping.Pressure;
                 var fresh = SettingsManager.CreateDefaultPadSetting(ud,
                     Engine.VirtualControllerType.PlayStation, toProfileId);
                 if (fresh == null) continue;
-                var outgoing = fromProfileId == null ? null
-                    : SettingsManager.CreateDefaultPadSetting(ud, Engine.VirtualControllerType.PlayStation, fromProfileId);
+                var outgoing = SettingsManager.CreateDefaultPadSetting(ud,
+                    Engine.VirtualControllerType.PlayStation, fromProfileId);
                 bool changed = false;
-                foreach (var target in targets)
+                foreach (var target in PresetGatedPlayStationTargets)
                 {
                     var prop = typeof(PadSetting).GetProperty(target);
                     if (prop == null || !string.IsNullOrEmpty(prop.GetValue(ps) as string)) continue;

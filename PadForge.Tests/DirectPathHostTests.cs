@@ -439,7 +439,7 @@ namespace PadForge.Tests
             {
                 new LightInfo(first, LightKind.Key, 0x04, LightKeySource.Generated),
                 new LightInfo(first + 1, LightKind.Other, 0, LightKeySource.None),
-            }, "test");
+            });
             PeripheralLightMaps.ResetForTest();
             try
             {

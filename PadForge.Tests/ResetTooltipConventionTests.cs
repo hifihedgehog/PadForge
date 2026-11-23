@@ -81,8 +81,11 @@ namespace PadForge.Tests
                     if (!tip.Success) continue;          // bound to a view model, checked below
                     if (!strings.TryGetValue(tip.Groups[1].Value, out string value)) continue;
 
+                    // "Reset to 250 Hz" names the default and not the
+                    // setting, so a row of resets still reads alike.
                     if (Generic.Contains(value, StringComparer.OrdinalIgnoreCase)
-                        || !value.StartsWith("Reset", StringComparison.OrdinalIgnoreCase))
+                        || !value.StartsWith("Reset", StringComparison.OrdinalIgnoreCase)
+                        || value.StartsWith("Reset to ", StringComparison.OrdinalIgnoreCase))
                     {
                         int line = text.Take(m.Index).Count(c => c == '\n') + 1;
                         offenders.Add($"{Path.GetFileName(file)}:{line} {tip.Groups[1].Value} = \"{value}\"");

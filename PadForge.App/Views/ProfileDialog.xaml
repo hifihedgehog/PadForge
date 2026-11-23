@@ -61,6 +61,7 @@
                           ToolTip="{Binding Profile_GameLook_Tip, Source={x:Static strings:Strings.Instance}}"
                           AutomationProperties.Name="{Binding Profile_GameLook, Source={x:Static strings:Strings.Instance}}"
                           Checked="GameLookSwitch_Changed" Unchecked="GameLookSwitch_Changed"/>
+                <reset:SettingResetButton Click="ResetGameLook_Click" Visibility="{Binding Visibility, ElementName=GameLookSwitch}" IsEnabled="{Binding IsEnabled, ElementName=GameLookSwitch}" SettingLabel="{Binding Profile_GameLook, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_GameLookSwitch_59101"/>
             </controls:SettingRow>
             <controls:FlexLinePanel x:Name="GameLookLine" Gap="10" LineGap="6" MinLineHeight="30" Visibility="Collapsed">
                 <TextBlock x:Name="GameLookStatus" Style="{StaticResource DialogNote}" VerticalAlignment="Center"

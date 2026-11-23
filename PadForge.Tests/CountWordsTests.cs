@@ -72,6 +72,7 @@ namespace PadForge.Tests
             ["Pad_Lighting_KeyColors_Others_BaseLayer_Format"] = "{0} is the base layer's name",
             ["MacroAction_ShowKeyboardScreen_Format"] = "{0} is the screen's name",
             ["MacroAction_ShowKeyboardScreen_Hold_Format"] = "{0} is the screen's name",
+            ["Import_ExtrasMacro_Format"] = "{0} is an input's label, as in its siblings {0} lightbar and {0} range",
         };
 
         /// <summary>Every English string that puts a count before a plural

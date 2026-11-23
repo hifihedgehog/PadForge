@@ -268,7 +268,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (light.Kind == LightKind.Zone) light = light with { Zone = ++zone };
                 lights.Add(light);
             }
-            return new LightMap(lights, "iCUE SDK LED positions, " + key) { Product = "icue:" + key };
+            return new LightMap(lights) { Product = "icue:" + key };
         }
 
         /// <summary>The colors of one device's LEDs from a picture of its

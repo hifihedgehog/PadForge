@@ -12,7 +12,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>RGBController_CherryKeyboard.cpp:23, 6 rows of 21, each cell an index into the LEDs or -1.
         /// 126 LEDs.</summary>
-        internal static readonly MatrixLayout Cherry = new("RGBController_CherryKeyboard.cpp:23", 6, 21, 126, new short[]
+        internal static readonly MatrixLayout Cherry = new(6, 21, 126, new short[]
         {
               0,  -1,  12,  18,  24,  30,  36,  42,  48,  54,  60,  66,  72,  78,  84,  90,  96, 102, 108, 114, 120,
               1,   7,  13,  19,  25,  31,  37,  43,  49,  55,  61,  67,  73,  79,  85,  91,  97, 103, 109, 115, 121,
@@ -24,7 +24,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>RGBController_EVisionKeyboard.cpp:18, 6 rows of 23, each cell an index into the LEDs or -1.
         /// 126 LEDs.</summary>
-        internal static readonly MatrixLayout EVision = new("RGBController_EVisionKeyboard.cpp:18", 6, 23, 126, new short[]
+        internal static readonly MatrixLayout EVision = new(6, 23, 126, new short[]
         {
               0,  -1,   1,   2,   3,   4,  -1,   5,   6,   7,   8,  -1,   9,  10,  11,  12,  14,  15,  16,  -1,  -1,  -1,  -1,
              21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  -1,  32,  33,  34,  -1,  35,  36,  37,  38,  39,  40,  41,
@@ -36,7 +36,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>RGBController_EVisionV2Keyboard.cpp:21, 6 rows of 21, each cell an index into the LEDs or -1.
         /// 106 LEDs.</summary>
-        internal static readonly MatrixLayout EVisionV2 = new("RGBController_EVisionV2Keyboard.cpp:21", 6, 21, 106, new short[]
+        internal static readonly MatrixLayout EVisionV2 = new(6, 21, 106, new short[]
         {
               0,  -1,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,  -1,  -1,  -1,  -1,
              16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35,  36,
@@ -77,7 +77,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>RGBController_EVisionV2Keyboard.cpp:32, 6 rows of 21, each cell an index into the LEDs or -1.
         /// 104 LEDs.</summary>
-        internal static readonly MatrixLayout Endorfy = new("RGBController_EVisionV2Keyboard.cpp:32", 6, 21, 104, new short[]
+        internal static readonly MatrixLayout Endorfy = new(6, 21, 104, new short[]
         {
               0,  -1,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,  -1,  -1,  -1,  -1,
              16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35,  36,
@@ -117,7 +117,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>RGBController_DasKeyboard.cpp:21, 7 rows of 21, each cell an index into the LEDs or -1.
         /// 131 LEDs.</summary>
-        internal static readonly MatrixLayout DasUs = new("RGBController_DasKeyboard.cpp:21", 7, 21, 131, new short[]
+        internal static readonly MatrixLayout DasUs = new(7, 21, 131, new short[]
         {
              -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
               5,  -1,  17,  23,  29,  35,  41,  47,  53,  59,  65,  71,  77,  83,  89,  95, 101, 127, 128, 129, 130,
@@ -165,7 +165,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
 
         /// <summary>RGBController_DasKeyboard.cpp:33, 7 rows of 21, each cell an index into the LEDs or -1.
         /// 131 LEDs.</summary>
-        internal static readonly MatrixLayout DasEu = new("RGBController_DasKeyboard.cpp:33", 7, 21, 131, new short[]
+        internal static readonly MatrixLayout DasEu = new(7, 21, 131, new short[]
         {
              -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 126,  -1,  -1,  -1,
               5,  -1,  17,  23,  29,  35,  41,  47,  53,  59,  65,  71,  77,  83,  89,  95, 101, 127, 128, 129, 130,

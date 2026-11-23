@@ -73,18 +73,21 @@ namespace PadForge.Common.Themes
 
         /// <summary>The game's wide picture and its logo, each null when
         /// it is not to be had: from the cache when the cache holds it,
-        /// else from Steam when the switch is on. Never throws for a
-        /// network failure.</summary>
-        internal async Task<(byte[] Hero, byte[] Logo)> FetchAsync(int appId, CancellationToken ct)
+        /// else from Steam when the switch is on. Unreached is true when
+        /// there is no wide picture because Steam could not be reached for
+        /// it, and false when Steam answered that the game has none. Never
+        /// throws for a network failure.</summary>
+        internal async Task<(byte[] Hero, byte[] Logo, bool Unreached)> FetchAsync(int appId, CancellationToken ct)
         {
-            if (appId <= 0) return (null, null);
-            byte[] hero = await OneAsync(appId, HeroFile, true, ct).ConfigureAwait(false);
-            byte[] logo = await OneAsync(appId, LogoFile, false, ct).ConfigureAwait(false);
-            return (hero, logo);
+            if (appId <= 0) return (null, null, false);
+            var (hero, unreached) = await OneAsync(appId, HeroFile, true, ct).ConfigureAwait(false);
+            var (logo, _) = await OneAsync(appId, LogoFile, false, ct).ConfigureAwait(false);
+            return (hero, logo, hero == null && unreached);
         }
 
-        private async Task<byte[]> OneAsync(int appId, string file, bool hero, CancellationToken ct)
+        private async Task<(byte[] Data, bool Unreached)> OneAsync(int appId, string file, bool hero, CancellationToken ct)
         {
+            bool unreached = false;
             if (IsOn)
             {
                 try
@@ -93,22 +96,24 @@ namespace PadForge.Common.Themes
                     ArtworkResult result = hero
                         ? await _art.GetHeroAsync(appId, ct).ConfigureAwait(false)
                         : await _art.GetFileAsync(appId, file, ct).ConfigureAwait(false);
-                    if (result?.Data != null) return result.Data;
+                    if (result?.Data != null) return (result.Data, false);
                 }
                 catch (Exception ex) when (ex is HttpRequestException or System.IO.IOException or InvalidOperationException
                                                || (ex is OperationCanceledException && !ct.IsCancellationRequested))
                 {
-                    // No network, or the switch went off between the check and the call: the cache below.
+                    // No network, a server error, or the switch went off between the check and the call: the cache below.
+                    unreached = true;
                 }
             }
             // What the cache already holds, however old: it asks nothing of the
             // network. A game with no wide picture was kept as its store header.
-            return await Task.Run(() =>
+            byte[] kept = await Task.Run(() =>
             {
                 if (_cache.TryGetBytesStaleOk(CacheCategory.Art, appId + "_" + file, CacheTtls.Art, out var cached, out _)) return cached;
                 if (hero && _cache.TryGetBytesStaleOk(CacheCategory.Art, appId + "_" + HeaderFile, CacheTtls.Art, out var header, out _)) return header;
                 return null;
             }, ct).ConfigureAwait(false);
+            return (kept, kept == null && unreached);
         }
     }
 }

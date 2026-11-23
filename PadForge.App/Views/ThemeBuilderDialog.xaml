@@ -4,6 +4,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:reset="clr-namespace:PadForge.Controls"
         xmlns:views="clr-namespace:PadForge.Views"
         Title="{Binding ThemeBuilder_NewTitle, Source={x:Static strings:Strings.Instance}}"
         Subtitle="{Binding ThemeBuilder_Subtitle, Source={x:Static strings:Strings.Instance}}">
@@ -69,11 +70,12 @@
             </StackPanel>
             <StackPanel x:Name="SearchPanel">
                 <ui:TextBox x:Name="GameSearchBox" Style="{StaticResource DialogTextBox}" TextChanged="GameSearchBox_TextChanged"
+                            KeyDown="GameSearchBox_KeyDown"
                             PlaceholderText="{Binding Workshop_SearchPlaceholder, Source={x:Static strings:Strings.Instance}}"
                             AutomationProperties.Name="{Binding Workshop_SearchPlaceholder, Source={x:Static strings:Strings.Instance}}"/>
                 <ListBox x:Name="GameList" Style="{StaticResource DialogListBox}" MaxHeight="176" Margin="0,8,0,0" Visibility="Collapsed"
                          ItemContainerStyle="{StaticResource DialogListItem}"
-                         SelectionChanged="GameList_SelectionChanged"
+                         SelectionChanged="GameList_SelectionChanged" KeyDown="GameList_KeyDown"
                          AutomationProperties.Name="{Binding Workshop_Games, Source={x:Static strings:Strings.Instance}}"/>
                 <TextBlock x:Name="GameStatus" Style="{StaticResource DialogNote}" Margin="0,8,0,0" Visibility="Collapsed"
                            AutomationProperties.LiveSetting="Polite"/>
@@ -99,6 +101,7 @@
             <Slider x:Name="PositionSlider" Minimum="0" Maximum="100" Value="50" SmallChange="1" LargeChange="10"
                     controls:SettingRow.Fills="True" ValueChanged="PositionSlider_ValueChanged"
                     AutomationProperties.Name="{Binding ThemeBuilder_Position, Source={x:Static strings:Strings.Instance}}"/>
+            <reset:SettingResetButton Click="ResetPosition_Click" SettingLabel="{Binding ThemeBuilder_Position, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PositionSlider_59102"/>
         </controls:SettingRow>
         <controls:SettingRow x:Name="LogoRow" MinHeight="44" Visibility="Collapsed">
             <TextBlock Style="{StaticResource DialogLabel}"
@@ -106,6 +109,7 @@
             <CheckBox x:Name="LogoSwitch" Style="{StaticResource SwitchCheckBox}" IsChecked="True"
                       AutomationProperties.Name="{Binding ThemeBuilder_ShowLogo, Source={x:Static strings:Strings.Instance}}"
                       Checked="LogoSwitch_Changed" Unchecked="LogoSwitch_Changed"/>
+            <reset:SettingResetButton Click="ResetLogo_Click" SettingLabel="{Binding ThemeBuilder_ShowLogo, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_LogoSwitch_59103"/>
         </controls:SettingRow>
 
         <!-- The four colors. Each has a swatch that opens the picker and

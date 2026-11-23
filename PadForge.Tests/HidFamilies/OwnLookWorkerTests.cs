@@ -48,7 +48,7 @@ namespace PadForge.Tests
                 {
                     new LightInfo(0, LightKind.Zone, 0, LightKeySource.None),
                     new LightInfo(1, LightKind.Key, 0x29, LightKeySource.Generated),
-                }, "test") { Product = "fake:own" },
+                }) { Product = "fake:own" },
                 Programs = programs ?? Array.Empty<VendorProgram>(),
                 Open = key =>
                 {
@@ -450,7 +450,7 @@ namespace PadForge.Tests
             new LightInfo(0, LightKind.Zone, 0, LightKeySource.None),
             new LightInfo(1, LightKind.Key, 0x29, LightKeySource.Device),
             new LightInfo(7, LightKind.Key, 0, LightKeySource.None),
-        }, "device") { Product = "fake:own" };
+        }) { Product = "fake:own" };
 
         /// <summary>A session that read the device's own map: the worker
         /// publishes it and renders by it, and the map stays after the

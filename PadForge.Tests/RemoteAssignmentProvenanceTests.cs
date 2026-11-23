@@ -134,6 +134,7 @@ namespace PadForge.Tests
         [InlineData("Controller", "hid://vigem-controller")]
         [InlineData("Virtual Gamepad", "web://spoofed")]
         [InlineData("Virtual Gamepad", "peer://spoofed")]
+        [InlineData("Virtual 1", "midi://winmm:Virtual 1")]
         public void UnprovenSourcesRetainTheVirtualFilterEvenWithAWebOrPeerPath(string name, string path)
         {
             var previousRefreshHook = SettingsService.AfterMappingSetsRefreshed;

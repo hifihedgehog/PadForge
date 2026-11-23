@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>سەرهێڵ</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>دەرهێڵ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>نەزانراو</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>بنەڕەت</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>گەڕان…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>بەردەوامبوون</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>وەستاندن</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>بزوێنەر وەستا.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>هەڵە: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} نەتوانرا دروست بکرێت.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>ئامێرێک نەتوانرا بکرێتەوە، بخوێندرێتەوە یان نەخشەسازی بکرێت. تۆماری دیاگنۆستیک ناوەکەی تێدایە.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} تووشی هەڵەیەک بوو. هۆکارەکە لە تۆماری دیاگنۆستیکدا هەیە.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>بزوێنەری تێخستن تووشی هەڵەیەک بوو. هۆکارەکە لە تۆماری دیاگنۆستیکدا هەیە.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL نەیتوانی دەست پێ بکات. هۆکارەکە لە تۆماری دیاگنۆستیکدا هەیە.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro نەتوانرا ڕێک بخرێت. هۆکارەکە لە تۆماری دیاگنۆستیکدا هەیە.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>پرۆفایلی HIDMaestro ی کۆنترۆڵەرێکی مەجازی نییە. تۆماری دیاگنۆستیک ناوەکەی تێدایە.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} نەیتوانی ناسنامە و ڕیزبەندیی دڵخوازی خۆی وەربگرێت و هی پرۆفایلەکەی خۆی بەکار دەهێنێت.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>پرۆفایل گۆڕدرا: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>پرۆفایل گۆڕدرا: بنەڕەت</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>بنەڕەت</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>پۆرتی ڕاژەکاری جووڵە</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>داتای جایرۆ و ئەکسێلەرۆمیتەر دەدات بە Cemu، Dolphin، Yuzu و هتد.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>مۆدەکانی یاری</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ڕێگە دەدات مۆدەکانی یاری کە بۆ DSX دروستکراون تریگەرە ئەداپتیڤەکان، شریتی ڕووناکی، ڕووناکییەکانی یاریزان و ڕووناکیی بێدەنگکردنی کۆنترۆڵەرەکانی PlayStation ەکەت ڕێک بخەن.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>ڕێگە دەدات مۆدەکانی یاری کە بۆ DSX دروستکراون تریگەرە ئەداپتیڤەکان، شریتی ڕووناکی، ڕووناکییەکانی یاریزان و ڕووناکیی بێدەنگکردنی DualSense یان DualShock 4 ڕێک بخەن.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>وەرگرتنی مۆدەکانی یاریی DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>پۆرتی مۆدەکانی یاری</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>کارپێکردنی جێگرەوەیەکی DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>هەندێک مۆد، وەک DualSense4GTAV، خۆیان دەکوژێننەوە ئەگەر بەرنامەیەک بە ناوی DSX کار نەکات. ئەمە جێگرەوەیەکی بچووک بەو ناوە کارپێدەکات لە کاتێکدا ڕاژەکارەکە گوێ دەگرێت.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>لەگەڵ ئەو مۆدانە کار دەکات کە بۆ DSX دروستکراون، وەک ئەوانەی بۆ GTA V، Red Dead Redemption 2، Skyrim و Forza. لە کاتێکدا ڕاژەکارەکە گوێ دەگرێت، PadForge پۆرتەکەی لەو شوێنە دەنووسێت کە ئەو مۆدانە بۆی دەگەڕێن.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>گوێگرتن لەسەر :{0}. {1} بۆ کۆنترۆڵەری مەجازیی {2} دەنێرێت.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>گوێگرتن لەسەر :{0}. {1} دەنێرێت، بەڵام هیچ کۆنترۆڵەرێکی مەجازی کۆنترۆڵەرێکی PlayStation ی لەسەر نییە.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>گوێگرتن لەسەر :{0}. {1} بۆ ژمارەی کۆنترۆڵەری {2} دەنێرێت، و هیچ کۆنترۆڵەرێکی مەجازی کە کۆنترۆڵەرێکی PlayStation ی لەسەرە ئەو ژمارەیەی نییە.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>گوێگرتن لەسەر :{0}. {1} دەنێرێت، بەڵام هیچ کۆنترۆڵەرێکی مەجازی DualSense یان DualShock 4 ی لەسەر نییە.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>گوێگرتن لەسەر :{0}. {1} بۆ ژمارەی کۆنترۆڵەری {2} دەنێرێت، و هیچ کۆنترۆڵەرێکی مەجازی کە DualSense یان DualShock 4 ی لەسەرە ئەو ژمارەیەی نییە.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>پۆرتی {0} لەلایەن بەرنامەیەکی ترەوە بەکاردێت، وەک DSX. دایبخە یان پۆرتێکی تر هەڵبژێرە.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>مۆدێکی یاری</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>لەگەڵ OpenTrack و هەر شوێنپێهەڵگرێک کار دەکات کە دەرچوونی UDP دەنێرێت یان بیرگەی هاوبەشی FreeTrack 2.0 دەنووسێت، و لەگەڵ ڕەنتایمێکی OpenXR لەسەر ئەم کۆمپیوتەرە کە بتوانێت دانیشتنێک لە پاشبنەمادا بەڕێوە ببات.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>پەڕگە نەدۆزرایەوە</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ناخوێندرێتەوە</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>پەڕگەی «{0}» نییە یان ناخوێندرێتەوە. PadForge تاریک پیشان دەدات تا پەڕگەکە دەگەڕێتەوە.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>پەڕگەی «{0}» هیچ ڕووکارێکی PadForge ی تێدا نییە. PadForge تاریک پیشان دەدات تا ڕووکارێکی تێدا دەبێت.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>پرۆفایلی «{0}» ڕووخساری یارییەکەی لەبەر کردووە. ڕووکارەکەت دەگەڕێتەوە کاتێک پرۆفایلێکی تر چالاک دەبێت.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>بزوێنەری تێخستن</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ڕەفتاری پشکنین و کارپێکردنی پاشبنەما ڕێک بخە.</value></data>
@@ -1044,6 +1051,7 @@
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>کۆنترۆڵەرەکە ئەو فەرمانەی وەرنەگرت کە ئامادەی دەکات، بۆیە هیچ نەنێردرا. دڵنیابە کە پەیوەستە و دووبارە بنێرەوە.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>ناردنەکە بەهۆی هەڵەیەک لە PadForge ڕاگیرا. فایلی لۆگ وردەکارییەکانی تێدایە.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>وێنەیەک هێشتا دەچێت بۆ کۆنترۆڵەرەکە. ناردنەکە ڕابگیرێت؟</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>بەردەوامبوون لە ناردن</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>فایلەکانی Controller Pak (*.mpk)|*.mpk|هەموو فایلەکان (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak پۆرتی {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>گەڕاندنەوەی Controller Pak</value></data>
@@ -1431,6 +1439,7 @@
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>کاڵبوونەوەی پاڵس</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>ڕێکخستنی ئامادە</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>دڵخواز</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (دروستکراوی بەکارهێنەر)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>ستیکەکان</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>تریگەرەکان</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV ەکان</value></data>
@@ -2411,7 +2420,6 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>ئەم کۆنترۆڵەرە مەگنێتۆمیتەری تێدایە. جێگیرکردنی یاو لەسەر باکووری موگناتیسی خلیسکانی هێواشی ئاسۆیی لە نیشانگرتنی جایرۆ لادەبات. سەرەتا کالیبرە بکە: کرتە لە کالیبرەکردن بکە، کۆنترۆڵەرەکە بە هەموو ئاراستەکاندا بە شێوەی ژمارە 8 بۆ چەند چرکەیەک بسووڕێنە، پاشان دووبارە کرتە بکە.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>جێگیرکردنی یاو بە قیبلەنما</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>خێراییەکی ڕاستکەرەوەی بچووک زیاد دەکات کە نیشانگرتنی ئاسۆیی بەرەو ئاراستەی موگناتیسی ڕادەکێشێت، بۆیە خلیسکان کەڵەکە نابێت. پێویستی بە کالیبرەکردنی پاشەکەوتکراوی مەگنێتۆمیتەر هەیە. ئەو نموونانەی کە کانزا یان موگناتیسی نزیک تێکیان دەدات بە شێوەی خۆکار ڕەت دەکرێنەوە.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>گەڕاندنەوە بۆ بنەڕەت (کوژاوە)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>لاسایکردنەوەی پیچ و ڕۆڵ</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>پیچ و ڕۆڵ لە ئەکسێلەرۆمیتەرەوە دەردەهێنرێن</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>جایرۆی ئەم کۆنترۆڵەرە تەنها سووڕانەوە بۆ چەپ و ڕاست هەست پێ دەکات. کاتێک لاسایکردنەوە چالاکە، PadForge پیچ و ڕۆڵ لە ئەکسێلەرۆمیتەرەوە دەردەهێنێت و لەگەڵ یاوی جایرۆ دەیاننێرێت بۆ ڕیزەکانی بەستنەوە و جووڵەی کۆنترۆڵەری مەجازی. ئەکسێلەرۆمیتەر ناتوانێت پاڵنان لە لاربوونەوە جیا بکاتەوە، بۆیە جووڵاندنی کۆنترۆڵەرەکە بەلادا یان بەرەو پێش بێ سووڕاندنی، وەک سووڕانەوەیەکی کورت دەخوێنرێتەوە.</value></data>
@@ -2803,7 +2811,6 @@
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>ستیکەکە بە دەوری لێوارەکەیدا بسووڕێنە بۆ نەخشەکێشانی ئەو لێوارەی پێی دەگات، پاشان دەیکاتەوە بە بازنەیەکی تەواو.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>گەڕاندنەوەی کالیبرەکردنی لێوار</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>گەڕاندنەوەی لادانی ناوەند Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>گەڕاندنەوە بۆ تیشکیی پێوانەکراو</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>گەڕاندنەوەی ناوچەی مردوو X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>گەڕاندنەوەی ناوچەی مردوو Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>گەڕاندنەوەی دژە-ناوچەی مردوو X</value></data>
@@ -3247,13 +3254,10 @@
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>گەڕاندنەوەی فلیک ستیک</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>خاڵ بۆ هەر 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ژمارەی جووڵەی ماوس بۆ یەک سووڕانی تەواوی 360°ی کامێرا. پەیوەستە بە هەستیاری ماوسی یارییەکە: بەرزی بکەرەوە ئەگەر فلیکێک کەمتر دەسووڕێت، نزمی بکەرەوە ئەگەر زیاتر دەسووڕێت.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>گەڕاندنەوە بۆ 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>کاتی فلیک</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>ماوەی تەواوبوونی فلیکێکی تەواوی 180°، بە خاوبوونەوە لە کۆتاییدا. سووڕانە کورتترەکان لە هەمان کاتدا تەواو دەبن.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>گەڕاندنەوە بۆ 0.1 چرکە</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>سنووری فلیک</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>ئەو لادانەی ستیک کە فلیکێک دەست پێدەکات، وەک بەشێک لە لادانی تەواو. لە کاتی فلیکدا، خاڵی بەردان دادەبەزێت بۆ 90%ی ئەمە.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>گەڕاندنەوە بۆ 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>گۆشەی چەسپاندن</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>فلیکەکە بە گۆشە جێگیرەکانەوە بچەسپێنە بۆ سووڕانی یەکگرتووتر. «تەنها پێشەوە» هەموو فلیکێک ڕاستەوخۆ بەرەو پێشەوە دەچەسپێنێت.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>بێ چەسپاندن</value></data>
@@ -3262,22 +3266,16 @@
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 پلە</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 پلە</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 پلە</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>گەڕاندنەوە بۆ بێ چەسپاندن</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>هێزی چەسپاندن</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>ئەوەندەی فلیکێک بەرەو گۆشەی چەسپێنراو ڕادەکێشرێت. 1 بە تەواوی دەچەسپێنێت، 0 چەسپاندن ناچالاک دەکات، بەهاکانی نێوانیان تێکەڵ دەکەن.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>گەڕاندنەوە بۆ 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>ناوچەی مردووی گۆشەی پێشەوە</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>فلیکێک لەناو ئەم گۆشەیە لە ڕاستەوخۆ پێشەوە هیچ ناسووڕێنێت. ڕێگەت دەدات ڕاکێشانێک دەست پێبکەیت بێ سووڕانی فلیک.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>گەڕاندنەوە بۆ 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>نەرمکردنی ڕاکێشان</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>ژاوەژاوی ڕاکێشانی لێوار نەرم دەکات. -1 پەنجەرەی پلەبەندی خۆکار بەکار دەهێنێت، 0 نەرمکردن دەکوژێنێتەوە، بەها گەورەترەکان سووڕانی گەورەتر لە هەر تیکێکدا نەرم دەکەن.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>گەڕاندنەوە بۆ خۆکار (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>ڕێگەدان بە فلیک لە کاتی چالاکبوون</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>لادانی سووڕانەوە</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>هەموو نەخشەی فلیک بەم ژمارە پلەیە دەسووڕێنێت. ئەرێنی بە ئاراستەی میلی کاتژمێرە. چەسپاندن دوای لادانەکە جێبەجێ دەکرێت.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>گەڕاندنەوەی لادانی سووڕانەوە</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>کاتێک ئەو چینەی فلیک ستیکی تێدایە چالاک دەبێت و ستیکەکە پێشتر لادراوە، فلیکەکە دەستبەجێ ئەنجام بدە. کوژاوە کامێراکە جێگیر دەهێڵێتەوە و سووڕانەوە لە گۆشەی ئێستای ستیکەوە بەدوادا دەچێت.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>گەڕاندنەوەی ڕێگەدان بە فلیک لە کاتی چالاکبوون</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>فیدباکی کۆتایی ئاراستەکردن</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نیشانەیەک لە کۆتایی بۆ ستیکی دۆخی ئاراستەکردن</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>کاتێک ستیکێک کە دۆخی ئاراستەکردنی بۆ دانراوە تا کۆتایی دەسووڕێنرێت، نیشانەیەک لێبدە (لەرزین، تریگەر، یان شریتی ڕووناکی) بۆ ئەوەی هەست بە سنوورەکە بکەیت. هەمووی بە بنەڕەت کوژاوەیە.</value></data>
@@ -3467,11 +3465,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>لێدانی هاپتیکی DualSense لەسەر ئەم کۆنترۆڵەرە</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>کاتێک یارییەک ئەم شوێنە وەک DualSenseێکی مەجازی بەکاردەهێنێت لەگەڵ دەنگی هاپتیکی دیزاینکراو، ئەو تراکە لەسەر کاراکەرەکانی ئەم کۆنترۆڵەرە لێبدە. Steam Controller 2026 لە ڕێگەی USB یان دۆنگڵەکەیەوە، و Flydigi Apex 6 Pro، خۆیان تراکەکە لێدەدەن. هەموو کۆنترۆڵەرەکانی تر، و ئەو Steam Controller ە لە ڕێگەی بلووتوس، تۆنێک وەردەگرن کە لە دەنگەکە دەرهێنراوە، کە لە هەستی دیزاینەرەکە نزیک دەبێتەوە بەڵام وەک خۆی دووبارەی ناکاتەوە.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>بەهێزکردنی هاپتیک</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>گەڕاندنەوە بۆ بنەڕەت (کوژاوە)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>گەڕاندنەوە بۆ بنەڕەت (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>سنووری فلتەری نزم-تێپەڕی کاراکەر</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>پەخشی هاپتیکی Steam Controller لە خوارەوەی ئەم لەرەلەرەدا دەهێڵێتەوە بۆ ئەوەی پادەکان بلەرزن لەبری ئەوەی بە بیستراوی دەنگ لێبدەن. نزیکەی 250 Hz کاراکەرەکان دەست دەکەن بە بیستران. بەرزی بکەرەوە بۆ وردەکاریی تیژتر، نزمی بکەرەوە بۆ کارکردنی بێدەنگتر.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>گەڕاندنەوە بۆ 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>تۆنەکانی سەرووی ئەم لەرەلەرە دەبڕدرێن یان دادەبەزێنرێن. بنەڕەتی 800 Hz لەرزینی بزوێنەر و بەرکەوتن دەهێڵێتەوە و بیپە تیژەکان دەگرێت.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>گەڕاندنەوەی تۆنە بەرزەکان</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>گەڕاندنەوەی سنووری تۆن</value></data>
@@ -4039,8 +4034,59 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>پرۆفایلی Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ماکرۆی Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ناوچەی نیشاندەر</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>شیفتی {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>لیستی چەرخ ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>ناوچەی نیشاندەر ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>ڕاگرتنی {0} ی ماوس ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>کرتەکردنی {0} ی ماوس ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>گۆڕینەوەی {0} ی ماوس ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>لێدانی لەرینەوە ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (کۆتایی بەردان)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>پەنجەلێدانی {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>تەقەی خۆکاری {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>ڕاگرتنی {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>گۆڕینەوەی {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>تووربۆی {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>دووجار پەستانی {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>پەستانی درێژی {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>هەنگاوی چەرخ ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>گۆڕینەوەی چەرخ ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>چەرخی تووربۆ ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>گواستنەوەی نیشاندەر ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>ڕێکخستنی LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>ناوەندکردنەوەی جایرۆ ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>جووڵاندنی کەمی نیشاندەر ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>کلیلی وێنەگرتنی شاشە ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>کیبۆردی سەر شاشە ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>ڕێکخستنی ڕەنگی ڕووناکی</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>ناوەندکردنەوەی کامێرا</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>گواستنەوەی نیشاندەر</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>جووڵاندنی کەمی نیشاندەر</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>وێنەگرتنی شاشە</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>کیبۆردی سەر شاشە</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>گۆڕینی چینی شیفت</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>هەڵکردنی چینێکی شیفت</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>کوژاندنەوەی چینێکی شیفت</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>ڕاگرتنی چینێکی شیفت</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>گۆڕینی ژمارەی یاریزان</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>نەبەستراو</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>گۆڕینەوەی دۆخی دێسکتۆپ</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>کلیلی سیستەمی Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>گۆڕینەوەی گەورەکەر</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>زیادکردنی ڕووناکیی شاشە</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>کەمکردنی ڕووناکیی شاشە</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>کوژاندنەوەی کۆنترۆڵەر</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>کردنەوەی ڕێکخەری Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>کردنەوەی مێنیوی خێرای Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>دەرچوون لە یاری</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>گۆڕینەوەی هاپتیک</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>گۆڕینەوەی HUD ی Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>گۆڕینەوەی لەرینەوە</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>سەپاندنی دوگمەی Guide</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>سووڕاندنی پێوانەکردنی جایرۆ</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>ڕووکردنە ئاراستەکە</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ڕاگرتن)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (بەردان)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (بەردان)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (چالاکبوون)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>کۆنفیگێک هەڵبژێرە بۆ بینینی ئەوەی دەگوازرێتەوە.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ئەوەی دەگوازرێتەوە</value></data>
@@ -4648,11 +4694,9 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>چین</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>ئەو چینە هەڵبژێرە کە ڕێگە بەم مێنیوە دەدات. هەر چینێک و بنچینە هەردووکیان لە ژێر چینە چالاکەکانی تریشدا ڕێگەی پێدەدەن. چینێکی ناودار دەبێت هەمان چینی چالاکی ئێستا بێت.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>گەڕاندنەوە بۆ هەر چینێک و کوژاندنەوەی کردنەوە بە ڕاگرتنی چین.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (لەسەر ئەم شوێنە لیست نەکراوە)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>چین مێنیوەکە کراوە ڕادەگرێت</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>ئەم مێنیوە کراوە بهێڵەوە لەکاتێکدا چینە ناودارەکەی چالاکە. تێخراوە فیزیکییە هەڵبژێردراوەکە دیارکەرەکە دەجووڵێنێت. هەر چینێک و بنچینە کردنەوەی ئاسایی ڕووکار بەکاردەهێنن.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>گەڕاندنەوە بۆ کردنەوە بە دەستلێدان یان لادان.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>جووڵاندن بە</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ئەو تێخراوە فیزیکییەی خانە دیارکراوەکە دەجووڵێنێت لەکاتێکدا چینەکە ئەم مێنیوە کراوە ڕادەگرێت.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>لە کۆنترۆڵەرە فیزیکییەکانی دیاریکراو بۆ ئەم شوێنە دەخوێندرێتەوە. چینەکە مێنیوەکە دەکاتەوە، و ئەم تێخراوە دەیجووڵێنێت. خانەکانی دیاری دەکەن کە چی دەری دەکات.</value></data>
@@ -4732,7 +4776,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>مۆتۆر</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>دابەشکردن بەپێی ئاراستە</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>ناوچەی مردووی ناوەند</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>گەڕاندنەوە بۆ ستیکی چەپ X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>گەڕاندنەوەی هێز (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>گەڕاندنەوەی ناوچەی مردووی ناوەند (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>گەڕاندنەوەی چالاککردنی لەرزینی گۆشەی سوکان</value></data>
@@ -5255,6 +5298,9 @@
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>گەورەکەر (لەکاتی ڕاگرتندا)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>لەکاتێکدا ئەم ماکرۆیە ڕاگیراوە گەورەکەرەکە پیشان دەدات، بۆ نیشانەگرتن بە دووربین. لە پەڕەی گەورەکەر ڕێکی بخە.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ئەو پەڕگەیە ڕووکاری PadForge نییە.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ناتوانێت ئەو پەڕگەیە بخوێنێتەوە.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ناتوانێت ئەو پەڕگەیە بدۆزێتەوە.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>ڕووکار نییە</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ڕووکارەکە پاشەکەوت نەکرا. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ڕووکاری نوێ</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ڕووکارەکە لەبەر دەکات لە کاتێکدا دروستی دەکەیت.</value></data>
@@ -5269,6 +5315,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>وەرگرتنی وێنەکە لە Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam هیچ وێنەیەکی پانی بۆ ئەم یارییە نییە.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>نەتوانرا پەیوەندی بە Steam بکرێت. پەیوەندییەکەت بپشکنە.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ناتوانێت وێنەی Steam بۆ ئەم یارییە بخوێنێتەوە.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>شوێن</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>وێنەکە لە پەنجەرەکەیدا بەرەو سەرەوە یان خوارەوە دەجووڵێنێت.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>پیشاندانی لۆگۆی یارییەکە</value></data>
@@ -5309,4 +5356,6 @@
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ئەو مۆدێلەی بۆ زنجیرەی ڕەسەنی ستار ترێک فیلمی لێ گیرا، وێنەگیراو لەلایەن Smithsonian National Air and Space Museum کە هەڵیگرتووە: وێنەی ڕووکاری ستار ترێک LCARS.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>وێنەی ڕووکار: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>چوارچێوەیەک لە ستار ترێک: نەوەی داهاتوو: وێنەی ڕووکاری ستار ترێک Starfleet. لە Memory Alpha دۆزرایەوە.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>شریتی ڕووناکی</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>شریتی ڕووناکیی {0}</value></data>
 </root>

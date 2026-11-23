@@ -1272,9 +1272,11 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The Wave effect as G-Helper sets it on those keyboards: 51 2C 04 three times, byte 4
         /// counting 02, 01, 00. The first report carries the speed (1E, G-Helper's Normal), the
-        /// brightness, 01 for its random colors and 02 in byte 9, and each report's answer is read
-        /// within G-Helper's 300 ms before the next goes out (ApplyLighting and ApplyChunked,
-        /// AsusKeyboard.cs:668-702, AuraSpeedByte, 663-666, USBTimeout, 302-305). Nothing saves the
+        /// brightness, 01 for its random colors and 02 in byte 9. Each report goes out after the
+        /// input already waiting is read away, the answers to the picture's reports among it, and
+        /// its own answer is read within G-Helper's 300 ms before the next goes out (ApplyLighting
+        /// and ApplyChunked, AsusKeyboard.cs:668-702, the drain in WriteForResponseLocked, line 337,
+        /// AuraSpeedByte, 663-666, USBTimeout, 302-305). Nothing saves the
         /// effect, so the stored one comes back at the next power cycle, as with
         /// <see cref="ClaymoreOwnEffect"/>. The crash path writes the three reports with no wait
         /// between them.</summary>
@@ -1283,6 +1285,7 @@ namespace PadForge.Common.Input.Peripherals
             var steps = new List<PluginStep>();
             for (int count = 2; count >= 0; count--)
             {
+                steps.Add(PluginStep.Drain());
                 steps.Add(PluginStep.Output(count == 2
                     ? Frame(65, 0x00, 0x51, 0x2C, 0x04, 0x02, 0x1E, 0x64, 0x01, 0x00, 0x02)
                     : Frame(65, 0x00, 0x51, 0x2C, 0x04, (byte)count)));

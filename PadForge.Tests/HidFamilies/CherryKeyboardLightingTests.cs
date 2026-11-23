@@ -62,7 +62,7 @@ namespace PadForge.Tests
             // LED 124 sits at row 5, column 20.
             Assert.Equal((20f, 5f), (lights[124].X, lights[124].Y));
             Assert.All(lights, l => Assert.Equal(0, l.Usage));
-            var map = new LightMap(lights, "t");
+            var map = new LightMap(lights);
             Assert.True(map.HasKeys);
             // 126 cells less the 16 NA of the grid are keys to name.
             Assert.Equal(126 - 16, map.UnnamedKeyCount);

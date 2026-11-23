@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Võrgus</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Võrguühenduseta</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tundmatu</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Vaikimisi</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Sirvi…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Jätka</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Peata</value></data>
@@ -272,6 +271,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Mootor peatati.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Viga: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Ei saanud luua: {0}.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Seadet ei saanud avada, lugeda ega vastendada. Diagnostikalogi nimetab selle.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>Kontrolleril {0} tekkis tõrge. Põhjus on diagnostikalogis.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>Sisendimootoris tekkis tõrge. Põhjus on diagnostikalogis.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL-i käivitamine ebaõnnestus. Põhjus on diagnostikalogis.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro seadistamine ebaõnnestus. Põhjus on diagnostikalogis.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Virtuaalse kontrolleri HIDMaestro profiil puudub. Diagnostikalogi nimetab selle.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Kontrolleril {0} ei õnnestunud võtta kasutusele kohandatud identiteeti ja paigutust ning see kasutab profiili enda omi.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiil vahetatud: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profiil vahetatud: Vaikimisi</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Vaikimisi</value></data>
@@ -544,15 +550,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Liikumisserveri port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Edastab güroskoobi ja kiirendusanduri andmeid emulaatoritele Cemu, Dolphin, Yuzu jt.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mängumodid</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lubab DSX-i jaoks tehtud mängumodidel määrata teie PlayStation-kontrollerite adaptiivseid päästikuid, valgusriba, mängijatulesid ja vaigistustuld.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Lubab DSX-i jaoks tehtud mängumodidel määrata DualSense'i või DualShock 4 adaptiivseid päästikuid, valgusriba, mängijatulesid ja vaigistustuld.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Võta vastu DSX-i mängumodid</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Mängumodi port</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Käivita DSX.exe asendaja</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Mõned modid, näiteks DualSense4GTAV, lülituvad ise välja, kui programmi nimega DSX ei tööta. See käivitab selle nimega väikese asendaja, kuni server kuulab.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Töötab DSX-i jaoks tehtud modidega, näiteks GTA V, Red Dead Redemption 2, Skyrim ja Forza omadega. Kuni server kuulab, kirjutab PadForge oma pordi sinna, kust need modid seda otsivad.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Kuulab pordil :{0}. {1} saadab virtuaalsele kontrollerile {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Kuulab pordil :{0}. {1} saadab, kuid ühelgi virtuaalsel kontrolleril pole PlayStation-kontrollerit.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kuulab pordil :{0}. {1} saadab kontrolleri indeksile {2} ja ühelgi PlayStation-kontrolleriga virtuaalsel kontrolleril pole seda indeksit.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Kuulab pordil :{0}. {1} saadab, kuid ühelgi virtuaalsel kontrolleril pole DualSense'i ega DualShock 4 kontrollerit.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kuulab pordil :{0}. {1} saadab kontrolleri indeksile {2} ja ühelgi virtuaalsel kontrolleril, millel on DualSense või DualShock 4, pole seda indeksit.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} on kasutusel teises programmis, näiteks DSX-is. Sulgege see või valige teine port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mängumod</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Töötab programmiga OpenTrack ja iga jälgijaga, mis saadab oma väljundi UDP kaudu või kirjutab FreeTrack 2.0 ühismällu, ning selles arvutis oleva OpenXR-i käituskeskkonnaga, mis suudab seanssi taustal käitada.</value></data>
@@ -642,6 +648,7 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Faili ei leitud</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ei saa lugeda</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Kujunduse „{0}“ fail puudub või seda ei saa lugeda. PadForge kasutab kujundust Tume, kuni fail on tagasi.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Kujunduse „{0}“ fail ei sisalda ühtegi PadForge kujundust. PadForge kasutab kujundust Tume, kuni see seda sisaldab.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profiil „{0}“ kasutab oma mängu kujundust. Teie kujundus naaseb, kui aktiivne on mõni teine profiil.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Sisendimootor</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Seadistage küsitlemise käitumine ja taustatöötlus.</value></data>
@@ -1047,6 +1054,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontroller ei võtnud vastu käsku, mis selle ette valmistab, seega ei saadetud midagi. Kontrollige, et see on ühendatud, ja saatke uuesti.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Saatmine peatus PadForge veateate tõttu. Üksikasjad on logifailis.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kontrollerisse on pilt veel teel. Kas peatada saatmine?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Jätka saatmist</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Paki failid (*.mpk)|*.mpk|Kõik failid (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Paki port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Taasta Controller Pak</value></data>
@@ -1434,6 +1442,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulsi hääbumine</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Eelseadistus</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kohandatud</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (kasutaja loodud)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Kangid</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Päästikud</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-id</value></data>
@@ -2414,7 +2423,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Sellel kontrolleril on magnetomeeter. Pöörde sidumine magnetilise põhjaga eemaldab güroskoobiga sihtimisest aeglase horisontaalse triivi. Kõigepealt kalibreerige: vajutage kalibreerimisnuppu, pöörake kontrollerit mõne sekundi jooksul kaheksakujuliselt läbi kõigi asendite ja vajutage uuesti.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Seo pööre kompassiga</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Lisab väikese parandava kiiruse, mis tõmbab horisontaalset sihtimist magnetilise kursi poole, nii et triiv ei saa koguneda. Vajab salvestatud magnetomeetri kalibreeringut. Lähedal asuva metalli või magnetite poolt häiritud näidud lükatakse automaatselt tagasi.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Lähtesta vaikeväärtusele (väljas)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pikikalde ja külgkalde simulatsioon</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Pikikalle ja külgkalle kiirendusanduri järgi</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Selle kontrolleri güroskoop tajub ainult pööramist vasakule ja paremale. Kui simulatsioon on sisse lülitatud, tuletab PadForge pikikalde ja külgkalde kiirendusandurist ning saadab need koos güroskoobi pöördega vastenduse ridadele ja virtuaalse kontrolleri liikumisse. Kiirendusandur ei erista lükkamist kallutamisest, seega loetakse kontrolleri liigutamist külgsuunas või ettepoole ilma pööramata lühiajaliseks pöördeks.</value></data>
@@ -2810,7 +2818,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Liigutage kangi mööda selle serva, et kaardistada saavutatav piir, ja seejärel kujundatakse see täisringiks.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Lähtesta piiri kalibreerimine</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Lähtesta keskpunkti nihe Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Lähtesta: skaleeritud radiaalne</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Lähtesta surnud tsoon X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Lähtesta surnud tsoon Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Lähtesta surnud tsooni kompensatsioon X</value></data>
@@ -3261,13 +3268,10 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Lähtesta Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkte 360° kohta</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Hiire loendused ühe täieliku 360° kaamerapöörde kohta. Sõltub mängu hiiretundlikkusest: suurendage, kui nips pöörab liiga vähe, vähendage, kui liiga palju.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Lähtesta väärtusele 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Nipsu aeg</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Kui kaua kulub täieliku 180° nipsu lõpetamiseks, aeglustuva lõpuga. Lühemad pöörded lõpevad sama ajaga.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Lähtesta väärtusele 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Nipsu lävi</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Kangi kõrvalekalle, mis alustab nipsu, murdosana täielikust kõrvalekaldest. Nipsu ajal langeb vabastuspunkt 90%-ni sellest.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Lähtesta väärtusele 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Kinnitusnurk</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Kinnitab nipsu fikseeritud nurkadele ühtlasemate pöörete jaoks. Ainult edasi kinnitab iga nipsu otse ette.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Kinnitamiseta</value></data>
@@ -3276,22 +3280,16 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 kraadi</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 kraadi</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 kraadi</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Lähtesta: kinnitamiseta</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Kinnituse tugevus</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Kui tugevalt nips kinnitusnurga poole tõmbab. 1 kinnitab täielikult, 0 keelab kinnitamise, vahepealsed väärtused segavad.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Lähtesta väärtusele 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Esinurga surnud tsoon</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Nips selle nurga piires otse eespool ei pööra midagi. Võimaldab alustada liigutust ilma nipsupöördeta.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Lähtesta väärtusele 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Liigutuse silumine</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Silub serval liigutamise müra. -1 kasutab automaatset astmelist akent, 0 lülitab silumise välja, suuremad väärtused siluvad suuremaid pöördeid tsükli kohta.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Lähtesta: automaatne (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Luba nips aktiveerimisel</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Pöörde nihe</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Pöörab kogu nipsukaarti nii mitme kraadi võrra. Positiivne on päripäeva. Kinnitamine rakendub pärast nihet.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Lähtesta pöörde nihe</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kui Flick Sticki sisaldav kiht aktiveerub ajal, mil kang on juba kõrvale kallutatud, käivitatakse nips kohe. Väljas hoiab kaamera paigal ja jälgib pööret kangi praegusest nurgast.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Lähtesta nipsu lubamine aktiveerimisel</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Roolilukuni jõudmise tagasiside</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Märguanne lõppasendis roolimisrežiimi kangile</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kui roolimisrežiimile seatud kang keeratakse lõpuni välja, esitatakse märguanne (vibratsioon, päästik või valgusriba), et tunneksite piiri. Vaikimisi kõik väljas.</value></data>
@@ -3481,11 +3479,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Esita DualSense'i haptikat sellel kontrolleril</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kui mäng juhib seda pesa virtuaalse DualSense'ina, millel on loodud haptiline heli, esitatakse see rada selle kontrolleri täituritel. Steam Controller 2026 USB või oma dongli kaudu ja Flydigi Apex 6 Pro esitavad raja ise. Kõik teised kontrollerid, samuti see Steam Controller Bluetoothi kaudu, saavad helist tuletatud toonid, mis ligikaudu jäljendavad kujundaja kavandatud tunnetust, kuid ei taasta seda täpselt.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptika võimendus</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Lähtesta vaikeväärtusele (väljas)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Lähtesta vaikeväärtusele (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Täituri madalpääsfiltri lõikesagedus</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Hoiab Steam Controlleri haptilise voo sellest sagedusest madalamal, et plaadid vibreeriksid, mitte ei esitaks kuuldavat heli. Umbes 250 Hz juures muutuvad täiturid kuuldavaks. Teravamate detailide jaoks suurendage, vaiksemaks mänguks vähendage.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Lähtesta väärtusele 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Sellest sagedusest kõrgemad toonid lõigatakse ära või viiakse alla. Vaikeväärtus 800 Hz säilitab mootori- ja löögivibratsiooni, kuid püüab kinni kõrged piiksud.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Lähtesta kõrged toonid</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Lähtesta tooni piir</value></data>
@@ -4054,8 +4049,59 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshopi profiil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshopi makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kursoripiirkond</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>{0} nihkekiht</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Ratta loend ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Kursoriala ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Hoia hiirenuppu {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Klõpsa hiirenuppu {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Lülita hiirenupp {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Haptiline impulss ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (vabastuse järg)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Toksa {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Automaattuli {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Hoia {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Lülita {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Turbo {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Topeltvajutus {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Pikk vajutus {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Ratta samm ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Lülita ratas ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Turboratas ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Kursori hüpe ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Määra LED ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Güroskoobi keskmestamine ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Kursori nihutamine ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Ekraanipildi klahv ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Ekraaniklaviatuur ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Määra valguse värv</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Keskmesta kaamera</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Kursori hüpe</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Nihuta kursorit</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Ekraanipilt</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Ekraaniklaviatuur</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Vaheta nihkekihti</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Lülita nihkekiht sisse</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Lülita nihkekiht välja</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Hoia nihkekihti</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Muuda mängija numbrit</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Seostamata</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Lülita töölauarežiim</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Steami süsteemiklahv</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Lülita suurendaja</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Heledus üles</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Heledus alla</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Lülita kontroller välja</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Ava Steami konfigureerija</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Ava Steami kiirmenüü</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Välju mängust</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Lülita haptika</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Lülita Steami HUD</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Lülita värin</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Sunni Guide-nupp</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Güroskoobi kalibreerimise pööre</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Pööra suunale</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hoidmine)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (vabastamine)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (vabastamine)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (rakendumine)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Valige konfiguratsioon, et näha, mis üle tuleb.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Mis üle tuleb</value></data>
@@ -4660,11 +4706,9 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Kiht</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Valige kiht, mis selle menüü lubab. Mis tahes kiht ja Põhikiht lubavad seda ka teiste aktiivsete kihtide all. Nimega kiht peab vastama praegu aktiivsele kihile.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Lähtesta väärtusele Mis tahes kiht ja lülita kihiga avatuna hoidmine välja.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (pole selles pesas loetletud)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Kiht hoiab menüü avatuna</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Hoiab selle menüü avatuna, kuni selle nimega kiht on aktiivne. Valitud füüsiline sisend juhib esiletõstu. Mis tahes kiht ja Põhikiht kasutavad tavalist pinna kaudu avamist.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Lähtesta avamisele puudutuse või kõrvalekalde korral.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Juhtimise sisend</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Füüsiline sisend, mis juhib esiletõstetud lahtrit, kuni kiht hoiab seda menüüd avatuna.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Loetakse sellele pesale määratud füüsilistest kontrolleritest. Kiht avab menüü ja see sisend juhib seda. Menüü lahtrid määravad selle väljundi.</value></data>
@@ -4744,7 +4788,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mootor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Suuna järgi jagatud</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Keskme surnud tsoon</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Lähtesta: vasak kang X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Lähtesta tugevus (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Lähtesta keskme surnud tsoon (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Lähtesta roolinurga vibratsiooni lubamine</value></data>
@@ -5261,6 +5304,9 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_LanguageRefs" xml:space="preserve"><value>Klingoni ja sindarini viited</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingoni ja sindarini tõlgete sõnu on kontrollitud allikatega klingon-assistant-data (Apache-2.0), boQwI' sõnastiku andmed, ja Eldamo (CC BY 4.0), elfi keelte leksikon, autor Paul Strack. Ainult sõnastikuandmed, midagi ei levitata.</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>See fail ei ole PadForge'i kujundus.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ei saa seda faili lugeda.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ei leia seda faili.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Pole kujundus</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Kujundust ei õnnestunud salvestada. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Uus kujundus</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge kasutab kujundust juba selle koostamise ajal.</value></data>
@@ -5275,6 +5321,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Pildi hankimine Steamist…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steamil pole sellele mängule laia pilti.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steamiga ei õnnestunud ühendust saada. Kontrollige ühendust.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ei saa selle mängu Steami pilti lugeda.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Asukoht</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Liigutab pilti selle aknas üles või alla.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Näita mängu logo</value></data>
@@ -5315,4 +5362,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Sarja Star Trek algse versiooni jaoks filmitud mudel, pildistanud Smithsonian National Air and Space Museum, kus seda hoitakse: sarja Star Trek kujunduse LCARS pilt.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Kujunduse pilt: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kaader sarjast Star Trek: Uus põlvkond: sarja Star Trek kujunduse Starfleet pilt. Leitud saidilt Memory Alpha.</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Valgusriba</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} valgusriba</value></data>
 </root>

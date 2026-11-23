@@ -53,46 +53,51 @@ namespace PadForge.SteamWorkshop.Translation
         /// "MOUSE_POSITION" and "add_layer" in the Menus editor. The dialog
         /// had a humanizer for exactly these tokens and the translator could
         /// not reach it, which made this class's own claim to be "the one
-        /// place that converts" false.</para></summary>
-        public static string CommandLabel(string token)
+        /// place that converts" false.</para>
+        /// <para>Each phrase is a string-table key, read through
+        /// <paramref name="nameFormat"/> (the app passes its lookup) or, with
+        /// none, its English in <see cref="TranslationNames.English"/>.</para></summary>
+        public static string CommandLabel(string token, Func<string, string> nameFormat = null)
         {
             if (string.IsNullOrWhiteSpace(token)) return null;
-            return CommandLabels.TryGetValue(token.Trim(), out var name) ? name : null;
+            if (!CommandKeys.TryGetValue(token.Trim(), out var key)) return null;
+            string text = nameFormat?.Invoke(key);
+            return string.IsNullOrEmpty(text) || text == key ? TranslationNames.English[key] : text;
         }
 
-        private static readonly System.Collections.Generic.Dictionary<string, string> CommandLabels =
+        private static readonly System.Collections.Generic.Dictionary<string, string> CommandKeys =
             new(StringComparer.OrdinalIgnoreCase)
             {
-            ["SET_LED"] = "Set light color",
-            ["CAMERA_RESET"] = "Recenter camera",
-            ["MOUSE_POSITION"] = "Warp cursor",
-            ["MOUSE_DELTA"] = "Nudge cursor",
-            ["SCREENSHOT"] = "Screenshot",
-            ["SHOW_KEYBOARD"] = "On-screen keyboard",
-            ["CHANGE_PRESET"] = "Switch shift layer",
-            ["ADD_LAYER"] = "Turn on a shift layer",
-            ["REMOVE_LAYER"] = "Turn off a shift layer",
-            ["HOLD_LAYER"] = "Hold a shift layer",
-            ["CHANGE_PLAYER_NUMBER"] = "Change player number",
-            ["EMPTY_BINDING"] = "Unbound",
-            ["EMPTY_SUB_COMMAND"] = "Unbound",
-            ["TOGGLE_LIZARD"] = "Toggle desktop mode",
-            ["TOGGLE_LIZARD_MODE"] = "Toggle desktop mode",
-            ["SYSTEM_KEY_0"] = "Steam system key",
-            ["SYSTEM_KEY_1"] = "Steam system key",
-            ["TOGGLE_MAGNIFIER"] = "Toggle magnifier",
-            ["BRIGHTNESS_UP"] = "Brightness up",
-            ["BRIGHTNESS_DOWN"] = "Brightness down",
-            ["CONTROLLER_POWEROFF"] = "Power off controller",
-            ["OPEN_CONFIGURATOR"] = "Open Steam configurator",
-            ["OPEN_QUICKMENU"] = "Open Steam quick menu",
-            ["QUIT_APPLICATION"] = "Quit game",
-            ["TOGGLE_HAPTICS"] = "Toggle haptics",
-            ["TOGGLE_HUD"] = "Toggle Steam HUD",
-            ["TOGGLE_RUMBLE"] = "Toggle rumble",
-            ["FORCE_GUIDE_UP"] = "Force Guide button",
-            ["DOTS_PER_360_CALIBRATION_SPIN"] = "Gyro calibration spin",
-            ["TURN_TO_FACE_DIRECTION"] = "Turn to face direction",
+            ["SET_LED"] = "Workshop_Command_SetLed",
+            ["CAMERA_RESET"] = "Workshop_Command_CameraReset",
+            ["MOUSE_POSITION"] = "Workshop_Command_MousePosition",
+            ["MOUSE_DELTA"] = "Workshop_Command_MouseDelta",
+            ["SCREENSHOT"] = "Workshop_Command_Screenshot",
+            ["SHOW_KEYBOARD"] = "Workshop_Command_ShowKeyboard",
+            ["CHANGE_PRESET"] = "Workshop_Command_ChangePreset",
+            ["ADD_LAYER"] = "Workshop_Command_AddLayer",
+            ["REMOVE_LAYER"] = "Workshop_Command_RemoveLayer",
+            ["HOLD_LAYER"] = "Workshop_Command_HoldLayer",
+            ["CHANGE_PLAYER_NUMBER"] = "Workshop_Command_ChangePlayerNumber",
+            ["EMPTY_BINDING"] = "Workshop_Command_Unbound",
+            ["EMPTY_SUB_COMMAND"] = "Workshop_Command_Unbound",
+            ["TOGGLE_LIZARD"] = "Workshop_Command_ToggleDesktopMode",
+            ["TOGGLE_LIZARD_MODE"] = "Workshop_Command_ToggleDesktopMode",
+            ["SYSTEM_KEY_0"] = "Workshop_Command_SystemKey",
+            ["SYSTEM_KEY_1"] = "Workshop_Command_SystemKey",
+            ["TOGGLE_MAGNIFIER"] = "Workshop_Command_ToggleMagnifier",
+            ["BRIGHTNESS_UP"] = "Workshop_Command_BrightnessUp",
+            ["BRIGHTNESS_DOWN"] = "Workshop_Command_BrightnessDown",
+            ["CONTROLLER_POWEROFF"] = "Workshop_Command_PowerOff",
+            ["OPEN_CONFIGURATOR"] = "Workshop_Command_OpenConfigurator",
+            ["OPEN_QUICKMENU"] = "Workshop_Command_OpenQuickMenu",
+            ["QUIT_APPLICATION"] = "Workshop_Command_QuitGame",
+            ["TOGGLE_HAPTICS"] = "Workshop_Command_ToggleHaptics",
+            ["TOGGLE_HUD"] = "Workshop_Command_ToggleHud",
+            ["TOGGLE_RUMBLE"] = "Workshop_Command_ToggleRumble",
+            ["FORCE_GUIDE_UP"] = "Workshop_Command_ForceGuide",
+            ["DOTS_PER_360_CALIBRATION_SPIN"] = "Workshop_Command_GyroCalibrationSpin",
+            ["TURN_TO_FACE_DIRECTION"] = "Workshop_Command_TurnToFace",
             };
 
         /// <summary><para>Names the control a macro hangs off, for the

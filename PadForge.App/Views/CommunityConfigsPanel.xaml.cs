@@ -1059,6 +1059,8 @@ namespace PadForge.Views
             BecomesGroup.Visibility = active == ManifestResultPanel ? Visibility.Visible : Visibility.Collapsed;
             GameLookGroup.Visibility = active == ManifestResultPanel && (_selectedGame?.AppId ?? 0) > 0
                 ? Visibility.Visible : Visibility.Collapsed;
+            // The line after the game look's switch goes and comes with it.
+            ShowGameLookStatus(GameLookStatus.Text);
             CanSaveChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -1206,47 +1208,25 @@ namespace PadForge.Views
         /// "Preset_1000001" and "Preset_1000002" for a config whose two
         /// layers are named "Deactivate trackpad" and "Menu save".</para>
         /// <para>The title may itself be a <c>#token</c> into the config's
-        /// localization block, so it resolves through there the same way the
-        /// translator's own PresetDisplayName does. Chips and manifest groups
-        /// have to agree, and now they read from the same two sources in the
-        /// same order.</para></summary>
-        private static string PresetLabel(SteamInputConfig parsed, SteamInputPreset preset)
-        {
-            string token = (preset.Name ?? string.Empty).Trim();
-            string fallback = token.Length == 0
-                ? "Preset " + preset.Id.ToString(CultureInfo.InvariantCulture)
-                : token;
-            if (token.Length == 0
-                || parsed?.ActionSetTitles == null
-                || !parsed.ActionSetTitles.TryGetValue(token, out var title)
-                || string.IsNullOrWhiteSpace(title))
-                return fallback;
+        /// localization block. Chips and manifest groups have to agree, so the
+        /// chip takes the translator's own name for the preset, with the same
+        /// options the translation run gets.</para></summary>
+        internal static string PresetLabel(SteamInputConfig parsed, SteamInputPreset preset)
+            => ConfigTranslator.PresetDisplayName(parsed, preset, WorkshopTranslationOptions(0, null));
 
-            title = title.Trim();
-            if (!title.StartsWith("#", StringComparison.Ordinal)) return title;
-
-            // A #token indexes the config's own localization table. Prefer
-            // the running UI language, then English, then any language that
-            // carries it, before giving up and showing the token.
-            foreach (var lang in PreferredConfigLanguages())
+        /// <summary>The options every Workshop translation runs with: the
+        /// config read in the interface language, and every name the
+        /// translator stores (an unnamed preset, menu or config, a macro's
+        /// verb, a mode shift's layer) taken from PadForge's string table.
+        /// The preset chips read their names with these options too.</summary>
+        internal static TranslationOptions WorkshopTranslationOptions(long fileId, IReadOnlySet<int> includedPresetIds)
+            => new TranslationOptions
             {
-                if (parsed.Localization != null
-                    && parsed.Localization.TryGetValue(lang, out var strings)
-                    && strings != null
-                    && strings.TryGetValue(title.Substring(1), out var localized)
-                    && !string.IsNullOrWhiteSpace(localized))
-                    return localized.Trim();
-            }
-            foreach (var strings in parsed.Localization?.Values
-                     ?? Enumerable.Empty<IReadOnlyDictionary<string, string>>())
-            {
-                if (strings != null
-                    && strings.TryGetValue(title.Substring(1), out var any)
-                    && !string.IsNullOrWhiteSpace(any))
-                    return any.Trim();
-            }
-            return fallback;
-        }
+                FileId = fileId,
+                IncludedPresetIds = includedPresetIds,
+                PreferredLanguages = PreferredConfigLanguages().ToList(),
+                NameFormat = Strings.Get,
+            };
 
         /// <summary>Steam's names for the config-localization languages, by
         /// the interface language they match: the "API language code" column
@@ -1480,10 +1460,13 @@ namespace PadForge.Views
             ShowGameLookStatus(reason);
         }
 
+        /// <summary>The line after the game look's switch. It shows only
+        /// beside the switch, so it never stands over another fill.</summary>
         private void ShowGameLookStatus(string text)
         {
             GameLookStatus.Text = text ?? string.Empty;
-            GameLookStatus.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+            GameLookStatus.Visibility = string.IsNullOrEmpty(text) || GameLookGroup.Visibility != Visibility.Visible
+                ? Visibility.Collapsed : Visibility.Visible;
         }
 
         /// <summary>Makes the picked game's look when the switch goes on, so
@@ -1507,8 +1490,7 @@ namespace PadForge.Views
                 if (cts.IsCancellationRequested) return;
                 if (made.Look == null)
                 {
-                    DropGameLook(made.Fault == Common.Themes.GameLookFault.LookupOff
-                        ? Strings.Instance.Profile_GameLook_LookupOff : Strings.Instance.ThemeBuilder_NoArt);
+                    DropGameLook(Common.Themes.GameLooks.FaultText(made.Fault));
                     return;
                 }
                 _madeLook = made;
@@ -1520,12 +1502,9 @@ namespace PadForge.Views
         }
 
         /// <summary>Waits for a look that is still being made, so a save
-        /// right after the switch takes it.</summary>
-        internal async Task PrepareSaveAsync()
-        {
-            try { await _lookTask; }
-            catch (OperationCanceledException) { }
-        }
+        /// right after the switch takes it. The making catches its own
+        /// cancel, so the wait never throws one.</summary>
+        internal Task PrepareSaveAsync() => _lookTask;
 
         // ─────────────────────────────────────────────
         //  Translator seam (#9 Phase B sibling)
@@ -1544,11 +1523,7 @@ namespace PadForge.Views
             if (PresetChips.Count > 0 && PresetChips.Any(p => !p.IsIncluded))
                 included = PresetChips.Where(p => p.IsIncluded).Select(p => p.Id).ToHashSet();
 
-            var options = new TranslationOptions
-            {
-                FileId = (long)item.FileId,
-                IncludedPresetIds = included,
-            };
+            var options = WorkshopTranslationOptions((long)item.FileId, included);
             var translated = new ConfigTranslator().Translate(parsed, options);
             var report = translated.Report ?? new TranslationReport();
 
@@ -1874,7 +1849,7 @@ namespace PadForge.Views
 
                 case "controller_action":
                     return PadForge.SteamWorkshop.Translation.SteamVocabulary
-                        .CommandLabel(first) ?? TitleFromToken(first);
+                        .CommandLabel(first, Strings.Get) ?? TitleFromToken(first);
 
                 case "game_action":
                     // "game_action FPSControls attack": the action itself,
@@ -2018,7 +1993,7 @@ namespace PadForge.Views
         /// reads as what it does ("Set light color") rather than as its
         /// spelled-out identifier ("Set Led").</summary>
         internal static string SpellSteamToken(string token)
-            => PadForge.SteamWorkshop.Translation.SteamVocabulary.CommandLabel(token)
+            => PadForge.SteamWorkshop.Translation.SteamVocabulary.CommandLabel(token, Strings.Get)
              ?? (XInputButtonNames.TryGetValue(token, out var xb) ? xb
              : TitleFromToken(token));
 

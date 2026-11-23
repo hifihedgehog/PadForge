@@ -195,6 +195,16 @@ namespace PadForge.Common.Input.Flydigi
             long now = Clock();
             if (now < Volatile.Read(ref entry.RetryAt)) return;
             if (Interlocked.Exchange(ref entry.Opening, 1) != 0) return;
+            QueueOpen(entry, ud, path);
+        }
+
+        /// <summary>The open, on a worker. In a method of its own: a lambda
+        /// in <see cref="OnPolled"/> that captured its parameters made the
+        /// compiler build the closure at that method's entry, 48 bytes for
+        /// every device on every poll, an Apex pad or not (the runtime meter
+        /// read about 580 bytes a pass on a PC with twelve rows).</summary>
+        private static void QueueOpen(Entry entry, UserDevice ud, string path)
+        {
             var candidate = Proto.CandidateModel(ud.VendorId, ud.ProdId);
             ThreadPool.UnsafeQueueUserWorkItem(_ =>
             {

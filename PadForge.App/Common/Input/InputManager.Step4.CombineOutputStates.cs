@@ -121,9 +121,9 @@ namespace PadForge.Common.Input
                             CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
                             // Bake the touchpad-click into the combined Gamepad
                             // bitmap so every downstream consumer (Step 5
-                            // virtual-controller submit, Step 6 retrieved-
-                            // states copy, UserEffectsDispatcher InputReactive
-                            // pulse detection) sees the press uniformly.
+                            // virtual-controller submit, UserEffectsDispatcher
+                            // InputReactive pulse detection) sees the press
+                            // uniformly.
                             // Without this, only Step 5's local copy + the
                             // packer saw the click; the dispatcher's
                             // SlotButtonsProvider read missed it and the
@@ -287,7 +287,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    RaiseError($"Error combining states for pad {padIndex}", ex);
+                    RaiseSlotError(padIndex, $"Error combining states for pad {padIndex}", ex);
                     CombinedOutputStates[padIndex].Clear();
                 }
             }

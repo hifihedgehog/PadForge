@@ -22,7 +22,8 @@ namespace PadForge.Converters
 
         // The colon between a host and its port: a host character before
         // it, one to five digits after it, and then the address ends, at a
-        // slash, a space, a comma, a closing bracket or the line's end.
+        // slash, a space, a comma, a semicolon, a closing bracket, a period
+        // that ends the sentence, or the line's end.
         private static readonly Regex PortColon = new(
             @"(?<=[\w\]]):(?=\d{1,5}(?:$|[/\s,;)]|\.(?:\s|$)))", RegexOptions.CultureInvariant);
 

@@ -92,15 +92,54 @@ namespace PadForge.Tests
                     // The profile itself keeps its name for HIDMaestro.
                     Assert.Equal("Custom", profiles.Single(p => p.Id == HMaestroProfileCatalog.CustomProfileId).Name);
 
-                    // A language change keeps the pick in a list made again.
+                    // A language change renames the entries in place, so the
+                    // picked entry, which the closed picker shows, reads the
+                    // new word. A list made again left the picker holding the
+                    // old entry and its old word.
                     var first = vm.PresetChoices;
                     Strings.ChangeCulture(CultureInfo.GetCultureInfo("de"));
-                    Assert.NotSame(first, vm.PresetChoices);
                     Assert.Equal(HMaestroProfileCatalog.CustomProfileId, picker.SelectedValue);
-                    Assert.NotNull(picker.SelectedItem);
+                    var shown = Assert.IsType<PadViewModel.PresetChoice>(picker.SelectedItem);
+                    Assert.Equal("Benutzerdefiniert", Strings.Instance.Pad_Preset_Custom);
+                    Assert.Equal(Strings.Instance.Pad_Preset_Custom, shown.Name);
+                    Assert.Same(first, vm.PresetChoices);
                 }
                 finally { Strings.ChangeCulture(before); }
             });
+        }
+
+        /// <summary>A profile the user imported is named in the picker with
+        /// the interface language's "(User Generated)" mark around its own
+        /// name, and follows a language change. The import wrote the English
+        /// mark into the stored name, so every language showed it.</summary>
+        [Fact]
+        public void AnImportedPresetIsMarkedInTheInterfaceLanguage()
+        {
+            var before = CultureInfo.CurrentUICulture;
+            try
+            {
+                string json = UserProfileProblemTests.ProfileJson("padforge-test-shown" + HMaestroProfileCatalog.UserProfileIdSuffix,
+                    edit: r => r["name"] = "Test Pad");
+                using var ctx = new HIDMaestro.HMContext();
+                ctx.LoadDefaultProfiles();
+                Assert.Empty(HMaestroProfileCatalog.LoadUserProfiles(ctx, new[] { json }));
+                var imported = ctx.GetProfile("padforge-test-shown" + HMaestroProfileCatalog.UserProfileIdSuffix);
+                Assert.NotNull(imported);
+                var builtIn = ctx.AllProfiles.First(p => p.IsDeployable && p.Id != imported.Id);
+
+                foreach (string culture in new[] { "de-DE", "en" })
+                {
+                    Strings.ChangeCulture(CultureInfo.GetCultureInfo(culture));
+                    string format = Strings.Instance.Pad_Preset_UserGenerated_Format;
+                    Assert.Contains("{0}", format);
+                    Assert.Equal(string.Format(format, "Test Pad"), HMaestroProfileCatalog.DisplayName(imported));
+                    Assert.Same(HMaestroProfileCatalog.DisplayName(imported), HMaestroProfileCatalog.DisplayName(imported));
+                    Assert.Equal(builtIn.Name, HMaestroProfileCatalog.DisplayName(builtIn));
+                }
+                // The profile keeps its own name for HIDMaestro.
+                Assert.Equal("Test Pad", imported.Name);
+            }
+            finally { Strings.ChangeCulture(before); }
         }
 
         /// <summary>Waits on the translation of Pad_Preset_Custom: the

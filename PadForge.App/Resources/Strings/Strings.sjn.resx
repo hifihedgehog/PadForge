@@ -100,7 +100,6 @@
   <data name="Common_Online" xml:space="preserve"><value>Iannannen</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Ú-iannannen</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ú-sinnen</value></data>
-  <data name="Common_Default" xml:space="preserve"><value>Senu</value></data>
   <data name="Common_Browse" xml:space="preserve"><value>Cesto…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Bado</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Posto</value></data>
@@ -285,6 +284,13 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Naur postannen.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Dŷl: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ú-carnen.</value></data>
+  <data name="Status_DeviceFailed" xml:space="preserve"><value>Carf ú-edrannen, ú-cethannen egor ú-sestannen. I narn tastaith esta ten.</value></data>
+  <data name="Status_SlotFailed_Format" xml:space="preserve"><value>{0} hirant dŷl. I narn tastaith gar i gaeth.</value></data>
+  <data name="Status_EngineFailed" xml:space="preserve"><value>I naur minnad hirant dŷl. I narn tastaith gar i gaeth.</value></data>
+  <data name="Status_SdlFailed" xml:space="preserve"><value>SDL ú-iestant. I narn tastaith gar i gaeth.</value></data>
+  <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>HIDMaestro ú-pannannen. I narn tastaith gar i gaeth.</value></data>
+  <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Panu HIDMaestro o vaethas nem ú-hirnen. I narn tastaith esta ten.</value></data>
+  <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ú-gedant i eneth a i phan garnen, a maetha hain o phanu dîn.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Panu gwistannen: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Panu gwistannen: Senu</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Senu</value></data>
@@ -557,15 +563,15 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Fen pethron mîn</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Anna sarth pirad a genediad adlod na Cemu, Dolphin, Yuzu a curu egel.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Tavn telias</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Tavn telias carnen an DSX pol sesta i das cammad, i rib celias, celias pen telias a celias pen glim vi maethas PlayStation lín.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Tavn telias carnen an DSX pol sesta i das cammad, i rib celias, celias pen telias a celias pen glim o DualSense egor DualShock 4.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Davo tavn telias DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Fen tavn telias</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Northo curu nem DSX.exe</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>Nodui tavn telias, sui DualSense4GTAV, lortha im pi curu adh i eneth DSX ú nor. Hen northa curu nem tithen adh i eneth hen lo i bethron lasta.</value></data>
   <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>Ianna gu tavn telias carnen an DSX, sui GTA V, Red Dead Redemption 2, Skyrim a Forza. Lo i bethron lasta, PadForge teitha i fen în vi sad i cesta i davn hen.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Lastad na :{0}. {1} menna na maethas nem {2}.</value></data>
-  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Lastad na :{0}. {1} menna, a maethas nem ú gar maethas PlayStation.</value></data>
-  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lastad na :{0}. {1} menna na noth maethas {2}, a maethas nem gu maethas PlayStation ú gar i noth hen.</value></data>
+  <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Lastad na :{0}. {1} menna, a maethas nem ú gar DualSense egor DualShock 4.</value></data>
+  <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lastad na :{0}. {1} menna na noth maethas {2}, a maethas nem gu DualSense egor DualShock 4 ú gar i noth hen.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Curu egel, sui DSX, maetha Fen {0}. Holo hon egor cilo fen egel.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Tavn telias</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Ianna gu OpenTrack a pân tirith dol i menna etholad UDP egor teitha haudhad govannen FreeTrack 2.0, a gu curu OpenXR vi garf nediad hen i pol northa carthas toblannen.</value></data>
@@ -655,9 +661,13 @@
   <data name="Settings_ThemeMissing" xml:space="preserve"><value>Parlas ú-hirnen</value></data>
   <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ú hennannen</value></data>
   <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>I parlas o “{0}” ú-hirnen egor ú hennannen. PadForge tana Morn naden i parlas dandol.</value></data>
+  <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>I parlas o “{0}” ú-gar cruith PadForge. PadForge tana Morn naden gar ten.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>I phanu “{0}” cola cruith i delias în. I gruith lín dandol ir panu egel carweg.</value></data>
   <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Cruith PadForge (*.pftheme)|*.pftheme</value></data>
   <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>I parlas hen ú cruith PadForge.</value></data>
+  <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ú-pol henna i parlas hen.</value></data>
+  <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ú-hir i parlas hen.</value></data>
+  <data name="Settings_ThemeNotATheme" xml:space="preserve"><value>Ú cruith</value></data>
   <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>I gruith ú-haudhannen. {0}</value></data>
   <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Cruith gîw</value></data>
   <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge cola i gruith mi echad în.</value></data>
@@ -672,6 +682,7 @@
   <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Gedad i em o Steam…</value></data>
   <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Pen em iaun an i delias hen vi Steam.</value></data>
   <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ú pol iannad na Steam. Cetho i iannad lín.</value></data>
+  <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ú-pol henna em Steam an i delias hen.</value></data>
   <data name="ThemeBuilder_Position" xml:space="preserve"><value>Sad</value></data>
   <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Mena i em am egor dan mi henneth în.</value></data>
   <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Tano têw i delias</value></data>
@@ -1094,6 +1105,7 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>I maethas ú-nabant i peth i feria ten, a alnad mennen. Tiro ce iannen, a menno ad.</value></data>
   <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>I vennad postant ah dŷl mi PadForge. I parlas haudhad gar ilnad.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Em eno menna na i maethas. Posto i vennad?</value></data>
+  <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Menno eno</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Parlas Controller Pak (*.mpk)|*.mpk|Il parlas (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak fen {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Dananno Controller Pak</value></data>
@@ -1435,7 +1447,7 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Dadhrad gant o muig mi sad iestad na pant mi sad meth. Ab sad meth i tas heb bellas pant.</value></data>
   <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Pothad mi pâd laew. Pothad thent mi raeth o iestad na meth. Nistad i tas felf sui sad pothad laew, ú-sui pothad brond min.</value></data>
   <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Panna Raeth a Bellas na noth i felf sui tas GameCube (iestad ~56%, meth ~63%, balt pant). Gwisto i nothrim ab, pi aníra felf egel.</value></data>
-  <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
+  <!-- Lighting group (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Celias</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Celias</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Sesto crui rib celias a men lhôn mi maethas annen. Teithad i delias ortha anuir. Cilith maethron tolir ir ú-maetha telias i rib celias.</value></data>
@@ -1658,6 +1670,7 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Gwathrad pothad</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Pan ferui</value></data>
   <data name="Pad_Preset_Custom" xml:space="preserve"><value>Sestannen</value></data>
+  <data name="Pad_Preset_UserGenerated_Format" xml:space="preserve"><value>{0} (Carnen o maethron)</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Bangath</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Tasath</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -2639,7 +2652,6 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Maethas sen cola tenu. Mangad pernad na forod haeda rain laidh o meithad pirad. Genedio minui: nisto Genedio, drinno i vaethas ben pân raith sui 8 an lû, ab hen nisto ad.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Mangad pernad na tenu</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Goianna lagor dithen tíradad i thag i meithad laidh na forod, an rain ú-pol ortha. Baura genediad tenu haudhannen. Hennad dŷr o raud nevui haedar.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Redhio na senu (Lorn)</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Bilthad nunnad a tholad</value></data>
   <data name="Pad_GyroSimulation_FoldHint" xml:space="preserve"><value>Nunnad a tholad o genediad adlod</value></data>
   <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>I pirad maethas sen cen ero pernad na hair a na fuir. Ah bilthad cui, PadForge echad nunnad a tholad o genediad adlod, a menna hain ah pernad pirad na theinas a na mîn i maethas nem. Genediad adlod ú-pol cen nistad o adlod, an mîn i vaethas laidh egor na nîf pen drinnad henna sui drinnad estent.</value></data>
@@ -3049,7 +3061,6 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Piro i bang os i glân dîn an sestad i daeg, a en tírado na corod pant.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Redhio genediad i daeg</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Redhio tíradad enedh Y</value></data>
-  <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redhio na corod senu</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Redhio sad lost X</value></data>
   <data name="Pad_ResetDeadZoneY" xml:space="preserve"><value>Redhio sad lost Y</value></data>
   <data name="Pad_ResetAntiDeadZoneX" xml:space="preserve"><value>Redhio dan-had lost X</value></data>
@@ -3501,13 +3512,10 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Redhio Cabed Bang</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Noth Nigol an 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Noth nigol an pernad min o 360° an i hen. Aphad felf nigol i delias: ortho ha pi cabed perna estent, dúdo ha pi cabed perna othovor.</value></data>
-  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Redhio na 14400</value></data>
   <data name="Settings_FlickTime" xml:space="preserve"><value>Lû Cabed</value></data>
   <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>I lû ir cabed pân o 180° tel, ah methed mae. Pernad estent tel mi lû ain.</value></data>
-  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Redhio na 0.1 s</value></data>
   <data name="Settings_FlickThreshold" xml:space="preserve"><value>Taeg Cabed</value></data>
   <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Haered bang ir cabed iesta, ah noth naden 1 an haered pân. Lo cabed, i sad leithiad dad na 90% o sen.</value></data>
-  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Redhio na 0.9</value></data>
   <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Tagad Naith</value></data>
   <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Taga i cabed na naith tagannen an pernad thand. Ero Nevrad taga il cabed na nevrad.</value></data>
   <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Pen Tagad</value></data>
@@ -3516,22 +3524,16 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90°</value></data>
   <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60°</value></data>
   <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45°</value></data>
-  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Redhio na Pen Tagad</value></data>
   <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Balt Tagad</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>I balt ir cabed thaga na naith tagannen. 1 taga pân, 0 lortha tagad, a noth im 0 a 1 cova.</value></data>
-  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Redhio na 1.0</value></data>
   <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Sad Lost Naith Nevrad</value></data>
   <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Cabed mi naith sen o nevrad ú-perna alnad. Sen anna le iesta whegrad pen pernad cabed.</value></data>
-  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Redhio na 0°</value></data>
   <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Pathad Whegrad</value></data>
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Patha lhôn whegrad edrain. -1 maetha i rhaed erui, 0 lortha pathad, a noth beleg patha pernad beleg.</value></data>
-  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Redhio na Erui (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Dav Cabed ir Echuidad</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Tíradad Pernad</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Perna sad cabed pân ah noth sen. Noth ortho perna na forvo. Tagad lúda ab tíradad.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Redhio Tíradad Pernad</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ir i dalan ah Cabed Bang echuia a i bang gwí haered, car i cabed hí. Lorn: i hen bar, a pernad aphad naith bang cýren.</value></data>
-  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Redhio Dav Cabed ir Echuidad</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Dangweth Taeg Drinnad</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Taith ir taeg pân an bang mi rhaed drinnad</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Ir bang mi rhaed drinnad perna naden taeg pân, car taith (pothad, tas egor rib celias) an felf i daeg. Pân lorn senu.</value></data>
@@ -3721,11 +3723,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Lenio Pothad Aphas DualSense mi Maethas Sen</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ir telias maetha rein sen sui DualSense nem ah lhôn pothad aphas, lenio ha mi carf pothad i maethas sen. Steam Controller 2026 ah USB egor lathron în, a Flydigi Apex 6 Pro, lenia i lhôn erui. Maethas egel il, a Steam Controller sen ah Bluetooth, ged glind o i lhôn, i biltha felf i tân, ú-naed.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Galu Pothad Aphas</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Redhio na Henu (Lorn)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Redhio na Henu (100%)</value></data>
   <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Taeg Haug Carf Pothad</value></data>
   <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Heb pothad aphas Steam Controller nu noth sen, an i plad aphas potha ú-lenia lhôn. Nevui 250 Hz i carf pothad pol lastannen. Ortho ha an pothad crisg, dúdo ha an telias tîn.</value></data>
-  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Redhio na 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Glind athar noth sen cristannen egor dúdannen. I senu 800 Hz heb pothad noriod a pothad dant, a ged glind orchal.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Redhio Glind Orchal</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Redhio Taeg Glind</value></data>
@@ -4326,8 +4325,59 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Panu Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Carthas Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Ardh i dill</value></data>
+  <data name="Workshop_Layer_ModeShift_Format" xml:space="preserve"><value>Gwistad {0}</value></data>
+  <data name="Workshop_Macro_WheelList_Format" xml:space="preserve"><value>Narth rind nigol ({0})</value></data>
+  <data name="Workshop_Macro_CursorRegion_Format" xml:space="preserve"><value>Ardh i dill ({0})</value></data>
+  <data name="Workshop_Macro_HoldMouse_Format" xml:space="preserve"><value>Manc nigol {0} ({1})</value></data>
+  <data name="Workshop_Macro_ClickMouse_Format" xml:space="preserve"><value>Nistad nigol {0} ({1})</value></data>
+  <data name="Workshop_Macro_ToggleMouse_Format" xml:space="preserve"><value>Gwistad nigol {0} ({1})</value></data>
+  <data name="Workshop_Macro_HapticPulse_Format" xml:space="preserve"><value>Pothad aphas estent ({0})</value></data>
+  <data name="Workshop_Macro_ReleaseTail_Format" xml:space="preserve"><value>{0} (ab leithiad)</value></data>
+  <data name="Workshop_Macro_Tap_Format" xml:space="preserve"><value>Aphad {0} ({1})</value></data>
+  <data name="Workshop_Macro_Autofire_Format" xml:space="preserve"><value>Rinad {0} ({1})</value></data>
+  <data name="Workshop_Macro_Hold_Format" xml:space="preserve"><value>Manc {0} ({1})</value></data>
+  <data name="Workshop_Macro_Toggle_Format" xml:space="preserve"><value>Gwistad {0} ({1})</value></data>
+  <data name="Workshop_Macro_Turbo_Format" xml:space="preserve"><value>Nistad laew {0} ({1})</value></data>
+  <data name="Workshop_Macro_DoublePress_Format" xml:space="preserve"><value>Nistad adu {0} ({1})</value></data>
+  <data name="Workshop_Macro_LongPress_Format" xml:space="preserve"><value>Nistad ann {0} ({1})</value></data>
+  <data name="Workshop_Macro_WheelTick_Format" xml:space="preserve"><value>Pâd rind nigol ({0})</value></data>
+  <data name="Workshop_Macro_ToggleWheel_Format" xml:space="preserve"><value>Gwistad talthad rind ({0})</value></data>
+  <data name="Workshop_Macro_TurboWheel_Format" xml:space="preserve"><value>Talthad rind laew ({0})</value></data>
+  <data name="Workshop_Macro_WarpCursor_Format" xml:space="preserve"><value>Sesto sad i dill ({0})</value></data>
+  <data name="Workshop_Macro_SetLed_Format" xml:space="preserve"><value>Sesto celias ({0})</value></data>
+  <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Enedh ad pirad ({0})</value></data>
+  <data name="Workshop_Macro_NudgeCursor_Format" xml:space="preserve"><value>Menno i dill ({0})</value></data>
+  <data name="Workshop_Macro_ScreenshotKey_Format" xml:space="preserve"><value>Ledil em cenedril ({0})</value></data>
+  <data name="Workshop_Macro_OnScreenKeyboard_Format" xml:space="preserve"><value>Pan ledil vi cenedril ({0})</value></data>
+  <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Sesto crui celias</value></data>
+  <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Redhio tírad</value></data>
+  <data name="Workshop_Command_MousePosition" xml:space="preserve"><value>Sesto sad i dill</value></data>
+  <data name="Workshop_Command_MouseDelta" xml:space="preserve"><value>Menno i dill</value></data>
+  <data name="Workshop_Command_Screenshot" xml:space="preserve"><value>Em cenedril</value></data>
+  <data name="Workshop_Command_ShowKeyboard" xml:space="preserve"><value>Pan ledil vi cenedril</value></data>
+  <data name="Workshop_Command_ChangePreset" xml:space="preserve"><value>Gwisto talan gwistad</value></data>
+  <data name="Workshop_Command_AddLayer" xml:space="preserve"><value>Echuido talan gwistad</value></data>
+  <data name="Workshop_Command_RemoveLayer" xml:space="preserve"><value>Lortho talan gwistad</value></data>
+  <data name="Workshop_Command_HoldLayer" xml:space="preserve"><value>Mango talan gwistad</value></data>
+  <data name="Workshop_Command_ChangePlayerNumber" xml:space="preserve"><value>Gwisto noth pen telias</value></data>
+  <data name="Workshop_Command_Unbound" xml:space="preserve"><value>Ú-sestannen</value></data>
+  <data name="Workshop_Command_ToggleDesktopMode" xml:space="preserve"><value>Gwistad men carf nediad</value></data>
+  <data name="Workshop_Command_SystemKey" xml:space="preserve"><value>Sarn curu Steam</value></data>
+  <data name="Workshop_Command_ToggleMagnifier" xml:space="preserve"><value>Gwistad heledh beleg</value></data>
+  <data name="Workshop_Command_BrightnessUp" xml:space="preserve"><value>Calad am</value></data>
+  <data name="Workshop_Command_BrightnessDown" xml:space="preserve"><value>Calad dad</value></data>
+  <data name="Workshop_Command_PowerOff" xml:space="preserve"><value>Lortho i vaethas</value></data>
+  <data name="Workshop_Command_OpenConfigurator" xml:space="preserve"><value>Edro cilith maethas Steam</value></data>
+  <data name="Workshop_Command_OpenQuickMenu" xml:space="preserve"><value>Edro narth lim Steam</value></data>
+  <data name="Workshop_Command_QuitGame" xml:space="preserve"><value>Holo i delias</value></data>
+  <data name="Workshop_Command_ToggleHaptics" xml:space="preserve"><value>Gwistad pothad aphas</value></data>
+  <data name="Workshop_Command_ToggleHud" xml:space="preserve"><value>Gwistad HUD Steam</value></data>
+  <data name="Workshop_Command_ToggleRumble" xml:space="preserve"><value>Gwistad pothad</value></data>
+  <data name="Workshop_Command_ForceGuide" xml:space="preserve"><value>Nisto sarn Tirith</value></data>
+  <data name="Workshop_Command_GyroCalibrationSpin" xml:space="preserve"><value>Genediad pirad ah pernad</value></data>
+  <data name="Workshop_Command_TurnToFace" xml:space="preserve"><value>Perno na râd</value></data>
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (manc)</value></data>
-  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (leithiad)</value></data>
+  <data name="Common_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (leithiad)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (echuidad)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Cilo panu an tana ma tôl.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ma tôl</value></data>
@@ -4975,11 +5025,9 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Talan</value></data>
   <data name="Menu_Layer_Tip" xml:space="preserve"><value>Cilo i dalan i dava hen narth. Talan Pân a Talath davar hon nu telain egel cui. Talan gu eneth baura i dalan cui sí.</value></data>
-  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Redhio na Talan Pân a lortho edrad mangannen o i dalan.</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ú mi narth hen rein)</value></data>
   <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>I dalan heb i narth edrannen</value></data>
   <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Hebo hen narth edrannen lo i dalan în cui. I minnad cilannen perna i calad. Talan Pân a Talath edrar sui senu.</value></data>
-  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Redhio na edrad gu aphad o haered.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Perno gu</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>I minnad i perna i sad sílannen lo i dalan heb hen narth edrannen.</value></data>
   <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Hennannen o i maethais annannen na hen rein. I dalan edra i narth, a hen minnad perna hon. I sad tanar i etholad în.</value></data>
@@ -5061,7 +5109,6 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Carf pothad</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Thago o raith</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Sad lost enedh</value></data>
-  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Redhio na Bang hair X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Redhio bellas (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Redhio sad lost enedh (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetEnable" xml:space="preserve"><value>Redhio Echuido pothad pernad</value></data>
@@ -5765,7 +5812,7 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX ú edanna man i cilith {0} dîn car, sí PadForge maetha i cilith dîn.</value></data>
   <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX ú edanna i nothrim minnad dîn. Panui DSX edannen maethar 41 na 44 sui canad raith, sí PadForge ceth hain sui.</value></data>
   <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ú teitha theinas sui hen, sí i parlas gwistannen eth DSX.</value></data>
-  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX gwista na pan ferui hen o ledil ferui. I garthas dîn bo i balt Carthas, ferui an iannad na sarn.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX gwista na pan ferui hen o ledil ferui. I garthas dîn nu Carthas &amp; Narth i vaethas, ferui an iannad na sarn.</value></data>
   <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Ú panu DSX edannen maetha {0}, sí PadForge ú cen man car.</value></data>
   <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX dav i thelias sesta hen ir i lang dîn cui, sí PadForge leithia hon na i thelias sui.</value></data>
   <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Mi Men senu ir Menna nothrim na garf lorn, DSX menna alnad dîn na i vaethas, sí PadForge leithia hen na i thelias sui.</value></data>
@@ -5776,6 +5823,25 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge heb {0} mi cilith curu dîn, eth pân panu.</value></data>
   <data name="Import_LayerName_Format" xml:space="preserve"><value>Talan {0}</value></data>
   <data name="Import_ShiftLayerName_Format" xml:space="preserve"><value>Shift {0}</value></data>
+  <data name="Import_TriggerPresetMacro_Format" xml:space="preserve"><value>Tas tad: {0}</value></data>
+  <data name="Import_LightbarMacro" xml:space="preserve"><value>Rib celias</value></data>
+  <data name="Import_ExtrasMacro_Format" xml:space="preserve"><value>Goiannad {0}</value></data>
+  <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Rib celias {0}</value></data>
+  <data name="Import_LaunchProgramMacro" xml:space="preserve"><value>Iesto Curu</value></data>
+  <data name="Import_StickRangeMacro_Format" xml:space="preserve"><value>Raeth {0}</value></data>
+  <data name="Import_UnnamedProfile" xml:space="preserve"><value>Panu gedannen</value></data>
+  <data name="Import_UnnamedMacro" xml:space="preserve"><value>Carthas gedannen</value></data>
+  <data name="Import_UnnamedPreset_Format" xml:space="preserve"><value>Pan ferui {0}</value></data>
+  <data name="Import_UnnamedRadialMenu_Format" xml:space="preserve"><value>Narth Rind {0}</value></data>
+  <data name="Import_UnnamedTouchMenu_Format" xml:space="preserve"><value>Narth Aphad {0}</value></data>
+  <data name="Import_MouseRegionMacro" xml:space="preserve"><value>Ardh nigol</value></data>
+  <data name="Import_GestureMacro_Format" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Import_Gesture_Tap" xml:space="preserve"><value>aphad</value></data>
+  <data name="Import_Gesture_Hold" xml:space="preserve"><value>manc</value></data>
+  <data name="Import_Gesture_DoubleTap" xml:space="preserve"><value>aphad adu</value></data>
+  <data name="Import_LeftTriggerEffectMacro" xml:space="preserve"><value>Cared tas hair</value></data>
+  <data name="Import_RightTriggerEffectMacro" xml:space="preserve"><value>Cared tas fuir</value></data>
+  <data name="Import_ButtonMappingMacro_Format" xml:space="preserve"><value>Theinas Sern {0}</value></data>
   <data name="Import_MenuItem_Format" xml:space="preserve"><value>Rein {0}</value></data>
   <data name="Import_Line_Controller" xml:space="preserve"><value>Maethas</value></data>
   <data name="Import_Line_Native" xml:space="preserve"><value>Heb i etholad dîn</value></data>

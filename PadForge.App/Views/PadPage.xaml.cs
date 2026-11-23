@@ -907,7 +907,7 @@ namespace PadForge.Views
 
         /// <summary>True while Search binds the page to each controller in
         /// turn to read which sections, parts and rows it shows
-        /// (SearchService.RefreshAvailability). The picture is left bound to
+        /// (SearchService.ReadOtherControllers). The picture is left bound to
         /// the controller it showed, which the page is bound to again before
         /// the read ends: binding a controller's 3D model is most of what a
         /// change of controller costs.</summary>
@@ -955,12 +955,12 @@ namespace PadForge.Views
             // Adaptive Triggers, Lighting, and Force Feedback groups all
             // reflect what the currently-SELECTED physical device on this
             // slot can do. Slots can have multiple devices assigned; the
-            // user picks which one's mappings they're editing via the
-            // device dropdown, and the configuration tabs follow that
+            // user picks which one's settings they're editing in the
+            // header's Driven by list, and the groups follow that
             // selection so a user editing the Xbox controller side of a
             // "DS5 + Xbox both mapped to one slot" setup doesn't see
-            // DualSense-specific tabs. When they switch the dropdown to
-            // the DualSense, the tabs reappear.
+            // DualSense-specific groups. When they pick the DualSense,
+            // the groups reappear.
             //
             // Adaptive Triggers: selected device is a DualSense or
             //   DualSense Edge (Sony VID 0x054C, PID 0x0CE6 or 0x0DF2).
@@ -969,7 +969,7 @@ namespace PadForge.Views
             //   input (Gamepad / Joystick / Driving / Flight / FirstPerson),
             //   or a haptic mouse, keyboard or the Razer Sensa row (#494).
             //   Other keyboards, mice, touchpads and MIDI controllers have
-            //   nothing to play rumble on, so the tab would be a no-op.
+            //   nothing to play rumble on, so the group would be a no-op.
             bool hasAdaptiveTriggers = false;
             // A Flydigi Apex 4, 5 or 6 Pro that answered as one (#586).
             var flydigiModel = PadForge.Engine.Flydigi.FlydigiApexModel.None;
@@ -2514,17 +2514,6 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Shift mode UI handlers (Issue #61 Phase 6)
-        //
-        //  + Shift Layer button opens the modal dialog, on Save splices
-        //  the new activator into SettingsManager.SlotMappingSets[N].
-        //  ShiftActivators and rebuilds the tab strip. Tab clicks set
-        //  PadViewModel.ActiveLayerMask which raises LayerActivated;
-        //  InputService.OnLayerActivated reloads MappingItems from the
-        //  selected layer's MappingRows.
-        // ─────────────────────────────────────────────
-
-        // ─────────────────────────────────────────────
         //  Sound macro action handlers (issue #83)
         // ─────────────────────────────────────────────
 
@@ -3065,6 +3054,17 @@ namespace PadForge.Views
             PadForge.Common.Input.SoundMacroService.Play(slot, null, action.SoundFilePath, action.SoundVolume, loop: false);
         }
 
+        // ─────────────────────────────────────────────
+        //  Shift mode UI handlers (Issue #61 Phase 6)
+        //
+        //  + Shift Layer button opens the modal dialog, on Save splices
+        //  the new activator into SettingsManager.SlotMappingSets[N].
+        //  ShiftActivators and rebuilds the layer chips. A layer chip's
+        //  click sets PadViewModel.ActiveLayerMask, which raises
+        //  LayerActivated. InputService.OnLayerActivated reloads
+        //  MappingItems from the selected layer's MappingRows.
+        // ─────────────────────────────────────────────
+
         private void AddShiftLayer_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPadVm == null) return;
@@ -3100,7 +3100,7 @@ namespace PadForge.Views
             if (dlg.ShowDialog() != true || dlg.Result == null) return;
 
             // Splice the new activator into the slot's MappingSet, rebuild
-            // the tab strip, switch to the new tab, mark settings dirty.
+            // the layer chips, switch to the new layer, mark settings dirty.
             slotMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
             // Build a new list and swap the reference, never Add in place.
             // The poll thread enumerates slotMs.ShiftActivators every frame
@@ -4588,12 +4588,12 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Lighting group: HEX color entry
+        //  Groups' visibility on a change of the slot's devices
         // ─────────────────────────────────────────────
 
-        /// <summary>Refreshes tab visibility when the slot's
-        /// MappedDevices collection changes — covers user
-        /// assigning/unassigning devices via the Devices page.</summary>
+        /// <summary>Refreshes the groups' visibility when the slot's
+        /// MappedDevices collection changes, as when the user assigns or
+        /// unassigns devices on the Devices page.</summary>
         private void OnMappedDevicesChanged(object sender,
             System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -4627,6 +4627,11 @@ namespace PadForge.Views
             if (item == null || item.Source == null) return;
             InputService?.DeleteCustomTouchpadGesture(item.Source.Name);
         }
+
+        // ─────────────────────────────────────────────
+        //  Lighting group: the light settings' boxes, the preview and
+        //  the key colors
+        // ─────────────────────────────────────────────
 
         private void OnDeviceConfigChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -4911,7 +4916,7 @@ namespace PadForge.Views
         }
 
         /// <summary>Adds the parts of the controller the base art leaves out,
-        /// as Buttons' picture draws them in 2D at rest
+        /// as the Mappings picture draws them in 2D at rest
         /// (ControllerModel2DView.BuildModel): the L2 and R2 trigger
         /// silhouettes behind the body (z 0, the body at z 1 covers their
         /// lower edge) and the stick caps in front of it (z 2). They stay
@@ -5316,6 +5321,10 @@ namespace PadForge.Views
                 BindingOperations.GetBindingExpression(box, TextBox.TextProperty)?.UpdateSource();
         }
 
+        // ─────────────────────────────────────────────
+        //  Lighting group: hex color entry
+        // ─────────────────────────────────────────────
+
         /// <summary>Parses a HEX color string (with or without leading #)
         /// and writes the components back into DeviceConfig. The
         /// per-channel sliders auto-update via their TwoWay bindings on
@@ -5386,6 +5395,11 @@ namespace PadForge.Views
                 SyncLightbarHexBox();
             }
         }
+
+        // ─────────────────────────────────────────────
+        //  Extended configuration fields, the preset and mapping
+        //  pickers' arrow keys, and the Extended slot's import and clone
+        // ─────────────────────────────────────────────
 
         private void ExtendedOemOverride_Toggled(object sender, RoutedEventArgs e)
         {

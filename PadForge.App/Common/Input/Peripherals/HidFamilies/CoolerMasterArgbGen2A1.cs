@@ -8,7 +8,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// Cooler Master's ARGB Gen 2 A1, A1 V2 and A1 Mini controllers (#557),
     /// 2516:0173, 01C9 and 01CB on interface 1, usage page 0xFF01
-    /// (CoolerMasterControllerDetect.cpp:52-54 and 412-414), lit as OpenRGB's
+    /// (CoolerMasterControllerDetect.cpp:52-54 and 452-454), lit as OpenRGB's
     /// CMARGBGen2A1Controller lights them in its Direct mode.
     ///
     /// <para>The protocol. Every frame is a 65-byte output report, report ID
@@ -99,7 +99,7 @@ namespace PadForge.Common.Input.Peripherals
             {
                 Family = Instance,
                 Name = name,
-                Map = new LightMap(lights, "OpenRGB RGBController_CMARGBGen2A1Controller.cpp, ports not asked yet")
+                Map = new LightMap(lights)
                 {
                     Product = Product(productId),
                 },
@@ -291,7 +291,7 @@ namespace PadForge.Common.Input.Peripherals
                     strips.Add(new LightStrip(number, A1MaxLeds, Math.Min(StripCounts.At(counts, number), A1MaxLeds)));
                 }
             }
-            return new LightMap(lights, "OpenRGB RGBController_CMARGBGen2A1Controller.cpp")
+            return new LightMap(lights)
             {
                 Product = Product(productId) + key,
                 Strips = strips,

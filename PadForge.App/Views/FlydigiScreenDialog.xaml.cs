@@ -390,13 +390,23 @@ namespace PadForge.Views
             // send cut off partway leaves the screen waiting, so the dialog
             // asks first and then stops it. The send hands the pad back on
             // its own thread.
-            if (!ConfirmDialog.Show(this, Strings.Instance.FlydigiScreen_Title, Strings.Instance.FlydigiScreen_LeaveWhileSending,
-                    Strings.Instance.Common_Stop))
+            if (!AskToStop(this))
             {
                 e.Cancel = true;
                 return;
             }
-            _sending.Cancel();
+            // The question is modal and pumps the dispatcher, so a send that
+            // ended while it was up has run its finally and cleared the
+            // send. That send needs no stop, and the dialog closes.
+            _sending?.Cancel();
         }
+
+        /// <summary>Asks whether to stop the send under way, true for Stop.
+        /// The dialog's own button reads Cancel during a send, so the
+        /// question's other answer reads Keep Sending: a second Cancel would
+        /// keep the send the user asked to cancel. A test sets it.</summary>
+        internal static Func<Window, bool> AskToStop = owner => ConfirmDialog.Show(owner, Strings.Instance.FlydigiScreen_Title,
+            Strings.Instance.FlydigiScreen_LeaveWhileSending, Strings.Instance.Common_Stop,
+            cancelText: Strings.Instance.FlydigiScreen_KeepSending);
     }
 }

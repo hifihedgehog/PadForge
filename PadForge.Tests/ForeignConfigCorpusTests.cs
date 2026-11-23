@@ -22,8 +22,13 @@ namespace PadForge.Tests
 
         public ForeignConfigCorpusTests(ITestOutputHelper output) => _output = output;
 
+        /// <summary>The folder the reference clones sit in: beside the
+        /// repository, or PADFORGE_CLONES_ROOT, which a build in a worktree
+        /// away from the clones sets to read the samples.</summary>
         private static string ClonesRoot()
         {
+            string named = Environment.GetEnvironmentVariable("PADFORGE_CLONES_ROOT");
+            if (!string.IsNullOrEmpty(named) && Directory.Exists(named)) return named;
             var dir = new DirectoryInfo(AppContext.BaseDirectory);
             while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
                 dir = dir.Parent;
@@ -346,7 +351,7 @@ namespace PadForge.Tests
                 Assert.True(m.Actions.Length > 0 || m.ConsumeTriggerButtons, $"{name}: macro {m.Name} does nothing");
                 // A DSX preset ships unbound, for the user to bind, and its
                 // line says so.
-                bool preset = result.Report.Entries.Any(e => e.ReasonKey == ImportReasons.DsxPreset && m.Name == "Triggers: " + e.Binding);
+                bool preset = result.Report.Entries.Any(e => e.ReasonKey == ImportReasons.DsxPreset && m.Name == string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Import_TriggerPresetMacro_Format, e.Binding));
                 Assert.True(m.TriggerMode == ViewModels.MacroTriggerMode.Always || !string.IsNullOrEmpty(m.TriggerInputs) || preset,
                     $"{name}: macro {m.Name} has no trigger");
             }

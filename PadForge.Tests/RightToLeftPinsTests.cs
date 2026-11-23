@@ -185,7 +185,7 @@ namespace PadForge.Tests
                 ["TriggerEffectGraph.xaml.cs"] = 2,
                 ["TriggerTravelArc.xaml.cs"] = 2,
                 ["VRPreviewView.xaml.cs"] = 4,
-                ["WorkshopControllerPreview.xaml.cs"] = 2,
+                ["WorkshopControllerPreview.xaml.cs"] = 3,
             };
             Assert.Equal(expected, found);
 

@@ -50,7 +50,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 {
                     Family = this,
                     Name = "QMK Keyboard",
-                    Map = new LightMap(new[] { WholeLight() }, "QMK, from the keyboard") { Product = key },
+                    Map = new LightMap(new[] { WholeLight() }) { Product = key },
                     RepaintMs = QmkLighting.RepaintMs,
                     Begin = (io, wait) => Begin(io, wait, key),
                 };
@@ -158,7 +158,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                 var targets = (protocol >= ChannelsFrom ? ByChannel(io, product) : WithoutChannels(io))
                     .Where(target => target != null).ToList();
                 if (targets.Count == 0) return null;
-                return new ViaSession(targets, new LightMap(new[] { WholeLight() }, "QMK VIA, from the keyboard") { Product = product });
+                return new ViaSession(targets, new LightMap(new[] { WholeLight() }) { Product = product });
             }
 
             private static IEnumerable<Target> ByChannel(IHidReportChannel io, string product)
@@ -401,7 +401,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     }
                 }
                 if (lights.Count == 0) return null;
-                return new OpenRgbProtocolSession(revision, new LightMap(lights, "QMK OpenRGB, from the keyboard") { Product = product }, direct, mode);
+                return new OpenRgbProtocolSession(revision, new LightMap(lights) { Product = product }, direct, mode);
             }
 
             /// <summary>Revision D and E number each LED in its frame, four bytes each. Earlier

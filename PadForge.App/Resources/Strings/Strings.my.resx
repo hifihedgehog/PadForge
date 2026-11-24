@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ခဏတာမှတ်တမ်း သိမ်းရန်</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>နောက်ဆုံး အင်ဂျင်ဖြစ်ရပ်များကို ဖိုင်အသစ်တစ်ခုသို့ သိမ်းဆည်းသည်။ ချို့ယွင်းချက်ရှာဖွေရေး မှတ်တမ်း ပိတ်ထားသော်လည်း အလုပ်လုပ်သည်။</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>မှတ်တမ်းဖိုင်တွဲ ဖွင့်ရန်</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ပြဿနာကို မှတ်တမ်းတင်ရန်</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်း စတင်ရန်</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်း ရပ်ရန် ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}၊ {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>“မှတ်တမ်းတင်ခြင်း ရပ်ရန်” နှိပ်သည်အထိ၊ 10 မိနစ်အထိ သို့မဟုတ် zip 20 MB အထိ မှတ်တမ်းတင်ပြီးနောက် အစီရင်ခံစာတွင် ပူးတွဲရန် အသင့်ဖြစ်အောင် zip ကို Explorer တွင် ရွေးပေးသည်။</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>စတင်ပါ၊ ပြဿနာ ဖြစ်အောင် လုပ်ပါ၊ ထို့နောက် ရပ်ပါ။ PadForge ဘေးရှိ ဖိုင်တစ်ခုတွင် PadForge ဖတ်ခဲ့၊ ပို့ခဲ့၊ မှတ်တမ်းတင်ခဲ့သမျှနှင့် ဘာမှားသွားသည်ကို အကျဉ်းချုပ် ပါဝင်သည်။ မှတ်တမ်းတင်နေစဉ် ကီးဘုတ်များနှင့် မောက်စ်များ အပါအဝင် စက်ပစ္စည်းတိုင်းတွင် နှိပ်သော ခလုတ်တိုင်း ဖိုင်ထဲတွင် ပါသည်။ မည်သည့်အရာမျှ မရေးမီ အသုံးပြုသူအမည်များ၊ နံပါတ်စဉ်များ၊ လိပ်စာများနှင့် ရိုက်ထည့်သော အမည်များကို အစားထိုးသည်။</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>အကျဉ်းချုပ်ကို ရေးနေသည်…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} ကို သိမ်းပြီးပါပြီ</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်း မစတင်ခဲ့ပါ။ ဖိုင်ထဲမှ ဖယ်ထုတ်နိုင်မည် မဟုတ်သော ဤ PC ၏ ကိုယ်ရေးတန်ဖိုးတစ်ခုကို စစ်ဆေးချက်က တွေ့ရှိခဲ့သည်။</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်း မစတင်ခဲ့ပါ။ {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>နောက်ဆုံး မှတ်တမ်းတင်ချက်ကို အပြီးသတ်နေဆဲ ဖြစ်သည်။</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>“နောက်ဆုံး 60 စက္ကန့်ကို ထိန်းထားရန်” ပိတ်ထားသဖြင့် သိမ်းစရာ မရှိပါ။</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge မရပ်ခဲ့သော မှတ်တမ်းတင်ချက်ကို အပြီးသတ်ခဲ့သည်: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>နောက်ဆုံး 60 စက္ကန့်ကို ထိန်းထားရန်</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>အင်ဂျင် လည်ပတ်နေစဉ် ညတိုင်း တစ်ကြိမ်သာ ပေါ်သော ပြဿနာအတွက် မှတ်တမ်းတင်ချက်တွင် ပါမည့်အရာ၏ နောက်ဆုံး တစ်မိနစ်ကို မှတ်ဉာဏ်ထဲတွင် ထိန်းထားသည်။ “နောက်ဆုံး 60 စက္ကန့်ကို သိမ်းရန်” က ၎င်းကို ဖိုင်အဖြစ် ရေးသည်။</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>နောက်ဆုံး 60 စက္ကန့်ကို သိမ်းရန်</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ရိုက်ထည့်သော စာလုံးများနှင့် ဂဏန်းများကို ခလုတ်တစ်ခုအဖြစ် ရေးရန်</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>မည်သည့်မက်ပင်း သို့မဟုတ် မက်ခရိုကမျှ မဖတ်သော စာလုံးနှင့် ဂဏန်း ခလုတ်များကို မှတ်တမ်းတင်ချက်က ခလုတ်တစ်ခုအဖြစ် ရေးပြီး နှိပ်မှုတိုင်းကို ၎င်း၏ ကိုယ်ပိုင်အချိန်ဖြင့် ရေးသည်။ အခြားခလုတ်တိုင်းနှင့် မက်ပင်း သို့မဟုတ် မက်ခရို ဖတ်သော ခလုတ်တိုင်းကို နှိပ်သည့်အတိုင်း ရေးသည်။</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>နောက်ဆုံး 60 စက္ကန့်ကို ထိန်းထားရန်၊ ရိုက်ထည့်သော စာလုံးများနှင့် ဂဏန်းများကို ခလုတ်တစ်ခုအဖြစ် ရေးရန်</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>အက်ပ် ဗားရှင်း</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ရန်တိုင်း</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL ဗားရှင်း</value></data>
@@ -5429,4 +5448,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation မှ ရုပ်ကွက်တစ်ကွက်: Star Trek သီမ် Starfleet ၏ ပုံ။ Memory Alpha တွင် တွေ့ရှိသည်။</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>အလင်းတန်း</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} အလင်းတန်း</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ပြဿနာ မှတ်တမ်းတင်ခြင်း</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်း စတင်ရန် သို့မဟုတ် ရပ်ရန်</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>မှတ်တမ်းတင်ချက်တွင် အမှတ်အသားပြုရန်</value></data>
 </root>

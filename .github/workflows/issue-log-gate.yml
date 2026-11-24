@@ -4,10 +4,12 @@
 # report filed after the form began asking for a log. An edit by anyone else
 # and a reopening do not run it, so the owner touching an older report never
 # deletes it. A report must carry a log: a file attached in its "Log files"
-# section (GitHub stores an attached file at github.com/user-attachments/files/...),
-# or the diagnostics log's own lines pasted there (they start with a time such
-# as 18:57:09.874). A screenshot is not a log. A report without one is labeled
-# missing-logs, answered with how to capture a log, closed as not planned,
+# section (GitHub stores an attached file at github.com/user-attachments/files/...,
+# a problem recording's .zip among them), or lines of a log pasted there: a
+# problem recording's (they start with the seconds since its start, such as
+# 12.345678, and a layer letter) or the diagnostics log's (they start with a
+# time such as 18:57:09.874). A screenshot is not a log. A report without one
+# is labeled missing-logs, answered with how to capture a log, closed as not planned,
 # locked, saved as one Markdown file in the private repository
 # PadForge-discussion-archive, and then deleted with ISSUE_BOT_TOKEN, the
 # owner's token, as the discussion pause does. A report that could not be saved
@@ -74,8 +76,10 @@ jobs:
           awk '/^### /{on = ($0 ~ /^### Log files/)} on' "$BODY_FILE" > "$SECTION"
           ATTACHED=$(grep -cE 'github\.com/user-attachments/files/|github\.com/hifihedgehog/PadForge/files/' "$SECTION" || true)
           PASTED=$(grep -cE '^[[:space:]]*[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3} [A-Z]' "$SECTION" || true)
-          echo "attached=$ATTACHED pasted=$PASTED"
-          if [ "$ATTACHED" -gt 0 ] || [ "$PASTED" -ge 3 ]; then
+          # A problem recording's event lines: seconds to six decimals, a layer letter, a subject.
+          RECORDED=$(grep -cE '^[[:space:]]*-?[0-9]+\.[0-9]{6} [IOSFTWELM] [A-Z0-9-]+' "$SECTION" || true)
+          echo "attached=$ATTACHED pasted=$PASTED recorded=$RECORDED"
+          if [ "$ATTACHED" -gt 0 ] || [ "$PASTED" -ge 3 ] || [ "$RECORDED" -ge 3 ]; then
             echo "missing=false" >> "$GITHUB_OUTPUT"
           else
             echo "missing=true" >> "$GITHUB_OUTPUT"
@@ -95,10 +99,12 @@ jobs:
           To capture one:
 
           1. In PadForge, open **Settings** and find the **Diagnostics** card.
-          2. Turn on **Keep a Diagnostics Log**.
-          3. Reproduce the problem.
-          4. Click **Save Snapshot**, then **Open Log Folder**.
-          5. File a new report and drag `diagnostics.log` and the snapshot file into its **Log files** box. If PadForge crashed, add `crash.log` from the same folder.
+          2. On the **Record a Problem** row, click **Start Recording**.
+          3. Make the problem happen.
+          4. Click **Stop Recording**. PadForge selects the recording in Explorer.
+          5. File a new report and drag that file, `PadForge-recording-(date).zip`, into its **Log files** box as it is. If PadForge crashed, add `crash.log` from the same folder.
+
+          For a problem you cannot make happen on demand, turn on **Keep a Diagnostics Log** instead. When the problem comes, click **Save Snapshot**, then **Open Log Folder**, and drag `diagnostics.log` and the snapshot file into the report.
 
           Details are in the [Logs and diagnostics](https://padforge.org/docs/troubleshooting/#logs-and-diagnostics) section of the docs.
           EOF

@@ -3019,6 +3019,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsRunProgramType));
                     OnPropertyChanged(nameof(IsProfileShortcutType));
                     OnPropertyChanged(nameof(ShowsProfileShortcutName));
+                    OnPropertyChanged(nameof(IsProblemRecordingType));
                     OnPropertyChanged(nameof(IsTextBlockType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
@@ -3374,6 +3375,9 @@ namespace PadForge.ViewModels
 
         /// <summary>True when the shortcut names one profile.</summary>
         public bool ShowsProfileShortcutName => IsProfileShortcutType && _profileShortcutMode == PadForge.Services.SwitchProfileMode.Specific;
+
+        /// <summary>True when Type is Problem Recording (#597).</summary>
+        public bool IsProblemRecordingType => _type == MacroActionType.ProblemRecording;
 
         /// <summary>True when Type is TextBlock (#201). Gates the multiline
         /// text editor panel.</summary>
@@ -4873,6 +4877,39 @@ namespace PadForge.ViewModels
             _ => string.IsNullOrWhiteSpace(_profileShortcutName)
                 ? Strings.Instance.MacroAction_Type_ProfileShortcut
                 : string.Format(Strings.Instance.MacroAction_ProfileShortcut_Format, _profileShortcutName),
+        };
+
+        // ── Problem Recording (for MacroActionType.ProblemRecording, #597) ──
+
+        private ProblemRecordingMode _problemRecordingMode = ProblemRecordingMode.Toggle;
+
+        public ProblemRecordingMode ProblemRecordingMode
+        {
+            get => _problemRecordingMode;
+            set
+            {
+                if (SetProperty(ref _problemRecordingMode, value))
+                {
+                    OnPropertyChanged(nameof(ProblemRecordingModeIndex));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        /// <summary>The Mode list's position, in <see cref="ViewModels.ProblemRecordingMode"/>'s order.</summary>
+        public int ProblemRecordingModeIndex
+        {
+            get => (int)_problemRecordingMode;
+            set => ProblemRecordingMode = Enum.IsDefined(typeof(ProblemRecordingMode), value)
+                ? (ProblemRecordingMode)value
+                : ProblemRecordingMode.Toggle;
+        }
+
+        private string ProblemRecordingSummary => _problemRecordingMode switch
+        {
+            ProblemRecordingMode.Mark => Strings.Instance.MacroAction_ProblemRecording_Mark,
+            ProblemRecordingMode.SaveLastMinute => Strings.Instance.Settings_RecordProblem_SaveLastMinute,
+            _ => Strings.Instance.MacroAction_ProblemRecording_Toggle,
         };
 
         // ── Run program (for MacroActionType.RunProgram, user request) ──
@@ -6472,6 +6509,7 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
                     MacroActionType.ProfileShortcut => ProfileShortcutSummary,
+                    MacroActionType.ProblemRecording => ProblemRecordingSummary,
                     MacroActionType.ToggleScreenOverlay => _screenOverlayNumber == 0
                         ? Strings.Instance.MacroAction_ToggleScreenOverlay
                         : string.Format(Strings.Instance.MacroAction_ToggleScreenOverlay_Format, _screenOverlayNumber),
@@ -7598,7 +7636,25 @@ namespace PadForge.ViewModels
         /// with its smoothed output, and a Toggle keeps the state its input
         /// last set (SourceKindRuntime.CenterMouseTravel). One-shot. Ordinal
         /// pinned.</summary>
-        CenterMouseSteering = 71
+        CenterMouseSteering = 71,
+
+        /// <summary>Starts or stops a problem recording, marks the one that
+        /// runs, or saves the last minute kept (#597), from the controller,
+        /// so nobody has to leave the game to do it. One-shot. Ordinal
+        /// pinned.</summary>
+        ProblemRecording = 72
+    }
+
+    /// <summary>What a <see cref="MacroActionType.ProblemRecording"/> step
+    /// does (#597). Saved by name. New members go at the end.</summary>
+    public enum ProblemRecordingMode
+    {
+        /// <summary>Starts a recording, or stops the one that runs.</summary>
+        Toggle = 0,
+        /// <summary>Puts a marker into the recording at this moment.</summary>
+        Mark = 1,
+        /// <summary>Writes what Keep the Last 60 Seconds holds.</summary>
+        SaveLastMinute = 2
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

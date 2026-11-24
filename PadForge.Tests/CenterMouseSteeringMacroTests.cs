@@ -133,7 +133,7 @@ namespace PadForge.Tests
         public void TheAction_IsAppendedAt71_AndSitsInBothLoops()
         {
             Assert.Equal(71, (int)MacroActionType.CenterMouseSteering);
-            Assert.Equal(MacroActionType.CenterMouseSteering, Enum.GetValues<MacroActionType>()[^1]);
+            Assert.Equal(MacroActionType.CenterMouseSteering, Enum.GetValues<MacroActionType>()[^2]);
 
             string loops = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs");
             Assert.Equal(2, loops.Split("case MacroActionType.CenterMouseSteering:").Length - 1);

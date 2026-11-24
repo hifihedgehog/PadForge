@@ -849,6 +849,25 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Guardar instantâneo</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Guarda os eventos mais recentes do motor num novo ficheiro. Funciona mesmo com o registo de diagnóstico desligado.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Abrir pasta dos registos</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Gravar um problema</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Iniciar gravação</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Parar gravação ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grava até Parar gravação, 10 minutos ou um zip de 20 MB, e depois seleciona o zip no Explorer, pronto a anexar a um relatório.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Inicie, faça o problema acontecer e pare. Um ficheiro junto ao PadForge contém tudo o que o PadForge leu, enviou e registou, com um resumo do que correu mal. Todas as teclas e botões premidos em todos os dispositivos durante a gravação ficam no ficheiro, teclados e ratos incluídos. Nomes de utilizador, números de série, endereços e nomes escritos são substituídos antes de se escrever o que quer que seja.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>A escrever o resumo…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Guardado {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>A gravação não começou. Uma verificação encontrou um valor privado deste PC que não ficaria fora do ficheiro.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>A gravação não começou. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>A última gravação ainda está a ser concluída.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Manter os últimos 60 segundos está desativado, por isso não há nada a guardar.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Concluída uma gravação que o PadForge não tinha parado: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Manter os últimos 60 segundos</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Enquanto o motor está em execução, guarda em memória o último minuto do que uma gravação contém, para um problema que surge uma vez por noite. Guardar os últimos 60 segundos escreve-o num ficheiro.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Guardar os últimos 60 segundos</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Escrever letras e números digitados como uma só tecla</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Uma gravação escreve como uma só tecla as teclas de letras e números que nenhum mapeamento ou macro lê, cada premir no seu momento. Todas as outras teclas, e todas as que um mapeamento ou macro lê, são escritas como foram premidas.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Manter os últimos 60 segundos, Escrever letras e números digitados como uma só tecla</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versão da aplicação</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versão do SDL</value></data>
@@ -5440,4 +5459,7 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Uma imagem de Star Trek: A Nova Geração: a imagem do tema Starfleet de Star Trek. Encontrada na Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Barra de luz</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Barra de luz de {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Gravação de problema</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Iniciar ou parar gravação</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marcar a gravação</value></data>
 </root>

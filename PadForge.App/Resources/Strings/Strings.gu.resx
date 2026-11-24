@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>સ્નૅપશૉટ સાચવો</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>તાજેતરની એન્જિન ઇવેન્ટ નવી ફાઇલમાં સાચવે છે. ડાયગ્નોસ્ટિક્સ લૉગ બંધ હોય ત્યારે પણ કામ કરે છે.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>લૉગ ફોલ્ડર ખોલો</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>સમસ્યા રેકોર્ડ કરો</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>રેકોર્ડિંગ શરૂ કરો</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>રેકોર્ડિંગ રોકો ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>રેકોર્ડિંગ રોકો, 10 મિનિટ અથવા 20 MB ની zip સુધી રેકોર્ડ કરે છે, પછી Explorer માં zip પસંદ કરે છે, જે રિપોર્ટ સાથે જોડવા તૈયાર હોય.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>શરૂ કરો, સમસ્યા થવા દો, પછી રોકો. PadForge પાસે એક ફાઇલમાં PadForge એ જે વાંચ્યું, મોકલ્યું અને લૉગ કર્યું તે બધું હોય છે, સાથે શું ખોટું થયું તેનો સારાંશ. રેકોર્ડિંગ દરમિયાન દરેક ઉપકરણ પર દબાયેલી દરેક કી અને બટન ફાઇલમાં હોય છે, કીબોર્ડ અને માઉસ સહિત. યુઝર નામ, સીરિયલ નંબર, સરનામાં અને ટાઇપ કરેલા નામ કંઈ પણ લખાય તે પહેલાં બદલી દેવાય છે.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>સારાંશ લખાય છે…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>સાચવ્યું {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>રેકોર્ડિંગ શરૂ થયું નહીં. ચકાસણીમાં આ PC ની એક ખાનગી કિંમત મળી જે ફાઇલની બહાર રહે તેમ નહોતું.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>રેકોર્ડિંગ શરૂ થયું નહીં. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>છેલ્લું રેકોર્ડિંગ હજી પૂરું થઈ રહ્યું છે.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>છેલ્લી 60 સેકંડ રાખો બંધ છે, તેથી સાચવવા જેવું કંઈ નથી.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge એ રોક્યું ન હતું તે રેકોર્ડિંગ પૂરું કર્યું: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>છેલ્લી 60 સેકંડ રાખો</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>એન્જિન ચાલતું હોય ત્યારે, રેકોર્ડિંગમાં હોય તે બધાની છેલ્લી મિનિટ મેમરીમાં રાખે છે, સાંજે એક વાર આવતી સમસ્યા માટે. છેલ્લી 60 સેકંડ સાચવો તેને ફાઇલ તરીકે લખે છે.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>છેલ્લી 60 સેકંડ સાચવો</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ટાઇપ કરેલા અક્ષરો અને આંકડા એક કી તરીકે લખો</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>રેકોર્ડિંગ એવા અક્ષર અને આંકડાની કીને એક કી તરીકે લખે છે જેને કોઈ મેપિંગ કે મેક્રો વાંચતું નથી, દરેક દબાણ તેના પોતાના સમયે. બાકીની દરેક કી, અને મેપિંગ કે મેક્રો વાંચે તે દરેક કી, દબાઈ હોય તેમ લખાય છે.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>છેલ્લી 60 સેકંડ રાખો, ટાઇપ કરેલા અક્ષરો અને આંકડા એક કી તરીકે લખો</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ઍપ સંસ્કરણ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET રનટાઇમ</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL સંસ્કરણ</value></data>
@@ -5430,4 +5449,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>સ્ટાર ટ્રેક: ધ નેક્સ્ટ જનરેશનની એક ફ્રેમ: સ્ટાર ટ્રેક થીમ Starfleet નું ચિત્ર. Memory Alpha પર મળી.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>લાઇટબાર</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} લાઇટબાર</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>સમસ્યા રેકોર્ડિંગ</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>રેકોર્ડિંગ શરૂ કરો અથવા રોકો</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>રેકોર્ડિંગ પર નિશાન કરો</value></data>
 </root>

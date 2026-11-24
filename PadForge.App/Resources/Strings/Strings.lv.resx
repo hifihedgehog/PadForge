@@ -900,6 +900,25 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Saglabāt momentuzņēmumu</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Saglabā jaunākos dzinēja notikumus jaunā failā. Darbojas arī tad, kad diagnostikas žurnāls ir izslēgts.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Atvērt žurnāla mapi</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Ierakstīt problēmu</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Sākt ierakstīšanu</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Apturēt ierakstīšanu ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Ieraksta līdz brīdim, kad nospiežat Apturēt ierakstīšanu, 10 minūtēm vai 20 MB zip failam, pēc tam atlasa zip failu programmā Explorer, gatavu pievienošanai ziņojumam.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Sāciet, izraisiet problēmu, pēc tam apturiet. Viens fails blakus PadForge satur visu, ko PadForge nolasīja, nosūtīja un žurnalēja, kopā ar kopsavilkumu par to, kas noticis nepareizi. Failā ir katrs taustiņš un poga, kas ierakstīšanas laikā nospiesta katrā ierīcē, arī tastatūrās un pelēs. Lietotāju vārdi, sērijas numuri, adreses un ievadīti nosaukumi tiek aizstāti pirms jebkā rakstīšanas.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Raksta kopsavilkumu…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Saglabāts {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Ierakstīšana nesākās. Pārbaude atrada šī PC privātu vērtību, ko nevarētu paturēt ārpus faila.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Ierakstīšana nesākās. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Pēdējais ieraksts vēl tiek pabeigts.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Iestatījums Paturēt pēdējās 60 sekundes ir izslēgts, tāpēc nav ko saglabāt.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Pabeigts ieraksts, ko PadForge nebija apturējis: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Paturēt pēdējās 60 sekundes</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Kamēr darbojas dzinējs, glabā atmiņā ieraksta pēdējo minūti problēmai, kas rodas reizi vakarā. Poga Saglabāt pēdējās 60 sekundes to ieraksta failā.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Saglabāt pēdējās 60 sekundes</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Rakstīt ievadītos burtus un ciparus kā vienu taustiņu</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Ieraksts raksta burtu un ciparu taustiņus, ko neviena piesaiste vai makross nelasa, kā vienu taustiņu, katru nospiešanu tās laikā. Katrs cits taustiņš un katrs taustiņš, ko lasa piesaiste vai makross, tiek rakstīts tāds, kāds nospiests.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Paturēt pēdējās 60 sekundes, Rakstīt ievadītos burtus un ciparus kā vienu taustiņu</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Lietotnes versija</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET izpildlaiks</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL versija</value></data>
@@ -5853,6 +5872,10 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profila saīsne</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Veic to pašu, ko profila saīsne: ielādē norādītu profilu, nākamo vai iepriekšējo profilu, parāda vai paslēpj logu, vai izslēdz un ieslēdz virtuālos kontrolierus.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profila saīsne: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problēmas ierakstīšana</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Sāk vai aptur problēmas ierakstu, atzīmē to, kas darbojas, vai saglabā pēdējās 60 sekundes, neizejot no spēles.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Sākt vai apturēt ierakstīšanu</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Atzīmēt ierakstu</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>X nobīde</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Y nobīde</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Atiestatīt X nobīdi</value></data>

@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>स्नॅपशॉट जतन करा</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>सर्वात अलीकडील इंजिन इव्हेंट नवीन फाइलमध्ये जतन करते. निदान लॉग बंद असतानाही काम करते.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>लॉग फोल्डर उघडा</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>समस्या रेकॉर्ड करा</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>रेकॉर्डिंग सुरू करा</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>रेकॉर्डिंग थांबवा ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>रेकॉर्डिंग थांबवा दाबेपर्यंत, 10 मिनिटांपर्यंत किंवा 20 MB च्या zip पर्यंत रेकॉर्ड करते, मग अहवालासोबत जोडण्यासाठी तयार असलेली zip Explorer मध्ये निवडते.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>सुरू करा, समस्या घडवा, मग थांबवा. PadForge जवळची एक फाइल PadForge ने वाचलेले, पाठवलेले आणि लॉग केलेले सर्व काही, काय चुकले त्याच्या सारांशासह ठेवते. रेकॉर्ड करताना प्रत्येक डिव्हाइसवर दाबलेली प्रत्येक की आणि बटण फाइलमध्ये असते, कीबोर्ड आणि माउससह. काहीही लिहिण्यापूर्वी वापरकर्ता नावे, अनुक्रमांक, पत्ते आणि टाइप केलेली नावे बदलली जातात.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>सारांश लिहित आहे…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} जतन केले</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>रेकॉर्डिंग सुरू झाले नाही. तपासणीत या PC चे एक खाजगी मूल्य फाइलच्या बाहेर राहणार नाही असे आढळले.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>रेकॉर्डिंग सुरू झाले नाही. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>मागील रेकॉर्डिंग अजून पूर्ण होत आहे.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>शेवटचे 60 सेकंद ठेवा बंद आहे, म्हणून जतन करण्यासारखे काही नाही.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ने न थांबवलेले रेकॉर्डिंग पूर्ण केले: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>शेवटचे 60 सेकंद ठेवा</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>इंजिन चालत असताना, रेकॉर्डिंग ज्यात असते त्याचा शेवटचा मिनिट मेमरीत ठेवते, संध्याकाळी एकदाच येणाऱ्या समस्येसाठी. शेवटचे 60 सेकंद जतन करा ते फाइल म्हणून लिहिते.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>शेवटचे 60 सेकंद जतन करा</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>टाइप केलेली अक्षरे आणि अंक एकच की म्हणून लिहा</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>कोणतेही मॅपिंग किंवा मॅक्रो वाचत नसलेल्या अक्षर आणि अंक कीजची रेकॉर्डिंग एकच की म्हणून नोंद करते, प्रत्येक दाबणे त्याच्या वेळेसह. इतर प्रत्येक की, आणि मॅपिंग किंवा मॅक्रो वाचतो ती प्रत्येक की, दाबल्याप्रमाणे लिहिली जाते.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>शेवटचे 60 सेकंद ठेवा, टाइप केलेली अक्षरे आणि अंक एकच की म्हणून लिहा</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ॲप आवृत्ती</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET रनटाइम</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL आवृत्ती</value></data>
@@ -5420,4 +5439,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>स्टार ट्रेक: द नेक्स्ट जनरेशन मधील एक फ्रेम: स्टार ट्रेक थीम Starfleet चे चित्र. Memory Alpha वर सापडले.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} लाइटबार</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>समस्या रेकॉर्डिंग</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>रेकॉर्डिंग सुरू किंवा थांबवा</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>रेकॉर्डिंगवर खूण करा</value></data>
 </root>

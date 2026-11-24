@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ذخیره تصویر لحظه‌ای</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>تازه‌ترین رویدادهای موتور را در فایلی جدید ذخیره می‌کند. حتی وقتی گزارش عیب‌یابی خاموش است هم کار می‌کند.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>باز کردن پوشه گزارش</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ضبط یک مشکل</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>شروع ضبط</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>توقف ضبط ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}، {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>تا «توقف ضبط»، 10 دقیقه یا یک zip با حجم 20 MB ضبط می‌کند، سپس zip را در Explorer انتخاب می‌کند تا برای پیوست به گزارش آماده باشد.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>شروع کنید، مشکل را پیش بیاورید، سپس توقف کنید. یک فایل کنار PadForge هر چیزی را که PadForge خوانده، فرستاده و ثبت کرده همراه با خلاصه‌ای از آنچه خراب شد دارد. هر کلید و دکمه‌ای که هنگام ضبط روی هر دستگاه فشرده شود در فایل است، از جمله صفحه‌کلیدها و ماوس‌ها. نام کاربری، شماره‌های سریال، نشانی‌ها و نام‌های تایپ‌شده پیش از نوشتن هر چیزی جایگزین می‌شوند.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>در حال نوشتن خلاصه…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} ذخیره شد</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ضبط شروع نشد. یک بررسی مقداری خصوصی از این PC پیدا کرد که از فایل بیرون نمی‌ماند.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ضبط شروع نشد. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>آخرین ضبط هنوز در حال پایان یافتن است.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«نگه داشتن 60 ثانیه آخر» خاموش است، پس چیزی برای ذخیره نیست.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>ضبطی که PadForge متوقفش نکرده بود تمام شد: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>نگه داشتن 60 ثانیه آخر</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>تا وقتی موتور اجرا می‌شود، آخرین یک دقیقه از آنچه یک ضبط دارد را برای مشکلی که شبی یک بار پیش می‌آید در حافظه نگه می‌دارد. «ذخیره 60 ثانیه آخر» آن را به‌صورت فایل می‌نویسد.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>ذخیره 60 ثانیه آخر</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>نوشتن حروف و عددهای تایپ‌شده به‌صورت یک کلید</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ضبط، کلیدهای حرف و عددی را که هیچ نگاشت یا ماکرویی نمی‌خواند به‌صورت یک کلید می‌نویسد، هر فشار در زمان خودش. هر کلید دیگر و هر کلیدی که نگاشت یا ماکرو می‌خواند به همان صورت فشرده‌شده نوشته می‌شود.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>نگه داشتن 60 ثانیه آخر، نوشتن حروف و عددهای تایپ‌شده به‌صورت یک کلید</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>نسخه برنامه</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>محیط اجرای .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>نسخه SDL</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>میانبر پروفایل</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>همان کار میانبر پروفایل را انجام می‌دهد: پروفایلی با نام مشخص، بعدی یا قبلی را بارگذاری می‌کند، پنجره را نشان می‌دهد یا پنهان می‌کند، یا کنترلرهای مجازی را خاموش و روشن می‌کند.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>میانبر پروفایل: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ضبط مشکل</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>ضبط یک مشکل را شروع یا متوقف می‌کند، ضبطی را که اجرا می‌شود نشانه‌گذاری می‌کند یا 60 ثانیه آخر را بدون ترک بازی ذخیره می‌کند.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>شروع یا توقف ضبط</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>نشانه‌گذاری ضبط</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>انحراف X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>انحراف Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>بازنشانی انحراف X</value></data>

@@ -667,6 +667,25 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salvar Instantâneo</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Salva os eventos mais recentes do motor em um novo arquivo. Funciona mesmo com o registro de diagnóstico desativado.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Abrir Pasta de Registros</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Gravar um Problema</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Iniciar Gravação</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Parar Gravação ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grava até Parar Gravação, 10 minutos ou um zip de 20 MB, e então seleciona o zip no Explorer, pronto para anexar a um relatório.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Inicie, faça o problema acontecer e pare. Um arquivo ao lado do PadForge contém tudo o que o PadForge leu, enviou e registrou, com um resumo do que deu errado. Toda tecla e botão pressionado em qualquer dispositivo durante a gravação está no arquivo, teclados e mouses inclusive. Nomes de usuário, números de série, endereços e nomes digitados são substituídos antes de qualquer gravação.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Escrevendo o resumo…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvo: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>A gravação não iniciou. Uma verificação encontrou um valor privado deste PC que não ficaria fora do arquivo.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>A gravação não iniciou. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>A última gravação ainda está sendo finalizada.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Manter os Últimos 60 Segundos está desativado, então não há nada para salvar.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Finalizada uma gravação que o PadForge não tinha parado: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Manter os Últimos 60 Segundos</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Enquanto o motor está em execução, guarda na memória o último minuto do que uma gravação contém, para um problema que aparece uma vez por noite. Salvar os Últimos 60 Segundos o grava como arquivo.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Salvar os Últimos 60 Segundos</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Gravar Letras e Números Digitados como Uma Só Tecla</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Uma gravação escreve como uma só tecla as teclas de letras e números que nenhum mapeamento ou macro lê, cada toque em seu próprio momento. Toda outra tecla, e toda tecla que um mapeamento ou macro lê, é gravada como foi pressionada.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Manter os Últimos 60 Segundos, Gravar Letras e Números Digitados como Uma Só Tecla</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versão do Aplicativo</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versão do SDL</value></data>
@@ -5802,6 +5821,10 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Atalho de Perfil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Faz o que um atalho de perfil faz: carrega um perfil pelo nome, o próximo ou o anterior, mostra ou oculta a janela, ou desliga e liga os controles virtuais.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Atalho de Perfil: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Gravação de Problema</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Inicia ou para a gravação de um problema, marca a que está em andamento ou salva os últimos 60 segundos, sem sair do jogo.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Iniciar ou Parar Gravação</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marcar a Gravação</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Deslocamento X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Deslocamento Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Redefinir Deslocamento X</value></data>

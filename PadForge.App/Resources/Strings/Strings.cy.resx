@@ -849,6 +849,25 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Cadw Ciplun</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Yn cadw digwyddiadau diweddaraf yr injan i ffeil newydd. Yn gweithio hyd yn oed pan fydd y log diagnosteg i ffwrdd.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Agor Ffolder y Log</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Recordio Problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Dechrau Recordio</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stopio Recordio ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Yn recordio hyd at Stopio Recordio, 10 munud neu zip 20 MB, yna'n dewis y zip yn Explorer, yn barod i'w atodi i adroddiad.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Dechreuwch, gwnewch i'r broblem ddigwydd, yna stopiwch. Mae un ffeil wrth ymyl PadForge yn cynnwys popeth y bu PadForge yn ei ddarllen, ei anfon a'i logio, gyda chrynodeb o'r hyn a aeth o'i le. Mae pob allwedd a botwm a wasgwyd ar bob dyfais tra bydd yn recordio yn y ffeil, gan gynnwys bysellfyrddau a llygod. Disodlir enwau defnyddwyr, rhifau cyfresol, cyfeiriadau ac enwau a deipiwyd cyn ysgrifennu dim.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Yn ysgrifennu'r crynodeb…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Cadwyd {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Ni ddechreuodd y recordio. Canfu gwiriad werth preifat o'r PC hwn na fyddai'n cael ei gadw allan o'r ffeil.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Ni ddechreuodd y recordio. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Mae'r recordiad diwethaf yn dal i gael ei orffen.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Mae Cadw'r 60 Eiliad Diwethaf i ffwrdd, felly nid oes dim i'w gadw.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Gorffennwyd recordiad nad oedd PadForge wedi'i stopio: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Cadw'r 60 Eiliad Diwethaf</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Tra bydd yr injan yn rhedeg, yn dal yn y cof funud ddiwethaf yr hyn y mae recordiad yn ei ddal, ar gyfer problem sy'n dod unwaith gyda'r nos. Mae Cadw'r 60 Eiliad Diwethaf yn ei hysgrifennu fel ffeil.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Cadw'r 60 Eiliad Diwethaf</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Ysgrifennu Llythrennau a Rhifau a Deipiwyd fel Un Allwedd</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Mae recordiad yn ysgrifennu'r allweddi llythrennau a rhifau nad oes mapiad na macro yn eu darllen fel un allwedd, pob gwasg ar ei hamser ei hun. Ysgrifennir pob allwedd arall, a phob allwedd y mae mapiad neu facro yn ei darllen, fel y'i gwasgwyd.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Cadw'r 60 Eiliad Diwethaf, Ysgrifennu Llythrennau a Rhifau a Deipiwyd fel Un Allwedd</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Fersiwn yr Ap</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Amser Rhedeg .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Fersiwn SDL</value></data>
@@ -5403,4 +5422,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Ffrâm o Star Trek: The Next Generation: llun thema Starfleet yn Star Trek. Wedi'i ganfod ar Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Bar golau</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bar golau {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Recordio Problem</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Dechrau neu Stopio Recordio</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Nodi'r Recordiad</value></data>
 </root>

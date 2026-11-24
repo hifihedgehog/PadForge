@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Պահել ակնթարթային պատկեր</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Պահում է մեխանիզմի վերջին իրադարձությունները նոր ֆայլում։ Աշխատում է նույնիսկ երբ ախտորոշման մատյանն անջատված է։</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Բացել մատյանի թղթապանակը</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Խնդրի գրառում</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Սկսել գրառումը</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Կանգնեցնել գրառումը ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Գրանցում է մինչև «Կանգնեցնել գրառումը», 10 րոպե կամ 20 MB zip, ապա Explorer-ում ընտրում է zip-ը՝ հաշվետվությանը կցելու պատրաստ։</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Սկսեք, առաջացրեք խնդիրը, ապա կանգնեցրեք։ PadForge-ի կողքին գտնվող մեկ ֆայլում կա այն ամենը, ինչ PadForge-ը կարդացել, ուղարկել և գրանցել է, խնդրի ամփոփագրով։ Գրառման ընթացքում ցանկացած սարքի վրա սեղմված յուրաքանչյուր ստեղն և կոճակ ֆայլում է, ստեղնաշարերն ու մկնիկները ներառյալ։ Օգտանունները, սերիական համարները, հասցեները և մուտքագրված անունները փոխարինվում են նախքան որևէ բան գրվելը։</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Ամփոփագիրը գրվում է…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Պահվեց {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Գրառումը չսկսվեց։ Ստուգումը գտավ այս PC-ի մասնավոր արժեք, որը չէր մնա ֆայլից դուրս։</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Գրառումը չսկսվեց։ {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Վերջին գրառումը դեռ ավարտվում է։</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«Հիշել վերջին 60 վայրկյանը» անջատված է, ուստի պահելու բան չկա։</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Ավարտվեց գրառում, որը PadForge-ը չէր կանգնեցրել՝ {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Հիշել վերջին 60 վայրկյանը</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Մեխանիզմի աշխատանքի ընթացքում հիշողության մեջ պահում է գրառման վերջին րոպեն՝ այն խնդրի համար, որն առաջանում է երեկոյան մեկ անգամ։ «Պահել վերջին 60 վայրկյանը» այն գրում է ֆայլում։</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Պահել վերջին 60 վայրկյանը</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Տառերն ու թվերը գրել որպես մեկ ստեղն</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Գրառումը տառային և թվային այն ստեղները, որոնք ոչ մի կապակցում կամ մակրո չի կարդում, գրում է որպես մեկ ստեղն՝ յուրաքանչյուր սեղմումը իր ժամանակով։ Մնացած բոլոր ստեղները և այն ստեղները, որոնք կապակցումը կամ մակրոն կարդում է, գրվում են ինչպես սեղմվել են։</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Հիշել վերջին 60 վայրկյանը, Տառերն ու թվերը գրել որպես մեկ ստեղն</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Հավելվածի տարբերակ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-ի տարբերակ</value></data>
@@ -5400,4 +5419,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>«Աստղային ճանապարհ. Հաջորդ սերունդ» սերիալի կադր՝ «Աստղային ճանապարհ» թեմայի Starfleet-ի պատկերը։ Գտնվել է Memory Alpha-ում։</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Լուսաշերտ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} լուսաշերտ</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Խնդրի գրառում</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Սկսել կամ կանգնեցնել գրառումը</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Նշել գրառումը</value></data>
 </root>

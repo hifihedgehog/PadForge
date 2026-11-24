@@ -2968,6 +2968,10 @@
   <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge no por lesa e archivo ei komo potrèt.</value></data>
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Potrèt: arte di biblioteka di Steam pa {0}.</value></data>
   <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktivá Konfigurashon di komunidat den Konfigurashon pa haña e potrèt di e wega for di Steam.</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kuminsá graba</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Para di graba ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Ta graba te Para di graba, 10 minüt òf un zip di 20 MB, despues ta selekshoná e zip den Explorer, kla pa pega na un raport.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Rekorido di mouse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Rekorido di mouse Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Rekorido te límite kompleto</value></data>
@@ -2992,4 +2996,6 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ta nivelá un mouse ku ta reportá desigual. E stür ta bai tras di e man mas o ménos asina largu. 0 ta pagá.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Límite na velosidat</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di wega sendí, kuantu di e límite ta keda na 200 km/h. Na 100% henter e límite ta keda na tur velosidat.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kuminsá òf para di graba</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marka e grabashon</value></data>
 </root>

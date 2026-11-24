@@ -667,6 +667,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>스냅샷 저장</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>가장 최근의 엔진 이벤트를 새 파일로 저장합니다. 진단 로그가 꺼져 있어도 작동합니다.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>로그 폴더 열기</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>문제 녹화</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>녹화 시작</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>녹화 중지 ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>녹화 중지, 10분, 또는 20 MB zip에 이를 때까지 기록한 다음 Explorer에서 zip을 선택해 보고서에 바로 첨부할 수 있게 합니다.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>시작하고, 문제를 일으킨 다음, 중지하세요. PadForge 옆에 생기는 파일 하나에 PadForge가 읽고 보내고 기록한 모든 것과 무엇이 잘못되었는지에 대한 요약이 담깁니다. 녹화하는 동안 모든 장치에서 누른 모든 키와 버튼이 파일에 들어가며, 키보드와 마우스도 포함됩니다. 사용자 이름, 일련번호, 주소, 입력한 이름은 기록되기 전에 대체됩니다.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>요약을 쓰는 중…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} 저장됨</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>녹화를 시작하지 못했습니다. 검사에서 파일에 남지 않도록 막지 못할 이 PC의 개인 값이 발견되었습니다.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>녹화를 시작하지 못했습니다. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>마지막 녹화를 아직 마무리하는 중입니다.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>최근 60초 보관이 꺼져 있어 저장할 것이 없습니다.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge가 중지하지 못한 녹화를 마무리했습니다: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>최근 60초 보관</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>엔진이 실행되는 동안 녹화에 담기는 내용의 마지막 1분을 메모리에 보관합니다. 저녁에 한 번 생기는 문제에 쓰입니다. 최근 60초 저장은 이를 파일로 씁니다.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>최근 60초 저장</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>입력한 문자와 숫자를 키 하나로 기록</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>녹화는 어떤 매핑이나 매크로도 읽지 않는 문자와 숫자 키를 하나의 키로 기록하며, 각 입력은 자기 시간에 남깁니다. 그 밖의 모든 키와 매핑이나 매크로가 읽는 모든 키는 누른 그대로 기록됩니다.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>최근 60초 보관, 입력한 문자와 숫자를 키 하나로 기록</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>앱 버전</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 런타임</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 버전</value></data>
@@ -5808,6 +5827,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>프로필 바로 가기</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>프로필 바로 가기와 같은 동작을 합니다. 이름을 지정한 프로필, 다음 프로필 또는 이전 프로필을 불러오거나, 창을 표시하거나 숨기거나, 가상 컨트롤러를 끄고 켭니다.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>프로필 바로 가기: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>문제 녹화</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>문제 녹화를 시작하거나 중지하고, 실행 중인 녹화에 표시를 남기거나, 게임을 떠나지 않고 최근 60초를 저장합니다.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>녹화 시작 또는 중지</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>녹화에 표시 남기기</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>오프셋 X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>오프셋 Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>오프셋 X 초기화</value></data>

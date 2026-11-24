@@ -849,6 +849,25 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Simpan Syot Kilat</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Menyimpan peristiwa enjin terkini ke fail baharu. Berfungsi walaupun log diagnostik dimatikan.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Buka Folder Log</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Rakam Masalah</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Mula Merakam</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Henti Merakam ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Merakam sehingga Henti Merakam, 10 minit atau zip 20 MB, kemudian memilih zip dalam Explorer, sedia dilampirkan pada laporan.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Mulakan, jadikan masalah itu berlaku, kemudian hentikan. Satu fail di sebelah PadForge mengandungi semua yang dibaca, dihantar dan dilog PadForge, bersama ringkasan apa yang tidak kena. Setiap kekunci dan butang yang ditekan pada setiap peranti semasa merakam ada dalam fail itu, termasuk papan kekunci dan tetikus. Nama pengguna, nombor siri, alamat dan nama yang ditaip digantikan sebelum apa-apa ditulis.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Menulis ringkasan…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Disimpan {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Rakaman tidak bermula. Satu semakan mendapati nilai peribadi PC ini yang tidak akan dikecualikan daripada fail.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Rakaman tidak bermula. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Rakaman terakhir masih sedang disiapkan.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Simpan 60 Saat Terakhir dimatikan, jadi tiada apa-apa untuk disimpan.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Menyiapkan rakaman yang tidak dihentikan PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Simpan 60 Saat Terakhir</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Semasa enjin berjalan, menyimpan dalam memori seminit terakhir apa yang dipegang rakaman, untuk masalah yang datang sekali setiap petang. Simpan 60 Saat Terakhir menulisnya sebagai fail.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Simpan 60 Saat Terakhir</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Tulis Huruf dan Nombor yang Ditaip sebagai Satu Kekunci</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Rakaman menulis kekunci huruf dan nombor yang tidak dibaca oleh sebarang pemetaan atau makro sebagai satu kekunci, setiap tekanan pada masanya sendiri. Setiap kekunci lain, dan setiap kekunci yang dibaca pemetaan atau makro, ditulis seperti yang ditekan.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Simpan 60 Saat Terakhir, Tulis Huruf dan Nombor yang Ditaip sebagai Satu Kekunci</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versi Apl</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Masa Jalan .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versi SDL</value></data>
@@ -5436,4 +5455,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Sebuah bingkai Star Trek: The Next Generation: gambar tema Star Trek Starfleet. Ditemui di Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Bar cahaya</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bar cahaya {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Rakaman Masalah</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Mula atau Henti Merakam</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Tandakan Rakaman</value></data>
 </root>

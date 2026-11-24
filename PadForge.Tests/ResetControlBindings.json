@@ -1762,5 +1762,23 @@
     "Id": "Reset_MagnifierItem_SpotlightDimPercent_58543",
     "Owner": "PadForge.ViewModels.MagnifierItem",
     "Property": "SpotlightDimPercent"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_ProblemRecordingKeepLastMinute_59701",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "ProblemRecordingKeepLastMinute"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_ProblemRecordingHideTypedKeys_59702",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "ProblemRecordingHideTypedKeys"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ProblemRecordingMode_59703",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ProblemRecordingMode"
   }
 ]

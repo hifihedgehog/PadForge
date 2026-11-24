@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Stoor kiekie</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Stoor die jongste enjingebeurtenisse in 'n nuwe lêer. Werk selfs wanneer die diagnoselogboek af is.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Maak logboekvouer oop</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Neem 'n probleem op</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Begin opname</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stop opname ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Neem op tot Stop opname, 10 minute of 'n zip van 20 MB, kies dan die zip in Explorer, gereed om aan 'n verslag te heg.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Begin, laat die probleem gebeur, en stop dan. Een lêer langs PadForge bevat alles wat PadForge gelees, gestuur en gelog het, met 'n opsomming van wat verkeerd gegaan het. Elke sleutel en knoppie wat op elke toestel gedruk word terwyl dit opneem, is in die lêer, sleutelborde en muise ingesluit. Gebruikersname, reeksnommers, adresse en getikte name word vervang voordat enigiets geskryf word.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skryf die opsomming…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} gestoor</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Die opname het nie begin nie. 'n Toets het 'n private waarde van hierdie PC gevind wat nie uit die lêer gehou sou word nie.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Die opname het nie begin nie. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Die laaste opname word nog voltooi.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Hou die laaste 60 sekondes is af, so daar is niks om te stoor nie.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>'n Opname voltooi wat PadForge nie gestop het nie: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Hou die laaste 60 sekondes</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Terwyl die enjin loop, hou dit die laaste minuut van wat 'n opname bevat in geheue, vir 'n probleem wat een keer 'n aand kom. Stoor die laaste 60 sekondes skryf dit as 'n lêer.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Stoor die laaste 60 sekondes</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skryf getikte letters en syfers as een sleutel</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>'n Opname skryf die letter- en syfersleutels wat geen toewysing of makro lees nie as een sleutel, elke druk op sy eie tyd. Elke ander sleutel, en elke sleutel wat 'n toewysing of makro lees, word geskryf soos gedruk.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Hou die laaste 60 sekondes, Skryf getikte letters en syfers as een sleutel</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Toepassingweergawe</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-looptyd</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-weergawe</value></data>
@@ -5243,4 +5262,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>'n Raam uit Star Trek: The Next Generation: die prent van die tema Starfleet van Star Trek. Gevind op Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Ligbalk</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0}-ligbalk</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleemopname</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Begin of stop opname</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Merk die opname</value></data>
 </root>

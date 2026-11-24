@@ -843,6 +843,25 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Išsaugoti momentinę kopiją</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Išsaugo naujausius variklio įvykius naujame faile. Veikia net tada, kai diagnostikos žurnalas išjungtas.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Atidaryti žurnalo aplanką</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Įrašyti problemą</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Pradėti įrašymą</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Sustabdyti įrašymą ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Įrašo, kol paspausite Sustabdyti įrašymą, kol praeis 10 minučių arba kol zip pasieks 20 MB, tada pažymi zip programoje Explorer, kad jį būtų galima pridėti prie pranešimo.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Pradėkite, sukelkite problemą, tada sustabdykite. Viename faile šalia „PadForge“ yra viskas, ką „PadForge“ skaitė, siuntė ir užregistravo, su santrauka, kas nepavyko. Į failą patenka kiekvienas klavišas ir mygtukas, paspaustas bet kuriame įrenginyje įrašant, įskaitant klaviatūras ir peles. Naudotojų vardai, serijos numeriai, adresai ir įvesti vardai pakeičiami prieš ką nors įrašant.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Rašoma santrauka…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Išsaugota {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Įrašymas nepradėtas. Patikra rado privačią šio PC reikšmę, kuri nebūtų neįtraukta į failą.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Įrašymas nepradėtas. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Paskutinis įrašas dar baigiamas.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Laikyti paskutines 60 sekundžių yra išjungta, todėl nėra ko išsaugoti.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Baigtas įrašas, kurio „PadForge“ nebuvo sustabdžiusi: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Laikyti paskutines 60 sekundžių</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Kol veikia variklis, atmintyje laiko paskutinę to, ką laiko įrašas, minutę, problemai, kuri pasitaiko kartą per vakarą. Išsaugoti paskutines 60 sekundžių įrašo ją į failą.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Išsaugoti paskutines 60 sekundžių</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Rašyti įvestas raides ir skaičius kaip vieną klavišą</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Įrašas raidžių ir skaičių klavišus, kurių nenaudoja joks susiejimas ar makrokomanda, užrašo kaip vieną klavišą, kiekvieną paspaudimą jo laiku. Kiti klavišai ir kiekvienas klavišas, kurį skaito susiejimas ar makrokomanda, užrašomi taip, kaip paspausti.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Laikyti paskutines 60 sekundžių, Rašyti įvestas raides ir skaičius kaip vieną klavišą</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Programos versija</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET vykdymo aplinka</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL versija</value></data>
@@ -5435,4 +5454,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Serialo „Žvaigždžių kelias: Naujoji karta“ kadras: Žvaigždžių kelio temos Starfleet paveikslėlis. Rasta „Memory Alpha“.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Šviesos juosta</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} šviesos juosta</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemos įrašymas</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Pradėti arba sustabdyti įrašymą</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Pažymėti įrašą</value></data>
 </root>

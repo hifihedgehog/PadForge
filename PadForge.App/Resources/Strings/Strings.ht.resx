@@ -709,6 +709,25 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Anrejistre yon kopi</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Anrejistre dènye evènman motè a nan yon nouvo fichye. Li mache menm lè jounal dyagnostik la dezaktive.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Louvri dosye jounal yo</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Anrejistre yon pwoblèm</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kòmanse anrejistre</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Kanpe anrejistreman an ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Anrejistre jiskaske ou peze Kanpe anrejistreman an, 10 minit oswa yon zip 20 MB, apre sa li chwazi zip la nan Explorer, pare pou mete nan yon rapò.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Kòmanse, fè pwoblèm lan rive, epi kanpe. Yon sèl fichye bò kote PadForge kenbe tout sa PadForge li, voye ak ekri nan jounal, ak yon rezime sa ki pa t mache. Chak touch ak bouton ki peze sou chak aparèy pandan l ap anrejistre nan fichye a, klavye ak sourit enkli. Non itilizatè, nimewo seri, adrès ak non ki tape ranplase anvan anyen ekri.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Ap ekri rezime a…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Anrejistre {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Anrejistreman an pa t kòmanse. Yon verifikasyon jwenn yon valè prive PC sa a ki pa t ap rete deyò fichye a.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Anrejistreman an pa t kòmanse. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Dènye anrejistreman an poko fin ekri.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Kenbe dènye 60 segonn yo dezaktive, kidonk pa gen anyen pou anrejistre.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Li fini yon anrejistreman PadForge pa t kanpe: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Kenbe dènye 60 segonn yo</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Pandan motè a ap mache, li kenbe nan memwa dènye minit sa yon anrejistreman kenbe, pou yon pwoblèm ki parèt yon fwa pa aswè. Anrejistre dènye 60 segonn yo ekri l kòm yon fichye.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Anrejistre dènye 60 segonn yo</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Ekri lèt ak chif ki tape kòm yon sèl touch</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Yon anrejistreman ekri touch lèt ak chif ke okenn asiyasyon oswa makwo pa li kòm yon sèl touch, chak peze nan pwòp moman li. Tout lòt touch, ak chak touch yon asiyasyon oswa makwo li, ekri jan yo peze yo.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Kenbe dènye 60 segonn yo, Ekri lèt ak chif ki tape kòm yon sèl touch</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Vèsyon aplikasyon an</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Vèsyon SDL</value></data>
@@ -4769,4 +4788,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imaj tèm: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Yon imaj nan Star Trek: The Next Generation: imaj tèm Star Trek Starfleet la. Yo jwenn li sou Memory Alpha.</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Anrejistreman pwoblèm</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kòmanse oswa kanpe anrejistreman</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Make anrejistreman an</value></data>
 </root>

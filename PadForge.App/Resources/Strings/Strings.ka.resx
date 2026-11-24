@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>სნეპშოტის შენახვა</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ინახავს ძრავის უახლეს მოვლენებს ახალ ფაილში. მუშაობს მაშინაც, როცა დიაგნოსტიკის ჟურნალი გამორთულია.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ჟურნალის საქაღალდის გახსნა</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>ჩაწერის დაწყება</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>ჩაწერის შეჩერება ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>წერს ჩაწერის შეჩერებამდე, 10 წუთამდე ან 20 MB zip-მდე, შემდეგ Explorer-ში მონიშნავს zip-ს, რათა ანგარიშს მიაბათ.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>დაიწყეთ, გამოიწვიეთ პრობლემა და შეაჩერეთ. PadForge-ის გვერდით ერთი ფაილი შეიცავს ყველაფერს, რასაც PadForge კითხულობდა, აგზავნიდა და ჟურნალში წერდა, ხარვეზის შეჯამებასთან ერთად. ფაილში არის ჩაწერისას ყველა მოწყობილობაზე დაჭერილი ყველა კლავიში და ღილაკი, კლავიატურებისა და მაუსების ჩათვლით. მომხმარებლის სახელები, სერიული ნომრები, მისამართები და აკრეფილი სახელები იცვლება ჩაწერამდე.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>შეჯამების წერა…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>შენახულია {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ჩაწერა არ დაიწყო. შემოწმებამ აღმოაჩინა ამ PC-ის პირადი მნიშვნელობა, რომელიც ფაილს ვერ დაემალებოდა.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ჩაწერა არ დაიწყო. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>წინა ჩანაწერი ჯერ კიდევ მთავრდება.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>„ბოლო 60 წამის შენახვა“ გამორთულია, ამიტომ შესანახი არაფერია.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>დასრულდა ჩანაწერი, რომელიც PadForge-მა არ შეაჩერა: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>ბოლო 60 წამის შენახვა</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>სანამ ძრავა მუშაობს, მეხსიერებაში ინახავს ჩანაწერის შიგთავსის ბოლო წუთს, იმ პრობლემისთვის, რომელიც საღამოში ერთხელ ჩნდება. ღილაკი „ბოლო 60 წამის შენახვა“ მას ფაილად წერს.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>ბოლო 60 წამის შენახვა</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>აკრეფილი ასოებისა და ციფრების ერთ კლავიშად ჩაწერა</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ჩანაწერი წერს ასოებისა და ციფრების კლავიშებს, რომლებსაც არც რუკა და არც მაკრო კითხულობს, ერთ კლავიშად, თითოეულ დაჭერას თავისი დროით. ყველა სხვა კლავიში და ყველა კლავიში, რომელსაც რუკა ან მაკრო კითხულობს, იწერება ისე, როგორც დაიჭირეს.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>ბოლო 60 წამის შენახვა, აკრეფილი ასოებისა და ციფრების ერთ კლავიშად ჩაწერა</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>აპის ვერსია</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET გაშვების გარემო</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL ვერსია</value></data>
@@ -5421,4 +5440,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>კადრი სერიალიდან ვარსკვლავური გზა: შემდეგი თაობა: ვარსკვლავური გზის თემის Starfleet სურათი. ნაპოვნია Memory Alpha-ზე.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>შუქის ზოლი</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} შუქის ზოლი</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ჩაწერის დაწყება ან შეჩერება</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ჩანაწერზე ნიშნულის დასმა</value></data>
 </root>

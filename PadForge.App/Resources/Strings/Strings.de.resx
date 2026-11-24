@@ -667,6 +667,25 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Momentaufnahme speichern</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Speichert die letzten Engine-Ereignisse in einer neuen Datei. Funktioniert auch bei deaktiviertem Diagnoseprotokoll.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Protokollordner öffnen</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Problem aufnehmen</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Aufnahme starten</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Aufnahme beenden ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nimmt auf bis Aufnahme beenden, 10 Minuten oder 20 MB als zip, und wählt dann die zip-Datei im Explorer aus, bereit zum Anhängen an einen Bericht.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Starten, das Problem auslösen, dann beenden. Eine Datei neben PadForge enthält alles, was PadForge gelesen, gesendet und protokolliert hat, mit einer Zusammenfassung dessen, was schiefging. Jede Taste und jeder Knopf auf jedem Gerät, die während der Aufnahme gedrückt werden, stehen in der Datei, auch von Tastaturen und Mäusen. Benutzernamen, Seriennummern, Adressen und getippte Namen werden ersetzt, bevor etwas geschrieben wird.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Zusammenfassung wird geschrieben…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} gespeichert</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Die Aufnahme wurde nicht gestartet. Eine Prüfung hat einen privaten Wert dieses PC gefunden, der nicht aus der Datei herausgehalten würde.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Die Aufnahme wurde nicht gestartet. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Die letzte Aufnahme wird noch abgeschlossen.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Letzte 60 Sekunden vorhalten ist ausgeschaltet, deshalb gibt es nichts zu speichern.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Eine Aufnahme abgeschlossen, die PadForge nicht beendet hatte: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Letzte 60 Sekunden vorhalten</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Hält, solange die Engine läuft, die letzte Minute dessen im Speicher, was eine Aufnahme enthält, für ein Problem, das nur einmal am Abend auftritt. Letzte 60 Sekunden speichern schreibt sie als Datei.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Letzte 60 Sekunden speichern</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Getippte Buchstaben und Zahlen als eine Taste schreiben</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Eine Aufnahme schreibt die Buchstaben- und Zahlentasten, die keine Zuordnung und kein Makro liest, als eine Taste, jeden Druck zu seiner eigenen Zeit. Jede andere Taste und jede Taste, die eine Zuordnung oder ein Makro liest, wird wie gedrückt geschrieben.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Letzte 60 Sekunden vorhalten, Getippte Buchstaben und Zahlen als eine Taste schreiben</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App-Version</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-Laufzeit</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-Version</value></data>
@@ -5808,6 +5827,10 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil-Shortcut</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Tut, was ein Profil-Shortcut tut: lädt ein benanntes Profil, das nächste oder das vorherige, zeigt oder verbirgt das Fenster oder schaltet die virtuellen Controller aus und wieder ein.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profil-Shortcut: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemaufnahme</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Startet oder beendet eine Problemaufnahme, markiert die laufende oder speichert die letzten 60 Sekunden, ohne das Spiel zu verlassen.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Aufnahme starten oder beenden</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Die Aufnahme markieren</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Versatz X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Versatz Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Versatz X zurücksetzen</value></data>

@@ -900,6 +900,25 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Haudho em</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Haudha i garthas medui o i noriod vi parlas cîr. Maetha eno ir i narn tastaith lorn.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Edro colch narn</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Teitho press</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Iesto teithad</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Posto teithad ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Teitha naden Posto teithad, 10 luig egor zip 20 MB, a cil i zip vi Explorer, ferui an goianna na narn dŷl.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Iesto, caro i bress tolo, a posto. Parlas er vi colch PadForge gar ilnad i PadForge hennant, mennant a teithant, adh narn estent i dŷl. Ilphen ledil a sarn nistannen vi ilphen carf lo teitha vi parlas, eithro pan ledil a nigol. Eneth maethron, noth carf, sad a eneth teithannen gwistannen nui ilnad teithannen.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Teitha i narn estent…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Haudhannen {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Teithad ú-iestant. Cethad hirant noth said o PC hen i ú-pol hebannen eth i barlas.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Teithad ú-iestant. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>I teithad medui ú-carnen sî.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Heb i 60 s medui lorn, a alnad an haudhad.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Teithad i PadForge ú-postant carnen: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Heb i 60 s medui</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Lo i naur cuia, heb i luig medui o men teithad gar, an press i tôl erlu bo aduial. Haudho i 60 s medui teitha hon sui parlas.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Haudho i 60 s medui</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Teitho têw a noth teithannen sui ledil er</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Teithad teitha ledil têw a noth i alnad theinas egor carthas henna sui ledil er, ilphen nistad vi lû în. Ilphen ledil egel, a ilphen ledil i theinas egor carthas henna, teithannen sui nistannen.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Heb i 60 s medui, Teitho têw a noth teithannen sui ledil er</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Noth i guru</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Curu .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Noth SDL</value></data>
@@ -5926,6 +5945,10 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Ledil ferui panu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Car man car ledil ferui panu: edra panu estannen, i abor egor i nui, tana egor tobla i henneth, egor lortha a echuida i maethais nem.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Ledil ferui panu: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Teithad press</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Iesta egor posta teithad press, teitha têw vi i teithad i cuia, egor haudha i 60 s medui, a i telias cuia eno.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Iesto egor posto teithad</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Teitho têw vi teithad</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Tíradad X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Tíradad Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Redhio tíradad X</value></data>

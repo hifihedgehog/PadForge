@@ -849,6 +849,25 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Spremi snimku stanja</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Sprema najnovije događaje mehanizma u novu datoteku. Radi i kada je dijagnostički zapisnik isključen.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Otvori mapu zapisnika</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Snimi problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Započni snimanje</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Zaustavi snimanje ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Snima do Zaustavi snimanje, 10 minuta ili zip datoteke od 20 MB, a zatim označi zip u Exploreru, spreman za prilog izvješću.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Započnite, izazovite problem, pa zaustavite. Jedna datoteka uz PadForge sadrži sve što je PadForge pročitao, poslao i zapisao, sa sažetkom što je pošlo po zlu. U datoteci je svaka tipka i gumb pritisnut na svakom uređaju dok snima, uključujući tipkovnice i miševe. Korisnička imena, serijski brojevi, adrese i upisana imena zamjenjuju se prije nego što se išta zapiše.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Zapisuje se sažetak…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Spremljeno {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Snimanje nije započelo. Provjera je našla privatnu vrijednost ovog PC-a koja ne bi bila izostavljena iz datoteke.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Snimanje nije započelo. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Posljednja snimka još se dovršava.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Čuvaj posljednjih 60 sekundi je isključeno, pa nema što spremiti.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Dovršena snimka koju PadForge nije zaustavio: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Čuvaj posljednjih 60 sekundi</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Dok mehanizam radi, drži u memoriji posljednju minutu onoga što sadrži snimka, za problem koji se javi jednom u večeri. Spremi posljednjih 60 sekundi zapisuje je kao datoteku.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Spremi posljednjih 60 sekundi</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Zapiši upisana slova i brojeve kao jednu tipku</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Snimka zapisuje slovne i brojčane tipke koje nijedno mapiranje ni makronaredba ne čita kao jednu tipku, svaki pritisak u svoje vrijeme. Svaka druga tipka i svaka tipka koju čita mapiranje ili makronaredba zapisuje se kako je pritisnuta.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Čuvaj posljednjih 60 sekundi, Zapiši upisana slova i brojeve kao jednu tipku</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Verzija aplikacije</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Okruženje .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Verzija SDL-a</value></data>
@@ -5439,4 +5458,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kadar iz serije Zvjezdane staze: Sljedeća generacija: slika teme Starfleet iz Zvjezdanih staza. Pronađeno na Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Svjetlosna traka</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Svjetlosna traka ({0})</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Snimanje problema</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Pokreni ili zaustavi snimanje</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Označi snimku</value></data>
 </root>

@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>บันทึกสแนปช็อต</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>บันทึกเหตุการณ์ล่าสุดของเอนจินลงในไฟล์ใหม่ ใช้ได้แม้ปิดล็อกการวินิจฉัยอยู่</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>เปิดโฟลเดอร์ล็อก</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>บันทึกปัญหา</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>เริ่มบันทึก</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>หยุดบันทึก ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>บันทึกจนกว่าจะหยุดบันทึก ครบ 10 นาที หรือไฟล์ zip ถึง 20 MB จากนั้นเลือกไฟล์ zip ใน Explorer พร้อมแนบกับรายงาน</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>เริ่มบันทึก ทำให้ปัญหาเกิดขึ้น แล้วหยุด ไฟล์เดียวข้าง PadForge เก็บทุกสิ่งที่ PadForge อ่าน ส่ง และบันทึกไว้ พร้อมสรุปว่าอะไรผิดพลาด ทุกปุ่มที่กดบนทุกอุปกรณ์ขณะบันทึกอยู่ในไฟล์ รวมถึงคีย์บอร์ดและเมาส์ ชื่อผู้ใช้ หมายเลขซีเรียล ที่อยู่ และชื่อที่พิมพ์จะถูกแทนที่ก่อนเขียนอะไรลงไฟล์</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>กำลังเขียนสรุป…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>บันทึก {0} แล้ว</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ไม่ได้เริ่มบันทึก การตรวจพบค่าส่วนตัวของ PC เครื่องนี้ที่จะไม่ถูกกันออกจากไฟล์</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ไม่ได้เริ่มบันทึก {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>การบันทึกครั้งล่าสุดยังเขียนไม่เสร็จ</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>เก็บ 60 วินาทีล่าสุดปิดอยู่ จึงไม่มีอะไรให้บันทึก</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>บันทึกที่ PadForge ยังไม่ได้หยุดเสร็จสมบูรณ์แล้ว: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>เก็บ 60 วินาทีล่าสุด</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ขณะที่เอนจินทำงาน จะเก็บสิ่งที่การบันทึกเก็บไว้ในช่วงนาทีล่าสุดไว้ในหน่วยความจำ สำหรับปัญหาที่เกิดแค่ตอนเย็นละครั้ง บันทึก 60 วินาทีล่าสุดจะเขียนมันเป็นไฟล์</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>บันทึก 60 วินาทีล่าสุด</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>เขียนตัวอักษรและตัวเลขที่พิมพ์เป็นปุ่มเดียว</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>การบันทึกจะเขียนปุ่มตัวอักษรและตัวเลขที่ไม่มีการแมปหรือแมโครใดอ่านเป็นปุ่มเดียว โดยแต่ละการกดมีเวลาของตัวเอง ปุ่มอื่นทั้งหมด และทุกปุ่มที่การแมปหรือแมโครอ่าน จะเขียนตามที่กดจริง</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>เก็บ 60 วินาทีล่าสุด, เขียนตัวอักษรและตัวเลขที่พิมพ์เป็นปุ่มเดียว</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>เวอร์ชันแอป</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>รันไทม์ .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>เวอร์ชัน SDL</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>ทางลัดโปรไฟล์</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>ทำสิ่งเดียวกับทางลัดโปรไฟล์ คือโหลดโปรไฟล์ที่ระบุชื่อ โปรไฟล์ถัดไปหรือก่อนหน้า แสดงหรือซ่อนหน้าต่าง หรือปิดและเปิดคอนโทรลเลอร์เสมือน</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>ทางลัดโปรไฟล์: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>การบันทึกปัญหา</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>เริ่มหรือหยุดการบันทึกปัญหา ทำเครื่องหมายในการบันทึกที่กำลังทำงาน หรือบันทึก 60 วินาทีล่าสุด โดยไม่ต้องออกจากเกม</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>เริ่มหรือหยุดบันทึก</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ทำเครื่องหมายในการบันทึก</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>ระยะเยื้อง X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>ระยะเยื้อง Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>รีเซ็ตระยะเยื้อง X</value></data>

@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>स्न्यापसट सेभ गर्नुहोस्</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>पछिल्ला इन्जिन घटनाहरूलाई नयाँ फाइलमा सेभ गर्छ। निदान लग बन्द हुँदा पनि काम गर्छ।</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>लग फोल्डर खोल्नुहोस्</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>समस्या रेकर्ड गर्नुहोस्</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>रेकर्डिङ सुरु गर्नुहोस्</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>रेकर्डिङ रोक्नुहोस् ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>“रेकर्डिङ रोक्नुहोस्”, 10 मिनेट वा 20 MB को zip सम्म रेकर्ड गर्छ, त्यसपछि रिपोर्टमा संलग्न गर्न तयार zip लाई Explorer मा चयन गर्छ।</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>सुरु गर्नुहोस्, समस्या हुन दिनुहोस्, त्यसपछि रोक्नुहोस्। PadForge छेउको एउटा फाइलमा PadForge ले पढेको, पठाएको र लग गरेको सबै कुरा, के बिग्रियो भन्ने सारांशसहित हुन्छ। रेकर्ड हुँदा हरेक यन्त्रमा थिचिएका सबै की र बटनहरू फाइलमा हुन्छन्, किबोर्ड र माउससमेत। केही लेख्नुअघि प्रयोगकर्ता नाम, सिरियल नम्बर, ठेगाना र टाइप गरिएका नामहरू प्रतिस्थापन गरिन्छन्।</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>सारांश लेख्दै…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} सेभ गरियो</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>रेकर्डिङ सुरु भएन। एउटा जाँचले यस PC को एउटा निजी मान फाइलबाट बाहिर नरहने भेट्टायो।</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>रेकर्डिङ सुरु भएन। {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>पछिल्लो रेकर्डिङ अझै पूरा हुँदैछ।</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>“अन्तिम 60 सेकेन्ड राख्नुहोस्” बन्द छ, त्यसैले सेभ गर्न केही छैन।</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ले नरोकेको रेकर्डिङ पूरा गरियो: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>अन्तिम 60 सेकेन्ड राख्नुहोस्</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>इन्जिन चलिरहँदा, रेकर्डिङले राख्ने कुराको अन्तिम एक मिनेट मेमोरीमा राख्छ, साँझमा एक पटक मात्र आउने समस्याका लागि। “अन्तिम 60 सेकेन्ड सेभ गर्नुहोस्” ले यसलाई फाइलका रूपमा लेख्छ।</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>अन्तिम 60 सेकेन्ड सेभ गर्नुहोस्</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>टाइप गरिएका अक्षर र अङ्कहरूलाई एउटै कीका रूपमा लेख्नुहोस्</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>कुनै म्यापिङ वा म्याक्रोले नपढ्ने अक्षर र अङ्क कीहरूलाई रेकर्डिङले एउटै कीका रूपमा, हरेक थिचाइ आफ्नै समयमा लेख्छ। अन्य सबै की, र म्यापिङ वा म्याक्रोले पढ्ने हरेक की, थिचिएअनुसार नै लेखिन्छ।</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>अन्तिम 60 सेकेन्ड राख्नुहोस्, टाइप गरिएका अक्षर र अङ्कहरूलाई एउटै कीका रूपमा लेख्नुहोस्</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>एप संस्करण</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET रनटाइम</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL संस्करण</value></data>
@@ -5853,6 +5872,10 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>प्रोफाइल सर्टकट</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>प्रोफाइल सर्टकटले गर्ने काम गर्छ: नाम दिइएको प्रोफाइल, अर्को प्रोफाइल वा अघिल्लो प्रोफाइल लोड गर्छ, विन्डो देखाउँछ वा लुकाउँछ, वा भर्चुअल कन्ट्रोलरहरू बन्द र फेरि सुरु गर्छ।</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>प्रोफाइल सर्टकट: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>समस्या रेकर्डिङ</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>खेल नछोडी समस्या रेकर्डिङ सुरु गर्छ वा रोक्छ, चलिरहेको रेकर्डिङमा चिह्न लगाउँछ, वा अन्तिम 60 सेकेन्ड सेभ गर्छ।</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>रेकर्डिङ सुरु गर्नुहोस् वा रोक्नुहोस्</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>रेकर्डिङमा चिह्न लगाउनुहोस्</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>अफसेट X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>अफसेट Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>अफसेट X रिसेट गर्नुहोस्</value></data>

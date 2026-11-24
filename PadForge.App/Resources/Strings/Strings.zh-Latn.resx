@@ -849,6 +849,25 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Bǎocún kuàizhào</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Jiāng zuìjìn de yǐnqíng shìjiàn bǎocún dào xīn wénjiàn. Jíshǐ zhěnduàn rìzhì yǐ guānbì yě kě shǐyòng.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Dǎkāi rìzhì wénjiànjiā</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Lùzhì wèntí</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kāishǐ lùzhì</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Tíngzhǐ lùzhì ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Lùzhì zhídào àn xià Tíngzhǐ lùzhì, mǎn 10 fēnzhōng huò zip dádào 20 MB, ránhòu zài Explorer zhōng xuǎnzhòng gāi zip, kě zhíjiē fùjiā dào bàogào.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Kāishǐ, ràng wèntí fāshēng, ránhòu tíngzhǐ. PadForge pángbiān de yí gè wénjiàn bāohán PadForge dúqǔ, fāsòng hé jìlù de quánbù nèiróng, bìng fù yǒu chūcuò zhāiyào. Lùzhì qījiān měi gè shèbèi shàng àn xià de měi gè jiàn hé ànniǔ dōu huì jìrù wénjiàn, bāokuò jiànpán hé shǔbiāo. Yònghùmíng, xùlièhào, dìzhǐ hé shūrù de míngchēng zài xiěrù qián dōu huì bèi tìhuàn.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Zhèngzài xiě zhāiyào…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Yǐ bǎocún {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Lùzhì wèi kāishǐ. Jiǎnchá fāxiàn cǐ PC de mǒu gè sīmì zhí wúfǎ bèi páichú zài wénjiàn zhī wài.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Lùzhì wèi kāishǐ. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Shàng yí gè lùzhì réng zài wánchéng zhōng.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Bǎoliú zuìhòu 60 miǎo yǐ guānbì, yīncǐ méiyǒu kě bǎocún de nèiróng.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Yǐ wánchéng PadForge wèi tíngzhǐ de lùzhì: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Bǎoliú zuìhòu 60 miǎo</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Yǐnqíng yùnxíng shí, zài nèicún zhōng bǎoliú lùzhì nèiróng de zuìhòu yì fēnzhōng, yòngyú měi wǎn zhǐ chūxiàn yí cì de wèntí. Bǎocún zuìhòu 60 miǎo huì jiāng qí xiěwéi wénjiàn.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Bǎocún zuìhòu 60 miǎo</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Jiāng shūrù de zìmǔ hé shùzì jì wéi tóng yí jiàn</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Lùzhì huì jiāng méiyǒu yìngshè huò hóng dúqǔ de zìmǔ jiàn hé shùzì jiàn jì wéi tóng yí jiàn, měi cì àn xià jìlù gèzì de shíjiān. Qítā suǒyǒu jiàn, yǐjí yìngshè huò hóng dúqǔ de jiàn, dōu àn shíjì àn xià de jiàn jìlù.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Bǎoliú zuìhòu 60 miǎo, Jiāng shūrù de zìmǔ hé shùzì jì wéi tóng yí jiàn</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Yìngyòng bǎnběn</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET yùnxíngshí</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL bǎnběn</value></data>
@@ -5335,4 +5354,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Xīngjì Míhángjì: Xià Yí Dài de yì zhēn huàmiàn: Xīngjì Míhángjì zhǔtí Starfleet de túpiàn. Zhǎo zì Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Dēngtiáo</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} dēngtiáo</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Wèntí lùzhì</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kāishǐ huò tíngzhǐ lùzhì</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Zài lùzhì zhōng zuò biāojì</value></data>
 </root>

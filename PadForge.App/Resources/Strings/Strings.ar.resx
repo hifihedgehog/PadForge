@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>حفظ لقطة</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>يحفظ أحدث أحداث المحرك في ملف جديد. يعمل حتى لو كان سجل التشخيص متوقفا.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>فتح مجلد السجل</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>تسجيل مشكلة</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>بدء التسجيل</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>إيقاف التسجيل ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}، {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>يسجل حتى «إيقاف التسجيل» أو 10 دقائق أو ملف zip بحجم 20 MB، ثم يحدد ملف zip في Explorer، جاهزا للإرفاق بتقرير.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ابدأ، ثم أحدث المشكلة، ثم أوقف. يحوي ملف واحد بجوار PadForge كل ما قرأه PadForge وأرسله وسجّله، مع ملخص لما حدث. كل مفتاح وزر يُضغط على أي جهاز أثناء التسجيل يكون في الملف، بما فيها لوحات المفاتيح والفأرات. تُستبدل أسماء المستخدمين والأرقام التسلسلية والعناوين والأسماء المكتوبة قبل كتابة أي شيء.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>جارٍ كتابة الملخص…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>تم حفظ {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>لم يبدأ التسجيل. وجد فحص قيمة خاصة بهذا الـ PC لن يتم إبعادها عن الملف.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>لم يبدأ التسجيل. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>لا يزال التسجيل الأخير قيد الإنهاء.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«الاحتفاظ بآخر 60 ثانية» متوقف، فلا يوجد ما يمكن حفظه.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>أُنهي تسجيل لم يوقفه PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>الاحتفاظ بآخر 60 ثانية</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>أثناء عمل المحرك، يحتفظ في الذاكرة بآخر دقيقة مما يحويه التسجيل، لمشكلة تحدث مرة في المساء. «حفظ آخر 60 ثانية» يكتبها في ملف.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>حفظ آخر 60 ثانية</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>كتابة الأحرف والأرقام المطبوعة كمفتاح واحد</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>يكتب التسجيل مفاتيح الأحرف والأرقام التي لا يقرؤها أي تعيين أو ماكرو على أنها مفتاح واحد، وكل ضغطة في وقتها. أما كل مفتاح آخر، وكل مفتاح يقرؤه تعيين أو ماكرو، فيُكتب كما ضُغط.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>الاحتفاظ بآخر 60 ثانية، كتابة الأحرف والأرقام المطبوعة كمفتاح واحد</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>إصدار التطبيق</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>وقت تشغيل .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>إصدار SDL</value></data>
@@ -5448,4 +5467,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>لقطة من ستار تريك: الجيل التالي: صورة سمة ستار تريك Starfleet. وُجدت على Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>شريط الإضاءة</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>شريط إضاءة {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>تسجيل المشكلة</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>بدء التسجيل أو إيقافه</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>وضع علامة في التسجيل</value></data>
 </root>

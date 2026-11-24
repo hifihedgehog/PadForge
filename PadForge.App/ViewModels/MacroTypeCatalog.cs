@@ -173,6 +173,7 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.ToggleMagnifier, S.MacroAction_ToggleMagnifier, S.Macro_Cat_Layers, null);
                 Add(MacroActionType.MagnifierWhileHeld, S.MacroAction_Type_MagnifierWhileHeld, S.Macro_Cat_Layers, S.MacroAction_MagnifierWhileHeld_Tooltip);
                 Add(MacroActionType.ProfileShortcut, S.MacroAction_Type_ProfileShortcut, S.Macro_Cat_System, S.MacroAction_ProfileShortcut_Tooltip);
+                Add(MacroActionType.ProblemRecording, S.MacroAction_Type_ProblemRecording, S.Macro_Cat_System, S.MacroAction_ProblemRecording_Tooltip);
                 Add(MacroActionType.RunProgram, S.MacroAction_Type_RunProgram, S.Macro_Cat_System, S.MacroAction_RunProgram_Tooltip);
                 Add(MacroActionType.VoiceListenWhileHeld, S.MacroAction_Type_VoiceListenWhileHeld, S.Macro_Cat_System, S.MacroAction_VoiceListenWhileHeld_Tooltip);
                 Add(MacroActionType.DisconnectController, S.MacroAction_Type_DisconnectController, S.Macro_Cat_System, S.MacroAction_DisconnectController_Tooltip);

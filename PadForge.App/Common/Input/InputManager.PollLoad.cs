@@ -57,6 +57,11 @@ namespace PadForge.Common.Input
             private readonly long[] _ticks = new long[s_names.Length];
             private readonly long[] _bytes = new long[s_names.Length];
             private readonly StringBuilder _line = new(512);
+
+            // The same sums kept apart for a problem recording (#597), which
+            // takes and clears them once a second.
+            private readonly long[] _recordedTicks = new long[s_names.Length];
+            private long _recordedPasses, _recordedSleeps, _recordedWork, _recordedLongest, _recordedLate, _recordedLatest;
             private long _start, _passes, _sleeps, _work, _longest, _late, _latest;
             private long _passStart, _last, _lastBytes;
             private ulong _cycles;
@@ -87,6 +92,8 @@ namespace PadForge.Common.Input
                 {
                     _late += late;
                     if (late > _latest) _latest = late;
+                    _recordedLate += late;
+                    if (late > _recordedLatest) _recordedLatest = late;
                 }
             }
 
@@ -96,6 +103,7 @@ namespace PadForge.Common.Input
                 long now = Stopwatch.GetTimestamp();
                 long bytes = GC.GetAllocatedBytesForCurrentThread();
                 _ticks[(int)step] += now - _last;
+                _recordedTicks[(int)step] += now - _last;
                 _bytes[(int)step] += bytes - _lastBytes;
                 _last = now;
                 _lastBytes = bytes;
@@ -108,10 +116,29 @@ namespace PadForge.Common.Input
                 long work = _last - _passStart;
                 _work += work;
                 if (work > _longest) _longest = work;
+                _recordedPasses++;
+                _recordedWork += work;
+                if (work > _recordedLongest) _recordedLongest = work;
+            }
+
+            /// <summary>Hands the sums since the last take to a problem
+            /// recording as one second's timing, and clears them. With no
+            /// recording to take them they are cleared alone, which a
+            /// recording's first pass asks for.</summary>
+            internal void TakeRecorded(Recording.RecordingCapture recording, long now, int rateHz)
+            {
+                recording?.Second(now, rateHz, _recordedPasses, _recordedSleeps, _recordedWork, _recordedLongest,
+                    _recordedLate, _recordedLatest, _recordedTicks);
+                Array.Clear(_recordedTicks);
+                _recordedPasses = _recordedSleeps = _recordedWork = _recordedLongest = _recordedLate = _recordedLatest = 0;
             }
 
             /// <summary>The thread slept between two passes.</summary>
-            internal void Slept() => _sleeps++;
+            internal void Slept()
+            {
+                _sleeps++;
+                _recordedSleeps++;
+            }
 
             /// <summary>The heartbeat's line took <paramref name="ticks"/>
             /// to write. The next line says so.</summary>

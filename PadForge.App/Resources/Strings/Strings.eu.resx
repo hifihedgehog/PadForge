@@ -849,6 +849,25 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Gorde argazkia</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Motorraren azken gertaerak fitxategi berri batean gordetzen ditu. Diagnostiko-erregistroa desaktibatuta dagoenean ere funtzionatzen du.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Ireki erregistroen karpeta</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Grabatu arazo bat</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Hasi grabatzen</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Gelditu grabaketa ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grabatzen du Gelditu grabaketa sakatu arte, 10 minutu igaro arte edo 20 MB-ko zip-a bete arte, eta gero zip-a Explorer-en hautatzen du, txosten batera erantsteko prest.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Hasi, eragin arazoa, eta gelditu. PadForge-ren ondoko fitxategi batek PadForge-k irakurri, bidali eta erregistratu duen guztia dauka, gaizki joan denaren laburpen batekin. Grabatzen den bitartean gailu guztietan sakatutako tekla eta botoi guztiak fitxategian daude, teklatuak eta saguak barne. Erabiltzaile-izenak, serie-zenbakiak, helbideak eta idatzitako izenak ordezkatu egiten dira ezer idatzi aurretik.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Laburpena idazten…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} gorde da</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Grabaketa ez da hasi. Egiaztapen batek PC honen balio pribatu bat aurkitu du, fitxategitik kanpo geratuko ez zena.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Grabaketa ez da hasi. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Azken grabaketa amaitzen ari da oraindik.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Gorde azken 60 segundoak desaktibatuta dago, beraz ez dago gordetzeko ezer.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge-k gelditu gabe zuen grabaketa bat amaitu da: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Gorde azken 60 segundoak</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Motorra martxan dagoen bitartean, grabaketa batek duenaren azken minutua memorian gordetzen du, arratsaldean behin gertatzen den arazo baterako. Gorde azken 60 segundoak botoiak fitxategi gisa idazten du.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Gorde azken 60 segundoak</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Idatzi letrak eta zenbakiak tekla bakar gisa</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Grabaketa batek mapaketa edo makro batek irakurtzen ez dituen letra- eta zenbaki-teklak tekla bakar gisa idazten ditu, sakatze bakoitza bere unean. Gainerako tekla guztiak, eta mapaketa edo makro batek irakurtzen dituen guztiak, sakatu bezala idazten dira.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Gorde azken 60 segundoak, Idatzi letrak eta zenbakiak tekla bakar gisa</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Aplikazioaren bertsioa</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET exekuzio-ingurunea</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL bertsioa</value></data>
@@ -5432,4 +5451,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation serieko fotograma bat: Star Trek gaiaren irudia, Starfleet. Memory Alpha-n aurkitua.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Argi-barra</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} argi-barra</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Arazoaren grabaketa</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Hasi edo gelditu grabaketa</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markatu grabaketa</value></data>
 </root>

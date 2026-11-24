@@ -900,6 +900,25 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Lagre øyeblikksbilde</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Lagrer de siste motorhendelsene i en ny fil. Fungerer også når diagnostikkloggen er av.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Åpne loggmappen</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Ta opp et problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Start opptak</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stopp opptak ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Tar opp til du trykker Stopp opptak, til det har gått 10 minutter eller til zip-filen er 20 MB, og markerer deretter zip-filen i Explorer, klar til å legges ved en rapport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, få problemet til å skje, og stopp. Én fil ved siden av PadForge inneholder alt PadForge leste, sendte og logget, med et sammendrag av hva som gikk galt. Hver tast og knapp som trykkes på hver enhet mens opptaket pågår, står i filen, tastaturer og mus inkludert. Brukernavn, serienumre, adresser og skrevne navn byttes ut før noe skrives.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skriver sammendraget…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Lagret {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Opptaket startet ikke. En kontroll fant en privat verdi fra denne PC-en som ikke ville blitt holdt utenfor filen.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Opptaket startet ikke. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Det forrige opptaket blir fortsatt ferdigstilt.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Behold de siste 60 sekundene er av, så det er ingenting å lagre.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Ferdigstilte et opptak PadForge ikke hadde stoppet: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Behold de siste 60 sekundene</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mens motoren kjører, holdes det siste minuttet av det et opptak inneholder i minnet, for et problem som kommer én gang i løpet av en kveld. Lagre de siste 60 sekundene skriver det som en fil.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Lagre de siste 60 sekundene</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skriv bokstaver og tall som én tast</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Et opptak skriver bokstav- og talltastene som ingen tilordning eller makro leser, som én tast, hvert trykk med sitt eget tidspunkt. Alle andre taster, og alle taster en tilordning eller makro leser, skrives slik de ble trykket.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Behold de siste 60 sekundene, Skriv bokstaver og tall som én tast</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Appversjon</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-kjøretidsmiljø</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-versjon</value></data>
@@ -5853,6 +5872,10 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilsnarvei</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gjør det en profilsnarvei gjør: laster en navngitt profil, den neste eller den forrige, viser eller skjuler vinduet, eller slår de virtuelle kontrollerne av og på.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profilsnarvei: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemopptak</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Starter eller stopper et problemopptak, markerer det som pågår, eller lagrer de siste 60 sekundene, uten å forlate spillet.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Start eller stopp opptak</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Merk opptaket</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Forskyvning X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Forskyvning Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Tilbakestill forskyvning X</value></data>

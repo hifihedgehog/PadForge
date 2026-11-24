@@ -900,6 +900,25 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Simpan cuplikan</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Menyimpan peristiwa mesin terbaru ke file baru. Berfungsi bahkan saat log diagnostik nonaktif.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Buka folder log</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Rekam masalah</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Mulai merekam</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Berhenti merekam ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Merekam sampai Berhenti merekam, 10 menit, atau zip 20 MB, lalu memilih zip itu di Explorer, siap dilampirkan ke laporan.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Mulai, buat masalahnya terjadi, lalu berhenti. Satu file di samping PadForge berisi semua yang dibaca, dikirim, dan dicatat PadForge, beserta ringkasan apa yang salah. Setiap tombol yang ditekan pada setiap perangkat selama merekam ada di file itu, termasuk keyboard dan mouse. Nama pengguna, nomor seri, alamat, dan nama yang diketik diganti sebelum apa pun ditulis.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Menulis ringkasan…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Tersimpan {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Perekaman tidak dimulai. Pemeriksaan menemukan nilai pribadi PC ini yang tidak akan terjaga dari file.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Perekaman tidak dimulai. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Rekaman terakhir masih diselesaikan.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Simpan 60 detik terakhir nonaktif, jadi tidak ada yang dapat disimpan.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Menyelesaikan rekaman yang belum dihentikan PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Simpan 60 detik terakhir</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Selama mesin berjalan, menyimpan di memori semenit terakhir dari isi sebuah rekaman, untuk masalah yang muncul sekali dalam semalam. Simpan 60 detik terakhir menuliskannya sebagai file.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Simpan 60 detik terakhir</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Tulis huruf dan angka yang diketik sebagai satu tombol</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Rekaman menulis tombol huruf dan angka yang tidak dibaca pemetaan atau makro apa pun sebagai satu tombol, tiap tekanan pada waktunya sendiri. Semua tombol lain, dan setiap tombol yang dibaca pemetaan atau makro, ditulis sebagaimana ditekan.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Simpan 60 detik terakhir, Tulis huruf dan angka yang diketik sebagai satu tombol</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versi aplikasi</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versi SDL</value></data>
@@ -5853,6 +5872,10 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Pintasan profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Melakukan hal yang sama seperti pintasan profil: memuat profil bernama, profil berikutnya atau sebelumnya, menampilkan atau menyembunyikan jendela, atau mematikan dan menyalakan kontroler virtual.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Pintasan profil: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Rekaman masalah</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Memulai atau menghentikan rekaman masalah, menandai rekaman yang berjalan, atau menyimpan 60 detik terakhir, tanpa meninggalkan game.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Mulai atau hentikan perekaman</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Tandai rekaman</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Offset X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Offset Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Atur ulang offset X</value></data>

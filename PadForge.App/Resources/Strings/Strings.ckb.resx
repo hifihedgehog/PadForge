@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستا</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>نوێترین ڕووداوەکانی بزوێنەر لە فایلێکی نوێدا پاشەکەوت دەکات. تەنانەت کاتێک تۆماری دەستنیشانکردن کوژاوەیە کاردەکات.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>کردنەوەی بوخچەی تۆمار</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>تۆمارکردنی کێشەیەک</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>دەستپێکردنی تۆمارکردن</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>وەستاندنی تۆمارکردن ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}، {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>تا «وەستاندنی تۆمارکردن»، 10 خولەک یان zip ێکی 20 MB تۆمار دەکات، پاشان zip ەکە لە Explorer دا دیاری دەکات، ئامادە بۆ هاوپێچکردن بە ڕاپۆرتێکەوە.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>دەست پێبکە، وا بکە کێشەکە ڕووبدات، پاشان بیوەستێنە. یەک فایل لە تەنیشت PadForge هەموو ئەوەی PadForge خوێندوویەتییەوە، ناردوویەتی و تۆماری کردووە لەگەڵ کورتەیەک لەوەی چی هەڵە بوو لەخۆ دەگرێت. هەموو کلیل و دوگمەیەک کە لە کاتی تۆمارکردندا لەسەر هەموو ئامێرێک دادەگیرێت لە فایلەکەدایە، کیبۆرد و ماوسیش. ناوی بەکارهێنەر، ژمارە زنجیرەییەکان، ناونیشانەکان و ناوە نووسراوەکان پێش ئەوەی هیچ شتێک بنووسرێت دەگۆڕدرێن.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>نووسینی کورتەکە…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>پاشەکەوتکرا: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>تۆمارکردن دەستی پێنەکرد. پشکنینێک بەهایەکی تایبەتی ئەم PC یەی دۆزییەوە کە لە فایلەکە دوور نەدەخرایەوە.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>تۆمارکردن دەستی پێنەکرد. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>دوایین تۆمار هێشتا تەواو دەکرێت.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«هێشتنەوەی دوایین 60 چرکە» کوژاوەیە، بۆیە هیچ شتێک نییە بۆ پاشەکەوتکردن.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>تۆمارێک تەواو کرا کە PadForge نەیوەستاندبوو: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>هێشتنەوەی دوایین 60 چرکە</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>تا بزوێنەر کار دەکات، دوایین خولەکی ئەوەی تۆمارێک لەخۆی دەگرێت لە بیرگەدا ڕادەگرێت، بۆ کێشەیەک کە ئێوارەیەک جارێک دێت. «پاشەکەوتکردنی دوایین 60 چرکە» وەک فایلێک دەینووسێت.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>پاشەکەوتکردنی دوایین 60 چرکە</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>نووسینی پیت و ژمارە نووسراوەکان وەک یەک کلیل</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>تۆمارێک ئەو کلیلە پیت و ژمارانەی کە هیچ بەستنەوە یان ماکرۆیەک نایانخوێنێتەوە وەک یەک کلیل دەنووسێت، هەر داگرتنێک لە کاتی خۆیدا. هەموو کلیلێکی تر، و هەموو کلیلێک کە بەستنەوە یان ماکرۆیەک دەیخوێنێتەوە، وەک داگیراو دەنووسرێت.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>هێشتنەوەی دوایین 60 چرکە، نووسینی پیت و ژمارە نووسراوەکان وەک یەک کلیل</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>وەشانی بەرنامە</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>ڕەنتایمی .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>وەشانی SDL</value></data>
@@ -5432,4 +5451,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>چوارچێوەیەک لە ستار ترێک: نەوەی داهاتوو: وێنەی ڕووکاری ستار ترێک Starfleet. لە Memory Alpha دۆزرایەوە.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>شریتی ڕووناکی</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>شریتی ڕووناکیی {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>تۆماری کێشە</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>دەستپێکردن یان وەستاندنی تۆمارکردن</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>نیشانەکردنی تۆمارەکە</value></data>
 </root>

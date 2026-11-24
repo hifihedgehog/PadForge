@@ -900,6 +900,25 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Save Snapshot</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Saves the most recent engine events to a new file. Works even when the diagnostics log is off.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Open Log Folder</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Record a Problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Start Recording</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stop Recording ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Records until Stop Recording, 10 minutes or a 20 MB zip, then selects the zip in Explorer, ready to attach to a report.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, make the problem happen, then stop. One file beside PadForge holds everything PadForge read, sent and logged, with a summary of what went wrong. Every key and button pressed on every device while it records is in the file, keyboards and mice included. User names, serial numbers, addresses and typed names are replaced before anything is written.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Writing the summary…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Saved {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Recording did not start. A check found a private value of this PC that would not be kept out of the file.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Recording did not start. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>The last recording is still being finished.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Keep the Last 60 Seconds is off, so there is nothing to save.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Finished a recording PadForge had not stopped: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Keep the Last 60 Seconds</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>While the engine runs, holds in memory the last minute of what a recording holds, for a problem that comes once an evening. Save the Last 60 Seconds writes it as a file.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Save the Last 60 Seconds</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Write Typed Letters and Numbers as One Key</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>A recording writes the letter and number keys that no mapping or macro reads as one key, each press at its own time. Every other key, and every key a mapping or macro reads, is written as pressed.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Keep the Last 60 Seconds, Write Typed Letters and Numbers as One Key</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App Version</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL Version</value></data>
@@ -5926,6 +5945,10 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profile Shortcut</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Does what a profile shortcut does: loads a named profile, the next one or the previous one, shows or hides the window, or turns the virtual controllers off and on.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profile Shortcut: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problem Recording</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Starts or stops a problem recording, marks the one that runs, or saves the last 60 seconds, without leaving the game.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Start or Stop Recording</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Mark the Recording</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Offset X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Offset Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Reset Offset X</value></data>

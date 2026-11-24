@@ -843,6 +843,25 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Desa una instantània</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Desa els esdeveniments més recents del motor en un fitxer nou. Funciona fins i tot quan el registre de diagnòstic està desactivat.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Obre la carpeta de registres</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Grava un problema</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Inicia la gravació</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Atura la gravació ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grava fins que premis Atura la gravació, fins a 10 minuts o fins a un zip de 20 MB, i després selecciona el zip a l'Explorer, a punt per adjuntar-lo a un informe.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Inicia, fes que passi el problema i atura. Un fitxer al costat de PadForge conté tot el que PadForge ha llegit, enviat i registrat, amb un resum del que ha anat malament. Totes les tecles i botons premuts a tots els dispositius mentre grava hi són, teclats i ratolins inclosos. Els noms d'usuari, els números de sèrie, les adreces i els noms escrits se substitueixen abans d'escriure res.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>S'està escrivint el resum…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>S'ha desat {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>La gravació no s'ha iniciat. Una comprovació ha trobat un valor privat d'aquest PC que no quedaria fora del fitxer.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>La gravació no s'ha iniciat. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>L'última gravació encara s'està acabant.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Conserva els últims 60 segons està desactivat, així que no hi ha res per desar.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>S'ha acabat una gravació que PadForge no havia aturat: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Conserva els últims 60 segons</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mentre el motor s'executa, guarda a la memòria l'últim minut del que conté una gravació, per a un problema que apareix un cop per vespre. Desa els últims 60 segons l'escriu com a fitxer.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Desa els últims 60 segons</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Escriu les lletres i els números tecleats com una sola tecla</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Una gravació escriu les tecles de lletres i números que cap assignació ni macro llegeix com una sola tecla, cada pulsació al seu moment. Totes les altres tecles, i totes les que llegeix una assignació o una macro, s'escriuen tal com es premen.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Conserva els últims 60 segons, Escriu les lletres i els números tecleats com una sola tecla</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versió de l'aplicació</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Entorn d'execució .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versió d'SDL</value></data>
@@ -5447,4 +5466,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Un fotograma de Star Trek: La nova generació: la imatge del tema de Star Trek Starfleet. Trobat a Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Barra de llum</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Barra de llum {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Gravació de problema</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Inicia o atura la gravació</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marca la gravació</value></data>
 </root>

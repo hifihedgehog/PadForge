@@ -667,6 +667,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>スナップショットを保存</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>直近のエンジンイベントを新しいファイルに保存します。診断ログが無効でも動作します。</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ログフォルダーを開く</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>問題を記録</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>記録を開始</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>記録を停止 ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}、{1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>記録を停止するか、10 分または 20 MB の zip に達するまで記録し、その後 Explorer で zip を選択します。そのまま報告に添付できます。</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>開始して問題を再現し、停止します。PadForge の横の 1 つのファイルに、PadForge が読み取り、送信し、記録したすべてと、問題の概要が入ります。記録中に、キーボードやマウスを含むすべてのデバイスで押されたすべてのキーとボタンがファイルに含まれます。ユーザー名、シリアル番号、アドレス、入力された名前は、書き込む前に置き換えられます。</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>概要を書き込み中…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} を保存しました</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>記録を開始できませんでした。この PC の非公開の値がファイルに残る可能性があることが、チェックで見つかりました。</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>記録を開始できませんでした。{0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>前回の記録をまだ仕上げています。</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>「直近 60 秒を保持」がオフのため、保存するものがありません。</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge が停止していなかった記録を完了しました: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>直近 60 秒を保持</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>エンジンの実行中、問題が夜に一度だけ起きるような場合に備えて、記録に含まれる内容の直近 1 分をメモリに保持します。「直近 60 秒を保存」でファイルに書き出します。</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>直近 60 秒を保存</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>入力された文字と数字を 1 つのキーとして記録</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>マッピングやマクロが読み取らない文字キーと数字キーを、それぞれ押した時刻とともに 1 つのキーとして記録します。それ以外のキーと、マッピングやマクロが読み取るキーは、押されたとおりに記録されます。</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>直近 60 秒を保持、入力された文字と数字を 1 つのキーとして記録</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>アプリバージョン</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ランタイム</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL バージョン</value></data>
@@ -5808,6 +5827,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>プロファイルショートカット</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>プロファイルショートカットと同じ動作をします。指定したプロファイル、次または前のプロファイルの読み込み、ウィンドウの表示と非表示、仮想コントローラーのオフとオンの切り替えができます。</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>プロファイルショートカット: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>問題の記録</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>ゲームを離れずに、問題の記録の開始と停止、実行中の記録へのマーク付け、直近 60 秒の保存を行います。</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>記録の開始または停止</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>記録にマークを付ける</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>オフセット X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>オフセット Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>オフセット X をリセット</value></data>

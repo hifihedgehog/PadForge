@@ -76,6 +76,8 @@ namespace PadForge.ViewModels
             nameof(EnableCommunityConfigLookup) or
             nameof(ShowLegacyWorkshopConfigs) or
             nameof(DiagnosticsLoggingEnabled) or
+            nameof(ProblemRecordingKeepLastMinute) or
+            nameof(ProblemRecordingHideTypedKeys) or
             nameof(EnableAutoProfileSwitching) or
             nameof(IdentityProtectionModeIndex);
 
@@ -272,6 +274,16 @@ namespace PadForge.ViewModels
                 case nameof(DiagnosticsLoggingEnabled):
                 {
                     DiagnosticsLoggingEnabled = false;
+                    break;
+                }
+                case nameof(ProblemRecordingKeepLastMinute):
+                {
+                    ProblemRecordingKeepLastMinute = false;
+                    break;
+                }
+                case nameof(ProblemRecordingHideTypedKeys):
+                {
+                    ProblemRecordingHideTypedKeys = false;
                     break;
                 }
                 case nameof(EnableAutoProfileSwitching):
@@ -1474,6 +1486,7 @@ namespace PadForge.ViewModels
             nameof(ScreenOverlayNumber) or
             nameof(CrosshairNumber) or
             nameof(ProfileShortcutMode) or
+            nameof(ProblemRecordingMode) or
             nameof(ScreenFrames) or
             nameof(ScreenFrameMs) or
             nameof(ScreenRepeat) or
@@ -1819,6 +1832,9 @@ namespace PadForge.ViewModels
                 case nameof(ProfileShortcutMode):
                     ProfileShortcutMode = PadForge.Services.SwitchProfileMode.Specific;
                     ProfileShortcutName = string.Empty;
+                    break;
+                case nameof(ProblemRecordingMode):
+                    ProblemRecordingMode = ProblemRecordingMode.Toggle;
                     break;
                 case nameof(ScreenOverlayNumber):
                 {

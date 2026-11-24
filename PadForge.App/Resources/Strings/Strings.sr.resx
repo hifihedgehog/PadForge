@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Сачувај снимак стања</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Чува најновије догађаје механизма у нову датотеку. Ради и када је дијагностички дневник искључен.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Отвори фасциклу дневника</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Сними проблем</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Почни снимање</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Заустави снимање ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Снима до Заустави снимање, 10 минута или zip од 20 MB, а затим изабере zip у програму Explorer, спреман за прилагање уз пријаву.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Почните, изазовите проблем, па зауставите. Једна датотека поред програма PadForge садржи све што је PadForge прочитао, послао и забележио, са сажетком шта је пошло по злу. У датотеци је сваки тастер и дугме притиснути на сваком уређају док траје снимање, укључујући тастатуре и мишеве. Корисничка имена, серијски бројеви, адресе и укуцана имена замењују се пре него што се било шта упише.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Уписивање сажетка…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Сачувано: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Снимање није почело. Провера је открила приватну вредност овог PC која не би била изостављена из датотеке.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Снимање није почело. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Последњи снимак се још завршава.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Чувај последњих 60 секунди је искључено, па нема шта да се сачува.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Завршен снимак који PadForge није зауставио: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Чувај последњих 60 секунди</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Док механизам ради, држи у меморији последњи минут онога што снимак садржи, за проблем који се јави једном у вече. Сачувај последњих 60 секунди уписује га као датотеку.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Сачувај последњих 60 секунди</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Упиши укуцана слова и бројеве као један тастер</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Снимак уписује тастере слова и бројева које ниједно мапирање или макро не чита као један тастер, сваки притисак у своје време. Сваки други тастер и сваки тастер који мапирање или макро чита уписује се као притиснут.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Чувај последњих 60 секунди, Упиши укуцана слова и бројеве као један тастер</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Верзија апликације</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET извршно окружење</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Верзија SDL</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Пречица профила</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Ради оно што ради пречица профила: учитава именовани профил, следећи или претходни, приказује или сакрива прозор, или искључује и укључује виртуелне контролере.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Пречица профила: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Снимање проблема</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Почиње или зауставља снимање проблема, означава оно које ради или чува последњих 60 секунди, без напуштања игре.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Почни или заустави снимање</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Означи снимак</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Померај X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Померај Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Ресетуј померај X</value></data>

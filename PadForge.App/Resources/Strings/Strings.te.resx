@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>స్నాప్‌షాట్ సేవ్ చేయి</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>తాజా ఇంజిన్ ఈవెంట్లను కొత్త ఫైల్‌లో సేవ్ చేస్తుంది. డయాగ్నోస్టిక్స్ లాగ్ ఆఫ్‌లో ఉన్నా పనిచేస్తుంది.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>లాగ్ ఫోల్డర్ తెరువు</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>సమస్యను రికార్డ్ చేయి</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>రికార్డింగ్ ప్రారంభించు</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>రికార్డింగ్ ఆపు ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>రికార్డింగ్ ఆపు వరకు, 10 నిమిషాలు లేదా 20 MB zip వరకు రికార్డ్ చేసి, ఆ తర్వాత Explorer లో zip ను ఎంచుకుని, నివేదికకు జోడించడానికి సిద్ధంగా ఉంచుతుంది.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ప్రారంభించి, సమస్యను జరగనిచ్చి, ఆపండి. PadForge పక్కన ఉండే ఒక ఫైల్‌లో PadForge చదివినవి, పంపినవి, లాగ్ చేసినవి అన్నీ ఉంటాయి, ఏమి తప్పు జరిగిందో సారాంశంతో సహా. రికార్డ్ అయ్యేటప్పుడు ప్రతి పరికరంలో నొక్కిన ప్రతి కీ, బటన్ ఆ ఫైల్‌లో ఉంటాయి, కీబోర్డులు, మౌస్‌లు సహా. వినియోగదారు పేర్లు, సీరియల్ నంబర్లు, చిరునామాలు, టైప్ చేసిన పేర్లు ఏదైనా రాయబడక ముందే మార్చబడతాయి.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>సారాంశం రాస్తోంది…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} సేవ్ చేయబడింది</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>రికార్డింగ్ ప్రారంభం కాలేదు. ఈ PC లోని ఒక ప్రైవేట్ విలువ ఫైల్‌లోకి రాకుండా ఆపబడదని ఒక తనిఖీలో తేలింది.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>రికార్డింగ్ ప్రారంభం కాలేదు. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>చివరి రికార్డింగ్ ఇంకా పూర్తవుతోంది.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>చివరి 60 సెకన్లు ఉంచు ఆఫ్‌లో ఉంది, కాబట్టి సేవ్ చేయడానికి ఏమీ లేదు.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ఆపని రికార్డింగ్ పూర్తయింది: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>చివరి 60 సెకన్లు ఉంచు</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ఇంజిన్ నడుస్తున్నప్పుడు, రికార్డింగ్ ఉంచేదాని చివరి నిమిషాన్ని మెమరీలో ఉంచుతుంది, సాయంత్రానికి ఒకసారి వచ్చే సమస్య కోసం. చివరి 60 సెకన్లు సేవ్ చేయి దాన్ని ఫైల్‌గా రాస్తుంది.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>చివరి 60 సెకన్లు సేవ్ చేయి</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>టైప్ చేసిన అక్షరాలు, అంకెలను ఒకే కీగా రాయి</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ఏ మ్యాపింగ్ లేదా మాక్రో చదవని అక్షర, అంకె కీలను రికార్డింగ్ ఒకే కీగా రాస్తుంది, ప్రతి నొక్కడం దాని సమయంలో. మిగతా ప్రతి కీ, మ్యాపింగ్ లేదా మాక్రో చదివే ప్రతి కీ నొక్కినట్లే రాయబడుతుంది.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>చివరి 60 సెకన్లు ఉంచు, టైప్ చేసిన అక్షరాలు, అంకెలను ఒకే కీగా రాయి</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>యాప్ వెర్షన్</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET రన్టైమ్</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL వెర్షన్</value></data>
@@ -5853,6 +5872,10 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్ చేసే పనిని చేస్తుంది: పేరున్న ప్రొఫైల్‌ను, తదుపరి లేదా మునుపటి ప్రొఫైల్‌ను లోడ్ చేస్తుంది, విండోను చూపిస్తుంది లేదా దాచుతుంది, లేదా వర్చువల్ కంట్రోలర్లను ఆఫ్ చేసి ఆన్ చేస్తుంది.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>సమస్య రికార్డింగ్</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>సమస్య రికార్డింగ్‌ను ప్రారంభిస్తుంది లేదా ఆపుతుంది, నడుస్తున్నదానిపై గుర్తు పెడుతుంది, లేదా గేమ్ వదలకుండా చివరి 60 సెకన్లను సేవ్ చేస్తుంది.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>రికార్డింగ్ ప్రారంభించు లేదా ఆపు</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>రికార్డింగ్‌పై గుర్తు పెట్టు</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>ఆఫ్‌సెట్ X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>ఆఫ్‌సెట్ Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>ఆఫ్‌సెట్ X ను రీసెట్ చేయి</value></data>

@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ස්නැප්ෂොට් සුරකින්න</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>නවතම එන්ජින් සිදුවීම් නව ගොනුවකට සුරකියි. දෝෂ නිර්ණය ලොගය අක්‍රිය විට පවා ක්‍රියා කරයි.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ලොග් ෆෝල්ඩරය විවෘත කරන්න</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ගැටලුවක් පටිගත කරන්න</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>පටිගත කිරීම අරඹන්න</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>පටිගත කිරීම නවත්වන්න ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>“පටිගත කිරීම නවත්වන්න”, මිනිත්තු 10 හෝ 20 MB zip එකක් දක්වා පටිගත කර, පසුව වාර්තාවකට අමුණන්නට සූදානම්ව Explorer හි zip එක තෝරයි.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>අරඹන්න, ගැටලුව ඇති කරන්න, ඉන්පසු නවත්වන්න. PadForge අසල ඇති එක් ගොනුවක PadForge කියවූ, යැවූ සහ ලොග් කළ සියල්ල, වැරදුණු දේ පිළිබඳ සාරාංශයක් සමඟ අඩංගු වේ. පටිගත කරන අතරතුර යතුරුපුවරු සහ මූසික ඇතුළුව සෑම උපාංගයකම එබූ සෑම යතුරක්ම සහ බොත්තමක්ම ගොනුවේ ඇත. කිසිවක් ලිවීමට පෙර පරිශීලක නම්, අනුක්‍රමික අංක, ලිපින සහ ටයිප් කළ නම් ප්‍රතිස්ථාපනය කෙරේ.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>සාරාංශය ලියමින්…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} සුරැකිණි</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>පටිගත කිරීම ආරම්භ නොවීය. ගොනුවෙන් බැහැර නොකෙරෙන මෙම PC එකේ පුද්ගලික අගයක් පරීක්ෂාවකින් හමු විය.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>පටිගත කිරීම ආරම්භ නොවීය. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>අවසන් පටිගත කිරීම තවමත් නිම කරමින් පවතී.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>“අවසන් තත්පර 60 තබා ගන්න” අක්‍රිය බැවින් සුරැකීමට කිසිවක් නැත.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge නොනැවැත්වූ පටිගත කිරීමක් නිම කළේය: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>අවසන් තත්පර 60 තබා ගන්න</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>එන්ජිම ධාවනය වන අතරතුර, සවසකට වරක් පමණක් ඇති වන ගැටලුවක් සඳහා, පටිගත කිරීමක අඩංගු දේවල අවසන් මිනිත්තුව මතකයේ තබා ගනී. “අවසන් තත්පර 60 සුරකින්න” එය ගොනුවක් ලෙස ලියයි.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>අවසන් තත්පර 60 සුරකින්න</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ටයිප් කළ අකුරු සහ අංක එක් යතුරක් ලෙස ලියන්න</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>කිසිදු සිතියම්ගත කිරීමක් හෝ මැක්‍රෝවක් නොකියවන අකුරු සහ අංක යතුරු, එක් එක් එබීම එහිම වේලාවේදී, පටිගත කිරීමක් එක් යතුරක් ලෙස ලියයි. අනෙක් සෑම යතුරක්ම සහ සිතියම්ගත කිරීමක් හෝ මැක්‍රෝවක් කියවන සෑම යතුරක්ම එබූ ලෙසම ලියැවේ.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>අවසන් තත්පර 60 තබා ගන්න, ටයිප් කළ අකුරු සහ අංක එක් යතුරක් ලෙස ලියන්න</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>යෙදුම් අනුවාදය</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ධාවන කාලය</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL අනුවාදය</value></data>
@@ -5396,4 +5415,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation හි රාමුවක්: Star Trek තේමාව Starfleet හි පින්තූරය. Memory Alpha හි හමු විය.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ලයිට්බාර්</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ලයිට්බාර්</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ගැටලු පටිගත කිරීම</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>පටිගත කිරීම අරඹන්න හෝ නවත්වන්න</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>පටිගත කිරීම සලකුණු කරන්න</value></data>
 </root>

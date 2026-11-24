@@ -302,6 +302,23 @@ namespace PadForge.Tests
                             var sent = (System.Windows.Controls.Primitives.ToggleButton)page.FindName("WhatIsSentToggle");
                             drawing.Picture(ground, "settings-data-sent.png", width, height, () => sent.IsChecked = true);
                             sent.IsChecked = false;
+                            // The Diagnostics card whole (#597): Record a Problem
+                            // while it runs, and its More row open with Keep the
+                            // Last 60 Seconds on, which shows Save beside it.
+                            var diagnostics = (Expander)page.FindName("DiagnosticsMore");
+                            drawing.Picture(ground, "settings-data-diagnostics.png", width, 3600, () =>
+                            {
+                                diagnostics.IsExpanded = true;
+                                vm.ProblemRecordingKeepLastMinute = true;
+                                vm.IsProblemRecording = true;
+                                vm.ProblemRecordingElapsed = "1:42, 3.4 MB";
+                            });
+                            diagnostics.IsExpanded = false;
+                            vm.ProblemRecordingKeepLastMinute = false;
+                            vm.IsProblemRecording = false;
+                            vm.ProblemRecordingStatus = "Saved PadForge-recording-20261123-151600.log";
+                            drawing.Picture(ground, "settings-data-diagnostics-saved.png", width, 3600);
+                            vm.ProblemRecordingStatus = string.Empty;
                         }
                     }
 

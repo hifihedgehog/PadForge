@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Үзіндіні сақтау</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Қозғалтқыштың ең соңғы оқиғаларын жаңа файлға сақтайды. Диагностика журналы өшірулі болса да жұмыс істейді.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Журнал қалтасын ашу</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Ақауды жазу</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Жазуды бастау</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Жазуды тоқтату ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Жазуды тоқтату түймесіне, 10 минутқа немесе 20 MB zip көлеміне дейін жазады, содан кейін zip файлын Explorer ішінде таңдап қояды, есепке тіркеуге дайын.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Бастаңыз, ақауды қайталаңыз, содан кейін тоқтатыңыз. PadForge жанындағы бір файлда PadForge оқыған, жіберген және журналға жазған барлық нәрсе мен не бұзылғаны туралы қорытынды болады. Жазу кезінде әр құрылғыда басылған әр перне мен түйме, пернетақталар мен тінтуірлерді қоса, файлда болады. Пайдаланушы аттары, сериялық нөмірлер, мекенжайлар және терілген аттар ештеңе жазылмай тұрып ауыстырылады.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Қорытынды жазылуда…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Сақталды: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Жазу басталмады. Тексеру осы PC компьютерінің файлдан тыс қалмайтын жеке мәнін тапты.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Жазу басталмады. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Соңғы жазба әлі аяқталуда.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Соңғы 60 секундты жадта ұстау өшірулі, сондықтан сақтайтын ештеңе жоқ.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge тоқтатпаған жазба аяқталды: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Соңғы 60 секундты жадта ұстау</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Қозғалтқыш жұмыс істеп тұрғанда, жазба қамтитын соңғы минутты жадта ұстайды, кешке бір рет болатын ақау үшін. Соңғы 60 секундты сақтау оны файл ретінде жазады.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Соңғы 60 секундты сақтау</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Терілген әріптер мен сандарды бір перне ретінде жазу</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Жазба ешбір тағайындау немесе макро оқымайтын әріп және сан пернелерін бір перне ретінде жазады, әр басу өз уақытымен. Қалған әр перне және тағайындау немесе макро оқитын әр перне басылғандай жазылады.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Соңғы 60 секундты жадта ұстау, Терілген әріптер мен сандарды бір перне ретінде жазу</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Қолданба нұсқасы</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET орындау ортасы</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL нұсқасы</value></data>
@@ -5435,4 +5454,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>«Star Trek: The Next Generation» сериалынан кадр: Star Trek тақырыбының Starfleet суреті. Memory Alpha сайтынан табылған.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Жарық жолағы</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} жарық жолағы</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Ақау жазбасы</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Жазуды бастау немесе тоқтату</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Жазбаға белгі қою</value></data>
 </root>

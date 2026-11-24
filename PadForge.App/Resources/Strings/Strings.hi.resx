@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>स्नैपशॉट सहेजें</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>सबसे हाल के इंजन इवेंट एक नई फ़ाइल में सहेजता है। निदान लॉग बंद होने पर भी काम करता है।</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>लॉग फ़ोल्डर खोलें</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>समस्या रिकॉर्ड करें</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>रिकॉर्डिंग शुरू करें</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>रिकॉर्डिंग रोकें ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>रिकॉर्डिंग रोकें दबाने, 10 मिनट या 20 MB की zip तक रिकॉर्ड करता है, फिर Explorer में zip चुनकर दिखाता है, रिपोर्ट के साथ जोड़ने के लिए तैयार।</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>शुरू करें, समस्या होने दें, फिर रोकें। PadForge के पास रखी एक फ़ाइल में वह सब है जो PadForge ने पढ़ा, भेजा और लॉग किया, साथ में इसका सार कि क्या गलत हुआ। रिकॉर्ड करते समय हर डिवाइस पर दबाई गई हर कुंजी और बटन फ़ाइल में रहता है, कीबोर्ड और माउस भी। कुछ भी लिखे जाने से पहले यूज़र नाम, सीरियल नंबर, पते और टाइप किए गए नाम बदल दिए जाते हैं।</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>सार लिखा जा रहा है…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} सहेजा गया</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>रिकॉर्डिंग शुरू नहीं हुई। एक जाँच में इस PC का एक निजी मान मिला जो फ़ाइल से बाहर नहीं रखा जा सकता था।</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>रिकॉर्डिंग शुरू नहीं हुई। {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>पिछली रिकॉर्डिंग अभी पूरी की जा रही है।</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>पिछले 60 सेकंड रखें बंद है, इसलिए सहेजने को कुछ नहीं है।</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>वह रिकॉर्डिंग पूरी की जो PadForge ने रोकी नहीं थी: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>पिछले 60 सेकंड रखें</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>इंजन चलते समय, रिकॉर्डिंग में जो कुछ होता है उसका पिछला एक मिनट मेमोरी में रखता है, उस समस्या के लिए जो शाम में एक बार आती है। पिछले 60 सेकंड सहेजें उसे फ़ाइल के रूप में लिखता है।</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>पिछले 60 सेकंड सहेजें</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>टाइप किए अक्षर और अंक एक कुंजी के रूप में लिखें</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>रिकॉर्डिंग उन अक्षर और अंक कुंजियों को, जिन्हें कोई मैपिंग या मैक्रो नहीं पढ़ता, एक ही कुंजी के रूप में लिखती है, हर दबाव अपने समय पर। बाकी हर कुंजी, और हर वह कुंजी जिसे कोई मैपिंग या मैक्रो पढ़ता है, जैसी दबाई गई वैसी लिखी जाती है।</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>पिछले 60 सेकंड रखें, टाइप किए अक्षर और अंक एक कुंजी के रूप में लिखें</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ऐप संस्करण</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET रनटाइम</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL संस्करण</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>प्रोफ़ाइल शॉर्टकट</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>वही करता है जो प्रोफ़ाइल शॉर्टकट करता है: किसी नामित प्रोफ़ाइल को, अगली या पिछली प्रोफ़ाइल को लोड करता है, विंडो दिखाता या छिपाता है, या वर्चुअल कंट्रोलर बंद और चालू करता है।</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>प्रोफ़ाइल शॉर्टकट: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>समस्या रिकॉर्डिंग</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>समस्या की रिकॉर्डिंग शुरू या बंद करता है, चल रही रिकॉर्डिंग में निशान लगाता है, या गेम छोड़े बिना पिछले 60 सेकंड सहेजता है।</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>रिकॉर्डिंग शुरू या बंद करें</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>रिकॉर्डिंग में निशान लगाएँ</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>ऑफ़सेट X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>ऑफ़सेट Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>ऑफ़सेट X रीसेट करें</value></data>

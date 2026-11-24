@@ -177,6 +177,7 @@ namespace PadForge.Common.Input
             if (!Ds5WriteTrace.Enabled || packet.Length <= 3)
             {
                 if (!WriteRaw(devicePath, packet)) return false;
+                Recording.RecordingTaps.SonyWrite(devicePath, fields);
                 routeLanded = WriteDs4UsbRoute(devicePath, packet, fields);
                 return true;
             }
@@ -192,6 +193,7 @@ namespace PadForge.Common.Input
             int start = packet[0] == 0x31 ? 3 : 1;
             Ds5WriteTrace.Log(written ? "pass" : "pass-fail", packet, start, packet.Length - start);
             if (!written) return false;
+            Recording.RecordingTaps.SonyWrite(devicePath, fields);
             routeLanded = WriteDs4UsbRoute(devicePath, packet, fields);
             return true;
         }

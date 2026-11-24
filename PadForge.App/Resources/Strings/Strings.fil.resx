@@ -849,6 +849,25 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>I-save ang snapshot</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Sine-save ang pinakabagong mga event ng engine sa bagong file. Gumagana kahit naka-off ang diagnostics log.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Buksan ang folder ng log</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Mag-record ng Problema</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Simulan ang Pag-record</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Ihinto ang Pag-record ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nagre-record hanggang sa Ihinto ang Pag-record, 10 minuto o 20 MB na zip, tapos pinipili ang zip sa Explorer, handa nang ilakip sa ulat.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Magsimula, pangyarihin ang problema, tapos ihinto. Isang file sa tabi ng PadForge ang may lahat ng binasa, ipinadala at itinala ng PadForge, kasama ang buod ng nagkamali. Nasa file ang bawat key at button na pinindot sa bawat device habang nagre-record, pati ang mga keyboard at mouse. Pinapalitan ang mga username, serial number, address at tinipang pangalan bago isulat ang anuman.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Isinusulat ang buod…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Na-save ang {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Hindi nagsimula ang pag-record. May nakitang pribadong value ng PC na ito na hindi maitatago sa file.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Hindi nagsimula ang pag-record. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Tinatapos pa ang huling recording.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Naka-off ang Itago ang Huling 60 Segundo, kaya walang mase-save.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Natapos ang recording na hindi pa naihinto ng PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Itago ang Huling 60 Segundo</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Habang tumatakbo ang engine, itinatago sa memory ang huling minuto ng laman ng isang recording, para sa problemang isang beses lang dumarating kada gabi. Isinusulat ito bilang file ng I-save ang Huling 60 Segundo.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>I-save ang Huling 60 Segundo</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Isulat ang mga Tinipang Letra at Numero bilang Iisang Key</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Isinusulat ng recording ang mga key ng letra at numero na hindi binabasa ng anumang mapping o macro bilang iisang key, bawat pindot sa sarili nitong oras. Ang bawat ibang key, at ang bawat key na binabasa ng mapping o macro, ay isinusulat na pinindot.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Itago ang Huling 60 Segundo, Isulat ang mga Tinipang Letra at Numero bilang Iisang Key</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Bersyon ng app</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Bersyon ng SDL</value></data>
@@ -5246,4 +5265,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Isang frame ng Star Trek: The Next Generation: ang larawan ng temang Starfleet ng Star Trek. Nakita sa Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar ng {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Pag-record ng Problema</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Simulan o Ihinto ang Pag-record</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markahan ang Recording</value></data>
 </root>

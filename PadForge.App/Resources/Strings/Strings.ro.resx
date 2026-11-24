@@ -900,6 +900,25 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salvare instantaneu</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Salvează cele mai recente evenimente ale motorului într-un fișier nou. Funcționează chiar și când jurnalul de diagnosticare este dezactivat.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Deschidere folder jurnal</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Înregistrare problemă</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Pornire înregistrare</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Oprire înregistrare ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Înregistrează până la Oprire înregistrare, 10 minute sau un zip de 20 MB, apoi selectează zip-ul în Explorer, gata de atașat la un raport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Porniți, provocați problema, apoi opriți. Un singur fișier lângă PadForge conține tot ce a citit, a trimis și a consemnat PadForge, cu un rezumat al ce a mers prost. Fiecare tastă și buton apăsate pe fiecare dispozitiv în timpul înregistrării se află în fișier, tastaturi și mouse-uri incluse. Numele de utilizator, numerele de serie, adresele și numele tastate sunt înlocuite înainte să se scrie ceva.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Se scrie rezumatul…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvat: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Înregistrarea nu a pornit. O verificare a găsit o valoare privată a acestui PC care nu ar fi fost ținută în afara fișierului.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Înregistrarea nu a pornit. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Ultima înregistrare este încă în curs de finalizare.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Păstrare ultimele 60 de secunde este dezactivat, deci nu există nimic de salvat.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>S-a finalizat o înregistrare pe care PadForge nu o oprise: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Păstrare ultimele 60 de secunde</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Cât timp rulează motorul, ține în memorie ultimul minut din ce conține o înregistrare, pentru o problemă care apare o dată pe seară. Salvare ultimele 60 de secunde îl scrie ca fișier.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Salvare ultimele 60 de secunde</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Scriere litere și cifre tastate ca o singură tastă</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>O înregistrare scrie tastele de litere și cifre pe care nicio mapare sau macrocomandă nu le citește ca o singură tastă, fiecare apăsare la momentul ei. Orice altă tastă și orice tastă citită de o mapare sau de o macrocomandă este scrisă așa cum a fost apăsată.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Păstrare ultimele 60 de secunde, Scriere litere și cifre tastate ca o singură tastă</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versiune aplicație</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Mediu de execuție .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versiune SDL</value></data>
@@ -5853,6 +5872,10 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Comandă rapidă de profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Face ce face o comandă rapidă de profil: încarcă un profil indicat prin nume, pe următorul sau pe cel anterior, afișează sau ascunde fereastra ori dezactivează și reactivează controllerele virtuale.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Comandă rapidă de profil: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Înregistrare problemă</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Pornește sau oprește o înregistrare de problemă, marchează înregistrarea care rulează sau salvează ultimele 60 de secunde, fără a părăsi jocul.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Pornire sau oprire înregistrare</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marcare înregistrare</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Decalaj X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Decalaj Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Resetare decalaj X</value></data>

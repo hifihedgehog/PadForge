@@ -849,6 +849,25 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Ruaj pamjen e çastit</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Ruan ngjarjet më të fundit të motorit në një skedar të ri. Funksionon edhe kur regjistri i diagnostikimit është çaktivizuar.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Hap dosjen e regjistrit</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Regjistro një problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Nis regjistrimin</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Ndalo regjistrimin ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Regjistron deri te Ndalo regjistrimin, 10 minuta ose një zip 20 MB, pastaj e zgjedh zip-in në Explorer, gati për t'u bashkëngjitur te një raport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Nise, bëje problemin të ndodhë, pastaj ndale. Një skedar pranë PadForge përmban çdo gjë që PadForge lexoi, dërgoi dhe regjistroi, me një përmbledhje të asaj që shkoi keq. Çdo tast dhe buton i shtypur në çdo pajisje gjatë regjistrimit është në skedar, tastierat dhe mausat përfshirë. Emrat e përdoruesve, numrat serialë, adresat dhe emrat e shkruar zëvendësohen para se të shkruhet çfarëdo.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Po shkruhet përmbledhja…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>U ruajt {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Regjistrimi nuk filloi. Një kontroll gjeti një vlerë private të këtij PC që nuk do të mbahej jashtë skedarit.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Regjistrimi nuk filloi. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Regjistrimi i fundit po përfundohet ende.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Mbaj 60 sekondat e fundit është i fikur, ndaj nuk ka çfarë të ruhet.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>U përfundua një regjistrim që PadForge nuk e kishte ndalur: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Mbaj 60 sekondat e fundit</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Ndërsa punon motori, mban në kujtesë minutën e fundit të asaj që përmban një regjistrim, për një problem që vjen një herë në mbrëmje. Ruaj 60 sekondat e fundit e shkruan si skedar.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Ruaj 60 sekondat e fundit</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Shkruaj shkronjat dhe numrat e shtypur si një tast</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Një regjistrim i shkruan tastet e shkronjave dhe numrave që asnjë hartëzim apo makro nuk i lexon si një tast, çdo shtypje në kohën e vet. Çdo tast tjetër, dhe çdo tast që e lexon një hartëzim ose makro, shkruhet siç u shtyp.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Mbaj 60 sekondat e fundit, Shkruaj shkronjat dhe numrat e shtypur si një tast</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versioni i aplikacionit</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versioni SDL</value></data>
@@ -5384,4 +5403,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Një kuadër nga Star Trek: The Next Generation: imazhi i temës Starfleet të Star Trek. Gjetur në Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Shiriti i dritës</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Shiriti i dritës {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Regjistrimi i problemit</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Nis ose ndalo regjistrimin</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Shëno regjistrimin</value></data>
 </root>

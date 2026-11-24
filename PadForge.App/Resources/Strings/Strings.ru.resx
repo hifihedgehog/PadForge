@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Сохранить снимок</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Сохраняет последние события движка в новый файл. Работает, даже когда журнал диагностики выключен.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Открыть папку журналов</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Запись проблемы</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Начать запись</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Остановить запись ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Записывает до нажатия кнопки «Остановить запись», до 10 минут или до zip размером 20 MB, затем выделяет zip в Explorer, готовый к прикреплению к отчету.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Начните, воспроизведите проблему и остановите запись. Один файл рядом с PadForge содержит все, что PadForge прочитал, отправил и записал в журнал, и сводку о том, что пошло не так. Каждая клавиша и кнопка, нажатая на любом устройстве во время записи, попадает в файл, включая клавиатуры и мыши. Имена пользователей, серийные номера, адреса и набранные имена заменяются до записи.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Запись сводки…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Сохранено: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Запись не началась. Проверка обнаружила личное значение этого PC, которое не удалось бы исключить из файла.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Запись не началась. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Предыдущая запись еще завершается.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Параметр «Хранить последние 60 секунд» выключен, поэтому сохранять нечего.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Завершена запись, которую PadForge не остановил: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Хранить последние 60 секунд</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Пока работает движок, хранит в памяти последнюю минуту того, что содержит запись, на случай проблемы, которая случается раз за вечер. Кнопка «Сохранить последние 60 секунд» записывает ее в файл.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Сохранить последние 60 секунд</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Записывать набранные буквы и цифры как одну клавишу</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Запись фиксирует буквенные и цифровые клавиши, которые не читает ни одно сопоставление и ни один макрос, как одну клавишу, каждое нажатие в свое время. Все остальные клавиши и все клавиши, которые читает сопоставление или макрос, записываются как нажатые.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Хранить последние 60 секунд, Записывать набранные буквы и цифры как одну клавишу</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Версия приложения</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Среда выполнения .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Версия SDL</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Быстрая команда профиля</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Делает то же, что и быстрая команда профиля: загружает профиль по имени, следующий или предыдущий профиль, показывает или скрывает окно, выключает и включает виртуальные контроллеры.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Быстрая команда профиля: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Запись проблемы</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Начинает или останавливает запись проблемы, отмечает идущую запись или сохраняет последние 60 секунд, не выходя из игры.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Начать или остановить запись</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Отметить запись</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Смещение X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Смещение Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Сбросить смещение X</value></data>

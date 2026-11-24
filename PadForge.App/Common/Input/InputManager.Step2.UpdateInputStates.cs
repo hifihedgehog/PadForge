@@ -122,6 +122,7 @@ namespace PadForge.Common.Input
                     {
                         // Device handle lost — mark offline.
                         ud.IsOnline = false;
+                        Recording.RecordingCapture.Active?.InputLost(ud, PadForge.Engine.Recording.RecordingCodec.OfflineReason.HandleLost);
                         InvalidateGyroTiltGravity(ud.InstanceGuid);
                         InvalidateGyroSimulation(ud.InstanceGuid);
                         continue;
@@ -131,6 +132,7 @@ namespace PadForge.Common.Input
                     {
                         // Read failed — device may have been disconnected.
                         ud.IsOnline = false;
+                        Recording.RecordingCapture.Active?.InputLost(ud, PadForge.Engine.Recording.RecordingCodec.OfflineReason.ReadFailed);
                         InvalidateGyroTiltGravity(ud.InstanceGuid);
                         InvalidateGyroSimulation(ud.InstanceGuid);
                         continue;
@@ -154,6 +156,10 @@ namespace PadForge.Common.Input
                     // Atomic reference swap, safe for cross-thread reading.
                     ud.InputState = newState;
                     ud.InputStateSeq++;
+                    // A problem recording takes the state as the device
+                    // reported it (#597), before the On-Screen Keyboard
+                    // rests what it drives.
+                    RecordInput(ud, rawState);
                     // A Flydigi Apex pad (#586): its session is kept here, and
                     // takes the triggers' real positions, which a bow, a zone
                     // curve and the Apex 6 Pro's renderer follow.

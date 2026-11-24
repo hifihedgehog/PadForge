@@ -1458,6 +1458,62 @@ namespace PadForge.ViewModels
         /// the Diagnostics card.</summary>
         public string DiagnosticsFolderPath => Common.DiagnosticsLogControl.Folder;
 
+        // ── Record a Problem (#597) ──
+
+        private bool _problemRecordingKeepLastMinute;
+
+        /// <summary>Keep the Last 60 Seconds: while on, the problem recorder
+        /// holds the last minute in memory, and Save the Last 60 Seconds
+        /// writes it. Persisted. Default off.</summary>
+        public bool ProblemRecordingKeepLastMinute
+        {
+            get => _problemRecordingKeepLastMinute;
+            set => SetProperty(ref _problemRecordingKeepLastMinute, value);
+        }
+
+        private bool _problemRecordingHideTypedKeys;
+
+        /// <summary>A recording writes a keyboard's letter and number keys
+        /// that no mapping and no macro reads as one key, each press at its
+        /// own time. Persisted. Default off: a recording holds every key as
+        /// pressed.</summary>
+        public bool ProblemRecordingHideTypedKeys
+        {
+            get => _problemRecordingHideTypedKeys;
+            set => SetProperty(ref _problemRecordingHideTypedKeys, value);
+        }
+
+        private bool _isProblemRecording;
+
+        /// <summary>True while a problem recording runs. Follows the
+        /// recorder. Not saved.</summary>
+        public bool IsProblemRecording
+        {
+            get => _isProblemRecording;
+            set => SetProperty(ref _isProblemRecording, value);
+        }
+
+        private string _problemRecordingElapsed = string.Empty;
+
+        /// <summary>How long the recording has run and how large its file
+        /// is, which the Stop Recording button shows. Not saved.</summary>
+        public string ProblemRecordingElapsed
+        {
+            get => _problemRecordingElapsed;
+            set => SetProperty(ref _problemRecordingElapsed, value ?? string.Empty);
+        }
+
+        private string _problemRecordingStatus = string.Empty;
+
+        /// <summary>The line beside the Record a Problem button: what
+        /// became of the last recording, or why one did not start. Empty
+        /// before the first one. Not saved.</summary>
+        public string ProblemRecordingStatus
+        {
+            get => _problemRecordingStatus;
+            set => SetProperty(ref _problemRecordingStatus, value ?? string.Empty);
+        }
+
         private bool _startAtLogin;
 
         /// <summary>Whether to automatically start PadForge when the user logs in.</summary>

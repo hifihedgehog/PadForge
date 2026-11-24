@@ -1816,6 +1816,9 @@ namespace PadForge.Common.Input
 
                 int idx = FeedbackPadIndex;
 
+                // A problem recording takes every report a game sends (#597).
+                Recording.RecordingTaps.GameReport(idx, pkt.Source, pkt.ReportId, pkt.Data.Span);
+
                 // Evidence line (#350): every output packet, before any
                 // gate, so a packet dropped by the pad-index guard or
                 // decoded by another branch still shows its shape.

@@ -3301,6 +3301,10 @@
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualiza gosi ta baxa bazi di dadus di komandus di komunidadi (SDL_GameControllerDB) di GitHub i ta guarda, na fixeru di konfigurason, mapiamentus ki es vérson di PadForge ka ten. Un mapiamentu novu ta uzadu só pa un komandu ki nada más ka ta lé suma gamepad, ki ka sta atribuídu i ki ka sta na Modu joystick brutu forsadu. Ripoi ta rimove tudu mapiamentu baxadu.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualiza gosi</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ta atualiza…</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kumesa gravason</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Para gravason ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Ta grava ti Para gravason, 10 minutu o un zip di 20 MB, dipôs ta silisiona zip na Explorer, prontu pa djunta na un relatóriu.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Perkursu di mouse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Perkursu di mouse Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Perkursu ti limiti</value></data>
@@ -3327,4 +3331,6 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di jogu ligadu, kantu di limiti ki ta fika a 200 km/h. A 100% limiti interu sta la na tudu velosidadi.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avizu di dispozitivu dizkonektadu</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avizu di dispozitivu konektadu</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kumesa o para gravason</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marka gravason</value></data>
 </root>

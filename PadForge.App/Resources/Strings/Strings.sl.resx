@@ -900,6 +900,25 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Shrani posnetek stanja</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Shrani najnovejše dogodke mehanizma v novo datoteko. Deluje tudi, ko je diagnostični dnevnik izklopljen.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Odpri mapo dnevnika</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Posnemi težavo</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Začni snemanje</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Ustavi snemanje ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Snema do ukaza Ustavi snemanje, 10 minut ali 20 MB velik zip, nato izbere zip v oknu Explorer, pripravljen za prilogo poročilu.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začnite, povzročite težavo in nato ustavite. Ena datoteka ob programu PadForge vsebuje vse, kar je PadForge prebral, poslal in zapisal, s povzetkom tega, kaj je šlo narobe. Vsaka tipka in gumb, pritisnjena na kateri koli napravi med snemanjem, je v datoteki, tudi s tipkovnic in miši. Uporabniška imena, serijske številke, naslovi in vtipkana imena se zamenjajo, preden se karkoli zapiše.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Pisanje povzetka …</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Shranjeno: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Snemanje se ni začelo. Preverjanje je odkrilo zasebno vrednost tega PC, ki ne bi bila izključena iz datoteke.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Snemanje se ni začelo. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Zadnji posnetek se še zaključuje.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Možnost Ohrani zadnjih 60 sekund je izklopljena, zato ni ničesar za shraniti.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Zaključen posnetek, ki ga PadForge ni ustavil: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Ohrani zadnjih 60 sekund</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Medtem ko mehanizem deluje, v pomnilniku hrani zadnjo minuto tistega, kar vsebuje posnetek, za težavo, ki se pojavi enkrat na večer. Shrani zadnjih 60 sekund jo zapiše kot datoteko.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Shrani zadnjih 60 sekund</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Zapiši vtipkane črke in številke kot eno tipko</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Posnetek črkovne in številske tipke, ki jih nobena preslikava ali makro ne bere, zapiše kot eno tipko, vsak pritisk ob svojem času. Vsaka druga tipka in vsaka tipka, ki jo bere preslikava ali makro, je zapisana, kot je bila pritisnjena.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Ohrani zadnjih 60 sekund, Zapiši vtipkane črke in številke kot eno tipko</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Različica programa</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Izvajalno okolje .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Različica SDL</value></data>
@@ -5853,6 +5872,10 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Bližnjica profila</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Naredi to, kar naredi bližnjica profila: naloži imenovan profil, naslednjega ali prejšnjega, pokaže ali skrije okno ali izklopi in vklopi virtualne krmilnike.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Bližnjica profila: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Snemanje težave</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Začne ali ustavi snemanje težave, označi tisto, ki teče, ali shrani zadnjih 60 sekund, ne da bi zapustili igro.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Začni ali ustavi snemanje</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Označi posnetek</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Zamik X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Zamik Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Ponastavi zamik X</value></data>

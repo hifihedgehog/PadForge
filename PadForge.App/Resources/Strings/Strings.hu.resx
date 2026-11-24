@@ -900,6 +900,25 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Pillanatkép mentése</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>A bemeneti motor legutóbbi eseményeit új fájlba menti. Akkor is működik, ha a diagnosztikai napló ki van kapcsolva.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Naplómappa megnyitása</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Probléma felvétele</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Felvétel indítása</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Felvétel leállítása ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>A Felvétel leállítása gombig, 10 percig vagy 20 MB méretű zip fájlig rögzít, majd kijelöli a zip fájlt az Explorerben, hogy csatolható legyen a hibajelentéshez.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Indítsa el, idézze elő a hibát, majd állítsa le. Egyetlen fájl a PadForge mellett tartalmaz mindent, amit a PadForge olvasott, küldött és naplózott, a hiba összefoglalójával. A fájlban benne van minden billentyű és gomb, amelyet a felvétel alatt bármely eszközön lenyomtak, a billentyűzeteket és egereket is beleértve. A felhasználóneveket, sorozatszámokat, címeket és begépelt neveket a rendszer az írás előtt lecseréli.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Az összefoglaló írása…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Elmentve: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>A felvétel nem indult el. Egy ellenőrzés talált egy olyan privát értéket ezen a PC-n, amely nem maradna ki a fájlból.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>A felvétel nem indult el. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Az utolsó felvétel lezárása még folyamatban van.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Az Utolsó 60 másodperc megőrzése ki van kapcsolva, ezért nincs mit menteni.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Egy olyan felvétel lezárva, amelyet a PadForge nem állított le: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Utolsó 60 másodperc megőrzése</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Amíg a motor fut, a memóriában tartja a felvétel tartalmának utolsó percét, olyan hibához, amely csak esténként egyszer jelentkezik. Az Utolsó 60 másodperc mentése fájlba írja.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Utolsó 60 másodperc mentése</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Begépelt betűk és számok egyetlen billentyűként</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>A felvétel azokat a betű- és számbillentyűket, amelyeket semmilyen leképezés vagy makró nem olvas, egyetlen billentyűként rögzíti, minden lenyomást a saját idejével. Minden más billentyűt, és minden olyat, amelyet leképezés vagy makró olvas, lenyomottként rögzít.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Utolsó 60 másodperc megőrzése, Begépelt betűk és számok egyetlen billentyűként</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Alkalmazásverzió</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-futtatókörnyezet</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-verzió</value></data>
@@ -5853,6 +5872,10 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil-gyorsparancs</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Azt teszi, amit egy profil-gyorsparancs: betölt egy megnevezett profilt, a következőt vagy az előzőt, megjeleníti vagy elrejti az ablakot, vagy ki- és bekapcsolja a virtuális vezérlőket.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profil-gyorsparancs: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problémafelvétel</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Elindít vagy leállít egy problémafelvételt, megjelöli a futót, vagy elmenti az utolsó 60 másodpercet, a játék elhagyása nélkül.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Felvétel indítása vagy leállítása</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>A felvétel megjelölése</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>X eltolás</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Y eltolás</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>X eltolás visszaállítása</value></data>

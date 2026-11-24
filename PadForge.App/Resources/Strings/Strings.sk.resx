@@ -900,6 +900,25 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Uložiť snímku</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Uloží najnovšie udalosti jadra do nového súboru. Funguje, aj keď je diagnostický denník vypnutý.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Otvoriť priečinok denníka</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Nahrať problém</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Začať nahrávanie</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Zastaviť nahrávanie ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nahráva do Zastaviť nahrávanie, 10 minút alebo 20 MB zip, potom vyberie zip v Explorer, pripravený na priloženie k hláseniu.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začnite, nechajte problém nastať a potom zastavte. Jeden súbor vedľa programu PadForge obsahuje všetko, čo PadForge čítal, odoslal a zapísal, so zhrnutím toho, čo sa pokazilo. Každý kláves a tlačidlo stlačené na každom zariadení počas nahrávania je v súbore, vrátane klávesníc a myší. Používateľské mená, sériové čísla, adresy a napísané mená sa pred zápisom nahradia.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Zapisuje sa zhrnutie…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Uložené: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Nahrávanie sa nespustilo. Kontrola zistila súkromnú hodnotu tohto PC, ktorá by sa do súboru nenahradila.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Nahrávanie sa nespustilo. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Posledná nahrávka sa ešte dokončuje.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Možnosť Uchovať posledných 60 sekúnd je vypnutá, takže nie je čo uložiť.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Dokončená nahrávka, ktorú PadForge nezastavil: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Uchovať posledných 60 sekúnd</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Kým beží jadro, drží v pamäti poslednú minútu toho, čo obsahuje nahrávka, pre problém, ktorý nastane raz za večer. Uložiť posledných 60 sekúnd ju zapíše do súboru.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Uložiť posledných 60 sekúnd</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Písmená a číslice zapisovať ako jeden kláves</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Nahrávka zapíše písmenové a číselné klávesy, ktoré žiadne mapovanie ani makro nečíta, ako jeden kláves, každé stlačenie v jeho vlastnom čase. Každý iný kláves a každý kláves, ktorý číta mapovanie alebo makro, sa zapíše tak, ako bol stlačený.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Uchovať posledných 60 sekúnd, Písmená a číslice zapisovať ako jeden kláves</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Verzia aplikácie</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Modul runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Verzia SDL</value></data>
@@ -5853,6 +5872,10 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Skratka profilu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Vykoná to, čo skratka profilu: načíta pomenovaný profil, nasledujúci alebo predchádzajúci, zobrazí alebo skryje okno, alebo vypne a zapne virtuálne ovládače.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Skratka profilu: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Nahrávka problému</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Spustí alebo zastaví nahrávku problému, označí tú, ktorá beží, alebo uloží posledných 60 sekúnd, bez opustenia hry.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Spustiť alebo zastaviť nahrávanie</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Označiť nahrávku</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Posun X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Posun Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Resetovať posun X</value></data>

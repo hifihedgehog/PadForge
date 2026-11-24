@@ -391,6 +391,7 @@ namespace PadForge
             // GyroCalibratorService.
             Views.DevicesPage.InputService = _inputService;
             Views.SettingsPage.InputService = _inputService;
+            InitializeProblemRecorder();
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
             // The External Control card says what Automation allows, which
@@ -561,6 +562,13 @@ namespace PadForge
                 if (e.PropertyName == nameof(SettingsViewModel.DiagnosticsLoggingEnabled))
                     Common.DiagnosticsLogControl.Apply(_viewModel.Settings.DiagnosticsLoggingEnabled);
 
+                // The problem recorder's two switches (#597) reach it as they
+                // change, and as the settings load.
+                if (e.PropertyName == nameof(SettingsViewModel.ProblemRecordingKeepLastMinute))
+                    Services.ProblemRecorder.Instance.KeepLastMinute = _viewModel.Settings.ProblemRecordingKeepLastMinute;
+                if (e.PropertyName == nameof(SettingsViewModel.ProblemRecordingHideTypedKeys))
+                    Services.ProblemRecorder.Instance.MaskTypedKeys = _viewModel.Settings.ProblemRecordingHideTypedKeys;
+
                 if (e.PropertyName == nameof(SettingsViewModel.FlydigiEnhancedProtocol))
                     Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(_viewModel.Settings.FlydigiEnhancedProtocol);
                 // (#519) Off closes the keyboard screens' sessions and gives a
@@ -591,6 +599,8 @@ namespace PadForge
                      or nameof(SettingsViewModel.IncludePreReleaseUpdates)
                      or nameof(SettingsViewModel.StartMinimized)
                      or nameof(SettingsViewModel.DiagnosticsLoggingEnabled)
+                     or nameof(SettingsViewModel.ProblemRecordingKeepLastMinute)
+                     or nameof(SettingsViewModel.ProblemRecordingHideTypedKeys)
                      or nameof(SettingsViewModel.StartAtLogin)
                      or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
                      or nameof(SettingsViewModel.PollingRateHz)
@@ -3538,6 +3548,10 @@ namespace PadForge
                 // is, and no program's command runs into the teardown (#597).
                 App.InstanceSignal?.MarkClosing();
                 _automation?.Dispose();
+
+                // A problem recording that still runs is stopped and its
+                // file finished while everything it describes is here (#597).
+                Services.ProblemRecorder.Instance.Shutdown();
 
                 // Stop HID arrival notifications first. Shutdown tears down the
                 // virtual controllers, which is itself a burst of device removals

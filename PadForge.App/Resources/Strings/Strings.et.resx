@@ -849,6 +849,25 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salvesta hetktõmmis</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Salvestab mootori viimased sündmused uude faili. Töötab ka siis, kui diagnostikalogi on välja lülitatud.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Ava logikaust</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Probleemi salvestamine</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Alusta salvestamist</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Peata salvestamine ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Salvestab kuni nupu Peata salvestamine vajutamiseni, 10 minutini või 20 MB zip-failini, seejärel valib zip-faili Exploreris, valmis aruandele lisamiseks.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Alustage, tekitage probleem ja peatage. Üks fail programmi PadForge kõrval sisaldab kõike, mida PadForge luges, saatis ja logis, koos kokkuvõttega sellest, mis valesti läks. Failis on iga klahv ja nupp, mida salvestamise ajal igas seadmes vajutati, ka klaviatuurid ja hiired. Kasutajanimed, seerianumbrid, aadressid ja sisestatud nimed asendatakse enne, kui midagi kirjutatakse.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Kokkuvõtte kirjutamine…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvestatud {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Salvestamine ei alanud. Kontroll leidis selle PC privaatse väärtuse, mida failist välja ei jääks.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Salvestamine ei alanud. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Eelmist salvestist alles lõpetatakse.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Säte Hoia viimast 60 sekundit on väljas, seega pole midagi salvestada.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Lõpetati salvestis, mida PadForge polnud peatanud: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Hoia viimast 60 sekundit</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Hoiab mootori töötamise ajal mälus viimast minutit sellest, mida salvestis sisaldab, probleemi jaoks, mis tuleb korra õhtus. Nupp Salvesta viimased 60 sekundit kirjutab selle failina.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Salvesta viimased 60 sekundit</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Kirjuta trükitud tähed ja numbrid ühe klahvina</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Salvestis kirjutab tähe- ja numbriklahvid, mida ükski vastendus ega makro ei loe, ühe klahvina, iga vajutus oma ajal. Iga muu klahv ja iga klahv, mida vastendus või makro loeb, kirjutatakse nii, nagu see vajutati.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Hoia viimast 60 sekundit, Kirjuta trükitud tähed ja numbrid ühe klahvina</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Rakenduse versioon</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-i käituskeskkond</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-i versioon</value></data>
@@ -5438,4 +5457,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kaader sarjast Star Trek: Uus põlvkond: sarja Star Trek kujunduse Starfleet pilt. Leitud saidilt Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Valgusriba</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} valgusriba</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleemi salvestamine</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Alusta või peata salvestamine</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Märgi salvestis</value></data>
 </root>

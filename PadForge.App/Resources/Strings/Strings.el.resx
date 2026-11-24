@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Αποθήκευση στιγμιότυπου</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Αποθηκεύει τα πιο πρόσφατα συμβάντα της μηχανής σε νέο αρχείο. Λειτουργεί ακόμη και όταν το αρχείο καταγραφής διαγνωστικών είναι απενεργοποιημένο.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Άνοιγμα φακέλου καταγραφής</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Εγγραφή προβλήματος</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Έναρξη εγγραφής</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Διακοπή εγγραφής ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Καταγράφει μέχρι τη Διακοπή εγγραφής, τα 10 λεπτά ή ένα zip 20 MB και μετά επιλέγει το zip στον Explorer, έτοιμο για επισύναψη σε αναφορά.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Ξεκινήστε, προκαλέστε το πρόβλημα και μετά σταματήστε. Ένα αρχείο δίπλα στο PadForge περιέχει όσα διάβασε, έστειλε και κατέγραψε το PadForge, με σύνοψη του τι πήγε στραβά. Κάθε πλήκτρο και κουμπί που πατιέται σε κάθε συσκευή όσο γίνεται η εγγραφή βρίσκεται στο αρχείο, και στα πληκτρολόγια και στα ποντίκια. Ονόματα χρηστών, σειριακοί αριθμοί, διευθύνσεις και ονόματα που πληκτρολογήθηκαν αντικαθίστανται πριν γραφτεί οτιδήποτε.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Εγγραφή της σύνοψης…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Αποθηκεύτηκε το {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Η εγγραφή δεν ξεκίνησε. Ένας έλεγχος βρήκε μια ιδιωτική τιμή αυτού του PC που δεν θα έμενε εκτός του αρχείου.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Η εγγραφή δεν ξεκίνησε. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Η προηγούμενη εγγραφή ολοκληρώνεται ακόμη.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Η επιλογή «Διατήρηση των τελευταίων 60 δευτερολέπτων» είναι απενεργοποιημένη, επομένως δεν υπάρχει τίποτα για αποθήκευση.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Ολοκληρώθηκε μια εγγραφή που το PadForge δεν είχε σταματήσει: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Διατήρηση των τελευταίων 60 δευτερολέπτων</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Όσο εκτελείται η μηχανή, κρατά στη μνήμη το τελευταίο λεπτό όσων περιέχει μια εγγραφή, για πρόβλημα που εμφανίζεται μία φορά το βράδυ. Το «Αποθήκευση των τελευταίων 60 δευτερολέπτων» το γράφει ως αρχείο.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Αποθήκευση των τελευταίων 60 δευτερολέπτων</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Εγγραφή πληκτρολογημένων γραμμάτων και αριθμών ως ένα πλήκτρο</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Μια εγγραφή γράφει ως ένα πλήκτρο τα πλήκτρα γραμμάτων και αριθμών που καμία αντιστοίχιση ή μακροεντολή δεν διαβάζει, κάθε πάτημα στη δική του στιγμή. Κάθε άλλο πλήκτρο, και κάθε πλήκτρο που διαβάζει μια αντιστοίχιση ή μακροεντολή, γράφεται όπως πατήθηκε.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Διατήρηση των τελευταίων 60 δευτερολέπτων, Εγγραφή πληκτρολογημένων γραμμάτων και αριθμών ως ένα πλήκτρο</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Έκδοση εφαρμογής</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Περιβάλλον εκτέλεσης .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Έκδοση SDL</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Συντόμευση προφίλ</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Κάνει ό,τι κάνει μια συντόμευση προφίλ: φορτώνει ένα προφίλ με όνομα, το επόμενο ή το προηγούμενο, εμφανίζει ή αποκρύπτει το παράθυρο, ή απενεργοποιεί και ενεργοποιεί τα εικονικά χειριστήρια.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Συντόμευση προφίλ: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Εγγραφή προβλήματος</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Ξεκινά ή σταματά μια εγγραφή προβλήματος, σημαδεύει αυτήν που εκτελείται ή αποθηκεύει τα τελευταία 60 δευτερόλεπτα, χωρίς να φύγετε από το παιχνίδι.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Έναρξη ή διακοπή εγγραφής</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Σήμανση της εγγραφής</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Μετατόπιση X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Μετατόπιση Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Επαναφορά μετατόπισης X</value></data>

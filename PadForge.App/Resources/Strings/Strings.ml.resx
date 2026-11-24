@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>സ്നാപ്ഷോട്ട് സേവ് ചെയ്യുക</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ഏറ്റവും പുതിയ എഞ്ചിൻ ഇവന്റുകൾ ഒരു പുതിയ ഫയലിൽ സേവ് ചെയ്യുന്നു. ഡയഗ്നോസ്റ്റിക്സ് ലോഗ് ഓഫായിരിക്കുമ്പോഴും പ്രവർത്തിക്കും.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ലോഗ് ഫോൾഡർ തുറക്കുക</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ഒരു പ്രശ്നം റെക്കോർഡ് ചെയ്യുക</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിക്കുക</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>റെക്കോർഡിംഗ് നിർത്തുക ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>റെക്കോർഡിംഗ് നിർത്തുക അമർത്തുന്നതുവരെ, 10 മിനിറ്റ് വരെ അല്ലെങ്കിൽ 20 MB zip ആകുന്നതുവരെ റെക്കോർഡ് ചെയ്യുന്നു, തുടർന്ന് റിപ്പോർട്ടിനൊപ്പം ചേർക്കാൻ തയ്യാറായി Explorer-ൽ zip തിരഞ്ഞെടുക്കുന്നു.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ആരംഭിക്കുക, പ്രശ്നം സംഭവിപ്പിക്കുക, തുടർന്ന് നിർത്തുക. PadForge-ന് അടുത്തുള്ള ഒരു ഫയലിൽ PadForge വായിച്ചതും അയച്ചതും ലോഗ് ചെയ്തതുമായ എല്ലാം, എന്താണ് തെറ്റിയതെന്നതിന്റെ സംഗ്രഹത്തോടെ ഉണ്ടാകും. റെക്കോർഡ് ചെയ്യുമ്പോൾ എല്ലാ ഉപകരണങ്ങളിലും അമർത്തുന്ന ഓരോ കീയും ബട്ടണും ഫയലിലുണ്ട്, കീബോർഡുകളും മൗസുകളും ഉൾപ്പെടെ. ഉപയോക്തൃനാമങ്ങൾ, സീരിയൽ നമ്പറുകൾ, വിലാസങ്ങൾ, ടൈപ്പ് ചെയ്ത പേരുകൾ എന്നിവ എന്തെങ്കിലും എഴുതുന്നതിന് മുമ്പ് മാറ്റിസ്ഥാപിക്കുന്നു.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>സംഗ്രഹം എഴുതുന്നു…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} സേവ് ചെയ്തു</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിച്ചില്ല. ഫയലിൽ നിന്ന് ഒഴിവാക്കാനാകാത്ത ഈ PC-യുടെ ഒരു സ്വകാര്യ മൂല്യം ഒരു പരിശോധനയിൽ കണ്ടെത്തി.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിച്ചില്ല. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>കഴിഞ്ഞ റെക്കോർഡിംഗ് ഇപ്പോഴും പൂർത്തിയാക്കുകയാണ്.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സൂക്ഷിക്കുക ഓഫാണ്, അതിനാൽ സേവ് ചെയ്യാൻ ഒന്നുമില്ല.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge നിർത്താതിരുന്ന ഒരു റെക്കോർഡിംഗ് പൂർത്തിയാക്കി: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സൂക്ഷിക്കുക</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോൾ, ഒരു റെക്കോർഡിംഗിലുള്ളതിന്റെ അവസാന മിനിറ്റ് മെമ്മറിയിൽ സൂക്ഷിക്കുന്നു, സായാഹ്നത്തിൽ ഒരിക്കൽ വരുന്ന പ്രശ്നത്തിനായി. അവസാന 60 സെക്കൻഡ് സേവ് ചെയ്യുക അത് ഒരു ഫയലായി എഴുതുന്നു.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സേവ് ചെയ്യുക</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ടൈപ്പ് ചെയ്ത അക്ഷരങ്ങളും അക്കങ്ങളും ഒരൊറ്റ കീ ആയി എഴുതുക</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ഒരു മാപ്പിംഗോ മാക്രോയോ വായിക്കാത്ത അക്ഷര, അക്ക കീകൾ ഒരൊറ്റ കീ ആയി ഒരു റെക്കോർഡിംഗ് എഴുതുന്നു, ഓരോ അമർത്തലും അതിന്റെ സ്വന്തം സമയത്ത്. മറ്റെല്ലാ കീകളും, ഒരു മാപ്പിംഗോ മാക്രോയോ വായിക്കുന്ന എല്ലാ കീകളും, അമർത്തിയതുപോലെ എഴുതുന്നു.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സൂക്ഷിക്കുക, ടൈപ്പ് ചെയ്ത അക്ഷരങ്ങളും അക്കങ്ങളും ഒരൊറ്റ കീ ആയി എഴുതുക</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ആപ്പ് പതിപ്പ്</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET റൺടൈം</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL പതിപ്പ്</value></data>
@@ -5405,4 +5424,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>സ്റ്റാർ ട്രെക്ക്: ദ നെക്സ്റ്റ് ജനറേഷനിലെ ഒരു ഫ്രെയിം: സ്റ്റാർ ട്രെക്ക് തീം Starfleet-ന്റെ ചിത്രം. Memory Alpha-യിൽ കണ്ടെത്തി.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ലൈറ്റ്ബാർ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ലൈറ്റ്ബാർ</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>പ്രശ്ന റെക്കോർഡിംഗ്</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിക്കുക അല്ലെങ്കിൽ നിർത്തുക</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>റെക്കോർഡിംഗിൽ അടയാളമിടുക</value></data>
 </root>

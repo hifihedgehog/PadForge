@@ -900,6 +900,25 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Gem øjebliksbillede</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Gemmer de seneste motorhændelser i en ny fil. Virker, selv når diagnosticeringsloggen er slået fra.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Åbn logmappe</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Optag et problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Start optagelse</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stop optagelse ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Optager indtil Stop optagelse, 10 minutter eller en zip på 20 MB og markerer så zip-filen i Explorer, klar til at blive vedhæftet en rapport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, få problemet til at opstå, og stop så. Én fil ved siden af PadForge indeholder alt, hvad PadForge har læst, sendt og logget, med en oversigt over, hvad der gik galt. Hver tast og knap, der trykkes på en enhed under optagelsen, står i filen, også tastaturer og mus. Brugernavne, serienumre, adresser og indtastede navne erstattes, før noget skrives.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skriver oversigten…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Gemt {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Optagelsen startede ikke. En kontrol fandt en privat værdi fra denne PC, som ikke ville blive holdt ude af filen.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Optagelsen startede ikke. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Den sidste optagelse bliver stadig gjort færdig.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Gem de sidste 60 sekunder er slået fra, så der er intet at gemme.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Gjorde en optagelse færdig, som PadForge ikke havde stoppet: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Behold de sidste 60 sekunder</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mens motoren kører, holdes det sidste minut af det, en optagelse indeholder, i hukommelsen, til et problem, der kommer én gang om aftenen. Gem de sidste 60 sekunder skriver det som en fil.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Gem de sidste 60 sekunder</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skriv indtastede bogstaver og tal som én tast</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>En optagelse skriver de bogstav- og tal-taster, som ingen mapping eller makro læser, som én tast, hvert tryk på sit eget tidspunkt. Alle andre taster og hver tast, en mapping eller makro læser, skrives, som de blev trykket.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Behold de sidste 60 sekunder, Skriv indtastede bogstaver og tal som én tast</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Programversion</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-kørselsmiljø</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-version</value></data>
@@ -5853,6 +5872,10 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilgenvej</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gør det, en profilgenvej gør: indlæser en navngivet profil, den næste eller den forrige, viser eller skjuler vinduet, eller slår de virtuelle controllere fra og til.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profilgenvej: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemoptagelse</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Starter eller stopper en problemoptagelse, markerer den, der kører, eller gemmer de sidste 60 sekunder, uden at forlade spillet.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Start eller stop optagelse</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markér optagelsen</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Forskydning X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Forskydning Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Nulstil forskydning X</value></data>

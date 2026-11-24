@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>DaH Dotlh yIpol</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>'a'baqa' chu'Daq jonta' wanI'mey ghoQbogh pol. Qagh nejmeH QonoS chu'Ha'lu'DI' je, Qap.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>QonoS 'a'baqa' ngaSwI' yIpoSmoH</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Qagh yIqon</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>qon yItagh</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>qon yImev ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>qon yImev 'uylu'pa', 10 tup ghap 20 MB zip 'a'baqa' qaSpa', qon. ghIq Explorer Daq zip 'a'baqa' wIv, ja'meH ghuS.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>yItagh, Qagh yIqaSmoH, ghIq yImev. PadForge retlhDaq wa' 'a'baqa' tu'lu'. PadForge laDpu'bogh, ngeHpu'bogh, QonoSDaq ghItlhpu'bogh Hoch Doch ngaS, Qagh De' ngaj je. qontaHvIS Hoch janDaq 'uylu'bogh Hoch nItlh leQ leQ je ngaS 'a'baqa', nItlh 'echletmey 'eQway'mey je. pagh ghItlhlu'pa', lo'wI' pongmey, Segh mI'mey, Daqmey, ghItlhlu'pu'bogh pongmey je qa'lu'.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Qagh De' ngaj ghItlhtaH…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>polpu': {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>qon taghbe'. naDev PC pegh mI' tu' 'ol, 'ej 'a'baqa'vo' 'oH botlaHbe'.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>qon taghbe'. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>wej rIn Qav ta.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>chu'Ha'lu' Qav 60 lup yI'uch, vaj polmeH Doch tu'lu'be'.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge mevmoHbe'pu'bogh ta rInmoHpu': {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Qav 60 lup yI'uch</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>QuQ QaptaHvIS, ta ngaSbogh Doch Qav tup qawHaqDaq 'uch, wa'logh Hoch ram qaSbogh QaghvaD. Qav 60 lup yIpol leQ 'a'baqa'Daq 'oH ghItlh.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Qav 60 lup yIpol</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ngutlh mI' je nItlh leQmey wa' nItlh leQ rur tIghItlh</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>neltaHghach mIw je laDbe'bogh ngutlh mI' je nItlh leQmey wa' nItlh leQ rur ghItlh ta, Hoch 'uy poHDaj ghItlh. Hoch latlh nItlh leQ, neltaHghach mIw ghap laDbogh Hoch nItlh leQ je, 'uylu'bogh rur ghItlhlu'.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Qav 60 lup yI'uch, ngutlh mI' je nItlh leQmey wa' nItlh leQ rur tIghItlh</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>nIqHom mI'</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Qapbogh nIqHom</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL mI'</value></data>
@@ -5926,6 +5945,10 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>tu'qom qIgh</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>tu'qom qIgh ta'bogh ta': tu'qom pong ghajbogh, tu'qom veb, tu'qom vorgh joq lI', Qorwagh 'ang So' joq, SeHjan velqa'mey chu'Ha' chu' joq.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>tu'qom qIgh: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Qagh ta</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Qagh ta tagh ghap mev, QaptaHbogh ta ghaS, ghap Qav 60 lup pol, Quj mejbe'taHvIS.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>qon yItagh ghap yImev</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ta yIghaS</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>X choH</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Y choH</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>X choH yImotlhmoH</value></data>

@@ -283,6 +283,16 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>What the page's two recording buttons ask the window for
+        /// (#597): false for Start or Stop Recording, true for Save the Last
+        /// 60 Seconds. The window owns the recorder's wiring and says here
+        /// what became of the request.</summary>
+        internal static Action<bool> ProblemRecordingAsked;
+
+        private void RecordProblem_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(false);
+
+        private void SaveLastMinute_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(true);
+
         private void OpenDiagFolder_Click(object sender, RoutedEventArgs e)
         {
             try

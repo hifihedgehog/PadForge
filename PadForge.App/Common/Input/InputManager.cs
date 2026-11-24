@@ -2323,6 +2323,7 @@ namespace PadForge.Common.Input
                         CurrentFrequency = 0;
                         _rateMeter.Reset();
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
+                        RecordRestingPass(1);
                         WritePollHeartbeat((Stopwatch.GetTimestamp() - tsIdleCycle) * 1000 / Stopwatch.Frequency);
                         Thread.Sleep(50);
                         firstCycle = true; // Ensure immediate enumeration on wake
@@ -2341,6 +2342,7 @@ namespace PadForge.Common.Input
                         CurrentFrequency = 0;
                         _rateMeter.Reset();
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
+                        RecordRestingPass(2);
                         WritePollHeartbeat(0);
                         Thread.Sleep(100);
                         firstCycle = true;
@@ -2371,6 +2373,7 @@ namespace PadForge.Common.Input
                         shortPassSeconds = lastPassStart != 0
                             ? (passStart - lastPassStart) / (double)Stopwatch.Frequency
                             : 1.0 / rateHz;
+                    long passGap = lastPassStart != 0 ? passStart - lastPassStart : 0;
                     lastPassStart = passStart;
 
                     try
@@ -2464,6 +2467,10 @@ namespace PadForge.Common.Input
                         if (sdlMs >= 25 || enumMs >= 25 || cycleMs >= 50)
                             Engine.SdlDiagLog.WriteLine(
                                 $"STALL poll sdl={sdlMs}ms enum={enumMs}ms cycle={cycleMs}ms");
+
+                        // A problem recording's share of the pass (#597).
+                        var recording = Recording.RecordingCapture.Active;
+                        if (recording != null) RecordPass(recording, passGap, rateHz, sdlMs, enumMs, cycleMs);
 
                         // Channel heartbeat, every 10 s from every branch.
                         WritePollHeartbeat(cycleMs);

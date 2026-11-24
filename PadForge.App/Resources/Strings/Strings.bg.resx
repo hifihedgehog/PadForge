@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Запиши моментна снимка</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Записва най-новите събития на двигателя в нов файл. Работи дори когато диагностичният журнал е изключен.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Отвори папката с журнала</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Записване на проблем</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Започни запис</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Спри записа ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Записва до „Спри записа“, 10 минути или 20 MB zip, после избира zip файла в Explorer, готов за прикачване към доклад.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Започнете, предизвикайте проблема, после спрете. Един файл до PadForge съдържа всичко, което PadForge е прочел, изпратил и записал в журнала, с обобщение на това, което е сбъркало. Всеки клавиш и бутон, натиснат на всяко устройство по време на записа, е във файла, включително клавиатури и мишки. Потребителските имена, серийните номера, адресите и въведените имена се заменят, преди да се запише каквото и да е.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Записване на обобщението…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Записан {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Записът не започна. Проверка откри лична стойност на този PC, която нямаше да остане извън файла.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Записът не започна. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Предишният запис още се завършва.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>„Пази последните 60 секунди“ е изключено, затова няма какво да се запише.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Завършен запис, който PadForge не беше спрял: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Пази последните 60 секунди</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Докато двигателят работи, държи в паметта последната минута от онова, което съдържа един запис, за проблем, който се появява веднъж вечер. „Запази последните 60 секунди“ я записва като файл.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Запази последните 60 секунди</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Записване на въведените букви и цифри като един клавиш</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Записът записва буквените и цифровите клавиши, които никое съпоставяне или макрос не чете, като един клавиш, всяко натискане в своето време. Всеки друг клавиш и всеки клавиш, който съпоставяне или макрос чете, се записва както е натиснат.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Пази последните 60 секунди, Записване на въведените букви и цифри като един клавиш</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Версия на приложението</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Среда за изпълнение .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Версия на SDL</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Пряк път към профил</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Прави това, което прави пряк път към профил: зарежда именуван профил, следващия или предишния, показва или скрива прозореца или изключва и включва виртуалните контролери.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Пряк път към профил: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Запис на проблем</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Започва или спира запис на проблем, отбелязва този, който върви, или записва последните 60 секунди, без да напускате играта.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Започване или спиране на записа</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Отбелязване на записа</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Изместване по X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Изместване по Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Нулиране на изместването по X</value></data>

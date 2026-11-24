@@ -848,6 +848,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ቅጽበታዊ ቅጂ አስቀምጥ</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>የቅርብ ጊዜዎቹን የሞተር ክስተቶች ወደ አዲስ ፋይል ያስቀምጣል። የምርመራ ምዝግቡ ጠፍቶ እንኳ ይሠራል።</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>የምዝግብ አቃፊ ክፈት</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ችግር ቅዳ</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>መቅዳት ጀምር</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>መቅዳት አቁም ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}፣ {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>«መቅዳት አቁም» እስኪጫን፣ 10 ደቂቃ እስኪሞላ ወይም zip 20 MB እስኪደርስ ድረስ ይቀዳል፣ ከዚያ zip ፋይሉን በExplorer ውስጥ ይመርጣል፣ ከሪፖርት ጋር ለማያያዝ ዝግጁ።</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ይጀምሩ፣ ችግሩ እንዲከሰት ያድርጉ፣ ከዚያ ያቁሙ። ከPadForge አጠገብ ያለ አንድ ፋይል PadForge ያነበበውን፣ የላከውን እና የመዘገበውን ሁሉ፣ ምን እንደተበላሸ ከሚገልጽ ማጠቃለያ ጋር ይይዛል። በሚቀዳበት ጊዜ በእያንዳንዱ መሣሪያ ላይ የተጫነ እያንዳንዱ ቁልፍ እና አዝራር በፋይሉ ውስጥ አለ፣ የቁልፍ ሰሌዳዎች እና መዳፊቶችም ጨምሮ። የተጠቃሚ ስሞች፣ የመለያ ቁጥሮች፣ አድራሻዎች እና የተተየቡ ስሞች ማንኛውም ነገር ከመጻፉ በፊት ይተካሉ።</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>ማጠቃለያውን በመጻፍ ላይ…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} ተቀምጧል</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>መቅዳት አልጀመረም። አንድ ፍተሻ ከፋይሉ ውጭ ሊደረግ የማይችል የዚህን PC የግል እሴት አግኝቷል።</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>መቅዳት አልጀመረም። {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>የመጨረሻው ቀረጻ አሁንም እየተጠናቀቀ ነው።</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«የመጨረሻዎቹን 60 ሰከንዶች አቆይ» ጠፍቷል፣ ስለዚህ የሚቀመጥ ነገር የለም።</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ያላቆመው ቀረጻ ተጠናቋል፦ {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>የመጨረሻዎቹን 60 ሰከንዶች አቆይ</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ሞተሩ በሚሄድበት ጊዜ ቀረጻ የሚይዘውን የመጨረሻውን ደቂቃ በማህደረ ትውስታ ውስጥ ይይዛል፣ በምሽት አንድ ጊዜ ለሚመጣ ችግር። «የመጨረሻዎቹን 60 ሰከንዶች አስቀምጥ» እንደ ፋይል ይጽፈዋል።</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>የመጨረሻዎቹን 60 ሰከንዶች አስቀምጥ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>የተተየቡ ፊደሎችን እና ቁጥሮችን እንደ አንድ ቁልፍ ጻፍ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ቀረጻ ምንም ማዛመጃ ወይም ማክሮ የማያነባቸውን የፊደል እና የቁጥር ቁልፎች እንደ አንድ ቁልፍ ይጽፋል፣ እያንዳንዱን ጭነት በራሱ ጊዜ። ሌላ እያንዳንዱ ቁልፍ፣ እና ማዛመጃ ወይም ማክሮ የሚያነበው እያንዳንዱ ቁልፍ፣ እንደተጫነ ይጻፋል።</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>የመጨረሻዎቹን 60 ሰከንዶች አቆይ፣ የተተየቡ ፊደሎችን እና ቁጥሮችን እንደ አንድ ቁልፍ ጻፍ</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>የመተግበሪያ ስሪት</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ራንታይም</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>የSDL ስሪት</value></data>
@@ -5410,4 +5429,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ከስታር ትሬክ፦ ዘ ኔክስት ጀነሬሽን የተወሰደ ፍሬም፦ የስታር ትሬክ ገጽታ Starfleet ምስል። በMemory Alpha ላይ የተገኘ።</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>የብርሃን አሞሌ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>የ{0} የብርሃን አሞሌ</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>የችግር ቀረጻ</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>መቅዳት ጀምር ወይም አቁም</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ቀረጻውን ምልክት አድርግ</value></data>
 </root>

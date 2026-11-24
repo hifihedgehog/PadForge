@@ -849,6 +849,25 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salva snapshot</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Isalva l-aktar avvenimenti riċenti tal-engine f'fajl ġdid. Jaħdem anke meta l-log tad-dijanjostika jkun mitfi.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Iftaħ il-folder tal-log</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Ħu reġistrazzjoni ta' problema</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Ibda r-reġistrazzjoni</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Waqqaf ir-reġistrazzjoni ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Jirreġistra sakemm Waqqaf ir-reġistrazzjoni, 10 minuti jew zip ta' 20 MB, imbagħad jagħżel iz-zip fl-Explorer, lest biex jiġi mehmuż ma' rapport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Ibda, ħalli l-problema sseħħ, imbagħad waqqaf. Fajl wieħed ħdejn PadForge fih dak kollu li PadForge qara, bagħat u rreġistra, b'sommarju ta' dak li mar ħażin. Kull ċavetta u buttuna mgħaffġa fuq kull apparat waqt ir-reġistrazzjoni tkun fil-fajl, inklużi t-tastieri u l-maws. L-ismijiet tal-utent, in-numri tas-serje, l-indirizzi u l-ismijiet ittajpjati jiġu mibdula qabel ma jinkiteb xejn.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Qed jinkiteb is-sommarju…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvat {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Ir-reġistrazzjoni ma bdietx. Kontroll sab valur privat ta' dan il-PC li ma jinżammx barra mill-fajl.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Ir-reġistrazzjoni ma bdietx. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>L-aħħar reġistrazzjoni għadha qed titlesta.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Żomm l-aħħar 60 sekonda huwa mitfi, għalhekk m'hemm xejn x'jiġi ssalvat.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Tlesta reġistrazzjoni li PadForge ma kienx waqqaf: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Żomm l-aħħar 60 sekonda</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Waqt li jaħdem l-engine, iżomm fil-memorja l-aħħar minuta ta' dak li fiha reġistrazzjoni, għal problema li tiġi darba filgħaxija. Salva l-aħħar 60 sekonda jikteb din bħala fajl.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Salva l-aħħar 60 sekonda</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Ikteb l-ittri u n-numri ttajpjati bħala ċavetta waħda</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Reġistrazzjoni tikteb iċ-ċwievet tal-ittri u tan-numri li l-ebda immappjar jew makro ma jaqra bħala ċavetta waħda, kull għafsa fil-ħin tagħha. Kull ċavetta oħra, u kull ċavetta li immappjar jew makro jaqra, tinkiteb kif tkun ġiet mgħaffġa.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Żomm l-aħħar 60 sekonda, Ikteb l-ittri u n-numri ttajpjati bħala ċavetta waħda</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Verżjoni tal-app</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Verżjoni SDL</value></data>
@@ -5369,4 +5388,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Frejm minn Star Trek: The Next Generation: l-istampa tat-tema Starfleet ta' Star Trek. Misjub fuq Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Reġistrazzjoni ta' problema</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Ibda jew waqqaf ir-reġistrazzjoni</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Immarka r-reġistrazzjoni</value></data>
 </root>

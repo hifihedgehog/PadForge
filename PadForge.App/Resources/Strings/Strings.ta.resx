@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ஸ்னாப்ஷாட்டைச் சேமி</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>மிகச் சமீபத்திய இன்ஜின் நிகழ்வுகளை ஒரு புதிய கோப்பில் சேமிக்கும். பிழையறிதல் பதிவேடு ஆஃப் ஆக இருந்தாலும் வேலை செய்யும்.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>பதிவேட்டுக் கோப்புறையைத் திற</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>சிக்கலைப் பதிவுசெய்</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>பதிவைத் தொடங்கு</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>பதிவை நிறுத்து ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>பதிவை நிறுத்து, 10 நிமிடங்கள் அல்லது 20 MB zip வரை பதிவுசெய்து, பிறகு அறிக்கையில் இணைக்கத் தயாராக Explorer-இல் அந்த zip-ஐத் தேர்ந்தெடுக்கும்.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>தொடங்கி, சிக்கலை நிகழச்செய்து, பிறகு நிறுத்தவும். PadForge-க்கு அருகில் உள்ள ஒரு கோப்பு, PadForge படித்தது, அனுப்பியது, பதிவுசெய்தது அனைத்தையும், என்ன தவறானது என்ற சுருக்கத்துடன் வைத்திருக்கும். பதிவுசெய்யும்போது ஒவ்வொரு சாதனத்திலும் அழுத்திய ஒவ்வொரு விசையும் பொத்தானும், விசைப்பலகைகள் மற்றும் சுட்டிகள் உட்பட, கோப்பில் இருக்கும். எதுவும் எழுதப்படும் முன் பயனர் பெயர்கள், வரிசை எண்கள், முகவரிகள், தட்டச்சு செய்த பெயர்கள் மாற்றப்படும்.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>சுருக்கத்தை எழுதுகிறது…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>சேமிக்கப்பட்டது: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>பதிவு தொடங்கவில்லை. இந்த PC-யின் ஒரு தனிப்பட்ட மதிப்பு கோப்பிலிருந்து விலக்கப்படாது என்பதைச் சோதனை கண்டறிந்தது.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>பதிவு தொடங்கவில்லை. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>கடைசிப் பதிவு இன்னும் முடிக்கப்படுகிறது.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு அணைந்துள்ளது, எனவே சேமிக்க எதுவும் இல்லை.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge நிறுத்தாத ஒரு பதிவை முடித்தது: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>இன்ஜின் இயங்கும்போது, ஓர் இரவில் ஒருமுறை வரும் சிக்கலுக்காக, பதிவு வைத்திருக்கும் தகவலின் கடைசி நிமிடத்தை நினைவகத்தில் வைத்திருக்கும். கடைசி 60 வினாடிகளைச் சேமி அதைக் கோப்பாக எழுதும்.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>கடைசி 60 வினாடிகளைச் சேமி</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>தட்டச்சு செய்த எழுத்துகளையும் எண்களையும் ஒரே விசையாக எழுது</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>எந்த மேப்பிங்கும் மேக்ரோவும் படிக்காத எழுத்து மற்றும் எண் விசைகளை, ஒவ்வொரு அழுத்தத்தையும் அதன் நேரத்தில், ஒரே விசையாகப் பதிவு எழுதும். மற்ற ஒவ்வொரு விசையும், மேப்பிங் அல்லது மேக்ரோ படிக்கும் ஒவ்வொரு விசையும், அழுத்தியபடியே எழுதப்படும்.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு, தட்டச்சு செய்த எழுத்துகளையும் எண்களையும் ஒரே விசையாக எழுது</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>பயன்பாட்டுப் பதிப்பு</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ரன்டைம்</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL பதிப்பு</value></data>
@@ -5853,6 +5872,10 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>சுயவிவரக் குறுக்குவழி</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>சுயவிவரக் குறுக்குவழி செய்வதைச் செய்யும்: பெயரிட்ட சுயவிவரத்தை, அடுத்ததை அல்லது முந்தையதை ஏற்றும், சாளரத்தைக் காட்டும் அல்லது மறைக்கும், அல்லது மெய்நிகர் கண்ட்ரோலர்களை அணைத்து இயக்கும்.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>சுயவிவரக் குறுக்குவழி: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>சிக்கல் பதிவு</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>சிக்கல் பதிவைத் தொடங்கும் அல்லது நிறுத்தும், இயங்கும் பதிவில் குறியிடும், அல்லது கேமை விட்டு வெளியேறாமல் கடைசி 60 வினாடிகளைச் சேமிக்கும்.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>பதிவைத் தொடங்கு அல்லது நிறுத்து</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>பதிவில் குறியிடு</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>நகர்வு X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>நகர்வு Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>நகர்வு X-ஐ மீட்டமை</value></data>

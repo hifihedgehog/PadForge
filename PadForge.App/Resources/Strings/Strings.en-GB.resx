@@ -652,4 +652,5 @@
   <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Puts the wheel of every Mouse Travel input on this virtual controller back at centre.</value></data>
   <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automation is on: programs can switch profiles, read devices and settings and send inputs</value></data>
   <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Check GitHub for new versions of PadForge and install them from here, and update the controller database. PadForge contacts only GitHub (api.github.com, github.com and its download servers and raw.githubusercontent.com for the controller database). The only data it sends is its own version number and, for the controller database, the tag GitHub gave the last download.</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Starts or stops a problem recording, marks the one that runs or saves the last 60 seconds, without leaving the game.</value></data>
 </root>

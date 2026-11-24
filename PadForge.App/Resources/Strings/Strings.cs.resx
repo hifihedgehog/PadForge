@@ -900,6 +900,25 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Uložit snímek</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Uloží nejnovější události jádra do nového souboru. Funguje i při vypnutém diagnostickém protokolu.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Otevřít složku protokolů</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Nahrát problém</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Začít nahrávat</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Zastavit nahrávání ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nahrává do stisku tlačítka Zastavit nahrávání, 10 minut nebo 20 MB souboru zip, pak soubor zip vybere v Exploreru, připravený k připojení ke hlášení.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začněte, vyvolejte problém a pak nahrávání zastavte. Jeden soubor vedle programu PadForge obsahuje vše, co PadForge četl, poslal a zaznamenal, se shrnutím toho, co se pokazilo. Každá klávesa a tlačítko stisknuté na kterémkoli zařízení během nahrávání jsou v souboru, včetně klávesnic a myší. Uživatelská jména, sériová čísla, adresy a zadaná jména se před zápisem nahradí.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Zapisuje se shrnutí…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Uloženo: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Nahrávání se nespustilo. Kontrola našla soukromou hodnotu tohoto PC, která by se do souboru dostala.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Nahrávání se nespustilo. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Poslední nahrávka se ještě dokončuje.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Volba Uchovávat posledních 60 sekund je vypnutá, takže není co uložit.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Dokončena nahrávka, kterou PadForge nezastavil: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Uchovávat posledních 60 sekund</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Dokud běží jádro, drží v paměti poslední minutu toho, co obsahuje nahrávka, pro problém, který se objeví jednou za večer. Tlačítko Uložit posledních 60 sekund ji zapíše jako soubor.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Uložit posledních 60 sekund</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Psaná písmena a číslice zapisovat jako jednu klávesu</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Nahrávka zapíše klávesy písmen a číslic, které žádné mapování ani makro nečte, jako jednu klávesu, každý stisk v jeho čase. Všechny ostatní klávesy a každá klávesa, kterou mapování nebo makro čte, se zapíšou tak, jak byly stisknuty.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Uchovávat posledních 60 sekund, Psaná písmena a číslice zapisovat jako jednu klávesu</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Verze aplikace</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Běhové prostředí .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Verze SDL</value></data>
@@ -5853,6 +5872,10 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Zkratka profilu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Provede to, co zkratka profilu: načte pojmenovaný profil, další nebo předchozí, zobrazí či skryje okno, nebo vypne a zapne virtuální ovladače.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Zkratka profilu: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Nahrávka problému</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Spustí nebo zastaví nahrávku problému, označí tu, která běží, nebo uloží posledních 60 sekund, aniž byste opustili hru.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Spustit nebo zastavit nahrávání</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Označit záznam</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Posun X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Posun Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Resetovat posun X</value></data>

@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ບັນທຶກສະແນັບຊັອດ</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ບັນທຶກເຫດການຫຼ້າສຸດຂອງເອັນຈິນລົງໄຟລ໌ໃໝ່. ໃຊ້ໄດ້ເຖິງແມ່ນວ່າບັນທຶກການວິນິດໄສຈະປິດຢູ່.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ເປີດໂຟນເດີບັນທຶກ</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ບັນທຶກບັນຫາ</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>ເລີ່ມບັນທຶກ</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>ຢຸດບັນທຶກ ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>ບັນທຶກຈົນກວ່າຈະກົດ ຢຸດບັນທຶກ, ຄົບ 10 ນາທີ ຫຼື zip ຮອດ 20 MB, ຈາກນັ້ນເລືອກ zip ໃນ Explorer, ພ້ອມແນບໃສ່ລາຍງານ.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ເລີ່ມ, ເຮັດໃຫ້ບັນຫາເກີດຂຶ້ນ, ແລ້ວຢຸດ. ໄຟລ໌ດຽວຂ້າງ PadForge ມີທຸກຢ່າງທີ່ PadForge ອ່ານ, ສົ່ງ ແລະ ບັນທຶກໄວ້, ພ້ອມສະຫຼຸບສິ່ງທີ່ຜິດພາດ. ທຸກປຸ່ມທີ່ກົດໃນທຸກອຸປະກອນໃນຂະນະບັນທຶກຈະຢູ່ໃນໄຟລ໌, ລວມທັງແປ້ນພິມ ແລະ ເມົ້າ. ຊື່ຜູ້ໃຊ້, ໝາຍເລກຊີຣຽວ, ທີ່ຢູ່ ແລະ ຊື່ທີ່ພິມຈະຖືກແທນທີ່ກ່ອນຂຽນຫຍັງລົງ.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>ກຳລັງຂຽນສະຫຼຸບ…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>ບັນທຶກ {0} ແລ້ວ</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ການບັນທຶກບໍ່ໄດ້ເລີ່ມ. ການກວດພົບຄ່າສ່ວນຕົວຂອງ PC ນີ້ທີ່ຈະບໍ່ຖືກກັນອອກຈາກໄຟລ໌.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ການບັນທຶກບໍ່ໄດ້ເລີ່ມ. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>ການບັນທຶກຄັ້ງກ່ອນຍັງບໍ່ທັນສຳເລັດ.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>ເກັບ 60 ວິນາທີສຸດທ້າຍ ປິດຢູ່, ສະນັ້ນຈຶ່ງບໍ່ມີຫຍັງໃຫ້ບັນທຶກ.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>ສຳເລັດການບັນທຶກທີ່ PadForge ບໍ່ໄດ້ຢຸດ: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>ເກັບ 60 ວິນາທີສຸດທ້າຍ</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ໃນຂະນະທີ່ເອັນຈິນເຮັດວຽກ, ເກັບນາທີສຸດທ້າຍຂອງສິ່ງທີ່ການບັນທຶກມີໄວ້ໃນໜ່ວຍຄວາມຈຳ, ສຳລັບບັນຫາທີ່ເກີດຂຶ້ນເທື່ອດຽວຕໍ່ຄືນ. ບັນທຶກ 60 ວິນາທີສຸດທ້າຍ ຈະຂຽນມັນເປັນໄຟລ໌.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>ບັນທຶກ 60 ວິນາທີສຸດທ້າຍ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ຂຽນຕົວອັກສອນ ແລະ ຕົວເລກທີ່ພິມເປັນປຸ່ມດຽວ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ການບັນທຶກຈະຂຽນປຸ່ມຕົວອັກສອນ ແລະ ຕົວເລກທີ່ບໍ່ມີການແມັບ ຫຼື ມາໂຄຣໃດອ່ານເປັນປຸ່ມດຽວ, ແຕ່ລະການກົດຕາມເວລາຂອງມັນ. ປຸ່ມອື່ນທັງໝົດ ແລະ ທຸກປຸ່ມທີ່ການແມັບ ຫຼື ມາໂຄຣອ່ານ ຈະຖືກຂຽນຕາມທີ່ກົດ.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>ເກັບ 60 ວິນາທີສຸດທ້າຍ, ຂຽນຕົວອັກສອນ ແລະ ຕົວເລກທີ່ພິມເປັນປຸ່ມດຽວ</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ເວີຊັນແອັບ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>ຣັນທາມ .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>ເວີຊັນ SDL</value></data>
@@ -5420,4 +5439,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ເຟຣມໜຶ່ງຈາກ Star Trek: The Next Generation: ຮູບຂອງທີມ Starfleet ຂອງ Star Trek. ພົບໃນ Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ແຖບໄຟ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>ແຖບໄຟ {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ການບັນທຶກບັນຫາ</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ເລີ່ມ ຫຼື ຢຸດການບັນທຶກ</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ໝາຍການບັນທຶກ</value></data>
 </root>

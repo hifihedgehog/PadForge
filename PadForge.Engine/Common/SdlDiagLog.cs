@@ -26,6 +26,20 @@ namespace PadForge.Engine
         private const int MaxLines = 4000;
         private static readonly object _sync = new object();
         private static readonly Queue<string> _ring = new Queue<string>(MaxLines);
+        // When each line of the ring was written, as a Stopwatch timestamp,
+        // so a taker can place the lines it inherits on its own clock.
+        private static readonly Queue<long> _ringTicks = new Queue<long>(MaxLines);
+
+        /// <summary>How long the stamp at the head of a ring line is:
+        /// "HH:mm:ss.fff" and a space.</summary>
+        private const int StampLength = 13;
+
+        /// <summary>The taker of every line while a problem recording, or
+        /// its memory of the last minute, runs (#597), or null. It gets each
+        /// line without its stamp, with the line's own time, and has to hand
+        /// it to a queue and return: it is called under the ring's lock on
+        /// whichever thread wrote the line, the poll thread among them.</summary>
+        private static volatile Action<long, string> _taker;
         // Rooted so the GC never collects the delegate SDL holds.
         private static SDL3.SDL.SDL_LogOutputFunction _sdlCallback;
 
@@ -58,7 +72,46 @@ namespace PadForge.Engine
         /// a string on every change test this first, so a normal session
         /// pays nothing for a trace. The ring itself stays cheap; the
         /// string interpolation is not.</summary>
-        public static bool IsMirroring => _mirrorPath != null;
+        public static bool IsMirroring => _mirrorPath != null || _taker != null;
+
+        /// <summary>Hands every line from now on to <paramref name="taker"/>
+        /// and returns the ring's lines up to now, oldest first, each with
+        /// the time it was written and without its stamp. Taking counts as
+        /// mirroring, so the trace sites that speak only then speak, and
+        /// their lines go to the taker's queue and through no file append of
+        /// this class. One taker at a time: a second replaces the first.
+        ///
+        /// <para>The taker is then called once with a null line, which marks
+        /// in its queue where the history ends. All of it is one step under
+        /// the ring's lock, so no line is in both the history and the queue
+        /// after the mark, and none is in neither. A taker already attached
+        /// calls this again for a fresh history and a fresh mark.</para></summary>
+        public static List<(long Ticks, string Line)> Attach(Action<long, string> taker)
+        {
+            var history = new List<(long, string)>();
+            lock (_sync)
+            {
+                using var ticks = _ringTicks.GetEnumerator();
+                foreach (string stamped in _ring)
+                {
+                    ticks.MoveNext();
+                    history.Add((ticks.Current, stamped.Length > StampLength ? stamped.Substring(StampLength) : stamped));
+                }
+                _taker = taker;
+                taker?.Invoke(System.Diagnostics.Stopwatch.GetTimestamp(), null);
+            }
+            return history;
+        }
+
+        /// <summary>Ends what <see cref="Attach"/> began, when
+        /// <paramref name="taker"/> is still the one attached.</summary>
+        public static void Detach(Action<long, string> taker)
+        {
+            lock (_sync)
+            {
+                if (ReferenceEquals(_taker, taker)) _taker = null;
+            }
+        }
 
         /// <summary>Arms (path) or disarms (null) the file mirror at
         /// runtime, for the Settings toggle (#303). A PADFORGE_DIAG bench
@@ -140,10 +193,17 @@ namespace PadForge.Engine
             try
             {
                 string stamped = $"{DateTime.Now:HH:mm:ss.fff} {line}";
+                long ticks = System.Diagnostics.Stopwatch.GetTimestamp();
                 lock (_sync)
                 {
-                    if (_ring.Count >= MaxLines) _ring.Dequeue();
+                    if (_ring.Count >= MaxLines)
+                    {
+                        _ring.Dequeue();
+                        _ringTicks.Dequeue();
+                    }
                     _ring.Enqueue(stamped);
+                    _ringTicks.Enqueue(ticks);
+                    _taker?.Invoke(ticks, line);
                     if (_mirrorPath != null)
                     {
                         string data = stamped + Environment.NewLine;

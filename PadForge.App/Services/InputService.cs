@@ -907,6 +907,10 @@ namespace PadForge.Services
 
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
+            // The problem recorder reads the engine's slots and this
+            // service's Remote Link values for its file (#597).
+            RecorderHost.Engine = _inputManager;
+            RecorderHost.Input = this;
             _inputManager.RemoteMidiInputDemand = HasFreshRemoteMidiDemand;
             _inputManagerStatic = _inputManager;
             ApplyEffectivePollingRate();
@@ -3500,6 +3504,10 @@ namespace PadForge.Services
 
             // ── Auto-profile switching (check foreground window) ──
             _foregroundMonitor?.CheckForegroundWindow();
+
+            // ── Problem recorder (#597): what its macros asked for, and the
+            //    program in front ──
+            TickProblemRecorder();
 
             // ── Profiles-page foreground readout (#175 item 8): 1 s slow
             //    lane riding this timer like the battery lane above. Only

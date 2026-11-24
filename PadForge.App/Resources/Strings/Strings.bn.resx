@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>স্ন্যাপশট সংরক্ষণ করুন</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>সাম্প্রতিকতম ইঞ্জিন ইভেন্টগুলো একটি নতুন ফাইলে সংরক্ষণ করে। ডায়াগনস্টিকস লগ বন্ধ থাকলেও কাজ করে।</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>লগ ফোল্ডার খুলুন</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>একটি সমস্যা রেকর্ড করুন</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>রেকর্ডিং শুরু করুন</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>রেকর্ডিং থামান ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>রেকর্ডিং থামান চাপা পর্যন্ত, 10 মিনিট বা 20 MB zip পর্যন্ত রেকর্ড করে, তারপর Explorer-এ zip ফাইলটি বেছে দেয়, রিপোর্টের সঙ্গে জুড়ে দেওয়ার জন্য তৈরি।</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>শুরু করুন, সমস্যাটি ঘটান, তারপর থামান। PadForge-এর পাশে একটি ফাইলে PadForge যা পড়েছে, পাঠিয়েছে ও লগ করেছে তার সবকিছু থাকে, কী ভুল হয়েছে তার সারসংক্ষেপসহ। রেকর্ড করার সময় প্রতিটি ডিভাইসে চাপা প্রতিটি কী ও বোতাম ফাইলে থাকে, কিবোর্ড ও মাউসসহ। কিছু লেখার আগেই ব্যবহারকারীর নাম, সিরিয়াল নম্বর, ঠিকানা ও টাইপ করা নাম বদলে দেওয়া হয়।</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>সারসংক্ষেপ লেখা হচ্ছে…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>সংরক্ষিত হয়েছে {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>রেকর্ডিং শুরু হয়নি। একটি পরীক্ষায় এই PC-র এমন একটি ব্যক্তিগত মান ধরা পড়েছে, যা ফাইলের বাইরে রাখা যেত না।</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>রেকর্ডিং শুরু হয়নি। {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>শেষ রেকর্ডিংটি এখনো শেষ করা হচ্ছে।</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>শেষ 60 সেকেন্ড রেখে দিন বন্ধ আছে, তাই সংরক্ষণ করার কিছু নেই।</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge থামায়নি এমন একটি রেকর্ডিং শেষ করা হয়েছে: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>শেষ 60 সেকেন্ড রেখে দিন</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ইঞ্জিন চলার সময় রেকর্ডিংয়ে যা থাকে তার শেষ এক মিনিট মেমরিতে ধরে রাখে, সন্ধ্যায় একবার আসা সমস্যার জন্য। শেষ 60 সেকেন্ড সংরক্ষণ করুন সেটি ফাইল হিসেবে লেখে।</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>শেষ 60 সেকেন্ড সংরক্ষণ করুন</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>টাইপ করা অক্ষর ও সংখ্যা একটি কী হিসেবে লিখুন</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>কোনো ম্যাপিং বা ম্যাক্রো যে অক্ষর ও সংখ্যার কী পড়ে না, রেকর্ডিং সেগুলোকে একটি কী হিসেবে লেখে, প্রতিটি চাপ তার নিজের সময়ে। বাকি প্রতিটি কী, আর ম্যাপিং বা ম্যাক্রো যে কী পড়ে তা চাপা অবস্থায় যেমন, তেমনই লেখা হয়।</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>শেষ 60 সেকেন্ড রেখে দিন, টাইপ করা অক্ষর ও সংখ্যা একটি কী হিসেবে লিখুন</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>অ্যাপের সংস্করণ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET রানটাইম</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL সংস্করণ</value></data>
@@ -5853,6 +5872,10 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>প্রোফাইল শর্টকাট</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>প্রোফাইল শর্টকাট যা করে তা-ই করে: নাম দেওয়া একটি প্রোফাইল, পরেরটি বা আগেরটি লোড করে, উইন্ডো দেখায় বা লুকায়, অথবা ভার্চুয়াল কন্ট্রোলার বন্ধ ও চালু করে।</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>প্রোফাইল শর্টকাট: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>সমস্যার রেকর্ডিং</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>সমস্যার রেকর্ডিং শুরু বা বন্ধ করে, চলমান রেকর্ডিংয়ে চিহ্ন দেয়, অথবা গেম ছাড়াই শেষ 60 সেকেন্ড সংরক্ষণ করে।</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>রেকর্ডিং শুরু বা বন্ধ করুন</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>রেকর্ডিংয়ে চিহ্ন দিন</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>অফসেট X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>অফসেট Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>অফসেট X রিসেট করুন</value></data>

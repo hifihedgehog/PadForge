@@ -843,6 +843,25 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Momentopnam späicheren</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Späichert déi lescht Engine-Evenementer an eng nei Datei. Funktionéiert och, wann d'Diagnoseprotokoll aus ass.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Protokolldossier opmaachen</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>E Problem opzeechnen</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Opnam starten</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Opnam stoppen ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Zeechent op bis „Opnam stoppen“, 10 Minutten oder eng zip-Datei vun 20 MB, a wielt dann d'zip-Datei am Explorer aus, prett fir un e Bericht unzehänken.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, loosst de Problem optrieden, a stoppt dann. Eng Datei nieft PadForge enthält alles, wat PadForge gelies, geschéckt a protokolléiert huet, mat enger Zesummefaassung vun deem, wat schifgaangen ass. All Tast an all Knäppchen, déi wärend der Opnam op all Apparat gedréckt ginn, sinn an der Datei, Tastaturen a Mais abegraff. Benotzernimm, Seriennummeren, Adressen a getippten Nimm ginn ersat, ier eppes geschriwwe gëtt.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>D'Zesummefaassung gëtt geschriwwen…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} gespäichert</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>D'Opnam ass net gestart. Eng Kontroll huet e private Wäert vun dësem PC fonnt, deen net aus der Datei erausgehale géif ginn.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>D'Opnam ass net gestart. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Déi lescht Opnam gëtt nach ofgeschloss.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>„Déi lescht 60 Sekonnen halen“ ass aus, dofir gëtt et näischt ze späicheren.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Eng Opnam ofgeschloss, déi PadForge net gestoppt hat: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Déi lescht 60 Sekonnen halen</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Hält, soulaang d'Engine leeft, déi lescht Minutt vun deem am Späicher, wat eng Opnam enthält, fir e Problem, deen eemol den Owend kënnt. „Déi lescht 60 Sekonne späicheren“ schreift se als Datei.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Déi lescht 60 Sekonne späicheren</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Getippte Buschtawen an Zuelen als eng Tast schreiwen</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Eng Opnam schreift d'Buschtawen- an Zuelentasten, déi keng Zouuerdnung a kee Makro liest, als eng Tast, all Drock zu senger eegener Zäit. All aner Tast, an all Tast, déi eng Zouuerdnung oder e Makro liest, gëtt geschriwwe wéi gedréckt.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Déi lescht 60 Sekonnen halen, Getippte Buschtawen an Zuelen als eng Tast schreiwen</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App-Versioun</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-Versioun</value></data>
@@ -5396,4 +5415,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Liichtbalken</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Liichtbalken {0}</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Maussteierung zentréieren</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemopnam</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Opnam starten oder stoppen</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>D'Opnam markéieren</value></data>
 </root>

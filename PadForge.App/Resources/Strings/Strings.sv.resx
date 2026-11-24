@@ -900,6 +900,25 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Spara ögonblicksbild</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Sparar de senaste motorhändelserna i en ny fil. Fungerar även när diagnostikloggen är av.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Öppna loggmappen</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Spela in ett problem</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Starta inspelning</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stoppa inspelning ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Spelar in tills du väljer Stoppa inspelning, 10 minuter har gått eller en zip-fil når 20 MB, och markerar sedan zip-filen i Explorer, redo att bifogas en rapport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Starta, låt problemet uppstå och stoppa sedan. En fil bredvid PadForge innehåller allt PadForge läste, skickade och loggade, med en sammanfattning av vad som gick fel. Varje tangent och knapp som trycks ned på varje enhet under inspelningen finns i filen, tangentbord och möss inräknade. Användarnamn, serienummer, adresser och skrivna namn ersätts innan något skrivs.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skriver sammanfattningen…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Sparade {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Inspelningen startade inte. En kontroll fann ett privat värde på den här PC:n som inte skulle hållas utanför filen.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Inspelningen startade inte. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Den senaste inspelningen avslutas fortfarande.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Spara de senaste 60 sekunderna är avstängt, så det finns inget att spara.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Avslutade en inspelning som PadForge inte hade stoppat: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Behåll de senaste 60 sekunderna</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Medan motorn körs hålls den senaste minuten av det en inspelning innehåller i minnet, för ett problem som kommer en gång per kväll. Spara de senaste 60 sekunderna skriver den som en fil.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Spara de senaste 60 sekunderna</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skriv bokstäver och siffror som en enda tangent</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>En inspelning skriver de bokstavs- och siffertangenter som ingen mappning eller något makro läser som en tangent, varje tryck vid sin egen tidpunkt. Alla andra tangenter, och varje tangent som en mappning eller ett makro läser, skrivs som de trycktes.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Behåll de senaste 60 sekunderna, Skriv bokstäver och siffror som en enda tangent</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Appversion</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-körmiljö</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-version</value></data>
@@ -5853,6 +5872,10 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilgenväg</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gör det en profilgenväg gör: läser in en namngiven profil, nästa eller föregående, visar eller döljer fönstret eller stänger av och slår på de virtuella handkontrollerna.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profilgenväg: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleminspelning</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Startar eller stoppar en probleminspelning, markerar den som körs eller sparar de senaste 60 sekunderna, utan att lämna spelet.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Starta eller stoppa inspelning</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markera inspelningen</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Förskjutning X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Förskjutning Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Återställ förskjutning X</value></data>

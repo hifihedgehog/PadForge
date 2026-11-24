@@ -1707,6 +1707,43 @@
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,44,0"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
+                                <!-- Record a Problem (#597): one file of everything read,
+                                     sent and logged while a problem happens. The line under
+                                     the row says what the file holds, the keys and buttons of
+                                     every device among it, where the user starts it. The
+                                     button keeps the reset's slot, as Check the Notice does. -->
+                                <controls:SettingItem>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_RecordProblem, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock x:Name="RecordProblemStatus" common:LiveText.Polite="True" Text="{Binding ProblemRecordingStatus}" FontSize="13"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis" Margin="0,0,12,0"/>
+                                        <Button x:Name="RecordProblemButton" Click="RecordProblem_Click" Margin="0,0,44,0"
+                                                Typography.NumeralAlignment="Tabular"
+                                                AutomationProperties.AutomationId="Settings_RecordProblem"
+                                                ToolTip="{Binding Settings_RecordProblem_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                    <Setter Property="Content" Value="{Binding Settings_RecordProblem_Start, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsProblemRecording}" Value="True">
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                        <Binding Path="ProblemRecordingElapsed"/>
+                                                                        <Binding Path="Settings_RecordProblem_Stop_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                                    </MultiBinding>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </controls:SettingRow>
+                                    <TextBlock Text="{Binding Settings_RecordProblem_Hint, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardDescription}" Margin="20,0,54,10"/>
+                                </controls:SettingItem>
                                 <controls:SettingItem>
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_DiagnosticsLogging, Source={x:Static strings:Strings.Instance}}"/>
@@ -1726,6 +1763,45 @@
                                         <Button Content="{Binding Settings_DiagnosticsOpenFolder, Source={x:Static strings:Strings.Instance}}"
                                                 Click="OpenDiagFolder_Click" ToolTip="{Binding DiagnosticsFolderPath}"/>
                                     </controls:FlexLinePanel>
+                                </controls:SettingItem>
+                                <!-- Under More (#597): the minute kept in memory, with its
+                                     Save beside the switch while it is on, and the one switch
+                                     that changes what a recording says of a keyboard. Both
+                                     off unless the user turns them on. The More row is built
+                                     as Battery Alerts builds its own. -->
+                                <controls:SettingItem Rule="{x:Null}">
+                                    <controls:MoreRow x:Name="DiagnosticsMore" StateKey="Settings.Data.Diagnostics.More" Margin="0"
+                                                      AutomationProperties.AutomationId="Settings_More_Diagnostics"
+                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                      Hint="{Binding Settings_More_Diagnostics, Source={x:Static strings:Strings.Instance}}">
+                                        <StackPanel Margin="-20,-8,-12,-12">
+                                            <controls:SettingItem Rule="{x:Null}">
+                                                <controls:SettingRow MinHeight="44">
+                                                    <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_RecordProblem_KeepLastMinute, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Button Content="{Binding Settings_RecordProblem_SaveLastMinute, Source={x:Static strings:Strings.Instance}}"
+                                                            Click="SaveLastMinute_Click" Margin="0,0,12,0"
+                                                            Visibility="{Binding ProblemRecordingKeepLastMinute, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_RecordProblem_KeepLastMinute, Source={x:Static strings:Strings.Instance}}"
+                                                              ToolTip="{Binding Settings_RecordProblem_KeepLastMinuteTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                              IsChecked="{Binding ProblemRecordingKeepLastMinute}"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ProblemRecordingKeepLastMinute"
+                                                                              SettingLabel="{Binding Settings_RecordProblem_KeepLastMinute, Source={x:Static strings:Strings.Instance}}"
+                                                                              AutomationProperties.AutomationId="Reset_SettingsViewModel_ProblemRecordingKeepLastMinute_59701"/>
+                                                </controls:SettingRow>
+                                            </controls:SettingItem>
+                                            <controls:SettingItem>
+                                                <controls:SettingRow MinHeight="44">
+                                                    <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_RecordProblem_HideTypedKeys, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_RecordProblem_HideTypedKeys, Source={x:Static strings:Strings.Instance}}"
+                                                              ToolTip="{Binding Settings_RecordProblem_HideTypedKeysTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                              IsChecked="{Binding ProblemRecordingHideTypedKeys}"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ProblemRecordingHideTypedKeys"
+                                                                              SettingLabel="{Binding Settings_RecordProblem_HideTypedKeys, Source={x:Static strings:Strings.Instance}}"
+                                                                              AutomationProperties.AutomationId="Reset_SettingsViewModel_ProblemRecordingHideTypedKeys_59702"/>
+                                                </controls:SettingRow>
+                                            </controls:SettingItem>
+                                        </StackPanel>
+                                    </controls:MoreRow>
                                 </controls:SettingItem>
                             </StackPanel>
                         </Border>

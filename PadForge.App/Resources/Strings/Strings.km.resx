@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>រក្សាទុករូបថតស្ថានភាព</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>រក្សាទុកព្រឹត្តិការណ៍ម៉ាស៊ីនថ្មីៗបំផុតទៅឯកសារថ្មីមួយ។ ដំណើរការ សូម្បីតែពេលកំណត់ហេតុរោគវិនិច្ឆ័យបិទ។</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>បើកថតកំណត់ហេតុ</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ថតបញ្ហា</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>ចាប់ផ្ដើមថត</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>បញ្ឈប់ការថត ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>ថតរហូតដល់ «បញ្ឈប់ការថត» 10 នាទី ឬឯកសារ zip 20 MB បន្ទាប់មកជ្រើសឯកសារ zip នៅក្នុង Explorer រួចរាល់សម្រាប់ភ្ជាប់ទៅរបាយការណ៍។</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ចាប់ផ្ដើម ធ្វើឱ្យបញ្ហាកើតឡើង រួចបញ្ឈប់។ ឯកសារតែមួយនៅក្បែរ PadForge ផ្ទុកអ្វីៗទាំងអស់ដែល PadForge បានអាន ផ្ញើ និងកត់ត្រា ជាមួយសេចក្ដីសង្ខេបនៃអ្វីដែលខុស។ គ្រប់គ្រាប់ចុច និងប៊ូតុងដែលបានចុចនៅលើគ្រប់ឧបករណ៍ខណៈវាកំពុងថត មាននៅក្នុងឯកសារ រួមទាំងក្ដារចុច និងកណ្ដុរផង។ ឈ្មោះអ្នកប្រើ លេខសៀរៀល អាសយដ្ឋាន និងឈ្មោះដែលបានវាយ ត្រូវបានជំនួសមុនពេលសរសេរអ្វីមួយ។</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>កំពុងសរសេរសេចក្ដីសង្ខេប…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>បានរក្សាទុក {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ការថតមិនបានចាប់ផ្ដើមទេ។ ការពិនិត្យមួយបានរកឃើញតម្លៃឯកជនមួយរបស់ PC នេះ ដែលនឹងមិនត្រូវបានដកចេញពីឯកសារ។</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ការថតមិនបានចាប់ផ្ដើមទេ។ {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>ការថតចុងក្រោយនៅតែកំពុងត្រូវបានបញ្ចប់។</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«រក្សា 60 វិនាទីចុងក្រោយ» បានបិទ ដូច្នេះគ្មានអ្វីត្រូវរក្សាទុកទេ។</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>បានបញ្ចប់ការថតដែល PadForge មិនបានបញ្ឈប់៖ {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>រក្សា 60 វិនាទីចុងក្រោយ</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ខណៈម៉ាស៊ីនដំណើរការ រក្សាទុកក្នុងអង្គចងចាំនូវមួយនាទីចុងក្រោយនៃអ្វីដែលការថតផ្ទុក សម្រាប់បញ្ហាដែលកើតឡើងម្ដងក្នុងមួយល្ងាច។ «រក្សាទុក 60 វិនាទីចុងក្រោយ» សរសេរវាជាឯកសារ។</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>រក្សាទុក 60 វិនាទីចុងក្រោយ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>សរសេរអក្សរ និងលេខដែលបានវាយជាគ្រាប់ចុចតែមួយ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ការថតសរសេរគ្រាប់ចុចអក្សរ និងលេខ ដែលគ្មានការម៉ាប ឬម៉ាក្រូណាអាន ជាគ្រាប់ចុចតែមួយ ដោយការចុចនីមួយៗតាមពេលវេលារបស់វា។ គ្រាប់ចុចផ្សេងទៀតទាំងអស់ និងគ្រាប់ចុចដែលការម៉ាប ឬម៉ាក្រូអាន ត្រូវបានសរសេរដូចដែលបានចុច។</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>រក្សា 60 វិនាទីចុងក្រោយ, សរសេរអក្សរ និងលេខដែលបានវាយជាគ្រាប់ចុចតែមួយ</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>កំណែកម្មវិធី</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>កម្មវិធីដំណើរការ .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>កំណែ SDL</value></data>
@@ -5435,4 +5454,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>រូបភាពមួយពី Star Trek: The Next Generation៖ រូបភាពនៃរចនាប័ទ្ម Star Trek «Starfleet»។ រកឃើញនៅលើ Memory Alpha។</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>របារភ្លើង</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>របារភ្លើង {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ការថតបញ្ហា</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ចាប់ផ្ដើម ឬបញ្ឈប់ការថត</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ដាក់សញ្ញាលើការថត</value></data>
 </root>

@@ -2399,6 +2399,13 @@ namespace PadForge.Services
             vm.AssignOfferHome = appSettings.AssignOfferHome;
             vm.StartMinimized = appSettings.StartMinimized;
             vm.DiagnosticsLoggingEnabled = appSettings.DiagnosticsLoggingEnabled;
+            vm.ProblemRecordingKeepLastMinute = appSettings.ProblemRecordingKeepLastMinute;
+            vm.ProblemRecordingHideTypedKeys = appSettings.ProblemRecordingHideTypedKeys;
+            // The recorder takes its two switches here too, as the mirror
+            // below takes its own: a session that starts with one on has no
+            // change to follow (#597).
+            ProblemRecorder.Instance.MaskTypedKeys = appSettings.ProblemRecordingHideTypedKeys;
+            ProblemRecorder.Instance.KeepLastMinute = appSettings.ProblemRecordingKeepLastMinute;
             // Arm the mirror on cold start (#303): the toggle's
             // PropertyChanged handler covers live changes, but an
             // auto-started session needs the persisted state applied here.
@@ -4276,7 +4283,8 @@ namespace PadForge.Services
                 KeyRestG = ad.KeyRestG,
                 KeyRestB = ad.KeyRestB,
                 ProfileShortcutMode = ad.ProfileShortcutMode,
-                ProfileShortcutName = ad.ProfileShortcutName
+                ProfileShortcutName = ad.ProfileShortcutName,
+                ProblemRecordingMode = ad.ProblemRecordingMode
             };
             // The effect's mode and values together (#531): set apart, the
             // mode's change would start the values over.
@@ -5187,6 +5195,8 @@ namespace PadForge.Services
                 AssignOfferHome = vm.AssignOfferHome,
                 StartMinimized = vm.StartMinimized,
                 DiagnosticsLoggingEnabled = vm.DiagnosticsLoggingEnabled,
+                ProblemRecordingKeepLastMinute = vm.ProblemRecordingKeepLastMinute,
+                ProblemRecordingHideTypedKeys = vm.ProblemRecordingHideTypedKeys,
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateHz = vm.PollingRateHz,
@@ -5790,6 +5800,7 @@ namespace PadForge.Services
                 TriggerEffectMs = a.TriggerEffectMs,
                 ProfileShortcutMode = a.ProfileShortcutMode,
                 ProfileShortcutName = a.Type == MacroActionType.ProfileShortcut ? a.ProfileShortcutName : null,
+                ProblemRecordingMode = a.ProblemRecordingMode,
                 KeyColorTargets = a.Type is MacroActionType.SetKeyColors or MacroActionType.ClearKeyColors
                     ? a.KeyColorTargets : null,
                 KeyColorStyle = a.KeyColorStyle,
@@ -7402,6 +7413,20 @@ namespace PadForge.Services
         [XmlElement]
         public bool DiagnosticsLoggingEnabled { get; set; }
 
+        /// <summary>Keep the Last 60 Seconds (#597): the problem recorder
+        /// holds the last minute in memory for Save the Last 60 Seconds.
+        /// Written only while on.</summary>
+        [XmlElement]
+        public bool ProblemRecordingKeepLastMinute { get; set; }
+        public bool ShouldSerializeProblemRecordingKeepLastMinute() => ProblemRecordingKeepLastMinute;
+
+        /// <summary>A problem recording writes a keyboard's letter and
+        /// number keys that no mapping and no macro reads as one key (#597).
+        /// Written only while on.</summary>
+        [XmlElement]
+        public bool ProblemRecordingHideTypedKeys { get; set; }
+        public bool ShouldSerializeProblemRecordingHideTypedKeys() => ProblemRecordingHideTypedKeys;
+
         [XmlElement]
         public bool StartAtLogin { get; set; }
 
@@ -8484,6 +8509,11 @@ namespace PadForge.Services
         /// name when it names one.</summary>
         [XmlElement] public SwitchProfileMode ProfileShortcutMode { get; set; }
         [XmlElement] public string ProfileShortcutName { get; set; }
+
+        /// <summary>Problem Recording (#597): what the step does. Written
+        /// only for a step that does something other than start or stop.</summary>
+        [XmlElement] public ViewModels.ProblemRecordingMode ProblemRecordingMode { get; set; }
+        public bool ShouldSerializeProblemRecordingMode() => ProblemRecordingMode != ViewModels.ProblemRecordingMode.Toggle;
 
         /// <summary>Set Key Colors and Clear Key Colors (#557): the lights
         /// named, in the order picked ("kUU", "gNAME", "all"), the style,

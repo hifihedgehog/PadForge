@@ -105,10 +105,10 @@ namespace PadForge.Tests
             // actions 58 to 61 (#519), the Adaptive Trigger Effect pair
             // 62 and 63 (#531), the key colors pair 64 and 65 (#557),
             // Toggle Screen Overlay 66 (#560), Profile Shortcut 67 (#561),
-            // the crosshair and magnifier actions 68 to 70 (#585) and
-            // Center Mouse Steering 71 (#597).
+            // the crosshair and magnifier actions 68 to 70 (#585),
+            // Center Mouse Steering 71 and Problem Recording 72 (#597).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.SwitchLayer, values[^17]);
+            Assert.Equal(MacroActionType.SwitchLayer, values[^18]);
             Assert.Equal(55, (int)MacroActionType.SwitchLayer);
             Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
         }

@@ -843,6 +843,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಉಳಿಸಿ</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ಇತ್ತೀಚಿನ ಎಂಜಿನ್ ಈವೆಂಟ್‌ಗಳನ್ನು ಹೊಸ ಫೈಲ್‌ಗೆ ಉಳಿಸುತ್ತದೆ. ರೋಗನಿರ್ಣಯ ಲಾಗ್ ಆಫ್ ಆಗಿದ್ದರೂ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ಲಾಗ್ ಫೋಲ್ಡರ್ ತೆರೆಯಿರಿ</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>ಸಮಸ್ಯೆಯನ್ನು ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸುವವರೆಗೆ, 10 ನಿಮಿಷ ಅಥವಾ 20 MB zip ವರೆಗೆ ರೆಕಾರ್ಡ್ ಮಾಡುತ್ತದೆ, ನಂತರ ವರದಿಗೆ ಲಗತ್ತಿಸಲು ಸಿದ್ಧವಾಗಿ Explorer ನಲ್ಲಿ zip ಅನ್ನು ಆಯ್ಕೆಮಾಡುತ್ತದೆ.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ಪ್ರಾರಂಭಿಸಿ, ಸಮಸ್ಯೆ ಸಂಭವಿಸುವಂತೆ ಮಾಡಿ, ನಂತರ ನಿಲ್ಲಿಸಿ. PadForge ಪಕ್ಕದಲ್ಲಿರುವ ಒಂದು ಫೈಲ್‌ನಲ್ಲಿ PadForge ಓದಿದ, ಕಳುಹಿಸಿದ ಮತ್ತು ಲಾಗ್ ಮಾಡಿದ ಎಲ್ಲವೂ ಇರುತ್ತದೆ, ಜೊತೆಗೆ ಏನು ತಪ್ಪಾಯಿತು ಎಂಬ ಸಾರಾಂಶವಿರುತ್ತದೆ. ರೆಕಾರ್ಡ್ ಮಾಡುವಾಗ ಪ್ರತಿ ಸಾಧನದಲ್ಲಿ ಒತ್ತಿದ ಪ್ರತಿ ಕೀ ಮತ್ತು ಬಟನ್ ಫೈಲ್‌ನಲ್ಲಿರುತ್ತದೆ, ಕೀಬೋರ್ಡ್ ಮತ್ತು ಮೌಸ್‌ಗಳೂ ಸೇರಿ. ಬಳಕೆದಾರ ಹೆಸರುಗಳು, ಸೀರಿಯಲ್ ಸಂಖ್ಯೆಗಳು, ವಿಳಾಸಗಳು ಮತ್ತು ಟೈಪ್ ಮಾಡಿದ ಹೆಸರುಗಳನ್ನು ಏನನ್ನಾದರೂ ಬರೆಯುವ ಮೊದಲು ಬದಲಾಯಿಸಲಾಗುತ್ತದೆ.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>ಸಾರಾಂಶ ಬರೆಯಲಾಗುತ್ತಿದೆ…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} ಉಳಿಸಲಾಗಿದೆ</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ. ಈ PC ಯ ಖಾಸಗಿ ಮೌಲ್ಯವೊಂದು ಫೈಲ್‌ನಿಂದ ಹೊರಗುಳಿಯುವುದಿಲ್ಲ ಎಂದು ಪರಿಶೀಲನೆಯಲ್ಲಿ ಕಂಡುಬಂದಿದೆ.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>ಕೊನೆಯ ರೆಕಾರ್ಡಿಂಗ್ ಇನ್ನೂ ಪೂರ್ಣಗೊಳ್ಳುತ್ತಿದೆ.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>ಕೊನೆಯ 60 ಸೆಕೆಂಡುಗಳನ್ನು ಇರಿಸಿ ಆಫ್ ಆಗಿದೆ, ಆದ್ದರಿಂದ ಉಳಿಸಲು ಏನೂ ಇಲ್ಲ.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ನಿಲ್ಲಿಸದ ರೆಕಾರ್ಡಿಂಗ್ ಅನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿದೆ: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>ಕೊನೆಯ 60 ಸೆಕೆಂಡುಗಳನ್ನು ಇರಿಸಿ</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ಎಂಜಿನ್ ಚಲಿಸುತ್ತಿರುವಾಗ, ಸಂಜೆಗೊಮ್ಮೆ ಬರುವ ಸಮಸ್ಯೆಗಾಗಿ, ರೆಕಾರ್ಡಿಂಗ್ ಹಿಡಿದಿಡುವ ಕೊನೆಯ ನಿಮಿಷವನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಇರಿಸುತ್ತದೆ. ಕೊನೆಯ 60 ಸೆಕೆಂಡುಗಳನ್ನು ಉಳಿಸಿ ಅದನ್ನು ಫೈಲ್ ಆಗಿ ಬರೆಯುತ್ತದೆ.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>ಕೊನೆಯ 60 ಸೆಕೆಂಡುಗಳನ್ನು ಉಳಿಸಿ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ಟೈಪ್ ಮಾಡಿದ ಅಕ್ಷರ ಮತ್ತು ಸಂಖ್ಯೆಗಳನ್ನು ಒಂದೇ ಕೀಯಾಗಿ ಬರೆಯಿರಿ</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ಯಾವುದೇ ಮ್ಯಾಪಿಂಗ್ ಅಥವಾ ಮ್ಯಾಕ್ರೋ ಓದದ ಅಕ್ಷರ ಮತ್ತು ಸಂಖ್ಯೆ ಕೀಲಿಗಳನ್ನು ರೆಕಾರ್ಡಿಂಗ್ ಒಂದೇ ಕೀ ಎಂದು ಬರೆಯುತ್ತದೆ, ಪ್ರತಿ ಒತ್ತುವಿಕೆ ತನ್ನದೇ ಸಮಯದಲ್ಲಿ. ಉಳಿದ ಎಲ್ಲಾ ಕೀಲಿಗಳು ಮತ್ತು ಮ್ಯಾಪಿಂಗ್ ಅಥವಾ ಮ್ಯಾಕ್ರೋ ಓದುವ ಪ್ರತಿ ಕೀ ಒತ್ತಿದಂತೆಯೇ ಬರೆಯಲ್ಪಡುತ್ತದೆ.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>ಕೊನೆಯ 60 ಸೆಕೆಂಡುಗಳನ್ನು ಇರಿಸಿ, ಟೈಪ್ ಮಾಡಿದ ಅಕ್ಷರ ಮತ್ತು ಸಂಖ್ಯೆಗಳನ್ನು ಒಂದೇ ಕೀಯಾಗಿ ಬರೆಯಿರಿ</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ರನ್‌ಟೈಮ್</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL ಆವೃತ್ತಿ</value></data>
@@ -5403,4 +5422,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ಸ್ಟಾರ್ ಟ್ರೆಕ್: ದ ನೆಕ್ಸ್ಟ್ ಜನರೇಶನ್‌ನ ಒಂದು ಫ್ರೇಮ್: ಸ್ಟಾರ್ ಟ್ರೆಕ್ ಥೀಮ್ Starfleet ನ ಚಿತ್ರ. Memory Alpha ದಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ಲೈಟ್ ಬಾರ್</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ಸಮಸ್ಯೆ ರೆಕಾರ್ಡಿಂಗ್</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ನಿಲ್ಲಿಸಿ</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್‌ಗೆ ಗುರುತು ಹಾಕಿ</value></data>
 </root>

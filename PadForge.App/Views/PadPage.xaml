@@ -14661,6 +14661,20 @@
                                         <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ProfileShortcutMode" SettingLabel="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ProfileShortcutMode_2980"/>
                                     </controls:FlexLinePanel>
                                                         </DataTemplate>
+                                    <!-- Problem Recording (#597): start or stop a recording, mark
+                                         the one that runs, or save the last minute, from the controller. -->
+                                                        <DataTemplate x:Key="StepFieldsProblemRecording">
+                                    <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                                        <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_Type_ProblemRecording, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox VerticalAlignment="Center" SelectedIndex="{Binding ProblemRecordingModeIndex}" MinWidth="200"
+                                                  AutomationProperties.Name="{Binding MacroAction_Type_ProblemRecording, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding MacroAction_ProblemRecording_Toggle, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_ProblemRecording_Mark, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Settings_RecordProblem_SaveLastMinute, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ProblemRecordingMode" SettingLabel="{Binding MacroAction_Type_ProblemRecording, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ProblemRecordingMode_59703"/>
+                                    </controls:FlexLinePanel>
+                                                        </DataTemplate>
                                     <!-- Which Screen Overlay (#560): Show Keyboard Screen and
                                          Keyboard Screen Mode with that kind, Toggle Screen Overlay,
                                          and Pan Keyboard Screen Picture. -->
@@ -15740,6 +15754,7 @@
                                                                 <controls:ShownPart PartTemplate="{StaticResource StepFieldsShowDreamcastScreen}" Show="{Binding IsShowDreamcastScreenType}"/>
                                                                 <controls:ShownPart PartTemplate="{StaticResource StepFieldsKeyboardScreenKind}" Show="{Binding IsKeyboardScreenKindType}"/>
                                                                 <controls:ShownPart PartTemplate="{StaticResource StepFieldsProfileShortcut}" Show="{Binding IsProfileShortcutType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsProblemRecording}" Show="{Binding IsProblemRecordingType}"/>
                                                                 <controls:ShownPart PartTemplate="{StaticResource StepFieldsScreenOverlayTarget}" Show="{Binding IsScreenOverlayTargetType}"/>
                                                                 <controls:ShownPart PartTemplate="{StaticResource StepFieldsCrosshairTarget}" Show="{Binding IsCrosshairTargetType}"/>
                                                                 <controls:ShownPart PartTemplate="{StaticResource StepFieldsShowKeyboardScreen}" Show="{Binding IsShowKeyboardScreenType}"/>

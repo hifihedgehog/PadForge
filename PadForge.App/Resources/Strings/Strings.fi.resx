@@ -900,6 +900,25 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Tallenna tilannevedos</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Tallentaa moottorin viimeisimmät tapahtumat uuteen tiedostoon. Toimii, vaikka diagnostiikkaloki olisi pois päältä.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Avaa lokikansio</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Ongelman tallennus</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Aloita tallennus</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Lopeta tallennus ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Tallentaa, kunnes painat Lopeta tallennus, kunnes on kulunut 10 minuuttia tai zip-tiedosto täyttää 20 MB, ja valitsee sitten zip-tiedoston Explorer-ikkunassa valmiina liitettäväksi raporttiin.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Aloita, saa ongelma esiin ja lopeta sitten. Yksi tiedosto PadForge-sovelluksen vieressä sisältää kaiken, minkä PadForge luki, lähetti ja kirjasi, sekä yhteenvedon siitä, mikä meni vikaan. Tiedostossa on jokainen tallennuksen aikana painettu näppäin ja painike jokaisella laitteella, myös näppäimistöt ja hiiret. Käyttäjänimet, sarjanumerot, osoitteet ja kirjoitetut nimet korvataan ennen kuin mitään kirjoitetaan.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Kirjoitetaan yhteenvetoa…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Tallennettu {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Tallennus ei alkanut. Tarkistus löysi tämän PC:n yksityisen arvon, jota ei pidettäisi poissa tiedostosta.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Tallennus ei alkanut. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Edellistä tallennetta viimeistellään vielä.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Pidä viimeiset 60 sekuntia on pois päältä, joten ei ole mitään tallennettavaa.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Viimeisteltiin tallenne, jota PadForge ei ollut pysäyttänyt: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Pidä viimeiset 60 sekuntia</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Kun moottori on käynnissä, pitää muistissa viimeisen minuutin siitä, mitä tallenne sisältää, ongelmaa varten, joka tulee kerran illassa. Tallenna viimeiset 60 sekuntia kirjoittaa sen tiedostoksi.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Tallenna viimeiset 60 sekuntia</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Kirjoita kirjaimet ja numerot yhtenä näppäimenä</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Tallenne kirjoittaa kirjain- ja numeronäppäimet, joita mikään määritys tai makro ei lue, yhtenä näppäimenä, kunkin painalluksen omalla ajalla. Kaikki muut näppäimet ja kaikki näppäimet, joita määritys tai makro lukee, kirjoitetaan sellaisina kuin ne painettiin.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Pidä viimeiset 60 sekuntia, Kirjoita kirjaimet ja numerot yhtenä näppäimenä</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Sovelluksen versio</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-ajoympäristö</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-versio</value></data>
@@ -5853,6 +5872,10 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profiilin pikavalinta</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Tekee saman kuin profiilin pikavalinta: lataa nimetyn profiilin, seuraavan tai edellisen, näyttää tai piilottaa ikkunan tai kytkee virtuaaliohjaimet pois päältä ja takaisin päälle.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profiilin pikavalinta: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Ongelman tallennus</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Aloittaa tai lopettaa ongelman tallennuksen, merkitsee käynnissä olevan tallenteen tai tallentaa viimeiset 60 sekuntia poistumatta pelistä.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Aloita tai lopeta tallennus</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Merkitse tallenne</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Siirtymä X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Siirtymä Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Palauta X-siirtymä</value></data>

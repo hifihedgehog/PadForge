@@ -900,6 +900,25 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Lưu ảnh chụp nhanh</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Lưu các sự kiện gần đây nhất của bộ máy vào một tệp mới. Hoạt động ngay cả khi nhật ký chẩn đoán đang tắt.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Mở thư mục nhật ký</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Ghi một sự cố</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Bắt đầu ghi</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Dừng ghi ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Ghi cho đến khi Dừng ghi, 10 phút hoặc tệp zip 20 MB, rồi chọn tệp zip trong Explorer, sẵn sàng đính kèm vào báo cáo.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Bắt đầu, làm cho sự cố xảy ra, rồi dừng. Một tệp cạnh PadForge chứa mọi thứ PadForge đã đọc, gửi và ghi nhật ký, kèm bản tóm tắt điều đã sai. Mọi phím và nút được nhấn trên mọi thiết bị trong lúc ghi đều nằm trong tệp, kể cả bàn phím và chuột. Tên người dùng, số sê-ri, địa chỉ và tên đã gõ được thay thế trước khi bất cứ thứ gì được ghi ra.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Đang ghi bản tóm tắt…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Đã lưu {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Việc ghi đã không bắt đầu. Một phép kiểm tra thấy một giá trị riêng tư của PC này sẽ không được giữ ra khỏi tệp.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Việc ghi đã không bắt đầu. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Bản ghi trước vẫn đang được hoàn tất.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Giữ 60 giây gần nhất đang tắt, nên không có gì để lưu.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Đã hoàn tất một bản ghi mà PadForge chưa dừng: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Giữ 60 giây gần nhất</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Khi bộ máy chạy, giữ trong bộ nhớ phút gần nhất của những gì một bản ghi chứa, cho sự cố chỉ xảy ra mỗi buổi tối một lần. Lưu 60 giây gần nhất ghi nó thành tệp.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Lưu 60 giây gần nhất</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Ghi chữ và số đã gõ thành một phím</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Bản ghi ghi các phím chữ và số mà không ánh xạ hay macro nào đọc thành một phím, mỗi lần nhấn vào thời điểm riêng của nó. Mọi phím khác, và mọi phím mà ánh xạ hoặc macro đọc, được ghi đúng như đã nhấn.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Giữ 60 giây gần nhất, Ghi chữ và số đã gõ thành một phím</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Phiên bản ứng dụng</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Phiên bản SDL</value></data>
@@ -5853,6 +5872,10 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Phím tắt hồ sơ</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Làm việc mà một phím tắt hồ sơ làm: tải hồ sơ có tên, hồ sơ kế tiếp hoặc hồ sơ trước đó, hiện hoặc ẩn cửa sổ, hoặc tắt và bật các tay cầm ảo.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Phím tắt hồ sơ: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Ghi sự cố</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Bắt đầu hoặc dừng ghi sự cố, đánh dấu bản ghi đang chạy, hoặc lưu 60 giây gần nhất, mà không rời trò chơi.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Bắt đầu hoặc dừng ghi</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Đánh dấu bản ghi</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Độ lệch X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Độ lệch Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Đặt lại độ lệch X</value></data>

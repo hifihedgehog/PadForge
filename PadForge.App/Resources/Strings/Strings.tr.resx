@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Anlık görüntü kaydet</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>En son motor olaylarını yeni bir dosyaya kaydeder. Tanılama günlüğü kapalıyken de çalışır.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Günlük klasörünü aç</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Sorun kaydet</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kaydı başlat</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Kaydı durdur ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Kaydı durdurana, 10 dakikaya veya 20 MB'lık zip dosyasına kadar kaydeder, sonra zip dosyasını Explorer'da seçer, rapora eklemeye hazır.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Başlatın, sorunu oluşturun, sonra durdurun. PadForge'un yanındaki tek bir dosya, PadForge'un okuduğu, gönderdiği ve günlüğe yazdığı her şeyi ve nelerin ters gittiğinin özetini içerir. Kayıt sırasında her cihazda basılan her tuş ve düğme, klavyeler ve fareler dahil, dosyadadır. Kullanıcı adları, seri numaraları, adresler ve yazılan adlar, hiçbir şey yazılmadan önce değiştirilir.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Özet yazılıyor…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Kaydedildi: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Kayıt başlamadı. Bir denetim, bu PC'ye ait özel bir değerin dosyadan dışarıda tutulamayacağını gösterdi.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Kayıt başlamadı. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Son kaydın bitirilmesi sürüyor.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Son 60 saniyeyi tut kapalı, bu yüzden kaydedilecek bir şey yok.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge'un durdurmadığı bir kayıt bitirildi: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Son 60 saniyeyi tut</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Motor çalışırken, akşamda bir kez gelen bir sorun için, bir kaydın içerdiklerinin son dakikasını bellekte tutar. Son 60 saniyeyi kaydet bunu dosya olarak yazar.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Son 60 saniyeyi kaydet</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Yazılan harf ve rakamları tek tuş olarak yaz</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Kayıt, hiçbir eşlemenin veya makronun okumadığı harf ve rakam tuşlarını tek bir tuş olarak, her basışı kendi zamanında yazar. Diğer her tuş ve bir eşlemenin veya makronun okuduğu her tuş basıldığı gibi yazılır.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Son 60 saniyeyi tut, Yazılan harf ve rakamları tek tuş olarak yaz</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Uygulama sürümü</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET çalışma zamanı</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL sürümü</value></data>
@@ -5853,6 +5872,10 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil kısayolu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Bir profil kısayolunun yaptığını yapar: adı verilen bir profili, sonrakini veya öncekini yükler, pencereyi gösterir veya gizler ya da sanal kumandaları kapatıp açar.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profil kısayolu: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Sorun kaydı</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Bir sorun kaydını başlatır veya durdurur, çalışanı işaretler ya da oyundan çıkmadan son 60 saniyeyi kaydeder.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kaydı başlat veya durdur</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Kaydı işaretle</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>X kayması</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Y kayması</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>X kaymasını sıfırla</value></data>

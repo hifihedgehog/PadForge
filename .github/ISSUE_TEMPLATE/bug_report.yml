@@ -92,10 +92,13 @@ body:
       label: Log files
       description: >-
         Required. Reports without a log file are closed automatically. In PadForge, open Settings and find
-        the Diagnostics card. Turn on Keep a Diagnostics Log, reproduce the problem, click Save Snapshot,
-        then Open Log Folder. Drag diagnostics.log and the snapshot file into this box, and crash.log too if
-        PadForge crashed. See https://padforge.org/docs/troubleshooting/#logs-and-diagnostics
-      placeholder: Drag the log files here.
+        the Diagnostics card. Click Start Recording on the Record a Problem row, make the problem happen,
+        then click Stop Recording. PadForge selects the recording in Explorer. Drag that one file,
+        PadForge-recording-(date).zip, into this box as it is, and crash.log too if PadForge crashed. For a problem
+        you cannot make happen on demand, turn on Keep a Diagnostics Log instead, and when it happens click
+        Save Snapshot and drag diagnostics.log and the snapshot file here.
+        See https://padforge.org/docs/troubleshooting/#logs-and-diagnostics
+      placeholder: Drag the recording here.
     validations:
       required: true
 

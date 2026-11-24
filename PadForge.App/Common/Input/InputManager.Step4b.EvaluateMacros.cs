@@ -3423,6 +3423,11 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.ProblemRecording:
+                    RunProblemRecordingAction(action);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.LightbarColor:
                 {
                     // Single-frame fire — write the override into PSConfig
@@ -6436,6 +6441,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ProfileShortcut:
                     RunProfileShortcutAction(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ProblemRecording:
+                    RunProblemRecordingAction(action);
                     AdvanceAction(macro);
                     break;
 

@@ -667,6 +667,25 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Momentopname opslaan</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Slaat de meest recente engine-gebeurtenissen op in een nieuw bestand. Werkt ook als het diagnoselogboek uitstaat.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Logboekmap openen</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Een probleem opnemen</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Opname starten</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Opname stoppen ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Neemt op tot Opname stoppen, 10 minuten of een zipbestand van 20 MB, en selecteert dan het zipbestand in Explorer, klaar om aan een melding toe te voegen.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, laat het probleem optreden en stop dan. Eén bestand naast PadForge bevat alles wat PadForge las, verstuurde en logde, met een samenvatting van wat misging. Elke toets en knop die tijdens de opname op elk apparaat wordt ingedrukt, staat in het bestand, toetsenborden en muizen inbegrepen. Gebruikersnamen, serienummers, adressen en getypte namen worden vervangen voordat er iets wordt geschreven.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>De samenvatting wordt geschreven…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Opgeslagen: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>De opname is niet gestart. Een controle vond een privéwaarde van deze PC die niet buiten het bestand zou blijven.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>De opname is niet gestart. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>De laatste opname wordt nog afgerond.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>De laatste 60 seconden bewaren staat uit, dus er valt niets op te slaan.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Een opname afgerond die PadForge niet had gestopt: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>De laatste 60 seconden bewaren</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Houdt zolang de engine draait de laatste minuut van wat een opname bevat in het geheugen, voor een probleem dat maar één keer per avond optreedt. De laatste 60 seconden opslaan schrijft die minuut naar een bestand.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>De laatste 60 seconden opslaan</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Getypte letters en cijfers als één toets schrijven</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Een opname schrijft de letter- en cijfertoetsen die geen koppeling of macro leest als één toets, elke druk op zijn eigen tijdstip. Elke andere toets en elke toets die een koppeling of macro leest, wordt geschreven zoals ingedrukt.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>De laatste 60 seconden bewaren, Getypte letters en cijfers als één toets schrijven</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App-versie</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-versie</value></data>
@@ -5828,6 +5847,10 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profielsnelkoppeling</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Doet wat een profielsnelkoppeling doet: laadt een profiel met een opgegeven naam, het volgende of het vorige profiel, toont of verbergt het venster, of schakelt de virtuele controllers uit en in.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Profielsnelkoppeling: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleemopname</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Start of stopt een probleemopname, markeert de opname die draait of slaat de laatste 60 seconden op, zonder het spel te verlaten.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Opname starten of stoppen</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>De opname markeren</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Verschuiving X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Verschuiving Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Verschuiving X herstellen</value></data>

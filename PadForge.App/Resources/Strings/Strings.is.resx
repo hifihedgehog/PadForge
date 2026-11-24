@@ -900,6 +900,25 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Vista skyndimynd</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Vistar nýjustu atburði vélarinnar í nýja skrá. Virkar líka þegar slökkt er á greiningarannálnum.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Opna annálsmöppu</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Taka upp vandamál</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Hefja upptöku</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stöðva upptöku ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Tekur upp þar til Stöðva upptöku er valið, í 10 mínútur eða þar til zip-skráin nær 20 MB, og velur síðan zip-skrána í Explorer, tilbúna til að hengja við skýrslu.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Byrjaðu, láttu vandamálið gerast og stöðvaðu svo. Ein skrá við hlið PadForge geymir allt sem PadForge las, sendi og skráði, með samantekt á því sem fór úrskeiðis. Hver takki og hnappur sem er ýtt á hverju tæki meðan tekið er upp er í skránni, líka á lyklaborðum og músum. Notendanöfnum, raðnúmerum, vistföngum og slegnum nöfnum er skipt út áður en nokkuð er skrifað.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skrifar samantektina…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Vistað {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Upptakan hófst ekki. Athugun fann einkagildi þessarar PC tölvu sem yrði ekki haldið utan skrárinnar.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Upptakan hófst ekki. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Verið er að ljúka síðustu upptöku.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Slökkt er á Geyma síðustu 60 sekúndur, svo ekkert er til að vista.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Lauk upptöku sem PadForge hafði ekki stöðvað: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Geyma síðustu 60 sekúndur</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Á meðan vélin keyrir er síðasta mínútan af því sem upptaka geymir höfð í minni, fyrir vandamál sem kemur einu sinni á kvöldi. Vista síðustu 60 sekúndur skrifar hana sem skrá.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Vista síðustu 60 sekúndur</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skrá innslegna stafi og tölur sem einn takka</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Upptaka skráir bókstafa- og tölutakka sem engin vörpun eða fjölvi les sem einn takka, hverja ýtingu á sínum tíma. Hver annar takki, og hver takki sem vörpun eða fjölvi les, er skráður eins og ýtt var á hann.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Geyma síðustu 60 sekúndur, Skrá innslegna stafi og tölur sem einn takka</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Útgáfa forrits</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-keyrsluumhverfi</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Útgáfa SDL</value></data>
@@ -5853,6 +5872,10 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Flýtileið sniðs</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gerir það sem flýtileið sniðs gerir: hleður tilteknu sniði, næsta eða fyrra sniði, sýnir eða felur gluggann, eða slekkur og kveikir á sýndarstýringum.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Flýtileið sniðs: {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Upptaka vandamáls</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Hefur eða stöðvar upptöku vandamáls, merkir þá sem er í gangi eða vistar síðustu 60 sekúndur, án þess að yfirgefa leikinn.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Hefja eða stöðva upptöku</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Merkja upptökuna</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Frávik X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Frávik Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Endurstilla frávik X</value></data>

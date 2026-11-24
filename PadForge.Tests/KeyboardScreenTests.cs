@@ -1152,9 +1152,9 @@ namespace PadForge.Tests
             // Adaptive Trigger Effect and its Stop follow at 62 and 63 (#531),
             // Set Key Colors and Clear Key Colors at 64 and 65 (#557),
             // Toggle Screen Overlay at 66 (#560), Profile Shortcut at 67
-            // (#561), the crosshair and magnifier actions at 68 to 70 (#585)
-            // and Center Mouse Steering at 71 (#597).
-            Assert.Equal(MacroActionType.PanKeyboardScreen, Enum.GetValues<MacroActionType>()[^11]);
+            // (#561), the crosshair and magnifier actions at 68 to 70 (#585),
+            // Center Mouse Steering at 71 and Problem Recording at 72 (#597).
+            Assert.Equal(MacroActionType.PanKeyboardScreen, Enum.GetValues<MacroActionType>()[^12]);
             Assert.Equal(0, (int)KeyboardScreenMode.Off);
             Assert.Equal(8, (int)KeyboardScreenMode.Lightbar);
             Assert.Equal(KeyboardScreenMode.Lightbar, KeyboardScreenData.DefaultMode);

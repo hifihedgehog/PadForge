@@ -279,8 +279,9 @@ namespace PadForge.Tests
         {
             Assert.Equal(66, (int)MacroActionType.ToggleScreenOverlay);
             // Profile Shortcut 67 (#561), the crosshair and magnifier actions
-            // 68 to 70 (#585) and Center Mouse Steering 71 (#597) follow it.
-            Assert.Equal(MacroActionType.ToggleScreenOverlay, Enum.GetValues<MacroActionType>()[^6]);
+            // 68 to 70 (#585), Center Mouse Steering 71 and Problem Recording
+            // 72 (#597) follow it.
+            Assert.Equal(MacroActionType.ToggleScreenOverlay, Enum.GetValues<MacroActionType>()[^7]);
             string source = RepoText("PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs");
             Assert.Equal(2, CountOf(source, "case MacroActionType.ToggleScreenOverlay:"));
             Assert.Equal(2, CountOf(source, "RequestScreenOverlayToggle(action.ScreenOverlayNumber);"));

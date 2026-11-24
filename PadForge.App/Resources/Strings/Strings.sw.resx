@@ -843,6 +843,25 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Hifadhi picha ya hali</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Huhifadhi matukio ya hivi karibuni ya injini kwenye faili mpya. Hufanya kazi hata kumbukumbu ya uchunguzi ikiwa imezimwa.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Fungua folda ya kumbukumbu</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Rekodi tatizo</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Anza kurekodi</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Acha kurekodi ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Hurekodi hadi Acha kurekodi, dakika 10 au zip ya MB 20, kisha huchagua zip kwenye Explorer, tayari kuambatishwa kwenye ripoti.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Anza, sababisha tatizo litokee, kisha acha. Faili moja kando ya PadForge ina kila kitu ambacho PadForge ilisoma, ilituma na kuandika kwenye kumbukumbu, pamoja na muhtasari wa kilichoharibika. Kila kitufe kilichobonyezwa kwenye kila kifaa wakati wa kurekodi kiko kwenye faili, pamoja na kibodi na panya. Majina ya watumiaji, nambari za ufuatiliaji, anwani na majina yaliyoandikwa hubadilishwa kabla ya chochote kuandikwa.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Inaandika muhtasari…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Imehifadhiwa {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Kurekodi hakukuanza. Ukaguzi uligundua thamani ya faragha ya PC hii ambayo isingezuiwa kutoka kwenye faili.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Kurekodi hakukuanza. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Rekodi ya mwisho bado inakamilishwa.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Weka Sekunde 60 za Mwisho imezimwa, kwa hiyo hakuna cha kuhifadhi.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Imekamilisha rekodi ambayo PadForge haikuisimamisha: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Weka Sekunde 60 za Mwisho</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Injini ikiendesha, huweka kwenye kumbukumbu dakika ya mwisho ya kile ambacho rekodi hubeba, kwa tatizo linalokuja mara moja jioni. Hifadhi Sekunde 60 za Mwisho huiandika kama faili.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Hifadhi Sekunde 60 za Mwisho</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Andika Herufi na Namba Zilizoandikwa kama Kitufe Kimoja</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Rekodi huandika vitufe vya herufi na namba ambavyo hakuna ramani wala makro inayovisoma kama kitufe kimoja, kila mbonyezo kwa wakati wake. Kila kitufe kingine, na kila kitufe ambacho ramani au makro husoma, huandikwa kama kilivyobonyezwa.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Weka Sekunde 60 za Mwisho, Andika Herufi na Namba Zilizoandikwa kama Kitufe Kimoja</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Toleo la programu</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime ya .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Toleo la SDL</value></data>
@@ -5370,4 +5389,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Fremu ya Star Trek: The Next Generation: picha ya mandhari ya Star Trek Starfleet. Ilipatikana kwenye Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar ya {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Rekodi ya Tatizo</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Anza au Acha Kurekodi</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Weka Alama kwenye Rekodi</value></data>
 </root>

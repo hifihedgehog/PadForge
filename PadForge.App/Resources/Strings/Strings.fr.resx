@@ -667,6 +667,25 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Enregistrer un instantané</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Enregistre les événements les plus récents du moteur dans un nouveau fichier. Fonctionne même si le journal de diagnostic est désactivé.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Ouvrir le dossier des journaux</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Enregistrer un problème</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Démarrer l'enregistrement</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Arrêter l'enregistrement ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Enregistre jusqu'à Arrêter l'enregistrement, 10 minutes ou un zip de 20 MB, puis sélectionne le zip dans Explorer, prêt à joindre à un rapport.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Démarrez, provoquez le problème, puis arrêtez. Un fichier à côté de PadForge contient tout ce que PadForge a lu, envoyé et consigné, avec un résumé de ce qui s'est mal passé. Chaque touche et chaque bouton pressés sur chaque appareil pendant l'enregistrement figurent dans le fichier, claviers et souris compris. Les noms d'utilisateur, numéros de série, adresses et noms saisis sont remplacés avant toute écriture.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Écriture du résumé…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} enregistré</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>L'enregistrement n'a pas démarré. Un contrôle a trouvé une valeur privée de ce PC qui ne serait pas exclue du fichier.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>L'enregistrement n'a pas démarré. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Le dernier enregistrement est encore en cours de finalisation.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Conserver les 60 dernières secondes est désactivé, il n'y a donc rien à enregistrer.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Enregistrement que PadForge n'avait pas arrêté, terminé : {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Conserver les 60 dernières secondes</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Tant que le moteur tourne, garde en mémoire la dernière minute de ce que contient un enregistrement, pour un problème qui survient une fois par soirée. Enregistrer les 60 dernières secondes l'écrit dans un fichier.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Enregistrer les 60 dernières secondes</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Écrire les lettres et chiffres saisis comme une seule touche</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Un enregistrement écrit comme une seule touche les touches de lettres et de chiffres qu'aucun mappage ni aucune macro ne lit, chaque appui à son heure. Toutes les autres touches, et toutes celles qu'un mappage ou une macro lit, sont écrites telles que pressées.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Conserver les 60 dernières secondes, Écrire les lettres et chiffres saisis comme une seule touche</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Version de l'application</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Version SDL</value></data>
@@ -5808,6 +5827,10 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Raccourci de profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Fait ce que fait un raccourci de profil : charge un profil nommé, le suivant ou le précédent, affiche ou masque la fenêtre, ou désactive et réactive les manettes virtuelles.</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>Raccourci de profil : {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Enregistrement de problème</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>Démarre ou arrête un enregistrement de problème, marque celui qui est en cours, ou enregistre les 60 dernières secondes, sans quitter le jeu.</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Démarrer ou arrêter l'enregistrement</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marquer l'enregistrement</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>Décalage X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>Décalage Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>Réinitialiser le décalage X</value></data>

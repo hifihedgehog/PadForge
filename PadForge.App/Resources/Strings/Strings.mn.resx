@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Агшин зураг хадгалах</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Хөдөлгүүрийн хамгийн сүүлийн үйл явдлуудыг шинэ файлд хадгална. Оношилгооны бүртгэл унтраалттай үед ч ажиллана.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Бүртгэлийн хавтас нээх</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Асуудлыг бичих</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Бичлэг эхлүүлэх</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Бичлэг зогсоох ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Бичлэг зогсоох товч дарах, 10 минут болох эсвэл zip 20 MB хүрэх хүртэл бичээд, тайланд хавсаргахад бэлэн zip файлыг Explorer дээр сонгоно.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Эхлүүлж, асуудлыг гаргаад, дараа нь зогсооно уу. PadForge-ийн хажууд байх нэг файлд PadForge-ийн уншсан, илгээсэн, бүртгэсэн бүх зүйл юу буруу болсон тухай хураангуйн хамт хадгалагдана. Бичиж байх үед төхөөрөмж бүр дээр дарагдсан товч бүр, гар болон хулганыг оролцуулан файлд орно. Хэрэглэгчийн нэр, серийн дугаар, хаяг болон бичсэн нэрсийг юу ч бичихээс өмнө орлуулна.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Хураангуйг бичиж байна…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Хадгалсан: {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Бичлэг эхэлсэнгүй. Шалгалтаар энэ PC-ийн хувийн утга файлаас хасагдахгүй болох нь илэрсэн.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Бичлэг эхэлсэнгүй. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Өмнөх бичлэгийг дуусгаж байна.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Сүүлийн 60 секундийг санах ойд байлгах унтраалттай тул хадгалах зүйл алга.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge-ийн зогсоогоогүй бичлэгийг дуусгалаа: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Сүүлийн 60 секундийг санах ойд байлгах</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Хөдөлгүүр ажиллаж байх үед бичлэгт орох зүйлсийн сүүлийн нэг минутыг санах ойд байлгана. Орой бүр нэг удаа гардаг асуудалд зориулсан. Сүүлийн 60 секундийг хадгалах товч үүнийг файл болгон бичнэ.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Сүүлийн 60 секундийг хадгалах</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Бичсэн үсэг ба тоог нэг товч болгон бичих</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Бичлэг нь ямар ч оноолт эсвэл макро уншдаггүй үсэг ба тооны товчнуудыг нэг товч болгон, дарсан бүрийг өөрийн цагт нь бичнэ. Бусад бүх товч болон оноолт эсвэл макро уншдаг бүх товчийг дарсан ёсоор нь бичнэ.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Сүүлийн 60 секундийг санах ойд байлгах, Бичсэн үсэг ба тоог нэг товч болгон бичих</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Програмын хувилбар</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ажиллах орчин</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL хувилбар</value></data>
@@ -5421,4 +5440,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation цувралын кадр: Star Trek загварын Starfleet хувилбарын зураг. Memory Alpha-аас олсон.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Гэрлийн зурвас</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} гэрлийн зурвас</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Асуудлын бичлэг</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Бичлэг эхлүүлэх эсвэл зогсоох</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Бичлэгт тэмдэг тавих</value></data>
 </root>

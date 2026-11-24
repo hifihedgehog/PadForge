@@ -2240,11 +2240,15 @@ namespace PadForge.Common.Input
             // ~1KB, but reusing one span keeps it bounded as the loop
             // bound grows.
             Span<byte> rawReportScratch = stackalloc byte[63];
+            // A problem recording takes each slot's frame as it is handed
+            // over, and what became of it (#597).
+            var rec = Recording.RecordingCapture.Active;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 try
                 {
                     var vc = _virtualControllers[padIndex];
+                    int sentState = rec == null ? 0 : RecordSentState(rec, padIndex, vc);
                     // Clear initializing flag once the controller is connected.
                     if (vc != null && vc.IsConnected && _slotInitializing[padIndex])
                     {
@@ -2293,6 +2297,7 @@ namespace PadForge.Common.Input
                             if (midiCfg != null)
                                 midiVc.ApplyLayout(midiCfg.Channel - 1, midiCfg.StartCc, midiCfg.CcCount,
                                     midiCfg.StartNote, midiCfg.NoteCount, midiCfg.Velocity);
+                            if (rec != null) RecordOut(rec, padIndex, in CombinedMidiRawStates[padIndex]);
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         }
                         else if (vc is KeyboardMouseVirtualController kbmVc)
@@ -2306,7 +2311,9 @@ namespace PadForge.Common.Input
                             // A gamepad-only-restricted peer feeding this slot must not
                             // reach the OS via the KBM controller: submit neutral (which
                             // releases anything held) instead of its mapped state.
-                            kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
+                            var kbmOut = IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex];
+                            if (rec != null) RecordOut(rec, padIndex, in kbmOut);
+                            kbmVc.SubmitKbmState(kbmOut);
                         }
                         else if (vc is HMaestroVRController vrVc)
                         {
@@ -2315,6 +2322,7 @@ namespace PadForge.Common.Input
                             // must not reach SteamVR, so submit neutral.
                             var vrOut = IsSlotRestricted(padIndex) ? default : CombinedVrRawStates[padIndex];
                             LogVrSubmit(padIndex, in vrOut);
+                            if (rec != null) RecordOut(rec, padIndex, in vrOut);
                             vrVc.SubmitVrState(in vrOut);
                         }
                         else if (SlotControllerTypes[padIndex] is VirtualControllerType.Extended
@@ -2358,6 +2366,7 @@ namespace PadForge.Common.Input
                             // Valve profiles, and HMaestroVirtualController
                             // picks the verbatim extended path for the ones
                             // whose descriptors need it (HM#58).
+                            if (rec != null) RecordOut(rec, padIndex, in rawOut, in CombinedTouchpadStates[padIndex], in MotionSnapshots[padIndex]);
                             var valvePacker = ValveReportPackers.ForProfile(hmExt.ProfileId);
                             if (valvePacker != null)
                             {
@@ -2536,6 +2545,10 @@ namespace PadForge.Common.Input
                             // shape, written by HM's encoder from the state
                             // fields). USB profiles with a packer skip this
                             // call and submit only the raw frame below.
+                            if (rec != null)
+                                RecordOut(rec, padIndex, in gpOut, in CombinedTouchpadStates[padIndex], in MotionSnapshots[padIndex],
+                                    SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation);
+
                             int pctNow = BatteryPercents[padIndex];
                             byte pctByte = pctNow < 0 ? (byte)100 : (byte)Math.Clamp(pctNow, 0, 100);
 
@@ -2641,9 +2654,13 @@ namespace PadForge.Common.Input
                             }
                         }
                     }
+                    else if (rec != null) RecordUnsent(rec, padIndex);
+                    if (rec != null && sentState == PadForge.Engine.Recording.RecordingCodec.SentState.Ok)
+                        rec.Sent(padIndex, sentState, (int)SlotControllerTypes[padIndex]);
                 }
                 catch (Exception ex)
                 {
+                    rec?.Sent(padIndex, PadForge.Engine.Recording.RecordingCodec.SentState.Failed, (int)SlotControllerTypes[padIndex]);
                     RaiseSlotError(padIndex, $"Error updating virtual controller for pad {padIndex}", ex);
                 }
             }

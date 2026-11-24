@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Зберегти знімок</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Зберігає найновіші події рушія в новий файл. Працює, навіть коли журнал діагностики вимкнено.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Відкрити папку журналу</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Записати проблему</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Почати запис</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Зупинити запис ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Записує до натискання «Зупинити запис», 10 хвилин або zip на 20 MB, а потім виділяє zip в Explorer, готовий для додавання до звіту.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Почніть, відтворіть проблему, а потім зупиніть. Один файл поруч із PadForge містить усе, що PadForge прочитав, надіслав і записав у журнал, з підсумком того, що пішло не так. Кожна клавіша й кнопка, натиснута на будь-якому пристрої під час запису, потрапляє у файл, зокрема клавіатури та миші. Імена користувачів, серійні номери, адреси та введені імена замінюються до запису будь-чого.</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Запис підсумку…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Збережено {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Запис не почався. Перевірка виявила приватне значення цього PC, яке не буде приховано у файлі.</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Запис не почався. {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Попередній запис ще завершується.</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«Зберігати останні 60 секунд» вимкнено, тож зберігати нічого.</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Завершено запис, який PadForge не зупинив: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Зберігати останні 60 секунд</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Поки працює рушій, тримає в пам'яті останню хвилину того, що містить запис, для проблеми, яка трапляється раз на вечір. «Зберегти останні 60 секунд» записує її як файл.</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Зберегти останні 60 секунд</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Записувати набрані літери та цифри як одну клавішу</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Запис фіксує літерні та цифрові клавіші, які не читає жодне зіставлення чи макрос, як одну клавішу, кожне натискання у свій час. Кожна інша клавіша і кожна клавіша, яку читає зіставлення чи макрос, записується як натиснута.</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Зберігати останні 60 секунд, Записувати набрані літери та цифри як одну клавішу</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Версія програми</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Середовище виконання .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Версія SDL</value></data>
@@ -5436,4 +5455,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Кадр із «Зоряного шляху: Наступне покоління»: зображення теми «Зоряного шляху» Starfleet. Знайдено на Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Світлова панель</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Світлова панель {0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Запис проблеми</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Почати або зупинити запис</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Позначити запис</value></data>
 </root>

@@ -849,6 +849,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Պահել ակնթարթը</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Վերջին շարժիչի դէպքերը կը պահէ նոր ֆայլի մը մէջ։ Կ՚աշխատի նոյնիսկ երբ ախտորոշման մատեանը անջատուած է։</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Բանալ մատեանի թղթապանակը</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>Արձանագրել խնդիր մը</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Սկսիլ արձանագրումը</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Կեցնել արձանագրումը ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Կ՚արձանագրէ մինչեւ «Կեցնել արձանագրումը», 10 վայրկեան կամ 20 MB zip, ապա zip-ը կ՚ընտրէ Explorer-ի մէջ՝ պատրաստ զեկոյցի մը կցելու։</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Սկսեցէք, խնդիրը առաջ բերէք, ապա կեցուցէք։ PadForge-ի կողքին մէկ ֆայլ կը պարունակէ այն ամէնը, որ PadForge-ը կարդաց, ղրկեց եւ մատեանագրեց, եւ ամփոփում մը այն մասին, թէ ինչ սխալ գնաց։ Արձանագրման ընթացքին ամէն սարքի վրայ սեղմուած ամէն ստեղն ու կոճակ ֆայլին մէջ է, ստեղնաշարերն ու մուկերը ներառեալ։ Օգտատէրերու անունները, սերիական թիւերը, հասցէները եւ մուտքագրուած անունները կը փոխարինուին, նախքան որեւէ բան գրուի։</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Ամփոփումը կը գրուի…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Պահուեցաւ՝ {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Արձանագրումը չսկսաւ։ Ստուգում մը գտաւ այս PC-ի գաղտնի արժէք մը, որ ֆայլէն դուրս պիտի չմնար։</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Արձանագրումը չսկսաւ։ {0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Վերջին արձանագրումը տակաւին կ՚աւարտուի։</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«Պահպանել վերջին 60 երկվայրկեանը» անջատուած է, ուստի պահելիք բան չկայ։</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Աւարտուեցաւ արձանագրում մը, որ PadForge-ը չէր կեցուցած: {0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Պահպանել վերջին 60 երկվայրկեանը</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Մինչ շարժիչը կ՚աշխատի, յիշողութեան մէջ կը պահէ արձանագրման պարունակութեան վերջին մէկ վայրկեանը՝ իրիկուան մէկ անգամ պատահող խնդիրի մը համար։ «Պահել վերջին 60 երկվայրկեանը» զայն կը գրէ իբրեւ ֆայլ։</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Պահել վերջին 60 երկվայրկեանը</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Մուտքագրուած տառերն ու թիւերը գրել իբրեւ մէկ ստեղն</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Արձանագրումը այն տառի եւ թիւի ստեղները, որոնք ոչ մէկ համապատասխանեցում կամ մաքրօ կը կարդայ, կը գրէ իբրեւ մէկ ստեղն, ամէն սեղմում՝ իր ժամանակին։ Միւս բոլոր ստեղները, եւ համապատասխանեցումի կամ մաքրօի կարդացած ամէն ստեղն, կը գրուին ինչպէս սեղմուած են։</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Պահպանել վերջին 60 երկվայրկեանը, Մուտքագրուած տառերն ու թիւերը գրել իբրեւ մէկ ստեղն</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Յաւելուածի տարբերակ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET գործարկման միջավայր</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-ի տարբերակ</value></data>
@@ -5392,4 +5411,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation-էն կադր մը՝ Star Trek-ի Starfleet ոճին պատկերը։ Գտնուած է Memory Alpha-ի մէջ։</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Լուսաշերտ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} լուսաշերտ</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Խնդրի արձանագրում</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Սկսիլ կամ կեցնել արձանագրումը</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Նշել արձանագրումը</value></data>
 </root>

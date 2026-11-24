@@ -900,6 +900,25 @@
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>儲存快照</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>將最近的引擎事件儲存到新檔案。即使診斷記錄已關閉也能使用。</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>開啟記錄資料夾</value></data>
+  <data name="Settings_RecordProblem" xml:space="preserve"><value>錄製問題</value></data>
+  <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>開始錄製</value></data>
+  <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>停止錄製 ({0})</value></data>
+  <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}，{1}</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>錄製到按下「停止錄製」、滿 10 分鐘或 zip 達 20 MB 為止，然後在檔案總管 (Explorer) 中選取該 zip，方便附加到回報。</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>開始錄製，讓問題發生，然後停止。PadForge 旁邊的一個檔案會記下 PadForge 讀取、傳送和記錄的一切，並附上問題的摘要。錄製期間每個裝置上按下的每個按鍵和按鈕都在檔案中，包括鍵盤和滑鼠。使用者名稱、序號、位址和輸入的名稱，會在寫入前先被取代。</value></data>
+  <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>正在寫入摘要…</value></data>
+  <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>已儲存 {0}</value></data>
+  <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>錄製未開始。檢查發現這部 PC 有一個私人值無法排除在檔案之外。</value></data>
+  <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>錄製未開始。{0}</value></data>
+  <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>上一次錄製仍在完成中。</value></data>
+  <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>「保留最近 60 秒」已關閉，所以沒有內容可儲存。</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>已完成 PadForge 未能停止的一次錄製：{0}</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>保留最近 60 秒</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>引擎執行期間，在記憶體中保留錄製內容的最近一分鐘，適合一晚才出現一次的問題。「儲存最近 60 秒」會把它寫成檔案。</value></data>
+  <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>儲存最近 60 秒</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>將輸入的字母和數字寫成同一個按鍵</value></data>
+  <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>錄製時，沒有任何對應或巨集讀取的字母和數字鍵會寫成同一個按鍵，每次按下仍保有各自的時間。其他所有按鍵，以及對應或巨集讀取的每個按鍵，都會照實際按下的寫入。</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>保留最近 60 秒、將輸入的字母和數字寫成同一個按鍵</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>應用程式版本</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 執行階段</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 版本</value></data>
@@ -5853,6 +5872,10 @@
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>設定檔捷徑</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>執行設定檔捷徑的動作：載入指定名稱的設定檔、下一個或上一個設定檔、顯示或隱藏視窗，或關閉與開啟虛擬控制器。</value></data>
   <data name="MacroAction_ProfileShortcut_Format" xml:space="preserve"><value>設定檔捷徑：{0}</value></data>
+  <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>問題錄製</value></data>
+  <data name="MacroAction_ProblemRecording_Tooltip" xml:space="preserve"><value>開始或停止問題錄製、標記執行中的錄製，或儲存最近 60 秒，不必離開遊戲。</value></data>
+  <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>開始或停止錄製</value></data>
+  <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>標記錄製內容</value></data>
   <data name="Macro_CursorClampOffsetX_Label" xml:space="preserve"><value>位移 X</value></data>
   <data name="Macro_CursorClampOffsetY_Label" xml:space="preserve"><value>位移 Y</value></data>
   <data name="Macro_Reset_OffsetX" xml:space="preserve"><value>重設位移 X</value></data>

@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge wèi jiēshòu cǐ chéngxù de liánjiē</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Zàicì qǐngqiú guò kuài</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge chóngxīn qǐdòng qián bù zài zhíxíng cǐ lèi qǐngqiú</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge méiyǒu cǐ gōngjù</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Chéngxù dúqǔ de shì jiù zhuàngtài</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Méiyǒu cǐ shèzhì</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Zhí chāochū gāi shèzhì de fànwéi</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Nín wèi yǔnxǔ</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Wú rén jíshí huídá</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Zhèngzài děngdài nín de huídá</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Méiyǒu cǐ qǐngqiú</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Méiyǒu kě chèxiāo de nèiróng</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Zhǐyǒu nín néng gēnggǎi cǐ xiàng</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Wúfǎ dǎkāi wénjiàn</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Méiyǒu cǐ hóng</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Děngdài nín huídá de wèntí guò duō</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Qiēhuàn dào pèizhì wénjiàn {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fǎnhuí mòrèn pèizhì wénjiàn</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Xúnwèn dāngqián huódòng de pèizhì wénjiàn</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Shìfàng shèbèi {0} de kòngjiàn</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Shèzhì zhí {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yùnxíng gōngjù {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Dúqǔ zhuàngtài</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Qiēhuàn pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Qǐdòng huò tíngzhǐ yǐnqíng</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kāiqǐ huò guānbì xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Bǎocún zhěnduàn kuàizhào</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Dúqǔ lúnxún sùlǜ hé qūdòng chéngxù</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lièchū pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Dúqǔ pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lièchū xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lièchū shèbèi</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Dúqǔ shèbèi</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Děngdài nín de shūrù</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Dúqǔ kòngzhìqì de yìngshè</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lièchū kòngzhìqì de hóng</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Lùzhì wèntí</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Cházhǎo shèzhì</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Dúqǔ shèzhì</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Xiàng nín zhǐchū mǒu gè wèizhì</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Tiānjiā zìjǐ de shèbèi</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Qūdòng zìjǐ de shèbèi</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Yíchú zìjǐ de shèbèi</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Bǎochí huò shìfàng kòngjiàn</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Gēnggǎi shèzhì</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Chuàngjiàn pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Chóngmìngmíng pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Shānchú pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Dǎorù pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Dǎochū pèizhì wénjiàn</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Tiānjiā xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Yíchú xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Gēnggǎi kòngzhìqì lèixíng</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Fēnpèi shèbèi</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Shèzhì yìngshè háng</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Qīngchú yìngshè háng</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Zìdòng yìngshè kòngzhìqì</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Bǎocún hóng</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Shānchú hóng</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Chèxiāo qí gēnggǎi</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Jiǎnchá qǐngqiú</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Diàoyòng PadForge méiyǒu de gōngjù: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Dǎorù pèizhì wénjiàn “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Xiàng Windows fāsòng jiànpán hé shǔbiāo shūrù</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Jiànpán shǔbiāo kòngzhìqì huì zài suǒyǒu chéngxù zhōng àn jiàn bìng yídòng zhǐzhēn.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, yóu {1} chùfā</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Bǎocún zài PadForge wàibù zhíxíng cāozuò de hóng</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Yùnxíng {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Àn xià {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Xiàng qiántái chéngxù shūrù wénběn</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Yídòng huò diǎnjī shǔbiāo</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Chuàngjiàn jiànpán shǔbiāo kòngzhìqì</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Kāiqǐ {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Gēnggǎi “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Jiāng {0} shèwéi {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Zài wǎngluò shàng jiāntīng, shǐ qítā shèbèi kěyǐ fǎngwèn cǐ diànnǎo.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Gēnggǎi qūdòng chéngxù huò HidHide, qítā chéngxù hé yóuxì yīlài tāmen.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Wénjiàn: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Tōngguò Use Only in PadForge gēnggǎi nǎxiē chéngxù kěyǐ dúqǔ gāi shèbèi.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Shèzhì kòngzhìqì</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Zhǎodào shèbèi, wèi qí chuàngjiàn xūnǐ kòngzhìqì, fēnpèi shèbèi, bìng yìngshè yóuxì suǒ xū de shūrù.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Wèishénme yóuxì kàn bù dào wǒ de kòngzhìqì</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Zhúyī jiǎnchá yǐnqíng, xūnǐ kòngzhìqì, shèbèi, qūdòng chéngxù hé HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Qiānyí pèizhì wénjiàn</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Cóng qítā chéngxù dǎorù pèizhì wénjiàn, ránhòu chákàn dǎorù le nǎxiē nèiróng.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} cì</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, tóng lèi {1} xiàng zhōng de zuìhòu yí xiàng</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3906,6 +3983,10 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 yòng yú Steam wǎngluò xiéyì de Protocol Buffers xùlièhuàqì, yóu Marc Gravell kāifā.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 yòng yú Steam depot kuài de Zstandard jiěyā, shì Oleg Stepanischev duì zstd kù de C# yízhí.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Zhīchí zhùshǒu liánjiē hé PadForge.exe --mcp de Model Context Protocol fúwùqì yǔ kèhùduān, zuòzhě wéi Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions hé DependencyInjection.Abstractions, MCP C# SDK jiànlì yú qí zhī shàng, zuòzhě wéi Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Guānyú Wii pèiduì liúchéng, yángshēngqì ADPCM, Wii Remote héngwò yǔ shùwò fāngxiàng, yáogǎn xiànwèi móxíng jí qí cúnchǔ géshì, yǐjí tuóluóyí zhóu yuēdìng de wéndàng. Jǐn zuòwéi wéndàng cānkǎo, bù suífù rènhé GPL dàimǎ.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

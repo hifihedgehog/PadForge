@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge သည် ဤပရိုဂရမ်၏ ချိတ်ဆက်မှုကို လက်မခံခဲ့ပါ</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>စောလွန်းစွာ ထပ်မေးခဲ့သည်</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge ပြန်မစမချင်း ဤအမျိုးအစား ထပ်မရနိုင်ပါ</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge တွင် ထိုကိရိယာ မရှိပါ</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>ပရိုဂရမ်သည် အခြေအနေ အဟောင်းကို ဖတ်ခဲ့သည်</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ထိုဆက်တင် မရှိပါ</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>တန်ဖိုးသည် ဆက်တင် လက်ခံသည့် အပိုင်းအခြား အပြင်ဘက်တွင် ရှိသည်</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>သင် ခွင့်မပြုခဲ့ပါ</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>အချိန်မီ မည်သူမျှ မဖြေခဲ့ပါ</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>သင့်အဖြေကို စောင့်နေသည်</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ထိုတောင်းဆိုချက် မရှိပါ</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ပြန်ဖျက်စရာ မရှိပါ</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ဤအရာကို သင်သာ ပြောင်းနိုင်သည်</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ဖိုင်ကို ဖွင့်၍ မရပါ</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ထိုမက်ခရို မရှိပါ</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>သင့်ကို စောင့်နေသော မေးခွန်းများ များလွန်းသည်</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ပရိုဖိုင် {0} သို့ ပြောင်းရန်</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>မူလ ပရိုဖိုင်သို့ ပြန်သွားရန်</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>မည်သည့်ပရိုဖိုင် အသက်ဝင်နေသည်ကို မေးရန်</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာများကို လွှတ်ရန်</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>တန်ဖိုး {0} ကို သတ်မှတ်ရန်</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ကိရိယာ {0} ကို လည်ပတ်ရန်</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>အခြေအနေကို ဖတ်ရန်</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းရန်</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>အင်ဂျင်ကို စတင်ရန် သို့မဟုတ် ရပ်ရန်</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများကို ဖွင့်ရန် သို့မဟုတ် ပိတ်ရန်</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>ချို့ယွင်းချက်ရှာဖွေရေး ခဏတာမှတ်တမ်း သိမ်းရန်</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>စစ်တမ်းနှုန်းနှင့် ဒရိုက်ဗာများကို ဖတ်ရန်</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>ပရိုဖိုင်များကို စာရင်းပြုစုရန်</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခုကို ဖတ်ရန်</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများကို စာရင်းပြုစုရန်</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>စက်ပစ္စည်းများကို စာရင်းပြုစုရန်</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>စက်ပစ္စည်းတစ်ခုကို ဖတ်ရန်</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>သင့်အဝင်ကို စောင့်ရန်</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>ကွန်ထရိုလာတစ်ခု၏ မက်ပင်းများကို ဖတ်ရန်</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ကွန်ထရိုလာတစ်ခု၏ မက်ခရိုများကို စာရင်းပြုစုရန်</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ပြဿနာကို မှတ်တမ်းတင်ရန်</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ဆက်တင်များကို ရှာရန်</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ဆက်တင်တစ်ခုကို ဖတ်ရန်</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>နေရာတစ်ခုကို သင့်အား ပြရန်</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>ကိုယ်ပိုင် စက်ပစ္စည်းတစ်ခု ထည့်ရန်</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>၎င်း၏ စက်ပစ္စည်းကို မောင်းနှင်ရန်</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>၎င်း၏ စက်ပစ္စည်းကို ဖယ်ရှားရန်</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ထိန်းချုပ်ကိရိယာကို ဖိထားရန် သို့မဟုတ် လွှတ်ရန်</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ဆက်တင်တစ်ခုကို ပြောင်းရန်</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခု ဖန်တီးရန်</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခုကို အမည်ပြောင်းရန်</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခုကို ဖျက်ရန်</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခုကို တင်သွင်းရန်</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခုကို ထုတ်ယူရန်</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာတစ်ခု ထည့်ရန်</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာတစ်ခုကို ဖယ်ရှားရန်</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>ကွန်ထရိုလာတစ်ခု၏ အမျိုးအစားကို ပြောင်းရန်</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>စက်ပစ္စည်းတစ်ခုကို သတ်မှတ်ရန်</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>မက်ပင်း အတန်းများကို သတ်မှတ်ရန်</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>မက်ပင်း အတန်းများကို ရှင်းလင်းရန်</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>ကွန်ထရိုလာတစ်ခုကို အလိုအလျောက် မက်ပင်းလုပ်ရန်</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>မက်ခရိုတစ်ခု သိမ်းရန်</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>မက်ခရိုတစ်ခုကို ဖျက်ရန်</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>၎င်း၏ ပြောင်းလဲမှုများကို ပြန်ဖျက်ရန်</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>တောင်းဆိုချက်တစ်ခုကို စစ်ဆေးရန်</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge တွင် မရှိသော ကိရိယာကို ခေါ်ရန်: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>ပရိုဖိုင် “{0}” ကို တင်သွင်းရန်</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows သို့ ကီးဘုတ်နှင့် မောက်စ် အဝင် ပို့ရန်</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>ကီးဘုတ်နှင့် မောက်စ် ကွန်ထရိုလာသည် ပရိုဂရမ်တိုင်းတွင် ခလုတ်များကို နှိပ်ပြီး ညွှန်ပြတံကို ရွှေ့သည်။</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1} မှ {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge အပြင်ဘက်တွင် လုပ်ဆောင်သော မက်ခရိုကို သိမ်းရန်</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} ကို လည်ပတ်စေသည်</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} ကို နှိပ်သည်</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>ရှေ့ရှိ ပရိုဂရမ်ထဲသို့ စာသား ရိုက်ထည့်သည်</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>မောက်စ်ကို ရွှေ့သည် သို့မဟုတ် ကလစ်နှိပ်သည်</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ကီးဘုတ်နှင့် မောက်စ် ကွန်ထရိုလာတစ်ခု ပြုလုပ်သည်</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} ကို ဖွင့်သည်</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” ကို ပြောင်းရန်</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ကို {1} သို့ သတ်မှတ်သည်</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>ကွန်ရက်ပေါ်တွင် နားထောင်သဖြင့် အခြားစက်ပစ္စည်းများက ဤ PC သို့ ရောက်နိုင်သည်။</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>အခြားပရိုဂရမ်များနှင့် ဂိမ်းများ မှီခိုသော ဒရိုက်ဗာ သို့မဟုတ် HidHide ကို ပြောင်းသည်။</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ဖိုင်: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge မှတစ်ဆင့် စက်ပစ္စည်းကို မည်သည့်ပရိုဂရမ်များ ဖတ်နိုင်သည်ကို ပြောင်းသည်။</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>ကွန်ထရိုလာ တပ်ဆင်ရန်</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>စက်ပစ္စည်းကို ရှာပါ၊ ၎င်းအတွက် ဗာချွယ်ကွန်ထရိုလာ ပြုလုပ်ပါ၊ သတ်မှတ်ပြီး ဂိမ်းလိုအပ်သည့်အရာကို မက်ပင်းလုပ်ပါ။</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>ဂိမ်းက ကျွန်ုပ်၏ ကွန်ထရိုလာကို ဘာကြောင့် မမြင်သနည်း</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>အင်ဂျင်၊ ဗာချွယ်ကွန်ထရိုလာ၊ စက်ပစ္စည်း၊ ဒရိုက်ဗာများနှင့် HidHide ကို တစ်ခုချင်း စစ်ဆေးပါ။</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>ပရိုဖိုင်တစ်ခုကို ယူလာရန်</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>အခြားပရိုဂရမ်မှ ပရိုဖိုင်ဖိုင်ကို တင်သွင်းပြီးနောက် ဘာပါလာသည်ကို ကြည့်ပါ။</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}၊ အကြိမ်ရေ: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}၊ ထိုကဲ့သို့ {1} ခုအနက် နောက်ဆုံး</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3929,6 +4006,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Steam ကွန်ရက် ပရိုတိုကောအတွက် SteamKit2 သုံးသော Protocol Buffers စီးရီးလိုက်ဇာ၊ Marc Gravell မှ။</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Steam depot အပိုင်းများအတွက် SteamKit2 သုံးသော Zstandard ချုံ့ဖိုင် ဖြည်ခြင်း၊ Oleg Stepanischev ပြုလုပ်သော zstd စာကြည့်တိုက်၏ C# ဗားရှင်း။</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>အကူအညီပေး ပရိုဂရမ် ချိတ်ဆက်မှုနှင့် PadForge.exe --mcp နောက်ကွယ်ရှိ Model Context Protocol ဆာဗာနှင့် ကလိုင်းယင့်၊ Model Context Protocol a Series of LF Projects မှ။</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK တည်ဆောက်ထားသော Microsoft.Extensions.AI.Abstractions၊ Logging.Abstractions နှင့် DependencyInjection.Abstractions၊ Microsoft မှ။</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii တွဲချိတ်ခြင်း လုပ်ငန်းစဉ်၊ စပီကာ ADPCM၊ ဘေးတိုက် နှင့် ထောင်လိုက် Wii Remote ဦးတည်ပုံ၊ စတစ်ဂိတ် မော်ဒယ် နှင့် ၎င်း၏ သိမ်းဆည်းပုံစံ နှင့် ဂိုင်ရို ဝင်ရိုး သတ်မှတ်ပုံအတွက် စာရွက်စာတမ်း။ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ထားပြီး GPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

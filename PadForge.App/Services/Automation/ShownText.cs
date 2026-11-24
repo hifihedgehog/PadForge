@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Text;
 
@@ -22,22 +23,33 @@ namespace PadForge.Services.Automation
     internal static class ShownText
     {
         /// <summary>The text with every format and control character out,
-        /// or the text itself when it has none. Null stays null.</summary>
+        /// or the text itself when it has none. Null stays null. Characters
+        /// are read as whole code points, so a format character outside the
+        /// Basic Multilingual Plane (the tag characters U+E0000 to U+E007F)
+        /// goes as well, and a lone surrogate, which shows as no character,
+        /// goes too.</summary>
         internal static string Clean(string text)
         {
             if (string.IsNullOrEmpty(text)) return text;
             int i = 0;
-            while (i < text.Length && Kind(text[i]) == Keep.Same) i++;
+            while (i < text.Length && !char.IsSurrogate(text[i]) && Kind(new Rune(text[i])) == Keep.Same) i++;
             if (i == text.Length) return text;
             var sb = new StringBuilder(text.Length);
             sb.Append(text, 0, i);
-            for (; i < text.Length; i++)
+            while (i < text.Length)
             {
-                switch (Kind(text[i]))
+                if (Rune.DecodeFromUtf16(text.AsSpan(i), out Rune rune, out int used) != System.Buffers.OperationStatus.Done)
                 {
-                    case Keep.Same: sb.Append(text[i]); break;
+                    // A lone surrogate.
+                    i += Math.Max(used, 1);
+                    continue;
+                }
+                switch (Kind(rune))
+                {
+                    case Keep.Same: sb.Append(text, i, used); break;
                     case Keep.Space: sb.Append(' '); break;
                 }
+                i += used;
             }
             return sb.ToString();
         }
@@ -46,7 +58,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>What a character becomes: itself, a space, or
         /// nothing.</summary>
-        private static Keep Kind(char c) => CharUnicodeInfo.GetUnicodeCategory(c) switch
+        private static Keep Kind(Rune c) => Rune.GetUnicodeCategory(c) switch
         {
             UnicodeCategory.Format or UnicodeCategory.Control => Keep.Out,
             UnicodeCategory.LineSeparator or UnicodeCategory.ParagraphSeparator => Keep.Space,

@@ -285,10 +285,26 @@ namespace PadForge.Tests
             // This process runs without rights, so its pipe's owner is its
             // user, which PadForge's name never takes.
             Assert.False(new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator));
-            Assert.False(PipeOwner.IsPadForges(client.SafePipeHandle));
-            Assert.False(PipeOwner.IsServer(client.SafePipeHandle, padForgesName: true));
+            Assert.False(PipeOwner.IsServer(client.SafePipeHandle, AutomationPipe.PipeName));
+            Assert.False(PipeOwner.IsServer(client.SafePipeHandle, ExternalControlService.PipeName));
+            // Windows compares pipe names without regard to case, and so does
+            // the rule.
+            Assert.False(PipeOwner.IsServer(client.SafePipeHandle, "padforge.AUTOMATION"));
             // A test's own name takes the test's own user, the plugin kit's rule.
-            Assert.True(PipeOwner.IsServer(client.SafePipeHandle, padForgesName: false));
+            Assert.True(PipeOwner.IsServer(client.SafePipeHandle, name));
+        }
+
+        [Fact]
+        public void PadForgesOwnNames_AreThePipesItServes()
+        {
+            Assert.Equal(new[] { ExternalControlService.PipeName, AutomationPipe.PipeName }, PipeOwner.OwnNames);
+            Assert.True(PipeOwner.IsOwnName("PADFORGE.CONTROL"));
+            Assert.False(PipeOwner.IsOwnName("PadForge.Tests.Owner"));
+            Assert.False(PipeOwner.IsOwnName(null));
+            // The plugin kit carries the very file PadForge builds, so the
+            // kit's C# plugin keeps the same rule.
+            Assert.Equal(ExtrasPageTests.RepoText("PadForge.App", "Services", "Automation", "PipeOwner.cs"),
+                System.Text.Encoding.UTF8.GetString(PadForge.Services.Plugins.PluginKit.Read("PipeOwner.cs")));
         }
 
         [Fact]
@@ -309,9 +325,11 @@ namespace PadForge.Tests
             Assert.Contains("\"UInt\", 0x00110000", libraries[AutomationLibraryKind.AutoHotkey]);
             // A pipe of another name than PadForge's own takes the caller's
             // own user, PadForge's never.
-            Assert.Contains("name.lower() != PIPE.lower() and found is not None and found == _own_user()", libraries[AutomationLibraryKind.Python]);
+            Assert.Contains("name.lower() not in _OWN_NAMES and found is not None and found == _own_user()", libraries[AutomationLibraryKind.Python]);
+            Assert.Contains("_OWN_NAMES = (\"padforge.control\", \"padforge.automation\")", libraries[AutomationLibraryKind.Python]);
+            Assert.Contains("|| string.Equals(name, \"PadForge.Control\", StringComparison.OrdinalIgnoreCase);", libraries[AutomationLibraryKind.PowerShell]);
             Assert.Contains("if (isTheAppsOwn || owner == null) return false;", libraries[AutomationLibraryKind.PowerShell]);
-            Assert.Contains("pipe != PadForge.DefaultPipe && owner != \"\" && owner = PadForge.OwnUser()", libraries[AutomationLibraryKind.AutoHotkey]);
+            Assert.Contains("pipe != PadForge.DefaultPipe && pipe != \"PadForge.Control\" && owner != \"\" && owner = PadForge.OwnUser()", libraries[AutomationLibraryKind.AutoHotkey]);
             // The owner is read before the first write: the PowerShell
             // library reads only once it is checked.
             string ps = libraries[AutomationLibraryKind.PowerShell];
@@ -537,6 +555,12 @@ namespace PadForge.Tests
             Assert.Equal("a b", ShownText.Clean("a\u2028b"));
             Assert.Equal("ab", ShownText.Clean("a\r\n\0b"));
             Assert.Same("plain", ShownText.Clean("plain"));
+            // Whole code points are read: tag characters, outside the Basic
+            // Multilingual Plane, go, a lone surrogate goes, and a letter
+            // outside that plane stays.
+            Assert.Equal("ab", ShownText.Clean("a\U000E0041\U000E007Fb"));
+            Assert.Equal("ab", ShownText.Clean("a\uD800b\uDC00"));
+            Assert.Equal("a\U0001D400b", ShownText.Clean("a\U0001D400​b"));
             Assert.Null(ShownText.Clean(null));
         }
 
@@ -588,9 +612,27 @@ namespace PadForge.Tests
                 string plain = Path.Combine(dir, "plain.exe");
                 File.WriteAllBytes(plain, new byte[] { (byte)'M', (byte)'Z', 0, 0 });
                 Assert.Null(AuthenticodeSigner.Of(plain));
+
+                // The test host carries an embedded signature, which reads as
+                // Windows' own Get-AuthenticodeSignature reads it.
+                string host = Path.Combine(AppContext.BaseDirectory, "testhost.exe");
+                Assert.Equal("Microsoft Corporation", AuthenticodeSigner.Of(host));
+                // A copy with one byte of its code changed holds no signature.
+                byte[] bytes = File.ReadAllBytes(host);
+                bytes[bytes.Length / 2] ^= 0xFF;
+                string changed = Path.Combine(dir, "changed.exe");
+                File.WriteAllBytes(changed, bytes);
+                Assert.Null(AuthenticodeSigner.Of(changed));
             }
             finally { Directory.Delete(dir, true); }
             Assert.Null(AuthenticodeSigner.Of(null));
+            // A file no signature format covers is still found in a catalog:
+            // Windows' own PowerShell modules are catalog-signed scripts.
+            string module = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System),
+                @"WindowsPowerShell\v1.0\Modules\Microsoft.PowerShell.Archive\Microsoft.PowerShell.Archive.psm1");
+            Assert.True(File.Exists(module), module);
+            Assert.Equal("Microsoft Windows", AuthenticodeSigner.Of(module));
+            Assert.Equal("Microsoft Windows", AuthenticodeSigner.Of(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe")));
         }
 
         [Fact]

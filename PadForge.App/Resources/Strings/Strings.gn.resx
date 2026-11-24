@@ -1400,6 +1400,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nomoneĩri ko programa joaju</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ojejerure jey pya'eterei</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ndaipóri hetave kóicha PadForge oñepyrũ jey peve</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ndoguerekói upéicha tembiporu</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programa olee peteĩ estado tujavéva</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ndaipóri upéicha configuración</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valor oĩ configuración rango okápe</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Nde nemoneĩri</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Avave ndombohováiri hi'ára jave</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Oha'arõ nde mbohovái</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ndaipóri upéicha ñemaña</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ndaipóri mba'eve ojebojevy hag̃ua</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nde añoite ikatu emoambue kóva</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ndaikatúi ojeipe'a archivo</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ndaipóri upéicha macro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Hetaiterei porandu oha'arõ ndéve</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Emoambue perfil {0} peve</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ejevy perfil ypykuépe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eporandu mba'e perfilpa oĩ hína</value></data>
@@ -1435,6 +1448,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ejei mba'e'oka {0} control kuéragui</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Emoĩ valor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Emboguata tembiporu {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Elee estado</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Emoambue perfil</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Emoñepyrũ térã emombyta motor</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Emyendy térã embogue mando virtual kuéra</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Eñongatu peteĩ diagnóstico ra'ãnga</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Elee polling rate ha driverkuéra</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Ehai perfil kuéra</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Elee peteĩ perfil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Ehai mando virtual kuéra</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Ehai mba'e'oka kuéra</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Elee peteĩ mba'e'oka</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Eha'arõ nde jeike</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Elee peteĩ mando mapeo</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Ehai peteĩ mando macro kuéra</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Emongarai peteĩ apañuãi</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Eheka configuración</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Elee peteĩ configuración</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Ehechauka ndéve peteĩ tenda</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Embojoapy peteĩ mba'e'oka imba'éva</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Emboguata imba'e'oka</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Enohẽ imba'e'oka</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Ejoko térã ejei peteĩ control</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Emoambue peteĩ configuración</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Ejapo peteĩ perfil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Emoambue peteĩ perfil réra</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Embogue peteĩ perfil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Egueru peteĩ perfil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Emondo okápe peteĩ perfil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Embojoapy peteĩ mando virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Enohẽ peteĩ mando virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Emoambue peteĩ mando tipo</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Emoĩ peteĩ mba'e'oka</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Emoĩ mapeo línea kuéra</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Emopotĩ mapeo línea kuéra</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Emapea peteĩ mando ijehegui</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Eñongatu peteĩ macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Embogue peteĩ macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Embojevy iñemoambue kuéra</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Ehecha peteĩ ñemaña</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Ehenói peteĩ tembiporu PadForge ndoguerekóiva: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Egueru perfil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Emondo teclado ha mouse jeike Windows peve</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Peteĩ mando teclado ha mouse rehegua oñapytĩ tecla ha omongu'e puntero opaite programa ryepýpe.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} {1} rupive</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Eñongatu peteĩ macro omba'apóva PadForge okápe</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Omboguata {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Oñapytĩ {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ohai moñe'ẽrã programa tenonderegua ryepýpe</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Omongu'e térã oñapytĩ mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ojapo peteĩ mando teclado ha mouse rehegua</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Omyendy {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Emoambue “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Omoĩ {0} {1} ramo</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ohendu red rupive, ambue mba'e'oka ikatu hag̃uáicha og̃uahẽ ko PCpe.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Omoambue peteĩ driver térã HidHide, ambue programa ha ñembosarái oikotevẽva.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Archivo: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Omoambue mba'e programapa ikatu olee mba'e'oka, Use Only in PadForge rupive.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Emboheko peteĩ mando</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Eheka mba'e'oka, ejapo peteĩ mando virtual chupe, emoĩ ha emapea ñembosarái oikotevẽva.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Mba'ére ñembosarái ndohechái che mando</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Ehecha motor, mando virtual, mba'e'oka, driverkuéra ha HidHide peteĩteĩ.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Egueru peteĩ perfil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Egueru peteĩ perfil archivo ambue programagui, upéi ehecha mba'épa og̃uahẽ.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} jey</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ipaha {1} ojoguáva apytégui</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emoneĩ</value></data>
@@ -1452,4 +1529,8 @@
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Akóinte</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alternar</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Botõ ombohapéva mouse omboguata hag̃ua, upe mba'e'oka mouse jeguata ndive. Ndojeiporavóiramo mba'eve, mouse omboguata akóinte.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol servidor ha cliente oĩva pytyvõhára joaju ha PadForge.exe --mcp rapykuéri, Model Context Protocol a Series of LF Projects rembiapo.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ha DependencyInjection.Abstractions, MCP C# SDK oñemopu'ãva hi'ári, Microsoft rembiapo.</value></data>
 </root>

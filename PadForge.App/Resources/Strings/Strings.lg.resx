@@ -917,6 +917,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge teyakkiriza kuyunga kwa pulogulaamu eno</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Kisabiddwa nate mangu nnyo</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tewali birala bya kika kino okutuusa PadForge lw'eneeddamu okutandika</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge terina kikozesebwa ekyo</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Pulogulaamu yasoma embeera enkadde</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tewali nsengeka eyo</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Omuwendo gwali wabweru w'ensengeka by'etwala</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Tewakikkiriza</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Tewali yaddamu mu budde</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Kulindirira kuddamu kwo</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tewali kusaba okwo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tewali kya kuddamu</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ggwe wekka asobola okukikyusa</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fayiro tesobodde kuggulwa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tewali macro eyo</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ebibuuzo bingi nnyo byali bikulindiridde</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kyusa ogende ku pulofayiro {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ddayo ku pulofayiro ey'olubeerera</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buuza pulofayiro ekola</value></data>
@@ -952,6 +965,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ta ebifuga by'ekyuma {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Teekawo omuwendo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ddukanya ekikozesebwa {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Soma embeera</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Kyusa pulofayiro</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Tandika oba yimiriza yingini</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Ko oba ggyako ebifuga bya virtual</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Tereka ekifaananyi ky'okwekebejja</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Soma sipiidi y'okubuuza ne ddayiva</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Laga olukalala lwa pulofayiro</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Soma pulofayiro</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Laga olukalala lw'ebifuga bya virtual</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Laga olukalala lw'ebyuma</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Soma ekyuma</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Linda by'oyingiza</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Soma okugatta kw'ekifuga</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Laga olukalala lwa macro z'ekifuga</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Kwata obuzibu</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Noonya ensengeka</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Soma ensengeka</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kulaga ekifo</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Yongerako ekyuma kyayo</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Fuga ekyuma kyayo</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Ggyawo ekyuma kyayo</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Kwata oba ta ekifuga</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Kyusa ensengeka</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Kola pulofayiro</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Kyusa erinnya lya pulofayiro</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Sazaamu pulofayiro</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Yingiza pulofayiro</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Fulumya pulofayiro</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Yongerako ekifuga kya virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Ggyawo ekifuga kya virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Kyusa ekika ky'ekifuga</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Gabira ekyuma</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Teekawo ennyiriri z'okugatta</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Sangula ennyiriri z'okugatta</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Gatta ekifuga mu ngeri ey'otoma</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Tereka macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Sazaamu macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Ddamu enkyukakyuka zaayo</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kebera okusaba</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kuba ekikozesebwa PadForge ky'etalina: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Yingiza pulofayiro “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Sindika ebiyingizibwa bya kiibodi ne maawusi eri Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ekifuga kya kiibodi ne maawusi kinyiga ebisumuluzo era kitambuza akasonga mu buli pulogulaamu.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} okuva ku {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Tereka macro ekola ebweru wa PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Eddukanya {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Enyiga {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ewandiika ebigambo mu pulogulaamu eri mu maaso</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Etambuza oba ekuba maawusi</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ekola ekifuga kya kiibodi ne maawusi</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Eko {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Kyusa “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Eteeka {0} ku {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ewuliriza ku mutimbagano, ebyuma ebirala bisobole okutuuka ku PC eno.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ekyusa ddayiva oba HidHide, pulogulaamu endala n'emizannyo bye byesigamako.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fayiro: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ekyusa pulogulaamu ezisobola okusoma ekyuma, okuyita mu Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Teekateeka Ekifuga</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Zuula ekyuma, kikolere ekifuga kya virtual, kigabire era ogatte ebyo omuzannyo bye gwetaaga.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Lwaki Omuzannyo Tegulaba Kifuga Kyange</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Kebera yingini, ekifuga kya virtual, ekyuma, ddayiva ne HidHide kimu ku kimu.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Leeta Pulofayiro</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Yingiza fayiro ya pulofayiro okuva mu pulogulaamu endala, olwo olabe ekizze.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, emirundi {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ekisembayo ku {1} ebifaanana bwe bityo</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Kkiriza</value></data>
@@ -961,4 +1038,8 @@
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Bw'otaddamu mu {0}, kitwalibwa nga nedda.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>emitendera</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Bulijjo</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva ne kasitoma wa Model Context Protocol ebiri emabega w'okuyunga omuyambi ne PadForge.exe --mcp, okuva eri Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ne DependencyInjection.Abstractions, MCP C# SDK kw'ezimbiddwa, okuva eri Microsoft.</value></data>
 </root>

@@ -698,6 +698,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge haikukubali muunganisho wa programu hii</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Iliombwa tena mapema mno</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Hakuna zaidi za hizi hadi PadForge ianze tena</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge haina zana kama hiyo</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programu ilisoma hali ya zamani</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Hakuna mpangilio kama huo</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Thamani ilikuwa nje ya kile ambacho mpangilio unakubali</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Hukuruhusu</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Hakuna aliyejibu kwa wakati</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Inasubiri jibu lako</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Hakuna ombi kama hilo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Hakuna cha kutendua</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ni wewe tu unayeweza kubadilisha hili</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faili haikuweza kufunguliwa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Hakuna makro kama hiyo</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Maswali mengi mno yalikuwa yanakusubiri</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Badilisha kwenda wasifu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rudi kwenye wasifu chaguomsingi</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Uliza ni wasifu upi unaotumika</value></data>
@@ -733,6 +746,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Achilia vidhibiti vya kifaa {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Weka thamani {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Endesha zana {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Soma hali</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Badilisha wasifu</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Anzisha au simamisha injini</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Washa au zima vidhibiti pepe</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Hifadhi picha ya hali ya uchunguzi</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Soma kasi ya upigaji kura na viendeshi</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Orodhesha wasifu</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Soma wasifu</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Orodhesha vidhibiti pepe</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Orodhesha vifaa</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Soma kifaa</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Subiri ingizo lako</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Soma ramani za kidhibiti</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Orodhesha makro za kidhibiti</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekodi tatizo</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Tafuta mipangilio</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Soma mpangilio</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kuonyesha mahali</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ongeza kifaa chake</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Endesha kifaa chake</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Ondoa kifaa chake</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Shikilia au achilia kidhibiti</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Badilisha mpangilio</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Unda wasifu</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Badilisha jina la wasifu</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Futa wasifu</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Leta wasifu</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Peleka nje wasifu</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Ongeza kidhibiti pepe</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Ondoa kidhibiti pepe</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Badilisha aina ya kidhibiti</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Kabidhi kifaa</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Weka safu za ramani</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Futa safu za ramani</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Ramani kidhibiti kiotomatiki</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Hifadhi makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Futa makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Tendua mabadiliko yake</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kagua ombi</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Pigia zana ambayo PadForge haina: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Leta wasifu “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Tuma ingizo la kibodi na kipanya kwa Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kidhibiti cha kibodi na kipanya hubonyeza vitufe na kusogeza kielekezi kwenye kila programu.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} kutoka {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Hifadhi makro inayofanya kazi nje ya PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Huendesha {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Hubonyeza {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Huandika maandishi kwenye programu iliyo mbele</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Husogeza au hubofya kipanya</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Hutengeneza kidhibiti cha kibodi na kipanya</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Huwasha {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Badilisha “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Huweka {0} kuwa {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Husikiliza kwenye mtandao, kwa hiyo vifaa vingine vinaweza kufikia kompyuta hii.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Hubadilisha kiendeshi au HidHide, ambavyo programu na michezo mingine hutegemea.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faili: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Hubadilisha ni programu zipi zinaweza kusoma kifaa, kupitia Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Sanidi Kidhibiti</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Tafuta kifaa, tengeneza kidhibiti pepe chake, kikabidhi na uramani kile ambacho mchezo unahitaji.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Kwa Nini Mchezo Hauoni Kidhibiti Changu</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Kagua injini, kidhibiti pepe, kifaa, viendeshi na HidHide kimoja baada ya kingine.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Leta Wasifu</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Leta faili ya wasifu kutoka programu nyingine, kisha uone kilichokuja.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mara {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya mwisho kati ya {1} zinazofanana</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3870,6 +3947,10 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Kiserilishaji cha Protocol Buffers ambacho SteamKit2 hutumia kwa itifaki ya waya ya Steam, na Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Upunguzaji wa Zstandard ambao SteamKit2 hutumia kwa vipande vya depo za Steam, toleo la C# la maktaba ya zstd na Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva na mteja wa Model Context Protocol nyuma ya muunganisho wa msaidizi na PadForge.exe --mcp, na Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions na DependencyInjection.Abstractions, ambazo MCP C# SDK imejengwa juu yake, na Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Nyaraka za sherehe ya kuoanisha Wii, ADPCM ya spika, mwelekeo wa Wii Remote wa pembeni na wima, modeli ya lango la kijiti na umbizo lake la hifadhi, na kanuni ya mhimili wa gyro. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaojumuishwa.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

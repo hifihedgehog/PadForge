@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>nIqHomvam rar lajQo' PadForge</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>tlhoy tugh tlhobqa'pu'</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge taghqa'pa', latlh chabal Seghvam ta'be'</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>SommI'vetlh ghajbe' PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Dotlh ngo' laDpu' nIqHom</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>DuHvetlh tu'lu'be'</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>DuH yutlhegh juS mI'</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>bIchaw'be'</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>poH Dorpa' jangbe' vay'</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>bIjang 'e' loStaH</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>chabalvetlh tu'lu'be'</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>choHHa'meH Doch tu'lu'be'</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>SoH neH DachoHlaH</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>'a'baqa' poSmoHlu'be'</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>mIwvetlh tu'lu'be'</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>tlhoy law' DuloStaHbogh chabalmey</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>tu'qom {0} yIchu'</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>motlh tu'qomDaq yIchegh</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>chu'lu'bogh tu'qom yIyu'</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>jan {0} SeHwI'mey tI'uchHa'</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>mI' {0} yIcher</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>SommI' {0} yIlo'</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Dotlh yIlaD</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>tu'qommey tIchoH</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>QuQ yItagh pagh yImevmoH</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>SeHjan velqa'mey tIchu' pagh tIchu'Ha'</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Qagh nejmeH DaH Dotlh yIpol</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>laD chaDvay' SeHwI' nIqHommey je tIlaD</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>tu'qommey tetlh yI'ang</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>tu'qom yIlaD</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>SeHjan velqa'mey tetlh yI'ang</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>janmey tetlh yI'ang</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>jan yIlaD</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>'elmoHghachlIj yIloS</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>SeHjan neltaHghachmey tIlaD</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>SeHjan mIwmey tetlh yI'ang</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Qagh yIqon</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>DuHmey tInej</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>DuH yIlaD</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Daq yI'ang</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>janDaj yIchel</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>janDaj yISeH</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>janDaj yIteq</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>SeHwI' yI'uch pagh yI'uchHa'</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>DuH yIchoH</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>tu'qom yIchenmoH</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>tu'qom pong yIchoH</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>tu'qom yIQaw'</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>tu'qom yIqem</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>tu'qom yIngeH</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>SeHjan velqa' yIchel</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>SeHjan velqa' yIteq</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>SeHjan Segh yIchoH</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>jan yInob</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>neltaHghach tlheghmey tIcher</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>neltaHghach tlheghmey tIteq</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>SeHjan yInel, nIteb</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>mIw yIpol</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>mIw yIQaw'</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>choHmeyDaj tIchoHHa'</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>chabal yI'ol</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge ghajbe'bogh SommI' yIlo': {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>tu'qom “{0}” yIqem</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows lo'taHvIS nItlh 'echlet 'eQway' je 'elmoHghach yIngeH</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Hoch nIqHomDaq nItlh leQmey 'uy 'ej ghaSwI' vIHmoH nItlh 'echlet 'eQway' je SeHjan.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, {1} 'uylu'DI'</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge Hur ta'bogh mIw yIpol</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} tagh</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} 'uy</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>tlhop nIqHomDaq ngutlhmey ghItlh</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>'eQway' vIHmoH pagh 'uy</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>nItlh 'echlet 'eQway' je SeHjan chenmoH</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} chu'</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” yIchoH</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{1} moj {0}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>SIr'o' 'Ij, vaj De'wI'vam rarlaH latlh janmey.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>SeHwI' nIqHom ghap HidHide choH. latlh nIqHommey Qujmey je lulo'.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>'a'baqa': {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForge neH lo'jaj lo'taHvIS, jan laDlaHbogh nIqHommey choH.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>SeHjan yIcher</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>jan yInej, SeHjan velqa' yIchenmoH, jan yInob, Quj poQbogh Dochmey tInel.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>qatlh SeHjanwIj leghbe' Quj</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>QuQ, SeHjan velqa', jan, SeHwI' nIqHommey, HidHide je wa' wa' tI'ol.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>latlh nIqHomvo' tu'qom yIqem</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>latlh nIqHomvo' tu'qom 'a'baqa' yIqem, ghIq qemlu'pu'bogh Dochmey yIlegh.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1}logh</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, {1} rurbogh chabalmey Qav</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4182,6 +4259,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers De' ghItlhwI'. Steam SIr'o' rarmeH chut lo'meH SteamKit2 lo'. Marc Gravell chenmoH.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard De' poSmoHmeH mIw. Steam De' ngoghmey poSmoHmeH SteamKit2 lo'. zstd nIqHom C# velqa' 'oH. Oleg Stepanischev chenmoH.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>QaHwI' rar, PadForge.exe --mcp je QapmoHbogh Model Context Protocol turwI', turwI' lo'wI' je. Model Context Protocol a Series of LF Projects chenmoH.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions, DependencyInjection.Abstractions je, MCP C# SDK chenmoHmeH lo'lu'. Microsoft chenmoH.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>QIjmeH ghItlh: Wii nelmeH tay, rI'wI' ADPCM, Wii Remote 'uchmeH chong mIw Dop mIw je, naQ lojmIt ghantoH pollu'meH mIw je, ngaDmoQ rober chut. QIjmeH ghItlh neH laDlu'. GPL ngoq ngeHlu'be'.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

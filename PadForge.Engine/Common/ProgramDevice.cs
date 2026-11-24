@@ -184,6 +184,14 @@ namespace PadForge.Engine
         /// <summary>The shape in force.</summary>
         public ProgramDeviceShape Shape => Volatile.Read(ref _shape);
 
+        /// <summary>The name the device's row keeps as its product's, when it
+        /// is not the name shown: a built-in plugin's device keeps a name in
+        /// no language here, and the name shown is made from it in the
+        /// language in use each time it is shown, an offline row from an
+        /// earlier run included. Null keeps the name shown. Set before the
+        /// device is registered.</summary>
+        public string ProductName { get; set; }
+
         /// <summary>Raised after <see cref="Reshape"/>, on the caller's
         /// thread.</summary>
         public event Action CapabilitiesChanged;

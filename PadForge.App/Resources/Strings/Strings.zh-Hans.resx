@@ -416,6 +416,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge 没有接受此程序的连接</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>再次请求得太快</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>在 PadForge 再次启动之前不能再做这类操作</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge 没有这个工具</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>程序读取的是较旧的状态</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>没有这个设置</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>该值超出了此设置可接受的范围</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>你没有允许</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>没有人及时回应</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>正在等你回应</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>没有这个请求</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>没有可撤销的内容</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>只有你能更改此项</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>无法打开该文件</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>没有这个宏</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>等你回应的问题太多</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>切换到配置文件 {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>返回默认配置文件</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>询问哪个配置文件处于活动状态</value></data>
@@ -451,6 +464,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>释放设备 {0} 的控件</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>设置值 {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>运行工具 {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>读取状态</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>切换配置文件</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>启动或停止引擎</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>开启或关闭虚拟控制器</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>保存诊断快照</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>读取轮询率和驱动程序</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>列出配置文件</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>读取配置文件</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>列出虚拟控制器</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>列出设备</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>读取设备</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>等待你的输入</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>读取控制器的映射</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>列出控制器的宏</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>录制问题</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>查找设置</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>读取设置</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>向你展示某个位置</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>添加自己的设备</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>操控它的设备</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>移除它的设备</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>按住或松开控件</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>更改设置</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>创建配置文件</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>重命名配置文件</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>删除配置文件</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>导入配置文件</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>导出配置文件</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>添加虚拟控制器</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>移除虚拟控制器</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>更改控制器的类型</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>分配设备</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>设置映射行</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>清除映射行</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>自动映射控制器</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>保存宏</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>删除宏</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>撤销它的更改</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>检查请求</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}：{1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>调用 PadForge 没有的工具：{0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>导入配置文件“{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>向 Windows 发送键盘和鼠标输入</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>键盘和鼠标控制器会在每个程序中按键并移动指针。</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1} 触发 {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>保存在 PadForge 之外执行操作的宏</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>运行 {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>按下 {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>向最前面的程序输入文本</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>移动或点击鼠标</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>创建键盘和鼠标控制器</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>开启 {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>更改“{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>把 {0} 设为 {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>会在网络上监听，其他设备因此可以访问这台电脑。</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>更改驱动程序或 HidHide，其他程序和游戏依赖它们。</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>文件：{0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>通过“仅在 PadForge 中使用”更改哪些程序可以读取该设备。</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>设置控制器</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>找到设备，为它创建虚拟控制器，分配好并映射游戏所需的内容。</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>为什么游戏看不到我的控制器</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>逐一检查引擎、虚拟控制器、设备、驱动程序和 HidHide。</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>迁入配置文件</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>导入另一个程序的配置文件，然后查看迁入了什么。</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}，共 {1} 次</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}，同类共 {1} 次中的最后一次</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4500,6 +4577,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 用于 Steam 网络协议的 Protocol Buffers 序列化器，由 Marc Gravell 开发。</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 用于 Steam depot 区块的 Zstandard 解压缩，是 Oleg Stepanischev 对 zstd 库的 C# 移植。</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>助手连接和 PadForge.exe --mcp 背后的 Model Context Protocol 服务器和客户端，作者为 Model Context Protocol a Series of LF Projects。</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions、Logging.Abstractions 和 DependencyInjection.Abstractions，MCP C# SDK 基于它们构建，作者为 Microsoft。</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>（任意设备）</value></data>
   <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X（左半部分）</value></data>
   <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X（右半部分）</value></data>

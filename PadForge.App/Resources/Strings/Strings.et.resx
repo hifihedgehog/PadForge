@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ei võtnud selle programmi ühendust vastu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Küsiti liiga vara uuesti</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Rohkem neid ei tehta, kuni PadForge uuesti käivitub</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Sellist tööriista programmis PadForge pole</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programm luges vanemat olekut</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Sellist sätet pole</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Väärtus oli väljaspool sättele lubatut</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Te ei lubanud seda</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Keegi ei vastanud õigel ajal</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ootab teie vastust</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Sellist päringut pole</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Pole midagi tagasi võtta</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Seda saate muuta ainult teie</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faili ei saanud avada</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Sellist makrot pole</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Teie vastust ootas liiga palju küsimusi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaheta profiilile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Naase vaikeprofiilile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Küsi, milline profiil on aktiivne</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lase lahti seadme {0} juhtelemendid</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sea väärtus {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Käivita tööriist {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Loe olekut</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Vaheta profiile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Käivita või peata mootor</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Lülita virtuaalsed kontrollerid sisse või välja</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Salvesta diagnostika hetktõmmis</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Loe küsitlussagedust ja draivereid</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Loetle profiilid</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Loe profiili</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Loetle virtuaalsed kontrollerid</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Loetle seadmed</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Loe seadet</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Oota teie sisendit</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Loe kontrolleri vastendusi</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Loetle kontrolleri makrod</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Salvesta probleem</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Leia sätteid</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Loe sätet</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Näita teile kohta</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Lisa oma seade</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Juhi oma seadet</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Eemalda oma seade</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Hoia või lase lahti juhtelement</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Muuda sätet</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Loo profiil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Nimeta profiil ümber</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Kustuta profiil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Impordi profiil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Ekspordi profiil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Lisa virtuaalne kontroller</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Eemalda virtuaalne kontroller</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Muuda kontrolleri tüüpi</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Määra seade</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Sea vastenduste read</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Tühjenda vastenduste read</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Vastenda kontroller automaatselt</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Salvesta makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Kustuta makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Võta tema muudatused tagasi</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kontrolli päringut</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kutsu tööriist, mida programmis PadForge pole: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Impordi profiil „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Saada Windowsile klaviatuuri ja hiire sisend</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Klaviatuuri ja hiire kontroller vajutab klahve ja liigutab kursorit igas programmis.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} sisendist {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Salvesta makro, mis tegutseb väljaspool programmi PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Käivitab {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Vajutab {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Sisestab teksti eesplaanil olevasse programmi</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Liigutab hiirt või klõpsab</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Loob klaviatuuri ja hiire kontrolleri</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Lülitab sisse {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Muuda „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Seab {0} väärtuseks {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Kuulab võrgus, nii et teised seadmed pääsevad sellele arvutile ligi.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Muudab draiverit või tööriista HidHide, millele toetuvad teised programmid ja mängud.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fail: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Muudab, millised programmid seadet lugeda saavad, sätte Use Only in PadForge kaudu.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Seadista kontroller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Leia seade, loo sellele virtuaalne kontroller, määra see ja vastenda, mida mäng vajab.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Miks mäng minu kontrollerit ei näe</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Kontrolli mootorit, virtuaalset kontrollerit, seadet, draivereid ja tööriista HidHide ükshaaval.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Too profiil üle</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Impordi teise programmi profiilifail ja vaata, mis üle tuli.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} korda</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, viimane {1} sellisest</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3934,6 +4011,10 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffersi serialiseerija, mida SteamKit2 kasutab Steami võrguprotokolli jaoks, autor Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandardi lahtipakkimine, mida SteamKit2 kasutab Steami depootükkide jaoks, zstd-teegi C#-port, autor Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocoli server ja klient assistendi ühenduse ja PadForge.exe --mcp taga, autor Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ja DependencyInjection.Abstractions, millele MCP C# SDK tugineb, autor Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentatsioon Wii sidumisprotseduuri, kõlari ADPCM-i, Wii Remote'i külili ja püsti asendi, kangipiirde mudeli ja selle salvestusvormingu ning güroskoobi telgede kokkuleppe kohta. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

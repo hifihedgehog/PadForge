@@ -18,5 +18,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\PadForge.App\Resources\Plugins\PadForgePlugin.cs" Link="Kit\PadForgePlugin.cs" />
+    <Compile Include="..\PadForge.App\Services\Automation\PipeOwner.cs" Link="Kit\PipeOwner.cs" />
   </ItemGroup>
 </Project>

@@ -241,6 +241,21 @@ namespace PadForge.ViewModels
                 ["refused"] = s => s.Automation_Result_Refused,
                 ["too-soon"] = s => s.Automation_Result_TooSoon,
                 ["limit-reached"] = s => s.Automation_Result_LimitReached,
+                // The codes an assistant's tools and a script's call lines
+                // answer (#597, AssistantCalls and AssistantTools).
+                ["unknown-tool"] = s => s.Automation_Result_UnknownTool,
+                ["stale"] = s => s.Automation_Result_Stale,
+                ["unknown-setting"] = s => s.Automation_Result_UnknownSetting,
+                ["out-of-range"] = s => s.Automation_Result_OutOfRange,
+                ["declined"] = s => s.Automation_Result_Declined,
+                ["timed-out"] = s => s.Automation_Result_TimedOut,
+                ["waiting"] = s => s.Automation_Result_Waiting,
+                ["unknown-request"] = s => s.Automation_Result_UnknownRequest,
+                ["nothing-to-undo"] = s => s.Automation_Result_NothingToUndo,
+                ["users-own"] = s => s.Automation_Result_UsersOwn,
+                ["no-file"] = s => s.Automation_Result_NoFile,
+                ["unknown-macro"] = s => s.Automation_Result_UnknownMacro,
+                ["too-many-questions"] = s => s.Automation_Result_TooManyQuestions,
             };
 
         /// <summary>A refusal in the interface's words: the phrase of its

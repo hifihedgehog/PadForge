@@ -46,7 +46,7 @@ namespace PadForge.Services.Plugins
             Manager = manager ?? new PluginManager(new PluginLauncher(), host.AutomationPipe.Name);
             BuiltIns = new BuiltInPlugins(host.Sessions.Devices,
                 () => Strings.Instance.Plugins_TestController,
-                name => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Plugins_Replay_DeviceName_Format, name));
+                BuiltInPlugins.ReplayShownName);
 
             host.AcceptPluginToken = Manager.AcceptToken;
             host.EngineChanged += OnEngine;

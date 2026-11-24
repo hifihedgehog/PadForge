@@ -8461,9 +8461,18 @@ namespace PadForge.Services
         }
 
         /// <summary>A built-in plugin's device in the language in use
-        /// (#597), unless the user named it.</summary>
+        /// (#597), unless the user named it: by the name this run gave it,
+        /// or, for a Replay row left offline by an earlier run, made from
+        /// the recorded name the row keeps as its product's.</summary>
         private static string BuiltInName(UserDevice ud)
-            => string.IsNullOrEmpty(ud.DisplayName) && Plugins.BuiltInDeviceNames.TryName(ud.InstanceGuid, out string name) ? name : null;
+        {
+            if (!string.IsNullOrEmpty(ud.DisplayName)) return null;
+            if (Plugins.BuiltInDeviceNames.TryName(ud.InstanceGuid, out string name)) return name;
+            if (ud.DevicePath != null && ud.DevicePath.StartsWith(Plugins.BuiltInPlugins.ReplayPathPrefix, StringComparison.Ordinal)
+                && !string.IsNullOrEmpty(ud.ProductName))
+                return Plugins.BuiltInPlugins.ReplayShownName(ud.ProductName);
+            return null;
+        }
 
         private static int TryParseInt(string value, int defaultValue)
         {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using PadForge.Resources.Strings;
@@ -100,6 +100,11 @@ namespace PadForge.Services.Automation
         Release,
         Value,
         Call,
+
+        /// <summary>A tool an assistant or a script's <c>call</c> line ran
+        /// (#597): the argument is the tool's name and the detail what it
+        /// named.</summary>
+        Tool,
     }
 
     /// <summary>
@@ -114,7 +119,9 @@ namespace PadForge.Services.Automation
     /// entry.</param>
     /// <param name="Mixed">Whether the asks counted named different things,
     /// of which <paramref name="Argument"/> is the last.</param>
-    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1, bool Mixed = false)
+    /// <param name="Detail">For a tool, what the call named: a profile, a
+    /// setting, a controller. Null for none.</param>
+    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1, bool Mixed = false, string Detail = null)
     {
         /// <summary>The longest stretch of a program's own text a sentence
         /// carries.</summary>
@@ -174,6 +181,7 @@ namespace PadForge.Services.Automation
                     AutomationAskKind.Release => string.Format(s.Automation_Asked_Release_Format, argument),
                     AutomationAskKind.Value => string.Format(s.Automation_Asked_Value_Format, argument),
                     AutomationAskKind.Call => string.Format(s.Automation_Asked_Call_Format, argument),
+                    AutomationAskKind.Tool => AssistantToolWords.Asked(Argument, Detail),
                     _ => string.Format(s.Automation_Asked_Unknown_Format, argument),
                 };
             }
@@ -197,7 +205,16 @@ namespace PadForge.Services.Automation
         /// <summary>Whether the entry records something done: a change, an
         /// input sent or held, or a question the user answered. No other
         /// program's lines push one out of Activity.</summary>
-        public bool Keeps => HoldsApproval || (Succeeded && !AutomationActivity.OnlyReads(Asked.Kind));
+        public bool Keeps => HoldsApproval || Spell != 0 || (Succeeded && !ReadsOnly && !AutomationActivity.OnlyReads(Asked.Kind));
+
+        /// <summary>Whether the call only read, for a kind that can do
+        /// either: an assistant's tool, by the tool's own hint.</summary>
+        public bool ReadsOnly { get; init; }
+
+        /// <summary>The undo journal's entry a tool's change joined, which
+        /// the Activity card's Undo restores, or 0 for a call that changed
+        /// nothing (#597).</summary>
+        public int Spell { get; init; }
     }
 
     /// <summary>
@@ -275,7 +292,8 @@ namespace PadForge.Services.Automation
             {
                 var old = _entries[same];
                 _entries.RemoveAt(same);
-                bool mixed = old.Asked.Mixed || !string.Equals(old.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal);
+                bool mixed = old.Asked.Mixed || !string.Equals(old.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal)
+                    || !string.Equals(old.Asked.Detail, entry.Asked.Detail, StringComparison.Ordinal);
                 entry = entry with { Asked = entry.Asked with { Count = old.Asked.Count + entry.Asked.Count, Mixed = mixed } };
             }
             else if (_entries.Count >= Capacity && !entry.Keeps && OldestOf(key, keepers: false) < 0)
@@ -316,14 +334,18 @@ namespace PadForge.Services.Automation
         {
             if (entry.HoldsApproval) return -1;
             if (entry.Succeeded && entry.Asked.Kind == AutomationAskKind.Call) return -1;
+            // A change an assistant made carries its own Undo, which a merge
+            // would lose.
+            if (entry.Spell != 0) return -1;
             for (int i = _entries.Count - 1; i >= 0; i--)
             {
                 var e = _entries[i];
-                if (e.HoldsApproval || e.Succeeded != entry.Succeeded || e.Asked.Kind != entry.Asked.Kind) continue;
+                if (e.HoldsApproval || e.Spell != 0 || e.Succeeded != entry.Succeeded || e.Asked.Kind != entry.Asked.Kind) continue;
                 if (!string.Equals(KeyOf(e), key, StringComparison.Ordinal) || !Equals(e.Program, entry.Program)) continue;
                 if (entry.Succeeded)
                 {
                     if (string.Equals(e.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal)
+                        && string.Equals(e.Asked.Detail, entry.Asked.Detail, StringComparison.Ordinal)
                         && string.Equals(e.Result, entry.Result, StringComparison.Ordinal))
                         return i;
                 }

@@ -1603,6 +1603,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge sinalandire kulumikizana kwa pulogalamuyi</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Yafunsanso mofulumira kwambiri</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Palibenso zina mwa izi mpaka PadForge iyambenso</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ilibe chida chotere</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Pulogalamuyo inawerenga mmene zinthu zinalili kale</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Palibe zokonda zotere</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Mtengowo unali kunja kwa zomwe zokondazo zimalandira</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Simunalole</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Palibe amene anayankha nthawi isanathe</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Tikudikira yankho lanu</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Palibe pempho lotere</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Palibe choti mubweze</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Inu nokha ndi amene mungasinthe izi</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fayiloyo sinatseguke</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Palibe macro yotere</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Mafunso ambiri kwambiri anali kukudikirani</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sinthani kupita ku mbiri {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bwererani ku mbiri yokhazikika</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Funsani mbiri yomwe ikugwira ntchito</value></data>
@@ -1638,6 +1651,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Siyani zowongolera za chipangizo {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Khazikitsani mtengo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yendetsani chida {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Werengani mmene zilili</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Sinthani mbiri</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Yambitsani kapena imitsani injini</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Yatsani kapena zimitsani makontrola a pakompyuta</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Sungani chithunzithunzi cha matenda</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Werengani liwiro la kufunsa ndi madalaivala</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lembani mbiri</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Werengani mbiri</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lembani makontrola a pakompyuta</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lembani zipangizo</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Werengani chipangizo</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Dikirani zolowetsa zanu</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Werengani mapu a kontrola</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lembani ma macro a kontrola</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Jambulani vuto</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Pezani zokonda</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Werengani zokonda</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kuonetsani malo</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Onjezani chipangizo chake</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Yendetsani chipangizo chake</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Chotsani chipangizo chake</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Gwirani kapena siyani chowongolera</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Sinthani zokonda</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Pangani mbiri</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Sinthani dzina la mbiri</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Fufutani mbiri</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Lowetsani mbiri</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Tumizani mbiri kunja</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Onjezani kontrola ya pakompyuta</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Chotsani kontrola ya pakompyuta</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Sinthani mtundu wa kontrola</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Perekani chipangizo</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Khazikitsani mizere ya mapu</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Chotsani mizere ya mapu</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Pangani mapu a kontrola zokha</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Sungani macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Fufutani macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Bwezerani zosintha zake</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Onani pempho</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Imbani chida chomwe PadForge ilibe: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Lowetsani mbiri “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Tumizani zolowetsa za kiyibodi ndi mbewa ku Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kontrola ya kiyibodi ndi mbewa imakanikiza makiyi ndikusuntha cholozera mu pulogalamu iliyonse.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} kuchokera ku {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Sungani macro yomwe imachita zinthu kunja kwa PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Imayendetsa {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Imakanikiza {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Imalemba mawu mu pulogalamu yomwe ili kutsogolo</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Imasuntha kapena kudina mbewa</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Imapanga kontrola ya kiyibodi ndi mbewa</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Imayatsa {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Sinthani “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Imakhazikitsa {0} kukhala {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Imamvetsera pa netiweki, kotero zipangizo zina zimatha kufika pa PC iyi.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Imasintha dalaivala kapena HidHide, zomwe mapulogalamu ena ndi masewera amadalira.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fayilo: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Imasintha mapulogalamu omwe angawerenge chipangizocho, kudzera mu Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Khazikitsani kontrola</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Pezani chipangizocho, pangani kontrola ya pakompyuta yake, ipatseni chipangizocho ndikupanga mapu a zomwe masewera akufuna.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Chifukwa chake masewera saona kontrola yanga</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Onani injini, kontrola ya pakompyuta, chipangizo, madalaivala ndi HidHide chimodzi ndi chimodzi.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Bweretsani mbiri</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Lowetsani fayilo ya mbiri kuchokera ku pulogalamu ina, kenako onani zomwe zabwera.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, nthawi {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, womaliza mwa {1} otere</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Lolani</value></data>
@@ -1677,5 +1754,9 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Imasalaza mbewa yomwe imanena mosagwirizana. Chiwongolero chimatsatira dzanja mochedwa pafupifupi nthawi imeneyi. 0 ndi kuzimitsa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kumapeto pa liwiro</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry ikayatsidwa, gawo la kumapeto lomwe latsala pa 200 km/h. Pa 100% kumapeto konse kulipo pa liwiro lililonse.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva ndi kasitomala wa Model Context Protocol kumbuyo kwa kulumikizana kwa othandizira ndi PadForge.exe --mcp, yolembedwa ndi Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ndi DependencyInjection.Abstractions, zomwe MCP C# SDK yamangidwapo, zolembedwa ndi Microsoft.</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Mtengo wa sikiripiti</value></data>
 </root>

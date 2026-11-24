@@ -878,4 +878,8 @@
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>wiliwili</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ena veigauna kece</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Na server kei na client ni Model Context Protocol e vakayagataki ena ivakasemati ni dauveivuke kei na PadForge.exe --mcp, mai vei Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions kei na DependencyInjection.Abstractions, ka tara kina na MCP C# SDK, mai vei Microsoft.</value></data>
 </root>

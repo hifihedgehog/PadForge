@@ -389,6 +389,23 @@ libusb
   Licensed under the GNU Lesser General Public License v2.1 or later
   (full text below)
 
+MCP C# SDK (ModelContextProtocol.Core)
+  https://github.com/modelcontextprotocol/csharp-sdk
+  Copyright (c) 2024-2026 Model Context Protocol a Series of LF Projects,
+  LLC. The Model Context Protocol server inside PadForge and the client
+  and server of PadForge.exe --mcp. Version 2.4.0 ships unmodified inside
+  the executable as ModelContextProtocol.Core.dll. Licensed under the
+  Apache License 2.0 (text below), with contributions made before the
+  project's relicensing under the MIT License (text below)
+
+Microsoft.Extensions abstractions
+  https://github.com/dotnet/extensions and https://github.com/dotnet/runtime
+  Copyright (c) .NET Foundation and Contributors. Microsoft.Extensions.AI.
+  Abstractions 10.11.0, Microsoft.Extensions.Logging.Abstractions 10.0.14
+  and Microsoft.Extensions.DependencyInjection.Abstractions 10.0.14, which
+  the MCP C# SDK is built on, ship unmodified inside the executable.
+  Licensed under MIT License
+
 Microsoft GameInput SDK loader
   https://www.nuget.org/packages/Microsoft.GameInput/3.5.270
   Copyright (c) Microsoft Corporation.
@@ -1622,8 +1639,8 @@ Special Thanks
 
 --------------------------------------------------------------------------------
 
-Apache License 2.0 (Kaldi, the Material Design Icons flame glyph, OpenFst,
-protobuf-net and Vosk, redistributed in binary form)
+Apache License 2.0 (Kaldi, the MCP C# SDK, the Material Design Icons flame
+glyph, OpenFst, protobuf-net and Vosk, redistributed in binary form)
 ==========================================================================
 
                                  Apache License
@@ -4537,7 +4554,8 @@ SOFTWARE.
 --------------------------------------------------------------------------------
 
 MIT License (Bouncy Castle, CommunityToolkit.Mvvm, HelixToolkit, HidHide,
-HIDMaestro, NAudio, Nefarius.Utilities.DeviceManagement, nefcon with the
+HIDMaestro, the MCP C# SDK's earlier contributions, the Microsoft.Extensions
+abstractions, NAudio, Nefarius.Utilities.DeviceManagement, nefcon with the
 colorwin, easyloggingpp, Microsoft Detours, neflib and Windows
 Implementation Libraries code inside it, the .NET runtime and
 WinRT.Runtime, the Windows MIDI Services projection, winpthreads, WPF UI

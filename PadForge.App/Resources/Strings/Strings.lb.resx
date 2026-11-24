@@ -698,6 +698,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge huet d'Verbindung vun dësem Programm net ugeholl</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ze séier nach eng Kéier gefrot</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Keng weider, bis PadForge nei start</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge huet dëst Tool net</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>De Programm huet en eelere Stand gelies</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Dës Astellung gëtt et net</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>De Wäert louch ausserhalb vun deem, wat d'Astellung erlaabt</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Dir hutt et net erlaabt</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Keen huet rechtzäiteg geäntwert</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Waart op Är Äntwert</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Dës Ufro gëtt et net</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Näischt réckgängeg ze maachen</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nëmmen Dir kënnt dat änneren</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>D'Datei konnt net opgemaach ginn</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Dëse Makro gëtt et net</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ze vill Froen hunn op Iech gewaart</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Op de Profil {0} wiesselen</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Op de Standardprofil zréckgoen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Froen, wéi e Profil aktiv ass</value></data>
@@ -733,6 +746,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Bedienelementer vum Apparat {0} lassloossen</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>De Wäert {0} setzen</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>D'Tool {0} ausféieren</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>De Status liesen</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Profil wiesselen</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>D'Engine starten oder stoppen</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Virtuell Controller un- oder ausschalten</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Eng Diagnose-Momentopnam späicheren</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>D'Ofrufrat an d'Treiber liesen</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>D'Profiler oplëschten</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>E Profil liesen</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>D'virtuell Controller oplëschten</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>D'Apparater oplëschten</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>En Apparat liesen</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Op Är Agab waarden</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>D'Zouuerdnunge vun engem Controller liesen</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>D'Makroe vun engem Controller oplëschten</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>E Problem opzeechnen</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Astellunge sichen</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Eng Astellung liesen</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Iech eng Plaz weisen</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>En eegenen Apparat derbäisetzen</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Säin Apparat steieren</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Säin Apparat ewechhuelen</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>E Bedienelement halen oder lassloossen</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Eng Astellung änneren</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>E Profil erstellen</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>E Profil ëmbenennen</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>E Profil läschen</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>E Profil importéieren</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>E Profil exportéieren</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>E virtuelle Controller derbäisetzen</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>E virtuelle Controller ewechhuelen</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Den Typ vun engem Controller änneren</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>En Apparat zouweisen</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Zouuerdnungszeile setzen</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Zouuerdnungszeile läschen</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>E Controller automatesch zouuerdnen</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>E Makro späicheren</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>E Makro läschen</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Seng Ännerunge réckgängeg maachen</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Eng Ufro iwwerpréiwen</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>En Tool opruffen, dat PadForge net huet: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>De Profil „{0}“ importéieren</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Tastatur- a Maus-Agabe u Windows schécken</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>En Tastatur- a Maus-Controller dréckt Tasten a beweegt de Mauszeiger an all Programm.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} vun {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>E Makro späicheren, deen ausserhalb vu PadForge handelt</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Féiert {0} aus</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Dréckt {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Tippt Text an de Programm am Virdergrond</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Beweegt oder klickt d'Maus</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Mécht en Tastatur- a Maus-Controller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Schalt {0} un</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>„{0}“ änneren</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setzt {0} op {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Lauschtert um Netzwierk, sou datt aner Apparater dëse PC erreeche kënnen.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ännert en Treiber oder HidHide, op déi aner Programmer a Spiller ugewise sinn.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Datei: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ännert iwwer „Use Only in PadForge“, wéi eng Programmer den Apparat liese kënnen.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>E Controller areechten</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Den Apparat fannen, e virtuelle Controller dofir maachen, en zouweisen an dat zouuerdnen, wat d'Spill brauch.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Firwat e Spill mäi Controller net gesäit</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>D'Engine, de virtuelle Controller, den Apparat, d'Treiber an HidHide een nom aneren iwwerpréiwen.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>E Profil iwwerhuelen</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Eng Profildatei aus engem anere Programm importéieren, dann kucken, wat iwwerholl gouf.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} Mol</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, déi lescht vun {1} ähnlechen Ufroen</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3902,6 +3979,10 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol-Buffers-Serialiséierer, deen SteamKit2 fir de Steam-Netzwierkprotokoll benotzt, vum Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-Dekompressioun, déi SteamKit2 fir Steam-Depot-Stécker benotzt, e C#-Port vun der zstd-Bibliothéik vum Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Server a Client vum Model Context Protocol hannert der Assistent-Verbindung an PadForge.exe --mcp, vu Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions an DependencyInjection.Abstractions, op deenen d'MCP C# SDK opbaut, vu Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentatioun zur Wii-Kopplungszeremonie, zum ADPCM vum Lautsprecher, zur säitlecher an oprechter Orientéierung vun der Wii Remote, zum Stick-Gate-Modell a sengem Späicherformat an zur Konventioun vun de Gyro-Achsen. Nëmmen als Dokumentatioun gelies, kee GPL-Code gëtt matgeliwwert.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

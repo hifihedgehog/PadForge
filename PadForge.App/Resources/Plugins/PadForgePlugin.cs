@@ -1,10 +1,10 @@
 // A PadForge plugin in C#: a complete small one, from the PadForge Plugin Kit.
 //
-// To build it, make a console program and put this file in place of its
-// Program.cs:
+// To build it, make a console program, put this file in place of its
+// Program.cs and PipeOwner.cs beside it:
 //
 //     dotnet new console -n MyPlugin
-//     (copy this file over MyPlugin\Program.cs)
+//     (copy this file over MyPlugin\Program.cs, and PipeOwner.cs into MyPlugin)
 //     dotnet build MyPlugin -c Release
 //
 // To add it, open PadForge, go to Extras, Plugins, press Add a Plugin… and
@@ -53,10 +53,11 @@ namespace PadForgePluginKit
             using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous,
                 TokenImpersonationLevel.Identification);
             pipe.Connect(5000);
-            // The key goes only to a pipe PadForge made.
-            if (!OperatingSystem.IsWindows() || !ServedByPadForge(pipe, pipeName))
+            // The key goes only to a pipe PadForge made: PipeOwner.cs holds
+            // the rule, the same file PadForge builds.
+            if (!OperatingSystem.IsWindows() || !PadForge.Services.Automation.PipeOwner.IsServer(pipe.SafePipeHandle, pipeName))
             {
-                Console.Error.WriteLine("The pipe " + pipeName + " is not PadForge's, so the plugin's key was not sent.");
+                Console.Error.WriteLine("Another program holds the pipe " + pipeName + ". It is not PadForge, so nothing was sent to it.");
                 return 3;
             }
             var utf8 = new UTF8Encoding(false);
@@ -136,22 +137,6 @@ namespace PadForgePluginKit
                 Console.Error.WriteLine(e.Message);
                 return 1;
             }
-        }
-
-        /// <summary>
-        /// Whether the pipe's owner is Administrators or SYSTEM, as a pipe
-        /// PadForge made is: a program without administrator rights cannot
-        /// make one so owned. A pipe of another name than PadForge's own,
-        /// which only a test gives, may also be owned by this program's own
-        /// user.
-        /// </summary>
-        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-        internal static bool ServedByPadForge(NamedPipeClientStream pipe, string pipeName)
-        {
-            if (pipe.GetAccessControl().GetOwner(typeof(SecurityIdentifier)) is not SecurityIdentifier owner) return false;
-            if (owner.IsWellKnown(WellKnownSidType.BuiltinAdministratorsSid) || owner.IsWellKnown(WellKnownSidType.LocalSystemSid)) return true;
-            using var me = WindowsIdentity.GetCurrent();
-            return pipeName != "PadForge.Automation" && owner == me.User;
         }
 
         /// <summary>The value of <paramref name="key"/>= in an ok line.</summary>

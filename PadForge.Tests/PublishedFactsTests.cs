@@ -54,11 +54,11 @@ namespace PadForge.Tests
                 "GamepadAssetPack", "GamepadMotionHelpers", "HelixToolkit", "HidHide", "HIDMaestro", "Hitboxer",
                 "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
                 "DotNet", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
-                "WiimoteLib", "ModernWpf", "X1nput", "Xbledctl", "MouseArt", "ZstdSharp",
+                "WiimoteLib", "ModernWpf", "X1nput", "Xbledctl", "MouseArt", "ZstdSharp", "MsExtensions",
                 "FlydigiSpaceStationMac", "FlydigiApex4Linux",
             }),
             ("About_License_MitSdkLoader", new[] { "GameInput" }),
-            ("About_License_Apache2", new[] { "Bluepad32", "ProtobufNet", "Vosk" }),
+            ("About_License_Apache2", new[] { "Bluepad32", "McpSdk", "ProtobufNet", "Vosk" }),
             ("About_License_Bsd3", new[]
             {
                 "BthPS3", "Concentus", "DsHidMini", "LogitechGKeyRefs", "OpenVR", "QDollar", "SipSorcery",

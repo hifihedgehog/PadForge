@@ -76,6 +76,9 @@ namespace PadForge
             // The script libraries PadForge carries, which the page's Save a
             // Library writes.
             _automation.Libraries = AutomationLibraries.Instance;
+            // The assistants' server, the call line of scripts, Save the
+            // Skill and the Activity card's Undo (#597).
+            StartAssistants();
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableAutomation)

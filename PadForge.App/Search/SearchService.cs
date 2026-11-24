@@ -80,14 +80,65 @@ namespace PadForge.Search
                 }
                 dispatcher.BeginInvoke(new Action(() =>
                 {
-                    _index = done.Result;
+                    SetIndex(done.Result);
                     IndexBuilt?.Invoke(this, EventArgs.Empty);
                 }));
             }, TaskScheduler.Default);
         }
 
-        /// <summary>Takes an index made elsewhere (the tests).</summary>
-        internal void SetIndex(IReadOnlyList<SearchEntry> index) => _index = index ?? Array.Empty<SearchEntry>();
+        /// <summary>Takes an index made elsewhere (the tests, and the
+        /// assistants' catalog when it is asked before the build is
+        /// done).</summary>
+        internal void SetIndex(IReadOnlyList<SearchEntry> index)
+        {
+            _index = index ?? Array.Empty<SearchEntry>();
+            _ids = SearchIds.Assign(_index);
+        }
+
+        private Dictionary<SearchEntry, string> _ids = new(ReferenceEqualityComparer.Instance);
+
+        /// <summary>An entry's stable ID (#597), the same in every
+        /// language.</summary>
+        internal string IdOf(SearchEntry entry) => entry != null && _ids.TryGetValue(entry, out string id) ? id : null;
+
+        /// <summary>One entry that shows now, as the settings catalog reads
+        /// it (#597): the entry, its item, its label's element, the
+        /// controller it stands on and that controller's section name, and
+        /// the value read for a controller the page is no longer bound
+        /// to.</summary>
+        internal readonly record struct Shown(SearchEntry Entry, object Item, DependencyObject Label, PadViewModel Pad, string Section, string Value);
+
+        /// <summary>Every entry that showed at the last read
+        /// (<see cref="RefreshAvailability"/>).</summary>
+        internal IReadOnlyList<Shown> AvailableNow()
+        {
+            var list = new List<Shown>(_available.Count);
+            foreach (var a in _available) list.Add(new Shown(a.Entry, a.Item, a.Label, a.Pad, a.Section, a.Value));
+            return list;
+        }
+
+        /// <summary>The second line Search writes for an entry.</summary>
+        internal string WhereFor(Shown shown)
+            => WhereOf(shown.Entry, shown.Pad, shown.Section, shown.Item ?? (object)shown.Pad ?? _pageOf(shown.Entry.Page)?.DataContext);
+
+        /// <summary>The value Search shows for an entry now.</summary>
+        internal string ValueFor(Shown shown) => shown.Value ?? ValueOf(shown.Entry, shown.Item ?? shown.Label);
+
+        /// <summary>How well an entry's words match a query: Search's own
+        /// score, 0 for no match.</summary>
+        internal int ScoreFor(Shown shown, string query)
+        {
+            var entry = shown.Entry;
+            object data = shown.Item ?? (object)shown.Pad ?? _pageOf(entry.Page)?.DataContext;
+            string title = SearchLocator.LabelText(entry.Label, data) ?? string.Empty;
+            if (title.Length == 0) return 0;
+            string qualifier = SearchLocator.LabelText(entry.Qualifier, data) ?? string.Empty;
+            string english = SearchLocator.EnglishText(entry.Label);
+            string englishQualifier = SearchLocator.EnglishText(entry.Qualifier);
+            if (english != null && englishQualifier != null) english += " " + englishQualifier;
+            int score = SearchMatcher.Score(query, qualifier.Length > 0 ? title + " " + qualifier : title, WhereFor(shown), english);
+            return score == 0 ? 0 : score + Weight(entry);
+        }
 
         private PadPage Pad => _pageOf(SearchPage.Pad) as PadPage;
 

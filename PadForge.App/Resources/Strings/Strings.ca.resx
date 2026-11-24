@@ -698,6 +698,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge no ha acceptat la connexió d'aquest programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>S'ha tornat a demanar massa aviat</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No se'n faran més fins que PadForge s'iniciï de nou</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge no té aquesta eina</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>El programa ha llegit un estat més antic</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>No existeix aquesta opció</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>El valor era fora del que accepta l'opció</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>No ho has permès</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ningú ha respost a temps</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Esperant la teva resposta</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>No existeix aquesta petició</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>No hi ha res per desfer</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Només tu ho pots canviar</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>No s'ha pogut obrir el fitxer</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>No existeix aquesta macro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Hi havia massa preguntes esperant la teva resposta</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Canvia al perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Torna al perfil per defecte</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pregunta quin perfil és actiu</value></data>
@@ -733,6 +746,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Deixa anar controls del dispositiu {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Defineix el valor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Executa l'eina {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Llegeix l'estat</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Canvia de perfil</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Inicia o atura el motor</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Activa o desactiva comandaments virtuals</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Desa una instantània de diagnòstic</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Llegeix la freqüència de sondeig i els controladors</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Llista els perfils</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Llegeix un perfil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Llista els comandaments virtuals</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Llista els dispositius</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Llegeix un dispositiu</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Espera una entrada teva</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Llegeix les assignacions d'un comandament</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Llista les macros d'un comandament</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Grava un problema</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Cerca opcions</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Llegeix una opció</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Mostra't un lloc</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Afegeix un dispositiu propi</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Controla el seu dispositiu</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Treu el seu dispositiu</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Manté o deixa anar un control</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Canvia una opció</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Crea un perfil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Canvia el nom d'un perfil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Elimina un perfil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importa un perfil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Exporta un perfil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Afegeix un comandament virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Treu un comandament virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Canvia el tipus d'un comandament</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Assigna un dispositiu</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Defineix files d'assignació</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Esborra files d'assignació</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Assigna un comandament automàticament</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Desa una macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Elimina una macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Desfés els seus canvis</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Comprova una petició</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Crida una eina que PadForge no té: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importa el perfil «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Envia entrades de teclat i ratolí a Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Un comandament de teclat i ratolí prem tecles i mou el punter a tots els programes.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} des de {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Desa una macro que actua fora de PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Executa {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Prem {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Escriu text al programa que té el focus</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Mou o fa clic amb el ratolí</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Crea un comandament de teclat i ratolí</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Activa {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Canvia «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Posa {0} a {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Escolta a la xarxa, de manera que altres dispositius poden accedir a aquest PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Canvia un controlador o HidHide, dels quals depenen altres programes i jocs.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fitxer: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Canvia quins programes poden llegir el dispositiu, mitjançant Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Configura un comandament</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Troba el dispositiu, crea-hi un comandament virtual, assigna'l i assigna el que necessita el joc.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Per què un joc no veu el meu comandament</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Comprova una a una el motor, el comandament virtual, el dispositiu, els controladors i HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Porta un perfil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importa un fitxer de perfil d'un altre programa i després mira què ha arribat.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} cops</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, l'últim de {1} com aquest</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3929,6 +4006,10 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serialitzador de Protocol Buffers que SteamKit2 fa servir per al protocol de xarxa de Steam, de Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Descompressió Zstandard que SteamKit2 fa servir per als fragments dels dipòsits de Steam, una adaptació a C# de la biblioteca zstd feta per Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>El servidor i el client del Model Context Protocol darrere de la connexió dels assistents i de PadForge.exe --mcp, de Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions i DependencyInjection.Abstractions, sobre els quals es basa el MCP C# SDK, de Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Documentació del procés d'aparellament de la Wii, l'ADPCM de l'altaveu, l'orientació de costat i vertical del comandament de Wii, el model de la guia de la palanca i el seu format d'emmagatzematge, i la convenció d'eixos del giroscopi. Llegit només com a documentació, no s'hi inclou cap codi GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

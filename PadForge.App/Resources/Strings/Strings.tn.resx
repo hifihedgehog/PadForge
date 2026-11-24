@@ -1270,6 +1270,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ga e a amogela kgolagano ya porogeramo e</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>E kopile gape ka bonako thata</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ga go sa tlhole go na tse dingwe go fitlha PadForge e simolola gape</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ga e na thulusu e e jalo</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Porogeramo e badile seemo sa bogologolo</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ga go na thulaganyo e e jalo</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Boleng bo ne bo le kwa ntle ga se thulaganyo e se amogelang</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ga o a e letla</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ga go ope yo o arabileng ka nako</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>E emetse karabo ya gago</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ga go na kopo e e jalo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ga go na sepe sa go dirolola</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ke wena fela yo o ka fetolang se</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faele ga e a kgona go bulwa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ga go na macro e e jalo</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Dipotso di le dintsi thata di ne di go emetse</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetolela kwa porofaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela kwa porofaeleng ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa gore ke porofaele efe e e dirang</value></data>
@@ -1305,6 +1318,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lesa ditaolo tsa sedirisiwa {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Baya boleng {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Dirisa thulusu {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Bala seemo</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Fetola diporofaele</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Simolola kgotsa emisa enjine</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Bulela kgotsa tima dicontroller tsa virtual</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Boloka setshwantsho sa tlhatlhobo</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Bala lebelo la polling le didraebara</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Bontsha lenaane la diporofaele</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Bala porofaele</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Bontsha lenaane la dicontroller tsa virtual</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Bontsha lenaane la didirisiwa</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Bala sedirisiwa</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Emela tsenyo ya gago</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Bala dimapo tsa controller</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Bontsha lenaane la dimacro tsa controller</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Gatisa bothata</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Batla dithulaganyo</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Bala thulaganyo</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Go bontsha lefelo</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Oketsa sedirisiwa sa yone</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Laola sedirisiwa sa yone</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Tlosa sedirisiwa sa yone</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Tshwara kgotsa lesa taolo</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Fetola thulaganyo</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Dira porofaele</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Fetola leina la porofaele</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Phimola porofaele</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Tsenya porofaele</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Romela porofaele kwa ntle</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Oketsa controller ya virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Tlosa controller ya virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Fetola mofuta wa controller</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Abela sedirisiwa</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Baya mela ya dimapo</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Phimola mela ya dimapo</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapa controller ka boitiro</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Boloka macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Phimola macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Dirolola diphetogo tsa yone</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Tlhola kopo</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Bitsa thulusu e PadForge e se nang yone: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Tsenya porofaele “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Romela tsenyo ya keyboard le mouse kwa Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Controller ya keyboard le mouse e tobetsa dinotlolo mme e sutisa sesupi mo porogerameng nngwe le nngwe.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} go tswa go {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Boloka macro e e dirang kwa ntle ga PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>E tsamaisa {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>E tobetsa {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>E kwala mafoko mo porogerameng e e kwa pele</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>E sutisa kgotsa e tobetsa mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>E dira controller ya keyboard le mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>E bulela {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Fetola “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>E baya {0} go {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>E reetsa mo neteweking, gore didirisiwa tse dingwe di kgone go fitlhelela PC e.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>E fetola draebara kgotsa HidHide, tse diporogeramo le metshameko e mengwe e di ikaegileng ka tsone.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faele: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>E fetola gore ke diporogeramo dife tse di ka balang sedirisiwa, ka Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Baakanya controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Batla sedirisiwa, dira controller ya virtual ya sone, se abele, mme o mape se motshameko o se tlhokang.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Goreng motshameko o sa bone controller ya me</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Tlhola enjine, controller ya virtual, sedirisiwa, didraebara le HidHide se le sengwe ka nako.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Tlisa porofaele</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Tsenya faele ya porofaele go tswa mo porogerameng e nngwe, morago o bone se se tlileng.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makgetlo: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya bofelo mo go tse {1} tse di tshwanang</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Letla</value></data>
@@ -1328,4 +1405,8 @@
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ka metlha</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Fa o ntse o tshwara</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Konopo e e letlang mouse go kgweetsa, mo sedirisiweng se le sengwe le motsamao wa mouse. Fa go sa tlhophiwa sepe, mouse e kgweetsa ka metlha.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Server le client ya Model Context Protocol tse di fa morago ga kgolagano ya mothusi le PadForge.exe --mcp, ka Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions le DependencyInjection.Abstractions, tse MCP C# SDK e agilweng mo go tsone, ka Microsoft.</value></data>
 </root>

@@ -26,6 +26,17 @@ namespace PadForge.Services.Plugins
         internal const string TestControllerKey = "test-controller";
         internal const string ReplayProgram = "Replay";
 
+        /// <summary>The word a Replay device's path carries, and the start
+        /// of that path: <c>program://replay/id</c>.</summary>
+        internal const string ReplayPathKind = "replay";
+        internal const string ReplayPathPrefix = "program://" + ReplayPathKind + "/";
+
+        /// <summary>A replayed device's name in the language in use, made
+        /// from the name it was recorded with.</summary>
+        internal static string ReplayShownName(string recorded)
+            => string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                PadForge.Resources.Strings.Strings.Instance.Plugins_Replay_DeviceName_Format, recorded);
+
         private readonly ProgramDevices _devices;
         private readonly Func<string> _testControllerName;
         private readonly Func<string, string> _replayName;
@@ -204,7 +215,11 @@ namespace PadForge.Services.Plugins
                 {
                     string recorded = device.Name;
                     Func<string> name = () => _replayName(recorded);
-                    var entry = _devices.DeclareBuiltIn(ReplayProgram, device.Key, name(), device.Shape);
+                    // The row keeps the recorded name, in no language, so a
+                    // row left offline by an earlier run is named in the
+                    // language in use too (InputService.LocalizedDeviceName).
+                    var entry = _devices.DeclareBuiltIn(ReplayProgram, device.Key, name(), device.Shape,
+                        productName: recorded, pathKind: ReplayPathKind);
                     Name(entry.Guid, name);
                     _replayEntries.Add(entry);
                     devices[device.Number] = entry.Device;

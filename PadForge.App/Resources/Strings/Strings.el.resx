@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Το PadForge δεν δέχτηκε τη σύνδεση αυτού του προγράμματος</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ζητήθηκε ξανά πολύ νωρίς</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Όχι άλλα τέτοια μέχρι να ξεκινήσει ξανά το PadForge</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Το PadForge δεν έχει τέτοιο εργαλείο</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Το πρόγραμμα διάβασε παλαιότερη κατάσταση</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Δεν υπάρχει τέτοια ρύθμιση</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Η τιμή ήταν εκτός των τιμών που δέχεται η ρύθμιση</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Δεν το επιτρέψατε</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Κανείς δεν απάντησε εγκαίρως</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Αναμονή για την απάντησή σας</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Δεν υπάρχει τέτοιο αίτημα</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αναίρεση</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Μόνο εσείς μπορείτε να το αλλάξετε</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Το αρχείο δεν μπόρεσε να ανοιχθεί</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Δεν υπάρχει τέτοια μακροεντολή</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Πάρα πολλές ερωτήσεις περίμεναν την απάντησή σας</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Αλλαγή στο προφίλ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Επιστροφή στο προεπιλεγμένο προφίλ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ερώτηση για το ενεργό προφίλ</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Αποδέσμευση χειριστηρίων της συσκευής {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ορισμός της τιμής {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Εκτέλεση του εργαλείου {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Ανάγνωση της κατάστασης</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Αλλαγή προφίλ</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Εκκίνηση ή διακοπή της μηχανής</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Ενεργοποίηση ή απενεργοποίηση εικονικών χειριστηρίων</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Αποθήκευση στιγμιότυπου διαγνωστικών</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Ανάγνωση του ρυθμού δειγματοληψίας και των προγραμμάτων οδήγησης</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Λίστα των προφίλ</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Ανάγνωση ενός προφίλ</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Λίστα των εικονικών χειριστηρίων</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Λίστα των συσκευών</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Ανάγνωση μιας συσκευής</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Αναμονή για είσοδο από εσάς</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Ανάγνωση των αντιστοιχίσεων ενός χειριστηρίου</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Λίστα των μακροεντολών ενός χειριστηρίου</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Εγγραφή ενός προβλήματος</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Αναζήτηση ρυθμίσεων</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Ανάγνωση μιας ρύθμισης</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Εμφάνιση ενός σημείου σε εσάς</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Προσθήκη δικής του συσκευής</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Οδήγηση της συσκευής του</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Αφαίρεση της συσκευής του</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Κράτημα ή αποδέσμευση ενός χειριστηρίου</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Αλλαγή μιας ρύθμισης</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Δημιουργία ενός προφίλ</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Μετονομασία ενός προφίλ</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Διαγραφή ενός προφίλ</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Εισαγωγή ενός προφίλ</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Εξαγωγή ενός προφίλ</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Προσθήκη ενός εικονικού χειριστηρίου</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Αφαίρεση ενός εικονικού χειριστηρίου</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Αλλαγή του τύπου ενός χειριστηρίου</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Ανάθεση μιας συσκευής</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Ορισμός γραμμών αντιστοίχισης</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Εκκαθάριση γραμμών αντιστοίχισης</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Αυτόματη αντιστοίχιση ενός χειριστηρίου</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Αποθήκευση μιας μακροεντολής</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Διαγραφή μιας μακροεντολής</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Αναίρεση των αλλαγών του</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Έλεγχος ενός αιτήματος</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Κλήση εργαλείου που το PadForge δεν έχει: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Εισαγωγή του προφίλ «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Αποστολή εισόδου πληκτρολογίου και ποντικιού στα Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ένα χειριστήριο πληκτρολογίου και ποντικιού πατά πλήκτρα και κινεί τον δείκτη σε κάθε πρόγραμμα.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} από {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Αποθήκευση μιας μακροεντολής που ενεργεί εκτός του PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Εκτελεί {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Πατά {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Πληκτρολογεί κείμενο στο πρόγραμμα που βρίσκεται μπροστά</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Κινεί ή κάνει κλικ με το ποντίκι</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Δημιουργεί χειριστήριο πληκτρολογίου και ποντικιού</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ενεργοποιεί: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Αλλαγή της ρύθμισης «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ορίζει το {0} σε {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ακούει στο δίκτυο, ώστε άλλες συσκευές να φτάνουν σε αυτόν τον υπολογιστή.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Αλλάζει ένα πρόγραμμα οδήγησης ή το HidHide, στα οποία βασίζονται άλλα προγράμματα και παιχνίδια.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Αρχείο: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Αλλάζει ποια προγράμματα μπορούν να διαβάζουν τη συσκευή, μέσω της επιλογής «Χρήση μόνο στο PadForge».</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Ρύθμιση χειριστηρίου</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Βρείτε τη συσκευή, φτιάξτε ένα εικονικό χειριστήριο για αυτήν, αναθέστε την και αντιστοιχίστε ό,τι χρειάζεται το παιχνίδι.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Γιατί ένα παιχνίδι δεν βλέπει το χειριστήριό μου</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Ελέγξτε ένα ένα τη μηχανή, το εικονικό χειριστήριο, τη συσκευή, τα προγράμματα οδήγησης και το HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Μεταφορά ενός προφίλ</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Εισαγάγετε ένα αρχείο προφίλ από άλλο πρόγραμμα και δείτε τι μεταφέρθηκε.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} φορές</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, το τελευταίο από {1} παρόμοια αιτήματα</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Σειριοποιητής Protocol Buffers που χρησιμοποιεί το SteamKit2 για το πρωτόκολλο δικτύου του Steam, του Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Αποσυμπίεση Zstandard που χρησιμοποιεί το SteamKit2 για τα τμήματα των depot του Steam, μια μεταφορά της βιβλιοθήκης zstd σε C# από τον Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ο διακομιστής και ο πελάτης Model Context Protocol πίσω από τη σύνδεση βοηθών και το PadForge.exe --mcp, από το Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Τα Microsoft.Extensions.AI.Abstractions, Logging.Abstractions και DependencyInjection.Abstractions, πάνω στα οποία βασίζεται το MCP C# SDK, από τη Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Τεκμηρίωση για τη διαδικασία σύζευξης του Wii, το ADPCM του ηχείου, τον πλάγιο και τον όρθιο προσανατολισμό του Wii Remote, το μοντέλο πύλης μοχλού και τη μορφή αποθήκευσής του, καθώς και τη σύμβαση αξόνων του γυροσκοπίου. Μελετήθηκε μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

@@ -194,7 +194,8 @@ namespace PadForgeAutomation
         {
             string owner = Owner();
             if (owner == "S-1-5-32-544" || owner == "S-1-5-18") return true;
-            bool isTheAppsOwn = string.Equals(name, "PadForge.Automation", StringComparison.OrdinalIgnoreCase);
+            bool isTheAppsOwn = string.Equals(name, "PadForge.Automation", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(name, "PadForge.Control", StringComparison.OrdinalIgnoreCase);
             if (isTheAppsOwn || owner == null) return false;
             using (WindowsIdentity me = WindowsIdentity.GetCurrent())
                 return me.User != null && owner == me.User.Value;

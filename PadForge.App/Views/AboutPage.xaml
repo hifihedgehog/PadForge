@@ -923,6 +923,15 @@
                         <Border Style="{StaticResource CreditRow}">
                             <DockPanel>
                                 <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Apache2, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_McpSdk, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_McpSdkDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
                                     <TextBlock common:BidiText.Text="{Binding About_License_Several, Source={x:Static strings:Strings.Instance}}"/>
                                 </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_MenuRefs, Source={x:Static strings:Strings.Instance}}"/>
@@ -945,6 +954,15 @@
                                 </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_VcRuntime, Source={x:Static strings:Strings.Instance}}"/>
                                 <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_VcRuntimeDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Mit, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_MsExtensions, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_MsExtensionsDesc, Source={x:Static strings:Strings.Instance}}"/>
                             </DockPanel>
                         </Border>
                         <Border Style="{StaticResource CreditRow}">

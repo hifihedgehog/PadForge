@@ -72,6 +72,20 @@ namespace PadForge.Services
         /// whole-written fields). Null when no created controller has that
         /// number.
         /// </summary>
+        /// <summary>The rate the engine runs at now, or 0 while it is
+        /// stopped, for an assistant's get_system (#597).</summary>
+        internal double EngineFrequency => _inputManager?.CurrentFrequency ?? 0;
+
+        /// <summary>What virtual controller <paramref name="number"/> sends to
+        /// the game now, as the outputs line words it, or null while the
+        /// engine is stopped or no controller has that number. For an
+        /// assistant's list_controllers (#597).</summary>
+        internal string AutomationOutputsNow(int number)
+        {
+            var manager = _inputManager;
+            return manager == null || !manager.IsRunning ? null : AutomationOutputs(manager, number);
+        }
+
         internal string AutomationOutputs(InputManager manager, int number)
         {
             int slot = SettingsManager.SlotOrders.PadIndexForGlobalSlotNumber(number);

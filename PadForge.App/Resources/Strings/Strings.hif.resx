@@ -1262,6 +1262,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ii program ke connection nai lis</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Bahut jaldi phir se maangis</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge phir se chalu hoe tak aur nai</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ke paas aisan koi tool nai hai</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Program purana state padhis</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Aisan koi setting nai hai</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Value setting ke range se baahar rahaa</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Aap allow nai karaa</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Time pe koi jawaab nai dis</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Aap ke jawaab ke intazaar hai</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Aisan koi request nai hai</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Undo kare ke kuch nai hai</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Khali aap ii badle sakta</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>File khule nai sakaa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Aisan koi macro nai hai</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Aap ke intazaar me bahut sawaal rahaa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Profile {0} pe jaao</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Default profile pe lauto</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Poocho kon profile chalu hai</value></data>
@@ -1297,6 +1310,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Device {0} ke control chhod do</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Value {0} set karo</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Tool {0} chalaao</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Status padho</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Profile badlo</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Engine chalu ya band karo</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Virtual controller On ya Off karo</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Diagnostics snapshot save karo</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Polling rate aur driver padho</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Profile ke list dikhaao</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Ek profile padho</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Virtual controller ke list dikhaao</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Device ke list dikhaao</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Ek device padho</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Aap ke input ke intazaar karo</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Controller ke mapping padho</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Controller ke macro ke list dikhaao</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Problem record karo</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Setting khojo</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Ek setting padho</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Aap ke ek jagah dikhaao</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Apan ek device add karo</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Apan device chalaao</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Apan device hataao</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Control pakdo ya chhodo</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ek setting badlo</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Profile banaao</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Profile ke naam badlo</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Profile delete karo</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Profile import karo</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Profile export karo</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Virtual controller add karo</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Virtual controller hataao</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Controller ke type badlo</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Device assign karo</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Mapping row set karo</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Mapping row clear karo</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Controller ke apne aap map karo</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Macro save karo</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Macro delete karo</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Apan badlaao undo karo</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Request check karo</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Aisan tool chalaao jon PadForge ke paas nai hai: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Profile “{0}” import karo</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows ke keyboard aur mouse input bhejo</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Keyboard aur mouse controller har program me key dabaawe hai aur pointer hilaawe hai.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, {1} se</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Aisan macro save karo jon PadForge ke baahar kaam kare</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} chalaawe hai</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} dabaawe hai</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Saamne wala program me text type kare hai</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Mouse hilaawe ya click kare hai</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Keyboard aur mouse controller banaawe hai</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} On kare hai</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” badlo</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ke {1} pe set kare hai</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Network pe sune hai, jisse dusra device ii PC tak pahunch sake.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ek driver ya HidHide badle hai, jon pe dusra program aur game bharosa kare hai.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge se badle hai ki kon program device padhe sake.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Controller set up karo</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Device khojo, oke liye virtual controller banaao, assign karo aur game ke jon chaahi uu map karo.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Game hamar controller kaahe nai dekhe</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Engine, virtual controller, device, driver aur HidHide ek ek kar ke check karo.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Profile le aao</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Dusra program se profile file import karo, phir dekho kya aais.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} baar</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, aisan {1} me se aakhri</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Allow karo</value></data>
@@ -1322,5 +1399,9 @@
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Uu button jon mouse ke steer kare deve hai, mouse ke travel wala device pe. Koi nai chuna to mouse hamesa steer kare hai.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game telemetry On rahe pe, 200 km/h pe kitna lock bache hai. 100% pe pura lock har speed pe rahe hai.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol server aur client jon assistant connection aur PadForge.exe --mcp ke peechhe hai, Model Context Protocol a Series of LF Projects ke banaawa.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions aur DependencyInjection.Abstractions, jon pe MCP C# SDK banaa hai, Microsoft ke banaawa.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
 </root>

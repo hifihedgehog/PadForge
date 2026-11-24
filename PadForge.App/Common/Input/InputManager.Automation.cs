@@ -35,7 +35,7 @@ namespace PadForge.Common.Input
             UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
             lock (SettingsManager.UserDevices.SyncRoot)
             {
-                ud.LoadFromExternalDevice(device);
+                Load(ud, device);
                 ud.IsOnline = true;
             }
 
@@ -43,6 +43,16 @@ namespace PadForge.Common.Input
             device.CapabilitiesChanged += OnProgramDeviceCapabilitiesChanged;
 
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Loads a program device's row, which keeps the device's
+        /// own product name when it has one (ProgramDevice.ProductName). The
+        /// caller holds the device list's lock.</summary>
+        private static void Load(UserDevice ud, ProgramDevice device)
+        {
+            ud.LoadFromExternalDevice(device);
+            string product = device.ProductName;
+            if (!string.IsNullOrEmpty(product)) ud.ProductName = product;
         }
 
         /// <summary>Takes a program's device offline with its mapped outputs
@@ -66,7 +76,7 @@ namespace PadForge.Common.Input
                 {
                     foreach (var ud in SettingsManager.UserDevices.Items)
                         if (ud?.Device is ProgramDevice program && ud.IsOnline)
-                            ud.LoadFromExternalDevice(program);
+                            Load(ud, program);
                 }
             }
             catch (InvalidOperationException)

@@ -197,6 +197,7 @@ Concentus 2.2.2                                    Opus codec for DualSense Blue
 HelixToolkit.Core.Wpf 2.27.3                       3D viewport rendering
 Microsoft.Windows.CsWinRT 2.3.1                    Projection of the in-box Windows.Devices.Midi2 (metadata in Resources/WinMD)
 Microsoft.Windows.Devices.Midi2 1.0.16-rc.3.7      Projection of the App SDK runtime, Microsoft's install or PadForge's build (from nuget-local/)
+ModelContextProtocol.Core 2.4.0                    The assistant connection: the protocol server inside PadForge and PadForge.exe --mcp
 NAudio.Wasapi 2.2.1                                WASAPI loopback capture and output
 Nefarius.Utilities.DeviceManagement 6.1.0          Driver-store installs for the DualShock 3 Bluetooth stack, USB port cycling for a hidden controller
 System.Management 10.0.13                          WMI queries for the handheld hidden-button learner

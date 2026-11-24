@@ -372,16 +372,14 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>This build carries the switch and not the connection
-        /// behind it: the run says so and exits 1.</summary>
+        /// <summary>--mcp runs the copy an assistant starts, the mirror of
+        /// PadForge's tools (AutomationAssistantMirrorTests holds what it
+        /// does).</summary>
         [Fact]
-        public void TheAssistantConnection_IsNotInThisBuild()
+        public void TheAssistantConnection_IsTheMirror()
         {
-            Assert.Equal(1, AssistantBridge.Run());
-            Assert.Equal(1, AssistantBridge.NotAvailable);
-            Assert.Contains("not in this build", AssistantBridge.NotInThisBuild, StringComparison.Ordinal);
-            string source = OffLimitsSource.Read("PadForge.App/Services/Automation/AssistantBridge.cs");
-            Assert.Contains("CallerConsole.SayError(NotInThisBuild);", FenceSource.Body(source, "internal static int Run()"), StringComparison.Ordinal);
+            string source = OffLimitsSource.Read("PadForge.App/Services/ClientRun.cs");
+            Assert.Contains("public Func<int> ServeAssistant = AssistantMirror.Run;", source, StringComparison.Ordinal);
         }
 
         [Fact]

@@ -644,7 +644,14 @@ namespace PadForge.Services.Automation
         /// with.</summary>
         internal const string BuiltInKind = "builtin";
 
-        internal Entry DeclareBuiltIn(string program, string key, string name, ProgramDeviceShape shape)
+        /// <param name="productName">The name the row keeps as its product's,
+        /// in no language (ProgramDevice.ProductName). Null keeps
+        /// <paramref name="name"/>.</param>
+        /// <param name="pathKind">A word the device's path carries after the
+        /// scheme, <c>program://kind/id</c>, so its row is known for what it
+        /// is in a later run. Null for <c>program://id</c>.</param>
+        internal Entry DeclareBuiltIn(string program, string key, string name, ProgramDeviceShape shape,
+            string productName = null, string pathKind = null)
         {
             const string kind = BuiltInKind;
             Guid guid = ProgramDeviceDeclaration.InstanceGuid(kind, program, key);
@@ -658,11 +665,12 @@ namespace PadForge.Services.Automation
                 {
                     string id = AutomationDevices.IdOf(guid);
                     var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, program, key),
-                        "program://" + id, name, shape);
+                        "program://" + (pathKind == null ? id : pathKind + "/" + id), name, shape);
                     entry = new Entry { Guid = guid, Id = id, Kind = kind, Program = program, Key = key, Device = device };
                     Wire(entry);
                     _entries[guid] = entry;
                 }
+                entry.Device.ProductName = productName;
                 entry.BuiltIn = true;
                 entry.OfflineAtMs = 0;
                 engine = _engine;

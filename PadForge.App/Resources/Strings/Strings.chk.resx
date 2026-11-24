@@ -835,6 +835,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ese etiwa ewe riri an ei program</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A tingor sefál mi fókkun mwittir</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Esor pwal ekkeei tori PadForge epwe poputá sefál</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Esor ena tool ren PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Ewe program a álleani eu state mi ochufesen</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Esor ena setting</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Ewe value a nó lúkún met ewe setting a etiwa</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>En ka ese mwútátá</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Esor emén a pólúweni non fansoun</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>A witiwiti óm pólúwen</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Esor ena tingor</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Esor met epwe liwinsefál</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>En chök ka tongeni siwili ei</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ese tongeni suuki ewe file</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Esor ena macro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>A fókkun chómmóng kapas eis ra witiwituk</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Siwil ngeni ewe profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Liwin ngeni ewe profile default</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eis ifa ewe profile mi angang</value></data>
@@ -870,6 +883,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Likitano ekkewe control an device {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Akkota ewe value {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Angangééni ewe tool {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Álleani ewe status</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Siwili profile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Poputá are aúkú ewe engine</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kawora are aúkú virtual controller</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Isóni eu diagnostics snapshot</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Álleani ewe polling rate me ekkewe driver</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lista ekkewe profile</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Álleani eu profile</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lista ekkewe virtual controller</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lista ekkewe device</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Álleani eu device</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Witiwiti óm input</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Álleani ekkewe mapping an eu controller</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lista ekkewe macro an eu controller</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekoti eu osukosuk</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Kútta setting</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Álleani eu setting</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Áiti ngonuk eu leeni</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Apacha eu device pwisin nóun</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Emmweni nóun device</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Atoui nóun device</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Amwéchú are likitano eu control</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Siwili eu setting</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Fératá eu profile</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Siwili iten eu profile</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ataieló eu profile</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Uweto eu profile</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Uwelo eu profile</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Apacha eu virtual controller</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Atoui eu virtual controller</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Siwili sókkun eu controller</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Ewiisa eu device</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Akkota mapping row</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Limeti mapping row</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Akkota mapping an eu controller pwisin</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Isóni eu macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ataieló eu macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Liwinsefáli nóun siwil</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Etittina eu tingor</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kéri eu tool ese nom ren PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Uweto ewe profile “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Tinala input an keyboard me mouse ngeni Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Eu keyboard me mouse controller a tinikkini key me mwékútúkú ewe pointer non iteiten program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} seni {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Isóni eu macro mi angang lúkún PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>A angangééni {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>A tinikkini {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>A taipa kapas non ewe program mi nom mwen</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>A mwékútúkú are kiliki ewe mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>A fératá eu keyboard me mouse controller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>A kawora {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Siwili “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>A akkota {0} ngeni {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>A rongorong won ewe network, pwe ekkoch device ra tongeni tori ei PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>A siwili eu driver are HidHide, ekkewe ekkoch program me kéém ra nounou.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>A siwili ifa program mi tongeni álleani ewe device, ren Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Ammolnata eu Controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Kúna ewe device, fératá eu virtual controller fán itan, ewiisa me akkota mapping ren met ewe kéém a mochen.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Pwata Eu Kéém Ese Kúna Ai Controller</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Etittina ewe engine, ewe virtual controller, ewe device, ekkewe driver me HidHide, eu me eu.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Uweto eu Profile</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Uweto eu profile file seni pwal eu program, mwirin kúna met a war.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fán</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ewe sópwólóón seni {1} mi ina usun</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Script (*.ahk)|*.ahk</value></data>
@@ -880,4 +957,8 @@
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Seni eu program mi aita pwisin “{0}”</value></data>
   <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Seni eu program Windows ese aita</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ewe Model Context Protocol server me client mi nom tuun ewe riri ngeni chón álillis me PadForge.exe --mcp, ren Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions me DependencyInjection.Abstractions, ekkewe ewe MCP C# SDK a pwo won, ren Microsoft.</value></data>
 </root>

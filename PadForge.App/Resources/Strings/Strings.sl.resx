@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ni sprejel povezave tega programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ponovno zahtevano prehitro</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Teh ne bo več, dokler se PadForge ne zažene znova</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nima takega orodja</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Program je prebral starejše stanje</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ni take nastavitve</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Vrednost je bila zunaj tistega, kar nastavitev sprejme</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Tega niste dovolili</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nihče ni odgovoril pravočasno</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Čaka na vaš odgovor</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ni take zahteve</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ničesar ni treba razveljaviti</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>To lahko spremenite samo vi</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Datoteke ni bilo mogoče odpreti</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ni takega makra</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na vas je čakalo preveč vprašanj</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Preklopi na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrni se na privzeti profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vprašaj, kateri profil je dejaven</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Spusti krmilne elemente naprave {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastavi vrednost {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Zaženi orodje {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Preberi stanje</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Zamenjaj profile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Zaženi ali ustavi mehanizem</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Vklopi ali izklopi navidezne krmilnike</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Shrani posnetek diagnostike</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Preberi hitrost vzorčenja in gonilnike</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Naštej profile</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Preberi profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Naštej navidezne krmilnike</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Naštej naprave</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Preberi napravo</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Počakaj na vaš vnos</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Preberi preslikave krmilnika</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Naštej makre krmilnika</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Posnemi težavo</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Poišči nastavitve</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Preberi nastavitev</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Pokaži vam mesto</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Dodaj lastno napravo</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Upravljaj svojo napravo</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Odstrani svojo napravo</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Drži ali spusti krmilni element</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Spremeni nastavitev</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Ustvari profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Preimenuj profil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Izbriši profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Uvozi profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Izvozi profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Dodaj navidezni krmilnik</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Odstrani navidezni krmilnik</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Spremeni vrsto krmilnika</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Dodeli napravo</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Nastavi vrstice preslikave</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Počisti vrstice preslikave</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Samodejno preslikaj krmilnik</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Shrani makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Izbriši makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Razveljavi njegove spremembe</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Preveri zahtevo</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Pokliči orodje, ki ga PadForge nima: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Uvozi profil „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Pošlji vnos tipkovnice in miške v Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Krmilnik tipkovnice in miške pritiska tipke in premika kazalec v vsakem programu.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} iz {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Shrani makro, ki deluje zunaj programa PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Zažene {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Pritisne {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Vtipka besedilo v program v ospredju</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Premakne ali klikne miško</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ustvari krmilnik tipkovnice in miške</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Vklopi {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Spremeni „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastavi {0} na {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Posluša v omrežju, zato lahko druge naprave dosežejo ta računalnik.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Spremeni gonilnik ali HidHide, na katera se zanašajo drugi programi in igre.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Datoteka: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Spremeni, kateri programi lahko berejo napravo, prek možnosti Uporabljaj samo v programu PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Nastavi krmilnik</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Poišči napravo, zanjo ustvari navidezni krmilnik, ga dodeli in preslikaj, kar igra potrebuje.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Zakaj igra ne vidi mojega krmilnika</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Preveri mehanizem, navidezni krmilnik, napravo, gonilnike in HidHide, enega za drugim.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Prenesi profil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Uvozi datoteko profila iz drugega programa in nato poglej, kaj je prišlo čez.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, krat: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, zadnja izmed {1} podobnih</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializator Protocol Buffers, ki ga SteamKit2 uporablja za omrežni protokol Steam. Avtor: Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Razširjanje Zstandard, ki ga SteamKit2 uporablja za kose skladišč Steam. Prenos knjižnice zstd v C#, avtor: Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Strežnik in odjemalec Model Context Protocol za povezavo pomočnika in PadForge.exe --mcp, avtor Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions in DependencyInjection.Abstractions, na katerih temelji MCP C# SDK, avtor Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentacija za postopek seznanjanja Wii, ADPCM zvočnika, ležečo in pokončno usmerjenost Wii Remote, model vodila palice in njegovo obliko shranjevanja ter konvencijo osi žiroskopa. Prebrano le kot dokumentacija, nobena koda GPL ni vključena.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

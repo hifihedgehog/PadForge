@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge neprijal pripojenie tohto programu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Opätovná žiadosť prišla príliš skoro</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Žiadne ďalšie, kým sa PadForge znova nespustí</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge takýto nástroj nemá</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Program čítal starší stav</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Takéto nastavenie neexistuje</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Hodnota bola mimo rozsahu, ktorý nastavenie prijíma</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Nepovolili ste to</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nikto neodpovedal včas</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Čaká sa na vašu odpoveď</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Taká žiadosť neexistuje</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nie je čo vrátiť späť</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Toto môžete zmeniť iba vy</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Súbor sa nepodarilo otvoriť</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Takéto makro neexistuje</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na vašu odpoveď čakalo príliš veľa otázok</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Prepnúť na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrátiť sa na predvolený profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Opýtať sa, ktorý profil je aktívny</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Uvoľniť ovládacie prvky zariadenia {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastaviť hodnotu {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Spustiť nástroj {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Prečítať stav</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Prepnúť profily</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Spustiť alebo zastaviť jadro</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Zapnúť alebo vypnúť virtuálne ovládače</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Uložiť diagnostickú snímku</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Prečítať vzorkovaciu frekvenciu a ovládače</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Vypísať profily</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Prečítať profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Vypísať virtuálne ovládače</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Vypísať zariadenia</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Prečítať zariadenie</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Čakať na váš vstup</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Prečítať mapovania ovládača</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Vypísať makrá ovládača</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Nahrať problém</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Nájsť nastavenia</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Prečítať nastavenie</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Ukázať vám miesto</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Pridať vlastné zariadenie</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Ovládať svoje zariadenie</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Odstrániť svoje zariadenie</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Držať alebo uvoľniť ovládací prvok</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Zmeniť nastavenie</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Vytvoriť profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Premenovať profil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Odstrániť profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importovať profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Exportovať profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Pridať virtuálny ovládač</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Odstrániť virtuálny ovládač</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Zmeniť typ ovládača</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Priradiť zariadenie</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Nastaviť riadky mapovania</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Vymazať riadky mapovania</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Namapovať ovládač automaticky</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Uložiť makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Odstrániť makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Vrátiť späť svoje zmeny</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Skontrolovať žiadosť</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Zavolať nástroj, ktorý PadForge nemá: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importovať profil „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Posielať vstup z klávesnice a myši do Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ovládač klávesnice a myši stláča klávesy a hýbe ukazovateľom v každom programe.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} z {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Uložiť makro, ktoré koná mimo programu PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Spustí {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Stlačí {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Napíše text do programu v popredí</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Hýbe myšou alebo klikne</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Vytvorí ovládač klávesnice a myši</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Zapne {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Zmeniť „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastaví {0} na {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Počúva v sieti, takže tento počítač môžu zastihnúť iné zariadenia.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mení ovládač alebo HidHide, na ktoré sa spoliehajú iné programy a hry.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Súbor: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mení, ktoré programy môžu zariadenie čítať, cez voľbu Používať iba v programe PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Nastaviť ovládač</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Nájdite zariadenie, vytvorte preň virtuálny ovládač, priraďte ho a namapujte, čo hra potrebuje.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Prečo hra nevidí môj ovládač</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Skontrolujte postupne jadro, virtuálny ovládač, zariadenie, ovládače a HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Preniesť profil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importujte súbor profilu z iného programu a potom si pozrite, čo sa prenieslo.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, počet: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, posledná z {1} podobných</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializátor Protocol Buffers, ktorý SteamKit2 používa pre sieťový protokol Steamu, od autora Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Dekompresia Zstandard, ktorú SteamKit2 používa pre časti depotov Steamu, port knižnice zstd do C# od autora Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Server a klient Model Context Protocol za pripojením asistenta a PadForge.exe --mcp, od Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions a DependencyInjection.Abstractions, na ktorých je postavený MCP C# SDK, od Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentácia k postupu párovania Wii, ADPCM reproduktora, orientácii Wii Remote bokom a zvisle, modelu brány páčky a jeho formátu ukladania a ku konvencii osí gyroskopu. Použité iba ako dokumentácia, nedodáva sa žiadny kód GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

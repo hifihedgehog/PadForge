@@ -347,6 +347,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>I-PadForge ayizange ilwamukele uxhumano lwalolu hlelo</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Kubuzwe futhi ngokushesha kakhulu</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Akusekho lokhu kuze kube i-PadForge iqala futhi</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>I-PadForge ayinalo ithuluzi elinjalo</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Uhlelo lufunde isimo esidala</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Asikho isilungiselelo esinjalo</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Inani belingaphandle kwalokho isilungiselelo esikwamukelayo</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Awuzange ukuvumele</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Akekho ophendule ngesikhathi</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Kulindelwe impendulo yakho</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Asikho isicelo esinjalo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Akukho okungahlehliswa</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nguwe kuphela ongashintsha lokhu</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ifayela alikwazanga ukuvulwa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ayikho i-macro enjalo</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Bekunemibuzo eminingi kakhulu ekulindile</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Shintshela kuphrofayela ethi {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kuphrofayela ezenzakalelayo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuthi iyiphi iphrofayela esebenzayo</value></data>
@@ -382,6 +395,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Dedela izilawuli zedivayisi {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setha inani elithi {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Qalisa ithuluzi elithi {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Funda isimo</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Shintsha amaphrofayela</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Qala noma umise injini</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Vula noma uvale izilawuli ezibonakalayo</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Londoloza isithombe sokuxilonga</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Funda isilinganiso sokuhlola namadrayivu</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Bala amaphrofayela</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Funda iphrofayela</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Bala izilawuli ezibonakalayo</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Bala amadivayisi</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Funda idivayisi</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Linda okufakwayo kwakho</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Funda ukumaphwa kwesilawuli</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Bala ama-macro esilawuli</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Qopha inkinga</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Thola izilungiselelo</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Funda isilungiselelo</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kubonise indawo</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Engeza idivayisi yalo</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Qhuba idivayisi yalo</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Susa idivayisi yalo</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Bamba noma udedele isilawuli</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Shintsha isilungiselelo</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Dala iphrofayela</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Qamba kabusha iphrofayela</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Susa iphrofayela</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Ngenisa iphrofayela</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Khipha iphrofayela</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Engeza isilawuli esibonakalayo</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Susa isilawuli esibonakalayo</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Shintsha uhlobo lwesilawuli</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Nikeza idivayisi</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Setha imigqa yokumapha</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Sula imigqa yokumapha</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapha isilawuli ngokuzenzakalelayo</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Londoloza i-macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Susa i-macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Hlehlisa izinguquko zalo</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Hlola isicelo</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Shayela ithuluzi i-PadForge engenalo: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Ngenisa iphrofayela ethi “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Thumela okufakwayo kwekhibhodi negundane ku-Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Isilawuli sekhibhodi negundane sicindezela okhiye futhi sihambisa isikhombi kuzo zonke izinhlelo.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} kusuka ku-{1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Londoloza i-macro esebenza ngaphandle kwe-PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Iqalisa {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Icindezela {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ithayipha umbhalo ohlelweni olungaphambili</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Ihambisa noma ichofoze igundane</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Idala isilawuli sekhibhodi negundane</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ivula {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Shintsha “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Isetha {0} ibe ngu-{1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ilalela kunethiwekhi, ngakho amanye amadivayisi angafinyelela le PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ishintsha idrayivu noma i-HidHide, ezithenjwa ezinye izinhlelo nemidlalo.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ifayela: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ishintsha ukuthi yiziphi izinhlelo ezingafunda idivayisi, nge-Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Misa isilawuli</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Thola idivayisi, wenzele yona isilawuli esibonakalayo, uyinikeze futhi umaphe lokho umdlalo okudingayo.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Kungani umdlalo ungasiboni isilawuli sami</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Hlola injini, isilawuli esibonakalayo, idivayisi, amadrayivu ne-HidHide ngakunye ngakunye.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Letha iphrofayela</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Ngenisa ifayela lephrofayela kolunye uhlelo, bese ubona okufikile.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, izikhathi ezingu-{1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, okokugcina kwezingu-{1} ezifanayo</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3090,5 +3167,9 @@
   <data name="Plugins_Log" xml:space="preserve"><value>Ilogi</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Khetha i-plugin ukuze ubone ilogi yayo.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Akukabikho lutho kulogi yale plugin.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Iseva neklayenti le-Model Context Protocol elingemuva koxhumano lomsizi ne-PadForge.exe --mcp, ngu-Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>I-Microsoft.Extensions.AI.Abstractions, i-Logging.Abstractions ne-DependencyInjection.Abstractions, okwakhelwe phezu kwazo i-MCP C# SDK, ngu-Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Uhlelo</value></data>
 </root>

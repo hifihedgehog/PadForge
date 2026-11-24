@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-ը չընդունեց այս ծրագրի կապը</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Կրկին խնդրվել է չափազանց շուտ</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Այս տեսակից ավելին չկա, մինչև PadForge-ը նորից մեկնարկի</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-ը այդպիսի գործիք չունի</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Ծրագիրը կարդացել էր ավելի հին վիճակ</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Այդպիսի կարգավորում չկա</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Արժեքը կարգավորման թույլատրելի սահմանից դուրս էր</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Դուք չթույլատրեցիք</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ոչ ոք ժամանակին չպատասխանեց</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Սպասում է ձեր պատասխանին</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Այդպիսի հարցում չկա</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Հետարկելու բան չկա</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Սա կարող եք փոխել միայն դուք</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ֆայլը չհաջողվեց բացել</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Այդպիսի մակրո չկա</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ձեզ չափազանց շատ հարցեր էին սպասում</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Անցնել {0} պրոֆիլին</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Վերադառնալ լռելյայն պրոֆիլին</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Հարցնել, թե որ պրոֆիլն է ակտիվ</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Բաց թողնել {0} սարքի կառավարման տարրերը</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Սահմանել արժեքը՝ {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Գործարկել գործիքը՝ {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Կարդալ կարգավիճակը</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Փոխել պրոֆիլները</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Մեկնարկել կամ կանգնեցնել մեխանիզմը</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Միացնել կամ անջատել վիրտուալ կառավարիչները</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Պահել ախտորոշման ակնթարթային պատկեր</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Կարդալ հարցման հաճախականությունը և դրայվերները</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Ցուցակագրել պրոֆիլները</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Կարդալ պրոֆիլ</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Ցուցակագրել վիրտուալ կառավարիչները</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Ցուցակագրել սարքերը</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Կարդալ սարք</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Սպասել ձեր մուտքին</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Կարդալ կառավարչի կապակցումները</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Ցուցակագրել կառավարչի մակրոները</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Գրանցել խնդիր</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Որոնել կարգավորումներ</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Կարդալ կարգավորում</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Ցույց տալ ձեզ մի վայր</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ավելացնել սեփական սարք</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Կառավարել իր սարքը</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Հեռացնել իր սարքը</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Պահել կամ բաց թողնել կառավարման տարր</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Փոխել կարգավորում</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Ստեղծել պրոֆիլ</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Վերանվանել պրոֆիլ</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ջնջել պրոֆիլ</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Ներմուծել պրոֆիլ</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Արտահանել պրոֆիլ</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Ավելացնել վիրտուալ կառավարիչ</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Հեռացնել վիրտուալ կառավարիչ</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Փոխել կառավարչի տիպը</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Նշանակել սարք</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Սահմանել կապակցման տողեր</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Մաքրել կապակցման տողերը</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Կապակցել կառավարիչն ինքնաշխատ</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Պահել մակրո</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ջնջել մակրո</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Հետարկել իր փոփոխությունները</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Ստուգել հարցումը</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}՝ {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Կանչել PadForge-ին անծանոթ գործիք՝ {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Ներմուծել «{0}» պրոֆիլը</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Ուղարկել ստեղնաշարի և մկնիկի մուտք Windows-ին</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ստեղնաշարի և մկնիկի կառավարիչը սեղմում է ստեղներ և շարժում ցուցիչը յուրաքանչյուր ծրագրում։</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}՝ {1}-ից</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Պահել մակրո, որը գործում է PadForge-ից դուրս</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Գործարկում է {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Սեղմում է {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Տեքստ է մուտքագրում առջևի ծրագրում</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Շարժում կամ սեղմում է մկնիկը</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ստեղծում է ստեղնաշարի և մկնիկի կառավարիչ</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Միացնում է {0}-ը</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Փոխել «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Սահմանում է {0}՝ {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Լսում է ցանցը, ուստի այլ սարքեր կարող են հասնել այս համակարգչին։</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Փոխում է դրայվեր կամ HidHide, որոնց վրա հենվում են այլ ծրագրեր և խաղեր։</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ֆայլ՝ {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Փոխում է, թե որ ծրագրերը կարող են կարդալ սարքը՝ «Use Only in PadForge» կարգավորմամբ։</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Կարգավորել կառավարիչ</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Գտնել սարքը, ստեղծել դրա համար վիրտուալ կառավարիչ, նշանակել այն և կապակցել այն, ինչ պետք է խաղին։</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Ինչու խաղը չի տեսնում իմ կառավարիչը</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Ստուգել մեխանիզմը, վիրտուալ կառավարիչը, սարքը, դրայվերները և HidHide-ը հերթով։</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Փոխանցել պրոֆիլ</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Ներմուծել պրոֆիլի ֆայլ մեկ այլ ծրագրից, ապա տեսնել, թե ինչ է փոխանցվել։</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} անգամ</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}՝ նույնատիպ {1} հարցումներից վերջինը</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3893,6 +3970,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers սերիալիզատոր, որը SteamKit2-ն օգտագործում է Steam-ի ցանցային արձանագրության համար, հեղինակ՝ Marc Gravell։</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard ապասեղմում, որը SteamKit2-ն օգտագործում է Steam depot-ի կտորների համար, zstd գրադարանի C# պորտ, հեղինակ՝ Oleg Stepanischev։</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol սերվերը և հաճախորդը, որոնք կանգնած են օգնականի կապի և PadForge.exe --mcp հետևում, հեղինակ՝ Model Context Protocol a Series of LF Projects։</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions և DependencyInjection.Abstractions, որոնց վրա կառուցված է MCP C# SDK-ը, հեղինակ՝ Microsoft։</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Փաստաթղթեր՝ Wii զուգակցման ծեսի, բարձրախոսի ADPCM-ի, Wii Remote-ի կողքաշրջված և ուղղահայաց դիրքավորման, ձողի դարպասի մոդելի և դրա պահպանման ձևաչափի և գիրոյի առանցքների պայմանականության մասին։ Կարդացված միայն որպես փաստաթուղթ, GPL կոդ չի ներառվում։</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

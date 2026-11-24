@@ -416,6 +416,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge가 이 프로그램의 연결을 받지 않았습니다</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>너무 빨리 다시 요청함</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge를 다시 시작하기 전까지는 더 할 수 없음</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge에 해당 도구가 없습니다</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>프로그램이 이전 상태를 읽었습니다</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>해당 설정 없음</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>설정이 받는 범위를 벗어난 값이었습니다</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>허용하지 않았습니다</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>제때 응답한 사람이 없습니다</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>사용자의 답변을 기다리는 중</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>해당 요청 없음</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>실행 취소할 것이 없음</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>사용자만 바꿀 수 있음</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>파일을 열 수 없었습니다</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>해당 매크로 없음</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>답변을 기다리는 질문이 너무 많았습니다</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>기본 프로필로 돌아가기</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>활성 프로필 확인</value></data>
@@ -451,6 +464,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 놓기</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>값 {0} 설정</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>도구 {0} 실행</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>상태 읽기</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>프로필 전환</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>엔진 시작 또는 중지</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>가상 컨트롤러 켜기 또는 끄기</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>진단 스냅샷 저장</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>폴링 레이트와 드라이버 읽기</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>프로필 목록 보기</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>프로필 읽기</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>가상 컨트롤러 목록 보기</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>장치 목록 보기</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>장치 읽기</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>사용자의 입력 기다리기</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>컨트롤러의 매핑 읽기</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>컨트롤러의 매크로 목록 보기</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>문제 녹화</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>설정 찾기</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>설정 읽기</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>위치 보여 주기</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>자체 장치 추가</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>자체 장치 구동</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>자체 장치 제거</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>컨트롤 고정 또는 놓기</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>설정 변경</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>프로필 만들기</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>프로필 이름 바꾸기</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>프로필 삭제</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>프로필 가져오기</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>프로필 내보내기</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>가상 컨트롤러 추가</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>가상 컨트롤러 제거</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>컨트롤러 유형 변경</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>장치 할당</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>매핑 행 설정</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>매핑 행 지우기</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>컨트롤러 자동 매핑</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>매크로 저장</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>매크로 삭제</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>변경 사항 실행 취소</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>요청 확인</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge에 없는 도구 호출: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>프로필 “{0}” 가져오기</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>키보드와 마우스 입력을 Windows로 보내기</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>키보드 및 마우스 컨트롤러는 모든 프로그램에서 키를 누르고 포인터를 움직입니다.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1}에서 {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge 밖에서 동작하는 매크로 저장</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} 실행</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} 누르기</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>앞에 있는 프로그램에 텍스트 입력</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>마우스를 움직이거나 클릭</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>키보드 및 마우스 컨트롤러 만들기</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} 켜기</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” 변경</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} 설정: {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>네트워크에서 연결을 받으므로 다른 장치가 이 PC에 접근할 수 있습니다.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>다른 프로그램과 게임이 의존하는 드라이버나 HidHide를 변경합니다.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>파일: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForge에서만 사용을 통해 어떤 프로그램이 장치를 읽을 수 있는지 변경합니다.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>컨트롤러 설정하기</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>장치를 찾고, 가상 컨트롤러를 만들고, 할당하고, 게임에 필요한 것을 매핑합니다.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>게임이 내 컨트롤러를 인식하지 못하는 이유</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>엔진, 가상 컨트롤러, 장치, 드라이버, HidHide를 하나씩 확인합니다.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>프로필 가져오기</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>다른 프로그램의 프로필 파일을 가져온 다음 무엇이 넘어왔는지 확인합니다.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1}회</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, 같은 요청 {1}개 중 마지막</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4500,6 +4577,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2가 Steam 통신 프로토콜에 사용하는 Protocol Buffers 직렬 변환기. Marc Gravell 제작.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2가 Steam 디포 청크에 사용하는 Zstandard 압축 해제. Oleg Stepanischev가 zstd 라이브러리를 C#으로 이식한 것.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>어시스턴트 연결과 PadForge.exe --mcp 뒤에서 작동하는 Model Context Protocol 서버와 클라이언트이며, Model Context Protocol a Series of LF Projects에서 제공합니다.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK의 기반이 되는 Microsoft.Extensions.AI.Abstractions, Logging.Abstractions, DependencyInjection.Abstractions이며, Microsoft에서 제공합니다.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(모든 장치)</value></data>
   <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} X (왼쪽 절반)</value></data>
   <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} X (오른쪽 절반)</value></data>

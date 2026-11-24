@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-მა ამ პროგრამის კავშირი არ მიიღო</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ზედმეტად ადრე მოითხოვა ხელახლა</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge-ის შემდეგ გაშვებამდე ამგვარი აღარ იქნება</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-ს ასეთი ხელსაწყო არ აქვს</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>პროგრამამ ძველი მდგომარეობა წაიკითხა</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ასეთი პარამეტრი არ არის</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>მნიშვნელობა პარამეტრის დასაშვებ ფარგლებს სცილდებოდა</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>თქვენ ეს არ დაუშვით</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>დროულად არავინ უპასუხა</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>თქვენს პასუხს ელოდება</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ასეთი მოთხოვნა არ არის</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>გასაუქმებელი არაფერია</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ამის შეცვლა მხოლოდ თქვენ შეგიძლიათ</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ფაილის გახსნა ვერ მოხერხდა</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ასეთი მაკრო არ არის</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ძალიან ბევრი შეკითხვა გელოდებოდათ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>გადართვა პროფილზე {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>დაბრუნება ნაგულისხმევ პროფილზე</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>კითხვა, რომელი პროფილია აქტიური</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების გაშვება</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>მნიშვნელობის დაყენება: {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ხელსაწყოს გაშვება: {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>სტატუსის წაკითხვა</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>პროფილების გადართვა</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ძრავის გაშვება ან გაჩერება</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ვირტუალური კონტროლერების ჩართვა ან გამორთვა</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>დიაგნოსტიკის სნეპშოტის შენახვა</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>გამოკითხვის სიხშირისა და დრაივერების წაკითხვა</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>პროფილების სიის მოთხოვნა</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>პროფილის წაკითხვა</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ვირტუალური კონტროლერების სიის მოთხოვნა</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>მოწყობილობების სიის მოთხოვნა</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>მოწყობილობის წაკითხვა</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>თქვენი შეყვანის ლოდინი</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>კონტროლერის რუკების წაკითხვა</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>კონტროლერის მაკროების სიის მოთხოვნა</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>პარამეტრების ძებნა</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>პარამეტრის წაკითხვა</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>ადგილის ჩვენება თქვენთვის</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>საკუთარი მოწყობილობის დამატება</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>თავისი მოწყობილობის მართვა</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>თავისი მოწყობილობის წაშლა</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>კონტროლის დაჭერა ან გაშვება</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>პარამეტრის შეცვლა</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>პროფილის შექმნა</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>პროფილის გადარქმევა</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>პროფილის წაშლა</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>პროფილის იმპორტი</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>პროფილის ექსპორტი</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>ვირტუალური კონტროლერის დამატება</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>ვირტუალური კონტროლერის წაშლა</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>კონტროლერის ტიპის შეცვლა</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>მოწყობილობის მინიჭება</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>რუკის რიგების დაყენება</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>რუკის რიგების გასუფთავება</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>კონტროლერის ავტომატური მიბმა</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>მაკროს შენახვა</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>მაკროს წაშლა</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>თავისი ცვლილებების გაუქმება</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>მოთხოვნის შემოწმება</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge-ისთვის უცნობი ხელსაწყოს გამოძახება: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>პროფილის „{0}“ იმპორტი</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>კლავიატურისა და მაუსის შეყვანის გაგზავნა Windows-ში</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>კლავიატურისა და მაუსის კონტროლერი აჭერს კლავიშებს და ამოძრავებს მაჩვენებელს ყველა პროგრამაში.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, წყარო: {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>მაკროს შენახვა, რომელიც PadForge-ის გარეთ მოქმედებს</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>უშვებს: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>აჭერს კლავიშს: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>წინა პლანზე მყოფ პროგრამაში ტექსტს კრეფს</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>ამოძრავებს ან აწკაპუნებს მაუსს</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ქმნის კლავიატურისა და მაუსის კონტროლერს</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>რთავს: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>„{0}“ შეცვლა</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} იღებს მნიშვნელობას {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>უსმენს ქსელს, ამიტომ სხვა მოწყობილობებს ამ კომპიუტერთან დაკავშირება შეუძლიათ.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ცვლის დრაივერს ან HidHide-ს, რომელზეც სხვა პროგრამები და თამაშები არიან დამოკიდებული.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ფაილი: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ცვლის, რომელ პროგრამებს შეუძლიათ მოწყობილობის წაკითხვა, პარამეტრით „Use Only in PadForge“.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>კონტროლერის გამართვა</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>იპოვეთ მოწყობილობა, შექმენით მისთვის ვირტუალური კონტროლერი, მიანიჭეთ და მიაბით ის, რაც თამაშს სჭირდება.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>რატომ ვერ ხედავს თამაში ჩემს კონტროლერს</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>შეამოწმეთ ძრავა, ვირტუალური კონტროლერი, მოწყობილობა, დრაივერები და HidHide სათითაოდ.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>პროფილის გადმოტანა</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>შემოიტანეთ პროფილის ფაილი სხვა პროგრამიდან და ნახეთ, რა გადმოვიდა.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ჯერ</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ბოლო {1} მსგავსიდან</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3931,6 +4008,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers სერიალიზატორი, რომელსაც SteamKit2 Steam-ის სადენური პროტოკოლისთვის იყენებს, ავტორი Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-ის დეკომპრესია, რომელსაც SteamKit2 Steam-ის depot-ის ბლოკებისთვის იყენებს, zstd ბიბლიოთეკის C# პორტი, ავტორი Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol სერვერი და კლიენტი ასისტენტის კავშირისა და PadForge.exe --mcp-ის უკან, ავტორი Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions და DependencyInjection.Abstractions, რომლებზეც MCP C# SDK არის აგებული, ავტორი Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>დოკუმენტაცია Wii-ს დაწყვილების პროცედურისთვის, დინამიკის ADPCM-ისთვის, Wii Remote-ის გვერდულად და ვერტიკალურად დაჭერის ორიენტაციისთვის, სტიკის გეითის მოდელისა და მისი შენახვის ფორმატისთვის და გიროსკოპის ღერძების კონვენციისთვის. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

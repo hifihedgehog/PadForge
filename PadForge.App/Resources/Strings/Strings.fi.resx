@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ei hyväksynyt tämän ohjelman yhteyttä</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Pyydetty uudelleen liian pian</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Näitä ei enää tule ennen kuin PadForge käynnistyy uudelleen</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-sovelluksessa ei ole tällaista työkalua</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Ohjelma luki vanhemman tilan</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Asetusta ei ole</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Arvo oli asetuksen sallimien rajojen ulkopuolella</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Et sallinut sitä</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Kukaan ei vastannut ajoissa</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Odottaa vastaustasi</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Pyyntöä ei ole</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ei mitään kumottavaa</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Vain sinä voit muuttaa tätä</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Tiedostoa ei voitu avata</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Makroa ei ole</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Liian moni kysymys odotti vastaustasi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaihda profiiliin {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Palaa oletusprofiiliin</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Kysy, mikä profiili on käytössä</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Vapauta laitteen {0} ohjauselementit</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Aseta arvo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Suorita työkalu {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Lue tila</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Vaihda profiilia</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Käynnistä tai pysäytä moottori</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kytke virtuaaliohjaimet päälle tai pois</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Tallenna diagnostiikan tilannevedos</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lue kyselytaajuus ja ajurit</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Listaa profiilit</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lue profiili</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Listaa virtuaaliohjaimet</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Listaa laitteet</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lue laite</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Odota syötettäsi</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lue ohjaimen määritykset</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Listaa ohjaimen makrot</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Tallenna ongelma</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Etsi asetuksia</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lue asetus</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Näytä sinulle paikka</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Lisää oma laite</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Ohjaa omaa laitettaan</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Poista oma laitteensa</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Pidä ohjauselementtiä tai vapauta se</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Muuta asetusta</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Luo profiili</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Nimeä profiili uudelleen</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Poista profiili</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Tuo profiili</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Vie profiili</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Lisää virtuaaliohjain</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Poista virtuaaliohjain</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Muuta ohjaimen tyyppiä</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Liitä laite</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Aseta määritysrivejä</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Tyhjennä määritysrivit</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Määritä ohjain automaattisesti</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Tallenna makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Poista makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Kumoa sen muutokset</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Tarkista pyyntö</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kutsu työkalua, jota PadForge ei tunne: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Tuo profiili ”{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Lähetä näppäimistön ja hiiren syötteitä Windowsiin</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Näppäimistö- ja hiiriohjain painaa näppäimiä ja liikuttaa osoitinta kaikissa ohjelmissa.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} syötteestä {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Tallenna makro, joka toimii PadForge-sovelluksen ulkopuolella</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Suorittaa {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Painaa {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Kirjoittaa tekstiä edessä olevaan ohjelmaan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Liikuttaa hiirtä tai napsauttaa</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Luo näppäimistö- ja hiiriohjaimen</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Kytkee päälle: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Muuta ”{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Asettaa {0} arvoon {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Kuuntelee verkossa, joten muut laitteet voivat tavoittaa tämän tietokoneen.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Muuttaa ajuria tai HidHide-ohjelmaa, joihin muut ohjelmat ja pelit tukeutuvat.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Tiedosto: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Muuttaa, mitkä ohjelmat voivat lukea laitetta, asetuksella Käytä vain PadForge-sovelluksessa.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Määritä ohjain</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Etsi laite, tee sille virtuaaliohjain, liitä se ja määritä, mitä peli tarvitsee.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Miksi peli ei näe ohjaintani</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Tarkista moottori, virtuaaliohjain, laite, ajurit ja HidHide yksi kerrallaan.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Tuo profiili tänne</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Tuo profiilitiedosto toisesta ohjelmasta ja katso, mitä siirtyi mukana.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kertaa</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, viimeinen {1} vastaavasta</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers -sarjoittaja, jota SteamKit2 käyttää Steamin siirtoprotokollaan, tekijä Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-purku, jota SteamKit2 käyttää Steamin depot-paloihin. C#-siirros zstd-kirjastosta, tekijä Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol -palvelin ja -asiakas avustajayhteyden ja komennon PadForge.exe --mcp takana, tekijä Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ja DependencyInjection.Abstractions, joihin MCP C# SDK perustuu, tekijä Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentaatio Wii-pariliitoksen menettelystä, kaiuttimen ADPCM-koodauksesta, Wii Remote -ohjaimen vaaka- ja pystyasennoista, sauvan rajausmallista ja sen tallennusmuodosta sekä gyron akselikäytännöstä. Käytetty vain dokumentaationa, GPL-koodia ei toimiteta.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

@@ -1585,6 +1585,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge haina kugamuchira kubatana kwechirongwa ichi</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Zvakumbirwa zvakare nokukurumidza</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Hapana zvimwe zvezvinhu izvi kusvikira PadForge yatanga zvakare</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge haina chishandiso chakadaro</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Chirongwa chakaverenga mamiriro ekare</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Hapana setingi yakadaro</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Kukosha kwanga kuri kunze kwezvinogamuchirwa nesetingi</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Hauna kuzvibvumira</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Hapana akapindura nenguva</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Zvakamirira mhinduro yako</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Hapana chikumbiro chakadaro</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Hapana chekudzosa</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Iwe chete ndiwe unogona kuchinja izvi</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faira haina kuvhurika</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Hapana macro yakadaro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Mibvunzo yakawandisa yanga yakakumirira</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chinja kuenda kupurofaira {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dzokera kupurofaira yekutanga</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bvunza kuti ndeipi purofaira iri kushanda</value></data>
@@ -1620,6 +1633,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Regedza zvidzoreso zvemudziyo {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gadza kukosha {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Mhanyisa chishandiso {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Verenga mamiriro</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Chinja purofaira</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Tanga kana kumisa injini</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Batidza kana kudzima kontiroura dzenhema</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Chengetedza mufananidzo wekuongorora</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Verenga polling rate nemadhiraivha</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Nyora mapurofaira</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Verenga purofaira</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Nyora kontiroura dzenhema</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Nyora midziyo</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Verenga mudziyo</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Mirira input yako</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Verenga mepu dzekontiroura</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Nyora macro dzekontiroura</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekodha dambudziko</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Tsvaga masetingi</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Verenga setingi</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Ratidza nzvimbo</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Wedzera mudziyo wacho pachacho</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Tonga mudziyo wacho</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Bvisa mudziyo wacho</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Bata kana kuregedza chidzoreso</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Chinja setingi</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Gadzira purofaira</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Tumidza purofaira zita idzva</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Dzima purofaira</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Unza purofaira</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Buritsa purofaira</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Wedzera kontiroura yenhema</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Bvisa kontiroura yenhema</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Chinja rudzi rwekontiroura</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Govera mudziyo</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Gadza mitsara yemepu</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Bvisa mitsara yemepu</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mepa kontiroura otomatiki</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Chengetedza macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Dzima macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Dzosa shanduko dzacho</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Tarisa chikumbiro</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Dana chishandiso chisipo mu-PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Unza purofaira “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Tumira input yekibhodhi nembeva kuWindows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kontiroura yekibhodhi nembeva inodzvanya makiyi uye inofambisa pointer muchirongwa chese.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} kubva pa{1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Chengetedza macro inoshanda kunze kwe-PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Inomhanyisa {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Inodzvanya {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Inonyora zvinyorwa muchirongwa chiri pamberi</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Inofambisa kana kudzvanya mbeva</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Inogadzira kontiroura yekibhodhi nembeva</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Inobatidza {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Chinja “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Inogadza {0} kuita {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Inoteerera panetiweki, saka imwe midziyo inogona kusvika paPC ino.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Inochinja dhiraivha kana HidHide, zvinovimbwa nazvo nezvimwe zvirongwa nemitambo.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faira: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Inochinja kuti ndezvipi zvirongwa zvinogona kuverenga mudziyo, kuburikidza ne-Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Gadzira kontiroura</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Tsvaga mudziyo, uigadzirire kontiroura yenhema, uigovere uye umepe zvinodiwa nemutambo.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Sei mutambo usingaoni kontiroura yangu</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Tarisa injini, kontiroura yenhema, mudziyo, madhiraivha ne-HidHide chimwe nechimwe.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Unza purofaira</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Unza faira yepurofaira kubva kune chimwe chirongwa, wozoona zvauya.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kanokwana {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, chekupedzisira pa{1} zvakafanana</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Bvumira</value></data>
@@ -1661,4 +1738,8 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Inoenzanisa mbeva inotaura zvisina kuenzana. Vhiri rinotevera ruoko nenguva inenge iyi. 0 zvinoreva kuti yakadzimwa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Mugumo pakumhanya</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kana Game Telemetry yakabatidzwa, chikamu chemugumo chinosara pa200 km/h. Pa100%, mugumo wese uripo pakumhanya kwese.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Server neclient ye-Model Context Protocol iri seri kwekubatana nemubatsiri uye PadForge.exe --mcp, naModel Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions neDependencyInjection.Abstractions, izvo MCP C# SDK yakavakirwa pazviri, naMicrosoft.</value></data>
 </root>

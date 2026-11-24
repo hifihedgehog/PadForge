@@ -536,8 +536,8 @@ namespace PadForge.Tests
             grant.Log("ok\u2066 fine\u202Dx");
             Assert.Equal("ok finex", _manager.LogOf(run)[^1].Text);
             Assert.Equal("Pad", ProgramDeviceDeclaration.Clean("P\u202Ea\u200Dd", 64));
-            Assert.Equal("ab", DisplayText.StripFormatCharacters("a\u200E\u200F\u061C\uFEFFb"));
-            Assert.Equal(string.Empty, DisplayText.StripFormatCharacters(null));
+            Assert.Equal("ab", ShownText.Clean("a\u200E\u200F\u061C\uFEFFb"));
+            Assert.Null(ShownText.Clean(null));
         }
 
         [Fact]

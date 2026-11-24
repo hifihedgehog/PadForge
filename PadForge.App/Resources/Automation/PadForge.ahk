@@ -158,14 +158,15 @@ class PadForge {
     }
 
     ; Whether PadForge serves the pipe: its owner is Administrators or the
-    ; system. A pipe of another name than PadForge's own, which only a test
-    ; serves, is also taken from this script's own user. Windows reads a
-    ; pipe's name without regard to case, and so does != here.
+    ; system. A pipe of another name than PadForge's own (the Automation
+    ; pipe and the control pipe), which only a test serves, is also taken
+    ; from this script's own user. Windows reads a pipe's name without
+    ; regard to case, and so does != here.
     static _ServedByPadForge(h, pipe) {
         owner := PadForge.PipeOwner(h)
         if (owner = "S-1-5-32-544" || owner = "S-1-5-18")
             return true
-        return pipe != PadForge.DefaultPipe && owner != "" && owner = PadForge.OwnUser()
+        return pipe != PadForge.DefaultPipe && pipe != "PadForge.Control" && owner != "" && owner = PadForge.OwnUser()
     }
 
     ; The SID of a pipe's owner as text, or "".

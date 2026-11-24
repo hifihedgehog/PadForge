@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Ni dderbyniodd PadForge gysylltiad y rhaglen hon</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Gofynnwyd eto'n rhy fuan</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Dim rhagor o'r rhain nes i PadForge gychwyn eto</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Nid oes gan PadForge offeryn o'r fath</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Darllenodd y rhaglen gyflwr hŷn</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Dim gosodiad o'r fath</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Roedd y gwerth y tu allan i'r hyn y mae'r gosodiad yn ei dderbyn</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ni wnaethoch ei ganiatáu</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ni atebodd neb mewn pryd</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Yn aros am eich ateb</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Dim cais o'r fath</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Dim i'w ddadwneud</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Dim ond chi all newid hyn</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Nid oedd modd agor y ffeil</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Dim macro o'r fath</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Roedd gormod o gwestiynau'n aros amdanoch</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Newid i'r proffil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dychwelyd i'r proffil rhagosodedig</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Holi pa broffil sy'n weithredol</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Gollwng rheolyddion dyfais {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gosod y gwerth {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Rhedeg yr offeryn {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Darllen y statws</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Newid proffiliau</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Cychwyn neu stopio'r injan</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Troi rheolyddion rhithwir ymlaen neu i ffwrdd</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Cadw ciplun diagnosteg</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Darllen y gyfradd pleidleisio a'r gyrwyr</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Rhestru'r proffiliau</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Darllen proffil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Rhestru'r rheolyddion rhithwir</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Rhestru'r dyfeisiau</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Darllen dyfais</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Aros am eich mewnbwn</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Darllen mapiadau rheolydd</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Rhestru macros rheolydd</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Recordio problem</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Dod o hyd i osodiadau</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Darllen gosodiad</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Dangos lle i chi</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ychwanegu dyfais ei hun</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Gyrru ei ddyfais</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Tynnu ei ddyfais</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Dal neu ollwng rheolydd</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Newid gosodiad</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Creu proffil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Ailenwi proffil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Dileu proffil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Mewnforio proffil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Allforio proffil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Ychwanegu rheolydd rhithwir</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Tynnu rheolydd rhithwir</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Newid math rheolydd</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Neilltuo dyfais</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Gosod rhesi mapio</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Clirio rhesi mapio</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapio rheolydd yn awtomatig</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Cadw macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Dileu macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Dadwneud ei newidiadau</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Gwirio cais</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Galw offeryn nad oes gan PadForge mohono: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Mewnforio'r proffil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Anfon mewnbwn bysellfwrdd a llygoden i Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Mae rheolydd bysellfwrdd a llygoden yn gwasgu allweddi ac yn symud y pwyntydd ym mhob rhaglen.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Cadw macro sy'n gweithredu y tu allan i PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Yn rhedeg {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Yn gwasgu {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Yn teipio testun i'r rhaglen o'r blaen</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Yn symud neu'n clicio'r llygoden</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Yn gwneud rheolydd bysellfwrdd a llygoden</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Yn troi {0} ymlaen</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Newid “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Yn gosod {0} i {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Yn gwrando ar y rhwydwaith, felly gall dyfeisiau eraill gyrraedd y PC hwn.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Yn newid gyrrwr neu HidHide, y mae rhaglenni a gemau eraill yn dibynnu arnynt.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ffeil: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Yn newid pa raglenni all ddarllen y ddyfais, drwy Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Gosod Rheolydd i Fyny</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Dewch o hyd i'r ddyfais, gwnewch reolydd rhithwir ar ei chyfer, neilltuwch hi a mapiwch yr hyn sydd ei angen ar y gêm.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Pam Nad yw Gêm yn Gweld Fy Rheolydd</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Gwiriwch yr injan, y rheolydd rhithwir, y ddyfais, y gyrwyr a HidHide fesul un.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Dod â Phroffil Drosodd</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Mewnforiwch ffeil proffil o raglen arall, yna gwelwch beth ddaeth drosodd.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, nifer y troeon: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, yr olaf o {1} tebyg iddo</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3927,6 +4004,10 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Cyfresydd Protocol Buffers y mae SteamKit2 yn ei ddefnyddio ar gyfer protocol gwifren Steam, gan Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Datgywasgu Zstandard y mae SteamKit2 yn ei ddefnyddio ar gyfer talpiau depo Steam, porth C# o lyfrgell zstd gan Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Gweinydd a chleient y Model Context Protocol y tu ôl i'r cysylltiad â chynorthwywyr a PadForge.exe --mcp, gan Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions a DependencyInjection.Abstractions, y mae'r MCP C# SDK wedi'i adeiladu arnynt, gan Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dogfennaeth ar gyfer seremoni paru Wii, ADPCM yr uchelseinydd, cyfeiriadedd ochrol ac unionsyth y Wii Remote, y model giât ffon a'i fformat storio, a chonfensiwn echelinau'r gyrosgop. Wedi'i ddarllen fel dogfennaeth yn unig, ni chludir cod GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

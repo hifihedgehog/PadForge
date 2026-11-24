@@ -8,7 +8,8 @@ namespace PadForge.Services.Automation
     /// <summary>
     /// The scrubber every free-text field a program reads goes through (#597):
     /// a device's name in <c>devices</c>, a control's name in <c>caps</c>,
-    /// and the names in <c>state</c>, <c>query</c> and <c>e profile</c>. What
+    /// the names in <c>state</c>, <c>query</c> and <c>e profile</c>, and
+    /// every string of an assistant's tool result (AssistantCalls). What
     /// a program reads carries no user name, PC name, serial number,
     /// Bluetooth address, folder path or access code, and no name the user
     /// gave a device. The problem recorder uses the same scrubber
@@ -48,6 +49,11 @@ namespace PadForge.Services.Automation
         /// lock, before a read's rows are made.</summary>
         internal static void Prepare() => Scrubber(fresh: true);
 
+        /// <summary>The scrubber, read again first when the last reading is
+        /// more than <see cref="FreshForMs"/> old: what an assistant's tool
+        /// result goes through. Called outside every lock.</summary>
+        internal static PrivacyScrubber Fresh() => Scrubber(fresh: true);
+
         /// <summary>The scrubber made last, or a new one when none was
         /// made.</summary>
         private static PrivacyScrubber Current() => Scrubber(fresh: false);
@@ -73,9 +79,9 @@ namespace PadForge.Services.Automation
         /// <summary>A scrubber told this PC's live values: what the problem
         /// recorder's check reads, and the names the user gave its
         /// devices.</summary>
-        internal static PrivacyScrubber Make()
+        internal static PrivacyScrubber Make(PrivacyEnvironment environment = null)
         {
-            var environment = PrivacyEnvironment.Current();
+            environment ??= PrivacyEnvironment.Current();
             var scrubber = new PrivacyScrubber(environment);
             foreach (var (kind, value) in LiveValues(environment, Devices())) scrubber.Know(kind, value);
             return scrubber;
@@ -108,6 +114,12 @@ namespace PadForge.Services.Automation
                 if (!string.IsNullOrEmpty(instance)) live.Add((PrivateKind.DeviceInstance, instance));
                 // The name the user gave the device on the Devices page.
                 if (!string.IsNullOrWhiteSpace(device.DisplayName)) live.Add((PrivateKind.DeviceName, device.DisplayName));
+                // A name its pairing gave it, which differs from its
+                // product's own: a Bluetooth pad carries the name its owner
+                // gave it.
+                if (!string.IsNullOrWhiteSpace(device.InstanceName)
+                    && !string.Equals(device.InstanceName.Trim(), device.ProductName?.Trim(), StringComparison.OrdinalIgnoreCase))
+                    live.Add((PrivateKind.DeviceName, device.InstanceName));
                 if (device.DevicePath != null && device.DevicePath.StartsWith(ProblemRecorder.WebDevicePrefix, StringComparison.OrdinalIgnoreCase))
                 {
                     ProblemRecorder.WebNames(device.ProductName, live);

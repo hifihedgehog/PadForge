@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge پەیوەندیی ئەم بەرنامەیەی وەرنەگرت</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>زوو دووبارە داوا کرایەوە</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>تا PadForge دووبارە دەست پێدەکاتەوە چیتر لەمانە نا</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ئامرازی وای نییە</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>بەرنامەکە دۆخێکی کۆنتری خوێندبووەوە</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ڕێکخستنی وا نییە</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>بەهاکە لە دەرەوەی ئەوە بوو کە ڕێکخستنەکە وەریدەگرێت</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>تۆ ڕێگەت پێنەدا</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>کەس لە کاتی خۆیدا وەڵامی نەدایەوە</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>چاوەڕێی وەڵامی تۆیە</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>داواکاریی وا نییە</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>هیچ شتێک نییە بۆ پاشگەزبوونەوە</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>تەنها تۆ دەتوانیت ئەمە بگۆڕیت</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>فایلەکە نەکرایەوە</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ماکرۆی وا نییە</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>پرسیاری زۆر چاوەڕێی تۆ بوون</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>گۆڕین بۆ پرۆفایلی {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>گەڕانەوە بۆ پرۆفایلی بنەڕەت</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسین کە کام پرۆفایل چالاکە</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>بەردانی کۆنترۆڵەکانی ئامێری {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>دانانی بەهای {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>کارپێکردنی ئامرازی {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>خوێندنەوەی دۆخ</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>گۆڕینی پرۆفایل</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>دەستپێکردن یان وەستاندنی بزوێنەر</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>هەڵکردن یان کوژاندنەوەی کۆنترۆڵەرە مەجازییەکان</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستای دەستنیشانکردن</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>خوێندنەوەی ڕێژەی وەرگرتن و درایڤەرەکان</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>ڕیزکردنی پرۆفایلەکان</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>خوێندنەوەی پرۆفایلێک</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ڕیزکردنی کۆنترۆڵەرە مەجازییەکان</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>ڕیزکردنی ئامێرەکان</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>خوێندنەوەی ئامێرێک</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>چاوەڕوانی تێخەری تۆ</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>خوێندنەوەی بەستنەوەکانی کۆنترۆڵەرێک</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ڕیزکردنی ماکرۆکانی کۆنترۆڵەرێک</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>تۆمارکردنی کێشەیەک</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>دۆزینەوەی ڕێکخستنەکان</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>خوێندنەوەی ڕێکخستنێک</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>پیشاندانی شوێنێک بە تۆ</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>زیادکردنی ئامێرێکی خۆی</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>بەڕێوەبردنی ئامێرەکەی</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>لابردنی ئامێرەکەی</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ڕاگرتن یان بەردانی کۆنترۆڵێک</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>گۆڕینی ڕێکخستنێک</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>دروستکردنی پرۆفایلێک</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ناوگۆڕینی پرۆفایلێک</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>سڕینەوەی پرۆفایلێک</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>هاوردەکردنی پرۆفایلێک</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>هەناردەکردنی پرۆفایلێک</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>زیادکردنی کۆنترۆڵەرێکی مەجازی</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>لابردنی کۆنترۆڵەرێکی مەجازی</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>گۆڕینی جۆری کۆنترۆڵەرێک</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>دیاریکردنی ئامێرێک</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>دانانی ڕیزەکانی بەستنەوە</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>پاککردنەوەی ڕیزەکانی بەستنەوە</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>بەستنەوەی خۆکاری کۆنترۆڵەرێک</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>پاشەکەوتکردنی ماکرۆیەک</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>سڕینەوەی ماکرۆیەک</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>پاشگەزبوونەوە لە گۆڕانکارییەکانی</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>پشکنینی داواکارییەک</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>بانگکردنی ئامرازێک کە PadForge نییەتی: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>هاوردەکردنی پرۆفایلی «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>ناردنی تێخەری کیبۆرد و ماوس بۆ Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>کۆنترۆڵەرێکی کیبۆرد و ماوس لە هەموو بەرنامەیەکدا کلیل دادەگرێت و نیشاندەر دەجووڵێنێت.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} لە ڕێگەی {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>پاشەکەوتکردنی ماکرۆیەک کە لە دەرەوەی PadForge کار دەکات</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} کار پێدەکات</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} دادەگرێت</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>دەق لە بەرنامەی پێشەوەدا دەنووسێت</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>ماوس دەجووڵێنێت یان کرتەی پێدەکات</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>کۆنترۆڵەرێکی کیبۆرد و ماوس دروست دەکات</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} هەڵدەکات</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>گۆڕینی «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} دەکاتە {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>گوێ لە تۆڕ دەگرێت، بۆیە ئامێرەکانی تر دەتوانن بگەنە ئەم کۆمپیوتەرە.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>درایڤەرێک یان HidHide دەگۆڕێت کە بەرنامە و یارییەکانی تر پشتیان پێدەبەستن.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>فایل: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ئەوە دەگۆڕێت کە کام بەرنامە دەتوانن ئامێرەکە بخوێننەوە، لە ڕێگەی Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>ڕێکخستنی کۆنترۆڵەرێک</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>ئامێرەکە بدۆزەرەوە، کۆنترۆڵەرێکی مەجازی بۆ دروست بکە، دیاری بکە و ئەوەی یارییەکە پێویستیەتی ببەستەوە.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>بۆچی یارییەک کۆنترۆڵەرەکەم نابینێت</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>بزوێنەر، کۆنترۆڵەری مەجازی، ئامێر، درایڤەرەکان و HidHide یەک لە دوای یەک بپشکنە.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>هێنانی پرۆفایلێک</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>فایلی پرۆفایلێک لە بەرنامەیەکی ترەوە هاوردە بکە، پاشان ببینە چی هاتووە.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}، {1} جار</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}، دواینی {1} داواکاریی لەو جۆرە</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3919,6 +3996,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>زنجیرەکەری Protocol Buffers کە SteamKit2 بۆ پرۆتۆکۆلی تۆڕی Steam بەکاری دەهێنێت، لەلایەن Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>کردنەوەی پەستاندنی Zstandard کە SteamKit2 بۆ پارچەکانی depot ی Steam بەکاری دەهێنێت، گواستنەوەیەکی C#ی کتێبخانەی zstd لەلایەن Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>ڕاژەکار و کڕیاری Model Context Protocol لە پشت پەیوەندیی یاریدەدەر و PadForge.exe --mcp، لەلایەن Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions، Logging.Abstractions و DependencyInjection.Abstractions، کە MCP C# SDK لەسەریان دروستکراوە، لەلایەن Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>بەڵگەنامە بۆ ڕێوڕەسمی جووتکردنی Wii، ADPCMی بڵندگۆ، ئاراستەی لاتەنیشت و ڕاستەوەستاوی Wii Remote، مۆدێلی دەروازەی ستیک و شێوازی هەڵگرتنی، و ڕێسای تەوەرەکانی جایرۆ. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکە نییە.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

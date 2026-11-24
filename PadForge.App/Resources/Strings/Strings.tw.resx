@@ -890,6 +890,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge annye program yi nkitahodi</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Wɔsan bisaa ntɛm dodo</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Eyi bi bio nni hɔ kosi sɛ PadForge bɛsan afi ase</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nni adwinnade a ɛte saa</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Program no kenkanee tebea dedaw bi</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Setting a ɛte saa nni hɔ</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Na bo no boro nea setting no gye</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Wommaa kwan</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Obiara annye so bere mu</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ɛretwɛn wo mmuae</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Abisade a ɛte saa nni hɔ</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Biribiara nni hɔ a wobɛsan ayi</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Wo nko ara na wubetumi asesa eyi</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Wɔantumi annue fael no</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Macro a ɛte saa nni hɔ</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na nsɛmmisa dodow dodo retwɛn wo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sesa kɔ profile {0} so</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>San kɔ profile a edi kan no so</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bisa profile a ɛreyɛ adwuma</value></data>
@@ -925,6 +938,64 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Gyaa device {0} controls mu</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Hyehyɛ bo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yɛ adwinnade {0} adwuma</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Kenkan tebea no</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Sesa profile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Fi engine no ase anaa gyae</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Sɔ anaa dum virtual controllers</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Kora diagnostics snapshot</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Kenkan polling rate ne drivers</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Kyerɛw profiles no din</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Kenkan profile bi</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Kyerɛw virtual controllers no din</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Kyerɛw devices no din</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Kenkan device bi</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Twɛn wo input</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Kenkan controller bi mappings</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Kyerɛw controller bi macros din</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Kyere ɔhaw bi</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Hwehwɛ settings</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Kenkan setting bi</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kyerɛ wo baabi</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Fa ne device ankasa ka ho</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Ka ne device</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Yi ne device fi hɔ</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Kura control bi mu anaa gyaa mu</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Sesa setting bi</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Yɛ profile bi</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Sesa profile bi din</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Pepa profile bi</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Fa profile bi ba</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Fa profile bi kɔ</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Fa virtual controller bi ka ho</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Yi virtual controller bi fi hɔ</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Sesa controller bi su</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Fa device bi ma</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Hyehyɛ mapping nkyerɛwee</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Pepa mapping nkyerɛwee</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Map controller bi ankasa</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Kora macro bi</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Pepa macro bi</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>San yi ne nsakrae</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Hwɛ abisade bi</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Frɛ adwinnade bi a PadForge nni: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Fa profile “{0}” ba</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Mane keyboard ne mouse input kɔ Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Keyboard ne mouse controller mia keys na ɛkanyan pointer no wɔ program biara mu.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} fi {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Kora macro a ɛyɛ adwuma wɔ PadForge akyi</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Ɛyɛ {0} adwuma</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Ɛmia {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ɛkyerɛw nsɛm gu program a ɛwɔ anim no mu</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Ɛkanyan mouse no anaa ɛmia so</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ɛyɛ keyboard ne mouse controller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ɛsɔ {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Sesa “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ɛhyehyɛ {0} kɔ {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ɛtie network no so, enti devices foforo betumi adu PC yi ho.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ɛsesa driver anaa HidHide, a programs ne agodi foforo de wɔn ho to so.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fael: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ɛsesa programs a wobetumi akenkan device no, denam Use Only in PadForge so.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mpɛn {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, nea etwa to wɔ {1} a ɛte saa mu</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ma Kwan</value></data>
@@ -939,4 +1010,8 @@
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Daa</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Button a ɛma mouse no kanyan steering no, wɔ device koro a mouse no travel wɔ so no ara so. Sɛ wompaw biara a, mouse no kanyan steering no daa.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol server ne client a ɛwɔ assistant nkitahodi ne PadForge.exe --mcp akyi, a Model Context Protocol a Series of LF Projects na wɔyɛe.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ne DependencyInjection.Abstractions, a wɔde MCP C# SDK no si so, a Microsoft na ɔyɛe.</value></data>
 </root>

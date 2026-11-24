@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не прыняў злучэнне гэтай праграмы</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Паўторны запыт занадта хутка</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Больш такіх запытаў да наступнага запуску PadForge не будзе</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>У PadForge няма такога інструмента</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Праграма прачытала састарэлы стан</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Такой налады няма</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Значэнне выходзіць за межы налады</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Вы не дазволілі</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ніхто не адказаў своечасова</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Чакае вашага адказу</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Такога запыту няма</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Няма чаго адмяняць</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Гэта можаце змяніць толькі вы</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Не ўдалося адкрыць файл</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Такога макраса няма</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Вас чакала занадта шмат пытанняў</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Пераключыцца на профіль {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Вярнуцца да профілю па змаўчанні</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Спытаць, які профіль актыўны</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Адпусціць элементы кіравання прылады {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задаць значэнне {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Запусціць інструмент {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Прачытаць стан</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Пераключыць профілі</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Запусціць або спыніць рухавік</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Уключыць або выключыць віртуальныя кантролеры</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Захаваць здымак дыягностыкі</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Прачытаць частату апытання і драйверы</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Паказаць спіс профіляў</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Прачытаць профіль</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Паказаць спіс віртуальных кантролераў</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Паказаць спіс прылад</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Прачытаць прыладу</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Чакаць вашага ўводу</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Прачытаць супастаўленні кантролера</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Паказаць спіс макрасаў кантролера</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Запісаць праблему</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Знайсці налады</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Прачытаць наладу</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Паказаць вам месца</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Дадаць уласную прыладу</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Кіраваць сваёй прыладай</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Выдаліць сваю прыладу</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Утрымліваць або адпусціць элемент кіравання</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Змяніць наладу</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Стварыць профіль</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Перайменаваць профіль</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Выдаліць профіль</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Імпартаваць профіль</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Экспартаваць профіль</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Дадаць віртуальны кантролер</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Выдаліць віртуальны кантролер</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Змяніць тып кантролера</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Прызначыць прыладу</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Задаць радкі супастаўлення</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Ачысціць радкі супастаўлення</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Аўтаматычна супаставіць кантролер</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Захаваць макрас</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Выдаліць макрас</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Адмяніць свае змены</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Праверыць запыт</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Выклікаць інструмент, якога няма ў PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Імпартаваць профіль «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Адпраўляць увод клавіятуры і мышы ў Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Кантролер клавіятуры і мышы націскае клавішы і рухае курсор у кожнай праграме.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} ад {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Захаваць макрас, які дзейнічае па-за PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Запускае {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Націскае {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Уводзіць тэкст у праграму, што наперадзе</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Рухае мыш або пстрыкае ёй</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Стварае кантролер клавіятуры і мышы</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Уключае {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Змяніць «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Задае для {0} значэнне {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Праслухоўвае сетку, таму іншыя прылады могуць дасягнуць гэтага ПК.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Змяняе драйвер або HidHide, на якія спадзяюцца іншыя праграмы і гульні.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Змяняе, якія праграмы могуць чытаць прыладу, праз параметр «Выкарыстоўваць толькі ў PadForge».</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Наладзіць кантролер</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Знайсці прыладу, стварыць для яе віртуальны кантролер, прызначыць яе і супаставіць тое, што патрэбна гульні.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Чаму гульня не бачыць мой кантролер</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Праверыць па чарзе рухавік, віртуальны кантролер, прыладу, драйверы і HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Перанесці профіль</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Імпартаваць файл профілю з іншай праграмы, а потым паглядзець, што перанеслася.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, разоў: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, апошні з {1} падобных</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Серыялізатар Protocol Buffers, які SteamKit2 выкарыстоўвае для сеткавага пратакола Steam, аўтар Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Распакоўка Zstandard, якую SteamKit2 выкарыстоўвае для частак дэпо Steam, порт бібліятэкі zstd на C# ад Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Сервер і кліент Model Context Protocol, на якіх трымаецца падключэнне памочнікаў і PadForge.exe --mcp, ад Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions і DependencyInjection.Abstractions, на якіх пабудаваны MCP C# SDK, ад Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Дакументацыя па працэдуры спалучэння Wii, ADPCM для дынаміка, гарызантальнай і вертыкальнай арыентацыі Wii Remote, мадэлі абмежавальніка стыка і яе фармаце захавання, а таксама па пагадненні пра восі гіраскопа. Выкарыстоўваецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

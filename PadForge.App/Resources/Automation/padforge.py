@@ -54,6 +54,10 @@ _OWNER_SECURITY_INFORMATION = 1
 # without administrator rights cannot give a pipe it makes either one.
 _PADFORGE_OWNERS = ("S-1-5-32-544", "S-1-5-18")
 
+# The names of the pipes PadForge serves, the control pipe and the Automation
+# pipe, in lower case: Windows compares pipe names without regard to case.
+_OWN_NAMES = ("padforge.control", "padforge.automation")
+
 
 class PadForgeError(Exception):
     """A request PadForge refused, or a connection it could not make.
@@ -254,14 +258,14 @@ def _own_user():
 def _served_by_padforge(handle, name):
     """Whether PadForge serves the pipe. Its owner must be Administrators
     or the system, which a program without administrator rights cannot
-    give a pipe it makes. A pipe of another name than PadForge's own,
-    which only a test serves, is also taken from this script's own user.
-    Windows reads a pipe's name without regard to case, so PadForge's own
-    is told apart the same way."""
+    give a pipe it makes. A pipe of another name than PadForge's own
+    (_OWN_NAMES), which only a test serves, is also taken from this
+    script's own user. Windows reads a pipe's name without regard to case,
+    so PadForge's own are told apart the same way."""
     found = _pipe_owner(handle)
     if found in _PADFORGE_OWNERS:
         return True
-    return name.lower() != PIPE.lower() and found is not None and found == _own_user()
+    return name.lower() not in _OWN_NAMES and found is not None and found == _own_user()
 
 
 class _Pipe:

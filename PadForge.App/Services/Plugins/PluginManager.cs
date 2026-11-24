@@ -105,7 +105,7 @@ namespace PadForge.Services.Plugins
 
         /// <summary>The name shown: the name it gave, or its file's
         /// name until it has run and given one.</summary>
-        public string ShownName => Name.Length > 0 ? Name : DisplayText.StripFormatCharacters(System.IO.Path.GetFileName(Path));
+        public string ShownName => Name.Length > 0 ? Name : (ShownText.Clean(System.IO.Path.GetFileName(Path)) ?? string.Empty);
 
         // ── The run in progress, under the manager's lock ──
         internal IPluginProcess Process;

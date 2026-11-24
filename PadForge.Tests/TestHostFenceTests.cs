@@ -194,6 +194,7 @@ namespace PadForge.Tests
         private const string WorkshopPanel = "PadForge.App/Views/CommunityConfigsPanel.xaml.cs";
         private const string ControlPipe = Services + "ExternalControlService.cs";
         private const string AutomationPipeFile = Services + "Automation/AutomationPipe.cs";
+        private const string PipeOwnerClientFile = Services + "Automation/PipeOwner.Client.cs";
         private const string RunningCopyFile = Services + "RunningCopy.cs";
         private const string InstanceSignalFile = Services + "InstanceSignal.cs";
         private const string InstanceLockFile = Services + "InstanceLock.cs";
@@ -243,6 +244,7 @@ namespace PadForge.Tests
             (SteamHttpFile, "SteamHttp"),
             (ControlPipe, "ExternalControlService"),
             (AutomationPipeFile, "AutomationPipe"),
+            (PipeOwnerClientFile, "PipeOwner"),
             (RunningCopyFile, "RunningCopy"),
             (ClientRunFile, "CallerConsole"),
             (StartWithRightsFile, "StartWithRights"),
@@ -296,6 +298,7 @@ namespace PadForge.Tests
             Assert.True(SteamHttp.OffLimitsForTest);
             Assert.True(ExternalControlService.OffLimitsForTest);
             Assert.True(PadForge.Services.Automation.AutomationPipe.OffLimitsForTest);
+            Assert.True(PadForge.Services.Automation.PipeOwner.OffLimitsForTest);
             Assert.True(RunningCopy.OffLimitsForTest);
             Assert.True(CallerConsole.OffLimitsForTest);
             Assert.True(StartWithRights.OffLimitsForTest);
@@ -505,6 +508,8 @@ namespace PadForge.Tests
             new object[] { ControlPipe, "public PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return PipeState.Stopped;" },
             // The Automation pipe a running PadForge serves (#597).
             new object[] { AutomationPipeFile, "public ExternalControlService.PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return ExternalControlService.PipeState.Stopped;" },
+            // The client end the copy an assistant starts opens (#597).
+            new object[] { PipeOwnerClientFile, "internal static NamedPipeClientStream Open(string pipeName)", "if (OffLimitsForTest && IsOwnName(pipeName)) return null;" },
             new object[] { ClientRunFile, "internal static bool Stands(string pipeName)", "if (ExternalControlService.OffLimitsForTest && IsTheAppsOwn(pipeName)) return false;" },
             new object[] { ClientRunFile, "internal static string Exchange(string pipeName, string line, int connectMs, int answerMs = AnswerMs)", "if (ExternalControlService.OffLimitsForTest && IsTheAppsOwn(pipeName)) return null;" },
 
@@ -726,7 +731,7 @@ namespace PadForge.Tests
             // The plugin kit's example plugin connects too. PadForge only
             // carries it as a file the user saves, and never compiles it
             // (#597).
-            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1), ("PadForge.App/Resources/Plugins/PadForgePlugin.cs", 1)),
+            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1), (PipeOwnerClientFile, 1), ("PadForge.App/Resources/Plugins/PadForgePlugin.cs", 1)),
                 FenceSource.Census(Creates("NamedPipeClientStream")));
             Assert.Contains(@"<Compile Remove=""Resources\Plugins\**"" />", ExtrasPageTests.RepoText("PadForge.App", "PadForge.App.csproj"));
 

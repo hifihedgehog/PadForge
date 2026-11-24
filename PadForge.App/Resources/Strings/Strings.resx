@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge did not take this program’s connection</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Asked again too soon</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No more of these until PadForge starts again</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge has no such tool</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>The program read an older state</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>No such setting</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>The value was outside what the setting takes</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>You did not allow it</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nobody answered in time</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Waiting for your answer</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>No such request</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nothing to undo</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Only you can change this</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>The file could not be opened</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>No such macro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Too many questions were waiting for you</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Switch to the profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Return to the default profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ask which profile is active</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Let go of controls of device {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Set the value {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Run the tool {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Read the status</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Switch profiles</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Start or stop the engine</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Turn virtual controllers on or off</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Save a diagnostics snapshot</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Read the polling rate and drivers</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>List the profiles</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Read a profile</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>List the virtual controllers</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>List the devices</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Read a device</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Wait for your input</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Read a controller’s mappings</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>List a controller’s macros</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Record a problem</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Find settings</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Read a setting</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Show you a place</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Add a device of its own</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Drive its device</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Remove its device</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Hold or release a control</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Change a setting</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Create a profile</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Rename a profile</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Delete a profile</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Import a profile</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Export a profile</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Add a virtual controller</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Remove a virtual controller</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Change a controller’s type</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Assign a device</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Set mapping rows</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Clear mapping rows</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Map a controller automatically</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Save a macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Delete a macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Undo its changes</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Check a request</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Call a tool PadForge does not have: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Import the profile “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Send keyboard and mouse input to Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>A keyboard and mouse controller presses keys and moves the pointer in every program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} from {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Save a macro that acts outside PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Runs {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Presses {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Types text into the program in front</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Moves or clicks the mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Makes a keyboard and mouse controller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Turns on {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Change “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Sets {0} to {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Listens on the network, so other devices can reach this PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Changes a driver or HidHide, which other programs and games rely on.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Changes which programs can read the device, through Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Set Up a Controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Find the device, make a virtual controller for it, assign it and map what the game needs.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Why a Game Does Not See My Controller</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Check the engine, the virtual controller, the device, the drivers and HidHide one at a time.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Bring a Profile Over</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Import a profile file from another program, then see what came over.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} times</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, the last of {1} like it</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4182,6 +4259,10 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers serializer SteamKit2 uses for the Steam wire protocol, by Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard decompression SteamKit2 uses for Steam depot chunks, a C# port of the zstd library by Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>The Model Context Protocol server and client behind the assistant connection and PadForge.exe --mcp, by Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions and DependencyInjection.Abstractions, which the MCP C# SDK is built on, by Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Documentation for the Wii pairing ceremony, the speaker ADPCM, the sideways and upright Wii Remote orientation, the stick-gate model and its storage format, and the gyro axis convention. Read as documentation only, no GPL code ships.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

@@ -229,6 +229,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ntiyakiriye ihuza ry'iyi porogaramu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Byongeye gusabwa vuba cyane</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nta bindi nk'ibi kugeza PadForge yongeye gutangira</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nta gikoresho nk'icyo ifite</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Porogaramu yasomye uko byari bimeze mbere</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nta igenamiterere nk'iryo ribaho</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Agaciro kari hanze y'ibyo igenamiterere ryakira</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ntiwabyemeye</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nta wasubije ku gihe</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Bitegereje igisubizo cyawe</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nta busabe nk'ubwo bubaho</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nta cyo gusiba</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ni wowe wenyine ushobora kubihindura</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Dosiye ntiyashoboye gufungurwa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nta macro nk'iyo ibaho</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ibibazo byinshi cyane byari bigutegereje</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hindurira kuri profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Subira kuri profili isanzwe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Baza profili ikora</value></data>
@@ -264,6 +277,64 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Rekura ibigenzura by'igikoresho {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Shyiraho agaciro {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Koresha igikoresho {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Soma uko bihagaze</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Hindura profili</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Tangiza cyangwa uhagarike moteri</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Fungura cyangwa ufunge kontorola z'ikoranabuhanga</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Bika ifoto y'isuzuma</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Soma inshuro z'isoma na drivers</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Garagaza profili</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Soma profili</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Garagaza kontorola z'ikoranabuhanga</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Garagaza ibikoresho</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Soma igikoresho</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Tegereza icyo winjiza</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Soma ihuzwa rya kontorola</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Garagaza macro za kontorola</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Fata ikibazo</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Shakisha igenamiterere</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Soma igenamiterere</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kwereka ahantu</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ongeramo igikoresho cyayo</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Koresha igikoresho cyayo</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Kuraho igikoresho cyayo</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Fata cyangwa urekure igenzura</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Hindura igenamiterere</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Kora profili</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Hindura izina rya profili</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Siba profili</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Injiza profili</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Ohereza profili hanze</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Ongeramo kontorola y'ikoranabuhanga</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Kuraho kontorola y'ikoranabuhanga</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Hindura ubwoko bwa kontorola</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Tanga igikoresho</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Shyiraho imirongo y'ihuzwa</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Siba imirongo y'ihuzwa</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Huza kontorola mu buryo bwikora</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Bika macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Siba macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Siba impinduka zayo</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Genzura ubusabe</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Hamagara igikoresho PadForge idafite: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Injiza profili “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Ohereza ibyinjizwa bya mwandikisho n'imbeba muri Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kontorola ya mwandikisho n'imbeba ikanda utubuto kandi ikimura akamenyetso muri porogaramu zose.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} biturutse kuri {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Bika macro ikora hanze ya PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Itangiza {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Ikanda {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Yandika inyandiko muri porogaramu iri imbere</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Yimura cyangwa ikanda imbeba</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ikora kontorola ya mwandikisho n'imbeba</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ifungura {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Hindura “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ishyira {0} kuri {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Yumviriza ku murandasi, bityo ibindi bikoresho bishobora kugera kuri iyi PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ihindura driver cyangwa HidHide, izindi porogaramu n'imikino byishingikirizaho.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Dosiye: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ihindura porogaramu zishobora gusoma igikoresho, binyuze kuri Use Only in PadForge.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Huza</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Bihujwe</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Nta gikoresho</value></data>
@@ -2147,5 +2218,9 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Iringaniza imbeba itanga amakuru atangana. Ruhuri ikurikira ukuboko itinzeho hafi iki gihe. 0 bisobanura ko bizimye.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Iherezo ku muvuduko</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Iyo Game Telemetry ifunguye, igice cy'iherezo gisigara ku muvuduko wa 200 km/h. Kuri 100% iherezo ryose riraboneka ku muvuduko uwo ari wo wose.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seriveri n'umukiriya ba Model Context Protocol bikoreshwa n'ihuza ry'abafasha na PadForge.exe --mcp, byakozwe na Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions na DependencyInjection.Abstractions, MCP C# SDK yubakiyeho, byakozwe na Microsoft.</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Agaciro ka script</value></data>
 </root>

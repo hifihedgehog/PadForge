@@ -4831,25 +4831,31 @@ namespace PadForge
         /// may be the one being clicked.</summary>
         private void DeleteSlotDeferred(int slotIndex)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                // Leave the page of the controller being deleted.
-                if (_viewModel.SelectedPadIndex == slotIndex)
-                    SelectNavItemByTag("Home");
+            Dispatcher.BeginInvoke(new Action(() => DeleteSlotNow(slotIndex)));
+        }
 
-                // Capture VC-active state BEFORE the delete so the
-                // bubble-down cascade in OnSlotDeleted knows whether the
-                // removed slot was holding a kernel slot. If it was not,
-                // the active VCs at higher positions do not need to bubble
-                // down: an inactive neighbor's removal displaced none of
-                // their kernel slots.
-                bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
-                var info = _deviceService.DeleteSlot(slotIndex);
-                _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
-                    deletedSlotHadActiveVc: hadActiveVc);
-                _viewModel.Devices.RefreshSlotButtons();
-                _inputService.RefreshDeviceList();
-            }));
+        /// <summary>The delete itself, on the interface's thread and outside
+        /// any click of the controller's own: the three places that offer
+        /// Delete come here deferred, and an assistant's remove_controller
+        /// at once (#597).</summary>
+        private void DeleteSlotNow(int slotIndex)
+        {
+            // Leave the page of the controller being deleted.
+            if (_viewModel.SelectedPadIndex == slotIndex)
+                SelectNavItemByTag("Home");
+
+            // Capture VC-active state BEFORE the delete so the
+            // bubble-down cascade in OnSlotDeleted knows whether the
+            // removed slot was holding a kernel slot. If it was not,
+            // the active VCs at higher positions do not need to bubble
+            // down: an inactive neighbor's removal displaced none of
+            // their kernel slots.
+            bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
+            var info = _deviceService.DeleteSlot(slotIndex);
+            _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
+                deletedSlotHadActiveVc: hadActiveVc);
+            _viewModel.Devices.RefreshSlotButtons();
+            _inputService.RefreshDeviceList();
         }
 
         // ─────────────────────────────────────────────
@@ -6930,14 +6936,24 @@ namespace PadForge
                     : Strings.Instance.Profiles_DeleteConfirmGames,
                 Strings.Instance.Common_Delete);
             if (!confirmed) return;
+            DeleteListedProfile(selected);
+        }
 
+        /// <summary>Deletes a profile the list holds, once the user or the
+        /// request card agreed: the profile, its game look's picture when no
+        /// other profile wears it, its list entry, and the default in force
+        /// when it was the active one. The Delete button and an assistant's
+        /// delete_profile both come here (#597).</summary>
+        private void DeleteListedProfile(ViewModels.ProfileListItem selected)
+        {
             int lookAppId = SettingsManager.Profiles.Find(p => p.Id == selected.Id)?.GameLook?.AppId ?? 0;
             bool wasActive = _inputService.DeleteProfile(selected.Id);
             // The deleted profile's game look (#591): its picture goes when
             // no other profile wears that game's look.
             PadForge.Common.Themes.GameLooks.Release(lookAppId);
             _viewModel.Settings.ProfileItems.Remove(selected);
-            _viewModel.Settings.SelectedProfile = null;
+            if (ReferenceEquals(_viewModel.Settings.SelectedProfile, selected))
+                _viewModel.Settings.SelectedProfile = null;
             if (wasActive)
                 _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
             _settingsService.MarkDirty();

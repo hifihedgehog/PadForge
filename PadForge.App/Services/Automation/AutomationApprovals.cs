@@ -84,6 +84,9 @@ namespace PadForge.Services.Automation
             _now = now ?? (() => DateTimeOffset.Now);
         }
 
+        /// <summary>How long a question waits for the user.</summary>
+        public TimeSpan Wait => _wait;
+
         /// <summary>Raised when a question joins or leaves
         /// <see cref="Pending"/>, on the thread that made the change. A
         /// listener that draws goes to its own thread.</summary>

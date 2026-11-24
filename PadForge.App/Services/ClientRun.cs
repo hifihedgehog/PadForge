@@ -87,7 +87,7 @@ namespace PadForge.Services
             public Action<string> TellError = CallerConsole.TellError;
 
             public Func<string> VersionLine = () => "PadForge " + BuildIdentity.Display;
-            public Func<int> ServeAssistant = AssistantBridge.Run;
+            public Func<int> ServeAssistant = AssistantMirror.Run;
         }
 
         /// <summary>
@@ -311,7 +311,8 @@ namespace PadForge.Services
         /// program (PipeOwner). The pipe is opened at the identification
         /// level, so a server that is not PadForge cannot act as the caller.
         /// A pipe of another name than PadForge's own, which a test serves,
-        /// is taken from the caller's own user too (PipeOwner.IsServer).</summary>
+        /// is taken from the caller's own user too: the one rule of
+        /// PipeOwner.IsServer.</summary>
         internal static string Exchange(string pipeName, string line, int connectMs, int answerMs = AnswerMs)
         {
             // The test host connects to no pipe under the app's own name.
@@ -324,7 +325,7 @@ namespace PadForge.Services
                     System.Security.Principal.TokenImpersonationLevel.Identification);
                 client.Connect(connectMs);
                 // Nothing goes to a server that is not PadForge.
-                if (!PipeOwner.IsServer(client.SafePipeHandle, IsTheAppsOwn(pipeName)))
+                if (!PipeOwner.IsServer(client.SafePipeHandle, pipeName))
                     return NotPadForge;
                 using var deadline = new CancellationTokenSource(answerMs);
                 byte[] request = Encoding.UTF8.GetBytes(line + "\n");

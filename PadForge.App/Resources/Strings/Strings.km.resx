@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge មិនបានទទួលការភ្ជាប់របស់កម្មវិធីនេះទេ</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>បានស្នើម្ដងទៀតលឿនពេក</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>មិនមានទៀតទេ រហូតដល់ PadForge ចាប់ផ្ដើមម្ដងទៀត</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge គ្មានឧបករណ៍នេះទេ</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>កម្មវិធីបានអានស្ថានភាពចាស់</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>គ្មានការកំណត់នេះទេ</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>តម្លៃនៅក្រៅជួរដែលការកំណត់ទទួលយក</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>អ្នកមិនបានអនុញ្ញាតវាទេ</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>គ្មាននរណាឆ្លើយទាន់ពេលទេ</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>កំពុងរង់ចាំចម្លើយរបស់អ្នក</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>គ្មានសំណើនេះទេ</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>គ្មានអ្វីត្រូវមិនធ្វើវិញទេ</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>មានតែអ្នកទេដែលអាចប្ដូរវានេះ</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>មិនអាចបើកឯកសារបានទេ</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>គ្មានម៉ាក្រូនេះទេ</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>មានសំណួរច្រើនពេកកំពុងរង់ចាំអ្នក</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ប្ដូរទៅប្រូហ្វាល់ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ត្រឡប់ទៅប្រូហ្វាល់លំនាំដើម</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>សួរថាប្រូហ្វាល់ណាសកម្ម</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>លែងការបញ្ជារបស់ឧបករណ៍ {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>កំណត់តម្លៃ {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ដំណើរការឧបករណ៍ {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>អានស្ថានភាព</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>ប្ដូរប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ចាប់ផ្ដើម ឬបញ្ឈប់ម៉ាស៊ីន</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>បើក ឬបិទឧបករណ៍បញ្ជានិម្មិត</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>រក្សាទុករូបថតស្ថានភាពរោគវិនិច្ឆ័យ</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>អានអត្រាស្ទង់ និងដ្រាយវ័រ</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>រាយប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>អានប្រូហ្វាល់មួយ</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>រាយឧបករណ៍បញ្ជានិម្មិត</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>រាយឧបករណ៍</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>អានឧបករណ៍មួយ</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>រង់ចាំការបញ្ចូលរបស់អ្នក</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>អានការម៉ាបរបស់ឧបករណ៍បញ្ជា</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>រាយម៉ាក្រូរបស់ឧបករណ៍បញ្ជា</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ថតបញ្ហា</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ស្វែងរកការកំណត់</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>អានការកំណត់មួយ</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>បង្ហាញអ្នកនូវកន្លែងមួយ</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>បន្ថែមឧបករណ៍ផ្ទាល់ខ្លួន</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>បញ្ជាឧបករណ៍របស់វា</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>ដកឧបករណ៍របស់វាចេញ</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>សង្កត់ ឬលែងការបញ្ជា</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ប្ដូរការកំណត់មួយ</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>បង្កើតប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ប្ដូរឈ្មោះប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>លុបប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>នាំចូលប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>នាំចេញប្រូហ្វាល់</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជានិម្មិត</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>ដកឧបករណ៍បញ្ជានិម្មិតចេញ</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>ប្ដូរប្រភេទឧបករណ៍បញ្ជា</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>ចាត់តាំងឧបករណ៍</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>កំណត់ជួរការម៉ាប</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>សម្អាតជួរការម៉ាប</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>ម៉ាបឧបករណ៍បញ្ជាដោយស្វ័យប្រវត្តិ</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>រក្សាទុកម៉ាក្រូ</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>លុបម៉ាក្រូ</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>មិនធ្វើការផ្លាស់ប្ដូររបស់វាវិញ</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>ពិនិត្យសំណើ</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}៖ {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>ហៅឧបករណ៍ដែល PadForge មិនមាន៖ {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>នាំចូលប្រូហ្វាល់ «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>ផ្ញើការបញ្ចូលក្ដារចុច និងកណ្ដុរទៅ Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>ឧបករណ៍បញ្ជាក្ដារចុច និងកណ្ដុរ ចុចគ្រាប់ចុច និងផ្លាស់ទីទស្សន៍ទ្រនិចក្នុងគ្រប់កម្មវិធី។</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} ពី {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>រក្សាទុកម៉ាក្រូដែលធ្វើសកម្មភាពនៅក្រៅ PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>ដំណើរការ {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>ចុច {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>វាយអត្ថបទទៅក្នុងកម្មវិធីដែលនៅខាងមុខ</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>ផ្លាស់ទី ឬចុចកណ្ដុរ</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>បង្កើតឧបករណ៍បញ្ជាក្ដារចុច និងកណ្ដុរ</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>បើក {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>ប្ដូរ «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>កំណត់ {0} ទៅ {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>ស្ដាប់នៅលើបណ្ដាញ ដូច្នេះឧបករណ៍ផ្សេងអាចភ្ជាប់មកកុំព្យូទ័រនេះបាន។</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ប្ដូរដ្រាយវ័រ ឬ HidHide ដែលកម្មវិធី និងហ្គេមផ្សេងទៀតពឹងផ្អែកលើ។</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ឯកសារ៖ {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ប្ដូរថាកម្មវិធីណាអាចអានឧបករណ៍ តាមរយៈ «Use Only in PadForge»។</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>រៀបចំឧបករណ៍បញ្ជា</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>ស្វែងរកឧបករណ៍ បង្កើតឧបករណ៍បញ្ជានិម្មិតសម្រាប់វា ចាត់តាំងវា ហើយម៉ាបអ្វីដែលហ្គេមត្រូវការ។</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>ហេតុអ្វីហ្គេមមិនឃើញឧបករណ៍បញ្ជារបស់ខ្ញុំ</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>ពិនិត្យម៉ាស៊ីន ឧបករណ៍បញ្ជានិម្មិត ឧបករណ៍ ដ្រាយវ័រ និង HidHide ម្ដងមួយៗ។</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>នាំប្រូហ្វាល់មកទីនេះ</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>នាំចូលឯកសារប្រូហ្វាល់ពីកម្មវិធីផ្សេង រួចមើលអ្វីដែលបាននាំមក។</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0} ចំនួន {1} ដង</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0} ចុងក្រោយក្នុងចំណោម {1} ដូចគ្នា</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3931,6 +4008,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>កម្មវិធីសៀរៀល Protocol Buffers ដែល SteamKit2 ប្រើសម្រាប់ពិធីការបណ្ដាញរបស់ Steam ដោយ Marc Gravell។</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ការពន្លា Zstandard ដែល SteamKit2 ប្រើសម្រាប់ផ្នែកឃ្លាំង Steam ជាកំណែ C# នៃបណ្ណាល័យ zstd ដោយ Oleg Stepanischev។</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>ម៉ាស៊ីនមេ និងម៉ាស៊ីនភ្ញៀវ Model Context Protocol នៅពីក្រោយការភ្ជាប់ជំនួយការ និង PadForge.exe --mcp ដោយ Model Context Protocol a Series of LF Projects។</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions និង DependencyInjection.Abstractions ដែល MCP C# SDK ត្រូវបានបង្កើតលើ ដោយ Microsoft។</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>ឯកសារសម្រាប់ពិធីផ្គូផ្គង Wii សំឡេង ADPCM នៃឧបករណ៍បំពងសំឡេង ទិសផ្ដេក និងបញ្ឈររបស់ Wii Remote គំរូរបាំងដងបញ្ជា និងទម្រង់ផ្ទុករបស់វា និងអនុសញ្ញាអ័ក្សហ្ស៊ីរ៉ូ។ អានជាឯកសារតែប៉ុណ្ណោះ គ្មានកូដ GPL ត្រូវបានបញ្ចូលទេ។</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

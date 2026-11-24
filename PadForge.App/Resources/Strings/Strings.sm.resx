@@ -1394,6 +1394,42 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>E leʻi taliaina e PadForge le fesoʻotaʻiga a lenei polokalame</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Toe fesili vave tele</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ua le toe faia nei mea seʻia toe amata PadForge</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>E leai se meafaigaluega faʻapea a PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Na faitau e le polokalame se tulaga tuai</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>E leai se faʻatulagaga faʻapea</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Na i fafo le tau o mea e talia e le faʻatulagaga</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>E te leʻi faʻatagaina</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>E leai se tali i le taimi</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>O loʻo faʻatali mo lau tali</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>E leai se talosaga faʻapea</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>E leai se mea e toe faʻafoʻi</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Naʻo oe e mafai ona sui lenei mea</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Na le mafai ona tatala le faila</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>E leai se macro faʻapea</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na tele naua fesili o loʻo faʻatali mo oe</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Faʻaulufale mai le profile “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Auina atu faʻaoga o le keyboard ma le mouse i Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>O se masini keyboard ma mouse e oomi ki ma faʻagaoioi le faʻasino i polokalame uma.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} mai {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Faʻasao se macro e galue i fafo o PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Faʻagaoioi {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Oomi {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Tusi upu i le polokalame o loʻo i luma</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Faʻagaoioi pe kiliki le mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Fai se masini keyboard ma mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Faʻaola {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Sui “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Seti {0} i le {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Faʻalogo i le fesoʻotaʻiga, ina ia mafai e isi masini ona oʻo atu i lenei PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Sui se driver poʻo HidHide, lea e faʻalagolago i ai isi polokalame ma taʻaloga.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faila: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Sui polokalame e mafai ona faitau le masini, e ala i le Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Faʻatulaga se Masini Taʻalo</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Suʻe le masini, fai se masini taʻalo faʻafoliga mo ia, tofia ma faʻafanua mea e manaʻomia e le taʻaloga.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Aisea e le Vaai ai se Taʻaloga i laʻu Masini Taʻalo</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Siaki le enisini, le masini taʻalo faʻafoliga, le masini, driver ma HidHide, taʻitasi.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Aumai se Profile</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Faʻaulufale mai se faila profile mai se isi polokalame, ona vaai lea i mea na oʻo mai.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Faʻataga</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Aua le Faʻatagaina</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai {0}</value></data>
@@ -1414,6 +1450,10 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>A o ʻuʻu</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Le faamau e mafai ai e le mouse ona foeuli, i le masini lava e tasi ma le gaoioiga a le mouse. Afai e leai se mea ua filifilia, e foeuli pea le mouse.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Le server ma le client Model Context Protocol i tua o le fesoʻotaʻiga ma fesoasoani ma PadForge.exe --mcp, saunia e Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ma DependencyInjection.Abstractions, lea ua fausia ai le MCP C# SDK, saunia e Microsoft.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Faʻailo o le Motusia o se Masini</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Faʻailo o le Fesoʻotaʻi o se Masini</value></data>
 </root>

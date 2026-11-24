@@ -275,6 +275,67 @@ namespace PadForge.Tests
             Assert.False(BuiltInDeviceNames.TryName(BuiltInPlugins.TestControllerGuid, out _));
         }
 
+        /// <summary>A Replay device's row keeps the recorded name, in no
+        /// language, as its product's, and its path says it is Replay's. A row
+        /// an earlier run left offline, which nothing in this run named, is
+        /// named in the language in use from it, and follows a language
+        /// change. A name the user gave stands.</summary>
+        [Fact]
+        public void AReplayRowLeftOfflineByAnEarlierRun_IsNamedInTheLanguageInUse()
+        {
+            using var recording = new TestRecording(1, 5, 0.02, Moving);
+            using var rig = new AutomationPipeRig(AutomationLevel.Commands);
+            var builtIns = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", BuiltInPlugins.ReplayShownName);
+            UserDevice row;
+            try
+            {
+                builtIns.SetPluginsOn(true);
+                builtIns.ReplayOn = true;
+                Assert.Null(builtIns.Open(recording.Path));
+                var entry = Assert.Single(rig.Host.Sessions.Devices.All(), e => e.Program == BuiltInPlugins.ReplayProgram);
+                Assert.Equal("Test Pad 1 (Replay)", entry.Device.Name);
+                Assert.Equal("Test Pad 1", entry.Device.ProductName);
+                Assert.StartsWith(BuiltInPlugins.ReplayPathPrefix, entry.Device.DevicePath, StringComparison.Ordinal);
+                // The engine's row, as PadForge.xml saves it.
+                lock (SettingsManager.UserDevices.SyncRoot)
+                    row = SettingsManager.UserDevices.Items.Single(d => d.InstanceGuid == entry.Guid);
+                Assert.Equal("Test Pad 1", row.ProductName);
+                Assert.Equal(entry.Device.DevicePath, row.DevicePath);
+            }
+            finally
+            {
+                builtIns.Dispose();
+            }
+
+            // The next run: nothing names the device until its recording is
+            // opened, and the saved row is read back.
+            Assert.False(BuiltInDeviceNames.TryName(row.InstanceGuid, out _));
+            var saved = new UserDevice
+            {
+                InstanceGuid = row.InstanceGuid,
+                DevicePath = row.DevicePath,
+                ProductName = row.ProductName,
+                InstanceName = row.InstanceName,
+            };
+            // The name is made when it is shown, from the format of the
+            // language in use: the row itself holds no word of any language
+            // around the recorded name.
+            Assert.DoesNotContain("Replay", saved.ProductName);
+            Assert.Equal("Test Pad 1 (Replay)", InputService.LocalizedDeviceName(saved));
+            Assert.Equal(string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Plugins_Replay_DeviceName_Format, "Test Pad 1"),
+                InputService.LocalizedDeviceName(saved));
+            string service = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
+            Assert.Contains("return Plugins.BuiltInPlugins.ReplayShownName(ud.ProductName);", service);
+            string plugins = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "BuiltInPlugins.cs");
+            Assert.Contains("PadForge.Resources.Strings.Strings.Instance.Plugins_Replay_DeviceName_Format, recorded);", plugins);
+            saved.DisplayName = "Bench Recording";
+            Assert.Equal("Bench Recording", InputService.LocalizedDeviceName(saved));
+            // A program's own device keeps the name it gave: its path is not
+            // Replay's.
+            var program = new UserDevice { InstanceGuid = Guid.NewGuid(), DevicePath = "program://abcd2345", ProductName = "Pad" };
+            Assert.Equal("Pad", InputService.LocalizedDeviceName(program));
+        }
+
         [Fact]
         public void AFileThatIsNoRecording_IsNotOpened()
         {

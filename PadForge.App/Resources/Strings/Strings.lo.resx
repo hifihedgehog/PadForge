@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ບໍ່ຮັບການເຊື່ອມຕໍ່ຂອງໂປຣແກຣມນີ້</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ຂໍອີກໄວເກີນໄປ</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ບໍ່ມີອີກຈົນກວ່າ PadForge ຈະເລີ່ມໃໝ່</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ບໍ່ມີເຄື່ອງມືນີ້</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>ໂປຣແກຣມອ່ານສະຖານະເກົ່າ</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ບໍ່ມີການຕັ້ງຄ່ານີ້</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>ຄ່າຢູ່ນອກຂອບເຂດທີ່ການຕັ້ງຄ່າຮັບໄດ້</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>ທ່ານບໍ່ໄດ້ອະນຸຍາດ</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ບໍ່ມີໃຜຕອບທັນເວລາ</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>ກຳລັງລໍຖ້າຄຳຕອບຂອງທ່ານ</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ບໍ່ມີຄຳຂໍນີ້</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ຍ້ອນກັບ</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ມີແຕ່ທ່ານທີ່ປ່ຽນສິ່ງນີ້ໄດ້</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ເປີດໄຟລ໌ບໍ່ໄດ້</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ບໍ່ມີມາໂຄຣນີ້</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ມີຄຳຖາມລໍຖ້າທ່ານຫຼາຍເກີນໄປ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ປ່ຽນໄປໂປຣໄຟລ໌ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ກັບໄປໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ຖາມວ່າໂປຣໄຟລ໌ໃດເປີດໃຊ້ຢູ່</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ປ່ອຍການຄວບຄຸມຂອງອຸປະກອນ {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ຕັ້ງຄ່າ {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ໃຊ້ເຄື່ອງມື {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>ອ່ານສະຖານະ</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>ປ່ຽນໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ເລີ່ມ ຫຼື ຢຸດເອັນຈິນ</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ເປີດ ຫຼື ປິດຕົວຄວບຄຸມສະເໝືອນ</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>ບັນທຶກສະແນັບຊັອດການວິນິດໄສ</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>ອ່ານອັດຕາໂພລລິງ ແລະ ໄດຣເວີ</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>ລາຍຊື່ໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>ອ່ານໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ລາຍຊື່ຕົວຄວບຄຸມສະເໝືອນ</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>ລາຍຊື່ອຸປະກອນ</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>ອ່ານອຸປະກອນ</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>ລໍຖ້າອິນພຸດຂອງທ່ານ</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>ອ່ານການແມັບຂອງຕົວຄວບຄຸມ</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ລາຍຊື່ມາໂຄຣຂອງຕົວຄວບຄຸມ</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ບັນທຶກບັນຫາ</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ຊອກຫາການຕັ້ງຄ່າ</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ອ່ານການຕັ້ງຄ່າ</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>ສະແດງບ່ອນໃດໜຶ່ງໃຫ້ທ່ານເບິ່ງ</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>ເພີ່ມອຸປະກອນຂອງມັນເອງ</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>ຂັບເຄື່ອນອຸປະກອນຂອງມັນ</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>ລຶບອຸປະກອນຂອງມັນ</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ຄ້າງ ຫຼື ປ່ອຍການຄວບຄຸມ</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ປ່ຽນການຕັ້ງຄ່າ</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ສ້າງໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ປ່ຽນຊື່ໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ລຶບໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>ນຳເຂົ້າໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>ສົ່ງອອກໂປຣໄຟລ໌</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>ເພີ່ມຕົວຄວບຄຸມສະເໝືອນ</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>ລຶບຕົວຄວບຄຸມສະເໝືອນ</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>ປ່ຽນປະເພດຂອງຕົວຄວບຄຸມ</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>ກຳນົດອຸປະກອນ</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>ຕັ້ງແຖວການແມັບ</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>ລ້າງແຖວການແມັບ</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>ແມັບຕົວຄວບຄຸມອັດຕະໂນມັດ</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ບັນທຶກມາໂຄຣ</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ລຶບມາໂຄຣ</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>ຍ້ອນກັບການປ່ຽນແປງຂອງມັນ</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>ກວດຄຳຂໍ</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>ເອີ້ນເຄື່ອງມືທີ່ PadForge ບໍ່ມີ: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>ນຳເຂົ້າໂປຣໄຟລ໌ “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>ສົ່ງອິນພຸດແປ້ນພິມ ແລະ ເມົ້າໄປຫາ Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>ຕົວຄວບຄຸມແປ້ນພິມ ແລະ ເມົ້າຈະກົດປຸ່ມ ແລະ ເລື່ອນຕົວຊີ້ໃນທຸກໂປຣແກຣມ.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} ຈາກ {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>ບັນທຶກມາໂຄຣທີ່ເຮັດວຽກນອກ PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>ເປີດ {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>ກົດ {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>ພິມຂໍ້ຄວາມໃສ່ໂປຣແກຣມທີ່ຢູ່ດ້ານໜ້າ</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>ເລື່ອນ ຫຼື ຄລິກເມົ້າ</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ສ້າງຕົວຄວບຄຸມແປ້ນພິມ ແລະ ເມົ້າ</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>ເປີດ {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>ປ່ຽນ “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>ຕັ້ງ {0} ເປັນ {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>ຮັບຟັງໃນເຄືອຂ່າຍ, ສະນັ້ນອຸປະກອນອື່ນສາມາດເຂົ້າເຖິງ PC ນີ້ໄດ້.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ປ່ຽນໄດຣເວີ ຫຼື HidHide, ເຊິ່ງໂປຣແກຣມ ແລະ ເກມອື່ນອາໄສຢູ່.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ໄຟລ໌: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ປ່ຽນວ່າໂປຣແກຣມໃດອ່ານອຸປະກອນໄດ້, ຜ່ານ Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>ຕັ້ງຄ່າຕົວຄວບຄຸມ</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>ຊອກຫາອຸປະກອນ, ສ້າງຕົວຄວບຄຸມສະເໝືອນໃຫ້ມັນ, ກຳນົດມັນ ແລະ ແມັບສິ່ງທີ່ເກມຕ້ອງການ.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>ເປັນຫຍັງເກມບໍ່ເຫັນຕົວຄວບຄຸມຂອງຂ້ອຍ</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>ກວດເອັນຈິນ, ຕົວຄວບຄຸມສະເໝືອນ, ອຸປະກອນ, ໄດຣເວີ ແລະ HidHide ເທື່ອລະຢ່າງ.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>ນຳໂປຣໄຟລ໌ມາໃຊ້</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>ນຳເຂົ້າໄຟລ໌ໂປຣໄຟລ໌ຈາກໂປຣແກຣມອື່ນ, ຈາກນັ້ນເບິ່ງວ່າມີຫຍັງມາແດ່.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ຄັ້ງ</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ອັນສຸດທ້າຍຈາກ {1} ອັນທີ່ຄ້າຍກັນ</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3915,6 +3992,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>ຕົວແປງຂໍ້ມູນ Protocol Buffers ທີ່ SteamKit2 ໃຊ້ສຳລັບໂປຣໂຕຄອນຂອງ Steam, ໂດຍ Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ການຖອດການບີບອັດ Zstandard ທີ່ SteamKit2 ໃຊ້ສຳລັບກ້ອນຂໍ້ມູນ depot ຂອງ Steam, ເປັນການພອດ C# ຂອງໄລບຣາຣີ zstd ໂດຍ Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>ເຊີບເວີ ແລະ ໄຄລເອັນ Model Context Protocol ທີ່ຢູ່ເບື້ອງຫຼັງການເຊື່ອມຕໍ່ຜູ້ຊ່ວຍ ແລະ PadForge.exe --mcp, ໂດຍ Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ແລະ DependencyInjection.Abstractions, ເຊິ່ງ MCP C# SDK ສ້າງຂຶ້ນເທິງມັນ, ໂດຍ Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>ເອກະສານສຳລັບຂັ້ນຕອນການຈັບຄູ່ Wii, ADPCM ຂອງລຳໂພງ, ທິດທາງຂອງ Wii Remote ແບບນອນ ແລະ ແບບຕັ້ງ, ແບບຈຳລອງຂອບສະຕິກ ແລະ ຮູບແບບການເກັບຂໍ້ມູນຂອງມັນ, ແລະ ຮູບແບບແກນໄຈໂຣ. ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ແຈກຢາຍມານຳ.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

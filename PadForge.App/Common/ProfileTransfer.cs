@@ -124,6 +124,40 @@ namespace PadForge.Common
             return bundled;
         }
 
+        /// <summary>Reads the profile a .pfprofile file holds and lands
+        /// nothing: what an import would add, for the question an
+        /// assistant's import puts to the user before anything comes in
+        /// (#597). Null when the file isn't a readable profile.</summary>
+        public static ProfileData Peek(string srcPath)
+        {
+            try
+            {
+                using var zip = ZipFile.OpenRead(srcPath);
+                var pe = zip.GetEntry(ProfileEntry);
+                if (pe == null) return null;
+                using var s = pe.Open();
+                var profile = (ProfileData)Serializer.Deserialize(s);
+                profile?.MigrateLegacySchema();
+                return profile;
+            }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or InvalidOperationException or UnauthorizedAccessException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>A copy of a profile that shares nothing with it, made the
+        /// way the file holds it: for a copy of a stored profile and for the
+        /// state an assistant's changes are undone to (#597).</summary>
+        public static ProfileData Clone(ProfileData profile)
+        {
+            if (profile == null) return null;
+            using var memory = new MemoryStream();
+            Serializer.Serialize(memory, profile);
+            memory.Position = 0;
+            return (ProfileData)Serializer.Deserialize(memory);
+        }
+
         /// <summary>Reads a profile file: lands bundled packages next to
         /// the exe (skipping byte-identical ones already there), registers
         /// them, and returns the deserialized profile with a fresh Id.

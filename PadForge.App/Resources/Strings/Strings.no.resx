@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tok ikke imot dette programmets tilkobling</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Spurt igjen for tidlig</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ikke flere av disse før PadForge starter på nytt</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge har ikke et slikt verktøy</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programmet leste en eldre tilstand</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ingen slik innstilling</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Verdien lå utenfor det innstillingen tar imot</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Du tillot det ikke</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ingen svarte i tide</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Venter på svaret ditt</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ingen slik forespørsel</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ingenting å angre</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Bare du kan endre dette</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Filen kunne ikke åpnes</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ingen slik makro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>For mange spørsmål ventet på deg</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bytt til profilen {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gå tilbake til standardprofilen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spør hvilken profil som er aktiv</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Slipp kontrollene på enhet {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sett verdien {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kjør verktøyet {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Les statusen</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Bytt profiler</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Start eller stopp motoren</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Slå virtuelle kontrollere av eller på</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Lagre et diagnostikkøyeblikksbilde</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Les avspørringsfrekvensen og driverne</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>List opp profilene</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Les en profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>List opp de virtuelle kontrollerne</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>List opp enhetene</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Les en enhet</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Vent på inndata fra deg</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Les tilordningene til en kontroller</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>List opp makroene til en kontroller</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Ta opp et problem</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Finn innstillinger</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Les en innstilling</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Vis deg et sted</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Legg til en egen enhet</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Styr enheten sin</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Fjern enheten sin</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Hold eller slipp en kontroll</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Endre en innstilling</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Opprett en profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Gi en profil nytt navn</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Slett en profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importer en profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Eksporter en profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Legg til en virtuell kontroller</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Fjern en virtuell kontroller</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Endre typen til en kontroller</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Tilordne en enhet</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Sett tilordningsrader</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Tøm tilordningsrader</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Tilordne en kontroller automatisk</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Lagre en makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Slett en makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Angre endringene sine</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Sjekk en forespørsel</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kall et verktøy PadForge ikke har: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importer profilen «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Send tastatur og musinndata til Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>En tastatur og mus-kontroller trykker taster og flytter pekeren i alle programmer.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} fra {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Lagre en makro som virker utenfor PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Kjører {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Trykker {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Skriver tekst i programmet som er fremst</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Flytter eller klikker med musen</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Lager en tastatur og mus-kontroller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Slår på {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Endre «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setter {0} til {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Lytter på nettverket, så andre enheter kan nå denne PC-en.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Endrer en driver eller HidHide, som andre programmer og spill er avhengige av.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fil: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Endrer hvilke programmer som kan lese enheten, gjennom Bruk bare i PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Sett opp en kontroller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Finn enheten, lag en virtuell kontroller for den, tilordne den og tilordne det spillet trenger.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Hvorfor et spill ikke ser kontrolleren min</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Sjekk motoren, den virtuelle kontrolleren, enheten, driverne og HidHide, én om gangen.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Ta med en profil over</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importer en profilfil fra et annet program, og se hva som kom med.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ganger</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, den siste av {1} slike</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serialiserer for Protocol Buffers som SteamKit2 bruker for Steam-protokollen, av Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-dekomprimering som SteamKit2 bruker for depotblokker i Steam, en C#-portering av zstd-biblioteket av Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol-serveren og klienten bak assistenttilkoblingen og PadForge.exe --mcp, av Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions og DependencyInjection.Abstractions, som MCP C# SDK er bygget på, av Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentasjon for sammenkoblingsseremonien til Wii, ADPCM for høyttaleren, sidelengs og oppreist retning for Wii Remote, stikkeportmodellen og lagringsformatet for den, og konvensjonen for gyroaksene. Kun lest som dokumentasjon, ingen GPL-kode følger med.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

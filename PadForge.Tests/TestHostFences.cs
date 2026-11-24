@@ -222,6 +222,15 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Services.Automation.AutomationPipe.OffLimitsForTest = true;
     }
 
+    /// <summary>The copy an assistant starts never opens the Automation pipe
+    /// of a PadForge that runs on the PC: a test's mirror reaches a host on a
+    /// name of its own (#597).</summary>
+    internal static class PipeOwnerOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.Automation.PipeOwner.OffLimitsForTest = true;
+    }
+
     /// <summary>A PadForge that runs on the PC is left alone and never
     /// stood in for: no window of it is looked up, nothing is posted to it,
     /// its lock is not opened, its exit is not waited for, and no window is

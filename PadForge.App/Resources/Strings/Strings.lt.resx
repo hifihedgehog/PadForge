@@ -698,6 +698,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>„PadForge“ nepriėmė šios programos ryšio</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Paprašyta iš naujo per anksti</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Daugiau tokių nebus, kol „PadForge“ nebus paleista iš naujo</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>„PadForge“ tokio įrankio neturi</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programa perskaitė senesnę būseną</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tokio nustatymo nėra</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Reikšmė buvo už nustatymo ribų</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Jūs to neleidote</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Niekas neatsakė laiku</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Laukiama jūsų atsakymo</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tokios užklausos nėra</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nėra ko anuliuoti</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tai gali keisti tik jūs</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Failo nepavyko atidaryti</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tokios makrokomandos nėra</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Per daug klausimų laukė jūsų</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Perjungti į profilį {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Grįžti į numatytąjį profilį</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Paklausti, kuris profilis aktyvus</value></data>
@@ -733,6 +746,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Paleisti įrenginio {0} valdiklius</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nustatyti reikšmę {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Paleisti įrankį {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Skaityti būseną</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Perjungti profilius</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Paleisti arba sustabdyti variklį</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Įjungti arba išjungti virtualius valdiklius</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Išsaugoti diagnostikos momentinę kopiją</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Skaityti apklausos dažnį ir tvarkykles</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Išvardyti profilius</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Skaityti profilį</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Išvardyti virtualius valdiklius</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Išvardyti įrenginius</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Skaityti įrenginį</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Laukti jūsų įvesties</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Skaityti valdiklio susiejimus</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Išvardyti valdiklio makrokomandas</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Įrašyti problemą</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Ieškoti nustatymų</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Skaityti nustatymą</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Parodyti jums vietą</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Pridėti savo įrenginį</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Valdyti savo įrenginį</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Pašalinti savo įrenginį</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Laikyti arba paleisti valdiklį</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Keisti nustatymą</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Sukurti profilį</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Pervadinti profilį</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ištrinti profilį</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importuoti profilį</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Eksportuoti profilį</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Pridėti virtualų valdiklį</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Pašalinti virtualų valdiklį</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Keisti valdiklio tipą</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Priskirti įrenginį</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Nustatyti susiejimo eilutes</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Išvalyti susiejimo eilutes</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Automatiškai susieti valdiklį</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Išsaugoti makrokomandą</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ištrinti makrokomandą</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Anuliuoti jos pakeitimus</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Patikrinti užklausą</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Iškviesti įrankį, kurio „PadForge“ neturi: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importuoti profilį „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Siųsti klaviatūros ir pelės įvestį į „Windows“</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Klaviatūros ir pelės valdiklis spaudžia klavišus ir judina žymeklį kiekvienoje programoje.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} iš {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Išsaugoti makrokomandą, veikiančią už „PadForge“ ribų</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Paleidžia {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Spaudžia {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Įveda tekstą į priekyje esančią programą</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Judina pelę arba spustelėja</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Sukuria klaviatūros ir pelės valdiklį</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Įjungia {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Keisti „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nustato {0} į {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Klauso tinkle, todėl kiti įrenginiai gali pasiekti šį kompiuterį.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Keičia tvarkyklę ar HidHide, kuriomis remiasi kitos programos ir žaidimai.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Failas: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Keičia, kurios programos gali skaityti įrenginį, per nustatymą Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Nustatyti valdiklį</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Raskite įrenginį, sukurkite jam virtualų valdiklį, priskirkite jį ir susiekite tai, ko reikia žaidimui.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Kodėl žaidimas nemato mano valdiklio</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Patikrinkite variklį, virtualų valdiklį, įrenginį, tvarkykles ir HidHide paeiliui.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Perkelti profilį</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importuokite profilio failą iš kitos programos, tada pažiūrėkite, kas perkelta.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kartų: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, paskutinė iš tokių užklausų: {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3924,6 +4001,10 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>„Protocol Buffers“ serializatorius, kurį SteamKit2 naudoja „Steam“ tinklo protokolui, autorius Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>„Zstandard“ išglaudinimas, kurį SteamKit2 naudoja „Steam“ saugyklų dalims, zstd bibliotekos C# perkėlimas, autorius Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol serveris ir klientas, kuriais remiasi asistento ryšys ir PadForge.exe --mcp, sukūrė Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ir DependencyInjection.Abstractions, kuriais remiasi MCP C# SDK, sukūrė Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentacija apie „Wii“ susiejimo procedūrą, garsiakalbio ADPCM, „Wii Remote“ šoninę ir stačią orientaciją, svirtelės ribų modelį ir jo saugojimo formatą bei giroskopo ašių susitarimą. Skaityta tik kaip dokumentacija, joks GPL kodas neplatinamas.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

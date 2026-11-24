@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge இந்த நிரலின் இணைப்பை ஏற்கவில்லை</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>மிக விரைவில் மீண்டும் கேட்கப்பட்டது</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge மீண்டும் தொடங்கும் வரை இவை இனி இல்லை</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-இல் அப்படி ஒரு கருவி இல்லை</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>நிரல் பழைய நிலையைப் படித்தது</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>அப்படி ஒரு அமைப்பு இல்லை</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>மதிப்பு அமைப்பு ஏற்கும் வரம்புக்கு வெளியே இருந்தது</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>நீங்கள் அனுமதிக்கவில்லை</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>நேரத்துக்குள் யாரும் பதிலளிக்கவில்லை</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>உங்கள் பதிலுக்காகக் காத்திருக்கிறது</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>அப்படி ஒரு கோரிக்கை இல்லை</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>செயல்தவிர்க்க எதுவும் இல்லை</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>இதை நீங்கள் மட்டுமே மாற்ற முடியும்</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>கோப்பைத் திறக்க முடியவில்லை</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>அப்படி ஒரு மேக்ரோ இல்லை</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>உங்களுக்காக மிக அதிகக் கேள்விகள் காத்திருந்தன</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>சுயவிவரத்தை மாற்று: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>இயல்புநிலை சுயவிவரத்துக்குத் திரும்பு</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>எந்தச் சுயவிவரம் செயலில் உள்ளது என்று கேள்</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளை விடு</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>மதிப்பை அமை: {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>கருவியை இயக்கு: {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>நிலையைப் படி</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>சுயவிவரங்களை மாற்று</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>இன்ஜினைத் தொடங்கு அல்லது நிறுத்து</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகளை இயக்கு அல்லது அணை</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமி</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>வாக்கெடுப்பு விகிதத்தையும் இயக்கிகளையும் படி</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>சுயவிவரங்களைப் பட்டியலிடு</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தைப் படி</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகளைப் பட்டியலிடு</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>சாதனங்களைப் பட்டியலிடு</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>ஒரு சாதனத்தைப் படி</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>உங்கள் உள்ளீட்டுக்காகக் காத்திரு</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் மேப்பிங்குகளைப் படி</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் மேக்ரோக்களைப் பட்டியலிடு</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ஒரு சிக்கலைப் பதிவுசெய்</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>அமைப்புகளைத் தேடு</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ஓர் அமைப்பைப் படி</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>உங்களுக்கு ஓர் இடத்தைக் காட்டு</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>தனக்கென ஒரு சாதனத்தைச் சேர்</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>அதன் சாதனத்தை இயக்கு</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>அதன் சாதனத்தை நீக்கு</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ஒரு கட்டுப்பாட்டைப் பிடித்து வை அல்லது விடு</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ஓர் அமைப்பை மாற்று</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தை உருவாக்கு</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தின் பெயரை மாற்று</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தை நீக்கு</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தை இறக்குமதி செய்</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தை ஏற்றுமதி செய்</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியைச் சேர்</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியை நீக்கு</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் வகையை மாற்று</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>ஒரு சாதனத்தை ஒதுக்கு</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>மேப்பிங் வரிசைகளை அமை</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>மேப்பிங் வரிசைகளை அழி</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியைத் தானாக மேப் செய்</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ஒரு மேக்ரோவைச் சேமி</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ஒரு மேக்ரோவை நீக்கு</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>அதன் மாற்றங்களைச் செயல்தவிர்</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>ஒரு கோரிக்கையைச் சரிபார்</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge-இல் இல்லாத ஒரு கருவியை அழை: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>“{0}” சுயவிவரத்தை இறக்குமதி செய்</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows-க்கு விசைப்பலகை மற்றும் சுட்டி உள்ளீட்டை அனுப்பு</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>விசைப்பலகை மற்றும் சுட்டிக் கட்டுப்படுத்தி ஒவ்வொரு நிரலிலும் விசைகளை அழுத்தி சுட்டியை நகர்த்தும்.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1} இலிருந்து {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge-க்கு வெளியே செயல்படும் மேக்ரோவைச் சேமி</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>இயக்குவது: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>அழுத்துவது: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>முன்னால் உள்ள நிரலில் உரையைத் தட்டச்சு செய்யும்</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>சுட்டியை நகர்த்தும் அல்லது கிளிக் செய்யும்</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>விசைப்பலகை மற்றும் சுட்டிக் கட்டுப்படுத்தியை உருவாக்கும்</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>இயக்குவது: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” ஐ மாற்று</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ஐ {1} ஆக அமைக்கும்</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>நெட்வொர்க்கில் கேட்கும், எனவே பிற சாதனங்கள் இந்த PC-ஐ அடைய முடியும்.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>பிற நிரல்களும் கேம்களும் சார்ந்திருக்கும் இயக்கி அல்லது HidHide-ஐ மாற்றும்.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>கோப்பு: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForge-இல் மட்டும் பயன்படுத்து என்பதன் மூலம், எந்த நிரல்கள் சாதனத்தைப் படிக்கலாம் என்பதை மாற்றும்.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>கட்டுப்படுத்தியை அமை</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>சாதனத்தைக் கண்டறிந்து, அதற்கு மெய்நிகர் கட்டுப்படுத்தியை உருவாக்கி, ஒதுக்கி, கேமுக்குத் தேவையானதை மேப் செய்.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>கேம் என் கட்டுப்படுத்தியைக் காணாதது ஏன்</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>இன்ஜின், மெய்நிகர் கட்டுப்படுத்தி, சாதனம், இயக்கிகள், HidHide ஆகியவற்றை ஒன்றன் பின் ஒன்றாகச் சரிபார்.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>ஒரு சுயவிவரத்தைக் கொண்டுவா</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>வேறொரு நிரலின் சுயவிவரக் கோப்பை இறக்குமதி செய், பிறகு என்ன வந்தது என்று பார்.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} முறை</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, இது போன்ற {1} இல் கடைசி</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Steam வயர் நெறிமுறைக்கு SteamKit2 பயன்படுத்தும் Protocol Buffers சீரியலைசர், Marc Gravell உருவாக்கியது.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Steam டிப்போ துண்டுகளுக்கு SteamKit2 பயன்படுத்தும் Zstandard சுருக்கநீக்கம், Oleg Stepanischev உருவாக்கிய zstd நூலகத்தின் C# போர்ட்.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>உதவியாளர் இணைப்புக்கும் PadForge.exe --mcp க்கும் பின்னால் உள்ள Model Context Protocol சேவையகமும் கிளையண்டும், Model Context Protocol a Series of LF Projects வழங்கியது.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK கட்டமைக்கப்பட்டுள்ள Microsoft.Extensions.AI.Abstractions, Logging.Abstractions மற்றும் DependencyInjection.Abstractions, Microsoft வழங்கியது.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii இணைசேர்ப்பு நடைமுறை, ஸ்பீக்கர் ADPCM, பக்கவாட்டு மற்றும் நிமிர்ந்த Wii Remote திசையமைவு, ஸ்டிக்-கேட் மாடல் மற்றும் அதன் சேமிப்பு வடிவம், கைரோ அச்சு மரபு ஆகியவற்றுக்கான ஆவணம். ஆவணமாக மட்டுமே படிக்கப்பட்டது, GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

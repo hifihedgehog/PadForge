@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>لم يقبل PadForge اتصال هذا البرنامج</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>طُلب مجددا قبل الأوان</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>لا مزيد من هذه الطلبات حتى يبدأ PadForge من جديد</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>لا توجد أداة بهذا الاسم في PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>قرأ البرنامج حالة أقدم</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>لا يوجد إعداد بهذا الاسم</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>كانت القيمة خارج ما يقبله الإعداد</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>لم تسمح به</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>لم يجب أحد في الوقت المناسب</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>بانتظار إجابتك</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>لا يوجد طلب بهذا الاسم</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>لا شيء للتراجع عنه</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>أنت وحدك من يمكنه تغيير هذا</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>تعذر فتح الملف</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>لا يوجد ماكرو بهذا الاسم</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>كانت أسئلة كثيرة جدا بانتظارك</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>التبديل إلى ملف التعريف {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>العودة إلى ملف التعريف الافتراضي</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>السؤال عن ملف التعريف النشط</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ترك عناصر التحكم في الجهاز {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ضبط القيمة {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>تشغيل الأداة {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>قراءة الحالة</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>تبديل ملفات التعريف</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>بدء المحرك أو إيقافه</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>تشغيل وحدات التحكم الظاهرية أو إيقافها</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>حفظ لقطة تشخيص</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>قراءة معدل الاستطلاع وبرامج التشغيل</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>سرد ملفات التعريف</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>قراءة ملف تعريف</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>سرد وحدات التحكم الظاهرية</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>سرد الأجهزة</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>قراءة جهاز</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>انتظار مدخلك</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>قراءة تعيينات وحدة تحكم</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>سرد ماكروهات وحدة تحكم</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>تسجيل مشكلة</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>البحث عن إعدادات</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>قراءة إعداد</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>عرض مكان عليك</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>إضافة جهاز خاص به</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>التحكم في جهازه</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>إزالة جهازه</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>الإمساك بعنصر تحكم أو تركه</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>تغيير إعداد</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>إنشاء ملف تعريف</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>إعادة تسمية ملف تعريف</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>حذف ملف تعريف</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>استيراد ملف تعريف</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>تصدير ملف تعريف</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>إضافة وحدة تحكم ظاهرية</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>إزالة وحدة تحكم ظاهرية</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>تغيير نوع وحدة تحكم</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>تعيين جهاز</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>ضبط صفوف التعيين</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>مسح صفوف التعيين</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>تعيين وحدة تحكم تلقائيا</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>حفظ ماكرو</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>حذف ماكرو</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>التراجع عن تغييراته</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>فحص طلب</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>استدعاء أداة ليست في PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>استيراد ملف التعريف «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>إرسال مدخلات لوحة المفاتيح والماوس إلى Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>وحدة تحكم لوحة المفاتيح والماوس تضغط المفاتيح وتحرك المؤشر في كل برنامج.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} من {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>حفظ ماكرو يعمل خارج PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>يشغّل {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>يضغط {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>يكتب نصا في البرنامج الذي في المقدمة</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>يحرك الماوس أو ينقر به</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ينشئ وحدة تحكم للوحة المفاتيح والماوس</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>يشغّل {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>تغيير «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>يضبط {0} على {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>يستمع على الشبكة، فتستطيع أجهزة أخرى الوصول إلى هذا الكمبيوتر.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>يغيّر برنامج تشغيل أو HidHide، وتعتمد عليه برامج وألعاب أخرى.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>الملف: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>يغيّر البرامج التي تستطيع قراءة الجهاز، عبر Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>إعداد وحدة تحكم</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>اعثر على الجهاز، وأنشئ له وحدة تحكم ظاهرية، وعيّنه، وعيّن ما تحتاجه اللعبة.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>لماذا لا ترى اللعبة وحدة التحكم</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>افحص المحرك ووحدة التحكم الظاهرية والجهاز وبرامج التشغيل وHidHide واحدا بعد الآخر.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>نقل ملف تعريف</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>استورد ملف تعريف من برنامج آخر، ثم اطّلع على ما انتقل.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}، عدد المرات: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}، آخر الطلبات المشابهة، وعددها {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3934,6 +4011,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>مسلسل Protocol Buffers الذي يستخدمه SteamKit2 لبروتوكول الاتصال في Steam، من إعداد Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>فك ضغط Zstandard الذي يستخدمه SteamKit2 لأجزاء مستودعات Steam، وهو نقل لمكتبة zstd إلى C# من إعداد Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>خادم Model Context Protocol وعميله وراء اتصال المساعدين وأمر PadForge.exe --mcp، من Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions وLogging.Abstractions وDependencyInjection.Abstractions، وهي التي يقوم عليها MCP C# SDK، من Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>توثيق لإجراء إقران Wii، وصيغة ADPCM لمكبر الصوت، ووضعيتي Wii Remote الجانبية والعمودية، ونموذج حدود العصا وتنسيق تخزينه، واصطلاح محاور الجيروسكوب. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

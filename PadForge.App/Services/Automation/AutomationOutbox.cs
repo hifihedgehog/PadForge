@@ -76,6 +76,20 @@ namespace PadForge.Services.Automation
 
         public int Cap { get; }
 
+        /// <summary>Where lines go in place of the pipe once an assistant's
+        /// session has handed its stream to the protocol (#597): the pipe is
+        /// the protocol's then, and a line written into it would break it.
+        /// A text line is handed over at once, its after-write step runs at
+        /// once, and the events of devices followed are dropped, since an
+        /// assistant follows nothing over lines.</summary>
+        public Action<string> Sink
+        {
+            get => _sink;
+            set => _sink = value;
+        }
+
+        private volatile Action<string> _sink;
+
         /// <summary>The window to wake after each batch, and the process it
         /// must belong to. Set once by hello.</summary>
         public IntPtr WakeWindow { get; set; }
@@ -110,6 +124,7 @@ namespace PadForge.Services.Automation
         /// waits is replaced, and no second line is queued.</summary>
         public bool Axis(AxisStreamSlots slots, int index, int value)
         {
+            if (_sink != null) return true;
             if (_cutOff) return false;
             lock (_sync)
             {
@@ -124,6 +139,17 @@ namespace PadForge.Services.Automation
 
         private bool Put(in Item item)
         {
+            var sink = _sink;
+            if (sink != null)
+            {
+                if (item.Kind == Kind.Text && item.Text != null)
+                {
+                    try { sink(item.Text); } catch { /* the sink's failure is not the sender's */ }
+                }
+                var after = item.After;
+                if (after != null) ThreadPool.UnsafeQueueUserWorkItem(_ => after(), null);
+                return true;
+            }
             if (_cutOff) return false;
             bool put;
             lock (_sync) put = PutLocked(item);

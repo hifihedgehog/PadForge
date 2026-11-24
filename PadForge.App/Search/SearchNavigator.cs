@@ -46,7 +46,12 @@ namespace PadForge.Search
         /// <summary>The documentation site's search for a query.</summary>
         internal static string DocsAddress(string query) => "https://padforge.org/docs/?q=" + Uri.EscapeDataString((query ?? string.Empty).Trim());
 
-        internal void Open(SearchResult result)
+        /// <summary>Takes a result to its place. With
+        /// <paramref name="takeFocus"/> false the place is opened, scrolled to
+        /// and ringed, and the keyboard focus stays where it is: an
+        /// assistant's show (#597), which must never activate the window,
+        /// lands that way.</summary>
+        internal void Open(SearchResult result, bool takeFocus = true)
         {
             if (result == null) return;
             switch (result.Target)
@@ -122,12 +127,12 @@ namespace PadForge.Search
                     break;
             }
             var page = _pageOf(entry.Page);
-            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page)));
+            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus)));
         }
 
         /// <summary>The page shows: find the result's element, open what
         /// folds it, then scroll, ring and focus once that is laid out.</summary>
-        private void Land(SearchResult result, FrameworkElement page)
+        private void Land(SearchResult result, FrameworkElement page, bool takeFocus)
         {
             var entry = result.Entry;
             DependencyObject label;
@@ -147,7 +152,7 @@ namespace PadForge.Search
                 if (!target.IsVisible) return;
                 ScrollTo(target);
                 SearchLandingAdorner.Ring(target);
-                FocusIn(target, entry);
+                if (takeFocus) FocusIn(target, entry);
             }));
         }
 

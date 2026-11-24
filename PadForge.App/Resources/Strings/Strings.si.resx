@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge මෙම වැඩසටහනේ සම්බන්ධතාවය පිළිගත්තේ නැත</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ඉතා ඉක්මනින් නැවත ඉල්ලන ලදී</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge නැවත ආරම්භ වන තුරු මේවා තවත් නැත</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge හි එවැනි මෙවලමක් නැත</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>වැඩසටහන පැරණි තත්ත්වයක් කියවීය</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>එවැනි සැකසීමක් නැත</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>අගය සැකසීම පිළිගන්නා පරාසයෙන් පිටත විය</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>ඔබ එයට ඉඩ දුන්නේ නැත</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>නියමිත වේලාවට කිසිවෙක් පිළිතුරු දුන්නේ නැත</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>ඔබේ පිළිතුර බලාපොරොත්තුවෙන්</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>එවැනි ඉල්ලීමක් නැත</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>අහෝසි කිරීමට කිසිවක් නැත</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>මෙය වෙනස් කළ හැක්කේ ඔබට පමණි</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ගොනුව විවෘත කළ නොහැකි විය</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>එවැනි මැක්‍රෝවක් නැත</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ඔබ වෙනුවෙන් ප්‍රශ්න වැඩි ගණනක් රැඳී තිබුණි</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} පැතිකඩට මාරු වන්න</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>පෙරනිමි පැතිකඩට ආපසු යන්න</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>සක්‍රිය පැතිකඩ කුමක්දැයි විමසන්න</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>උපාංගය {0} හි පාලන මුදා හරින්න</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} අගය සකසන්න</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} මෙවලම ධාවනය කරන්න</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>තත්ත්වය කියවන්න</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>පැතිකඩ මාරු කරන්න</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>එන්ජිම ආරම්භ කරන්න හෝ නවත්වන්න</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>අතථ්‍ය පාලක ක්‍රියාත්මක හෝ අක්‍රිය කරන්න</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>දෝෂ නිර්ණය ස්නැප්ෂොට් එකක් සුරකින්න</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>පෝලිං අනුපාතය සහ ධාවක කියවන්න</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>පැතිකඩ ලැයිස්තුගත කරන්න</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>පැතිකඩක් කියවන්න</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>අතථ්‍ය පාලක ලැයිස්තුගත කරන්න</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>උපාංග ලැයිස්තුගත කරන්න</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>උපාංගයක් කියවන්න</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>ඔබේ ආදානය බලාපොරොත්තුවෙන් සිටින්න</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>පාලකයක සිතියම්ගත කිරීම් කියවන්න</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>පාලකයක මැක්‍රෝ ලැයිස්තුගත කරන්න</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ගැටලුවක් පටිගත කරන්න</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>සැකසීම් සොයන්න</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>සැකසීමක් කියවන්න</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>ඔබට ස්ථානයක් පෙන්වන්න</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>තමන්ගේම උපාංගයක් එක් කරන්න</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>තමන්ගේ උපාංගය හසුරුවන්න</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>තමන්ගේ උපාංගය ඉවත් කරන්න</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>පාලනයක් අල්ලා තබා ගන්න හෝ මුදා හරින්න</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>සැකසීමක් වෙනස් කරන්න</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>පැතිකඩක් සාදන්න</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>පැතිකඩක් නැවත නම් කරන්න</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>පැතිකඩක් මකන්න</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>පැතිකඩක් ආනයනය කරන්න</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>පැතිකඩක් අපනයනය කරන්න</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>අතථ්‍ය පාලකයක් එක් කරන්න</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>අතථ්‍ය පාලකයක් ඉවත් කරන්න</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>පාලකයක වර්ගය වෙනස් කරන්න</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>උපාංගයක් පවරන්න</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>සිතියම්ගත කිරීමේ පේළි සකසන්න</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>සිතියම්ගත කිරීමේ පේළි හිස් කරන්න</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>පාලකයක් ස්වයංක්‍රීයව සිතියම්ගත කරන්න</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>මැක්‍රෝවක් සුරකින්න</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>මැක්‍රෝවක් මකන්න</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>තමන්ගේ වෙනස්කම් අහෝසි කරන්න</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>ඉල්ලීමක් පරීක්ෂා කරන්න</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge සතු නොවන මෙවලමක් අමතන්න: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>“{0}” පැතිකඩ ආනයනය කරන්න</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows වෙත යතුරුපුවරු සහ මූසික ආදානය යවන්න</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>යතුරුපුවරු සහ මූසික පාලකයක් සෑම වැඩසටහනකම යතුරු ඔබා දර්ශකය චලනය කරයි.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1} මඟින් {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge පිටත ක්‍රියා කරන මැක්‍රෝවක් සුරකින්න</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} ධාවනය කරයි</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} ඔබයි</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>ඉදිරියෙන් ඇති වැඩසටහනට පෙළ ටයිප් කරයි</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>මූසිකය චලනය කරයි හෝ ක්ලික් කරයි</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>යතුරුපුවරු සහ මූසික පාලකයක් සාදයි</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} ක්‍රියාත්මක කරයි</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” වෙනස් කරන්න</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} {1} ලෙස සකසයි</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>ජාලයට සවන් දෙන බැවින් වෙනත් උපාංගවලට මෙම පරිගණකය වෙත ළඟා විය හැක.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>වෙනත් වැඩසටහන් සහ ක්‍රීඩා රඳා පවතින ධාවකයක් හෝ HidHide වෙනස් කරයි.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ගොනුව: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge හරහා, උපාංගය කියවිය හැකි වැඩසටහන් වෙනස් කරයි.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>පාලකයක් සකසන්න</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>උපාංගය සොයා, ඒ සඳහා අතථ්‍ය පාලකයක් සාදා, එය පවරා, ක්‍රීඩාවට අවශ්‍ය දේ සිතියම්ගත කරන්න.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>ක්‍රීඩාවකට මගේ පාලකය නොපෙනෙන්නේ ඇයි</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>එන්ජිම, අතථ්‍ය පාලකය, උපාංගය, ධාවක සහ HidHide එකින් එක පරීක්ෂා කරන්න.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>පැතිකඩක් ගෙන එන්න</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>වෙනත් වැඩසටහනකින් පැතිකඩ ගොනුවක් ආනයනය කර, පැමිණි දේ බලන්න.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, වාර {1}ක්</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, එවැනි {1} න් අවසාන එක</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3893,6 +3970,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam ජාල ප්‍රොටෝකෝලය සඳහා භාවිත කරන Protocol Buffers අනුක්‍රමිකකරණය, Marc Gravell විසිනි.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam depot කුට්ටි සඳහා භාවිත කරන Zstandard විසංකෝචනය. zstd පුස්තකාලයේ C# අනුවාදයකි, Oleg Stepanischev විසිනි.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>සහායක සම්බන්ධතාවය සහ PadForge.exe --mcp පිටුපස ඇති Model Context Protocol සේවාදායකය සහ සේවාලාභියා, Model Context Protocol a Series of LF Projects විසින්.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK ගොඩනඟා ඇති Microsoft.Extensions.AI.Abstractions, Logging.Abstractions සහ DependencyInjection.Abstractions, Microsoft විසින්.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii යුගල කිරීමේ ක්‍රියාවලිය, ස්පීකර ADPCM, පැත්තට සහ සෘජුව තබන Wii Remote දිශානතිය, ස්ටික්-ගේට් ආකෘතිය සහ එහි ගබඩා ආකෘතිය, සහ ගයිරෝ අක්ෂ සම්මුතිය සඳහා ලේඛන. ලේඛන ලෙස පමණක් කියවා ඇත, GPL කේත කිසිවක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

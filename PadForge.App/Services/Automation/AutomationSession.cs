@@ -114,9 +114,55 @@ namespace PadForge.Services.Automation
 
         public CancellationToken Stopping => _cts.Token;
 
+        /// <summary>Canceled when the connection ends, however it ends. An
+        /// assistant's session hands its stream over and its reader's token
+        /// ends then, so what lasts as long as the connection waits on this
+        /// one (#597).</summary>
+        internal CancellationToken Lifetime => _outer.Token;
+
         /// <summary>A feedback event for a device this session owns. Queued
         /// without a wait from whatever thread raised it.</summary>
         public void Feedback(string line) => Outbox.Line(line);
+
+        /// <summary>The program is still there. An assistant's session calls
+        /// it while its protocol runs, since its lines no longer pass the
+        /// reader that keeps the lease (#597).</summary>
+        internal void Heard()
+        {
+            LastHeardMs = _nowMs();
+            if (Lapsed) Lapsed = false;
+        }
+
+        /// <summary>Runs <paramref name="work"/> with the rights of the
+        /// program at the other end of the pipe, so a file a tool opens for
+        /// it is one the program could open itself. False when the
+        /// connection is no pipe of Windows' and has no rights to borrow.</summary>
+        /// <summary>While a tool runs a line of the session's on its behalf
+        /// (AutomationSessions.RunCapturedAsync), the answers it gets, and
+        /// one run at a time. Null otherwise.</summary>
+        internal volatile List<string> Captured;
+        internal readonly SemaphoreSlim CaptureGate = new SemaphoreSlim(1, 1);
+
+        /// <summary>The tag the lines a tool runs carry, so their answers are
+        /// told from the session's events.</summary>
+        internal const string CaptureTag = "@pf";
+
+        /// <summary>A line written to an assistant's session once its
+        /// stream is the protocol's: an answer to a line a tool runs is
+        /// kept, anything else is dropped.</summary>
+        internal void Sink(string text)
+        {
+            var list = Captured;
+            if (list == null || text == null || !text.StartsWith(CaptureTag + " ", StringComparison.Ordinal)) return;
+            lock (list) list.Add(text.Substring(CaptureTag.Length + 1));
+        }
+
+        internal bool RunAsClient(Action work)
+        {
+            if (_stream is not System.IO.Pipes.NamedPipeServerStream pipe) return false;
+            pipe.RunAsClient(() => work());
+            return true;
+        }
 
         // ── Reading ──
 
@@ -323,6 +369,13 @@ namespace PadForge.Services.Automation
             string kind = (request.Get("kind") ?? "script").ToLowerInvariant();
             string name = ProgramDeviceDeclaration.Clean(request.Get("name"), ProgramDeviceDeclaration.LongestName);
             string given = name;
+            // The copy of PadForge.exe an assistant starts names the program
+            // that started it, its host (#597). Both names are claims and
+            // are shown as such. Clean takes the format characters out, so
+            // neither name can read backward or hide part of itself on the
+            // request card and in Activity.
+            string host = kind == "mcp" ? ProgramDeviceDeclaration.Clean(request.Get("host"), ProgramDeviceDeclaration.LongestName) : string.Empty;
+            if (host.Length > 0) name = name.Length > 0 ? name + " (" + host + ")" : host;
             if (name.Length == 0 && Process.ImageName != null)
                 name = ProgramDeviceDeclaration.Clean(PadForge.Common.Input.RunningProcessList.ShortName(Process.ImageName),
                     ProgramDeviceDeclaration.LongestName);
@@ -354,7 +407,9 @@ namespace PadForge.Services.Automation
 
             // A script and an assistant speak while Automation is on. With
             // Plugins on alone, the pipe serves plugins and nothing else, so
-            // no program takes a plugin's place.
+            // no program takes a plugin's place, and an assistant is told so
+            // before it takes a session's place: the copy it started then
+            // says Automation is off. This is the one check of it.
             if (kind is "script" or "mcp" && !_hub.Host.IsOn)
             {
                 Answer(request.Tag, AutomationLine.Error("not-allowed", "Automation is off, and the pipe serves plugins alone"));

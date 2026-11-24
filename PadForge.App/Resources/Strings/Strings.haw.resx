@@ -1242,6 +1242,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>ʻAʻole i ʻae ʻo PadForge i ka hoʻopili ʻana o kēia polokalamu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ua noi hou ʻia ma mua o ka manawa</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ʻAʻohe hou o kēia ʻano a hoʻomaka hou ʻo PadForge</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>ʻAʻohe mea hana pēlā o PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Ua heluhelu ka polokalamu i kekahi kūlana kahiko</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ʻAʻohe hoʻonohonoho pēlā</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Aia ka waiwai ma waho o ka mea a ka hoʻonohonoho e ʻae ai</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>ʻAʻole ʻoe i ʻae</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ʻAʻohe mea i pane i ka manawa</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ke kali nei i kāu pane</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ʻAʻohe noi pēlā</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ʻAʻohe mea e hoʻihoʻi ai</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ʻO ʻoe wale nō ke hiki ke hoʻololi i kēia</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ʻAʻole hiki ke wehe i ka faila</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ʻAʻohe macro pēlā</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Nui loa nā nīnau e kali ana iā ʻoe</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hoʻololi i ka profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoʻi i ka profile paʻamau</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nīnau i ka profile e hana nei</value></data>
@@ -1277,6 +1290,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Hoʻokuʻu i nā mana hoʻokele o ka hāmeʻa {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Hoʻonoho i ka waiwai {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Holo i ka mea hana {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Heluhelu i ke kūlana</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Hoʻololi i ka profile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Hoʻomaka a hoʻōki paha i ka ʻenekini</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Hoʻā a hoʻopio paha i nā controller kikohoʻe</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Mālama i kekahi kiʻi nānā pilikia</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Heluhelu i ka pinepine koho a me nā driver</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Helu i nā profile</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Heluhelu i kekahi profile</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Helu i nā controller kikohoʻe</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Helu i nā hāmeʻa</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Heluhelu i kekahi hāmeʻa</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Kali i kāu hoʻokomo</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Heluhelu i nā hoʻonohonoho pihi o kekahi controller</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Helu i nā macro o kekahi controller</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Hoʻopaʻa i kekahi pilikia</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Huli i nā hoʻonohonoho</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Heluhelu i kekahi hoʻonohonoho</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Hōʻike iā ʻoe i kekahi wahi</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Hoʻohui i kekahi hāmeʻa ponoʻī</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Hoʻokele i kona hāmeʻa</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Wehe i kona hāmeʻa</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Paʻa a hoʻokuʻu paha i kekahi mana hoʻokele</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Hoʻololi i kekahi hoʻonohonoho</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Hana i kekahi profile</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Kapa hou i kekahi profile</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Holoi i kekahi profile</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Lawe mai i kekahi profile</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Hoʻopuka i kekahi profile</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Hoʻohui i kekahi controller kikohoʻe</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Wehe i kekahi controller kikohoʻe</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Hoʻololi i ke ʻano o kekahi controller</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Hāʻawi i kekahi hāmeʻa</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Hoʻonoho i nā lālani hoʻonohonoho pihi</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Holoi i nā lālani hoʻonohonoho pihi</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Hoʻonohonoho ʻakomi i nā pihi o kekahi controller</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Mālama i kekahi macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Holoi i kekahi macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Hoʻihoʻi i kāna mau hoʻololi</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Nānā i kekahi noi</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kāhea i kekahi mea hana ʻaʻohe o PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Lawe mai i ka profile “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Hoʻouna i ka hoʻokomo papa pihi a me ka ʻiole iā Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kaomi ka controller papa pihi a me ka ʻiole i nā pihi a hoʻoneʻe i ke kuhi ma nā polokalamu a pau.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} mai {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Mālama i kekahi macro e hana ana ma waho o PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Holo iā {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Kaomi iā {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Kikokiko i ke kikokikona i loko o ka polokalamu ma mua</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Hoʻoneʻe a kaomi paha i ka ʻiole</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Hana i kekahi controller papa pihi a me ka ʻiole</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Hoʻā iā {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Hoʻololi iā “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Hoʻonoho iā {0} i {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Hoʻolohe ma ka pūnaewele, no laila hiki i nā hāmeʻa ʻē aʻe ke hōʻea i kēia PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Hoʻololi i kekahi driver a i ʻole iā HidHide, kahi a nā polokalamu ʻē aʻe a me nā pāʻani e hilinaʻi ai.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faila: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Hoʻololi i nā polokalamu hiki ke heluhelu i ka hāmeʻa, ma o Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Hoʻonohonoho i kekahi controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>E loaʻa ka hāmeʻa, e hana i kekahi controller kikohoʻe nona, e hāʻawi iā ia a e hoʻonohonoho i nā pihi a ka pāʻani e pono ai.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>No ke aha ʻaʻole ʻike kekahi pāʻani i koʻu controller</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>E nānā i ka ʻenekini, ka controller kikohoʻe, ka hāmeʻa, nā driver a me HidHide, pākahi.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Lawe mai i kekahi profile</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>E lawe mai i kekahi faila profile mai kekahi polokalamu ʻē aʻe, a laila e ʻike i nā mea i hiki mai.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} manawa</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ka hope o nā noi like he {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ʻAe</value></data>
@@ -1312,4 +1389,8 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Hoʻolaumania i ka ʻiole e hōʻike like ʻole ana. Hahai ka huila ma hope o ka lima ma kahi o kēia lōʻihi. ʻO 0 ka pio.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Wili ma ka māmā</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ke ā ʻo Telemetry pāʻani, ka nui o ka wili e koe ana ma 200 km/h. Ma 100%, aia ka wili holoʻokoʻa ma nā māmā a pau.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ka server a me ka client Model Context Protocol ma hope o ka hoʻopili kōkua AI a me PadForge.exe --mcp, na Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions a me DependencyInjection.Abstractions, kahi i kūkulu ʻia ai ka MCP C# SDK, na Microsoft.</value></data>
 </root>

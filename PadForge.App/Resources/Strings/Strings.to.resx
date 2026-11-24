@@ -865,6 +865,23 @@
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalama taʻeʻiloa</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, fakamoʻoni ʻe {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ʻikai fakamoʻoni</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Fakahū mai ʻa e polōfila “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Fekauʻi ʻa e ngāue kīpooti mo e mausi ki Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ko ha kontolola kīpooti mo e mausi ʻoku ne lomiʻi ʻa e ngaahi kī pea ueʻi ʻa e pointa ʻi he polokalama kotoa pē.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} mei he {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Tauhi ha makolo ʻoku ngāue ʻi tuʻa mei PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Fakalele {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Lomiʻi {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Tohi ha tohi ki he polokalama ʻoku ʻi muʻa</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Ueʻi pe lomiʻi ʻa e mausi</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Faʻu ha kontolola kīpooti mo e mausi</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Fakaʻā ʻa e {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Liliu “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Fokotuʻu ʻa e {0} ki he {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>ʻOku fanongo ʻi he netiueka, koeʻuhi ke aʻu mai ʻa e ngaahi meʻangāue kehe ki he PC ko ʻeni.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Liliu ha draiva pe HidHide, ʻa ia ʻoku falala ki ai ʻa e ngaahi polokalama mo e vaʻinga kehe.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faile: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Liliu pe ko e fē ngaahi polokalama ʻe lava ʻo lau ʻa e meʻangāue, ʻo fou ʻi he Use Only in PadForge.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mei he {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mei he {1}, ʻa ia ʻoku ui ia ko “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mei ha polokalama ʻoku ui ia ko “{0}”</value></data>
@@ -873,4 +890,8 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ʻi he {1}</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>lau</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Maʻu pē</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ko e sēvā mo e kalaieni Model Context Protocol ʻoku ʻi he fakafehokotaki ki he polokalama tokoni mo e PadForge.exe --mcp, ʻe Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions mo DependencyInjection.Abstractions, ʻa ia kuo langa ai ʻa e MCP C# SDK, ʻe Microsoft.</value></data>
 </root>

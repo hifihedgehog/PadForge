@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge የዚህን ፕሮግራም ግንኙነት አልተቀበለም</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>በጣም ቶሎ እንደገና ተጠይቋል</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge እንደገና እስኪጀምር ድረስ ከእነዚህ ተጨማሪ የለም</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge እንደዚህ ያለ መገልገያ የለውም</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>ፕሮግራሙ የቆየ ሁኔታ አንብቧል</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>እንደዚህ ያለ ቅንብር የለም</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>እሴቱ ቅንብሩ ከሚቀበለው ውጭ ነበር</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>አልፈቀዱትም</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ማንም በጊዜው አልመለሰም</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>መልስዎን በመጠበቅ ላይ</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>እንደዚህ ያለ ጥያቄ የለም</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>የሚቀለበስ ነገር የለም</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ይህንን መቀየር የሚችሉት እርስዎ ብቻ ነዎት</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ፋይሉ ሊከፈት አልቻለም</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>እንደዚህ ያለ ማክሮ የለም</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>እርስዎን የሚጠብቁ በጣም ብዙ ጥያቄዎች ነበሩ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ወደ መገለጫው {0} ቀይር</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ወደ ነባሪው መገለጫ ተመለስ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>የትኛው መገለጫ ንቁ እንደሆነ ጠይቅ</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን ልቀቅ</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>እሴቱን {0} አዘጋጅ</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>መገልገያውን {0} አሂድ</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>ሁኔታውን አንብብ</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>መገለጫዎችን ቀይር</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ሞተሩን አስጀምር ወይም አቁም</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎችን አብራ ወይም አጥፋ</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>የምርመራ ቅጽበታዊ ቅጂ አስቀምጥ</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>የመጠይቅ ድግግሞሹን እና ሾፌሮቹን አንብብ</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>መገለጫዎቹን ዘርዝር</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>መገለጫ አንብብ</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎቹን ዘርዝር</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>መሣሪያዎቹን ዘርዝር</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>መሣሪያ አንብብ</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>ግብዓትዎን ጠብቅ</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>የመቆጣጠሪያን ማዛመጃዎች አንብብ</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>የመቆጣጠሪያን ማክሮዎች ዘርዝር</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ችግር ቅዳ</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ቅንብሮችን ፈልግ</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ቅንብር አንብብ</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>አንድ ቦታ አሳይ</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>የራሱን መሣሪያ አክል</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>መሣሪያውን ተቆጣጠር</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>መሣሪያውን አስወግድ</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>መቆጣጠሪያ ክፍል ያዝ ወይም ልቀቅ</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ቅንብር ቀይር</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>መገለጫ ፍጠር</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>መገለጫ እንደገና ሰይም</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>መገለጫ ሰርዝ</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>መገለጫ አስመጣ</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>መገለጫ ላክ</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ አክል</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ አስወግድ</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>የመቆጣጠሪያን ዓይነት ቀይር</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>መሣሪያ መድብ</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>የማዛመጃ ረድፎችን አዘጋጅ</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>የማዛመጃ ረድፎችን አጽዳ</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>መቆጣጠሪያን በራስ ሰር አዛምድ</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ማክሮ አስቀምጥ</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ማክሮ ሰርዝ</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>ለውጦቹን ቀልብስ</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>ጥያቄ ፈትሽ</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}፦ {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge የሌለውን መገልገያ ጥራ፦ {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>መገለጫውን «{0}» አስመጣ</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>የቁልፍ ሰሌዳ እና የመዳፊት ግብዓት ወደ Windows ላክ</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>የቁልፍ ሰሌዳ እና የመዳፊት መቆጣጠሪያ በእያንዳንዱ ፕሮግራም ውስጥ ቁልፎችን ይጫናል እና ጠቋሚውን ያንቀሳቅሳል።</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} ከ{1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>ከPadForge ውጭ የሚሠራ ማክሮ አስቀምጥ</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} ያሂዳል</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} ይጫናል</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>ከፊት ባለው ፕሮግራም ውስጥ ጽሑፍ ይተይባል</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>መዳፊቱን ያንቀሳቅሳል ወይም ጠቅ ያደርጋል</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>የቁልፍ ሰሌዳ እና የመዳፊት መቆጣጠሪያ ይፈጥራል</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} ያበራል</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>«{0}» ቀይር</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ወደ {1} ያዘጋጃል</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>በአውታረ መረቡ ላይ ያዳምጣል፣ ስለዚህ ሌሎች መሣሪያዎች ይህንን ፒሲ ማግኘት ይችላሉ።</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ሌሎች ፕሮግራሞች እና ጨዋታዎች የሚመኩበትን ሾፌር ወይም HidHide ይቀይራል።</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ፋይል፦ {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>በ«Use Only in PadForge» በኩል መሣሪያውን የትኞቹ ፕሮግራሞች ማንበብ እንደሚችሉ ይቀይራል።</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>መቆጣጠሪያ አዘጋጅ</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>መሣሪያውን ፈልግ፣ ምናባዊ መቆጣጠሪያ ፍጠርለት፣ መድበው እና ጨዋታው የሚፈልገውን አዛምድ።</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>ጨዋታ መቆጣጠሪያዬን ለምን አያየውም</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>ሞተሩን፣ ምናባዊ መቆጣጠሪያውን፣ መሣሪያውን፣ ሾፌሮቹን እና HidHide አንድ በአንድ ፈትሽ።</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>መገለጫ አምጣ</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>ከሌላ ፕሮግራም የመገለጫ ፋይል አስመጣ፣ ከዚያ ምን እንደመጣ ተመልከት።</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}፣ {1} ጊዜ</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}፣ ከ{1} ተመሳሳዮች የመጨረሻው</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3897,6 +3974,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 ለSteam የአውታረ መረብ ፕሮቶኮል የሚጠቀመው የProtocol Buffers ሲሪያላይዘር፣ በMarc Gravell።</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 ለSteam depot ቁርጥራጮች የሚጠቀመው የZstandard መፍቻ፣ በOleg Stepanischev የተሠራ የzstd ቤተ-መጽሐፍት የC# ስሪት።</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>ከረዳቱ ግንኙነት እና ከPadForge.exe --mcp በስተጀርባ ያለው የModel Context Protocol አገልጋይ እና ደንበኛ፣ በModel Context Protocol a Series of LF Projects የተሰራ።</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK የተገነባባቸው Microsoft.Extensions.AI.Abstractions፣ Logging.Abstractions እና DependencyInjection.Abstractions፣ በMicrosoft የተሰሩ።</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>ለWii የማጣመሪያ ሂደት፣ ለድምጽ ማጉያው ADPCM፣ ለጎን እና ቀጥ ያለ የWii Remote አቅጣጫ፣ ለስቲክ በር ሞዴልና ለማከማቻ ቅርጸቱ፣ እንዲሁም ለጋይሮ ዘንግ ስምምነት ሰነዶች። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

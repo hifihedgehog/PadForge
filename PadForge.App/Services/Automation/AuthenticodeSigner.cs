@@ -13,15 +13,20 @@ namespace PadForge.Services.Automation
     /// Windows' own files are signed. Null when the file is not signed or
     /// its signature does not hold.
     ///
-    /// <para>The steps are those Microsoft documents for WinVerifyTrust
-    /// ("Example C Program: Verifying the Signature of a PE File") and for a
-    /// catalog member (CryptCATAdminCalcHashFromFileHandle2,
-    /// CryptCATAdminEnumCatalogFromHash, WINTRUST_CATALOG_INFO): verify, then
-    /// read the signer's certificate from the state WinVerifyTrust kept
-    /// (WTHelperProvDataFromStateData, WTHelperGetProvSignerFromChain), then
-    /// close that state. Revocation is not checked and nothing is fetched
-    /// from the network: the name is for the user's eyes and decides
-    /// nothing.</para>
+    /// <para>The steps follow System Informer's phlib/verify.c
+    /// (PhVerifyFile, PhVerifyFileEx, PhpVerifyFile,
+    /// PhpVerifyFileFromCatalog, PhpGetSignaturesFromStateData) and
+    /// PowerShell's Authenticode.cs (GetSignatureFromWinVerifyTrust,
+    /// TryGetProviderSigner): the file is opened once, sharing reads and
+    /// deletes only, so it cannot change between the checks. Its embedded
+    /// signature is verified first. When it has none, the catalogs are
+    /// searched for its SHA-256 hash, then its SHA-1 hash, and the catalog
+    /// member is verified. The signer's certificate is read from the state
+    /// WinVerifyTrust kept (the first signer's chain, its first
+    /// certificate), then that state is closed. Revocation is not checked
+    /// and nothing is fetched from the network (verify.c's
+    /// PH_VERIFY_PREVENT_NETWORK_ACCESS): the name is for the user's eyes
+    /// and decides nothing.</para>
     ///
     /// <para>An answer is kept for the file's path, size and time of last
     /// write, so a program that connects again costs no second check, and a
@@ -81,14 +86,16 @@ namespace PadForge.Services.Automation
 
         private static string Read(string path)
         {
-            string embedded = VerifyFile(path, out bool noSignature);
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
+            IntPtr handle = stream.SafeFileHandle.DangerousGetHandle();
+            string embedded = VerifyFile(path, handle, out bool noSignature);
             if (embedded != null || !noSignature) return embedded;
-            return VerifyCatalogMember(path);
+            return VerifyCatalogMember(path, handle);
         }
 
         // ── An embedded signature ──
 
-        private static string VerifyFile(string path, out bool noSignature)
+        private static string VerifyFile(string path, IntPtr handle, out bool noSignature)
         {
             noSignature = false;
             IntPtr file = Marshal.StringToCoTaskMemUni(path);
@@ -99,11 +106,17 @@ namespace PadForge.Services.Automation
                 {
                     cbStruct = (uint)Marshal.SizeOf<WINTRUST_FILE_INFO>(),
                     pcwszFilePath = file,
+                    hFile = handle,
                 };
                 fileInfo = Marshal.AllocHGlobal(Marshal.SizeOf<WINTRUST_FILE_INFO>());
                 Marshal.StructureToPtr(fi, fileInfo, false);
                 var data = NewData(WTD_CHOICE_FILE, fileInfo);
                 int result = Verify(ref data, out string signer);
+                // A file of a kind no signature format covers (a script
+                // without a SIP) may still be listed in a catalog, which
+                // PowerShell's reading takes for any file
+                // (GetSignatureFromMSSecurityExtensions), so it goes to the
+                // catalogs as an unsigned file does.
                 noSignature = result is TRUST_E_NOSIGNATURE or TRUST_E_SUBJECT_FORM_UNKNOWN or TRUST_E_PROVIDER_UNKNOWN;
                 return result == 0 ? signer : null;
             }
@@ -116,10 +129,8 @@ namespace PadForge.Services.Automation
 
         // ── A catalog that lists the file ──
 
-        private static string VerifyCatalogMember(string path)
+        private static string VerifyCatalogMember(string path, IntPtr handle)
         {
-            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-            IntPtr handle = stream.SafeFileHandle.DangerousGetHandle();
             foreach (string algorithm in new[] { "SHA256", "SHA1" })
             {
                 if (!CryptCATAdminAcquireContext2(out IntPtr admin, IntPtr.Zero, algorithm, IntPtr.Zero, 0)) continue;
@@ -136,7 +147,7 @@ namespace PadForge.Services.Automation
                     {
                         var catInfo = new CATALOG_INFO { cbStruct = (uint)Marshal.SizeOf<CATALOG_INFO>() };
                         if (!CryptCATCatalogInfoFromContext(catalog, ref catInfo, 0)) continue;
-                        string signer = VerifyMember(catInfo.wszCatalogFile, path, hash, admin);
+                        string signer = VerifyMember(catInfo.wszCatalogFile, path, handle, hash, admin);
                         if (signer != null) return signer;
                     }
                     finally
@@ -152,7 +163,10 @@ namespace PadForge.Services.Automation
             return null;
         }
 
-        private static string VerifyMember(string catalogPath, string path, byte[] hash, IntPtr admin)
+        /// <summary>A catalog member is verified by its open handle, as
+        /// verify.c's PhpVerifyFileFromCatalog does, and by its path, which
+        /// wintrust.h names as required.</summary>
+        private static string VerifyMember(string catalogPath, string path, IntPtr file, byte[] hash, IntPtr admin)
         {
             var tag = new StringBuilder(hash.Length * 2);
             foreach (byte b in hash) tag.Append(b.ToString("X2", System.Globalization.CultureInfo.InvariantCulture));
@@ -170,6 +184,7 @@ namespace PadForge.Services.Automation
                     pcwszCatalogFilePath = catalogFile,
                     pcwszMemberTag = memberTag,
                     pcwszMemberFilePath = memberFile,
+                    hMemberFile = file,
                     pbCalculatedFileHash = hashCopy,
                     cbCalculatedFileHash = (uint)hash.Length,
                     hCatAdmin = admin,
@@ -199,7 +214,9 @@ namespace PadForge.Services.Automation
             dwUnionChoice = choice,
             pInfo = info,
             dwStateAction = WTD_STATEACTION_VERIFY,
-            dwProvFlags = WTD_CACHE_ONLY_URL_RETRIEVAL | WTD_REVOCATION_CHECK_NONE,
+            // verify.c's PhpVerifyFile with network access prevented. MD2
+            // and MD4 hashes are refused.
+            dwProvFlags = WTD_SAFER_FLAG | WTD_DISABLE_MD2_MD4 | WTD_CACHE_ONLY_URL_RETRIEVAL,
         };
 
         /// <summary>Verifies, reads the signer when the signature holds, and
@@ -248,8 +265,9 @@ namespace PadForge.Services.Automation
         private const uint WTD_CHOICE_CATALOG = 2;
         private const uint WTD_STATEACTION_VERIFY = 1;
         private const uint WTD_STATEACTION_CLOSE = 2;
-        private const uint WTD_REVOCATION_CHECK_NONE = 0x00000010;
+        private const uint WTD_SAFER_FLAG = 0x00000100;
         private const uint WTD_CACHE_ONLY_URL_RETRIEVAL = 0x00001000;
+        private const uint WTD_DISABLE_MD2_MD4 = 0x00002000;
         private const uint CERT_NAME_SIMPLE_DISPLAY_TYPE = 4;
         private const int TRUST_E_NOSIGNATURE = unchecked((int)0x800B0100);
         private const int TRUST_E_SUBJECT_FORM_UNKNOWN = unchecked((int)0x800B0003);

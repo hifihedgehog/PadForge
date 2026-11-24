@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge اتصال این برنامه را نپذیرفت</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>خیلی زود دوباره درخواست شد</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>تا اجرای دوباره PadForge بیشتر از این ممکن نیست</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge چنین ابزاری ندارد</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>برنامه وضعیتی قدیمی‌تر را خوانده بود</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>چنین تنظیمی وجود ندارد</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>مقدار بیرون از محدوده‌ای بود که تنظیم می‌پذیرد</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>شما اجازه ندادید</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>کسی به‌موقع پاسخ نداد</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>منتظر پاسخ شما</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>چنین درخواستی وجود ندارد</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>چیزی برای واگرد نیست</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>فقط شما می‌توانید این را تغییر دهید</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>فایل باز نشد</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>چنین ماکرویی وجود ندارد</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>پرسش‌های منتظر شما بیش از حد بود</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>رفتن به پروفایل {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>بازگشت به پروفایل پیش‌فرض</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسیدن اینکه کدام پروفایل فعال است</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>رها کردن کنترل‌های دستگاه {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>تنظیم مقدار {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>اجرای ابزار {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>خواندن وضعیت</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>تعویض پروفایل‌ها</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>روشن یا خاموش کردن موتور</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>روشن یا خاموش کردن کنترلرهای مجازی</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>ذخیره تصویر لحظه‌ای عیب‌یابی</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>خواندن نرخ پولینگ و درایورها</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>فهرست کردن پروفایل‌ها</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>خواندن یک پروفایل</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>فهرست کردن کنترلرهای مجازی</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>فهرست کردن دستگاه‌ها</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>خواندن یک دستگاه</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>منتظر ورودی شما ماندن</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>خواندن نگاشت‌های یک کنترلر</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>فهرست کردن ماکروهای یک کنترلر</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ضبط یک مشکل</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>یافتن تنظیمات</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>خواندن یک تنظیم</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>نشان دادن جایی به شما</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>افزودن دستگاهی از خودش</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>هدایت دستگاهش</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>حذف دستگاهش</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>نگه داشتن یا رها کردن یک کنترل</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>تغییر یک تنظیم</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ساخت یک پروفایل</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>تغییر نام یک پروفایل</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>حذف یک پروفایل</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>درون‌ریزی یک پروفایل</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>برون‌بری یک پروفایل</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>افزودن یک کنترلر مجازی</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>حذف یک کنترلر مجازی</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>تغییر نوع یک کنترلر</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>اختصاص یک دستگاه</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>تنظیم ردیف‌های نگاشت</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>پاک کردن ردیف‌های نگاشت</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>نگاشت خودکار یک کنترلر</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ذخیره یک ماکرو</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>حذف یک ماکرو</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>واگرد تغییرهایش</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>بررسی یک درخواست</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>فراخوانی ابزاری که PadForge ندارد: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>درون‌ریزی پروفایل «{0}»</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>ارسال ورودی صفحه‌کلید و ماوس به Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>یک کنترلر صفحه‌کلید و ماوس در هر برنامه کلید فشار می‌دهد و اشاره‌گر را حرکت می‌دهد.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} از {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>ذخیره ماکرویی که بیرون از PadForge عمل می‌کند</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} را اجرا می‌کند</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} را فشار می‌دهد</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>متن را در برنامه جلویی تایپ می‌کند</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>ماوس را حرکت می‌دهد یا کلیک می‌کند</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>یک کنترلر صفحه‌کلید و ماوس می‌سازد</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} را روشن می‌کند</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>تغییر «{0}»</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} را روی {1} تنظیم می‌کند</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>در شبکه گوش می‌دهد، پس دستگاه‌های دیگر می‌توانند به این رایانه برسند.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>یک درایور یا HidHide را تغییر می‌دهد که برنامه‌ها و بازی‌های دیگر به آن تکیه دارند.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>فایل: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>اینکه کدام برنامه‌ها می‌توانند دستگاه را بخوانند را از راه «استفاده فقط در PadForge» تغییر می‌دهد.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>راه‌اندازی یک کنترلر</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>دستگاه را پیدا کنید، یک کنترلر مجازی برایش بسازید، اختصاصش دهید و آنچه بازی لازم دارد نگاشت کنید.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>چرا یک بازی کنترلر من را نمی‌بیند</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>موتور، کنترلر مجازی، دستگاه، درایورها و HidHide را یکی‌یکی بررسی کنید.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>آوردن یک پروفایل</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>یک فایل پروفایل از برنامه‌ای دیگر را درون‌ریزی کنید، سپس ببینید چه چیزی آمده است.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}، {1} بار</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}، آخرین مورد از {1} درخواست مشابه</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>سریال‌ساز Protocol Buffers که SteamKit2 برای پروتکل انتقال Steam به کار می‌برد، اثر Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>فشرده‌گشایی Zstandard که SteamKit2 برای قطعه‌های مخزن Steam به کار می‌برد، برگردان C# کتابخانه zstd اثر Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>سرور و کلاینت Model Context Protocol پشت اتصال دستیار و PadForge.exe --mcp، از Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions، Logging.Abstractions و DependencyInjection.Abstractions که MCP C# SDK بر آن‌ها ساخته شده، از Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>مستندات فرایند جفت‌سازی Wii، ADPCM بلندگو، جهت‌گیری افقی و ایستاده Wii Remote، مدل دریچه استیک و قالب ذخیره‌سازی آن، و قرارداد محورهای ژیروسکوپ. فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

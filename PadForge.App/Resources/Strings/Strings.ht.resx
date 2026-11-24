@@ -497,6 +497,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge pa t aksepte koneksyon pwogram sa a</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Li mande ankò twò vit</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Pa gen plis nan sa yo jiskaske PadForge demare ankò</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge pa gen zouti sa a</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Pwogram lan te li yon eta ki pi ansyen</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Paramèt sa a pa egziste</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valè a te deyò sa paramèt la aksepte</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ou pa t pèmèt li</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Pèsonn pa t reponn atan</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ap tann repons ou</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Demann sa a pa egziste</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Pa gen anyen pou defèt</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Se ou sèl ki ka chanje sa</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Pa t ka louvri fichye a</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Makwo sa a pa egziste</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Twòp kesyon t ap tann ou</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chanje pou pwofil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Retounen nan pwofil pa defo a</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mande ki pwofil ki aktif</value></data>
@@ -532,6 +545,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lage kontwòl aparèy {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Mete valè {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Itilize zouti {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Li estati a</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Chanje pwofil</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Demare oswa kanpe motè a</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Aktive oswa dezaktive kontwolè vityèl yo</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Anrejistre yon kopi dyagnostik</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Li frekans sondaj la ak drivè yo</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Fè lis pwofil yo</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Li yon pwofil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Fè lis kontwolè vityèl yo</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Fè lis aparèy yo</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Li yon aparèy</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Tann antre ou</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Li asiyasyon yon kontwolè</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Fè lis makwo yon kontwolè</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Anrejistre yon pwoblèm</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Chèche paramèt</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Li yon paramèt</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Montre w yon kote</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ajoute yon aparèy pa li</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Kontwole aparèy li</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Retire aparèy li</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Kenbe oswa lage yon kontwòl</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Chanje yon paramèt</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Kreye yon pwofil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Chanje non yon pwofil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Efase yon pwofil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Enpòte yon pwofil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Ekspòte yon pwofil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Ajoute yon kontwolè vityèl</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Retire yon kontwolè vityèl</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Chanje kalite yon kontwolè</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Asiyen yon aparèy</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Mete liy asiyasyon</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Efase liy asiyasyon</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Asiyen yon kontwolè otomatikman</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Anrejistre yon makwo</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Efase yon makwo</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Defèt chanjman li yo</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Verifye yon demann</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Rele yon zouti PadForge pa genyen: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Enpòte pwofil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Voye antre klavye ak sourit bay Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Yon kontwolè klavye ak sourit peze touch epi deplase pwentè a nan tout pwogram.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} apati {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Anrejistre yon makwo ki aji deyò PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Lanse {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Peze {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Tape tèks nan pwogram ki devan an</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Deplase oswa klike sourit la</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Kreye yon kontwolè klavye ak sourit</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Aktive {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Chanje “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Mete {0} sou {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Li koute sou rezo a, kidonk lòt aparèy ka rive jwenn PC sa a.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Li chanje yon drivè oswa HidHide, ke lòt pwogram ak jwèt depann de yo.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fichye: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Li chanje ki pwogram ki ka li aparèy la, atravè Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Konfigire yon kontwolè</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Jwenn aparèy la, kreye yon kontwolè vityèl pou li, asiyen l epi asiyen sa jwèt la bezwen.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Poukisa yon jwèt pa wè kontwolè mwen</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Verifye motè a, kontwolè vityèl la, aparèy la, drivè yo ak HidHide youn apre lòt.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Pote yon pwofil vini</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Enpòte yon fichye pwofil ki soti nan yon lòt pwogram, epi gade sa ki pase.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fwa</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, dènye nan {1} ki sanble</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4944,6 +5021,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Jounal</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chwazi yon plugin pou wè jounal li.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Poko gen anyen nan jounal plugin sa a.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Sèvè ak kliyan Model Context Protocol ki dèyè koneksyon asistan an ak PadForge.exe --mcp, pa Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ak DependencyInjection.Abstractions, ke MCP C# SDK la bati sou yo, pa Microsoft.</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Pwogram</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Anrejistreman pwoblèm</value></data>

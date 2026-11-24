@@ -226,9 +226,16 @@
          that build. -->
     <Compile Remove="Resources\Plugins\**" />
     <EmbeddedResource Include="Resources\Plugins\PadForgePlugin.cs" LogicalName="PadForge.Plugins.PadForgePlugin.cs" />
+    <!-- The rule of who serves a PadForge pipe, which PadForge builds and
+         the kit's C# plugin builds beside it, so both keep one rule. -->
+    <EmbeddedResource Include="Services\Automation\PipeOwner.cs" LogicalName="PadForge.Plugins.PipeOwner.cs" />
     <EmbeddedResource Include="Resources\Plugins\plugin.py" LogicalName="PadForge.Plugins.plugin.py" />
     <EmbeddedResource Include="Resources\Plugins\plugin.ps1" LogicalName="PadForge.Plugins.plugin.ps1" />
     <EmbeddedResource Include="Resources\Plugins\plugin.ahk" LogicalName="PadForge.Plugins.plugin.ahk" />
+    <!-- PadForge's own skill for assistants (#597): served over the Skills
+         extension and written by Save the Skill, so it matches the version
+         in use. The path under the folder stays in the name. -->
+    <EmbeddedResource Include="Resources\Assistant\padforge\**\*.md" LogicalName="PadForge.Assistant.Skill/%(RecursiveDir)%(Filename)%(Extension)" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="PadForge.ThirdPartyNotices.txt" />
     <!-- The x64 HidHide setup, for x64 machines. Only the x64 build can run
          on one, so only the x64 build carries its 7.7 MB. -->
@@ -294,6 +301,13 @@
     <!-- Driver-store install, class filters, and USB CyclePort for the BthPS3
          DualShock 3 Bluetooth stack (nefarius, same lib BthPS3's own installer uses) -->
     <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="6.1.0" />
+    <!-- The Model Context Protocol's C# SDK (Apache-2.0), core package only:
+         the server inside PadForge that assistants reach over the Automation
+         pipe, and the copy PadForge.exe starts for an assistant (#597). It brings
+         Microsoft.Extensions.AI.Abstractions, Logging.Abstractions and
+         DependencyInjection.Abstractions (MIT). No hosting package and no
+         ASP.NET Core. -->
+    <PackageReference Include="ModelContextProtocol.Core" Version="2.4.0" />
   </ItemGroup>
 
   <!-- The in-box Windows MIDI Services API ships in Windows 11 25H2 (build

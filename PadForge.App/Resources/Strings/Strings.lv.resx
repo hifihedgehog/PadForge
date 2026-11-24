@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nepieņēma šīs programmas savienojumu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Pieprasīts atkal par ātru</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Šādu vairs nebūs, līdz PadForge startēs no jauna</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nav šāda rīka</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programma nolasīja vecāku stāvokli</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Šāda iestatījuma nav</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Vērtība bija ārpus iestatījuma pieļaujamā</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Jūs to neatļāvāt</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Neviens laikā neatbildēja</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Gaida jūsu atbildi</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Šāda pieprasījuma nav</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nav ko atsaukt</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Šo var mainīt tikai jūs</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Failu nevarēja atvērt</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Šāda makrosa nav</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Uz jums gaidīja pārāk daudz jautājumu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Pārslēgties uz profilu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Atgriezties pie noklusējuma profila</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pajautāt, kurš profils ir aktīvs</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Atlaist ierīces {0} vadīklas</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Iestatīt vērtību {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Palaist rīku {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Nolasīt statusu</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Pārslēgt profilus</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Startēt vai apturēt dzinēju</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Ieslēgt vai izslēgt virtuālos kontrollerus</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Saglabāt diagnostikas momentuzņēmumu</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Nolasīt aptaujas frekvenci un draiverus</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Uzskaitīt profilus</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Nolasīt profilu</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Uzskaitīt virtuālos kontrollerus</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Uzskaitīt ierīces</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Nolasīt ierīci</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Gaidīt jūsu ievadi</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Nolasīt kontrollera piesaistes</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Uzskaitīt kontrollera makrosus</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Ierakstīt problēmu</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Atrast iestatījumus</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Nolasīt iestatījumu</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Parādīt jums vietu</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Pievienot savu ierīci</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Vadīt savu ierīci</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Noņemt savu ierīci</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Turēt vai atlaist vadīklu</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Mainīt iestatījumu</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Izveidot profilu</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Pārdēvēt profilu</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Dzēst profilu</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importēt profilu</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Eksportēt profilu</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Pievienot virtuālo kontrolleri</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Noņemt virtuālo kontrolleri</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Mainīt kontrollera tipu</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Piešķirt ierīci</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Iestatīt piesaistes rindas</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Notīrīt piesaistes rindas</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Automātiski piesaistīt kontrolleri</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Saglabāt makrosu</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Dzēst makrosu</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Atsaukt tās izmaiņas</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Pārbaudīt pieprasījumu</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Izsaukt rīku, kura PadForge nav: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importēt profilu „{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Sūtīt tastatūras un peles ievadi uz Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Tastatūras un peles kontrolleris nospiež taustiņus un pārvieto rādītāju visās programmās.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} no {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Saglabāt makrosu, kas darbojas ārpus PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Palaiž {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Nospiež {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Raksta tekstu priekšplāna programmā</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Pārvieto peli vai klikšķina</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Izveido tastatūras un peles kontrolleri</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ieslēdz {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Mainīt „{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Iestata {0} uz {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Klausās tīklā, tāpēc citas ierīces var sasniegt šo datoru.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Maina draiveri vai HidHide, uz ko paļaujas citas programmas un spēles.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fails: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Maina, kuras programmas var nolasīt ierīci, izmantojot iestatījumu Izmantot tikai programmā PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Iestatīt kontrolleri</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Atrodiet ierīci, izveidojiet tai virtuālo kontrolleri, piešķiriet to un piesaistiet to, ko prasa spēle.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Kāpēc spēle neredz manu kontrolleri</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Pārbaudiet pa vienam dzinēju, virtuālo kontrolleri, ierīci, draiverus un HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Pārnest profilu</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importējiet profila failu no citas programmas, pēc tam apskatiet, kas pārnests.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, reizes: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, pēdējais no šādiem pieprasījumiem (kopā {1})</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers serializētājs, ko SteamKit2 izmanto Steam tīkla protokolam, autors Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard dekompresija, ko SteamKit2 izmanto Steam depo fragmentiem, zstd bibliotēkas C# pārnesums, autors Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol serveris un klients, kas stāv aiz asistentu savienojuma un PadForge.exe --mcp, autors Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions un DependencyInjection.Abstractions, uz kuriem balstīts MCP C# SDK, autors Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentācija par Wii savienošanas pārī procedūru, skaļruņa ADPCM, Wii Remote sānisko un vertikālo orientāciju, sviras ierobežotāja modeli un tā glabāšanas formātu, kā arī žiroskopa asu konvenciju. Izmantota tikai kā dokumentācija, GPL kods netiek izplatīts.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

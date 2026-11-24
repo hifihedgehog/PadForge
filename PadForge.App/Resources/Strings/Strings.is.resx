@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tók ekki við tengingu þessa forrits</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Beðið aftur of fljótt</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ekki fleiri af þessu fyrr en PadForge ræsist aftur</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge hefur ekkert slíkt tól</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Forritið las eldri stöðu</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Engin slík stilling</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Gildið var utan þess sem stillingin tekur við</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Þú leyfðir það ekki</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Enginn svaraði í tæka tíð</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Bíður eftir svari þínu</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Engin slík beiðni</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ekkert til að afturkalla</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Aðeins þú getur breytt þessu</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ekki tókst að opna skrána</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Enginn slíkur fjölvi</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Of margar spurningar biðu þín</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skipta yfir í sniðið {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fara aftur í sjálfgefna sniðið</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spyrja hvaða snið er virkt</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Sleppa stjórntækjum tækisins {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Stilla gildið {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Keyra tólið {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Lesa stöðuna</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Skipta um snið</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Ræsa eða stöðva vélina</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kveikja eða slökkva á sýndarstýringum</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Vista greiningarskyndimynd</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lesa tíðni könnunar og rekla</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Telja upp sniðin</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lesa snið</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Telja upp sýndarstýringarnar</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Telja upp tækin</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lesa tæki</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Bíða eftir inntaki frá þér</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lesa varpanir stýringar</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Telja upp fjölva stýringar</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Taka upp vandamál</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Leita að stillingum</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lesa stillingu</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Sýna þér stað</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Bæta við eigin tæki</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Stýra tæki sínu</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Fjarlægja tæki sitt</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Halda eða sleppa stjórntæki</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Breyta stillingu</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Búa til snið</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Endurnefna snið</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Eyða sniði</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Flytja inn snið</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Flytja út snið</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Bæta við sýndarstýringu</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Fjarlægja sýndarstýringu</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Breyta gerð stýringar</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Úthluta tæki</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Stilla varpanalínur</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Hreinsa varpanalínur</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Varpa stýringu sjálfkrafa</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Vista fjölva</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Eyða fjölva</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Afturkalla breytingar sínar</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Athuga beiðni</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kalla á tól sem PadForge hefur ekki: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Flytja inn sniðið „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Senda lyklaborðs- og músarinntak til Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Lyklaborðs- og músarstýring ýtir á takka og færir bendilinn í öllum forritum.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} frá {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Vista fjölva sem aðhefst utan PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Keyrir {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Ýtir á {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Slær texta inn í forritið sem er fremst</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Færir eða smellir með músinni</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Býr til lyklaborðs- og músarstýringu</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Kveikir á {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Breyta „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stillir {0} á {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Hlustar á netinu, svo önnur tæki geta náð í þessa tölvu.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Breytir reklum eða HidHide, sem önnur forrit og leikir reiða sig á.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Skrá: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Breytir því hvaða forrit geta lesið tækið, með Nota aðeins í PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Setja upp leikjastýringu</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Finna tækið, búa til sýndarstýringu fyrir það, úthluta því og varpa því sem leikurinn þarf.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Af hverju leikur sér ekki stýringuna mína</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Athuga vélina, sýndarstýringuna, tækið, rekla og HidHide eitt af öðru.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Flytja snið yfir</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Flytja inn sniðskrá úr öðru forriti og sjá svo hvað skilaði sér.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} sinnum</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, síðasta af {1} slíkum</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Raðari fyrir Protocol Buffers sem SteamKit2 notar fyrir samskiptareglur Steam, eftir Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-afþjöppun sem SteamKit2 notar fyrir gagnabúta úr Steam-geymslum, C#-útgáfa af zstd-safninu eftir Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol þjónninn og biðlarinn á bak við tengingu aðstoðarforrita og PadForge.exe --mcp, frá Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions og DependencyInjection.Abstractions, sem MCP C# SDK er byggt á, frá Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Skjölun fyrir pörunarferli Wii, ADPCM hátalarans, stefnu Wii Remote á hlið og upprétt, líkan pinnarammans og geymsluform hans, og ásavenju snúningsskynjarans. Lesið eingöngu sem skjölun, enginn GPL-kóði fylgir.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ఈ ప్రోగ్రామ్ కనెక్షన్‌ను స్వీకరించలేదు</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>చాలా త్వరగా మళ్లీ అడిగారు</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge మళ్లీ ప్రారంభమయ్యే వరకు ఇవి ఇక లేవు</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge లో అలాంటి సాధనం లేదు</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>ప్రోగ్రామ్ పాత స్థితిని చదివింది</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>అలాంటి సెట్టింగ్ లేదు</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>విలువ సెట్టింగ్ అంగీకరించే పరిధికి బయట ఉంది</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>మీరు అనుమతించలేదు</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>సమయానికి ఎవరూ సమాధానం ఇవ్వలేదు</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>మీ సమాధానం కోసం ఎదురుచూస్తోంది</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>అలాంటి అభ్యర్థన లేదు</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>అన్‌డూ చేయడానికి ఏమీ లేదు</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>దీన్ని మీరు మాత్రమే మార్చగలరు</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>ఫైల్‌ను తెరవలేకపోయింది</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>అలాంటి మాక్రో లేదు</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>మీ కోసం చాలా ప్రశ్నలు ఎదురుచూస్తున్నాయి</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ప్రొఫైల్ {0} కు మారు</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>డిఫాల్ట్ ప్రొఫైల్‌కు తిరిగి వెళ్లు</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ఏ ప్రొఫైల్ ఆన్‌లో ఉందో అడుగు</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>పరికరం {0} నియంత్రణలను వదిలేయి</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>విలువ {0} ను సెట్ చేయి</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>సాధనం {0} ను నడుపు</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>స్థితిని చదువు</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>ప్రొఫైల్లను మార్చు</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ఇంజిన్‌ను ప్రారంభించు లేదా ఆపు</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లను ఆన్ లేదా ఆఫ్ చేయి</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>డయాగ్నోస్టిక్స్ స్నాప్‌షాట్‌ను సేవ్ చేయి</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>పోలింగ్ రేటు, డ్రైవర్లను చదువు</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>ప్రొఫైల్లను జాబితా చేయి</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>ప్రొఫైల్‌ను చదువు</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లను జాబితా చేయి</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>పరికరాలను జాబితా చేయి</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>పరికరాన్ని చదువు</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>మీ ఇన్‌పుట్ కోసం వేచి ఉండు</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>కంట్రోలర్ మ్యాపింగ్లను చదువు</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>కంట్రోలర్ మాక్రోలను జాబితా చేయి</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>సమస్యను రికార్డ్ చేయి</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>సెట్టింగులను వెతుకు</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>సెట్టింగ్‌ను చదువు</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>మీకు ఒక స్థలాన్ని చూపు</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>తన సొంత పరికరాన్ని జోడించు</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>తన పరికరాన్ని నడుపు</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>తన పరికరాన్ని తొలగించు</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>నియంత్రణను పట్టి ఉంచు లేదా వదులు</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>సెట్టింగ్‌ను మార్చు</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ప్రొఫైల్‌ను సృష్టించు</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ప్రొఫైల్ పేరు మార్చు</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ప్రొఫైల్‌ను తొలగించు</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>ప్రొఫైల్‌ను ఇంపోర్ట్ చేయి</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>ప్రొఫైల్‌ను ఎక్స్‌పోర్ట్ చేయి</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్‌ను జోడించు</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్‌ను తొలగించు</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>కంట్రోలర్ రకాన్ని మార్చు</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>పరికరాన్ని కేటాయించు</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>మ్యాపింగ్ వరుసలను సెట్ చేయి</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>మ్యాపింగ్ వరుసలను క్లియర్ చేయి</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>కంట్రోలర్‌ను ఆటోమేటిక్‌గా మ్యాప్ చేయి</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>మాక్రోను సేవ్ చేయి</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>మాక్రోను తొలగించు</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>దాని మార్పులను అన్‌డూ చేయి</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>అభ్యర్థనను తనిఖీ చేయి</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge లో లేని సాధనాన్ని కాల్ చేయి: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>“{0}” ప్రొఫైల్‌ను ఇంపోర్ట్ చేయి</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows కు కీబోర్డ్, మౌస్ ఇన్‌పుట్ పంపు</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>కీబోర్డ్, మౌస్ కంట్రోలర్ ప్రతి ప్రోగ్రామ్‌లో కీలను నొక్కుతుంది, పాయింటర్‌ను కదిలిస్తుంది.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1} నుండి {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge బయట పనిచేసే మాక్రోను సేవ్ చేయి</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} ను నడుపుతుంది</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} ను నొక్కుతుంది</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>ముందున్న ప్రోగ్రామ్‌లో టెక్స్ట్ టైప్ చేస్తుంది</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>మౌస్‌ను కదిలిస్తుంది లేదా క్లిక్ చేస్తుంది</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>కీబోర్డ్, మౌస్ కంట్రోలర్‌ను తయారు చేస్తుంది</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} ను ఆన్ చేస్తుంది</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” ను మార్చు</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ను {1} కు సెట్ చేస్తుంది</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>నెట్‌వర్క్‌లో వింటుంది, కాబట్టి ఇతర పరికరాలు ఈ PC ని చేరగలవు.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ఇతర ప్రోగ్రామ్లు, గేమ్‌లు ఆధారపడే డ్రైవర్ను లేదా HidHide ను మారుస్తుంది.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ఫైల్: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForgeలో మాత్రమే ఉపయోగించు ఎంపిక ద్వారా, పరికరాన్ని ఏ ప్రోగ్రామ్లు చదవగలవో మారుస్తుంది.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>కంట్రోలర్‌ను సెటప్ చేయి</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>పరికరాన్ని కనుగొని, దానికి వర్చువల్ కంట్రోలర్ తయారు చేసి, కేటాయించి, గేమ్‌కు కావలసినది మ్యాప్ చేయండి.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>గేమ్‌కు నా కంట్రోలర్ ఎందుకు కనిపించదు</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>ఇంజిన్, వర్చువల్ కంట్రోలర్, పరికరం, డ్రైవర్లు, HidHide ను ఒక్కొక్కటిగా తనిఖీ చేయండి.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>ప్రొఫైల్‌ను తీసుకురా</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>మరొక ప్రోగ్రామ్ నుండి ప్రొఫైల్ ఫైల్‌ను ఇంపోర్ట్ చేసి, ఏమి వచ్చిందో చూడండి.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} సార్లు</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, అలాంటి {1} లో చివరిది</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam వైర్ ప్రోటోకాల్ కోసం వాడే Protocol Buffers సీరియలైజర్, Marc Gravell రచన.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam డిపో చంక్ల కోసం వాడే Zstandard డీకంప్రెషన్, Oleg Stepanischev రూపొందించిన zstd లైబ్రరీ C# పోర్ట్.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>అసిస్టెంట్ కనెక్షన్, PadForge.exe --mcp వెనుక ఉన్న Model Context Protocol సర్వర్, క్లయింట్, రచన Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions, DependencyInjection.Abstractions, వీటిపై MCP C# SDK నిర్మించబడింది, రచన Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii జత చేసే విధానం, స్పీకర్ ADPCM, Wii Remote పక్కకు, నిటారుగా ఉండే ఓరియెంటేషన్, స్టిక్-గేట్ మోడల్ దాని నిల్వ ఫార్మాట్, గైరో అక్ష సంప్రదాయం గురించిన డాక్యుమెంటేషన్. డాక్యుమెంటేషన్గా మాత్రమే చదవబడింది, GPL కోడ్ ఏదీ చేర్చబడలేదు.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

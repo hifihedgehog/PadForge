@@ -2241,6 +2241,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge wal qunnamtii sagantaa kanaa hin fudhanne</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Dafee irra deebi'ee gaafate</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Hanga PadForge irra deebi'ee jalqabutti kana caalaa hin jiru</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge meeshaa hojii akkasii hin qabu</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Sagantaan haala durii dubbise</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Qindaa'inni akkasii hin jiru</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Gatiin waan qindaa'inni fudhatu ala ture</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ati hin hayyamne</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Namni yeroo isaatti deebii hin kennine</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Deebii kee eeggachaa jira</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Gaaffiin akkasii hin jiru</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Wanti duubatti deebi'u hin jiru</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kana kan jijjiiruu danda'u ati qofa</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faayiliin banamuu hin dandeenye</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Maakiroon akkasii hin jiru</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Gaaffiileen baay'een si eeggachaa turan</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gara piroofaayilii {0} jijjiiri</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gara piroofaayilii durtii deebi'i</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Piroofaayiliin kam akka hojii irra jiru gaafadhu</value></data>
@@ -2276,6 +2289,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} gadi lakkisi</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gatii {0} kaa'i</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Meeshaa hojii {0} hojjechiisi</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Haala dubbisi</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Piroofaayilii jijjiiri</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Injinii jalqabi ykn dhaabi</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kontirolaawwan fakkeessaa bani ykn cufi</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Suuraa qorannoo rakkoo olkaa'i</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Saffisa sakatta'iinsaa fi sagantaalee fe'insaa dubbisi</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Piroofaayiliiwwan tarreessi</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Piroofaayilii tokko dubbisi</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Kontirolaawwan fakkeessaa tarreessi</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Meeshaalee tarreessi</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Meeshaa tokko dubbisi</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Galtee kee eeggadhu</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Walqabsiisa kontirolaa tokkoo dubbisi</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Maakiroowwan kontirolaa tokkoo tarreessi</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rakkoo galmeessi</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Qindaa'ina barbaadi</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Qindaa'ina tokko dubbisi</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Bakka tokko si agarsiisi</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Meeshaa mataa isaa ida'i</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Meeshaa isaa oofi</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Meeshaa isaa balleessi</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>To'annoo tokko qabadhu ykn gadi lakkisi</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Qindaa'ina tokko jijjiiri</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Piroofaayilii uumi</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Maqaa piroofaayilii jijjiiri</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Piroofaayilii haqi</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Piroofaayilii galchi</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Piroofaayilii al-ergi</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Kontirolaa fakkeessaa ida'i</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Kontirolaa fakkeessaa balleessi</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Gosa kontirolaa jijjiiri</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Meeshaa ramadi</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Tarreewwan walqabsiisaa qindeessi</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Tarreewwan walqabsiisaa qulqulleessi</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Kontirolaa ofumaan walqabsiisi</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Maakiroo olkaa'i</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Maakiroo haqi</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Jijjiirama isaa duubatti deebisi</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Gaaffii tokko mirkaneessi</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Meeshaa hojii PadForge hin qabne waami: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Piroofaayilii “{0}” galchi</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Galtee kiiboordii fi maawusii gara Windows ergi</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kontirolaan kiiboordii fi maawusii sagantaa hunda keessatti furtuuwwan tuqa, akeekaa immoo sochoosa.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} {1} irraa</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Maakiroo PadForge ala hojjetu olkaa'i</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} hojjechiisa</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} tuqa</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Sagantaa fuuldura jiru keessatti barreeffama barreessa</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Maawusii sochoosa ykn cuqaasa</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Kontirolaa kiiboordii fi maawusii uuma</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} bana</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” jijjiiri</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} gara {1} kaa'a</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Neetworkii irratti dhaggeeffata, kanaaf meeshaaleen biroo PC kana ga'uu danda'u.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Sagantaa fe'insaa ykn HidHide jijjiira, kan sagantaaleen biroo fi taphoonni irratti hirkatan.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faayilii: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Karaa Use Only in PadForge sagantaalee meeshaa dubbisuu danda'an jijjiira.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Kontirolaa qopheessi</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Meeshaa barbaadi, kontirolaa fakkeessaa isaaf uumi, ramadi, waan taphni barbaadu immoo walqabsiisi.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Taphni maaliif kontirolaa koo hin argu</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Injinii, kontirolaa fakkeessaa, meeshaa, sagantaalee fe'insaa fi HidHide tokko tokkoon mirkaneessi.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Piroofaayilii as fidi</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Faayilii piroofaayilii sagantaa biraa irraa galchi, sana booda waan dhufe ilaali.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, al {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, isa dhumaa kan {1} akkasii</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Hayyami</value></data>
@@ -2314,5 +2391,9 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maawusii wal qixa hin taane gabaasu wal qixxeessa. Geengoon harka gara yeroo kanaan duubaan hordofa. 0 jechuun cufaa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Daangaa saffisa irratti</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry yoo banaa ta'e, daangaan hammam 200 km/h irratti akka hafu. 100% irratti daangaan guutuun saffisa hunda irratti jira.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Sarvarii fi maamilaa Model Context Protocol kan wal qunnamtii gargaaraa fi PadForge.exe --mcp duuba jiran, kan Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions fi DependencyInjection.Abstractions, kanneen MCP C# SDK irratti ijaarame, kan Microsoft.</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Gatii iskiriptii</value></data>
 </root>

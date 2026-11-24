@@ -1702,6 +1702,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tsis txais qhov program no txoj kev txuas</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Thov dua sai dhau</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tsis muaj ntxiv lawm txog thaum PadForge pib dua</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge tsis muaj tool no</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Qhov program nyeem ib lub xeev qub</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tsis muaj qhov teeb tsa no</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Tus nqi nyob sab nraud ntawm qhov uas qhov teeb tsa txais</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Koj tsis tau tso cai</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Tsis muaj leej twg teb raws sij hawm</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Tab tom tos koj teb</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tsis muaj qhov kev thov no</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tsis muaj dab tsi yuav thim rov qab</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tsuas yog koj thiaj hloov tau qhov no</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Qhib tsis tau daim ntawv</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tsis muaj macro no</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Muaj lus nug ntau dhau tos koj</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hloov mus rau profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rov qab mus rau profile neej ntawd</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nug saib profile twg siv</value></data>
@@ -1737,6 +1750,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Tso cov tswj ntawm khoom siv {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Teeb tus nqi {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Khiav tool {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Nyeem qhov xwm txheej</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Hloov profile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Pib los yog nres lub engine</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Qhib los yog kaw cov controller virtual</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Khaws ib daim snapshot kuaj mob</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Nyeem polling rate thiab cov driver</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Teev cov profile</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Nyeem ib lub profile</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Teev cov controller virtual</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Teev cov khoom siv</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Nyeem ib lub khoom siv</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Tos koj qhov input</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Nyeem ib lub controller cov mapping</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Teev ib lub controller cov macro</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Kaw ib qho teeb meem</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Nrhiav cov teeb tsa</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Nyeem ib qho teeb tsa</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Qhia koj ib qho chaw</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ntxiv ib lub khoom siv ntawm nws tus kheej</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Tswj nws lub khoom siv</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Tshem nws lub khoom siv</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Tuav los yog tso ib qho tswj</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Hloov ib qho teeb tsa</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Tsim ib lub profile</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Hloov npe ib lub profile</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Rho tawm ib lub profile</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Import ib lub profile</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Export ib lub profile</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Ntxiv ib lub controller virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Tshem ib lub controller virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Hloov ib lub controller hom</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Muab ib lub khoom siv</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Teeb cov kab mapping</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Tshem cov kab mapping</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Map ib lub controller ntawm nws tus kheej</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Khaws ib lub macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Rho tawm ib lub macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Thim nws cov kev hloov rov qab</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kuaj ib qho kev thov</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Hu ib lub tool uas PadForge tsis muaj: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Import lub profile “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Xa keyboard thiab mouse input mus rau Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ib lub controller keyboard thiab mouse nias cov khawm thiab txav tus pointer hauv txhua qhov program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} los ntawm {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Khaws ib lub macro uas ua sab nraud PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Khiav {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Nias {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ntaus ntawv rau hauv qhov program nyob pem hauv ntej</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Txav los yog nias mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Tsim ib lub controller keyboard thiab mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Qhib {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Hloov “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Teeb {0} ua {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Mloog hauv lub network, yog li lwm cov khoom siv mus txog tau lub PC no.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Hloov ib lub driver los yog HidHide, uas lwm cov program thiab game cia siab rau.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Daim ntawv: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Hloov seb cov program twg nyeem tau lub khoom siv, los ntawm Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Teeb tsa ib lub controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Nrhiav lub khoom siv, tsim ib lub controller virtual rau nws, muab nws thiab map yam uas lub game xav tau.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Vim li cas ib lub game tsis pom kuv lub controller</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Kuaj lub engine, lub controller virtual, lub khoom siv, cov driver thiab HidHide ib qho zuj zus.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Coj ib lub profile los</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Import ib daim ntawv profile los ntawm lwm qhov program, ces saib dab tsi tuaj txog.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} zaug</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, qhov kawg ntawm {1} qhov zoo li nws</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tso cai</value></data>
@@ -1776,6 +1853,10 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ua kom du ib lub mouse uas qhia tsis sib luag. Lub kauj tsheb lag tom qab tes li ntawm ntev npaum no. 0 yog kaw.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kev tig thaum ceev</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Thaum qhib Game Telemetry, kev tig kawg nkaus tseem tshuav npaum li cas thaum 200 km/h. Thaum 100% tag nrho kev tig kawg nkaus muaj nyob txhua qhov ceev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Lub server thiab client Model Context Protocol uas nyob tom qab kev txuas assistant thiab PadForge.exe --mcp, los ntawm Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions thiab DependencyInjection.Abstractions, uas MCP C# SDK tsim rau saum, los ntawm Microsoft.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv tsis txuas</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv txuas</value></data>
 </root>

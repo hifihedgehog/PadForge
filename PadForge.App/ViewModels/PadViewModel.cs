@@ -8701,7 +8701,12 @@ namespace PadForge.ViewModels
         public RelayCommand ClearMappingsCommand =>
             _clearMappingsCommand ??= new RelayCommand(ClearAllMappings);
 
-        private void ClearAllMappings()
+        private void ClearAllMappings() => ClearMappingRows(Mappings);
+
+        /// <summary>Clears the rows given as Clear All clears every row: the
+        /// one clear, which an assistant's clear_mappings also takes for the
+        /// rows it names (#597).</summary>
+        internal void ClearMappingRows(System.Collections.Generic.IEnumerable<MappingItem> rows)
         {
             // Stop any recording first. A Map All walk or a single-row record
             // writes its result into the row instance when it completes, so
@@ -8714,7 +8719,7 @@ namespace PadForge.ViewModels
             }
             CurrentRecordingTarget = null;
 
-            foreach (var m in Mappings)
+            foreach (var m in rows.ToList())
             {
                 m.SourceDescriptor = string.Empty;
                 m.NegSourceDescriptor = string.Empty;

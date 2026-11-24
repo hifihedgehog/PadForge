@@ -289,6 +289,17 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HasAutomationActivity));
         }
 
+        /// <summary>Asks the host again which calls can be undone, from any
+        /// thread: the undo journal says so when a run of changes starts or
+        /// is undone (#597).</summary>
+        internal void RefreshAutomationUndoFromHost()
+        {
+            var dispatcher = _automationDispatcher;
+            if (dispatcher == null) return;
+            if (dispatcher.CheckAccess()) RefreshAutomationUndo();
+            else dispatcher.BeginInvoke(new System.Action(RefreshAutomationUndo));
+        }
+
         /// <summary>Asks the host again which calls can be undone.</summary>
         private void RefreshAutomationUndo()
         {

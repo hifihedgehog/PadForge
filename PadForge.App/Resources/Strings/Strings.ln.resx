@@ -193,6 +193,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge endimaki connexion ya programme oyo te</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Esengami lisusu noki mingi</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Lisusu te kino PadForge ebanda lisusu</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ezali na esaleli ya boye te</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programme etangaki état ya kala</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Paramètre ya boye ezali te</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Motuya ezalaki libanda ya oyo paramètre endimaka</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ondimaki yango te</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Moto moko te ayanolaki na ntango</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ezali kozela eyano na yo</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Bosenga ya boye ezali te</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Eloko te ya kozongisa sima</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kaka yo nde okoki kobongola oyo</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fichier efungwamaki te</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Macro ya boye ezali te</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Mituna mingi mingi ezalaki kozela yo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kokende na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kozonga na profil ya liboso</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Kotuna profil nini ezali kosala</value></data>
@@ -228,6 +241,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Kotika ba commande ya appareil {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Kotia motuya {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kotambwisa esaleli {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Kotanga état</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Kobongola profil</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Kobandisa to kotelemisa moteur</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kopelisa to kozimisa ba manette virtuelle</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Kobomba snapshot ya diagnostic</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Kotanga fréquence ya sondage mpe ba pilote</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Kolakisa ba profil</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Kotanga profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Kolakisa ba manette virtuelle</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Kolakisa ba appareil</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Kotanga appareil</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Kozela entrée na yo</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Kotanga ba assignation ya manette</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Kolakisa ba macro ya manette</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Kokanga mokakatano</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Koluka ba paramètre</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Kotanga paramètre</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Kolakisa yo esika moko</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Kobakisa appareil na yango moko</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Kotambwisa appareil na yango</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Kolongola appareil na yango</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Kosimba to kotika commande</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Kobongola paramètre</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Kosala profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Kobongola nkombo ya profil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Kolongola profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Kokotisa profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Kobimisa profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Kobakisa manette virtuelle</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Kolongola manette virtuelle</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Kobongola type ya manette</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Kotia appareil na assignation</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Kotia milongo ya assignation</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Kopetola milongo ya assignation</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Kotia assignation ya manette yango moko</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Kobomba macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Kolongola macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Kozongisa sima mbongwana na yango</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kotala bosenga</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Kobenga esaleli oyo PadForge ezali na yango te: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Kokotisa profil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Kotinda entrée ya clavier mpe souris na Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Manette ya clavier mpe souris efinaka ba touche mpe etambwisaka curseur na ba programme nyonso.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} uta na {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Kobomba macro oyo esalaka libanda ya PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Etambwisaka {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Efinaka {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ekomaka makomi na programme oyo ezali liboso</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Etambwisaka to ebetaka souris</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Esalaka manette ya clavier mpe souris</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Epelisaka {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Kobongola “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Etiaka {0} na {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Eyokaka na réseau, yango wana ba appareil mosusu bakoki kokoma na PC oyo.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ebongolaka pilote to HidHide, oyo ba programme mosusu mpe ba masano etyelaka motema.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fichier: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ebongolaka ba programme nini bakoki kotanga appareil, na nzela ya Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Kobongisa manette</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Luka appareil, salela yango manette virtuelle, tia yango na assignation mpe tia ba assignation oyo lisano esengeli.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Mpo na nini lisano emonaka manette na ngai te</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Tala moteur, manette virtuelle, appareil, ba pilote mpe HidHide moko moko.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Komema profil awa</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Kotisa fichier ya profil uta na programme mosusu, sima tala nini eyei.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mbala {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya suka kati na {1} ya ndenge wana</value></data>
 
@@ -2209,5 +2286,9 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ebongisaka souris oyo eyebisaka na ndenge ekokani te. Volant elandaka loboko na sima pene na ntango oyo. 0 ezali ezimi.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock na vitesse</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Soki Télémétrie ya masano efungwami, ndambo nini ya lock etikalaka na 200 km/h. Na 100%, lock mobimba ezalaka na vitesse nyonso.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serveur mpe client ya Model Context Protocol oyo esalaka connexion ya assistant mpe PadForge.exe --mcp, na Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions mpe DependencyInjection.Abstractions, oyo MCP C# SDK etongami likolo na yango, na Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programme</value></data>
 </root>

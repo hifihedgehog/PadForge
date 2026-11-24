@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-k ez du programa honen konexioa onartu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Berriro eskatu da goizegi</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ez da gehiago egingo PadForge berriro abiarazi arte</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-k ez du halako tresnarik</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programak egoera zaharrago bat irakurri zuen</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ez dago ezarpen hori</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Balioa ezarpenak onartzen duenaren kanpoan zegoen</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ez zenuen baimendu</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Inork ez zuen garaiz erantzun</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Zure erantzunaren zain</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ez dago eskaera hori</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ez dago desegiteko ezer</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Zuk bakarrik alda dezakezu hau</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fitxategia ezin izan da ireki</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ez dago makro hori</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Galdera gehiegi zeuden zure zain</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Aldatu {0} profilera</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Itzuli profil lehenetsira</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Galdetu zein profil dagoen aktibo</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Askatu {0} gailuaren kontrolak</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ezarri {0} balioa</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Exekutatu {0} tresna</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Irakurri egoera</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Aldatu profilak</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Abiarazi edo gelditu motorra</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Gaitu edo desgaitu kontrolagailu birtualak</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Gorde diagnostiko-argazki bat</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Irakurri galdeketa-maiztasuna eta kontrolatzaileak</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Zerrendatu profilak</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Irakurri profil bat</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Zerrendatu kontrolagailu birtualak</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Zerrendatu gailuak</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Irakurri gailu bat</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Itxaron zure sarrerari</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Irakurri kontrolagailu baten mapaketak</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Zerrendatu kontrolagailu baten makroak</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Grabatu arazo bat</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Bilatu ezarpenak</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Irakurri ezarpen bat</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Erakutsi leku bat</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Gehitu berezko gailu bat</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Gidatu bere gailua</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Kendu bere gailua</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Eutsi kontrol bati edo askatu</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Aldatu ezarpen bat</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Sortu profil bat</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Aldatu profil baten izena</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ezabatu profil bat</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Inportatu profil bat</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Esportatu profil bat</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Gehitu kontrolagailu birtual bat</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Kendu kontrolagailu birtual bat</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Aldatu kontrolagailu baten mota</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Esleitu gailu bat</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Ezarri mapaketa-errenkadak</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Garbitu mapaketa-errenkadak</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapatu kontrolagailu bat automatikoki</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Gorde makro bat</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ezabatu makro bat</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Desegin bere aldaketak</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Egiaztatu eskaera bat</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Deitu PadForge-k ez duen tresna bati: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Inportatu “{0}” profila</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Bidali teklatu eta sagu sarrera Windows-i</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Teklatu eta sagu kontrolagailu batek teklak sakatzen ditu eta erakuslea mugitzen du programa guztietan.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} hemendik: {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Gorde PadForge-ren kanpoan jarduten duen makro bat</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Exekutatzen du: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Sakatzen du: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Testua idazten du aurreko planoko programan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Sagua mugitzen edo klik egiten du</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Teklatu eta sagu kontrolagailu bat sortzen du</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Aktibatzen du: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Aldatu “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ezartzen du honetara: {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Sarean entzuten du, beraz beste gailuek PC hau atzitu dezakete.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Kontrolatzaile bat edo HidHide aldatzen du, eta beste programek eta jokoek horietan oinarritzen dira.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fitxategia: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Zein programek irakur dezaketen gailua aldatzen du, Use Only in PadForge aukeraren bidez.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Konfiguratu kontrolagailu bat</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Bilatu gailua, sortu kontrolagailu birtual bat harentzat, esleitu eta mapatu jokoak behar duena.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Zergatik ez duen joko batek nire kontrolagailua ikusten</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Egiaztatu motorra, kontrolagailu birtuala, gailua, kontrolatzaileak eta HidHide banan-banan.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Ekarri profil bat</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Inportatu beste programa bateko profil-fitxategi bat, eta ikusi zer etorri den.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} aldiz</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, horrelako {1}ren azkena</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3925,6 +4002,10 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2-k Steam-en sare-protokolorako erabiltzen duen Protocol Buffers serializatzailea. Egilea: Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2-k Steam-en depot zatietarako erabiltzen duen Zstandard deskonpresioa, zstd liburutegiaren C# egokitzapena. Egilea: Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Laguntzaile-konexioaren eta PadForge.exe --mcp komandoaren atzean dauden Model Context Protocol zerbitzaria eta bezeroa, Model Context Protocol a Series of LF Projects-ek egina.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions eta DependencyInjection.Abstractions, MCP C# SDK-k oinarri dituenak, Microsoft-ek egina.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii parekatze-prozesuaren, bozgorailuaren ADPCM-aren, Wii Remote-aren albotiko eta zutiko orientazioen, palanka-atearen ereduaren eta haren biltegiratze-formatuaren, eta giroskopioaren ardatz-konbentzioaren dokumentazioa. Dokumentazio gisa soilik irakurria. Ez da GPL koderik banatzen.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

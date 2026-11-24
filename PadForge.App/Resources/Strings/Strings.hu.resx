@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>A PadForge nem fogadta el ennek a programnak a csatlakozását</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Túl hamar kérte újra</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>A PadForge újraindulásáig több ilyen nem lehet</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>A PadForge nem rendelkezik ilyen eszközzel</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>A program régebbi állapotot olvasott</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nincs ilyen beállítás</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Az érték kívül esett a beállítás tartományán</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ön nem engedélyezte</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Senki nem válaszolt időben</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Az Ön válaszára vár</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nincs ilyen kérés</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nincs mit visszavonni</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ezt csak Ön módosíthatja</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>A fájlt nem sikerült megnyitni</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nincs ilyen makró</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Túl sok kérdés várt az Ön válaszára</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Váltás erre a profilra: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Visszatérés az alapértelmezett profilra</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>A mostani profil lekérdezése</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek elengedése</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>A(z) {0} érték beállítása</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>A(z) {0} eszköz futtatása</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Az állapot olvasása</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Profilváltás</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>A motor indítása vagy leállítása</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Virtuális kontrollerek be- vagy kikapcsolása</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Diagnosztikai pillanatkép mentése</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>A lekérdezési gyakoriság és a meghajtók olvasása</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>A profilok listázása</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Egy profil olvasása</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>A virtuális kontrollerek listázása</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Az eszközök listázása</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Egy eszköz olvasása</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Várakozás az Ön bemenetére</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Egy kontroller leképezéseinek olvasása</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Egy kontroller makróinak listázása</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Probléma felvétele</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Beállítások keresése</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Egy beállítás olvasása</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Egy hely megmutatása Önnek</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Saját eszköz hozzáadása</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Az eszközének vezérlése</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Az eszközének eltávolítása</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Vezérlőelem tartása vagy elengedése</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Egy beállítás módosítása</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Profil létrehozása</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Profil átnevezése</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Profil törlése</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Profil importálása</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Profil exportálása</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Virtuális kontroller hozzáadása</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Virtuális kontroller eltávolítása</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Egy kontroller típusának módosítása</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Eszköz hozzárendelése</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Leképezési sorok beállítása</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Leképezési sorok törlése</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Kontroller automatikus leképezése</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Makró mentése</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Makró törlése</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>A módosításainak visszavonása</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kérés ellenőrzése</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Egy, a PadForge által nem ismert eszköz hívása: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>A(z) „{0}” profil importálása</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Billentyűzet- és egérbemenet küldése a Windowsnak</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>A billentyűzet és egér kontroller billentyűket nyom le és mozgatja a mutatót minden programban.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} ennek hatására: {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>A PadForge-on kívül ható makró mentése</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Futtatja: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Lenyomja: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Szöveget gépel az előtérben lévő programba</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Mozgatja vagy kattintja az egeret</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Billentyűzet és egér kontrollert hoz létre</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Bekapcsolja: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>A(z) „{0}” módosítása</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>A(z) {0} értéke ez lesz: {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>A hálózaton figyel, így más eszközök elérhetik ezt a számítógépet.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Meghajtót vagy a HidHide-ot módosítja, amelyekre más programok és játékok támaszkodnak.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fájl: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Módosítja, mely programok olvashatják az eszközt, a „Használat csak a PadForge-ban” beállításon keresztül.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Kontroller beállítása</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Az eszköz megkeresése, virtuális kontroller létrehozása hozzá, hozzárendelés és annak leképezése, amire a játéknak szüksége van.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Miért nem látja a játék a kontrollerem</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>A motor, a virtuális kontroller, az eszköz, a meghajtók és a HidHide ellenőrzése egyenként.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Profil átvétele</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Egy másik programból származó profilfájl importálása, majd annak megtekintése, mi került át.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ismétlések száma: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, az utolsó az ilyen {1} kérés közül</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers szerializáló, amelyet a SteamKit2 a Steam átviteli protokolljához használ, készítette: Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-kicsomagolás, amelyet a SteamKit2 a Steam depot adatdarabjaihoz használ. A zstd könyvtár C# portja, készítette: Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>A Model Context Protocol kiszolgálója és kliense az asszisztenskapcsolat és a PadForge.exe --mcp mögött, készítette: Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions és DependencyInjection.Abstractions, amelyekre az MCP C# SDK épül, készítette: Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentáció a Wii párosítási folyamatához, a hangszóró ADPCM-kódolásához, a Wii Remote oldalra fordított és függőleges tájolásához, a karkapu-modellhez és annak tárolási formátumához, valamint a giroszkóptengelyek konvenciójához. Kizárólag dokumentációként olvasva, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

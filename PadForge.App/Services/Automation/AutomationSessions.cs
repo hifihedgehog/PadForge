@@ -1211,13 +1211,41 @@ namespace PadForge.Services.Automation
             {
                 result = AutomationCallResult.Failure("internal");
             }
+            // The tool's own path wrote the call into Activity, as it does
+            // for an assistant's call, so the answer goes out alone.
             if (result == null || !result.Ok)
             {
-                Fail(session, r, AutomationAskKind.Call, tool, result?.Code ?? "internal", result?.Words);
+                session.Answer(r.Tag, AutomationLine.Error(result?.Code ?? "internal", result?.Words));
                 return;
             }
             string json = (result.Json ?? "{}").Replace("\r", string.Empty).Replace("\n", string.Empty);
-            Done(session, r, AutomationAskKind.Call, tool, "ok " + json);
+            session.Answer(r.Tag, "ok " + json);
+        }
+
+        /// <summary>
+        /// Runs one line of the session's for a tool an assistant called
+        /// (#597), and gives the answer's lines with their tag taken off.
+        /// The line goes through the same verb the program's own lines do,
+        /// with the same checks. One such line runs at a time in a
+        /// session.
+        /// </summary>
+        internal async Task<IReadOnlyList<string>> RunCapturedAsync(AutomationSession session, string body, CancellationToken stopping)
+        {
+            await session.CaptureGate.WaitAsync(stopping).ConfigureAwait(false);
+            var lines = new List<string>();
+            try
+            {
+                var r = AutomationLine.Parse(AutomationSession.CaptureTag + " " + body);
+                if (r.Error != null) return new[] { AutomationLine.Error(r.Error) };
+                session.Captured = lines;
+                await RunAsync(session, r).ConfigureAwait(false);
+                lock (lines) return lines.ToArray();
+            }
+            finally
+            {
+                session.Captured = null;
+                session.CaptureGate.Release();
+            }
         }
 
         // ── Activity ──
@@ -1230,6 +1258,9 @@ namespace PadForge.Services.Automation
         /// </summary>
         internal void Record(AutomationSession session, AutomationAsk ask, string result, bool ok)
         {
+            // A line a tool runs for an assistant is part of the tool's
+            // call, which writes its own entry (#597).
+            if (session.Captured != null) return;
             Owned owned;
             lock (_sync) _owned.TryGetValue(session, out owned);
             Record(session, ask, result, ok, owned);

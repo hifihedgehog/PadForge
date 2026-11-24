@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ma aċċettax il-konnessjoni ta' dan il-programm</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Mitlub mill-ġdid kmieni wisq</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ebda aktar minn dawn sakemm PadForge jerġa' jibda</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge m'għandu l-ebda għodda bħal din</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Il-programm qara stat aktar qadim</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ebda setting bħal dan</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Il-valur kien barra minn dak li jaċċetta s-setting</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ma ppermettejtux</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ħadd ma wieġeb fil-ħin</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Qed jistenna t-tweġiba tiegħek</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ebda talba bħal din</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Xejn x'jiġi rrevokat</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Int biss tista' tibdel dan</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Il-fajl ma setax jinfetaħ</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ebda makro bħal din</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Wisq mistoqsijiet kienu qed jistennewk</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibdel għall-profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Erġa' lura għall-profil awtomatiku</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Staqsi liema profil huwa attiv</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ħalli l-kontrolli tal-apparat {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Issettja l-valur {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Mexxi l-għodda {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Aqra l-istatus</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Ibdel il-profili</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Ibda jew waqqaf l-engine</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Ixgħel jew itfi l-kontrolluri virtwali</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Salva snapshot tad-dijanjostika</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Aqra r-rata tal-polling u d-drivers</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Elenka l-profili</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Aqra profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Elenka l-kontrolluri virtwali</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Elenka l-apparati</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Aqra apparat</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Stenna l-input tiegħek</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Aqra l-immappjar ta' kontrollur</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Elenka l-makros ta' kontrollur</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Ħu reġistrazzjoni ta' problema</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Fittex is-settings</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Aqra setting</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Uri post</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Żid apparat tiegħu stess</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Mexxi l-apparat tiegħu</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Neħħi l-apparat tiegħu</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Żomm jew ħalli kontroll</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Biddel setting</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Oħloq profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Semmi profil mill-ġdid</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ħassar profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importa profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Esporta profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Żid kontrollur virtwali</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Neħħi kontrollur virtwali</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Biddel it-tip ta' kontrollur</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Assenja apparat</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Issettja r-ringieli tal-immappjar</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Imsaħ ir-ringieli tal-immappjar</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Immappja kontrollur awtomatikament</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Salva makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ħassar makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Irrevoka l-bidliet tiegħu</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Iċċekkja talba</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Ċempel għodda li PadForge m'għandux: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importa l-profil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Ibgħat input tat-tastiera u tal-maws lil Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kontrollur tat-tastiera u tal-maws jagħfas ċwievet u jċaqlaq il-pointer f'kull programm.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} minn {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Salva makro li taġixxi barra minn PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Iħaddem {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Jagħfas {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Jittajpja test fil-programm quddiem</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Iċaqlaq jew jikklikkja l-maws</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Joħloq kontrollur tat-tastiera u tal-maws</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Jixgħel {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Biddel “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Jissettja {0} għal {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Jisma' fuq in-network, biex apparati oħra jilħqu dan il-PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ibiddel driver jew HidHide, li programmi u logħob oħra jiddependu minnhom.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fajl: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ibiddel liema programmi jistgħu jaqraw l-apparat, permezz ta' Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Issettja kontrollur</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Sib l-apparat, oħloq kontrollur virtwali għalih, assenjah u mappja dak li jeħtieġ il-logħba.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Għaliex logħba ma tarax il-kontrollur tiegħi</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Iċċekkja l-engine, il-kontrollur virtwali, l-apparat, id-drivers u HidHide wieħed wieħed.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Ġib profil minn programm ieħor</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importa fajl ta' profil minn programm ieħor, imbagħad ara x'ġie mgħoddi.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, għadd ta' darbiet: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, l-aħħar minn għadd ta' bħalu: {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3873,6 +3950,10 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializzatur Protocol Buffers li SteamKit2 juża għall-protokoll tan-netwerk ta' Steam, minn Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Dekompressjoni Zstandard li SteamKit2 juża għall-chunks tad-depot ta' Steam, port f'C# tal-librerija zstd minn Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Is-server u l-klijent tal-Model Context Protocol wara l-konnessjoni tal-assistenti u PadForge.exe --mcp, minn Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions u DependencyInjection.Abstractions, li fuqhom hu mibni l-MCP C# SDK, minn Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentazzjoni għaċ-ċerimonja tal-ippearjar tal-Wii, l-ADPCM tal-ispeaker, l-orjentazzjoni tal-Wii Remote mimdud fuq il-ġenb u wieqaf, il-mudell tal-gate tal-istick u l-format tal-ħażna tiegħu, u l-konvenzjoni tal-assi tal-ġiroskopju. Moqrija bħala dokumentazzjoni biss, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

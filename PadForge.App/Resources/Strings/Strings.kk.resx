@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge бұл бағдарламаның қосылымын қабылдамады</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Тым ерте қайта сұралды</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge қайта іске қосылғанға дейін мұндай сұрау болмайды</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-та мұндай құрал жоқ</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Бағдарлама ескі күйді оқыды</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Мұндай параметр жоқ</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Мән параметр қабылдайтын аралықтан тыс болды</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Сіз рұқсат бермедіңіз</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Уақытында ешкім жауап бермеді</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Жауабыңыз күтілуде</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Мұндай сұрау жоқ</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Қайтаратын ештеңе жоқ</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Мұны тек сіз өзгерте аласыз</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Файлды ашу мүмкін болмады</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Мұндай макро жоқ</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Сізді тым көп сұрақ күтіп тұрды</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профиліне ауысу</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Әдепкі профильге оралу</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Қай профиль белсенді екенін сұрау</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>{0} құрылғысының басқару элементтерін жіберу</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} мәнін орнату</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} құралын іске қосу</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Күйді оқу</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Профильдерді ауыстыру</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Қозғалтқышты іске қосу немесе тоқтату</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Виртуалды контроллерлерді қосу немесе өшіру</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Диагностика үзіндісін сақтау</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Сұрау жиілігі мен драйверлерді оқу</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Профильдерді тізімдеу</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Профильді оқу</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Виртуалды контроллерлерді тізімдеу</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Құрылғыларды тізімдеу</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Құрылғыны оқу</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Сіздің кірісіңізді күту</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Контроллердің тағайындауларын оқу</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Контроллердің макроларын тізімдеу</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Ақауды жазу</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Параметрлерді іздеу</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Параметрді оқу</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Сізге бір орынды көрсету</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Өз құрылғысын қосу</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Өз құрылғысын басқару</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Өз құрылғысын жою</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Басқару элементін ұстап тұру немесе жіберу</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Параметрді өзгерту</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Профиль жасау</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Профильдің атын өзгерту</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Профильді жою</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Профильді импорттау</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Профильді экспорттау</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Виртуалды контроллер қосу</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Виртуалды контроллерді жою</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Контроллер түрін өзгерту</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Құрылғыны тағайындау</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Тағайындау жолдарын орнату</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Тағайындау жолдарын тазалау</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Контроллерді автоматты түрде тағайындау</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Макроны сақтау</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Макроны жою</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Өз өзгерістерін қайтару</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Сұрауды тексеру</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge-та жоқ құралды шақыру: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>“{0}” профилін импорттау</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows жүйесіне пернетақта мен тінтуір кірісін жіберу</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Пернетақта мен тінтуір контроллері әр бағдарламада пернелерді басады және меңзерді жылжытады.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, көзі: {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge-тан тыс әрекет ететін макроны сақтау</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Іске қосады: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Басады: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Алдыңғы қатардағы бағдарламаға мәтін теріп жібереді</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Тінтуірді жылжытады немесе басады</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Пернетақта мен тінтуір контроллерін жасайды</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Қосады: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” өзгерту</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} мәнін {1} етіп орнатады</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Желіде тыңдайды, сондықтан басқа құрылғылар осы компьютерге қол жеткізе алады.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Басқа бағдарламалар мен ойындар сүйенетін драйверді немесе HidHide өзгертеді.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Құрылғыны қай бағдарламалар оқи алатынын Use Only in PadForge арқылы өзгертеді.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Контроллерді баптау</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Құрылғыны табу, оған виртуалды контроллер жасау, оны қосу және ойынға керегін тағайындау.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Ойын неге менің контроллерімді көрмейді</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Қозғалтқышты, виртуалды контроллерді, құрылғыны, драйверлерді және HidHide-ты бірінен соң бірін тексеру.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Профильді көшіріп әкелу</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Басқа бағдарламадан профиль файлын импорттап, нені әкелгенін көру.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} рет</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, осындай {1} сұраудың соңғысы</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3930,6 +4007,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam желілік хаттамасы үшін пайдаланатын Protocol Buffers сериализаторы. Авторы Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam depot бөліктері үшін пайдаланатын Zstandard декомпрессиясы, zstd кітапханасының C# тіліне көшірілген нұсқасы. Авторы Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Көмекші қосылымы мен PadForge.exe --mcp артындағы Model Context Protocol сервері және клиенті, автор: Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK құрылған Microsoft.Extensions.AI.Abstractions, Logging.Abstractions және DependencyInjection.Abstractions, автор: Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii жұптастыру рәсімінің, динамиктің ADPCM форматының, Wii Remote пультінің жанынан және тік бағдарының, стик шектеу моделі мен оның сақтау пішімінің және гироскоп осьтері келісімінің құжаттамасы. Тек құжаттама ретінде оқылды, GPL коды жеткізілмейді.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

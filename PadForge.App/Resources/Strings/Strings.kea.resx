@@ -387,6 +387,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ka aseta konekson di es programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Pididu otu bês sedu dimás</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ka ten más di es ti PadForge inisia otu bês</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ka ten es feramenta</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programa lé un stadu más antigu</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Konfigurason ka izisti</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valor staba fora di kuzé ki konfigurason ta aseta</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Bu ka dexa</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ninguén ka responde a tenpu</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ta spera bu resposta</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Pididu ka izisti</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nada pa disfaze</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Só bo ki podi muda es</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ka konsigi abri fixeru</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Makru ka izisti</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Txeu pergunta staba ta spera pa bo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Troka pa perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Volta pa Perfil Padron</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pergunta kal perfil ki sta ativu</value></data>
@@ -422,6 +435,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Larga kontrolus di dispozitivu {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Difini valor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Roda feramenta {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Lé stadu</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Troka perfil</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Inisia o para motor</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Liga o disliga komandus virtual</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Guarda un kaptura di diagnóstiku</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lé taxa di sondajen i drivers</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lista perfis</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lé un perfil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lista komandus virtual</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lista dispozitivus</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lé un dispozitivu</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Spera bu entrada</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lé mapiamentus di un komandu</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lista makrus di un komandu</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Grava un prubléma</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Buska konfigurason</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lé un konfigurason</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Mostra-bu un lugar</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Adisiona un dispozitivu di se</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Kontrola se dispozitivu</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Rimove se dispozitivu</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Sigura o larga un kontrolu</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Muda un konfigurason</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Kria un perfil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Muda nómi di un perfil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Apaga un perfil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importa un perfil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Exporta un perfil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Adisiona un komandu virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Rimove un komandu virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Muda tipu di un komandu</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Atribui un dispozitivu</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Difini linhas di mapiamentu</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Linpa linhas di mapiamentu</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapia un komandu automatikamenti</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Guarda un makru</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Apaga un makru</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Disfaze se mudansas</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Verifika un pididu</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Txoma un feramenta ki PadForge ka ten: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importa perfil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Manda entrada di tekladu i mouse pa Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Un komandu di tekladu i mouse ta karega téklas i ta move ponteru na tudu programa.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} di {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Guarda un makru ki ta atua fora di PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Ta roda {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Ta karega {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ta skrebe testu na programa ki sta na frenti</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Ta move o ta klika mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ta kria un komandu di tekladu i mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ta liga {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Muda “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ta poi {0} na {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ta skuta na redi, pur isu otus dispozitivu podi txiga es PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ta muda un driver o HidHide, ki otus programa i jogu ta dipendi di el.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fixeru: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ta muda kal programa ki podi lé dispozitivu, através di Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Konfigura un komandu</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Atxa dispozitivu, kria un komandu virtual pa el, atribui-l i mapia kuzé ki jogu ta mesti.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Pamodi un jogu ka ta odja nha komandu</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Verifika motor, komandu virtual, dispozitivu, drivers i HidHide un pa un.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Traze un perfil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importa un fixeru di perfil di otu programa, dipôs odja kuzé ki bem.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} bês</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, último di {1} sima el</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Komandu web</value></data>
@@ -3427,6 +3504,10 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ta iguala un mouse ki ta manda dadus irregular. Volanti ta sigi mon ku más o menus es atrazu. 0 e disligadu.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limiti na velosidadi</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di jogu ligadu, kantu di limiti ki ta fika a 200 km/h. A 100% limiti interu sta la na tudu velosidadi.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Servidor i klienti di Model Context Protocol ki sta pa trás di konekson ku asistenti i di PadForge.exe --mcp, di Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions i DependencyInjection.Abstractions, ki MCP C# SDK ta konstruídu riba es, di Microsoft.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avizu di dispozitivu dizkonektadu</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avizu di dispozitivu konektadu</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>

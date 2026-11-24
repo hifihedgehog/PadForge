@@ -1700,6 +1700,42 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Waray karawata han PadForge an koneksyon hini nga programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ginhangyo utro hin sayo hin duro</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Waray na hini tubtob magsugod utro an PadForge</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Waray sugad nga tool an PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Daan nga kahimtang an nabasa han programa</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Waray sugad nga setting</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>An value aada ha gawas han ginkakarawat han setting</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Waray mo ini tugoti</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Waray nagbaton ha husto nga oras</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Naghuhulat han imo baton</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Waray sugad nga hangyo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Waray bawion</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ikaw la an makakabag-o hini</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Diri nabuksan an file</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Waray sugad nga macro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Damo hin duro an pakiana nga naghuhulat ha imo</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>I-import an profile nga “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Pagpadara hin input han keyboard ngan mouse ha Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>An keyboard ngan mouse nga controller napindot hin mga key ngan naglilihok han pointer ha kada programa.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} tikang ha {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Pagtipig hin macro nga nagbubuhat ha gawas han PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Padadaganon an {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Pipindoton an {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Nagtatype hin teksto ha programa nga aada ha atubangan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Naglilihok o nagkiklik han mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Naghihimo hin keyboard ngan mouse nga controller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Bubuksan an {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Bag-oha an “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ginbubutang an {0} ha {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Namamati ha network, salit maaabot hini nga PC han iba nga mga device.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ginbabag-o an driver o an HidHide, nga ginsasarigan han iba nga mga programa ngan dula.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ginbabag-o kun hain nga mga programa an makakabasa han device, pinaagi han Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Pag-set Up hin Controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Bilnga an device, paghimo hin virtual nga controller para hini, i-assign ini ngan i-map an kinahanglan han dula.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Kay Ano nga Diri Nakikita han Dula an Akon Controller</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Susiha an engine, an virtual nga controller, an device, an mga driver ngan an HidHide tagsa-tagsa.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Pagdara hin Profile</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>I-import an profile file tikang ha iba nga programa, ngan kitaa kun ano an nadara.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tugoti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ayaw Pagtugoti</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Tikang ha {0}</value></data>
@@ -1740,6 +1776,10 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ginpapapareho an mouse nga diri pareho an pag-report. Nasunod an manibela ha kamot hin mga sugad hini kahalaba. 0 an sarado.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock ha kakusog</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kun bukas an Game Telemetry, kun pira han lock an nabibilin ha 200 km/h. Ha 100% an bug-os nga lock aada ha kada kakusog.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>An server ngan client han Model Context Protocol nga aada ha luyo han koneksyon han assistant ngan han PadForge.exe --mcp, han Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ngan DependencyInjection.Abstractions, nga gintukoran han MCP C# SDK, han Microsoft.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibaro han nadiskonek nga device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibaro han nakakonek nga device</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Value han script</value></data>

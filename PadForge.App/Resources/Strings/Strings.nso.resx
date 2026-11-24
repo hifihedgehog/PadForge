@@ -1441,6 +1441,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ga se ya amogela kgokagano ya lenaneo le</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Go kgopetšwe gape ka pela kudu</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ga go sa na tše dingwe tša mohuta wo go fihla PadForge e thoma gape</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ga e na sedirišwa se bjalo sa lenaneo</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Lenaneo le badile maemo a kgale</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ga go peakanyo ye bjalo</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Boleng bo be bo le ka ntle ga seo peakanyo e se amogelago</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Ga se wa e dumelela</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ga go yo a arabilego ka nako</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>E letile karabo ya gago</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ga go kgopelo ye bjalo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ga go selo sa go bušetšwa morago</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ke wena fela o ka fetošago se</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faele ga se ya kgona go bulwa</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ga go macro ye bjalo</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Dipotšišo tše dintši kudu di be di go letile</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetogela go profaele {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela go profaele ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botšiša gore ke profaele efe yeo e šomago</value></data>
@@ -1476,6 +1489,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Tlogela ditaolo tša sedirišwa {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Bea boleng {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Šomiša sedirišwa sa lenaneo {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Bala maemo</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Fetoša profaele</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Thoma goba emiša enjene</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Bula goba tima dikhontroulara tša virtual</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Boloka seswantšho sa tlhahlobo</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Bala lebelo la polling le didraebara</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Ngwala diprofaele</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Bala profaele</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Ngwala dikhontroulara tša virtual</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Ngwala didirišwa</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Bala sedirišwa</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Leta tsenyo ya gago</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Bala dimmapo tša khontroulara</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Ngwala dimacro tša khontroulara</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekhota bothata</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Hwetša dipeakanyo</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Bala peakanyo</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Go bontšha lefelo</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Oketša sedirišwa sa lona</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Laola sedirišwa sa lona</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Tloša sedirišwa sa lona</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Swara goba lokolla taolo</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Fetoša peakanyo</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Hlama profaele</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Fa profaele leina le lefsa</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Phumola profaele</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Tsenya profaele</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Romela profaele ntle</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Oketša khontroulara ya virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Tloša khontroulara ya virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Fetoša mohuta wa khontroulara</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Abela sedirišwa</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Bea methaladi ya dimmapo</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Phumola methaladi ya dimmapo</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapa khontroulara ka go itiragalela</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Boloka macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Phumola macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Bušetša diphetogo tša lona morago</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Lekola kgopelo</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Bitša sedirišwa sa lenaneo seo PadForge e se nago naso: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Tsenya profaele “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Romela tsenyo ya khiboto le mouse go Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Khontroulara ya khiboto le mouse e tobetša dikhii gomme e šuthiša pointer ka lenaneong le lengwe le le lengwe.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} go tšwa go {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Boloka macro yeo e dirago ka ntle ga PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>E šomiša {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>E tobetša {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>E ngwala sengwalwa ka lenaneong le le lego pele</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>E šuthiša goba e klika mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>E dira khontroulara ya khiboto le mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>E bula {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Fetoša “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>E bea {0} go {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>E theeletša neteweke, ka gona didirišwa tše dingwe di ka fihlelela PC ye.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>E fetoša draebara goba HidHide, tšeo mananeo a mangwe le dipapadi di di ithekgilego ka tšona.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faele: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>E fetoša gore ke mananeo afe a ka balago sedirišwa, ka Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Beakanya khontroulara</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Hwetša sedirišwa, o se direle khontroulara ya virtual, o se abele gomme o mape seo papadi e se hlokago.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Ke ka lebaka la eng papadi e sa bone khontroulara ya ka</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Lekola enjene, khontroulara ya virtual, sedirišwa, didraebara le HidHide ka o tee ka o tee.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Tliša profaele</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Tsenya faele ya profaele go tšwa lenaneong le lengwe, ke moka o bone seo se tlilego.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makga a {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya mafelelo go tše {1} tše di swanago</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dumelela</value></data>
@@ -1503,5 +1580,9 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ge o swere</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ge Telemetry ya papadi e butšwe, ke bokae bja lock bjo bo šalago ka 200 km/h. Ka 100% lock ka moka e gona ka lebelo le lengwe le le lengwe.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seabi le moreki wa Model Context Protocol ka morago ga kgokagano ya mothuši le PadForge.exe --mcp, ka Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions le DependencyInjection.Abstractions, tšeo MCP C# SDK e agilwego godimo ga tšona, ka Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Lenaneo</value></data>
 </root>

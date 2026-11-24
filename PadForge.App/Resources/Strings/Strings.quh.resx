@@ -1756,6 +1756,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge mana kay programap tinkiyninta chaskirqanchu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ancha utqayta wakmanta mañakurqan</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Manaña kaykunaqa kanqachu PadForge wakmanta qallarinankama</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge mana chay herramientayuqchu</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programaqa ñawpaq estadota ñawincharqan</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Chay configuración mana kanchu</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valorqa configuraciónpa chaskisqanmanta hawapi karqan</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Qanqa mana saqirqankichu</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Mana pipas tiempopi kutichirqanchu</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Kutichiyniykita suyachkan</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Chay mañakuy mana kanchu</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Mana imapas kutichinapaq kanchu</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Qanllam kayta t'ikrayta atinki</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Archivota mana kichayta atikurqanchu</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Chay macro mana kanchu</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ancha achka tapuykuna qanta suyachkarqan</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} perfilman t'ikray</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ñawpaq kaq perfilman kutiy</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mayqin perfil llamk'achkasqanta tapuy</value></data>
@@ -1791,6 +1804,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Dispositivo {0} controlninkunata kacharipuy</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Valorta churay: {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Herramientata llamk'achiy: {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Estadota ñawinchay</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Perfilta t'ikray</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Motorta qallarichiy utaq sayachiy</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Control virtualkunata hap'ichiy utaq wañuchiy</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Diagnóstico capturata waqaychay</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Polling ratetawan driverkunatawan ñawinchay</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Perfilkunata listay</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Huk perfilta ñawinchay</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Control virtualkunata listay</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Dispositivokunata listay</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Huk dispositivota ñawinchay</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Entradaykita suyay</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Huk controlpa asignacionninkunata ñawinchay</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Huk controlpa macronkunata listay</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Huk sasachakuyta grabay</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Configuraciónkunata maskay</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Huk configuraciónta ñawinchay</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Huk chiqata rikuchisuyki</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Kikinpa dispositivonta yapay</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Dispositivonta kamachiy</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Dispositivonta qichuy</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Huk controlta hap'iy utaq kacharipuy</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Huk configuraciónta t'ikray</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Huk perfilta ruway</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Huk perfilpa sutinta t'ikray</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Huk perfilta qichuy</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Huk perfilta importay</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Huk perfilta exportay</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Huk control virtualta yapay</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Huk control virtualta qichuy</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Huk controlpa tipunta t'ikray</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Huk dispositivota asignay</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Asignación filakunata churay</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Asignación filakunata pichay</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Huk controlta kikinmanta asignay</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Huk macrota waqaychay</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Huk macrota qichuy</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>T'ikrasqankunata kutichiy</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Huk mañakuyta qhawariy</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge mana kapuqninta herramientata waqyay: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>“{0}” perfilta importay</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows nisqaman teclado mouse entradata kachay</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Teclado mouse controlqa tukuy programakunapi teclakunata ñitin, punterotataq kuyuchin.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, {1} nisqamanta</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge nisqamanta hawapi ruwaq macrota waqaychay</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Llamk'achin: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Ñitin: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Ñawpaqpi kaq programaman qillqata qillqan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Mouseta kuyuchin utaq ñitin</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Teclado mouse controlta ruwan</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Hap'ichin: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” t'ikray</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} nisqata {1} nisqaman churan</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Redpi uyarin, chayrayku huk dispositivokuna kay PC-man chayayta atinku.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Huk driverta utaq HidHide nisqata t'ikran, chaykunapitaq huk programakuna pukllaykunapas tiyakunku.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Archivo: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mayqin programakuna dispositivota ñawinchayta atisqankuta t'ikran, Use Only in PadForge nisqawan.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Huk controlta churay</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Dispositivota tariy, paypaq control virtualta ruway, asignay, pukllaypa munasqantataq asignay.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Imaraykutaq huk pukllay mana controlniyta rikunchu</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Motorta, control virtualta, dispositivota, driverkunata, HidHide nisqatapas sapanka sapanka qhaway.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Huk perfilta apamuy</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Huk programamanta perfil archivota importay, chaymanta ima chayamusqanta qhaway.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kutikuna: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, kaykunamanta qhipa kaq: {1}</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} nisqamanta</value></data>
@@ -1812,6 +1889,10 @@
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mouseta volante hina kamachichiq botón, mousep puriyninpa kikin dispositivonpi. Mana akllasqa kaqtinqa, mouseqa sapa kuti kamachin.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Pukllay telemetría hap'isqa kaqtin, 200 km/h nisqapi lockmanta hayk'a puchun. 100% nisqapi tukuy lock tukuy velocidadpi kan.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol servidor cliente ima, asistente tinkiypa PadForge.exe --mcp nisqapa qhipanpi, Model Context Protocol a Series of LF Projects ruwasqan.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions, DependencyInjection.Abstractions ima, MCP C# SDK nisqap tiyanan, Microsoft ruwasqan.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Dispositivo t'aqakusqa willakuy</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Dispositivo tinkikusqa willakuy</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>

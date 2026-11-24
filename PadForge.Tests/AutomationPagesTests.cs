@@ -401,13 +401,20 @@ namespace PadForge.Tests
                 // The Automation pipe's codes, in its own folder: err and a
                 // code, the code a refusal or failure is given, and the
                 // request's own error.
-                if (!file.Replace('\\', '/').Contains("/Services/Automation/", StringComparison.Ordinal)) continue;
+                // The assistants' tools and a script's call lines answer
+                // their codes as refusals and failures (#597), some of them
+                // from the window's part.
+                string slashed = file.Replace('\\', '/');
+                if (!slashed.Contains("/Services/Automation/", StringComparison.Ordinal)
+                    && !slashed.EndsWith("/MainWindow.Assistant.cs", StringComparison.Ordinal)) continue;
                 foreach (string pattern in new[]
                 {
                     @"""err ([a-z][a-z-]*)",
                     @"Error\(""([a-z][a-z-]*)""",
                     @"[Ee]rror = ""([a-z][a-z-]*)""",
                     @"Fail\(session, r, AutomationAskKind\.\w+, [^,]+, ""([a-z][a-z-]*)""",
+                    @"AssistantRefusal\(\s*""([a-z][a-z-]*)""",
+                    @"Failure\(""([a-z][a-z-]*)""",
                 })
                     foreach (Match m in Regex.Matches(code, pattern))
                         pipeCodes.Add(m.Groups[1].Value);
@@ -425,6 +432,10 @@ namespace PadForge.Tests
                 Assert.Contains(known, words);
             foreach (string known in new[] { "refused", "denied", "engine-stopped", "busy", "unknown-device", "not-owner",
                          "rate-limited", "too-long", "hello-first", "bad-tag" })
+                Assert.Contains(known, pipeCodes);
+            // And the assistants' tools' codes.
+            foreach (string known in new[] { "unknown-tool", "stale", "unknown-setting", "out-of-range", "declined", "timed-out",
+                         "waiting", "users-own", "too-many-questions", "nothing-to-undo" })
                 Assert.Contains(known, pipeCodes);
             words.UnionWith(pipeCodes);
             var s = Strings.Instance;

@@ -22,6 +22,7 @@ namespace PadForge.Services.Plugins
         internal static IReadOnlyList<(string FileName, string Resource)> Files { get; } = new[]
         {
             ("PadForgePlugin.cs", "PadForge.Plugins.PadForgePlugin.cs"),
+            ("PipeOwner.cs", "PadForge.Plugins.PipeOwner.cs"),
             ("plugin.py", "PadForge.Plugins.plugin.py"),
             ("plugin.ps1", "PadForge.Plugins.plugin.ps1"),
             ("plugin.ahk", "PadForge.Plugins.plugin.ahk"),

@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge энэ програмын холболтыг хүлээн аваагүй</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Хэт эрт дахин хүссэн</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge дахин эхлэх хүртэл эдгээрийг дахин хийхгүй</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-д ийм хэрэгсэл алга</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Програм хуучин төлөвийг уншсан</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ийм тохиргоо алга</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Утга тохиргооны хүлээн авах хүрээнээс гадуур байсан</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Та үүнийг зөвшөөрөөгүй</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Хэн ч цагтаа хариулаагүй</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Таны хариултыг хүлээж байна</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ийм хүсэлт алга</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Буцаах зүйл алга</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Үүнийг зөвхөн та өөрчилж чадна</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Файлыг нээж чадсангүй</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ийм макро алга</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Таныг хүлээж буй асуулт хэт олон байсан</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профайл руу шилжих</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Үндсэн профайл руу буцах</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Аль профайл идэвхтэйг асуух</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг суллах</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} утгыг тохируулах</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} хэрэгслийг ажиллуулах</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Төлөвийг унших</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Профайл солих</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Хөдөлгүүрийг эхлүүлэх эсвэл зогсоох</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Виртуал контроллеруудыг асаах эсвэл унтраах</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Оношилгооны агшин зураг хадгалах</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Шалгалтын давтамж болон драйверуудыг унших</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Профайлуудыг жагсаах</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Профайл унших</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Виртуал контроллеруудыг жагсаах</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Төхөөрөмжүүдийг жагсаах</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Төхөөрөмж унших</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Таны оролтыг хүлээх</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Контроллерын оноолтуудыг унших</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Контроллерын макронуудыг жагсаах</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Асуудал бичих</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Тохиргоо хайх</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Тохиргоо унших</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Танд байршил үзүүлэх</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Өөрийн төхөөрөмж нэмэх</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Өөрийн төхөөрөмжийг удирдах</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Өөрийн төхөөрөмжийг хасах</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Удирдлагыг барих эсвэл суллах</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Тохиргоо өөрчлөх</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Профайл үүсгэх</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Профайлын нэрийг өөрчлөх</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Профайл устгах</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Профайл импортлох</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Профайл экспортлох</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Виртуал контроллер нэмэх</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Виртуал контроллер хасах</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Контроллерын төрлийг өөрчлөх</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Төхөөрөмж оноох</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Оноолтын мөрүүдийг тохируулах</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Оноолтын мөрүүдийг цэвэрлэх</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Контроллерыг автоматаар оноох</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Макро хадгалах</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Макро устгах</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Өөрийн өөрчлөлтүүдийг буцаах</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Хүсэлтийг шалгах</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge-д байхгүй хэрэгслийг дуудах: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>“{0}” профайлыг импортлох</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows руу гар болон хулганы оролт илгээх</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Гар болон хулганы контроллер бүх програмд товч дарж, заагчийг хөдөлгөнө.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0}, оролт: {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge-ээс гадуур үйлдэл хийдэг макро хадгалах</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Ажиллуулна: {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Дарна: {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Урд байгаа програмд текст бичнэ</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Хулганыг хөдөлгөж эсвэл товшино</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Гар болон хулганы контроллер үүсгэнэ</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Асаана: {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” тохиргоог өөрчлөх</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0}: {1} болгоно</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Сүлжээг сонсох тул бусад төхөөрөмж энэ компьютерт хандах боломжтой болно.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Бусад програм болон тоглоомуудын түшиглэдэг драйвер эсвэл HidHide-ийг өөрчилнө.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge тохиргоогоор дамжуулан аль програмууд төхөөрөмжийг уншиж болохыг өөрчилнө.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Контроллер тохируулах</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Төхөөрөмжийг олж, түүнд виртуал контроллер үүсгэж, оноогоод, тоглоомд хэрэгтэй зүйлсийг оноох.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Тоглоом яагаад миний контроллерыг харахгүй байна</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Хөдөлгүүр, виртуал контроллер, төхөөрөмж, драйверууд болон HidHide-ийг нэг нэгээр нь шалгах.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Профайл шилжүүлж авах</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Өөр програмын профайл файлыг импортлоод, юу шилжиж ирснийг харах.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} удаа</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ижил төрлийн {1} хүсэлтийн сүүлийнх</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3935,6 +4012,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2-ийн Steam сүлжээний протоколд ашигладаг Protocol Buffers сериалчлагч. Зохиогч Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2-ийн Steam depot хэсгүүдэд ашигладаг Zstandard задлалт, Oleg Stepanischev-ийн zstd сангийн C# порт.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Туслахын холболт болон PadForge.exe --mcp командын ард ажилладаг Model Context Protocol сервер ба клиент. Model Context Protocol a Series of LF Projects-ийн бүтээл.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK-ийн суурь болсон Microsoft.Extensions.AI.Abstractions, Logging.Abstractions болон DependencyInjection.Abstractions. Microsoft-ийн бүтээл.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii хослуулах журам, чанга яригчийн ADPCM, хажуу болон босоо Wii Remote-ын чиглэл, стикийн хүрээний загвар ба түүний хадгалах формат, гироскопын тэнхлэгийн тохиролцооны баримт бичиг. Зөвхөн баримт бичиг болгон уншсан, GPL код агуулаагүй.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

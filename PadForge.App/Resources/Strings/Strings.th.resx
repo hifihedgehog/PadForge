@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ไม่รับการเชื่อมต่อของโปรแกรมนี้</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ขอซ้ำเร็วเกินไป</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ไม่มีเพิ่มอีกจนกว่า PadForge จะเริ่มใหม่</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ไม่มีเครื่องมือนี้</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>โปรแกรมอ่านสถานะที่เก่ากว่า</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ไม่มีการตั้งค่านี้</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>ค่าอยู่นอกช่วงที่การตั้งค่ารับได้</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>คุณไม่ได้อนุญาต</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ไม่มีใครตอบทันเวลา</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>รอคำตอบจากคุณ</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ไม่มีคำขอนี้</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ไม่มีอะไรให้เลิกทำ</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>มีเพียงคุณที่เปลี่ยนสิ่งนี้ได้</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>เปิดไฟล์ไม่ได้</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ไม่มีแมโครนี้</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>มีคำถามรอคุณอยู่มากเกินไป</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>สลับไปที่โปรไฟล์ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>กลับไปที่โปรไฟล์เริ่มต้น</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ถามว่าโปรไฟล์ใดทำงานอยู่</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ปล่อยตัวควบคุมของอุปกรณ์ {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ตั้งค่า {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>เรียกใช้เครื่องมือ {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>อ่านสถานะ</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>สลับโปรไฟล์</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>เริ่มหรือหยุดเอนจิน</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>เปิดหรือปิดคอนโทรลเลอร์เสมือน</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>บันทึกสแนปช็อตการวินิจฉัย</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>อ่านอัตราการโพลและไดรเวอร์</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>แสดงรายการโปรไฟล์</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>อ่านโปรไฟล์</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>แสดงรายการคอนโทรลเลอร์เสมือน</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>แสดงรายการอุปกรณ์</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>อ่านอุปกรณ์</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>รออินพุตจากคุณ</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>อ่านการแมปของคอนโทรลเลอร์</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>แสดงรายการแมโครของคอนโทรลเลอร์</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>บันทึกปัญหา</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ค้นหาการตั้งค่า</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>อ่านการตั้งค่า</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>พาคุณไปยังตำแหน่งหนึ่ง</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>เพิ่มอุปกรณ์ของตัวเอง</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>ควบคุมอุปกรณ์ของตัวเอง</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>นำอุปกรณ์ของตัวเองออก</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>กดค้างหรือปล่อยตัวควบคุม</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>เปลี่ยนการตั้งค่า</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>สร้างโปรไฟล์</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>เปลี่ยนชื่อโปรไฟล์</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ลบโปรไฟล์</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>นำเข้าโปรไฟล์</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>ส่งออกโปรไฟล์</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>เพิ่มคอนโทรลเลอร์เสมือน</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>นำคอนโทรลเลอร์เสมือนออก</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>เปลี่ยนประเภทของคอนโทรลเลอร์</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>กำหนดอุปกรณ์</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>ตั้งค่าแถวการแมป</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>ล้างแถวการแมป</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>แมปคอนโทรลเลอร์อัตโนมัติ</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>บันทึกแมโคร</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ลบแมโคร</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>เลิกทำการเปลี่ยนแปลงของมัน</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>ตรวจคำขอ</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>เรียกเครื่องมือที่ PadForge ไม่มี: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>นำเข้าโปรไฟล์ “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>ส่งอินพุตคีย์บอร์ดและเมาส์ไปยัง Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>คอนโทรลเลอร์คีย์บอร์ดและเมาส์จะกดปุ่มและเลื่อนตัวชี้ในทุกโปรแกรม</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} จาก {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>บันทึกแมโครที่ทำงานนอก PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>เรียกใช้ {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>กด {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>พิมพ์ข้อความลงในโปรแกรมที่อยู่ด้านหน้า</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>เลื่อนหรือคลิกเมาส์</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>สร้างคอนโทรลเลอร์คีย์บอร์ดและเมาส์</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>เปิด {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>เปลี่ยน “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>ตั้ง {0} เป็น {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>รับฟังบนเครือข่าย อุปกรณ์อื่นจึงเข้าถึงพีซีเครื่องนี้ได้</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>เปลี่ยนไดรเวอร์หรือ HidHide ซึ่งโปรแกรมและเกมอื่นพึ่งพาอยู่</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ไฟล์: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>เปลี่ยนว่าโปรแกรมใดอ่านอุปกรณ์ได้ ผ่านตัวเลือกใช้เฉพาะใน PadForge</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>ตั้งค่าคอนโทรลเลอร์</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>ค้นหาอุปกรณ์ สร้างคอนโทรลเลอร์เสมือนให้ กำหนดอุปกรณ์ และแมปสิ่งที่เกมต้องการ</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>ทำไมเกมจึงไม่เห็นคอนโทรลเลอร์ของฉัน</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>ตรวจเอนจิน คอนโทรลเลอร์เสมือน อุปกรณ์ ไดรเวอร์ และ HidHide ทีละอย่าง</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>นำโปรไฟล์มาจากที่อื่น</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>นำเข้าไฟล์โปรไฟล์จากโปรแกรมอื่น แล้วดูว่าอะไรถูกนำมาบ้าง</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0} {1} ครั้ง</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0} ครั้งสุดท้ายจากคำขอลักษณะเดียวกัน {1} ครั้ง</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>ตัวซีเรียลไลซ์ Protocol Buffers ที่ SteamKit2 ใช้สำหรับโปรโตคอลรับส่งข้อมูลของ Steam โดย Marc Gravell</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>การคลายการบีบอัด Zstandard ที่ SteamKit2 ใช้กับชังก์ของ Steam depot เป็นการพอร์ตไลบรารี zstd มาเป็น C# โดย Oleg Stepanischev</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>เซิร์ฟเวอร์และไคลเอนต์ Model Context Protocol ที่อยู่เบื้องหลังการเชื่อมต่อผู้ช่วยและ PadForge.exe --mcp โดย Model Context Protocol a Series of LF Projects</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions และ DependencyInjection.Abstractions ซึ่ง MCP C# SDK สร้างขึ้นบนพื้นฐานนี้ โดย Microsoft</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>เอกสารอ้างอิงสำหรับขั้นตอนการจับคู่ของ Wii, ADPCM ของลำโพง การวางแนว Wii Remote แบบแนวนอนและแบบตั้งตรง โมเดลเกตของสติ๊กและรูปแบบการจัดเก็บ และข้อตกลงเรื่องแกนไจโร ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

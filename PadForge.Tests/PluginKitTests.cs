@@ -46,7 +46,7 @@ namespace PadForge.Tests
                 string first = PluginKit.Save(parent);
                 Assert.Equal(Path.Combine(parent, PluginKit.FolderName), first);
                 var names = Directory.GetFiles(first).Select(Path.GetFileName).OrderBy(n => n, StringComparer.Ordinal).ToArray();
-                Assert.Equal(new[] { "PadForge.ahk", "PadForge.psm1", "PadForgePlugin.cs", "padforge.py", "plugin.ahk", "plugin.ps1", "plugin.py" }
+                Assert.Equal(new[] { "PadForge.ahk", "PadForge.psm1", "PadForgePlugin.cs", "PipeOwner.cs", "padforge.py", "plugin.ahk", "plugin.ps1", "plugin.py" }
                     .OrderBy(n => n, StringComparer.Ordinal), names);
                 foreach (var (name, _) in PluginKit.Files)
                 {
@@ -79,6 +79,7 @@ namespace PadForge.Tests
             Assert.True(File.Exists(PluginLauncherTests.ProbeExe), PluginLauncherTests.ProbeExe);
             string project = ExtrasPageTests.RepoText("PadForge.PluginProbe", "PadForge.PluginProbe.csproj");
             Assert.Contains(@"<Compile Include=""..\PadForge.App\Resources\Plugins\PadForgePlugin.cs""", project);
+            Assert.Contains(@"<Compile Include=""..\PadForge.App\Services\Automation\PipeOwner.cs""", project);
             Assert.Contains("<TreatWarningsAsErrors>true</TreatWarningsAsErrors>", project);
             Assert.Contains("<Nullable>enable</Nullable>", project);
             Assert.Contains("<ImplicitUsings>enable</ImplicitUsings>", project);

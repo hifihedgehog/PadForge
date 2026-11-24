@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge није прихватио везу овог програма</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Поновљен захтев пребрзо</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Више оваквих нема док се PadForge поново не покрене</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge нема такав алат</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Програм је прочитао старије стање</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Нема таквог подешавања</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Вредност је ван опсега који подешавање прихвата</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Нисте дозволили</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Нико није одговорио на време</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Чека се ваш одговор</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Нема таквог захтева</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Нема шта да се опозове</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ово можете променити само ви</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Датотека није могла да се отвори</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Нема таквог макроа</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Превише питања је чекало на вас</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Пређи на профил {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Врати се на подразумевани профил</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Питај који је профил активан</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Отпусти контроле уређаја {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Постави вредност {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Покрени алат {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Прочитај статус</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Промени профиле</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Покрени или заустави механизам</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Укључи или искључи виртуелне контролере</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Сачувај снимак дијагностике</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Прочитај учесталост анкетирања и драјвере</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Наведи профиле</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Прочитај профил</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Наведи виртуелне контролере</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Наведи уређаје</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Прочитај уређај</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Сачекај ваш улаз</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Прочитај мапирања контролера</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Наведи макрое контролера</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Сними проблем</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Пронађи подешавања</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Прочитај подешавање</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Покажи вам место</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Додај сопствени уређај</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Управљај својим уређајем</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Уклони свој уређај</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Држи или отпусти контролу</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Промени подешавање</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Направи профил</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Преименуј профил</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Обриши профил</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Увези профил</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Извези профил</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Додај виртуелни контролер</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Уклони виртуелни контролер</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Промени тип контролера</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Додели уређај</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Подеси редове мапирања</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Обриши редове мапирања</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Аутоматски мапирај контролер</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Сачувај макро</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Обриши макро</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Опозови своје промене</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Провери захтев</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Позови алат који PadForge нема: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Увези профил „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Шаљи улаз тастатуре и миша у Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Контролер тастатуре и миша притиска тастере и помера показивач у сваком програму.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} са улаза {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Сачувај макро који делује ван програма PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Покреће {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Притиска {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Куца текст у програм који је испред</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Помера миш или кликће</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Прави контролер тастатуре и миша</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Укључује {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Промени „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Поставља {0} на {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Слуша на мрежи, па други уређаји могу да досегну овај рачунар.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Мења драјвер или HidHide, на које се ослањају други програми и игре.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Датотека: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Мења који програми могу да читају уређај, преко опције Користи само у PadForge-у.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Подеси контролер</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Пронађи уређај, направи виртуелни контролер за њега, додели га и мапирај шта игра тражи.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Зашто игра не види мој контролер</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Провери један по један механизам, виртуелни контролер, уређај, драјвере и HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Пренеси профил</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Увези датотеку профила из другог програма, па погледај шта је пренето.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, пута: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, последњи од {1} оваквих</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers серијализатор који SteamKit2 користи за Steam мрежни протокол, аутор Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard декомпресија коју SteamKit2 користи за делове Steam депоа, C# порт библиотеке zstd, аутор Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol сервер и клијент иза везе са асистентима и PadForge.exe --mcp, аутор Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions и DependencyInjection.Abstractions, на којима је изграђен MCP C# SDK, аутор Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Документација за поступак упаривања Wii уређаја, ADPCM звучника, бочну и усправну оријентацију Wii Remote контролера, модел граничника палице и његов формат чувања, као и конвенцију оса жироскопа. Коришћено само као документација, не испоручује се GPL код.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

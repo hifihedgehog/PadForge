@@ -162,7 +162,7 @@ namespace PadForge.Tests
                 .Where(e => e.Name.LocalName == "Border" && Attr(e, "Style") == "{StaticResource CreditChip}")
                 .Select(e => Regex.Match(Attr(e.Elements().Single(), "BidiText.Text") ?? string.Empty, @"^\{Binding (\w+),").Groups[1].Value)
                 .ToList();
-            Assert.Equal(168, chips.Count);
+            Assert.Equal(170, chips.Count);
             Assert.All(chips, key => Assert.Contains(key, inTable));
             Assert.Equal(inTable.OrderBy(k => k, StringComparer.Ordinal), chips.Distinct().OrderBy(k => k, StringComparer.Ordinal));
         }
@@ -262,7 +262,7 @@ namespace PadForge.Tests
                 bool Holds(UIElement row, string query) => Texts(row).Any(t => TextMatch.Contains(t, query));
 
                 // Folded: the first five, over the button.
-                Assert.Equal(169, rows.Count);
+                Assert.Equal(171, rows.Count);
                 Assert.Equal(rows.Take(AboutPage.FirstCredits), Shown());
                 Assert.Equal(Visibility.Visible, buttonRow.Visibility);
                 Assert.Equal(Strings.Instance.About_ShowAllCredits, button.Content);

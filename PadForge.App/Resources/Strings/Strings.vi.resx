@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge đã không nhận kết nối của chương trình này</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Hỏi lại quá sớm</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Không còn thêm loại này cho đến khi PadForge khởi động lại</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge không có công cụ như vậy</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Chương trình đã đọc một trạng thái cũ hơn</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Không có thiết lập như vậy</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Giá trị nằm ngoài những gì thiết lập nhận</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Bạn đã không cho phép</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Không ai trả lời kịp lúc</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Đang chờ câu trả lời của bạn</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Không có yêu cầu như vậy</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Không có gì để hoàn tác</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Chỉ bạn mới đổi được mục này</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Không mở được tệp</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Không có macro như vậy</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Quá nhiều câu hỏi đang chờ bạn</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chuyển sang hồ sơ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Quay về hồ sơ mặc định</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Hỏi hồ sơ nào đang hoạt động</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Thả các điều khiển của thiết bị {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Đặt giá trị {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Chạy công cụ {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Đọc trạng thái</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Chuyển hồ sơ</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Khởi động hoặc dừng bộ máy</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Bật hoặc tắt các tay cầm ảo</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Lưu ảnh chụp nhanh chẩn đoán</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Đọc tốc độ thăm dò và trình điều khiển</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Liệt kê các hồ sơ</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Đọc một hồ sơ</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Liệt kê các tay cầm ảo</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Liệt kê các thiết bị</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Đọc một thiết bị</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Chờ đầu vào của bạn</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Đọc các ánh xạ của một tay cầm</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Liệt kê các macro của một tay cầm</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Ghi một sự cố</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Tìm thiết lập</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Đọc một thiết lập</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Chỉ cho bạn một nơi</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Thêm một thiết bị riêng</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Điều khiển thiết bị của nó</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Gỡ thiết bị của nó</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Giữ hoặc thả một điều khiển</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Đổi một thiết lập</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Tạo một hồ sơ</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Đổi tên một hồ sơ</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Xóa một hồ sơ</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Nhập một hồ sơ</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Xuất một hồ sơ</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Thêm một tay cầm ảo</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Gỡ một tay cầm ảo</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Đổi loại của một tay cầm</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Gán một thiết bị</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Đặt các hàng ánh xạ</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Xóa các hàng ánh xạ</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Tự động ánh xạ một tay cầm</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Lưu một macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Xóa một macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Hoàn tác các thay đổi của nó</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kiểm tra một yêu cầu</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Gọi một công cụ PadForge không có: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Nhập hồ sơ “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Gửi đầu vào bàn phím và chuột đến Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Một tay cầm bàn phím và chuột nhấn phím và di chuyển con trỏ trong mọi chương trình.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} từ {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Lưu một macro tác động ra ngoài PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Chạy {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Nhấn {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Gõ văn bản vào chương trình đang ở phía trước</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Di chuyển hoặc nhấp chuột</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Tạo một tay cầm bàn phím và chuột</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Bật {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Đổi “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Đặt {0} thành {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Lắng nghe trên mạng, nên các thiết bị khác có thể truy cập PC này.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Đổi một trình điều khiển hoặc HidHide, mà các chương trình và trò chơi khác dựa vào.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Tệp: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Đổi những chương trình nào đọc được thiết bị, thông qua Chỉ dùng trong PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Thiết lập một tay cầm</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Tìm thiết bị, tạo một tay cầm ảo cho nó, gán nó và ánh xạ những gì trò chơi cần.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Vì sao trò chơi không thấy tay cầm của tôi</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Kiểm tra lần lượt bộ máy, tay cầm ảo, thiết bị, trình điều khiển và HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Đưa một hồ sơ sang</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Nhập một tệp hồ sơ từ chương trình khác, rồi xem những gì đã được đưa sang.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} lần</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, lần cuối trong {1} yêu cầu tương tự</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Bộ tuần tự hóa Protocol Buffers mà SteamKit2 dùng cho giao thức truyền của Steam, của Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Bộ giải nén Zstandard mà SteamKit2 dùng cho các khối depot của Steam, một bản chuyển sang C# của thư viện zstd do Oleg Stepanischev thực hiện.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Máy chủ và máy khách Model Context Protocol đằng sau kết nối trợ lý và PadForge.exe --mcp, bởi Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions và DependencyInjection.Abstractions, nền tảng mà MCP C# SDK được xây dựng trên đó, bởi Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Tài liệu về quy trình ghép đôi Wii, ADPCM của loa, hướng nằm ngang và dựng đứng của Wii Remote, mô hình khung giới hạn cần analog và định dạng lưu trữ của nó, cùng quy ước trục con quay hồi chuyển. Chỉ được đọc làm tài liệu, không có mã GPL nào được phát hành kèm.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

@@ -43,6 +43,27 @@ namespace PadForge.Search
             return value;
         }
 
+        /// <summary>Writes <paramref name="value"/> to <paramref name="path"/>
+        /// on <paramref name="source"/> through a binding with the converter
+        /// the page's control uses, as that control's binding would write a
+        /// person's change (#597). For a setting whose control is not drawn
+        /// now, such as a row of a card per item.</summary>
+        internal static void Write(object source, string path, object value, IValueConverter converter = null)
+        {
+            if (source == null || string.IsNullOrEmpty(path)) return;
+            var probe = new Probe();
+            BindingOperations.SetBinding(probe, Probe.ValueProperty, new Binding(path)
+            {
+                Source = source,
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+                Converter = converter,
+            });
+            probe.SetCurrentValue(Probe.ValueProperty, value);
+            BindingOperations.GetBindingExpression(probe, Probe.ValueProperty)?.UpdateSource();
+            BindingOperations.ClearBinding(probe, Probe.ValueProperty);
+        }
+
         /// <summary>A value as a binding's StringFormat writes it: a composite
         /// format when it holds {0}, else a format for the value alone.</summary>
         internal static string Format(object value, string stringFormat)

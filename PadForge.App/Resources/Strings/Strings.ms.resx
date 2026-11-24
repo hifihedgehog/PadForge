@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tidak menerima sambungan program ini</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Diminta semula terlalu awal</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tiada lagi yang seperti ini sehingga PadForge bermula semula</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge tiada alat sedemikian</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Program itu membaca keadaan yang lebih lama</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tiada tetapan sedemikian</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Nilai itu di luar apa yang diterima tetapan</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Anda tidak membenarkannya</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Tiada siapa menjawab tepat pada masanya</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Menunggu jawapan anda</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tiada permintaan sedemikian</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tiada yang perlu dibuat asal</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Hanya anda yang boleh mengubah ini</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fail tidak dapat dibuka</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tiada makro sedemikian</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Terlalu banyak soalan menunggu anda</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Tukar ke profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kembali ke profil lalai</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Tanya profil mana yang aktif</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lepaskan kawalan peranti {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tetapkan nilai {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Jalankan alat {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Baca status</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Tukar profil</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Mulakan atau hentikan enjin</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Hidupkan atau matikan pengawal maya</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Simpan syot kilat diagnostik</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Baca kadar pengundian dan pemacu</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Senaraikan profil</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Baca profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Senaraikan pengawal maya</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Senaraikan peranti</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Baca peranti</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Tunggu input anda</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Baca pemetaan pengawal</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Senaraikan makro pengawal</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rakam masalah</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Cari tetapan</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Baca tetapan</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Tunjukkan satu tempat kepada anda</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Tambah peranti sendiri</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Pandu peranti itu</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Buang peranti itu</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Tahan atau lepaskan kawalan</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ubah tetapan</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Cipta profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Namakan semula profil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Padam profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Import profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Eksport profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Tambah pengawal maya</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Buang pengawal maya</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Ubah jenis pengawal</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Umpuk peranti</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Tetapkan baris pemetaan</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Kosongkan baris pemetaan</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Petakan pengawal secara automatik</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Simpan makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Padam makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Buat asal perubahannya</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Semak permintaan</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Panggil alat yang tiada pada PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Import profil “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Hantar input papan kekunci dan tetikus ke Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Pengawal papan kekunci dan tetikus menekan kekunci dan menggerakkan penuding dalam setiap program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} daripada {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Simpan makro yang bertindak di luar PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Menjalankan {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Menekan {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Menaip teks ke dalam program di hadapan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Menggerakkan atau mengklik tetikus</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Membuat pengawal papan kekunci dan tetikus</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Menghidupkan {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Ubah “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Menetapkan {0} kepada {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Mendengar pada rangkaian, jadi peranti lain boleh mencapai PC ini.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mengubah pemacu atau HidHide, yang menjadi tumpuan program dan permainan lain.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fail: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mengubah program yang boleh membaca peranti itu, melalui Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Sediakan Pengawal</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Cari peranti, buat pengawal maya untuknya, umpukkannya dan petakan apa yang diperlukan permainan.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Sebab Permainan Tidak Nampak Pengawal Saya</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Semak enjin, pengawal maya, peranti, pemacu dan HidHide satu demi satu.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Bawa Masuk Profil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Import fail profil daripada program lain, kemudian lihat apa yang berpindah.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kali</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, yang terakhir daripada {1} yang serupa</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3929,6 +4006,10 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializer Protocol Buffers yang digunakan SteamKit2 untuk protokol wayar Steam, oleh Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Penyahmampatan Zstandard yang digunakan SteamKit2 untuk ketulan depot Steam, port C# bagi pustaka zstd oleh Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Pelayan dan klien Model Context Protocol di sebalik sambungan pembantu dan PadForge.exe --mcp, oleh Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions dan DependencyInjection.Abstractions, yang menjadi asas MCP C# SDK, oleh Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentasi untuk upacara penggandingan Wii, ADPCM pembesar suara, orientasi Wii Remote mengiring dan tegak, model get kayu bedik dan format storannya, serta konvensyen paksi giro. Dibaca sebagai dokumentasi sahaja, tiada kod GPL dihantar.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

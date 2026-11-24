@@ -2328,7 +2328,7 @@ namespace PadForge.Services
         /// <summary>
         /// Pushes application-level settings to the SettingsViewModel.
         /// </summary>
-        private void LoadAppSettings(AppSettingsData appSettings)
+        internal void LoadAppSettings(AppSettingsData appSettings)
         {
             var vm = _mainVm.Settings;
             PadForge.Common.SoundPackageManager.LoadRegistry(
@@ -5068,7 +5068,7 @@ namespace PadForge.Services
         /// <summary>
         /// Builds an AppSettingsData from the current SettingsViewModel state.
         /// </summary>
-        private AppSettingsData BuildAppSettings()
+        internal AppSettingsData BuildAppSettings()
         {
             var vm = _mainVm.Settings;
             var soundPackages = PadForge.Common.SoundPackageManager.SaveRegistry()

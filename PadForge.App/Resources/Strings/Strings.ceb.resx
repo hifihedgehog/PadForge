@@ -301,6 +301,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Wala gidawat sa PadForge ang koneksyon niini nga programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Nangayo pag-usab sa dili pa panahon</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Wala nay dugang niini hangtod magsugod pag-usab ang PadForge</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Walay ingon ana nga tool ang PadForge</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Daan nga kahimtang ang nabasa sa programa</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Walay ingon ana nga setting</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Ang value naa sa gawas sa madawat sa setting</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Wala nimo kini gitugotan</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Walay mitubag sa husto nga oras</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Naghulat sa imong tubag</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Walay ingon ana nga hangyo</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Walay ma-undo</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ikaw lang ang makausab niini</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Dili maablihan ang file</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Walay ingon ana nga macro</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Daghan kaayong pangutana ang naghulat kanimo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibalhin sa profile nga {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ibalik sa default nga profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pangutan-a kung unsang profile ang aktibo</value></data>
@@ -336,6 +349,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Buhii ang mga control sa device {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>I-set ang value nga {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Padagana ang tool nga {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Basaha ang status</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Balhina ang profile</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Sugdi o hunonga ang engine</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>I-on o i-off ang mga virtual nga controller</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>I-save ang diagnostics snapshot</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Basaha ang polling rate ug mga driver</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Ilista ang mga profile</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Basaha ang usa ka profile</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Ilista ang mga virtual nga controller</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Ilista ang mga device</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Basaha ang usa ka device</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Hulata ang imong input</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Basaha ang mga mapping sa usa ka controller</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Ilista ang mga macro sa usa ka controller</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>I-record ang usa ka problema</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Pangitaa ang mga setting</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Basaha ang usa ka setting</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Ipakita kanimo ang usa ka dapit</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Idugang ang kaugalingon niini nga device</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Palihoka ang device niini</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Tangtanga ang device niini</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Kuptan o buhii ang usa ka control</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Usba ang usa ka setting</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Paghimo og profile</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Usba ang ngalan sa usa ka profile</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Papasa ang usa ka profile</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>I-import ang usa ka profile</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>I-export ang usa ka profile</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Pagdugang og virtual nga controller</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Tangtanga ang usa ka virtual nga controller</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Usba ang klase sa usa ka controller</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>I-assign ang usa ka device</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>I-set ang mga laray sa mapping</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Hawani ang mga laray sa mapping</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Awtomatikong i-map ang usa ka controller</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>I-save ang usa ka macro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Papasa ang usa ka macro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>I-undo ang mga kausaban niini</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Susiha ang usa ka hangyo</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Pagtawag og tool nga wala sa PadForge: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>I-import ang profile nga “{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Pagpadala og input sa keyboard ug mouse ngadto sa Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Ang controller nga keyboard ug mouse mopindot og mga key ug molihok sa pointer sa matag programa.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} gikan sa {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>I-save ang macro nga molihok sa gawas sa PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Padaganon ang {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Pindoton ang {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Mag-type og teksto sa programa nga naa sa atubangan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Molihok o mo-click sa mouse</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Maghimo og controller nga keyboard ug mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>I-on ang {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Usba ang “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>I-set ang {0} ngadto sa {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Mamati sa network, busa maabot niini nga PC sa ubang mga device.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mag-usab og driver o sa HidHide, nga gisaligan sa ubang mga programa ug dula.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mag-usab kung unsang mga programa ang makabasa sa device, pinaagi sa Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Pag-set up og controller</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Pangitaa ang device, paghimo og virtual nga controller para niini, i-assign kini ug i-map ang gikinahanglan sa dula.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Nganong dili makita sa dula ang akong controller</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Susiha ang engine, ang virtual nga controller, ang device, ang mga driver ug ang HidHide tagsatagsa.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Pagdala og profile dinhi</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>I-import ang profile file gikan sa laing programa, unya tan-awa kung unsay nadala.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ka beses</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ang katapusan sa {1} nga sama niini</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -2689,6 +2766,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers serializer nga gigamit sa SteamKit2 para sa Steam wire protocol, ni Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard decompression nga gigamit sa SteamKit2 para sa mga chunk sa Steam depot, usa ka C# port sa zstd library ni Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ang Model Context Protocol server ug client luyo sa koneksyon sa assistant ug sa PadForge.exe --mcp, gikan sa Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ug DependencyInjection.Abstractions, nga gitukoran sa MCP C# SDK, gikan sa Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>

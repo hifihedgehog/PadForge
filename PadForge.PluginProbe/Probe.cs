@@ -27,8 +27,8 @@ namespace PadForge.PluginProbe
                 using var pipe = new System.IO.Pipes.NamedPipeClientStream(".", args[1], System.IO.Pipes.PipeDirection.InOut,
                     System.IO.Pipes.PipeOptions.Asynchronous, TokenImpersonationLevel.Identification);
                 pipe.Connect(5000);
-                Console.WriteLine("own=" + (PadForgePluginKit.Program.ServedByPadForge(pipe, args[1]) ? 1 : 0)
-                    + " padforge=" + (PadForgePluginKit.Program.ServedByPadForge(pipe, "PadForge.Automation") ? 1 : 0));
+                Console.WriteLine("own=" + (PadForge.Services.Automation.PipeOwner.IsServer(pipe.SafePipeHandle, args[1]) ? 1 : 0)
+                    + " padforge=" + (PadForge.Services.Automation.PipeOwner.IsServer(pipe.SafePipeHandle, "PadForge.Automation") ? 1 : 0));
                 return 0;
             }
 

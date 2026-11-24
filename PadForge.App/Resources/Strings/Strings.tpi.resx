@@ -278,6 +278,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge i no kisim konek bilong dispela program</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>I askim gen kwik tumas</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>I no gat moa long dispela kain inap PadForge i stat gen</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge i no gat kain tul olsem</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Program i ritim wanpela olpela stet</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>I no gat kain seting olsem</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Namba i stap ausait long wanem seting i kisim</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Yu no bin orait long en</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>I no gat wanpela i bekim long taim</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>I wetim bekim bilong yu</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>I no gat kain askim olsem</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>I no gat senis long tekewe</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Yu tasol inap senisim dispela</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>I no inap opim fail</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>I no gat kain makro olsem</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Planti tumas askim i wetim yu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Senis i go long profail {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Go bek long namba wan profail</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Askim wanem profail i wok</value></data>
@@ -313,6 +326,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lusim ol kontrol bilong masin {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setim namba {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ranim tul {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Ritim stet</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Senisim profail</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Statim o stopim injin</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Onim o ofim ol virtual kontrola</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Seivim snapshot bilong diagnostics</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Ritim polling reit na ol draiva</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Soim lis bilong ol profail</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Ritim wanpela profail</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Soim lis bilong ol virtual kontrola</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Soim lis bilong ol masin</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Ritim wanpela masin</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Wetim samting yu presim</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Ritim ol mep bilong wanpela kontrola</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Soim lis bilong ol makro bilong wanpela kontrola</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekodim wanpela hevi</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Painim ol seting</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Ritim wanpela seting</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Soim yu wanpela hap</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Putim masin bilong em yet</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Kontrolim masin bilong en</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Rausim masin bilong en</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Holim o lusim wanpela kontrol</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Senisim wanpela seting</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Wokim wanpela profail</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Senisim nem bilong wanpela profail</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Rausim wanpela profail</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Kisim wanpela profail i kam insait</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Salim wanpela profail i go ausait</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Putim wanpela virtual kontrola</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Rausim wanpela virtual kontrola</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Senisim kain bilong wanpela kontrola</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Putim wanpela masin i go long kontrola</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Setim ol lain bilong mep</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Klinim ol lain bilong mep</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapim wanpela kontrola otomatik</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Seivim wanpela makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Rausim wanpela makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Tekewe ol senis bilong en</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Sekim wanpela askim</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Singautim tul PadForge i no gat: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Kisim profail “{0}” i kam insait</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Salim ki na maus i go long Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Kontrola bilong ki na maus i presim ol ki na muvim pointa long olgeta program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} long {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Seivim makro i wok ausait long PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Ranim {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Presim {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Raitim toktok i go long program i stap ples klia</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Muvim o klikim maus</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Wokim kontrola bilong ki na maus</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Onim {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Senisim “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setim {0} long {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>I harim netwok, olsem na ol narapela masin i ken kamap long dispela PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>I senisim draiva o HidHide, we ol narapela program na gem i bilip long en.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fail: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>I senisim wanem ol program i ken ritim masin, long Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Redim wanpela kontrola</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Painim masin, wokim virtual kontrola bilong en, putim i go long en na mapim wanem samting gem i nidim.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Bilong wanem gem i no lukim kontrola bilong mi</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Sekim injin, virtual kontrola, masin, ol draiva na HidHide wan wan.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Bringim wanpela profail i kam</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Kisim fail bilong profail long narapela program, na lukim wanem samting i kam.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, namba bilong taim: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, las wan long {1} kain olsem</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>nogat kontrola</value></data>
@@ -2324,6 +2401,10 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taim yu holim</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Tanim on o of</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Las hap long spit</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol seva na klaien i stap bihain long konek bilong asistan na PadForge.exe --mcp, long Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions na DependencyInjection.Abstractions, we MCP C# SDK i sanap long en, long Microsoft.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Tok taim masin i no konek moa</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Tok taim masin i konek</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Namba bilong skrip</value></data>

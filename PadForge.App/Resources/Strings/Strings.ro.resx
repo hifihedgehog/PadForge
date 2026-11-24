@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nu a acceptat conexiunea acestui program</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Solicitat din nou prea devreme</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nu se mai fac astfel de lucruri până la repornirea PadForge</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nu are un astfel de instrument</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programul a citit o stare mai veche</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Setare inexistentă</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valoarea era în afara celor acceptate de setare</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Nu ați permis</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nimeni nu a răspuns la timp</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Se așteaptă răspunsul dumneavoastră</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Solicitare inexistentă</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nimic de anulat</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Doar dumneavoastră puteți schimba aceasta</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fișierul nu a putut fi deschis</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Macrocomandă inexistentă</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Prea multe întrebări așteptau răspunsul dumneavoastră</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Trecere la profilul {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Revenire la profilul implicit</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Întrebare despre profilul activ</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Eliberare controale ale dispozitivului {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setare valoare {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Rulare instrument {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Citire stare</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Comutare profiluri</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Pornire sau oprire motor</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Activare sau dezactivare controlere virtuale</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Salvare instantaneu de diagnosticare</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Citire frecvență de interogare și drivere</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Listare profiluri</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Citire profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Listare controlere virtuale</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Listare dispozitive</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Citire dispozitiv</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Așteptare intrare de la dumneavoastră</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Citire mapări ale unui controler</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Listare macrocomenzi ale unui controler</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Înregistrare problemă</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Căutare setări</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Citire setare</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Arătare a unui loc</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Adăugare dispozitiv propriu</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Comandare dispozitiv propriu</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Eliminare dispozitiv propriu</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Ținere sau eliberare control</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Modificare setare</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Creare profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Redenumire profil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ștergere profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importare profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Exportare profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Adăugare controler virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Eliminare controler virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Schimbare tip de controler</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Atribuire dispozitiv</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Setare rânduri de mapare</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Golire rânduri de mapare</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapare automată a unui controler</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Salvare macrocomandă</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ștergere macrocomandă</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Anulare modificări proprii</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Verificare solicitare</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Apelare instrument pe care PadForge nu îl are: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importare profil „{0}”</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Trimitere intrări de tastatură și mouse către Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Un controler de tastatură și mouse apasă taste și mută cursorul în orice program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} de la {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Salvare macrocomandă care acționează în afara PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Rulează {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Apasă {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Scrie text în programul din prim-plan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Mută mouse-ul sau face clic</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Creează un controler de tastatură și mouse</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Activează {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Modificare „{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setează {0} la {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Ascultă în rețea, deci alte dispozitive pot ajunge la acest PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Modifică un driver sau HidHide, de care depind alte programe și jocuri.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fișier: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Schimbă ce programe pot citi dispozitivul, prin Folosire numai în PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Configurare controler</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Găsiți dispozitivul, creați un controler virtual pentru el, atribuiți-l și mapați ce are nevoie jocul.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>De ce nu vede un joc controlerul meu</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Verificați pe rând motorul, controlerul virtual, dispozitivul, driverele și HidHide.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Aducere profil</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importați un fișier de profil din alt program, apoi vedeți ce a ajuns aici.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, repetări: {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ultima dintre solicitările asemănătoare: {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializator Protocol Buffers folosit de SteamKit2 pentru protocolul de rețea Steam, de Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Decompresie Zstandard folosită de SteamKit2 pentru fragmentele depozitelor Steam, un port C# al bibliotecii zstd de Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serverul și clientul Model Context Protocol din spatele conexiunii cu asistenții și al PadForge.exe --mcp, de Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions și DependencyInjection.Abstractions, pe care este construit MCP C# SDK, de Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Documentație pentru procedura de asociere Wii, ADPCM-ul difuzorului, orientarea laterală și verticală a Wii Remote, modelul limitatorului de stick și formatul său de stocare, precum și convenția axelor giroscopului. Citit doar ca documentație, nu este inclus niciun cod GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

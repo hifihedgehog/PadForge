@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge het nie hierdie program se verbinding aanvaar nie</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Te gou weer gevra</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nie meer hiervan tot PadForge weer begin nie</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge het geen sodanige hulpmiddel nie</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Die program het 'n ouer toestand gelees</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Geen sodanige instelling nie</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Die waarde was buite wat die instelling aanvaar</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Jy het dit nie toegelaat nie</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Niemand het betyds geantwoord nie</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Wag op jou antwoord</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Geen sodanige versoek nie</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Niks om te ontdoen nie</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Net jy kan dit verander</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Die lêer kon nie oopgemaak word nie</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Geen sodanige makro nie</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Te veel vrae het op jou gewag</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Wissel na die profiel {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Keer terug na die verstekprofiel</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vra watter profiel aktief is</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Los kontroles van toestel {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Stel die waarde {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Voer die hulpmiddel {0} uit</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Lees die status</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Wissel profiele</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Begin of stop die enjin</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Skakel virtuele controllers aan of af</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Stoor 'n diagnosekiekie</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lees die pollingkoers en drywers</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lys die profiele</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lees 'n profiel</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lys die virtuele controllers</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lys die toestelle</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lees 'n toestel</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Wag vir jou invoer</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lees 'n controller se toewysings</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lys 'n controller se makro's</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Neem 'n probleem op</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Soek instellings</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lees 'n instelling</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Wys vir jou 'n plek</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Voeg 'n eie toestel by</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Bestuur sy toestel</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Verwyder sy toestel</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Hou 'n kontrole vas of los dit</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Verander 'n instelling</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Skep 'n profiel</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Hernoem 'n profiel</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Vee 'n profiel uit</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Voer 'n profiel in</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Voer 'n profiel uit</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Voeg 'n virtuele controller by</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Verwyder 'n virtuele controller</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Verander 'n controller se tipe</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Wys 'n toestel toe</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Stel toewysingsrye</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Vee toewysingsrye uit</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Wys 'n controller outomaties toe</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Stoor 'n makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Vee 'n makro uit</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Ontdoen sy veranderinge</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Gaan 'n versoek na</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Roep 'n hulpmiddel wat PadForge nie het nie: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Voer die profiel “{0}” in</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Stuur sleutelbord- en muisinvoer na Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>'n Sleutelbord-en-muis-controller druk sleutels en beweeg die wyser in elke program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} van {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Stoor 'n makro wat buite PadForge optree</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Voer {0} uit</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Druk {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Tik teks in die program vooraan</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Beweeg of klik die muis</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Maak 'n sleutelbord-en-muis-controller</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Skakel {0} aan</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Verander “{0}”</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stel {0} op {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Luister op die netwerk, sodat ander toestelle hierdie rekenaar kan bereik.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Verander 'n drywer of HidHide, waarop ander programme en speletjies staatmaak.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Lêer: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Verander watter programme die toestel kan lees, deur Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Stel 'n controller op</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Vind die toestel, maak 'n virtuele controller daarvoor, wys dit toe en wys toe wat die speletjie nodig het.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Hoekom 'n speletjie my controller nie sien nie</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Gaan die enjin, die virtuele controller, die toestel, die drywers en HidHide een op 'n slag na.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Bring 'n profiel oor</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Voer 'n profiellêer uit 'n ander program in, en kyk dan wat oorgekom het.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} keer</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, die laaste van {1} soortgelykes</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3805,6 +3882,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffersi serialiseerija, mida SteamKit2 kasutab Steami võrguprotokolli jaoks, autor Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandardi lahtipakkimine, mida SteamKit2 kasutab Steami depootükkide jaoks, zstd-teegi C#-port, autor Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Die Model Context Protocol-bediener en -kliënt agter die assistentverbinding en PadForge.exe --mcp, deur Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions en DependencyInjection.Abstractions, waarop die MCP C# SDK gebou is, deur Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentatsioon Wii sidumisprotseduuri, kõlari ADPCM-i, Wii Remote'i külili ja püsti asendi, kangipiirde mudeli ja selle salvestusvormingu ning güroskoobi telgede kokkuleppe kohta. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

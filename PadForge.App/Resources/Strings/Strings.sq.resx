@@ -704,6 +704,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nuk e pranoi lidhjen e këtij programi</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>U kërkua sërish shumë shpejt</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nuk lejohen më të tilla derisa PadForge të niset sërish</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nuk ka një mjet të tillë</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>Programi lexoi një gjendje më të vjetër</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nuk ka cilësim të tillë</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Vlera ishte jashtë asaj që pranon cilësimi</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>Nuk e lejove</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Askush nuk u përgjigj në kohë</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>Pret përgjigjen tënde</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nuk ka kërkesë të tillë</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nuk ka çfarë të zhbëhet</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Vetëm ti mund ta ndryshosh këtë</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>Skedari nuk u hap dot</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nuk ka makro të tillë</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Shumë pyetje po të prisnin</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ndërro te profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kthehu te profili i parazgjedhur</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pyet cili profil është aktiv</value></data>
@@ -739,6 +752,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lësho kontrollet e pajisjes {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Cakto vlerën {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ekzekuto mjetin {0}</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>Lexo gjendjen</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Ndërro profilet</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Nis ose ndalo motorin</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Ndiz ose fik kontrolluesit virtualë</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Ruaj një pamje çasti të diagnostikimit</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lexo shpejtësinë e pyetjes dhe drejtuesit</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Listo profilet</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lexo një profil</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Listo kontrolluesit virtualë</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Listo pajisjet</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lexo një pajisje</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Prit hyrjen tënde</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lexo hartëzimet e një kontrolluesi</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Listo makrot e një kontrolluesi</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Regjistro një problem</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Gjej cilësime</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lexo një cilësim</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>Të shfaq një vend</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Shto një pajisje të vetën</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Drejto pajisjen e vet</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Hiq pajisjen e vet</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Mbaj ose lësho një kontroll</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ndrysho një cilësim</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Krijo një profil</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Riemëro një profil</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Fshi një profil</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>Importo një profil</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>Eksporto një profil</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>Shto një kontrollues virtual</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>Hiq një kontrollues virtual</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Ndrysho llojin e një kontrolluesi</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Cakto një pajisje</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Cakto rreshta hartëzimi</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Pastro rreshta hartëzimi</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Hartëzo një kontrollues automatikisht</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Ruaj një makro</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Fshi një makro</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>Zhbëj ndryshimet e veta</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>Kontrollo një kërkesë</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>Thirr një mjet që PadForge nuk e ka: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>Importo profilin „{0}“</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Dërgo hyrje tastiere dhe mausi te Windows</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>Një kontrollues tastiere dhe mausi shtyp tastet dhe lëviz treguesin në çdo program.</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{0} nga {1}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>Ruaj një makro që vepron jashtë PadForge</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>Ekzekuton {0}</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>Shtyp {0}</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>Shkruan tekst në programin që është përpara</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>Lëviz ose klikon mausin</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Krijon një kontrollues tastiere dhe mausi</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ndez {0}</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Ndrysho „{0}“</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Cakton {0} në {1}</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>Dëgjon në rrjet, ndaj pajisje të tjera mund ta arrijnë këtë PC.</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ndryshon një drejtues ose HidHide, nga të cilët varen programe dhe lojëra të tjera.</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Skedari: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ndryshon cilët programe mund ta lexojnë pajisjen, përmes Use Only in PadForge.</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>Rregullo një kontrollues</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>Gjej pajisjen, krijo një kontrollues virtual për të, caktoje dhe hartëzo çfarë i duhet lojës.</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>Pse loja nuk e sheh kontrolluesin tim</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>Kontrollo motorin, kontrolluesin virtual, pajisjen, drejtuesit dhe HidHide një nga një.</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Sill një profil këtu</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importo një skedar profili nga një program tjetër, pastaj shih çfarë erdhi.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} herë</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, e fundit nga {1} të tilla</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -3880,6 +3957,10 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializues Protocol Buffers që SteamKit2 e përdor për protokollin e Steam, nga Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Dekompresim Zstandard që SteamKit2 e përdor për pjesët e depove Steam, port C# i bibliotekës zstd nga Oleg Stepanischev.</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serveri dhe klienti i Model Context Protocol pas lidhjes me asistentët dhe PadForge.exe --mcp, nga Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions dhe DependencyInjection.Abstractions, mbi të cilat është ndërtuar MCP C# SDK, nga Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentim për ceremoninë e çiftimit të Wii, ADPCM e altoparlantit, orientimin anash dhe në këmbë të Wii Remote, modelin e portës së levës dhe formatin e ruajtjes së tij, dhe konventën e boshteve të xhiros. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

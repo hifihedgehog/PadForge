@@ -717,6 +717,19 @@
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ले यो प्रोग्रामको जडान स्वीकार गरेन</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>धेरै चाँडै फेरि सोधियो</value></data>
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge फेरि सुरु नभएसम्म यस्ता थप हुँदैनन्</value></data>
+  <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge मा यस्तो टुल छैन</value></data>
+  <data name="Automation_Result_Stale" xml:space="preserve"><value>प्रोग्रामले पुरानो अवस्था पढेको थियो</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>यस्तो सेटिङ छैन</value></data>
+  <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>मान सेटिङले लिने दायराभन्दा बाहिर थियो</value></data>
+  <data name="Automation_Result_Declined" xml:space="preserve"><value>तपाईंले अनुमति दिनुभएन</value></data>
+  <data name="Automation_Result_TimedOut" xml:space="preserve"><value>समयमै कसैले जवाफ दिएन</value></data>
+  <data name="Automation_Result_Waiting" xml:space="preserve"><value>तपाईंको जवाफको प्रतीक्षामा</value></data>
+  <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>यस्तो अनुरोध छैन</value></data>
+  <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>पूर्ववत् गर्न केही छैन</value></data>
+  <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>यो तपाईं मात्र बदल्न सक्नुहुन्छ</value></data>
+  <data name="Automation_Result_NoFile" xml:space="preserve"><value>फाइल खोल्न सकिएन</value></data>
+  <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>यस्तो म्याक्रो छैन</value></data>
+  <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>तपाईंको प्रतीक्षामा धेरै प्रश्नहरू थिए</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>प्रोफाइल {0} मा जानुहोस्</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>पूर्वनिर्धारित प्रोफाइलमा फर्कनुहोस्</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>कुन प्रोफाइल सक्रिय छ भनेर सोध्नुहोस्</value></data>
@@ -752,6 +765,70 @@
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>यन्त्र {0} का नियन्त्रणहरू छोड्नुहोस्</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>मान {0} सेट गर्नुहोस्</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>टुल {0} चलाउनुहोस्</value></data>
+  <data name="Automation_Tool_Status" xml:space="preserve"><value>स्थिति पढ्नुहोस्</value></data>
+  <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>प्रोफाइल बदल्नुहोस्</value></data>
+  <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>इन्जिन सुरु गर्नुहोस् वा रोक्नुहोस्</value></data>
+  <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरू अन वा अफ गर्नुहोस्</value></data>
+  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>निदान स्न्यापसट सेभ गर्नुहोस्</value></data>
+  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>पोलिङ दर र ड्राइभरहरू पढ्नुहोस्</value></data>
+  <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>प्रोफाइलहरूको सूची लिनुहोस्</value></data>
+  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>प्रोफाइल पढ्नुहोस्</value></data>
+  <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरूको सूची लिनुहोस्</value></data>
+  <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>यन्त्रहरूको सूची लिनुहोस्</value></data>
+  <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>यन्त्र पढ्नुहोस्</value></data>
+  <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>तपाईंको इनपुटको प्रतीक्षा गर्नुहोस्</value></data>
+  <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>कन्ट्रोलरका म्यापिङहरू पढ्नुहोस्</value></data>
+  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>कन्ट्रोलरका म्याक्रोहरूको सूची लिनुहोस्</value></data>
+  <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>समस्या रेकर्ड गर्नुहोस्</value></data>
+  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>सेटिङहरू खोज्नुहोस्</value></data>
+  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>सेटिङ पढ्नुहोस्</value></data>
+  <data name="Automation_Tool_Show" xml:space="preserve"><value>तपाईंलाई कुनै ठाउँ देखाउनुहोस्</value></data>
+  <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>आफ्नै यन्त्र थप्नुहोस्</value></data>
+  <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>आफ्नो यन्त्र चलाउनुहोस्</value></data>
+  <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>आफ्नो यन्त्र हटाउनुहोस्</value></data>
+  <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>नियन्त्रण समात्नुहोस् वा छोड्नुहोस्</value></data>
+  <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>सेटिङ बदल्नुहोस्</value></data>
+  <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>प्रोफाइल बनाउनुहोस्</value></data>
+  <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>प्रोफाइलको नाम बदल्नुहोस्</value></data>
+  <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>प्रोफाइल मेटाउनुहोस्</value></data>
+  <data name="Automation_Tool_ImportProfile" xml:space="preserve"><value>प्रोफाइल आयात गर्नुहोस्</value></data>
+  <data name="Automation_Tool_ExportProfile" xml:space="preserve"><value>प्रोफाइल निर्यात गर्नुहोस्</value></data>
+  <data name="Automation_Tool_AddController" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर थप्नुहोस्</value></data>
+  <data name="Automation_Tool_RemoveController" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर हटाउनुहोस्</value></data>
+  <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>कन्ट्रोलरको प्रकार बदल्नुहोस्</value></data>
+  <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>यन्त्र असाइन गर्नुहोस्</value></data>
+  <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>म्यापिङ पङ्क्तिहरू सेट गर्नुहोस्</value></data>
+  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>म्यापिङ पङ्क्तिहरू खाली गर्नुहोस्</value></data>
+  <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>कन्ट्रोलरलाई स्वतः म्याप गर्नुहोस्</value></data>
+  <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>म्याक्रो सेभ गर्नुहोस्</value></data>
+  <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>म्याक्रो मेटाउनुहोस्</value></data>
+  <data name="Automation_Tool_Undo" xml:space="preserve"><value>आफ्ना परिवर्तनहरू पूर्ववत् गर्नुहोस्</value></data>
+  <data name="Automation_Tool_CheckRequest" xml:space="preserve"><value>अनुरोध जाँच्नुहोस्</value></data>
+  <data name="Automation_Tool_WithDetail_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Automation_Tool_Unknown_Format" xml:space="preserve"><value>PadForge मा नभएको टुल चलाउनुहोस्: {0}</value></data>
+  <data name="Automation_Ask_Import_Format" xml:space="preserve"><value>प्रोफाइल “{0}” आयात गर्नुहोस्</value></data>
+  <data name="Automation_Ask_KeyboardMouse" xml:space="preserve"><value>Windows मा किबोर्ड र माउस इनपुट पठाउनुहोस्</value></data>
+  <data name="Automation_Ask_KeyboardMouseLine" xml:space="preserve"><value>किबोर्ड र माउस कन्ट्रोलरले हरेक प्रोग्राममा कीहरू थिच्छ र पोइन्टर सार्छ।</value></data>
+  <data name="Automation_Ask_KeyRow_Format" xml:space="preserve"><value>{1} बाट {0}</value></data>
+  <data name="Automation_Ask_Macro" xml:space="preserve"><value>PadForge बाहिर काम गर्ने म्याक्रो सेभ गर्नुहोस्</value></data>
+  <data name="Automation_Ask_Runs_Format" xml:space="preserve"><value>{0} चलाउँछ</value></data>
+  <data name="Automation_Ask_Presses_Format" xml:space="preserve"><value>{0} थिच्छ</value></data>
+  <data name="Automation_Ask_TypesText" xml:space="preserve"><value>अगाडि रहेको प्रोग्राममा पाठ टाइप गर्छ</value></data>
+  <data name="Automation_Ask_MovesMouse" xml:space="preserve"><value>माउस सार्छ वा क्लिक गर्छ</value></data>
+  <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>किबोर्ड र माउस कन्ट्रोलर बनाउँछ</value></data>
+  <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} अन गर्छ</value></data>
+  <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” बदल्नुहोस्</value></data>
+  <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} लाई {1} मा सेट गर्छ</value></data>
+  <data name="Automation_Ask_Network" xml:space="preserve"><value>नेटवर्कमा सुन्छ, ताकि अन्य यन्त्रहरू यो PC सम्म पुग्न सकून्।</value></data>
+  <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ड्राइभर वा HidHide बदल्छ, जसमा अन्य प्रोग्राम र खेलहरू निर्भर छन्।</value></data>
+  <data name="Automation_Ask_File_Format" xml:space="preserve"><value>फाइल: {0}</value></data>
+  <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>“PadForge मा मात्र प्रयोग गर्नुहोस्” मार्फत यन्त्र कुन प्रोग्रामहरूले पढ्न सक्छन् भन्ने कुरा बदल्छ।</value></data>
+  <data name="Automation_Prompt_SetUp_Title" xml:space="preserve"><value>कन्ट्रोलर सेटअप गर्नुहोस्</value></data>
+  <data name="Automation_Prompt_SetUp_Description" xml:space="preserve"><value>यन्त्र खोज्नुहोस्, त्यसका लागि भर्चुअल कन्ट्रोलर बनाउनुहोस्, असाइन गर्नुहोस् र खेललाई चाहिने कुरा म्याप गर्नुहोस्।</value></data>
+  <data name="Automation_Prompt_NotSeen_Title" xml:space="preserve"><value>खेलले मेरो कन्ट्रोलर किन देख्दैन</value></data>
+  <data name="Automation_Prompt_NotSeen_Description" xml:space="preserve"><value>इन्जिन, भर्चुअल कन्ट्रोलर, यन्त्र, ड्राइभर र HidHide एक एक गरी जाँच्नुहोस्।</value></data>
+  <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>प्रोफाइल ल्याउनुहोस्</value></data>
+  <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>अर्को प्रोग्रामबाट प्रोफाइल फाइल आयात गर्नुहोस्, त्यसपछि के आयो हेर्नुहोस्।</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} पटक</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, यस्ता {1} मध्ये अन्तिम</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
@@ -4168,6 +4245,10 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 ले Steam वायर प्रोटोकलका लागि प्रयोग गर्ने Protocol Buffers सिरियलाइजर, Marc Gravell द्वारा।</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 ले Steam डिपो खण्डहरूका लागि प्रयोग गर्ने Zstandard डिकम्प्रेसन, Oleg Stepanischev को zstd लाइब्रेरीको C# पोर्ट।</value></data>
+  <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>सहायक जडान र PadForge.exe --mcp पछाडिको Model Context Protocol सर्भर र क्लाइन्ट, Model Context Protocol a Series of LF Projects द्वारा।</value></data>
+  <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
+  <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions र DependencyInjection.Abstractions, जसमाथि MCP C# SDK बनेको छ, Microsoft द्वारा।</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii जोडा बनाउने प्रक्रिया, स्पिकर ADPCM, तेर्सो र ठाडो Wii Remote दिशा, स्टिक-गेट मोडेल र यसको भण्डारण ढाँचा, र जाइरो अक्ष परिपाटीको दस्तावेज। दस्तावेजका रूपमा मात्र पढिएको, कुनै GPL कोड समावेश छैन।</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

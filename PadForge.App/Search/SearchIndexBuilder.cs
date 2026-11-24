@@ -587,6 +587,17 @@ namespace PadForge.Search
                     if (unitText != null && unitText.StartsWith("{", StringComparison.Ordinal)) unitText = null;
                     return new SearchValueSource(b.Path, b.StringFormat, b.ConverterKey, unitKey, unitText, SearchValueKind.Number);
                 }
+                // A number box holds its number itself (#597: the settings
+                // catalog reads and writes it, and Search shows it).
+                var numberBox = kids.FirstOrDefault(k => Local(k) == "NumberBox");
+                if (numberBox != null && Binding.Parse(Attr(numberBox, "Value")) is { } n && n.IsPlainPath)
+                {
+                    var unit = kids.FirstOrDefault(k => Local(k) == "TextBlock" && StyleOf(k) == "DzPercent");
+                    string unitKey = unit == null ? null : KeyIn(Attr(unit, "Text"));
+                    string unitText = unit == null || unitKey != null ? null : Attr(unit, "Text");
+                    if (unitText != null && unitText.StartsWith("{", StringComparison.Ordinal)) unitText = null;
+                    return new SearchValueSource(n.Path, n.StringFormat, n.ConverterKey, unitKey, unitText, SearchValueKind.Number);
+                }
                 foreach (var k in kids)
                 {
                     if (Local(k) is "CheckBox" or "ToggleSwitch" && Binding.Parse(Attr(k, "IsChecked")) is { } on && on.IsPlainPath)

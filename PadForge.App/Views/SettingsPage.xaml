@@ -600,6 +600,53 @@
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_IncludePreReleaseUpdates_4573"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
+                                <!-- Controller Database (#597): the community's controller
+                                     mappings, fetched when the user presses Update Now and kept
+                                     in PadForge.xml. The status line counts what this version
+                                     reads out of the box and what the last update added, and
+                                     stands before the button as a row's report does. The button
+                                     says Updating while a download runs. The line under the row
+                                     says what an update that changed nothing came to, or when
+                                     stored rows take effect. The reset empties the section. -->
+                                <controls:SettingItem controls:SettingSearch.Terms="{Binding Settings_ControllerDatabaseDesc, Source={x:Static strings:Strings.Instance}}">
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_ControllerDatabase, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Settings_ControllerDatabaseDesc, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Button Command="{Binding UpdateControllerDatabaseCommand}"
+                                                ToolTip="{Binding Settings_ControllerDatabaseDesc, Source={x:Static strings:Strings.Instance}}">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                    <Setter Property="Content" Value="{Binding Settings_ControllerDatabaseUpdateNow, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsControllerDatabaseUpdating}" Value="True">
+                                                            <Setter Property="Content" Value="{Binding Settings_ControllerDatabaseUpdating, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                        <TextBlock Style="{StaticResource RowStatus}" common:LiveText.Polite="True" Text="{Binding ControllerDatabaseStatus}"
+                                                   Typography.NumeralAlignment="Tabular"
+                                                   Visibility="{Binding ControllerDatabaseStatus, Converter={StaticResource StringToVisibility}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ControllerDatabaseStatus"
+                                                                  SettingLabel="{Binding Settings_ControllerDatabase, Source={x:Static strings:Strings.Instance}}"
+                                                                  AutomationProperties.AutomationId="Reset_SettingsViewModel_ControllerDatabaseStatus_5971"/>
+                                    </controls:SettingRow>
+                                    <TextBlock common:LiveText.Polite="True" Text="{Binding ControllerDatabaseResult}"
+                                               FontSize="13" TextWrapping="Wrap" Margin="20,0,54,10"
+                                               Visibility="{Binding ControllerDatabaseResult, Converter={StaticResource StringToVisibility}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ControllerDatabaseResultIsWarning}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </controls:SettingItem>
                             </StackPanel>
                         </Border>
                     </StackPanel>

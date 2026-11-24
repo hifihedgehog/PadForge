@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>എപ്പോഴും സിസ്റ്റം ട്രേയിൽ കാണിക്കുക</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>വിൻഡോ തുറന്നിരിക്കുമ്പോൾ ട്രേ ഐക്കൺ ദൃശ്യമാക്കുക, അങ്ങനെ അതിന്റെ മെനുവിലെ പുറത്തുകടക്കുക എപ്പോഴും ഒരു ക്ലിക്ക് അകലെയാകും.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge-ന്റെ പുതിയ പതിപ്പുകൾക്കായി GitHub പരിശോധിക്കുക, ഇവിടെ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക. PadForge GitHub-മായി മാത്രമേ (api.github.com, github.com, അതിന്റെ ഡൗൺലോഡ് സെർവറുകൾ) ബന്ധപ്പെടുന്നുള്ളൂ, അയയ്ക്കുന്ന ഏക ഡാറ്റ അതിന്റെ സ്വന്തം പതിപ്പ് നമ്പറാണ്.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge-ന്റെ പുതിയ പതിപ്പുകൾക്കായി GitHub പരിശോധിക്കുക, ഇവിടെ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക, കൺട്രോളർ ഡാറ്റാബേസും അപ്ഡേറ്റ് ചെയ്യുക. PadForge GitHub-മായി മാത്രമേ (api.github.com, github.com, അതിന്റെ ഡൗൺലോഡ് സെർവറുകൾ, കൺട്രോളർ ഡാറ്റാബേസിനായി raw.githubusercontent.com) ബന്ധപ്പെടുന്നുള്ളൂ. അയയ്ക്കുന്ന ഏക ഡാറ്റ അതിന്റെ സ്വന്തം പതിപ്പ് നമ്പറും, കൺട്രോളർ ഡാറ്റാബേസിന്, GitHub അവസാന ഡൗൺലോഡിന് നൽകിയ ടാഗും മാത്രമാണ്.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ സ്വയമേവ പരിശോധിക്കുക</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge ആരംഭിക്കുമ്പോഴും അതിനുശേഷം ഓരോ 12 മണിക്കൂറിലും പരിശോധിക്കുന്നു.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ സ്വയമേവ ഇൻസ്റ്റാൾ ചെയ്യുക</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>ഇപ്പോൾ പരിശോധിക്കുക</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്ത് റീസ്റ്റാർട്ട് ചെയ്യുക</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>റിലീസ് കുറിപ്പുകൾ</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>കൺട്രോളർ ഡാറ്റാബേസ്</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക എന്നത് കമ്മ്യൂണിറ്റി കൺട്രോളർ ഡാറ്റാബേസ് (SDL_GameControllerDB) GitHub-ൽ നിന്ന് ഡൗൺലോഡ് ചെയ്യുകയും, PadForge-ന്റെ ഈ പതിപ്പിൽ ഇല്ലാത്ത മാപ്പിംഗുകൾ ക്രമീകരണ ഫയലിൽ സൂക്ഷിക്കുകയും ചെയ്യുന്നു. ഒരു പുതിയ മാപ്പിംഗ് ഉപയോഗിക്കുന്നത്, മറ്റൊന്നും ഗെയിംപാഡായി വായിക്കാത്തതും അസൈൻ ചെയ്യാത്തതും റോ ജോയ്സ്റ്റിക്ക് മോഡ് നിർബന്ധമാക്കാത്തതുമായ ഒരു കൺട്രോളറിന് മാത്രമാണ്. റീസെറ്റ് ഡൗൺലോഡ് ചെയ്ത എല്ലാ മാപ്പിംഗുകളും നീക്കം ചെയ്യുന്നു.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>അപ്ഡേറ്റ് ചെയ്യുന്നു…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ പരിശോധിക്കുന്നു…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} കാലികമാണ്.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} ലഭ്യമാണ്.</value></data>
@@ -729,6 +733,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge രണ്ട് മിനിറ്റിനു ശേഷവും അടഞ്ഞിട്ടില്ല. അത് അടഞ്ഞാലുടൻ അപ്ഡേറ്റ് ഇൻസ്റ്റാൾ ചെയ്യും. കാത്തിരിക്കുന്നത് തുടരാൻ {0} അല്ലെങ്കിൽ ഈ അപ്ഡേറ്റ് ഒഴിവാക്കാൻ {1} തിരഞ്ഞെടുക്കുക. ഏതായാലും, അടഞ്ഞശേഷം PadForge വീണ്ടും ആരംഭിക്കും.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}-ലേക്കുള്ള അപ്ഡേറ്റ് ഇൻസ്റ്റാൾ ചെയ്യുന്നത് പൂർത്തിയായില്ല. വീണ്ടും ശ്രമിക്കാൻ ക്രമീകരണങ്ങളിൽ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0}-ലേക്ക് അപ്ഡേറ്റ് ചെയ്തു.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയത്: {0} മാപ്പിംഗുകൾ, {1} തീയതിയിലെ കമ്മ്യൂണിറ്റി പകർപ്പ്.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയത്: {0} മാപ്പിംഗുകൾ, {1} തീയതിയിലെ കമ്മ്യൂണിറ്റി പകർപ്പ്. അപ്ഡേറ്റ് ചെയ്തത് {2}: പുതിയത് {3}, മാറിയത് {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>കഴിഞ്ഞ അപ്ഡേറ്റിന് ശേഷം കമ്മ്യൂണിറ്റി ഡാറ്റാബേസിൽ മാറ്റമില്ല.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-ൽ എത്താനായില്ല: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>ഡൗൺലോഡ് പ്രതീക്ഷിക്കുന്ന കൺട്രോളർ ഡാറ്റാബേസ് അല്ലാത്തതിനാൽ PadForge അത് നിരസിച്ചു. ഒന്നും മാറിയില്ല.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>ഒരു പുതിയ മാപ്പിംഗ് അതിന്റെ കൺട്രോളർ അടുത്ത തവണ കണക്റ്റ് ചെയ്യുമ്പോൾ ഉപയോഗിക്കും.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>മാറിയ ഒരു മാപ്പിംഗ് PadForge അടുത്ത തവണ ആരംഭിക്കുമ്പോൾ ഉപയോഗിക്കും.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ചെറുതാക്കി ആരംഭിക്കുക</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ലോഗിൻ ചെയ്യുമ്പോൾ ആരംഭിക്കുക</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

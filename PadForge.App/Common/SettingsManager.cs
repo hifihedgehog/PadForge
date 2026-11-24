@@ -106,6 +106,39 @@ namespace PadForge.Common.Input
         public static GlobalMacroData[] GlobalMacros { get; set; }
 
         // ─────────────────────────────────────────────
+        //  Controller database (#597)
+        // ─────────────────────────────────────────────
+
+        private static ControllerDatabaseSection _controllerDatabase;
+
+        /// <summary>The controller database rows fetched since this release,
+        /// or null when there are none: before the first Update Now, and
+        /// after the row's reset. A section is never changed once built, so
+        /// the poll thread reads this without a lock.</summary>
+        internal static ControllerDatabaseSection ControllerDatabase
+        {
+            get => System.Threading.Volatile.Read(ref _controllerDatabase);
+            set => System.Threading.Volatile.Write(ref _controllerDatabase, value);
+        }
+
+        /// <summary>Replaces the section with what <paramref name="change"/>
+        /// makes of it, and answers whether that was another section. The
+        /// poll thread marks a row in use while the UI thread stores a
+        /// download, so the change is made again on the section that got in
+        /// first, and neither is lost.</summary>
+        internal static bool ChangeControllerDatabase(System.Func<ControllerDatabaseSection, ControllerDatabaseSection> change)
+        {
+            while (true)
+            {
+                var before = ControllerDatabase;
+                var after = change(before);
+                if (ReferenceEquals(before, after)) return false;
+                if (ReferenceEquals(System.Threading.Interlocked.CompareExchange(ref _controllerDatabase, after, before), before))
+                    return true;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────
 

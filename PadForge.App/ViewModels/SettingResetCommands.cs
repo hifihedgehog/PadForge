@@ -26,7 +26,7 @@ namespace PadForge.ViewModels
         internal static IReadOnlyList<string> CardSettings(string card) => card switch
         {
             "Window" => new[] { nameof(MinimizeToTray), nameof(CloseToTray), nameof(AlwaysShowTrayIcon), nameof(StartMinimized), nameof(StartAtLogin) },
-            "Updates" => new[] { nameof(CheckForUpdatesAutomatically), nameof(InstallUpdatesAutomatically), nameof(IncludePreReleaseUpdates) },
+            "Updates" => new[] { nameof(CheckForUpdatesAutomatically), nameof(InstallUpdatesAutomatically), nameof(IncludePreReleaseUpdates), nameof(ControllerDatabaseStatus) },
             "InputEngine" => new[] { nameof(AutoStartEngine), nameof(EnablePollingOnFocusLoss), nameof(PollingRateHz), nameof(HmInactivityDestroyTimeoutSeconds) },
             "AssignmentPrompts" => new[] { nameof(AssignOfferNewDevice), nameof(AssignOfferEmptySlot), nameof(AssignOfferHome) },
             "BatteryAlerts" => new[] { nameof(BatteryNotifyEnabled), nameof(BatteryNotifyThreshold), nameof(BatteryNotifyVibrate), nameof(BatteryNotifyRepeatMinutes), nameof(BatteryNotifyFull) },
@@ -49,6 +49,7 @@ namespace PadForge.ViewModels
             nameof(CheckForUpdatesAutomatically) or
             nameof(InstallUpdatesAutomatically) or
             nameof(IncludePreReleaseUpdates) or
+            nameof(ControllerDatabaseStatus) or
             nameof(StartMinimized) or
             nameof(StartAtLogin) or
             nameof(EnablePollingOnFocusLoss) or
@@ -126,6 +127,14 @@ namespace PadForge.ViewModels
                 case nameof(IncludePreReleaseUpdates):
                 {
                     IncludePreReleaseUpdates = false;
+                    break;
+                }
+                case nameof(ControllerDatabaseStatus):
+                {
+                    // The downloaded rows go, and the row reads what this
+                    // version carries (#597). ControllerDatabaseController
+                    // empties the section.
+                    ControllerDatabaseResetRequested?.Invoke(this, EventArgs.Empty);
                     break;
                 }
                 case nameof(StartMinimized):

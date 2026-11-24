@@ -2194,4 +2194,15 @@
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} i no inap kisim nem na lukluk bilong yu yet, olsem na em i yusim profail bilong en yet.</value></data>
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge i no inap ritim dispela fail.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no inap painim dispela fail.</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Data bilong ol kontrola</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdeitim nau i daunlodim data bilong ol kontrola bilong komuniti (SDL_GameControllerDB) long GitHub na i holim, long fail bilong ol seting, ol mep dispela vesen bilong PadForge i no gat. Nupela mep i wok tasol long kontrola we narapela samting i no ritim olsem gempet, we i no putim i go long virtual kontrola, na we i no stap long Force Raw Joystick Mode. Reset i rausim olgeta mep i bin daunlod.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Apdeitim nau</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Apdeitim…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Insait pinis: mep {0}, kopi bilong komuniti long {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Insait pinis: mep {0}, kopi bilong komuniti long {1}. Apdeit long {2}: {3} nupela, {4} i senis.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Data bilong komuniti i no senis bihain long las apdeit.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>I no inap kamap long GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge i no kisim daunlod long wanem em i no data bilong ol kontrola em i wetim. I no gat samting i senis.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Nupela mep i wok long neks taim kontrola bilong en i konek.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mep i senis i wok long neks taim PadForge i stat.</value></data>
 </root>

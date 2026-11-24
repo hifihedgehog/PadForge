@@ -688,7 +688,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Ëmmer am Infoberäich weisen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>D'Symbol am Infoberäich bleift siichtbar, och wann d'Fënster op ass, sou datt säi Menü ëmmer just ee Klick ewech ass.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualiséierungen</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Sicht op GitHub no neie Versioune vu PadForge an installéiert se vun hei aus. PadForge kontaktéiert nëmme GitHub (api.github.com, github.com a seng Download-Serveren) a schéckt dobäi just seng eege Versiounsnummer.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Sicht op GitHub no neie Versioune vu PadForge an installéiert se vun hei aus, an aktualiséiert d'Controller-Datebank. PadForge kontaktéiert nëmme GitHub (api.github.com, github.com a seng Download-Serveren, a raw.githubusercontent.com fir d'Controller-Datebank). Déi eenzeg Donnéeën, déi et schéckt, sinn seng eege Versiounsnummer an, fir d'Controller-Datebank, d'Kennung, déi GitHub dem leschten Download ginn huet.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Automatesch no Aktualiséierunge sichen</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Sicht beim Start vu PadForge an duerno all 12 Stonnen.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Aktualiséierungen automatesch installéieren</value></data>
@@ -698,6 +698,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Elo sichen</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installéieren an nei starten</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Versiounsnotizen</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controller-Datebank</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>„Elo aktualiséieren“ luet d'Community-Controller-Datebank (SDL_GameControllerDB) vu GitHub erof a späichert an der Astellungsdatei d'Zouuerdnungen, déi dëser Versioun vu PadForge feelen. Eng nei Zouuerdnung gëtt nëmme fir e Controller benotzt, deen näischt anescht als Gamepad liest, deen net zougewisen ass a fir deen „Raw-Joystick-Modus forcéieren“ net aktiv ass. D'Zrécksetzen läscht all erofgeluede Zouuerdnungen.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Elo aktualiséieren</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Gëtt aktualiséiert…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Sicht no Aktualiséierungen…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} ass um neiste Stand.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} ass disponibel.</value></data>
@@ -723,6 +727,13 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge ass no zwou Minutten nach net zou. D'Aktualiséierung gëtt installéiert, soubal et zou ass. Wielt {0}, fir weider ze waarden, oder {1}, fir dës Aktualiséierung z'iwwersprangen. Esou oder esou start PadForge nees, soubal et zou ass.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>D'Aktualiséierung op PadForge {0} gouf net fäerdeg installéiert. Installéiert se an den Astellungen, fir et nach eng Kéier ze probéieren.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge gouf op {0} aktualiséiert.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Agebaut: {0} Zouuerdnungen, Community-Kopie vum {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Agebaut: {0} Zouuerdnungen, Community-Kopie vum {1}. Aktualiséiert den {2}: {3} nei, {4} geännert.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>D'Community-Datebank huet sech zënter der leschter Aktualiséierung net geännert.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub war net erreechbar: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge huet den Download refuséiert, well et net déi Controller-Datebank ass, déi et erwaart. Näischt gouf geännert.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Eng nei Zouuerdnung gëtt benotzt, soubal hire Controller déi nächst Kéier verbonne gëtt.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Eng geännert Zouuerdnung gëtt beim nächste Start vu PadForge benotzt.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Minimiséiert starten</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Beim Umellen starten</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

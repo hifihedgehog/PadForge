@@ -1226,4 +1226,12 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Botsa phetolelo ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Botsa gore ke eng se se dirang</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mola o PadForge e sa o itseng: {0}</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ntšhafatsa jaanong e tsenya database ya setšhaba ya dicontroller (SDL_GameControllerDB) go tswa kwa GitHub mme e boloka, mo faeleng ya dithulaganyo, dimapo tse phetolelo e ya PadForge e se nang tsone. Mapo e ntšha e dirisiwa fela mo controller e go se nang sepe se sengwe se se e balang jaaka gamepad, e e sa abelwang, e e seng mo Force Raw Joystick Mode. Go busetsa go tlosa mapo nngwe le nngwe e e tsentsweng.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Ntšhafatsa jaanong</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>E a ntšhafatsa…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>E agetswe mo teng: dimapo di le {0}, khopi ya setšhaba ya {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>E agetswe mo teng: dimapo di le {0}, khopi ya setšhaba ya {1}. E ntšhafaditswe {2}: tse dintšha: {3}, tse di fetotsweng: {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Database ya setšhaba ga e a fetoga fa e sale e ntšhafatswa la bofelo.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mapo e ntšha e dirisiwa lekgetlo le le latelang fa controller ya yone e golagana.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mapo e e fetotsweng e dirisiwa lekgetlo le le latelang fa PadForge e simolola.</value></data>
 </root>

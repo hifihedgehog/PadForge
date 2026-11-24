@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>હંમેશા સિસ્ટમ ટ્રેમાં બતાવો</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>વિન્ડો ખુલ્લી હોય ત્યારે પણ ટ્રે આઇકન દેખાતું રાખો, જેથી તેના મેનૂમાં Exit હંમેશા એક ક્લિક દૂર હોય.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>અપડેટ</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge ના નવા સંસ્કરણો માટે GitHub તપાસો અને અહીંથી ઇન્સ્ટોલ કરો. PadForge ફક્ત GitHub (api.github.com, github.com અને તેના ડાઉનલોડ સર્વર) નો સંપર્ક કરે છે, અને તે જે એકમાત્ર ડેટા મોકલે છે તે તેનો પોતાનો સંસ્કરણ નંબર છે.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge ના નવા સંસ્કરણો માટે GitHub તપાસો અને અહીંથી ઇન્સ્ટોલ કરો, અને કંટ્રોલર ડેટાબેઝ અપડેટ કરો. PadForge ફક્ત GitHub (api.github.com, github.com અને તેના ડાઉનલોડ સર્વર, અને કંટ્રોલર ડેટાબેઝ માટે raw.githubusercontent.com) નો સંપર્ક કરે છે. તે જે એકમાત્ર ડેટા મોકલે છે તે તેનો પોતાનો સંસ્કરણ નંબર છે, અને કંટ્રોલર ડેટાબેઝ માટે GitHub એ છેલ્લા ડાઉનલોડને આપેલો ટૅગ.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>અપડેટ આપોઆપ તપાસો</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge શરૂ થાય ત્યારે અને પછી દર 12 કલાકે તપાસે છે.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>અપડેટ આપોઆપ ઇન્સ્ટોલ કરો</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>હમણાં તપાસો</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ઇન્સ્ટોલ કરો અને ફરી શરૂ કરો</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>રિલીઝ નોંધો</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>કંટ્રોલર ડેટાબેઝ</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>હમણાં અપડેટ કરો સમુદાયનો કંટ્રોલર ડેટાબેઝ (SDL_GameControllerDB) GitHub પરથી ડાઉનલોડ કરે છે અને PadForge ના આ સંસ્કરણમાં ન હોય તેવા મેપિંગ સેટિંગ્સ ફાઇલમાં રાખે છે. નવું મેપિંગ ફક્ત એવા કંટ્રોલર માટે વપરાય છે જેને બીજું કંઈ ગેમપૅડ તરીકે વાંચતું નથી, જે અસાઇન કરેલું નથી અને જે રો જૉયસ્ટિક મોડ ફરજિયાત કરો માં નથી. રીસેટ ડાઉનલોડ કરેલા બધા મેપિંગ દૂર કરે છે.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>હમણાં અપડેટ કરો</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>અપડેટ થઈ રહ્યું છે…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>અપડેટ તપાસી રહ્યું છે…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} અદ્યતન છે.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} ઉપલબ્ધ છે.</value></data>
@@ -729,6 +733,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge બે મિનિટ પછી પણ બંધ થયું નથી. તે બંધ થતાં જ અપડેટ ઇન્સ્ટોલ થશે. રાહ જોતા રહેવા {0} પસંદ કરો, અથવા આ અપડેટ છોડવા {1}. બંને રીતે, બંધ થયા પછી PadForge ફરી શરૂ થશે.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} નું અપડેટ ઇન્સ્ટોલ થવાનું પૂરું થયું નહીં. ફરી પ્રયાસ કરવા તેને સેટિંગ્સમાંથી ઇન્સ્ટોલ કરો.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} પર અપડેટ થયું.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>અંદર બનેલું: {0} મેપિંગ, {1} ની સમુદાય નકલ.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>અંદર બનેલું: {0} મેપિંગ, {1} ની સમુદાય નકલ. અપડેટ {2}: નવા {3}, બદલાયેલા {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>છેલ્લા અપડેટ પછી સમુદાય ડેટાબેઝ બદલાયો નથી.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub સુધી પહોંચી શકાયું નહીં: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge એ ડાઉનલોડ નકાર્યું કારણ કે તે અપેક્ષિત કંટ્રોલર ડેટાબેઝ નથી. કંઈ બદલાયું નથી.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>નવું મેપિંગ તેનું કંટ્રોલર આગલી વાર કનેક્ટ થાય ત્યારે વપરાય છે.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>બદલાયેલું મેપિંગ PadForge આગલી વાર શરૂ થાય ત્યારે વપરાય છે.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>નાનું કરીને શરૂ કરો</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>લૉગિન પર શરૂ કરો</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

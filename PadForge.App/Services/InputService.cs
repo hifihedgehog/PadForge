@@ -983,6 +983,7 @@ namespace PadForge.Services
             _inputManager.TabletCaptureChanged += OnTabletCaptureChanged;
             _inputManager.TouchpadCaptureChanged += OnTouchpadCaptureChanged;
             _inputManager.WinUsbTakeoversFound += OnWinUsbTakeoversFound;
+            _inputManager.ControllerDatabaseRowFirstUsed += OnControllerDatabaseRowFirstUsed;
             // Read on the look's worker. A list that changes under it fails
             // that look, and the next one asks again.
             _inputManager.WinUsbOrphanFind = () => WinUsbKeyboardBinding.FindOrphans(_mainVm.Settings.WinUsbOptIns.ToArray());
@@ -2704,6 +2705,7 @@ namespace PadForge.Services
                 _inputManager.TabletCaptureChanged -= OnTabletCaptureChanged;
                 _inputManager.TouchpadCaptureChanged -= OnTouchpadCaptureChanged;
                 _inputManager.WinUsbTakeoversFound -= OnWinUsbTakeoversFound;
+                _inputManager.ControllerDatabaseRowFirstUsed -= OnControllerDatabaseRowFirstUsed;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.ErrorResolved -= OnErrorResolved;
@@ -11092,6 +11094,12 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(SyncDevicesList));
         }
+
+        /// <summary>A controller was read through a new controller database
+        /// row for the first time (#597), raised on the poll thread. The row
+        /// carries a mark from then on, so the settings are saved with it.
+        /// MarkDirty is safe from any thread.</summary>
+        private void OnControllerDatabaseRowFirstUsed() => _settingsService?.MarkDirty();
 
         /// <summary>A Bliss-Box port opened, closed or identified another
         /// controller (#469): its row's objects take the new names, a port

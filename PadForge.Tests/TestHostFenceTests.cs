@@ -186,6 +186,9 @@ namespace PadForge.Tests
         private const string Stun = "PadForge.Engine/RemoteLink/StunClient.cs";
         private const string Relay = "PadForge.Engine/RemoteLink/IrohRelayClient.cs";
         private const string TwitchChat = Input + "Twitch/TwitchChatClient.cs";
+        internal const string DatabaseUpdater = Services + "ControllerDatabaseUpdater.cs";
+        internal const string DatabaseSend = "private static Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)";
+        internal const string DatabaseGuard = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(request.RequestUri.IdnHost))";
         private const string SteamHttpFile = "PadForge.SteamWorkshop/Api/SteamHttp.cs";
         private const string SteamClientFile = "PadForge.SteamWorkshop/Api/SteamWorkshopClient.cs";
         private const string WorkshopPanel = "PadForge.App/Views/CommunityConfigsPanel.xaml.cs";
@@ -485,6 +488,8 @@ namespace PadForge.Tests
             new object[] { Relay, "private async Task<bool> ConnectOneAsync(string host, CancellationToken ct)", RefusesHost + " return false;" },
             // The Twitch Chat row's connection to Twitch's chat (#555).
             new object[] { TwitchChat, "private async Task<bool> SessionAsync(CancellationToken ct)", "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(Host))" },
+            // The controller database's one request to GitHub (#597).
+            new object[] { DatabaseUpdater, DatabaseSend, DatabaseGuard },
             new object[] { Outbound, "public static bool Refuses(IPAddress address)", "OffLimitsForTest && (address == null || !IPAddress.IsLoopback(address));" },
             new object[] { Outbound, "public static bool RefusesHost(string host)", "OffLimitsForTest && !IsLoopbackHost(host);" },
             new object[] { Outbound, "public static HttpClient NewHttpClient()", "OffLimitsForTest ? new HttpClient(new LoopbackOnly()) : new HttpClient();" },
@@ -848,13 +853,16 @@ namespace PadForge.Tests
 
             // An HTTP client. The driver installer's, the updater's and
             // Steam's refuse under their own flags, and the two vendor
-            // clients under the vendor gate. Get Profiles' community configs
+            // clients under the vendor gate. The controller database's
+            // sends through the one member that asks the outbound gate
+            // first (#597, AskedFirst). Get Profiles' community configs
             // make none of their own (#574): every Steam call goes through
             // the PadForge.SteamWorkshop clients counted above.
             Assert.Equal(Map(
                 ("PadForge.App/Common/DriverInstaller.cs", 2),
                 (Chroma, 1),
                 (GameSense, 1),
+                (DatabaseUpdater, 1),
                 (Services + "UpdateService.cs", 1),
                 (Outbound, 2),
                 (SteamHttpFile, 2)), FenceSource.Census(Creates("HttpClient")));

@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցուցադրել ծանուցումներու գօտիին մէջ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ծանուցումներու գօտիի պատկերակը տեսանելի պահել, մինչ պատուհանը բաց է, որպէսզի անոր ցանկին «Ելք»-ը միշտ մէկ սեղմում հեռու ըլլայ։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Ստուգել GitHub-ը PadForge-ի նոր տարբերակներու համար եւ զանոնք տեղադրել հոսկէ։ PadForge-ը կը կապուի միայն GitHub-ի հետ (api.github.com, github.com եւ անոր ներբեռնման սպասարկիչները), եւ միակ տուեալը, որ կը ղրկէ, իր սեփական տարբերակի թիւն է։</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Ստուգել GitHub-ը PadForge-ի նոր տարբերակներու համար եւ զանոնք տեղադրել հոսկէ, ինչպէս նաեւ թարմացնել կառավարիչներու տուեալներու շտեմարանը։ PadForge-ը կը կապուի միայն GitHub-ի հետ (api.github.com, github.com եւ անոր ներբեռնման սպասարկիչները, եւ raw.githubusercontent.com՝ կառավարիչներու տուեալներու շտեմարանին համար)։ Միակ տուեալը, որ կը ղրկէ, իր սեփական տարբերակի թիւն է, իսկ կառավարիչներու տուեալներու շտեմարանին համար՝ այն պիտակը, որ GitHub-ը տուաւ վերջին ներբեռնումին։</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Ինքնաբերաբար ստուգել թարմացումները</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Կը ստուգէ, երբ PadForge-ը կը գործարկուի, եւ անկէ ետք ամէն 12 ժամը անգամ մը։</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Ինքնաբերաբար տեղադրել թարմացումները</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Ստուգել հիմա</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Տեղադրել եւ վերագործարկել</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Թողարկման նօթեր</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Կառավարիչներու տուեալներու շտեմարան</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա» կոճակը GitHub-էն կը ներբեռնէ համայնքի կառավարիչներու տուեալներու շտեմարանը (SDL_GameControllerDB) եւ կարգաւորումներու ֆայլին մէջ կը պահէ այն համապատասխանեցումները, որոնք PadForge-ի այս տարբերակը չունի։ Նոր համապատասխանեցում մը կը գործածուի միայն այն կառավարիչին համար, զոր ուրիշ ոչինչ կը կարդայ իբրեւ խաղային կառավարիչ, որ նշանակուած չէ եւ որ «Ստիպողաբար հում ճոյսթիքի կերպ»-ի մէջ չէ։ Վերակայումը կը հեռացնէ բոլոր ներբեռնուած համապատասխանեցումները։</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Թարմացնել հիմա</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Կը թարմացուի…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Թարմացումներու ստուգում…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0}-ը արդիական է։</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0}-ը հասանելի է։</value></data>
@@ -729,6 +733,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge-ը երկու վայրկեան ետք տակաւին չէ փակուած։ Թարմացումը կը տեղադրուի անմիջապէս, երբ ան փակուի։ Ընտրեցէք {0}՝ սպասելը շարունակելու համար, կամ {1}՝ այս թարմացումը անցնելու համար։ Որեւէ պարագային, PadForge-ը նորէն կը գործարկուի, երբ փակուի։</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}-ի թարմացումը չաւարտեց տեղադրուիլը։ Նորէն փորձելու համար տեղադրեցէք զայն Կարգաւորումներէն։</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge-ը թարմացուեցաւ {0}-ի։</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ներկառուցուած՝ {0} համապատասխանեցում, համայնքի պատճէն՝ {1}։</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ներկառուցուած՝ {0} համապատասխանեցում, համայնքի պատճէն՝ {1}։ Թարմացուած՝ {2}, նոր՝ {3}, փոխուած՝ {4}։</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Համայնքի շտեմարանը չէ փոխուած վերջին թարմացումէն ի վեր։</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-ին կարելի չեղաւ հասնիլ: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-ը մերժեց ներբեռնուածը, քանի որ ան ակնկալուած կառավարիչներու շտեմարանը չէ։ Ոչինչ փոխուեցաւ։</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Նոր համապատասխանեցում մը կը գործածուի, երբ անոր կառավարիչը յաջորդ անգամ միանայ։</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Փոխուած համապատասխանեցում մը կը գործածուի PadForge-ի յաջորդ գործարկման ատեն։</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Փոքրացած գործարկել</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Գործարկել մուտք գործելու ատեն</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

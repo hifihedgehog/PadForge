@@ -1206,4 +1206,12 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ke version poocho</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Poocho kya chale hai</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Aisan line bhejo jon PadForge nai jaane: {0}</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Naya mapping khali uu controller ke liye use hoi jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Reset sab download karaa mapping hataawe hai.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Abhi update karo</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Update hoe rahaa…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Andar se: {0} mapping, community copy {1} ke.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Andar se: {0} mapping, community copy {1} ke. {2} ke update bhais: {3} naya, {4} badla.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Pichhla update se community database nai badla hai.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Naya mapping agla baar use hoi jab uske controller connect hoi.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Badla mapping agla baar use hoi jab PadForge chalu hoi.</value></data>
 </root>

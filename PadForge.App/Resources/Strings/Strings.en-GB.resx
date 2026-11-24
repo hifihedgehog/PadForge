@@ -645,4 +645,5 @@
   <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentre camera</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimise the window</value></data>
   <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automation is on: programs can switch profiles, read devices and settings and send inputs</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Check GitHub for new versions of PadForge and install them from here, and update the controller database. PadForge contacts only GitHub (api.github.com, github.com and its download servers and raw.githubusercontent.com for the controller database). The only data it sends is its own version number and, for the controller database, the tag GitHub gave the last download.</value></data>
 </root>

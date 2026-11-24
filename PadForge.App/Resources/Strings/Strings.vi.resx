@@ -745,7 +745,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Luôn hiện trong khay hệ thống</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Giữ biểu tượng khay luôn hiển thị khi cửa sổ đang mở, để lệnh Thoát trong menu của nó luôn chỉ cách một cú nhấp.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cập nhật</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kiểm tra phiên bản PadForge mới trên GitHub và cài đặt ngay tại đây. PadForge chỉ liên hệ với GitHub (api.github.com, github.com và các máy chủ tải xuống của nó), và dữ liệu duy nhất nó gửi là số phiên bản của chính nó.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kiểm tra phiên bản PadForge mới trên GitHub và cài đặt ngay tại đây, đồng thời cập nhật cơ sở dữ liệu tay cầm. PadForge chỉ liên hệ với GitHub (api.github.com, github.com và các máy chủ tải xuống của nó, cùng raw.githubusercontent.com cho cơ sở dữ liệu tay cầm). Dữ liệu duy nhất nó gửi là số phiên bản của chính nó và, với cơ sở dữ liệu tay cầm, thẻ mà GitHub gán cho lần tải trước.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Tự động kiểm tra cập nhật</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kiểm tra khi PadForge khởi động và cứ 12 giờ một lần sau đó.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Tự động cài đặt cập nhật</value></data>
@@ -755,6 +755,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Kiểm tra ngay</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Cài đặt và khởi động lại</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Ghi chú phát hành</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Cơ sở dữ liệu tay cầm</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cập nhật ngay tải cơ sở dữ liệu tay cầm của cộng đồng (SDL_GameControllerDB) từ GitHub và giữ lại trong tệp thiết lập các ánh xạ mà phiên bản PadForge này còn thiếu. Một ánh xạ mới chỉ được dùng cho tay cầm mà không gì khác nhận là gamepad, chưa được gán và không ở chế độ joystick thô. Nút đặt lại xóa mọi ánh xạ đã tải.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Cập nhật ngay</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Đang cập nhật…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Đang kiểm tra cập nhật…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} là bản mới nhất.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>Đã có PadForge {0}.</value></data>
@@ -780,6 +784,13 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge chưa đóng sau hai phút. Bản cập nhật sẽ được cài đặt ngay khi nó đóng. Chọn {0} để tiếp tục chờ, hoặc {1} để bỏ qua bản cập nhật này. Dù chọn cách nào, PadForge cũng sẽ khởi động lại sau khi đã đóng.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Bản cập nhật lên PadForge {0} chưa cài đặt xong. Hãy cài đặt từ Thiết lập để thử lại.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge đã được cập nhật lên {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Có sẵn: {0} ánh xạ, bản sao cộng đồng ngày {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Có sẵn: {0} ánh xạ, bản sao cộng đồng ngày {1}. Đã cập nhật {2}: mới {3}, đã đổi {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Cơ sở dữ liệu cộng đồng không thay đổi kể từ lần cập nhật trước.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Không kết nối được GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge đã từ chối bản tải xuống vì nó không phải cơ sở dữ liệu tay cầm mà PadForge mong đợi. Không có gì thay đổi.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ánh xạ mới được dùng vào lần tới tay cầm của nó kết nối.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ánh xạ đã đổi được dùng vào lần khởi động PadForge tiếp theo.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Khởi động thu nhỏ</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Khởi động khi đăng nhập</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

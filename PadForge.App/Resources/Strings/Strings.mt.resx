@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dejjem uri fis-system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Żomm l-ikona tat-tray viżibbli waqt li t-tieqa tkun miftuħa, biex Oħroġ fil-menu tagħha jkun dejjem klikk wieħed 'il bogħod.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aġġornamenti</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Iċċekkja GitHub għal verżjonijiet ġodda ta' PadForge u installahom minn hawn. PadForge jikkuntattja biss lil GitHub (api.github.com, github.com u s-servers tad-download tiegħu), u l-unika data li jibgħat hija n-numru tal-verżjoni tiegħu stess.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Iċċekkja GitHub għal verżjonijiet ġodda ta' PadForge u installahom minn hawn, u aġġorna d-database tal-kontrolluri. PadForge jikkuntattja biss lil GitHub (api.github.com, github.com u s-servers tad-download tiegħu, u raw.githubusercontent.com għad-database tal-kontrolluri). L-unika data li jibgħat hija n-numru tal-verżjoni tiegħu stess u, għad-database tal-kontrolluri, it-tag li ta GitHub lill-aħħar tniżżil.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Iċċekkja għall-aġġornamenti awtomatikament</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Jiċċekkja meta jibda PadForge u kull 12-il siegħa minn hemm 'il quddiem.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Installa l-aġġornamenti awtomatikament</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Iċċekkja issa</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installa u erġa' ibda</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Noti tal-verżjoni</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database tal-kontrolluri</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aġġorna issa jniżżel id-database komunitarja tal-kontrolluri (SDL_GameControllerDB) minn GitHub u jżomm, fil-fajl tas-settings, l-immappjar li din il-verżjoni ta' PadForge m'għandhiex. Immappjar ġdid jintuża biss għal kontrollur li xejn ieħor ma jaqrah bħala gamepad, li mhux assenjat u li mhux fil-modalità tal-joystick mhux ipproċessat. L-irrisettjar ineħħi kull immappjar imniżżel.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Aġġorna issa</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Qed jaġġorna…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Qed jiċċekkja għall-aġġornamenti…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} huwa aġġornat.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} huwa disponibbli.</value></data>
@@ -729,6 +733,13 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge għadu ma għalaqx wara żewġ minuti. L-aġġornament jiġi installat hekk kif jagħlaq. Agħżel {0} biex tibqa' tistenna, jew {1} biex taqbeż dan l-aġġornament. Fi kwalunkwe każ, PadForge jerġa' jibda ladarba jkun għalaq.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>L-aġġornament għal PadForge {0} ma spiċċax jiġi installat. Installah mis-Settings biex terġa' tipprova.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ġie aġġornat għal {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Inkorporat: {0} immappjar, kopja komunitarja ta' {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inkorporat: {0} immappjar, kopja komunitarja ta' {1}. Aġġornat {2}: ġodda {3}, mibdula {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Id-database komunitarja ma nbidlitx mill-aħħar aġġornament.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ma setax jilħaq GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge irrifjuta t-tniżżil għax mhuwiex id-database tal-kontrolluri li jistenna. Xejn ma nbidel.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Immappjar ġdid jintuża d-darba li jmiss li jitqabbad il-kontrollur tiegħu.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Immappjar mibdul jintuża d-darba li jmiss li jibda PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Ibda minimizzat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Ibda mal-login</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

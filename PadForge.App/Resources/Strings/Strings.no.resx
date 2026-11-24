@@ -745,7 +745,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vis alltid i systemstatusfeltet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hold ikonet i systemstatusfeltet synlig mens vinduet er åpent, slik at Avslutt i menyen alltid er ett klikk unna.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Oppdateringer</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Se etter nye versjoner av PadForge på GitHub, og installer dem herfra. PadForge kontakter bare GitHub (api.github.com, github.com og nedlastingsserverne derfra), og det eneste programmet sender, er sitt eget versjonsnummer.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Se etter nye versjoner av PadForge på GitHub og installer dem herfra, og oppdater kontrollerdatabasen. PadForge kontakter bare GitHub (api.github.com, github.com og nedlastingsserverne derfra, og raw.githubusercontent.com for kontrollerdatabasen). Det eneste programmet sender, er sitt eget versjonsnummer og, for kontrollerdatabasen, taggen GitHub ga ved siste nedlasting.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Se etter oppdateringer automatisk</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Ser etter når PadForge starter, og deretter hver 12. time.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Installer oppdateringer automatisk</value></data>
@@ -755,6 +755,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Sjekk nå</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installer og start på nytt</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Versjonsmerknader</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrollerdatabase</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Oppdater nå laster ned fellesskapets kontrollerdatabase (SDL_GameControllerDB) fra GitHub og beholder i innstillingsfilen tilordningene denne versjonen av PadForge mangler. En ny tilordning brukes bare for en kontroller som ingenting annet leser som en gamepad, som ikke er tilordnet og som ikke står i Tving rå joystickmodus. Tilbakestillingen fjerner alle nedlastede tilordninger.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Oppdater nå</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Oppdaterer…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Ser etter oppdateringer…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} er oppdatert.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} er tilgjengelig.</value></data>
@@ -780,6 +784,13 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge er ikke lukket etter to minutter. Oppdateringen installeres så snart programmet lukkes. Velg {0} for å fortsette å vente, eller {1} for å hoppe over denne oppdateringen. Uansett starter PadForge igjen når programmet er lukket.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Oppdateringen til PadForge {0} ble ikke ferdig installert. Installer den fra Innstillinger for å prøve igjen.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ble oppdatert til {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Innebygd: {0} tilordninger, fellesskapskopi fra {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Innebygd: {0} tilordninger, fellesskapskopi fra {1}. Oppdatert {2}: {3} nye, {4} endret.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Fellesskapsdatabasen har ikke endret seg siden forrige oppdatering.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Fikk ikke kontakt med GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge avviste nedlastingen fordi den ikke er kontrollerdatabasen det venter. Ingenting ble endret.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>En ny tilordning brukes neste gang kontrolleren kobles til.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>En endret tilordning brukes neste gang PadForge starter.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Start minimert</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Start ved pålogging</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

@@ -259,6 +259,13 @@
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} irahari.</value></data>
   <data name="Update_CheckFailed_Format" xml:space="preserve"><value>Ntibyashobotse gushakisha ivugurura: {0}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge yavuguruwe kuri {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Byubatswemo: ihuzwa {0}, kopi y'umuryango yo ku wa {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Byubatswemo: ihuzwa {0}, kopi y'umuryango yo ku wa {1}. Byavuguruwe ku wa {2}: bishya {3}, byahinduwe {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ububiko bw'amakuru bw'umuryango ntibwahindutse kuva ivugurura riheruka.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ntibyashobotse kugera kuri GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge yanze ibyamanuwe kuko atari ububiko bw'amakuru bwa kontorola itegereje. Nta cyahindutse.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ihuzwa rishya rikoreshwa ubutaha kontorola yaryo ihujwe.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ihuzwa ryahinduwe rikoreshwa ubutaha PadForge itangiye.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ongeraho…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Kuramo HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ibi ni byo bizakurwa kuri iyi PC. PadForge yongera gushyiramo HIDMaestro ubutaha itangije kontorola y'ikoranabuhanga.</value></data>
@@ -2024,4 +2031,8 @@
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Ifoto: ishusho y'isomero rya Steam ya {0}.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ntishobora gusoma ifoto ya Steam y'uyu mukino.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Komeza kohereza</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ububiko bw'amakuru bwa kontorola</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Vugurura nonaha imanura ububiko bw'amakuru bwa kontorola bw'umuryango (SDL_GameControllerDB) kuri GitHub kandi ikabika, muri dosiye y'igenamiterere, ihuzwa iyi verisiyo ya PadForge idafite. Ihuzwa rishya rikoreshwa gusa kuri kontorola nta kindi gisoma nka gamepad, idahujwe kandi itari muri Force Raw Joystick Mode. Gusubiza uko byari biri bikuraho ihuzwa ryose ryamanuwe.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Vugurura nonaha</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Iravugurura…</value></data>
 </root>

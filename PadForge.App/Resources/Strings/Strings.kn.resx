@@ -688,7 +688,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ಯಾವಾಗಲೂ ಸಿಸ್ಟಮ್ ಟ್ರೇನಲ್ಲಿ ತೋರಿಸಿ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ವಿಂಡೋ ತೆರೆದಿರುವಾಗ ಟ್ರೇ ಐಕಾನ್ ಗೋಚರಿಸಲಿ, ಇದರಿಂದ ಅದರ ಮೆನುವಿನಲ್ಲಿರುವ ನಿರ್ಗಮಿಸು ಯಾವಾಗಲೂ ಒಂದು ಕ್ಲಿಕ್ ದೂರದಲ್ಲಿರುತ್ತದೆ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ನವೀಕರಣಗಳು</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge ನ ಹೊಸ ಆವೃತ್ತಿಗಳಿಗಾಗಿ GitHub ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಇಲ್ಲಿಂದಲೇ ಸ್ಥಾಪಿಸಿ. PadForge GitHub ಅನ್ನು ಮಾತ್ರ ಸಂಪರ್ಕಿಸುತ್ತದೆ (api.github.com, github.com ಮತ್ತು ಅದರ ಡೌನ್‌ಲೋಡ್ ಸರ್ವರ್‌ಗಳು), ಮತ್ತು ಅದು ಕಳುಹಿಸುವ ಏಕೈಕ ಡೇಟಾ ತನ್ನ ಆವೃತ್ತಿ ಸಂಖ್ಯೆ.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge ನ ಹೊಸ ಆವೃತ್ತಿಗಳಿಗಾಗಿ GitHub ಪರಿಶೀಲಿಸಿ, ಇಲ್ಲಿಂದಲೇ ಸ್ಥಾಪಿಸಿ ಮತ್ತು ಕಂಟ್ರೋಲರ್ ಡೇಟಾಬೇಸ್ ಅನ್ನು ನವೀಕರಿಸಿ. PadForge GitHub ಅನ್ನು ಮಾತ್ರ ಸಂಪರ್ಕಿಸುತ್ತದೆ (api.github.com, github.com ಮತ್ತು ಅದರ ಡೌನ್‌ಲೋಡ್ ಸರ್ವರ್‌ಗಳು, ಮತ್ತು ಕಂಟ್ರೋಲರ್ ಡೇಟಾಬೇಸ್‌ಗಾಗಿ raw.githubusercontent.com). ಅದು ಕಳುಹಿಸುವ ಡೇಟಾ ತನ್ನ ಆವೃತ್ತಿ ಸಂಖ್ಯೆ ಮಾತ್ರ, ಮತ್ತು ಕಂಟ್ರೋಲರ್ ಡೇಟಾಬೇಸ್‌ಗಾಗಿ ಕೊನೆಯ ಡೌನ್‌ಲೋಡ್‌ಗೆ GitHub ನೀಡಿದ ಟ್ಯಾಗ್.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>ನವೀಕರಣಗಳನ್ನು ತಾನಾಗಿ ಪರಿಶೀಲಿಸಿ</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge ಪ್ರಾರಂಭವಾದಾಗ ಮತ್ತು ಅದರ ನಂತರ ಪ್ರತಿ 12 ಗಂಟೆಗೊಮ್ಮೆ ಪರಿಶೀಲಿಸುತ್ತದೆ.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>ನವೀಕರಣಗಳನ್ನು ತಾನಾಗಿ ಸ್ಥಾಪಿಸಿ</value></data>
@@ -698,6 +698,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>ಈಗ ಪರಿಶೀಲಿಸಿ</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ಸ್ಥಾಪಿಸಿ ಮತ್ತು ಮರುಪ್ರಾರಂಭಿಸಿ</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ಬಿಡುಗಡೆ ಟಿಪ್ಪಣಿಗಳು</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಡೇಟಾಬೇಸ್</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ಈಗ ನವೀಕರಿಸಿ ಬಟನ್ GitHub ನಿಂದ ಸಮುದಾಯದ ಕಂಟ್ರೋಲರ್ ಡೇಟಾಬೇಸ್ (SDL_GameControllerDB) ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ, PadForge ನ ಈ ಆವೃತ್ತಿಯಲ್ಲಿಲ್ಲದ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ಸೆಟ್ಟಿಂಗ್ಸ್ ಫೈಲ್‌ನಲ್ಲಿ ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ. ಹೊಸ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನು ಬೇರೆ ಯಾವುದೂ ಗೇಮ್‌ಪ್ಯಾಡ್ ಎಂದು ಓದದ, ನಿಯೋಜಿಸದ ಮತ್ತು ರಾ ಜಾಯ್‌ಸ್ಟಿಕ್ ಮೋಡ್‌ನಲ್ಲಿ ಇಲ್ಲದ ಕಂಟ್ರೋಲರ್‌ಗೆ ಮಾತ್ರ ಬಳಸಲಾಗುತ್ತದೆ. ಮರುಹೊಂದಿಸುವಿಕೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಎಲ್ಲಾ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ಈಗ ನವೀಕರಿಸಿ</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>ನವೀಕರಿಸಲಾಗುತ್ತಿದೆ…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} ನವೀಕೃತವಾಗಿದೆ.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} ಲಭ್ಯವಿದೆ.</value></data>
@@ -723,6 +727,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>ಎರಡು ನಿಮಿಷಗಳ ನಂತರವೂ PadForge ಮುಚ್ಚಿಲ್ಲ. ಅದು ಮುಚ್ಚಿದ ತಕ್ಷಣ ನವೀಕರಣ ಸ್ಥಾಪನೆಯಾಗುತ್ತದೆ. ಕಾಯುತ್ತಿರಲು {0} ಅಥವಾ ಈ ನವೀಕರಣವನ್ನು ಬಿಟ್ಟುಬಿಡಲು {1} ಆಯ್ಕೆಮಾಡಿ. ಯಾವುದನ್ನಾದರೂ, PadForge ಮುಚ್ಚಿದ ನಂತರ ಮತ್ತೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} ಗೆ ನವೀಕರಣ ಸ್ಥಾಪನೆ ಪೂರ್ಣಗೊಳ್ಳಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಲು ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಿಂದ ಸ್ಥಾಪಿಸಿ.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ಅನ್ನು {0} ಗೆ ನವೀಕರಿಸಲಾಯಿತು.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ಅಂತರ್ನಿರ್ಮಿತ: {0} ಮ್ಯಾಪಿಂಗ್‌ಗಳು, {1} ರ ಸಮುದಾಯ ಪ್ರತಿ.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ಅಂತರ್ನಿರ್ಮಿತ: {0} ಮ್ಯಾಪಿಂಗ್‌ಗಳು, {1} ರ ಸಮುದಾಯ ಪ್ರತಿ. {2} ರಂದು ನವೀಕರಿಸಲಾಗಿದೆ: ಹೊಸವು {3}, ಬದಲಾದವು {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>ಕೊನೆಯ ನವೀಕರಣದ ನಂತರ ಸಮುದಾಯ ಡೇಟಾಬೇಸ್ ಬದಲಾಗಿಲ್ಲ.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>ಡೌನ್‌ಲೋಡ್ PadForge ನಿರೀಕ್ಷಿಸುವ ಕಂಟ್ರೋಲರ್ ಡೇಟಾಬೇಸ್ ಅಲ್ಲದ ಕಾರಣ PadForge ಅದನ್ನು ನಿರಾಕರಿಸಿತು. ಏನೂ ಬದಲಾಗಿಲ್ಲ.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>ಹೊಸ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನು ಅದರ ಕಂಟ್ರೋಲರ್ ಮುಂದಿನ ಬಾರಿ ಸಂಪರ್ಕಗೊಂಡಾಗ ಬಳಸಲಾಗುತ್ತದೆ.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>ಬದಲಾದ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನು ಮುಂದಿನ ಬಾರಿ PadForge ಪ್ರಾರಂಭವಾದಾಗ ಬಳಸಲಾಗುತ್ತದೆ.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ಮಿನಿಮೈಸ್ ಆಗಿ ಪ್ರಾರಂಭಿಸಿ</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ಲಾಗಿನ್ ಆದಾಗ ಪ್ರಾರಂಭಿಸಿ</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

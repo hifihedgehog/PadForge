@@ -205,6 +205,7 @@ namespace PadForge.Services
             if (_profilesCompactedOnLoad) { _profilesCompactedOnLoad = false; MarkDirty(); }
             if (_accessCodeUnsavedOnLoad) { _accessCodeUnsavedOnLoad = false; MarkDirty(); }
             if (_peripheralSwitchesMigratedOnLoad) { _peripheralSwitchesMigratedOnLoad = false; MarkDirty(); }
+            if (_controllerDatabaseChangedOnLoad) { _controllerDatabaseChangedOnLoad = false; MarkDirty(); }
         }
 
         // ─────────────────────────────────────────────
@@ -271,6 +272,10 @@ namespace PadForge.Services
                 // Fold them onto those devices' Gyro cards now: assignment,
                 // the only other fold, will not run for them again.
                 data.FoldCarriedGyroStamps();
+
+                // The controller database section (#597), judged against
+                // what this release carries. A file without one has none.
+                LoadControllerDatabase(data.ControllerDatabase);
 
                 // Pre-deserialization migrations applied to every PadSetting
                 // before they're handed out to UserSettings or the VM.
@@ -4745,6 +4750,39 @@ namespace PadForge.Services
         /// on each launch.</summary>
         private bool _accessCodeUnsavedOnLoad;
 
+        /// <summary>Set when the load read the controller database section
+        /// as another one than the file holds (#597): a row this release now
+        /// carries was dropped, or the file came from another build.
+        /// Re-armed after the same post-load clear, so the file follows.</summary>
+        private bool _controllerDatabaseChangedOnLoad;
+
+        /// <summary>
+        /// Takes the file's controller database section, or its absence, as
+        /// the one in force (#597). Every row is judged again against this
+        /// release's baseline (<see cref="ControllerDatabaseSection.FromData"/>),
+        /// which is the prune a new version owes: a row the new SDL carries
+        /// itself goes. A section that cannot be read is no section. It is
+        /// never the reason a settings file fails to load.
+        /// </summary>
+        private void LoadControllerDatabase(ControllerDatabaseData stored)
+        {
+            ControllerDatabaseSection section = null;
+            bool changed;
+            try
+            {
+                section = ControllerDatabaseSection.FromData(stored, ControllerDatabaseBaseline.Embedded,
+                    BuildIdentity.Display, out changed);
+            }
+            catch (Exception ex)
+            {
+                changed = stored != null;
+                PadForge.Engine.SdlDiagLog.WriteLine("MAPPINGS database section not read: " + ex.Message);
+            }
+            SettingsManager.ControllerDatabase = section;
+            if (changed) _controllerDatabaseChangedOnLoad = true;
+            _mainVm.Settings.RaiseControllerDatabaseStatus();
+        }
+
         // ─────────────────────────────────────────────
         //  Save
         // ─────────────────────────────────────────────
@@ -4874,6 +4912,10 @@ namespace PadForge.Services
                 // Collect profiles.
                 if (SettingsManager.Profiles.Count > 0)
                     data.Profiles = SettingsManager.Profiles.ToArray();
+
+                // The controller database section (#597). None, and the
+                // element is left out of the file.
+                data.ControllerDatabase = SettingsManager.ControllerDatabase?.ToData();
 
                 // Serialize to an in-memory buffer first so a serializer
                 // crash mid-write never truncates the on-disk file. The old
@@ -6104,6 +6146,11 @@ namespace PadForge.Services
             SettingsManager.SlotMappingSets =
                 new Engine.Data.MappingSet[Common.Input.InputManager.MaxPads];
             SettingsManager.PendingDefaultSnapshot = null;
+            // The downloaded controller database rows (#597): a fresh
+            // install has none. The section is no part of AppSettingsData,
+            // so the rebuild below does not reach it.
+            SettingsManager.ControllerDatabase = null;
+            _mainVm.Settings.RaiseControllerDatabaseStatus();
             // Sibling contract from RemoveUserProfile: every _userProfiles
             // mutation reloads the HM catalog, or the Extended profile
             // dropdown keeps serving the wiped imports for the session.
@@ -6255,6 +6302,7 @@ namespace PadForge.Services
             if (_profilesCompactedOnLoad) { _profilesCompactedOnLoad = false; MarkDirty(); }
             if (_accessCodeUnsavedOnLoad) { _accessCodeUnsavedOnLoad = false; MarkDirty(); }
             if (_peripheralSwitchesMigratedOnLoad) { _peripheralSwitchesMigratedOnLoad = false; MarkDirty(); }
+            if (_controllerDatabaseChangedOnLoad) { _controllerDatabaseChangedOnLoad = false; MarkDirty(); }
         }
 
         /// <summary>
@@ -6894,6 +6942,69 @@ namespace PadForge.Services
     }
 
     /// <summary>
+    /// The controller database section (#597): where and when the community
+    /// database was fetched, and the rows of it that are new or changed
+    /// against what the release that stored them carries. The whole of the
+    /// feature's state is here, in the one settings file.
+    /// PadForge.Common.Input.ControllerDatabaseSection reads it and judges
+    /// every row again, so nothing in it is taken on trust. Every value is
+    /// held as text for that reason: a number or a mark the reader cannot
+    /// make sense of costs that value, never the load of the file.
+    /// </summary>
+    public class ControllerDatabaseData
+    {
+        /// <summary>The address the file was fetched from.</summary>
+        [XmlAttribute]
+        public string Source { get; set; }
+
+        /// <summary>When, in UTC, as 2026-11-23T14:17:35Z.</summary>
+        [XmlAttribute]
+        public string FetchedUtc { get; set; }
+
+        /// <summary>The tag GitHub gave the download, sent back with the
+        /// next one so an unchanged file is not fetched again.</summary>
+        [XmlAttribute]
+        public string ETag { get; set; }
+
+        /// <summary>SHA-256 of the download.</summary>
+        [XmlAttribute]
+        public string Sha256 { get; set; }
+
+        /// <summary>Windows rows of the downloaded copy, a whole number.</summary>
+        [XmlAttribute]
+        public string WindowsRows { get; set; }
+
+        /// <summary>The community commit the storing release's SDL carries.</summary>
+        [XmlAttribute]
+        public string BaselinePin { get; set; }
+
+        /// <summary>The PadForge build that stored the section.</summary>
+        [XmlAttribute]
+        public string AppVersion { get; set; }
+
+        [XmlElement("Row")]
+        public ControllerDatabaseRowData[] Rows { get; set; }
+    }
+
+    /// <summary>One stored row: its text exactly as the community wrote it,
+    /// whether it is new to this release or a changed form of a row the
+    /// release carries, and whether a controller is read through it.</summary>
+    public class ControllerDatabaseRowData
+    {
+        /// <summary>New or Changed.</summary>
+        [XmlAttribute]
+        public string Kind { get; set; }
+
+        /// <summary>"true" on a new row a controller was read through, and
+        /// left out otherwise.</summary>
+        [XmlAttribute]
+        public string InUse { get; set; }
+
+        [XmlText]
+        public string Text { get; set; }
+    }
+
+    /// <summary>
     /// Root element for the PadForge settings XML file.
     /// </summary>
     [XmlRoot("PadForgeSettings")]
@@ -6937,6 +7048,14 @@ namespace PadForge.Services
         [XmlArray("Profiles")]
         [XmlArrayItem("Profile")]
         public ProfileData[] Profiles { get; set; }
+
+        /// <summary>The controller database rows fetched since this release
+        /// (#597). Null, and so left out of the file, until Update Now has
+        /// stored a download and again once the row's reset has emptied it.
+        /// A file from before the feature has no such element and loads the
+        /// same way.</summary>
+        [XmlElement("ControllerDatabase")]
+        public ControllerDatabaseData ControllerDatabase { get; set; }
 
         /// <summary>Migrates pre-v4.x element spellings forward after
         /// deserialization: the per-(slot, device) config arrays were

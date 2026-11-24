@@ -1536,4 +1536,14 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Foto (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faịlụ niile (*.*)|*.*</value></data>
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge enweghị ike ịgụ faịlụ ahụ.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ahụghị faịlụ ahụ.</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ntọgharị ahụ na-ewepụ mapping niile e budatara.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Na-emelite…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Dị n'ime: mapping {0}, oyiri obodo nke {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Dị n'ime: mapping {0}, oyiri obodo nke {1}. E meliteere {2}: ọhụrụ {3}, gbanwere agbanwe {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ọdụ data obodo agbanwebeghị kemgbe mmelite ikpeazụ.</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge jụrụ ihe e budatara n'ihi na ọ bụghị ọdụ data controller ọ na-atụ anya ya. Ọ dịghị ihe gbanwere.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A ga-eji mapping ọhụrụ oge ọzọ controller ya jikọrọ.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A ga-eji mapping gbanwere agbanwe oge ọzọ PadForge malitere.</value></data>
 </root>

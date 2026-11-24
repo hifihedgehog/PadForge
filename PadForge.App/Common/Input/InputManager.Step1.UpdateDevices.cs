@@ -149,6 +149,13 @@ namespace PadForge.Common.Input
                     if (_suppressedSelfVirtualIds.Contains(instanceId))
                         continue;
 
+                    // A controller database row for a controller nothing
+                    // else reads as a gamepad goes to SDL before the open,
+                    // which asks SDL whether the joystick is one (#597).
+                    // A row used for the first time is marked once the
+                    // device is kept, below.
+                    string databaseRowFirstUsed = OfferControllerDatabaseRow(instanceId);
+
                     // Open the device by instance ID. The SDL3 fork already
                     // dropped HIDMaestro HIDs from hid_enumerate, and the
                     // OpenXInput fork's xinput1_4.dll never gives a HIDMaestro
@@ -238,6 +245,7 @@ namespace PadForge.Common.Input
 
                     // Track the SDL instance ID with its wrapper.
                     _openedSdlInstanceIds[wrapper.SdlInstanceId] = wrapper;
+                    MarkControllerDatabaseRowInUse(databaseRowFirstUsed);
 
                     MarkChanged(ref changed);
                 }

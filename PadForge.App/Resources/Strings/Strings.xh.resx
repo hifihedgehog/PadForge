@@ -1968,4 +1968,12 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ithatha imibala emine kumfanekiso.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imifanekiso (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Zonke iifayile (*.*)|*.*</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Qhubeka uthumela</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Isiseko sedatha sezilawuli</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hlaziya ngoku ikhuphela isiseko sedatha sezilawuli soluntu (SDL_GameControllerDB) kwi-GitHub, kwaye igcina kwifayile yeesetingi iimephu le nguqulelo ye-PadForge engenazo. Imephu entsha isetyenziswa kuphela kwisilawuli esingafundwa njenge-gamepad yenye into, esingabelwanga, nesingekho kwi-Force Raw Joystick Mode. Ukuseta kwakhona kususa zonke iimephu ezikhutshelweyo.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ezakhelwe ngaphakathi: {0} iimephu, ikopi yoluntu yomhla {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ezakhelwe ngaphakathi: {0} iimephu, ikopi yoluntu yomhla {1}. Kuhlaziywe {2}: ezintsha {3}, ezitshintshiweyo {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Isiseko sedatha soluntu asikatshintshi ukususela kuhlaziyo lokugqibela.</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>I-PadForge ilale ukukhuphela kuba asiso isiseko sedatha sezilawuli esisilindeleyo. Akukho nto itshintshileyo.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Imephu entsha isetyenziswa kwixesha elilandelayo isilawuli sayo siqhagamshela.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Imephu etshintshiweyo isetyenziswa kwixesha elilandelayo i-PadForge iqala.</value></data>
 </root>

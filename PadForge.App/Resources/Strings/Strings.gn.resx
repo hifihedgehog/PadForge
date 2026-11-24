@@ -1364,4 +1364,10 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eporandu PadForge versión</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Eporandu mba'épa omba'apo hína</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Emondo peteĩ línea PadForge ndoikuaáiva: {0}</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now omboguejy mando aty tekoha rehegua (SDL_GameControllerDB) GitHub guive ha oñongatu, configuración archivo ryepýpe, mapeo ko PadForge versión ndoguerekóiva. Peteĩ mapeo pyahu ojeporu añoite peteĩ mando ambue mba'eve nolee'ỹva gamepad ramo, noñemoĩriva ha ndaiporiva Force Raw Joystick Mode ryepýpe. Restablecer omboguete opaite mapeo ojeboguejy va'ekue.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ijapytepegua: {0} mapeo, tekoha kopia {1} rehegua.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ijapytepegua: {0} mapeo, tekoha kopia {1} rehegua. Oñembopyahu {2}: pyahu {3}, oñemoambuéva {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Mando aty tekoha rehegua noñemoambuéi ipaha ñembopyahu guive.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Peteĩ mapeo pyahu ojeporu imando oñembojoaju jey vove.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Peteĩ mapeo oñemoambuéva ojeporu PadForge oñepyrũ jey vove.</value></data>
 </root>

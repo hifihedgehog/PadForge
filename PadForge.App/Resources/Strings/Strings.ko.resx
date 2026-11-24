@@ -514,7 +514,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>항상 시스템 트레이에 표시</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>창이 열려 있는 동안에도 시스템 트레이 아이콘을 표시하여 언제든지 해당 메뉴에서 종료를 선택할 수 있습니다.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>업데이트</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub에서 PadForge의 새 버전을 확인하고 여기서 설치합니다. PadForge는 GitHub(api.github.com, github.com 및 해당 다운로드 서버)에만 연결하며, 전송하는 데이터는 자신의 버전 번호뿐입니다.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub에서 PadForge의 새 버전을 확인하고 여기서 설치하며, 컨트롤러 데이터베이스를 업데이트합니다. PadForge는 GitHub(api.github.com, github.com 및 해당 다운로드 서버, 컨트롤러 데이터베이스용 raw.githubusercontent.com)에만 연결합니다. 전송하는 데이터는 자신의 버전 번호와, 컨트롤러 데이터베이스의 경우 GitHub가 마지막 다운로드에 붙인 태그뿐입니다.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>자동으로 업데이트 확인</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge 시작 시와 이후 12시간마다 확인합니다.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>자동으로 업데이트 설치</value></data>
@@ -524,6 +524,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>지금 확인</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>설치 후 다시 시작</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>릴리스 노트</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>컨트롤러 데이터베이스</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>지금 업데이트는 커뮤니티 컨트롤러 데이터베이스(SDL_GameControllerDB)를 GitHub에서 다운로드하고, 이 버전의 PadForge에 없는 매핑을 설정 파일에 보관합니다. 새 매핑은 다른 방법으로는 게임패드로 인식되지 않고, 할당되지 않았으며, 강제 원시 조이스틱 모드가 아닌 컨트롤러에만 사용됩니다. 초기화는 다운로드한 모든 매핑을 제거합니다.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>지금 업데이트</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>업데이트 중…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>업데이트 확인 중…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0}은(는) 최신 버전입니다.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0}을(를) 사용할 수 있습니다.</value></data>
@@ -549,6 +553,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>2분이 지나도 PadForge가 종료되지 않았습니다. 종료되는 즉시 업데이트가 설치됩니다. 계속 기다리려면 [{0}]을, 이 업데이트를 건너뛰려면 [{1}]를 선택하세요. 어느 쪽이든 PadForge는 종료된 후 다시 시작됩니다.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}(으)로의 업데이트 설치가 완료되지 않았습니다. 다시 시도하려면 설정에서 설치하세요.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge가 {0}(으)로 업데이트되었습니다.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>기본 제공: 매핑 {0}개, {1}자 커뮤니티 사본.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>기본 제공: 매핑 {0}개, {1}자 커뮤니티 사본. {2} 업데이트: 새로운 것 {3}개, 변경된 것 {4}개.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>마지막 업데이트 이후 커뮤니티 데이터베이스가 바뀌지 않았습니다.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub에 연결할 수 없습니다: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge가 예상하는 컨트롤러 데이터베이스가 아니어서 다운로드를 거부했습니다. 변경된 것은 없습니다.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>새 매핑은 해당 컨트롤러가 다음에 연결될 때 사용됩니다.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>변경된 매핑은 PadForge를 다음에 시작할 때 사용됩니다.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>최소화 상태로 시작</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>로그인 시 자동 시작</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

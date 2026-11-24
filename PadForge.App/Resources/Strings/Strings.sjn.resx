@@ -745,7 +745,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Tano anuir vi dast</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Heb aerem i dast athgen lo i henneth edrannen, sí Uthwen vi narth în ferui anuir.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cŷl</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cetho GitHub an PadForge cîr a panno hon o sí. PadForge ianna ero GitHub (api.github.com, github.com a pethron ged în), a ero noth în menna.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cetho GitHub an noth cîr o PadForge a panno hain o sí, a cýro i narth maethas. PadForge ianna na GitHub ero (api.github.com, github.com a pethron ged în, a raw.githubusercontent.com an i narth maethas). I noth ero i menna noth în, a, an i narth maethas, i têw i GitHub annant i ged medui.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Cetho cŷl anuir</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Ceth ir PadForge iesta a pân 12 lû ab hen.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Panno cŷl anuir</value></data>
@@ -755,6 +755,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Cetho hí</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Panno a iesto nui</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Sarth edannad</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Narth maethas</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cýro hí ged i narth maethas govod (SDL_GameControllerDB) o GitHub a heb, vi parlas cilith, i theinas i noth hen o PadForge ú-gar. Theinas cîr maethannen ero an maethas i alnad egel henna sui maethas telias, i ú-annannen, a i ú-vi Henno sui bang maethas. I redhiad haeda ilphen theinas gedannen.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Cýro hí</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Cýra…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Cethad cŷl…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} i medui.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} ferui.</value></data>
@@ -780,6 +784,13 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge ú hol ab tad luig. I gŷl panna im ir hol. Cilo {0} na hebad, egor {1} na lítha i gŷl hen. Pân men, PadForge iesta nui ab holad.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>I gŷl na PadForge {0} ú tel. Panno hon o Cilith a ritho nui.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge cýrannen na {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Adabannen: {0} theinas, lammad govod o {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Adabannen: {0} theinas, lammad govod o {1}. Cýrannen {2}: {3} cîr, {4} gwistannen.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>I narth govod ú-gwistant ab i cŷl medui.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ú-tolant na GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge bodant i ged an ú-i narth maethas i aníra. Alnad gwistant.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Theinas cîr maethannen ir i maethas în ianna ad.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Theinas gwistannen maethannen ir PadForge iesta ad.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iesto níthannen</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iesto ir minnad</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shfaq gjithmonë në tabakanë e sistemit</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mbaje ikonën e tabakasë të dukshme sa kohë dritarja është e hapur, që Dil në menynë e saj të jetë gjithmonë një klik larg.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Përditësimet</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kontrollo GitHub për versione të reja të PadForge dhe instalo ato që këtu. PadForge kontakton vetëm GitHub (api.github.com, github.com dhe serverët e shkarkimit të tij), dhe e vetmja e dhënë që dërgon është numri i versionit të vet.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kontrollo GitHub për versione të reja të PadForge dhe instalo ato që këtu, dhe përditëso bazën e kontrolluesve. PadForge kontakton vetëm GitHub (api.github.com, github.com dhe serverët e shkarkimit të tij, dhe raw.githubusercontent.com për bazën e kontrolluesve). E vetmja e dhënë që dërgon është numri i versionit të vet dhe, për bazën e kontrolluesve, etiketa që GitHub dha për shkarkimin e fundit.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Kontrollo për përditësime automatikisht</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kontrollon kur niset PadForge dhe çdo 12 orë pas kësaj.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instalo përditësimet automatikisht</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Kontrollo tani</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalo dhe rinis</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Shënimet e versionit</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Baza e kontrolluesve</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Përditëso tani shkarkon bazën e komunitetit të kontrolluesve (SDL_GameControllerDB) nga GitHub dhe mban, në skedarin e cilësimeve, hartëzimet që i mungojnë këtij versioni të PadForge. Një hartëzim i ri përdoret vetëm për një kontrollues që asgjë tjetër nuk e lexon si gamepad, që nuk është caktuar dhe që nuk është në Detyro modalitetin e papërpunuar të xhojstikut. Rivendosja i heq të gjitha hartëzimet e shkarkuara.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Përditëso tani</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Po përditësohet…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Po kontrollohet për përditësime…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} është i përditësuar.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} është i disponueshëm.</value></data>
@@ -729,6 +733,13 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge nuk është mbyllur pas dy minutash. Përditësimi instalohet sapo të mbyllet. Zgjidh {0} për të vazhduar pritjen, ose {1} për ta kapërcyer këtë përditësim. Në të dyja rastet, PadForge niset përsëri pasi të jetë mbyllur.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Përditësimi në PadForge {0} nuk përfundoi së instaluari. Instaloje nga Cilësimet për të provuar përsëri.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge u përditësua në {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}. Përditësuar më {2}: të reja {3}, të ndryshuara {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baza e komunitetit nuk ka ndryshuar që nga përditësimi i fundit.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Nuk u arrit GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge e refuzoi shkarkimin sepse nuk është baza e kontrolluesve që pret. Asgjë nuk ndryshoi.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Një hartëzim i ri përdoret herën tjetër që lidhet kontrolluesi i tij.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Një hartëzim i ndryshuar përdoret herën tjetër që niset PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Nise i minimizuar</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Nise me hyrjen në Windows</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

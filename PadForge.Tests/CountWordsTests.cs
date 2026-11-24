@@ -73,6 +73,8 @@ namespace PadForge.Tests
             ["MacroAction_ShowKeyboardScreen_Format"] = "{0} is the screen's name",
             ["MacroAction_ShowKeyboardScreen_Hold_Format"] = "{0} is the screen's name",
             ["Import_ExtrasMacro_Format"] = "{0} is an input's label, as in its siblings {0} lightbar and {0} range",
+            ["ControllerDatabase_BuiltIn_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount: SDL's own Windows rows and the community's",
+            ["ControllerDatabase_BuiltInUpdated_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount, and {3} and {4} stand before no noun",
         };
 
         /// <summary>Every English string that puts a count before a plural
@@ -113,6 +115,8 @@ namespace PadForge.Tests
                 PadForge.MainWindow.KeepDriverSeconds,
                 PadForge.Common.Input.Twitch.ChatCommandRegistry.MaxWordLength,
                 PadForge.Common.Input.Twitch.ChatCommandRegistry.MaxWords,
+                PadForge.Common.Input.ControllerDatabaseStatus.BuiltInCount(
+                    PadForge.Common.Input.ControllerDatabaseBaseline.Embedded, PadForge.Common.Input.ControllerDatabaseUse.OwnRows),
             };
             Assert.All(neverOne, n => Assert.True(n > 1, n + " is one"));
             int releaseMs = PadForge.Engine.Steering.ReleaseTest.ReleaseMs;

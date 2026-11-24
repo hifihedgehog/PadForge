@@ -507,11 +507,12 @@ namespace PadForge.Tests
             var item = Assert.Single(page.Descendants(), e => (string)e.Attribute(X + "Name") == "UpdateStatusItem");
             Assert.Equal("SettingItem", item.Name.LocalName);
             Assert.Equal("{DynamicResource SteelBandBrush}", (string)item.Attribute("Background"));
-            // First under the card's head, over the three switches.
+            // First under the card's head, over the three switches and the
+            // Controller Database row (#597).
             var parts = item.Parent.Elements().ToList();
             Assert.Equal("DockPanel", parts[0].Name.LocalName);
             Assert.Same(item, parts[1]);
-            Assert.Equal(5, parts.Count);
+            Assert.Equal(6, parts.Count);
 
             var row = Assert.Single(item.Elements(), e => e.Name.LocalName == "SettingRow");
             Assert.Equal("56", (string)row.Attribute("MinHeight"));

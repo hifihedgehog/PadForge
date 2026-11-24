@@ -745,7 +745,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>แสดงในถาดระบบเสมอ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>แสดงไอคอนในถาดระบบไว้ขณะที่หน้าต่างเปิดอยู่ เพื่อให้เข้าถึง “ออก” ในเมนูของไอคอนได้ในคลิกเดียวเสมอ</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>การอัปเดต</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>ตรวจหา PadForge เวอร์ชันใหม่บน GitHub และติดตั้งได้จากที่นี่ PadForge ติดต่อเฉพาะ GitHub (api.github.com, github.com และเซิร์ฟเวอร์ดาวน์โหลดของ GitHub) และข้อมูลเดียวที่ส่งไปคือหมายเลขเวอร์ชันของตัวเอง</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>ตรวจหา PadForge เวอร์ชันใหม่บน GitHub และติดตั้งได้จากที่นี่ รวมถึงอัปเดตฐานข้อมูลคอนโทรลเลอร์ PadForge ติดต่อเฉพาะ GitHub (api.github.com, github.com และเซิร์ฟเวอร์ดาวน์โหลดของ GitHub รวมถึง raw.githubusercontent.com สำหรับฐานข้อมูลคอนโทรลเลอร์) ข้อมูลที่ส่งไปมีเพียงหมายเลขเวอร์ชันของตัวเอง และสำหรับฐานข้อมูลคอนโทรลเลอร์ก็คือแท็กที่ GitHub ให้ไว้กับการดาวน์โหลดครั้งล่าสุด</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>ตรวจหาการอัปเดตโดยอัตโนมัติ</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>ตรวจเมื่อ PadForge เริ่มทำงาน และทุก 12 ชั่วโมงหลังจากนั้น</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>ติดตั้งการอัปเดตโดยอัตโนมัติ</value></data>
@@ -755,6 +755,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>ตรวจตอนนี้</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ติดตั้งและเริ่มใหม่</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>บันทึกประจำรุ่น</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>ฐานข้อมูลคอนโทรลเลอร์</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>อัปเดตทันทีจะดาวน์โหลดฐานข้อมูลคอนโทรลเลอร์ของชุมชน (SDL_GameControllerDB) จาก GitHub และเก็บการแมปที่ PadForge เวอร์ชันนี้ไม่มีไว้ในไฟล์การตั้งค่า การแมปใหม่จะใช้เฉพาะกับคอนโทรลเลอร์ที่ไม่มีสิ่งอื่นอ่านเป็นเกมแพด ไม่ได้ถูกกำหนดให้ใคร และไม่ได้อยู่ในโหมดจอยสติ๊กดิบแบบบังคับใช้ การรีเซ็ตจะลบการแมปที่ดาวน์โหลดไว้ทั้งหมด</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>อัปเดตทันที</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>กำลังอัปเดต…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>กำลังตรวจหาการอัปเดต…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} เป็นเวอร์ชันล่าสุดแล้ว</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} พร้อมให้ใช้งานแล้ว</value></data>
@@ -780,6 +784,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge ยังไม่ปิดหลังผ่านไปสองนาที การอัปเดตจะติดตั้งทันทีที่โปรแกรมปิด เลือก {0} เพื่อรอต่อ หรือ {1} เพื่อข้ามการอัปเดตนี้ ไม่ว่าเลือกแบบใด PadForge จะเริ่มทำงานอีกครั้งเมื่อปิดลงแล้ว</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>การอัปเดตเป็น PadForge {0} ติดตั้งไม่เสร็จ ติดตั้งจากการตั้งค่าเพื่อลองอีกครั้ง</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge อัปเดตเป็น {0} แล้ว</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>มีมาในตัว: การแมป {0} รายการ สำเนาของชุมชนวันที่ {1}</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>มีมาในตัว: การแมป {0} รายการ สำเนาของชุมชนวันที่ {1} อัปเดตเมื่อ {2} ใหม่: {3} เปลี่ยนแปลง: {4}</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>ฐานข้อมูลของชุมชนไม่เปลี่ยนแปลงตั้งแต่การอัปเดตครั้งล่าสุด</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>เข้าถึง GitHub ไม่ได้: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ปฏิเสธไฟล์ที่ดาวน์โหลด เพราะไม่ใช่ฐานข้อมูลคอนโทรลเลอร์ที่คาดไว้ ไม่มีอะไรเปลี่ยนแปลง</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>การแมปใหม่จะถูกใช้ในครั้งถัดไปที่คอนโทรลเลอร์ของมันเชื่อมต่อ</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>การแมปที่เปลี่ยนแปลงจะถูกใช้ในครั้งถัดไปที่ PadForge เริ่มทำงาน</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>เริ่มแบบย่อหน้าต่าง</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>เริ่มเมื่อลงชื่อเข้าใช้</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

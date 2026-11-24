@@ -1395,4 +1395,14 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Kgopela phetolelo ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Botšiša seo se šomago</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mothaladi wo PadForge e sa o tsebego: {0}</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Polokelo ya tshedimošo ya dikhontroulara</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mpshafatša bjale e laolla polokelo ya tshedimošo ya dikhontroulara ya setšhaba (SDL_GameControllerDB) go tšwa GitHub gomme e boloka, ka faeleng ya dipeakanyo, dimmapo tšeo phetolelo ye ya PadForge e se nago tšona. Mmapo wo moswa o šomišwa fela go khontroulara yeo go se nago selo se sengwe seo se e balago bjalo ka gamepad, yeo e sa abelwago, le yeo e sego ka Force Raw Joystick Mode. Go bušetša go tloša dimmapo ka moka tše di laolotšwego.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Mpshafatša bjale</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>E a mpshafatša…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tše di agetšwego ka gare: dimmapo tše {0}, kopi ya setšhaba ya {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tše di agetšwego ka gare: dimmapo tše {0}, kopi ya setšhaba ya {1}. E mpshafaditšwe {2}: tše mpsha: {3}, tše di fetotšwego: {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Polokelo ya tshedimošo ya setšhaba ga se ya fetoga go tloga mpshafatšong ya mafelelo.</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge e gannye go laolla ka gobane ga se polokelo ya tshedimošo ya dikhontroulara yeo e e letetšego. Ga go selo seo se fetogilego.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mmapo wo moswa o šomišwa ka lekga le le latelago leo khontroulara ya wona e kgokaganago.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mmapo wo o fetotšwego o šomišwa ka lekga le le latelago leo PadForge e thomago.</value></data>
 </root>

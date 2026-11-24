@@ -1700,4 +1700,10 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nisqap versiónninta tapuy</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Ima llamk'achkasqanta tapuy</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge mana riqsisqan siq'ita kachay: {0}</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now nisqa comunidadpa control base de datosninta (SDL_GameControllerDB) GitHub nisqamanta uraykachin, configuración archivopitaq kay PadForge versiónpa mana kapuqnin asignaciónkunata waqaychan. Musuq asignaciónqa mana imapas gamepad hina ñawinchasqan, mana asignasqa, mana Force Raw Joystick Mode nisqapi kaq controlpaqlla llamk'achikun. Ñawpaqman kutichiyqa tukuy uraykachisqa asignaciónkunata qichun.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian. {2} musuqyachisqa: musuq {3}, t'ikrasqa {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Comunidadpa base de datosninqa qhipa musuqyachiymanta mana t'ikrakunchu.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Musuq asignaciónqa controlnin hamuq kutipi tinkikuqtin llamk'achikun.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>T'ikrasqa asignaciónqa PadForge hamuq kutipi qallariqtin llamk'achikun.</value></data>
 </root>

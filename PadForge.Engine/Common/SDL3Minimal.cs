@@ -260,10 +260,6 @@ namespace SDL3
         //  Custom gamepad mappings
         // ─────────────────────────────────────────────
 
-        /// <summary>Load gamepad mappings from a file (SDL gamecontrollerdb.txt format). Returns number of mappings added, or -1 on error.</summary>
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SDL_AddGamepadMappingsFromFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
-
         /// <summary>Add a single gamepad mapping string. Returns 1 if new, 0 if updated, -1 on error.</summary>
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern int SDL_AddGamepadMapping([MarshalAs(UnmanagedType.LPUTF8Str)] string mapping);
@@ -508,6 +504,20 @@ namespace SDL3
         public static string GetJoystickGUIDString(IntPtr joystick)
         {
             var guid = SDL_GetJoystickGUID(joystick);
+            byte[] buf = new byte[33];
+            SDL_GUIDToString(guid, buf, buf.Length);
+            return System.Text.Encoding.ASCII.GetString(buf).TrimEnd('\0');
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern SDL_GUID SDL_GetJoystickGUIDForID(uint instance_id);
+
+        /// <summary>The GUID of a joystick SDL lists, as its 32 hex digits,
+        /// before the joystick is opened. The key SDL looks a gamepad mapping
+        /// up by.</summary>
+        public static string GetJoystickGUIDStringForID(uint instance_id)
+        {
+            var guid = SDL_GetJoystickGUIDForID(instance_id);
             byte[] buf = new byte[33];
             SDL_GUIDToString(guid, buf, buf.Length);
             return System.Text.Encoding.ASCII.GetString(buf).TrimEnd('\0');

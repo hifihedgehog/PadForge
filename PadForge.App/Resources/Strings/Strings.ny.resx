@@ -1565,4 +1565,12 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Funsani mtundu wa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Funsani zomwe zikuyenda</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumizani mzere womwe PadForge sikudziwa: {0}</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Sinthani tsopano imatsitsa nkhokwe ya makontrola ya anthu onse (SDL_GameControllerDB) kuchokera ku GitHub ndikusunga, mu fayilo ya zokonda, mapu omwe mtundu uwu wa PadForge ulibe. Mapu atsopano amagwiritsidwa ntchito pa kontrola yokha yomwe palibe china chimaiwerenga ngati gamepad, yomwe sinaperekedwe ndipo yomwe siili mu Force Raw Joystick Mode. Kubwezeretsa kumachotsa mapu onse otsitsidwa.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Sinthani tsopano</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ikusintha…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Zomangidwa mkati: mapu {0}, kope la anthu onse la {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Zomangidwa mkati: mapu {0}, kope la anthu onse la {1}. Zasinthidwa {2}: zatsopano {3}, zosinthidwa {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Nkhokwe ya anthu onse sinasinthe kuyambira pomwe inasinthidwa komaliza.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mapu atsopano amagwiritsidwa ntchito nthawi ina kontrola yake ikalumikizidwa.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mapu osinthidwa amagwiritsidwa ntchito nthawi ina PadForge ikayamba.</value></data>
 </root>

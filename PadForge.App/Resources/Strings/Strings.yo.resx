@@ -2149,4 +2149,10 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ó ń mú àwọ̀ mẹ́rẹ̀ẹ̀rin náà láti inú àwòrán.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Àwọn àwòrán (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Gbogbo fáìlì (*.*)|*.*</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Máa fi ránṣẹ́ lọ</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ṣe ìmúdójúìwọ̀n báyìí ń gba ibi ìpamọ́ ẹ̀rọ ìdarí ti àwùjọ (SDL_GameControllerDB) wálẹ̀ láti GitHub, ó sì ń pa àwọn ìsopọ̀ tí ẹ̀yà PadForge yìí kò ní mọ́ sínú fáìlì ètò. A máa ń lo ìsopọ̀ tuntun kìkì fún ẹ̀rọ ìdarí tí kò sí ohun míràn tí ó kà á bí gamepad, tí a kò yàn, tí kò sì sí ní Ipò joystick aise. Títún tò ń yọ gbogbo ìsopọ̀ tí a gbà wálẹ̀ kúrò.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}. A ṣe ìmúdójúìwọ̀n ní {2}: tuntun {3}, àyípadà {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ibi ìpamọ́ àwùjọ kò yípadà láti ìgbà ìmúdójúìwọ̀n tó kẹ́yìn.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A ó lo ìsopọ̀ tuntun nígbà míràn tí ẹ̀rọ ìdarí rẹ̀ bá sopọ̀.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A ó lo ìsopọ̀ tí a yí padà nígbà míràn tí PadForge bá bẹ̀rẹ̀.</value></data>
 </root>

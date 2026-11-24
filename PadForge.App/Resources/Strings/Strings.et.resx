@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Kuva alati teavitusalal</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Teavitusala ikoon jääb nähtavaks ka siis, kui aken on avatud, nii et menüükäsk Välju on alati ühe klõpsu kaugusel.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Värskendused</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Otsige PadForge'i uusi versioone saidilt GitHub ja installige need siit. PadForge võtab ühendust ainult saidiga GitHub (api.github.com, github.com ja selle allalaadimisserverid) ning saadab ainult oma versiooninumbri.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Otsige PadForge'i uusi versioone saidilt GitHub, installige need siit ja uuendage kontrollerite andmebaasi. PadForge võtab ühendust ainult saidiga GitHub (api.github.com, github.com ja selle allalaadimisserverid ning kontrollerite andmebaasi jaoks raw.githubusercontent.com). See saadab ainult oma versiooninumbri ja kontrollerite andmebaasi puhul sildi, mille GitHub viimasele allalaadimisele andis.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Otsi värskendusi automaatselt</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kontrollib PadForge'i käivitumisel ja seejärel iga 12 tunni järel.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Installi värskendused automaatselt</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Kontrolli kohe</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installi ja taaskäivita</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Väljaande märkmed</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrollerite andmebaas</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Nupp Uuenda kohe laadib saidilt GitHub alla kogukonna kontrollerite andmebaasi (SDL_GameControllerDB) ja hoiab sättefailis need vastendused, mida selles PadForge versioonis pole. Uut vastendust kasutatakse ainult kontrolleri puhul, mida miski muu ei loe mängupuldina, mis pole määratud ja mis pole režiimis Sunni toores juhtkangirežiim. Lähtestus eemaldab kõik allalaaditud vastendused.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Uuenda kohe</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Uuendamine…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Värskenduste otsimine…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} on ajakohane.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} on saadaval.</value></data>
@@ -729,6 +733,13 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge pole kahe minuti möödudes sulgunud. Värskendus installitakse kohe, kui programm sulgub. Valige {0}, et edasi oodata, või {1}, et see värskendus vahele jätta. Mõlemal juhul käivitub PadForge pärast sulgumist uuesti.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Värskenduse PadForge {0} installimine jäi pooleli. Uuesti proovimiseks installige see Sätete lehelt.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge värskendati versioonile {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Sisseehitatud: {0} vastendust, kogukonna koopia kuupäevast {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Sisseehitatud: {0} vastendust, kogukonna koopia kuupäevast {1}. Uuendatud {2}: uusi {3}, muudetud {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Kogukonna andmebaas pole pärast viimast uuendust muutunud.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Saiti GitHub ei saanud kätte: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge keeldus allalaadimisest, sest see pole andmebaas, mida programm ootab. Midagi ei muutunud.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Uut vastendust kasutatakse järgmisel korral, kui selle kontroller ühendatakse.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Muudetud vastendust kasutatakse järgmisel korral, kui PadForge käivitub.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Käivita minimeeritult</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Käivita sisselogimisel</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

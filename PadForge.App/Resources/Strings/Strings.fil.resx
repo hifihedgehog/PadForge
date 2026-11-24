@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Laging ipakita sa system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Panatilihing nakikita ang tray icon habang bukas ang window, kaya isang click lang ang layo ng Lumabas sa menu nito.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Tingnan sa GitHub ang mga bagong bersyon ng PadForge at i-install ang mga ito mula rito. GitHub lang ang kinokontak ng PadForge (api.github.com, github.com at mga download server nito), at ang tanging ipinapadala nito ay ang sarili nitong numero ng bersyon.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Tingnan sa GitHub ang mga bagong bersyon ng PadForge at i-install ang mga ito mula rito, at i-update ang controller database. GitHub lang ang kinokontak ng PadForge (api.github.com, github.com at mga download server nito, at raw.githubusercontent.com para sa controller database). Ang tanging ipinapadala nito ay ang sarili nitong numero ng bersyon at, para sa controller database, ang tag na ibinigay ng GitHub sa huling download.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Awtomatikong tumingin ng mga update</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Tumitingin kapag nagsimula ang PadForge at bawat 12 oras pagkatapos nito.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Awtomatikong i-install ang mga update</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Tingnan ngayon</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>I-install at i-restart</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Release notes</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database ng Controller</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Dina-download ng I-update Ngayon ang database ng controller ng komunidad (SDL_GameControllerDB) mula sa GitHub at itinatago, sa settings file, ang mga mapping na kulang sa bersyong ito ng PadForge. Ginagamit lang ang bagong mapping para sa controller na wala nang ibang nagbabasa bilang gamepad, na hindi naka-assign at wala sa Raw Joystick Mode na pinilit. Inaalis ng reset ang bawat na-download na mapping.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>I-update Ngayon</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Nag-a-update…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Tumitingin ng mga update…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>Napapanahon ang PadForge {0}.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>Available na ang PadForge {0}.</value></data>
@@ -729,6 +733,13 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>Hindi pa nagsasara ang PadForge pagkalipas ng dalawang minuto. Mai-install ang update sa sandaling magsara ito. Piliin ang {0} para patuloy na maghintay, o ang {1} para laktawan ang update na ito. Sa alinmang kaso, magsisimula muli ang PadForge kapag nagsara na ito.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Hindi natapos ma-install ang update sa PadForge {0}. I-install ito mula sa Settings para subukan muli.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>Na-update ang PadForge sa {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built-in: {0} mapping, kopya ng komunidad noong {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built-in: {0} mapping, kopya ng komunidad noong {1}. Na-update noong {2}: {3} bago, {4} nabago.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Walang nagbago sa database ng komunidad mula sa huling update.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Hindi maabot ang GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Tinanggihan ng PadForge ang download dahil hindi ito ang database ng controller na inaasahan nito. Walang nagbago.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Gagamitin ang bagong mapping sa susunod na pagkonekta ng controller nito.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Gagamitin ang nabagong mapping sa susunod na pagsisimula ng PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Magsimulang naka-minimize</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Magsimula sa pag-login</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

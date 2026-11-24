@@ -2074,4 +2074,12 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kokokanisa na elili</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ekozwa langi minei uta na elili.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Ba fichier nyonso (*.*)|*.*</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kosala mise à jour sikoyo ekitisaka base ya ba manette ya communauté (SDL_GameControllerDB) uta na GitHub mpe ebombaka, na fichier ya ba paramètre, ba assignation oyo version oyo ya PadForge ezangi. Assignation ya sika esalelamaka kaka mpo na manette oyo eloko mosusu te etangaka lokola gamepad, oyo ezali na assignation te mpe oyo ezali na Mode joystick brut te. Kozongisa elongolaka ba assignation nyonso oyo ekitisami.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Kosala mise à jour sikoyo</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Mise à jour…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ya kati: ba assignation {0}, copie ya communauté ya {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ya kati: ba assignation {0}, copie ya communauté ya {1}. Mise à jour ya {2}: ya sika {3}, ebongwani {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Base ya communauté ebongwani te banda mise à jour ya suka.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Assignation ya sika esalelamaka ntango manette na yango ekokangana mbala ekoya.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Assignation oyo ebongwani esalelamaka ntango PadForge ekobanda mbala ekoya.</value></data>
 </root>

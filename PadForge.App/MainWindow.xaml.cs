@@ -2669,9 +2669,13 @@ namespace PadForge
             // which never fires for a launch straight to the tray.
             _updateController = new Services.UpdateController(_viewModel, ExitForUpdate);
             _updateController.Start();
+            // The Controller Database row of the same card (#597).
+            _controllerDatabaseController = new Services.ControllerDatabaseController(_viewModel, _settingsService.MarkDirty);
+            _controllerDatabaseController.Start();
         }
 
         private Services.UpdateController _updateController;
+        private Services.ControllerDatabaseController _controllerDatabaseController;
 
         /// <summary>The installer is running and waits for this process to
         /// exit, so close for real, past Close to System Tray, through the
@@ -3572,6 +3576,8 @@ namespace PadForge
                 _workshopUpdateCts?.Cancel();
                 // And any app update check or download (#457).
                 _updateController?.Dispose();
+                // And a controller database download (#597).
+                _controllerDatabaseController?.Dispose();
 
                 // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
                 // SDL_Quit: the 100ms pump fires SDL_PumpEvents/SDL_UpdateJoysticks on

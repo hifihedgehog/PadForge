@@ -1333,6 +1333,12 @@
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_ControllerDatabaseStatus_5971",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "ControllerDatabaseStatus"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
     "Id": "Reset_SettingsViewModel_StartMinimized_132",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "StartMinimized"

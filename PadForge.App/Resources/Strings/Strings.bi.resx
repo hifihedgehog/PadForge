@@ -1895,4 +1895,13 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no save faenem fael ia.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge i no save ridim pikja blong Steam blong gem ia.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Gohed blong sendem</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdetem Naoia i daonlodem database blong kontrola blong komuniti (SDL_GameControllerDB) long GitHub mo i kipim, long fael blong seting, ol mapping we vesen ia blong PadForge i no gat. PadForge i yusum wan niu mapping nomo blong wan kontrola we i no gat narafala samting i ridim olsem gempad, we i no asaen mo we i no stap long Force Raw Joystick Mode. Putum bak i tekemaot evri mapping we i daonlod.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Apdetem Naoia</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>I stap apdet…</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>I stap insaed: {0} mapping, kopi blong komuniti blong {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>I stap insaed: {0} mapping, kopi blong komuniti blong {1}. Apdet {2}: niu {3}, jenis {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Database blong komuniti i no jenis stat long laswan apdet.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>I no save kasem GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Wan niu mapping i stat wok nekis taem we kontrola blong hem i konekt.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Wan mapping we i jenis i stat wok nekis taem we PadForge i stat.</value></data>
 </root>

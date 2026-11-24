@@ -1812,4 +1812,10 @@
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Indi magamit sang {0} ang iya kustom nga identidad kag layout, gani ginagamit niya ang kaugalingon sang iya profile.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Indi mabasa sang PadForge ang litrato sang Steam para sa sini nga game.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Padayon nga ipadala</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ang bag-o nga mapping ginagamit lang para sa controller nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Ang reset nagakuha sang tanan nga na-download nga mapping.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}. Na-update {2}: bag-o {3}, ginbaylo {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Wala nagbaylo ang community database kutob sang katapusan nga update.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ang bag-o nga mapping gamiton sa masunod nga pag-connect sang iya controller.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ang ginbaylo nga mapping gamiton sa masunod nga pagsugod sang PadForge.</value></data>
 </root>

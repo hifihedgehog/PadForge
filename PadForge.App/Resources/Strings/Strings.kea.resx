@@ -435,6 +435,13 @@
   <data name="Update_InstallFailed_Format" xml:space="preserve"><value>PadForge ka konsigi instala atualizason: {0}</value></data>
   <data name="Update_RestartFailed_Format" xml:space="preserve"><value>PadForge ka konsigi rinisia: {0}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge atualizadu pa {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Inkluídu: {0} mapiamentus, kópia di komunidadi di {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inkluídu: {0} mapiamentus, kópia di komunidadi di {1}. Atualizadu {2}: novu {3}, mudadu {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Bazi di dadus di komunidadi ka muda dizdi última atualizason.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ka konsigi txiga GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge rekuza baxa pamodi e ka bazi di dadus di komandus ki el ta spera. Nada ka muda.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Un mapiamentu novu ta uzadu próximu bês ki se komandu konekta.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Un mapiamentu mudadu ta uzadu próximu bês ki PadForge inisia.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Inisia minimizadu</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Djunta…</value></data>
@@ -3281,4 +3288,8 @@
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imajen: arti di biblioteka di Steam pa {0}.</value></data>
   <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ativa Konfigurason di komunidadi na Definisons pa pega imajen di jogu na Steam.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kontinua manda</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Bazi di dadus di komandus</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualiza gosi ta baxa bazi di dadus di komandus di komunidadi (SDL_GameControllerDB) di GitHub i ta guarda, na fixeru di konfigurason, mapiamentus ki es vérson di PadForge ka ten. Un mapiamentu novu ta uzadu só pa un komandu ki nada más ka ta lé suma gamepad, ki ka sta atribuídu i ki ka sta na Modu joystick brutu forsadu. Ripoi ta rimove tudu mapiamentu baxadu.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualiza gosi</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ta atualiza…</value></data>
 </root>

@@ -688,7 +688,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostra sempre a la safata del sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Manté la icona de la safata visible mentre la finestra està oberta, de manera que l'opció Surt del seu menú sempre és a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualitzacions</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cerca versions noves de PadForge a GitHub i instal·la-les des d'aquí. PadForge només contacta amb GitHub (api.github.com, github.com i els seus servidors de baixada), i l'única dada que envia és el seu propi número de versió.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cerca versions noves de PadForge a GitHub i instal·la-les des d'aquí, i actualitza la base de dades de comandaments. PadForge només contacta amb GitHub (api.github.com, github.com i els seus servidors de baixada, i raw.githubusercontent.com per a la base de dades de comandaments). Les úniques dades que envia són el seu propi número de versió i, per a la base de dades de comandaments, l'etiqueta que GitHub va donar a l'última baixada.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Cerca actualitzacions automàticament</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Comprova quan s'inicia PadForge i, després, cada 12 hores.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instal·la les actualitzacions automàticament</value></data>
@@ -698,6 +698,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Comprova-ho ara</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instal·la i reinicia</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Notes de la versió</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Base de dades de comandaments</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualitza ara baixa la base de dades de comandaments de la comunitat (SDL_GameControllerDB) de GitHub i conserva, al fitxer de configuració, les assignacions que aquesta versió de PadForge no té. Una assignació nova només s'usa per a un comandament que cap altra cosa llegeix com a comandament, que no està assignat i que no està en el mode de joystick en brut. El restabliment elimina totes les assignacions baixades.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Actualitza ara</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>S'està actualitzant…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>S'estan cercant actualitzacions…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} està actualitzat.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} està disponible.</value></data>
@@ -723,6 +727,13 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge no s'ha tancat al cap de dos minuts. L'actualització s'instal·larà tan bon punt es tanqui. Selecciona {0} per continuar esperant o {1} per ometre aquesta actualització. En tots dos casos, PadForge es tornarà a iniciar quan s'hagi tancat.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>L'actualització a PadForge {0} no s'ha acabat d'instal·lar. Instal·la-la des de Configuració per tornar-ho a provar.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge s'ha actualitzat a la versió {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}. Actualitzat el {2}: noves: {3}, canviades: {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>La base de dades de la comunitat no ha canviat des de l'última actualització.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>No s'ha pogut contactar amb GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ha refusat la baixada perquè no és la base de dades de comandaments que espera. No ha canviat res.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Una assignació nova s'usa la propera vegada que es connecti el seu comandament.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Una assignació canviada s'usa la propera vegada que s'iniciï PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Inicia minimitzat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Executa en iniciar la sessió</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

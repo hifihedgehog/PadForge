@@ -139,6 +139,9 @@ namespace PadForge.ViewModels
             // Built from Strings.Instance on every read (#457).
             OnPropertyChanged(nameof(UpdateStatusText));
             OnPropertyChanged(nameof(AboutSubLine));
+            // And the Controller Database row's two lines (#597).
+            OnPropertyChanged(nameof(ControllerDatabaseStatus));
+            OnPropertyChanged(nameof(ControllerDatabaseResult));
             // A failed SDL read is worded from the string table on every read.
             OnPropertyChanged(nameof(SdlVersion));
 
@@ -1262,6 +1265,73 @@ namespace PadForge.ViewModels
         public event EventHandler CheckForUpdatesNowRequested;
         public event EventHandler InstallUpdateRequested;
         public event EventHandler OpenReleaseNotesRequested;
+
+        // ── Controller database (#597) ──
+
+        private Func<string> _controllerDatabaseStatus;
+        /// <summary>The Controller Database row's status line: what PadForge
+        /// reads out of the box and what the last update added. It is built
+        /// each time it is read, from the language in use then
+        /// (OnCultureChanged raises it). Empty until
+        /// ControllerDatabaseController gives it its text.</summary>
+        public string ControllerDatabaseStatus => _controllerDatabaseStatus?.Invoke() ?? string.Empty;
+
+        private Func<string> _controllerDatabaseResult;
+        /// <summary>The line under the row: what the last Update Now came
+        /// to when it changed nothing or needs a word, built as the status
+        /// line is. Empty otherwise.</summary>
+        public string ControllerDatabaseResult => _controllerDatabaseResult?.Invoke() ?? string.Empty;
+
+        private bool _controllerDatabaseResultIsWarning;
+        /// <summary>The line under the row says the update did not go
+        /// through.</summary>
+        public bool ControllerDatabaseResultIsWarning
+        {
+            get => _controllerDatabaseResultIsWarning;
+            private set => SetProperty(ref _controllerDatabaseResultIsWarning, value);
+        }
+
+        /// <summary>Sets what the status line reads. The function reads the
+        /// section and Strings.Instance itself.</summary>
+        internal void SetControllerDatabaseStatus(Func<string> text)
+        {
+            _controllerDatabaseStatus = text;
+            OnPropertyChanged(nameof(ControllerDatabaseStatus));
+        }
+
+        /// <summary>The section changed: the status line is read again.</summary>
+        internal void RaiseControllerDatabaseStatus() => OnPropertyChanged(nameof(ControllerDatabaseStatus));
+
+        /// <summary>Sets the line under the row. Null clears it.</summary>
+        internal void SetControllerDatabaseResult(Func<string> text, bool warning = false)
+        {
+            _controllerDatabaseResult = text;
+            ControllerDatabaseResultIsWarning = warning && text != null;
+            OnPropertyChanged(nameof(ControllerDatabaseResult));
+        }
+
+        private bool _isControllerDatabaseUpdating;
+        /// <summary>A download of the controller database is running. The
+        /// button says so and takes no second press.</summary>
+        public bool IsControllerDatabaseUpdating
+        {
+            get => _isControllerDatabaseUpdating;
+            set
+            {
+                if (SetProperty(ref _isControllerDatabaseUpdating, value))
+                    _updateControllerDatabaseCommand?.NotifyCanExecuteChanged();
+            }
+        }
+
+        private RelayCommand _updateControllerDatabaseCommand;
+        public RelayCommand UpdateControllerDatabaseCommand =>
+            _updateControllerDatabaseCommand ??= new RelayCommand(
+                () => UpdateControllerDatabaseRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isControllerDatabaseUpdating);
+
+        public event EventHandler UpdateControllerDatabaseRequested;
+        /// <summary>The row's reset: the downloaded rows go.</summary>
+        public event EventHandler ControllerDatabaseResetRequested;
 
         private bool _batteryNotifyEnabled = true;
 

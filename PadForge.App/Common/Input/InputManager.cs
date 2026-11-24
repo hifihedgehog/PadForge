@@ -1184,9 +1184,10 @@ namespace PadForge.Common.Input
                     return false;
                 }
 
-                // Load PadForge community mappings (extends SDL's built-in
-                // gamecontrollerdb). Embedded in the exe; apply per-line via
-                // SDL_AddGamepadMapping rather than the file-path overload.
+                // The mappings PadForge adds to SDL's built-in ones, one
+                // SDL_AddGamepadMapping call per row: the changed rows of the
+                // controller database section (#597), then PadForge's own
+                // embedded rows, which stand wherever the two meet.
                 LoadEmbeddedGamepadMappings();
 
                 // SDL_INIT_VIDEO disables the screensaver and system sleep by
@@ -1412,46 +1413,47 @@ namespace PadForge.Common.Input
         public static int EmbeddedMappingsLoaded { get; private set; }
 
         /// <summary>
-        /// Streams the embedded gamecontrollerdb_padforge.txt resource through
-        /// SDL_AddGamepadMapping one line at a time. The file-path overload
-        /// (SDL_AddGamepadMappingsFromFile) is unusable when the file ships
-        /// inside the single-file exe rather than as a loose resource next to
-        /// it. Per-line apply is cheap (one P/Invoke per mapping, a few dozen
-        /// total) and avoids touching the filesystem.
+        /// Gives SDL the mappings PadForge adds to its built-in ones, right
+        /// after SDL starts: the changed rows of the controller database
+        /// section (#597), then the rows of the embedded
+        /// gamecontrollerdb_padforge.txt, in that order
+        /// (<see cref="ControllerDatabaseUse.StartupRows"/>). Each goes
+        /// through SDL_AddGamepadMapping, one call per row. The rows ship
+        /// inside the single-file exe and the settings file, so there is no
+        /// file SDL could be pointed at, and a call per row costs one
+        /// P/Invoke each and touches no disk.
         /// </summary>
         private static void LoadEmbeddedGamepadMappings()
         {
-            int applied = 0;
+            int applied = 0, changed = 0;
             try
             {
-                var asm = typeof(InputManager).Assembly;
-                // Resource name is the default manifest name: "<RootNamespace>.<filename>".
-                // PadForge's RootNamespace is "PadForge" (see csproj).
-                string resourceName = "PadForge.gamecontrollerdb_padforge.txt";
-                using var stream = asm.GetManifestResourceStream(resourceName);
-                if (stream == null)
+                var own = ControllerDatabaseUse.OwnRows;
+                if (own.Count == 0)
                 {
                     System.Diagnostics.Debug.WriteLine(
-                        $"[InputManager] Embedded resource '{resourceName}' not found. " +
+                        $"[InputManager] Embedded resource '{ControllerDatabaseUse.OwnRowsResource}' not found or empty. " +
                         "Check <EmbeddedResource Include=\"gamecontrollerdb_padforge.txt\"/> in PadForge.App.csproj.");
-                    return;
                 }
-                using var reader = new System.IO.StreamReader(stream);
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                // A build with no readable baseline gives SDL no changed row,
+                // and PadForge's own rows go in as they always did.
+                ControllerDatabaseBaseline baseline = null;
+                try { baseline = ControllerDatabaseBaseline.Embedded; }
+                catch (Exception ex) { Engine.SdlDiagLog.WriteLine("MAPPINGS database baseline unreadable: " + ex.Message); }
+                var rows = ControllerDatabaseUse.StartupRows(SettingsManager.ControllerDatabase, baseline, own);
+                int fromDatabase = rows.Count - own.Count;
+                for (int i = 0; i < rows.Count; i++)
                 {
-                    string trimmed = line.Trim();
-                    if (trimmed.Length == 0 || trimmed[0] == '#') continue;
-                    if (SDL_AddGamepadMapping(trimmed) >= 0)
-                        applied++;
+                    if (SDL_AddGamepadMapping(rows[i]) < 0) continue;
+                    if (i < fromDatabase) changed++;
+                    else applied++;
                 }
             }
             catch (Exception ex)
             {
-                // Mapping load is best-effort — SDL's built-in gamecontrollerdb
-                // is still active and recognizes most common gamepads. Any
-                // failure here just means PadForge's community mappings aren't
-                // applied on top, which isn't fatal.
+                // The added rows are best effort. SDL's built-in rows stay
+                // in force and read most gamepads, so a failure here costs
+                // only what PadForge adds on top.
                 System.Diagnostics.Debug.WriteLine($"[InputManager] Embedded mappings load failed: {ex.Message}");
             }
             EmbeddedMappingsLoaded = applied;
@@ -1464,7 +1466,7 @@ namespace PadForge.Common.Input
             // missing or every line was blank, which is a build
             // misconfiguration worth seeing in a user's log rather than only
             // under a debugger.
-            Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied}");
+            Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied} database changed applied={changed}");
         }
 
         // ─────────────────────────────────────────────

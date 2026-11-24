@@ -514,7 +514,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sempre Mostrar na Bandeja do Sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantém o ícone da bandeja do sistema visível enquanto a janela está aberta, então Sair no menu dele está sempre a um clique.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Procure novas versões do PadForge no GitHub e instale-as por aqui. O PadForge se conecta apenas ao GitHub (api.github.com, github.com e seus servidores de download), e o único dado que envia é o seu próprio número de versão.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Procure novas versões do PadForge no GitHub e instale-as por aqui, e atualize o banco de dados de controles. O PadForge se conecta apenas ao GitHub (api.github.com, github.com e seus servidores de download, e raw.githubusercontent.com para o banco de dados de controles). Os únicos dados que envia são o seu próprio número de versão e, para o banco de dados de controles, a etiqueta que o GitHub deu ao último download.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Verificar Atualizações Automaticamente</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Verifica quando o PadForge inicia e depois a cada 12 horas.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instalar Atualizações Automaticamente</value></data>
@@ -524,6 +524,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>Verificar Agora</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalar e Reiniciar</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Notas da Versão</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Banco de Dados de Controles</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualizar Agora baixa o banco de dados de controles da comunidade (SDL_GameControllerDB) do GitHub e guarda, no arquivo de configurações, os mapeamentos que esta versão do PadForge não tem. Um mapeamento novo só é usado para um controle que nada mais lê como gamepad, que não está atribuído e que não está no Modo Joystick Bruto. A redefinição remove todos os mapeamentos baixados.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualizar Agora</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Atualizando…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Verificando atualizações…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>O PadForge {0} está atualizado.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>O PadForge {0} está disponível.</value></data>
@@ -549,6 +553,13 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>O PadForge não fechou após dois minutos. A atualização é instalada assim que ele fechar. Selecione {0} para continuar esperando ou {1} para pular esta atualização. Em ambos os casos, o PadForge é iniciado novamente depois de fechar.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>A atualização para o PadForge {0} não terminou de instalar. Instale-a pelas Configurações para tentar de novo.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>O PadForge foi atualizado para {0}.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Incluído: {0} mapeamentos, cópia da comunidade de {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Incluído: {0} mapeamentos, cópia da comunidade de {1}. Atualizado em {2}: novos {3}, alterados {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>O banco de dados da comunidade não mudou desde a última atualização.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Não foi possível alcançar o GitHub: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>O PadForge recusou o download porque ele não é o banco de dados de controles esperado. Nada mudou.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Um mapeamento novo é usado na próxima vez que o controle dele se conectar.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Um mapeamento alterado é usado na próxima vez que o PadForge iniciar.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar Minimizado</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

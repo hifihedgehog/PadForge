@@ -210,6 +210,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
+    <!-- What the bundled SDL3.dll carries of the community controller
+         database (#597), written by tools\gen_controller_database_baseline.py
+         at each SDL take. The Controller Database row in Settings, Updates
+         keeps only the rows that are new or changed against it. -->
+    <EmbeddedResource Include="gamecontrollerdb_baseline.txt" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="PadForge.ThirdPartyNotices.txt" />
     <!-- The x64 HidHide setup, for x64 machines. Only the x64 build can run
          on one, so only the x64 build carries its 7.7 MB. -->

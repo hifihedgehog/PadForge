@@ -1427,4 +1427,10 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Alaen ti uppat a kolor manipud iti ladawan.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Saan a mabasa ti PadForge ti ladawan ti Steam para iti daytoy nga ay-ayam.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ituloy ti panangipatulod</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ti Update Now ket mangi-download iti database ti controller ti komunidad (SDL_GameControllerDB) manipud iti GitHub ken idulinna, iti settings file, dagiti mapping nga awan iti daytoy a bersion ti PadForge. Ti baro a mapping ket mausar laeng para iti controller nga awan ti sabali a mangbasa a kas gamepad, saan a naitudingan ken saan nga adda iti Force Raw Joystick Mode. Ikkaten ti reset amin a na-download a mapping.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}. Na-update iti {2}: {3} baro, {4} nabaliwan.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Saan a nagbaliw ti database ti komunidad manipud iti maudi a panag-update.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ti baro a mapping ket mausar inton sumaruno a kumonekta ti controllerna.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ti nabaliwan a mapping ket mausar inton sumaruno nga agrugi ti PadForge.</value></data>
 </root>

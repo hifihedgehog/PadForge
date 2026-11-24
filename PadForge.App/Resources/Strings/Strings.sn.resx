@@ -1540,4 +1540,10 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Bvunza shanduro ye-PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Bvunza kuti chii chiri kushanda</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumira mutsara usingazivikanwe ne-PadForge: {0}</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now inodhawunirodha dhatabhesi yekontiroura yenharaunda (SDL_GameControllerDB) kubva ku-GitHub uye inochengeta, mufaira yemasetingi, mepu dzisina shanduro iyi ye-PadForge. Mepu itsva inoshandiswa chete kukontiroura isingaverengwe sechigamepad nechimwe chinhu, isina kugoverwa uye isiri muForce Raw Joystick Mode. Kudzorera kunobvisa mepu dzese dzakadhawunirodhwa.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Zvakavakirwa mukati: mepu {0}, kopi yenharaunda ya{1}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Zvakavakirwa mukati: mepu {0}, kopi yenharaunda ya{1}. Zvakagadziridzwa {2}: itsva {3}, dzakachinjwa {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Dhatabhesi yenharaunda haina kuchinja kubva pakugadziridza kwekupedzisira.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mepu itsva inoshandiswa kana kontiroura yayo yabatanidzwa zvakare.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mepu yakachinjwa inoshandiswa kana PadForge yatanga zvakare.</value></data>
 </root>

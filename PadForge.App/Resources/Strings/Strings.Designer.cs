@@ -1014,6 +1014,10 @@ public class Strings : INotifyPropertyChanged
     public string Settings_CheckNow => Get("Settings_CheckNow");
     public string Settings_InstallAndRestart => Get("Settings_InstallAndRestart");
     public string Settings_ReleaseNotes => Get("Settings_ReleaseNotes");
+    public string Settings_ControllerDatabase => Get("Settings_ControllerDatabase");
+    public string Settings_ControllerDatabaseDesc => Get("Settings_ControllerDatabaseDesc");
+    public string Settings_ControllerDatabaseUpdateNow => Get("Settings_ControllerDatabaseUpdateNow");
+    public string Settings_ControllerDatabaseUpdating => Get("Settings_ControllerDatabaseUpdating");
     public string Update_Checking => Get("Update_Checking");
     public string Update_UpToDate_Format => Get("Update_UpToDate_Format");
     public string Update_Available_Format => Get("Update_Available_Format");
@@ -1037,6 +1041,13 @@ public class Strings : INotifyPropertyChanged
     public string Update_WaitingForClose_Format => Get("Update_WaitingForClose_Format");
     public string Update_PendingFailed_Format => Get("Update_PendingFailed_Format");
     public string Update_Updated_Format => Get("Update_Updated_Format");
+    public string ControllerDatabase_BuiltIn_Format => Get("ControllerDatabase_BuiltIn_Format");
+    public string ControllerDatabase_BuiltInUpdated_Format => Get("ControllerDatabase_BuiltInUpdated_Format");
+    public string ControllerDatabase_NothingChanged => Get("ControllerDatabase_NothingChanged");
+    public string ControllerDatabase_NoNetwork_Format => Get("ControllerDatabase_NoNetwork_Format");
+    public string ControllerDatabase_Refused => Get("ControllerDatabase_Refused");
+    public string ControllerDatabase_NewApplies => Get("ControllerDatabase_NewApplies");
+    public string ControllerDatabase_ChangedApplies => Get("ControllerDatabase_ChangedApplies");
     public string Settings_StartMinimized => Get("Settings_StartMinimized");
     public string Settings_StartAtLogin => Get("Settings_StartAtLogin");
     public string Settings_HidHide => Get("Settings_HidHide");

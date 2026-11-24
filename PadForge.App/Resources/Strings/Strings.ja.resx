@@ -514,7 +514,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>常にシステムトレイに表示する</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ウィンドウを開いている間もシステムトレイのアイコンを表示し、いつでもそのメニューから「終了」を選択できるようにします。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>アップデート</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub で PadForge の新しいバージョンを確認し、ここからインストールします。PadForge が接続するのは GitHub (api.github.com、github.com とそのダウンロードサーバー) だけで、送信するデータは自身のバージョン番号のみです。</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub で PadForge の新しいバージョンを確認してここからインストールし、コントローラーデータベースを更新します。PadForge が接続するのは GitHub (api.github.com、github.com とそのダウンロードサーバー、コントローラーデータベース用の raw.githubusercontent.com) だけです。送信するデータは、自身のバージョン番号と、コントローラーデータベースの場合に GitHub が前回のダウンロードに付けたタグのみです。</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>アップデートを自動的に確認する</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge の起動時と、その後 12 時間ごとに確認します。</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>アップデートを自動的にインストールする</value></data>
@@ -524,6 +524,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>今すぐ確認</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>インストールして再起動</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>リリースノート</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>コントローラーデータベース</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>「今すぐ更新」を押すと、コミュニティのコントローラーデータベース (SDL_GameControllerDB) を GitHub からダウンロードし、このバージョンの PadForge にないマッピングを設定ファイルに保存します。新しいマッピングが使われるのは、ほかにゲームパッドとして認識されておらず、割り当てられておらず、強制 Raw ジョイスティックモードでもないコントローラーだけです。リセットすると、ダウンロードしたマッピングはすべて削除されます。</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>今すぐ更新</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>更新中…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>アップデートを確認しています…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} は最新です。</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} を利用できます。</value></data>
@@ -549,6 +553,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>2 分経っても PadForge が終了していません。終了するとすぐにアップデートがインストールされます。待ち続けるには [{0}] を、このアップデートをスキップするには [{1}] を選択してください。どちらの場合も、PadForge は終了後に再び起動します。</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} へのアップデートのインストールが完了しませんでした。再試行するには設定からインストールしてください。</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge を {0} にアップデートしました。</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>組み込み: {0} 件のマッピング、{1} 時点のコミュニティ版。</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>組み込み: {0} 件のマッピング、{1} 時点のコミュニティ版。{2} に更新: 新規 {3} 件、変更 {4} 件。</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>コミュニティデータベースは前回の更新から変更されていません。</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub に接続できませんでした: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge が想定するコントローラーデータベースではないため、ダウンロードを拒否しました。変更はありません。</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>新しいマッピングは、そのコントローラーを次に接続したときに使われます。</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>変更されたマッピングは、PadForge を次に起動したときに使われます。</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>最小化状態で起動する</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ログイン時に起動する</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

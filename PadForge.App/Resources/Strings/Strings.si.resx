@@ -694,7 +694,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>සැමවිටම පද්ධති තැටියේ පෙන්වන්න</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>කවුළුව විවෘතව ඇති අතරතුර තැටි නිරූපකය දෘශ්‍යමානව තබා ගන්න, එවිට එහි මෙනුවේ පිටවන්න සැමවිටම එක් ක්ලික් කිරීමකින් ළඟා විය හැක.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>යාවත්කාලීන</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge හි නව අනුවාද සඳහා GitHub පරීක්ෂා කර ඒවා මෙතැනින් ස්ථාපනය කරන්න. PadForge සම්බන්ධ වන්නේ GitHub (api.github.com, github.com සහ එහි බාගැනීම් සේවාදායක) සමඟ පමණක් වන අතර, එය යවන එකම දත්තය එහිම අනුවාද අංකයයි.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge හි නව අනුවාද සඳහා GitHub පරීක්ෂා කර ඒවා මෙතැනින් ස්ථාපනය කරන්න, සහ පාලක දත්ත සමුදාය යාවත්කාලීන කරන්න. PadForge සම්බන්ධ වන්නේ GitHub (api.github.com, github.com සහ එහි බාගැනීම් සේවාදායක, සහ පාලක දත්ත සමුදාය සඳහා raw.githubusercontent.com) සමඟ පමණි. එය යවන එකම දත්ත වන්නේ එහිම අනුවාද අංකය සහ, පාලක දත්ත සමුදාය සඳහා, අවසන් බාගැනීමට GitHub ලබා දුන් ටැගයයි.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>යාවත්කාලීන ස්වයංක්‍රීයව පරීක්ෂා කරන්න</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge ආරම්භ වන විට සහ ඉන් පසු සෑම පැය 12කට වරක් පරීක්ෂා කරයි.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>යාවත්කාලීන ස්වයංක්‍රීයව ස්ථාපනය කරන්න</value></data>
@@ -704,6 +704,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>දැන් පරීක්ෂා කරන්න</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ස්ථාපනය කර නැවත අරඹන්න</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>නිකුතු සටහන්</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>පාලක දත්ත සමුදාය</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“දැන් යාවත්කාලීන කරන්න” මඟින් ප්‍රජා පාලක දත්ත සමුදාය (SDL_GameControllerDB) GitHub වෙතින් බාගත කර, PadForge හි මෙම අනුවාදයේ නොමැති සිතියම්ගත කිරීම් සැකසීම් ගොනුවේ තබා ගනී. නව සිතියම්ගත කිරීමක් භාවිත වන්නේ වෙනත් කිසිවක් ගේම්පෑඩ් එකක් ලෙස නොකියවන, පවරා නොමැති සහ “අමු ජොයිස්ටික් ප්‍රකාරය බල කරන්න” තුළ නොමැති පාලකයක් සඳහා පමණි. යළි සැකසීම බාගත කළ සියලු සිතියම්ගත කිරීම් ඉවත් කරයි.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>දැන් යාවත්කාලීන කරන්න</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>යාවත්කාලීන කරමින්…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>යාවත්කාලීන සඳහා පරීක්ෂා කරමින්…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} යාවත්කාලීනයි.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} ලබා ගත හැක.</value></data>
@@ -729,6 +733,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge මිනිත්තු දෙකකට පසුවත් වැසී නැත. එය වැසුණු වහාම යාවත්කාලීනය ස්ථාපනය වේ. දිගටම රැඳී සිටීමට {0} තෝරන්න, නැතහොත් මෙම යාවත්කාලීනය මඟ හැරීමට {1} තෝරන්න. කෙසේ වෙතත්, PadForge වැසුණු පසු එය නැවත ආරම්භ වේ.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} වෙත යාවත්කාලීනය ස්ථාපනය කිරීම අවසන් වූයේ නැත. නැවත උත්සාහ කිරීමට එය සැකසීම් වෙතින් ස්ථාපනය කරන්න.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} වෙත යාවත්කාලීන කරන ලදී.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ඇතුළත්: සිතියම්ගත කිරීම් {0}, {1} දිනයේ ප්‍රජා පිටපත.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ඇතුළත්: සිතියම්ගත කිරීම් {0}, {1} දිනයේ ප්‍රජා පිටපත. {2} යාවත්කාලීන කළා: නව {3}, වෙනස් වූ {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>අවසන් යාවත්කාලීනයෙන් පසු ප්‍රජා දත්ත සමුදාය වෙනස් වී නැත.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub වෙත ළඟා විය නොහැකි විය: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>බාගැනීම PadForge අපේක්ෂා කරන පාලක දත්ත සමුදාය නොවන බැවින් PadForge එය ප්‍රතික්ෂේප කළේය. කිසිවක් වෙනස් වූයේ නැත.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>නව සිතියම්ගත කිරීමක් භාවිත වන්නේ එහි පාලකය ඊළඟ වතාවේ සම්බන්ධ වන විටය.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>වෙනස් වූ සිතියම්ගත කිරීමක් භාවිත වන්නේ PadForge ඊළඟ වතාවේ ආරම්භ වන විටය.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>අවම කර ආරම්භ කරන්න</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>පුරනය වන විට ආරම්භ කරන්න</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

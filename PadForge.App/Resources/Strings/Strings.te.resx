@@ -745,7 +745,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ఎల్లప్పుడూ సిస్టమ్ ట్రేలో చూపించు</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>విండో తెరిచి ఉన్నప్పుడు ట్రే ఐకాన్ కనిపించేలా ఉంచండి, తద్వారా దాని మెనూలోని నిష్క్రమించు ఎప్పుడూ ఒక క్లిక్ దూరంలో ఉంటుంది.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>అప్డేట్లు</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge కొత్త వెర్షన్ల కోసం GitHubలో తనిఖీ చేసి, వాటిని ఇక్కడ నుండి ఇన్స్టాల్ చేయండి. PadForge GitHubను (api.github.com, github.com, దాని డౌన్లోడ్ సర్వర్లు) మాత్రమే సంప్రదిస్తుంది, అది పంపే ఏకైక డేటా దాని స్వంత వెర్షన్ నంబర్.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge కొత్త వెర్షన్ల కోసం GitHub లో తనిఖీ చేసి, వాటిని ఇక్కడ నుండి ఇన్స్టాల్ చేయండి, కంట్రోలర్ డేటాబేస్‌ను అప్డేట్ చేయండి. PadForge GitHub ను మాత్రమే సంప్రదిస్తుంది (api.github.com, github.com, దాని డౌన్లోడ్ సర్వర్లు, కంట్రోలర్ డేటాబేస్ కోసం raw.githubusercontent.com). అది పంపే డేటా దాని స్వంత వెర్షన్ నంబర్ మాత్రమే, కంట్రోలర్ డేటాబేస్ కోసం GitHub చివరి డౌన్లోడ్‌కు ఇచ్చిన ట్యాగ్ కూడా.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>అప్డేట్ల కోసం ఆటోమేటిక్‌గా తనిఖీ చేయి</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge ప్రారంభమైనప్పుడు, ఆ తర్వాత ప్రతి 12 గంటలకు తనిఖీ చేస్తుంది.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>అప్డేట్లను ఆటోమేటిక్‌గా ఇన్స్టాల్ చేయి</value></data>
@@ -755,6 +755,10 @@
   <data name="Settings_CheckNow" xml:space="preserve"><value>ఇప్పుడే తనిఖీ చేయి</value></data>
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ఇన్స్టాల్ చేసి రీస్టార్ట్ చేయి</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>రిలీజ్ నోట్స్</value></data>
+  <data name="Settings_ControllerDatabase" xml:space="preserve"><value>కంట్రోలర్ డేటాబేస్</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ఇప్పుడే అప్డేట్ చేయి బటన్ GitHub నుండి కమ్యూనిటీ కంట్రోలర్ డేటాబేస్ (SDL_GameControllerDB) ను డౌన్లోడ్ చేసి, ఈ PadForge వెర్షన్‌లో లేని మ్యాపింగ్లను సెట్టింగుల ఫైల్‌లో ఉంచుతుంది. కొత్త మ్యాపింగ్ మరేదీ గేమ్‌ప్యాడ్‌గా చదవని, కేటాయించని, రా జాయ్స్టిక్ మోడ్‌లో లేని కంట్రోలర్‌కు మాత్రమే వాడబడుతుంది. రీసెట్ డౌన్లోడ్ చేసిన ప్రతి మ్యాపింగ్‌ను తొలగిస్తుంది.</value></data>
+  <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ఇప్పుడే అప్డేట్ చేయి</value></data>
+  <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>అప్డేట్ అవుతోంది…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>అప్డేట్ల కోసం తనిఖీ చేస్తోంది…</value></data>
   <data name="Update_UpToDate_Format" xml:space="preserve"><value>PadForge {0} తాజాగా ఉంది.</value></data>
   <data name="Update_Available_Format" xml:space="preserve"><value>PadForge {0} అందుబాటులో ఉంది.</value></data>
@@ -780,6 +784,13 @@
   <data name="Update_WaitingForClose_Format" xml:space="preserve"><value>PadForge రెండు నిమిషాల తర్వాత కూడా మూసుకోలేదు. అది మూసుకున్న వెంటనే అప్డేట్ ఇన్స్టాల్ అవుతుంది. వేచి ఉండటానికి {0} ఎంచుకోండి, లేదా ఈ అప్డేట్‌ను దాటవేయడానికి {1} ఎంచుకోండి. ఎలాగైనా, అది మూసుకున్న తర్వాత PadForge మళ్లీ ప్రారంభమవుతుంది.</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}కు అప్డేట్ ఇన్స్టాల్ పూర్తి కాలేదు. మళ్లీ ప్రయత్నించడానికి సెట్టింగులలో నుండి ఇన్స్టాల్ చేయండి.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0}కు అప్డేట్ చేయబడింది.</value></data>
+  <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>అంతర్నిర్మితం: {0} మ్యాపింగ్లు, {1} నాటి కమ్యూనిటీ కాపీ.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>అంతర్నిర్మితం: {0} మ్యాపింగ్లు, {1} నాటి కమ్యూనిటీ కాపీ. అప్డేట్ {2}: కొత్తవి {3}, మారినవి {4}.</value></data>
+  <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>చివరి అప్డేట్ తర్వాత కమ్యూనిటీ డేటాబేస్ మారలేదు.</value></data>
+  <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub ను చేరలేకపోయింది: {0}</value></data>
+  <data name="ControllerDatabase_Refused" xml:space="preserve"><value>డౌన్లోడ్ PadForge ఆశించే కంట్రోలర్ డేటాబేస్ కాదు, కాబట్టి PadForge దాన్ని నిరాకరించింది. ఏమీ మారలేదు.</value></data>
+  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>కొత్త మ్యాపింగ్ దాని కంట్రోలర్ తదుపరిసారి కనెక్ట్ అయినప్పుడు వాడబడుతుంది.</value></data>
+  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>మారిన మ్యాపింగ్ PadForge తదుపరిసారి ప్రారంభమైనప్పుడు వాడబడుతుంది.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>మినిమైజ్ చేసి ప్రారంభించు</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>లాగిన్ వద్ద ప్రారంభించు</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>

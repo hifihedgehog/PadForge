@@ -1361,6 +1361,18 @@
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Embojevy</value></data>
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Katupyry pytyvõhára peg̃uarã</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Eñongatu katupyry…</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ipukukue {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Emboguata</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ejapo jey</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} {1} apytépe</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Oñepyrũ motor ndive</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ohecha archivo oñepyrũ mboyve</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin ryru</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Eñongatu plugin ryru…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Peteĩ plugin michĩ C# pe, ha upe plugin voi AutoHotkey, Python ha PowerShell peg̃uarã, opa archivo oguereko mba'éicha ojejapo térã oñemboguata.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Registro</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Eiporavo peteĩ plugin rehecha hag̃ua iregistro.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ndaipóri gueteri mba'eve ko plugin registro ryepýpe.</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ojejapóma</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ndojejapói</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Noñemoneĩri ko nivel-pe</value></data>

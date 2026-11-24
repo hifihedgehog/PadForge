@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Patakbuhin ang mga Plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Walang tumatakbong plugin.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Tumatakbo ang isang plugin gamit ang iyong mga karapatan, hindi ang sa PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Built-in</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Test Controller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Isang controller na kumikilos nang mag-isa, isang kontrol sa bawat pagkakataon, para masubukan ang isang mapping nang walang hawak na hardware.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Bilis</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Mabagal</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Mabilis</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Pinakamabilis</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Pinapatugtog muli ang recording ng problema bilang mga device na gumawa nito, sa timing na mayroon sila. Mga bagong device ang mga ito sa PC na ito, na naka-map ayon sa pag-map mo o ng isang profile.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Magbukas ng Recording…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Walang nakabukas na recording.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} ang haba</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Playback</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>I-play</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ulitin</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Replay)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Mga recording ng problema|*.zip;*.log|Lahat ng file|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Hindi mapatugtog ng PadForge ang {0}. Hindi ito recording ng problema, o wala itong input ng anumang device.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Mga Plugin Mo</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Ang plugin ay isang program na nagdaragdag ng mga device sa PadForge. Sinisimulan ito ng PadForge gamit ang iyong karaniwang mga karapatan tuwing tumatakbo ang engine.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Magdagdag ng Plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Mga program at script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Lahat ng file|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprubahan…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Nagsisimula kasabay ng engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Sinusuri ang file bago magsimula</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Natapos na may code na {0}. Magsisimula muli sa loob ng {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Hindi nagsimula. Susubukan muli sa loob ng {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Nagbago mula nang aprubahan mo</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Huminto matapos ang limang sunod na pagkabigo</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Hindi nagsimula: wala na ang file</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Hindi nagsimula: walang program ang Windows para sa ganitong uri ng file</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Hindi nagsimula: walang desktop shell na mapagsisimulan nito</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Hindi nagsimula: may karapatan ng administrator ang desktop shell, kaya magkakaroon din nito ang plugin</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Hindi nagsimula: humihingi ito ng karapatan ng administrator</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Hindi nagsimula: tumanggi ang Windows na may error na {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Hindi nagsimula</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Nagsimula</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Natapos na may code na {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Tinanggihan ang key nito mula sa process {0}, na hindi sinimulan ng PadForge</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Magdagdag ng Plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Aprubahan Muli ang Plugin</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Tatakbo ang program na ito gamit ang iyong mga karapatan tuwing tumatakbo ang engine.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Nagbago ang file mula nang aprubahan mo ito. Tatakbo ang program na ito gamit ang iyong mga karapatan tuwing tumatakbo ang engine.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Nilagdaan ng: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Hindi nilagdaan</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Idagdag ang Plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Aprubahan</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>Hindi mabasa ng PadForge ang {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>Nasa listahan na ang {0}.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>Nagpapatakbo ang PadForge ng hanggang 16 plugin. Mag-alis ng isa para makapagdagdag ng iba.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Mga tumatakbong plugin: {0}. Mga device na idinagdag nila: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Ang plugin kit, at ang log ng plugin na pipiliin mo</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>I-save ang Plugin Kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Isang maliit na plugin sa C#, at ang parehong plugin para sa AutoHotkey, Python at PowerShell, bawat file ay may paliwanag kung paano ito i-build o patakbuhin.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pumili ng plugin para makita ang log nito.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Wala pang laman ang log ng plugin na ito.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protocol server ng DSU/CemuHook Motion Provider para sa data ng gyro at accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>I-enable ang DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>

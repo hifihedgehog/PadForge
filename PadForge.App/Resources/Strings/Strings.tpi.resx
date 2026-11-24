@@ -2272,6 +2272,20 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge i no inap seivim: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ranim ol plagin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>I no gat plagin i ran.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, longpela {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Pilaim</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Mekim gen</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} long {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>I stat wantaim injin</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Sekim fail bipo em i stat</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ol plagin i ran: {0}. Ol masin ol i putim: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit bilong plagin, na log bilong plagin yu makim</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit bilong plagin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Seivim kit bilong plagin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Wanpela liklik plagin long C#, na wankain plagin bilong AutoHotkey, Python na PowerShell, na olgeta fail i tok long olsem wanem long wokim o ranim.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Makim wanpela plagin long lukim log bilong en.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>I no gat wanpela samting long log bilong dispela plagin yet.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Orait</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>No ken</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Long {0}</value></data>

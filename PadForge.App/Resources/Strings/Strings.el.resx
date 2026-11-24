@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Εκτέλεση προσθέτων</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Κανένα πρόσθετο δεν εκτελείται.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Ένα πρόσθετο εκτελείται με τα δικαιώματά σας, όχι με του PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ενσωματωμένα</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Δοκιμαστικό χειριστήριο</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ένα χειριστήριο που κινείται μόνο του, ένα χειριστήριο τη φορά, ώστε να δοκιμάζεται μια αντιστοίχιση χωρίς υλικό διαθέσιμο.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Ταχύτητα</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Αργή</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Κανονική</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Γρήγορη</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Ταχύτατη</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Επανάληψη εγγραφής</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Αναπαράγει μια εγγραφή προβλήματος ως τις συσκευές που την έκαναν, με τον χρονισμό που είχαν. Είναι νέες συσκευές σε αυτόν τον υπολογιστή και αντιστοιχίζονται όπως τις αντιστοιχίζετε εσείς ή ένα προφίλ.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Εγγραφή</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Άνοιγμα εγγραφής…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Καμία εγγραφή δεν είναι ανοιχτή.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, διάρκεια {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Αναπαραγωγή</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Αναπαραγωγή</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Επανάληψη</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} από {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Επανάληψη εγγραφής)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Εγγραφές προβλημάτων|*.zip;*.log|Όλα τα αρχεία|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να αναπαραγάγει το {0}. Δεν είναι εγγραφή προβλήματος ή δεν περιέχει είσοδο καμίας συσκευής.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Τα πρόσθετά σας</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Ένα πρόσθετο είναι ένα πρόγραμμα που προσθέτει συσκευές στο PadForge. Το PadForge το ξεκινά με τα συνηθισμένα δικαιώματά σας κάθε φορά που εκτελείται η μηχανή.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Προσθήκη προσθέτου…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Προγράμματα και σενάρια|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Όλα τα αρχεία|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Έγκριση…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ξεκινά με τη μηχανή</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Έλεγχος του αρχείου πριν ξεκινήσει</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Έληξε με κωδικό {0}. Ξεκινά ξανά σε {1} δευτ.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Δεν ξεκίνησε. Νέα προσπάθεια σε {0} δευτ.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Άλλαξε από τότε που το εγκρίνατε</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Σταμάτησε μετά από πέντε συνεχόμενες αποτυχίες</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Δεν ξεκίνησε: το αρχείο λείπει</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows δεν έχουν πρόγραμμα για αυτό το είδος αρχείου</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Δεν ξεκίνησε: δεν εκτελείται κέλυφος επιφάνειας εργασίας για να το ξεκινήσει</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Δεν ξεκίνησε: το κέλυφος της επιφάνειας εργασίας έχει δικαιώματα διαχειριστή, άρα θα τα είχε και το πρόσθετο</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Δεν ξεκίνησε: ζητά δικαιώματα διαχειριστή</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows αρνήθηκαν με σφάλμα {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Δεν ξεκίνησε</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Ξεκίνησε</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Έληξε με κωδικό {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Απορρίφθηκε το κλειδί του από τη διεργασία {0}, που δεν την ξεκίνησε το PadForge</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Προσθήκη προσθέτου</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Νέα έγκριση του προσθέτου</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Αυτό το πρόγραμμα θα εκτελείται με τα δικαιώματά σας κάθε φορά που εκτελείται η μηχανή.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Το αρχείο άλλαξε από τότε που το εγκρίνατε. Αυτό το πρόγραμμα θα εκτελείται με τα δικαιώματά σας κάθε φορά που εκτελείται η μηχανή.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Αρχείο: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Υπογραφή από: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Χωρίς υπογραφή</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Προσθήκη προσθέτου</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Έγκριση</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει το {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>Το {0} υπάρχει ήδη στη λίστα.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>Το PadForge εκτελεί έως 16 πρόσθετα. Αφαιρέστε ένα για να προσθέσετε άλλο.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Πρόσθετα που εκτελούνται: {0}. Συσκευές που πρόσθεσαν: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Το κιτ προσθέτων και το αρχείο καταγραφής ενός προσθέτου της επιλογής σας</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Κιτ προσθέτων</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Αποθήκευση του κιτ προσθέτων…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ένα μικρό πρόσθετο σε C# και το ίδιο πρόσθετο για AutoHotkey, Python και PowerShell, με οδηγίες για τη δημιουργία ή την εκτέλεση σε κάθε αρχείο.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Αρχείο καταγραφής</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Επιλέξτε ένα πρόσθετο για να δείτε το αρχείο καταγραφής του.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Το αρχείο καταγραφής αυτού του προσθέτου δεν έχει ακόμη τίποτα.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Διακομιστής κίνησης</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Διακομιστής πρωτοκόλλου DSU/CemuHook Motion Provider για δεδομένα γυροσκοπίου και επιταχυνσιομέτρου.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ενεργοποίηση διακομιστή κίνησης DSU (πρωτόκολλο CemuHook Motion Provider)</value></data>

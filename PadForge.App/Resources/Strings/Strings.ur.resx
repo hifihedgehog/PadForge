@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>پلگ اِنز چلائیں</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>کوئی پلگ اِن نہیں چل رہا۔</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلگ اِن آپ کے حقوق کے ساتھ چلتا ہے، PadForge کے حقوق کے ساتھ نہیں۔</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>پہلے سے شامل</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>ٹیسٹ کنٹرولر</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ایسا کنٹرولر جو خود ہلتا ہے، ایک وقت میں ایک کنٹرول، تاکہ ہاتھ میں ہارڈ ویئر کے بغیر میپنگ آزمائی جا سکے۔</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>رفتار</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>آہستہ</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>عام</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>تیز</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>تیز ترین</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>ری پلے</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>کسی مسئلے کی ریکارڈنگ کو انہی آلات کے طور پر اسی وقت کے ساتھ دوبارہ چلاتا ہے جنہوں نے اسے بنایا تھا۔ وہ اس PC پر نئے آلات ہیں، جنہیں آپ یا کوئی پروفائل جیسے میپ کرے ویسے میپ کیا جاتا ہے۔</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ریکارڈنگ</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>ریکارڈنگ کھولیں…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>کوئی ریکارڈنگ کھلی نہیں۔</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}، دورانیہ {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>پلے بیک</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>چلائیں</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>دہرائیں</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1} میں سے {0}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (ری پلے)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>مسئلے کی ریکارڈنگز|*.zip;*.log|تمام فائلیں|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} نہیں چلا سکتا۔ یہ مسئلے کی ریکارڈنگ نہیں ہے، یا اس میں کسی آلے کا ان پٹ نہیں۔</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>آپ کے پلگ اِنز</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>پلگ اِن ایسا پروگرام ہے جو PadForge میں آلات شامل کرتا ہے۔ جب بھی انجن چلتا ہے PadForge اسے آپ کے عام حقوق کے ساتھ شروع کرتا ہے۔</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>پلگ اِن شامل کریں…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>پروگرام اور اسکرپٹس|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|تمام فائلیں|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>منظور کریں…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>انجن کے ساتھ شروع ہوتا ہے</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>شروع ہونے سے پہلے فائل جانچی جا رہی ہے</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>کوڈ {0} کے ساتھ بند ہوا۔ {1} سیکنڈ میں دوبارہ شروع ہوگا۔</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>شروع نہیں ہوا۔ {0} سیکنڈ میں دوبارہ کوشش ہوگی۔</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>آپ کی منظوری کے بعد بدل گیا</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>مسلسل پانچ ناکامیوں کے بعد رک گیا</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>شروع نہیں ہوا: فائل موجود نہیں</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>شروع نہیں ہوا: Windows کے پاس اس قسم کی فائل کے لیے کوئی پروگرام نہیں</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>شروع نہیں ہوا: کوئی ڈیسک ٹاپ شیل نہیں چل رہا جس کے تحت اسے شروع کیا جائے</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>شروع نہیں ہوا: ڈیسک ٹاپ شیل کے پاس منتظم کے حقوق ہیں، اس لیے پلگ اِن کے پاس بھی ہوتے</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>شروع نہیں ہوا: یہ منتظم کے حقوق مانگتا ہے</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>شروع نہیں ہوا: Windows نے خرابی {0} کے ساتھ انکار کر دیا</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>شروع نہیں ہوا</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>شروع ہوا</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>کوڈ {0} کے ساتھ بند ہوا</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>پروسیس {0} سے اس کی کلید مسترد کر دی گئی، جسے PadForge نے شروع نہیں کیا تھا</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>پلگ اِن شامل کریں</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>پلگ اِن کو دوبارہ منظور کریں</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>یہ پروگرام جب بھی انجن چلے گا آپ کے حقوق کے ساتھ چلے گا۔</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>فائل آپ کی منظوری کے بعد بدل گئی ہے۔ یہ پروگرام جب بھی انجن چلے گا آپ کے حقوق کے ساتھ چلے گا۔</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>فائل: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>دستخط کنندہ: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>دستخط شدہ نہیں</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>پلگ اِن شامل کریں</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>منظور کریں</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge {0} نہیں پڑھ سکتا۔</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} فہرست میں پہلے سے ہے۔</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge زیادہ سے زیادہ 16 پلگ اِنز چلاتا ہے۔ نیا شامل کرنے کے لیے کوئی ہٹائیں۔</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>چلتے پلگ اِنز: {0}۔ ان کے شامل کردہ آلات: {1}۔</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>پلگ اِن کٹ، اور آپ کے منتخب کردہ پلگ اِن کا لاگ</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>پلگ اِن کٹ</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>پلگ اِن کٹ محفوظ کریں…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# میں ایک چھوٹا پلگ اِن، اور وہی پلگ اِن AutoHotkey، Python اور PowerShell کے لیے، ہر فائل کے ساتھ اسے بنانے یا چلانے کا طریقہ۔</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>لاگ</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>لاگ دیکھنے کے لیے کوئی پلگ اِن منتخب کریں۔</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>اس پلگ اِن کے لاگ میں ابھی کچھ نہیں ہے۔</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>موشن سرور</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>جائرو اور ایکسیلیرومیٹر ڈیٹا کے لیے DSU/CemuHook Motion Provider پروٹوکول سرور۔</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU موشن سرور فعال کریں (CemuHook Motion Provider پروٹوکول)</value></data>

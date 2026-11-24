@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Գործարկել պլագինները</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ոչ մի պլագին չի աշխատում։</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Պլագինն աշխատում է ձեր իրավունքներով, ոչ թե PadForge-ի։</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ներկառուցված</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Փորձնական կառավարիչ</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Կառավարիչ, որը շարժվում է ինքնուրույն, մեկ կառավարման տարրով հերթով, որպեսզի կապակցումը կարելի լինի փորձել առանց սարքի։</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Արագություն</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Դանդաղ</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Նորմալ</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Արագ</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Ամենաարագ</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Վերարտադրում</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Վերարտադրում է խնդրի գրառումը որպես այն ստեղծած սարքեր՝ նույն ժամանակային ընթացքով։ Դրանք նոր սարքեր են այս համակարգչում և կապակցվում են այնպես, ինչպես կապակցում եք դուք կամ պրոֆիլը։</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Գրառում</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Բացել գրառում…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ոչ մի գրառում բաց չէ։</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, տևողությունը՝ {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Նվագարկում</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Նվագարկել</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Կրկնել</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0}՝ {1}-ից</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Վերարտադրում)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Խնդրի գրառումներ|*.zip;*.log|Բոլոր ֆայլերը|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ը չի կարող նվագարկել {0}։ Այն խնդրի գրառում չէ կամ սարքի մուտք չի պարունակում։</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ձեր պլագինները</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Պլագինը ծրագիր է, որը սարքեր է ավելացնում PadForge-ին։ PadForge-ը այն մեկնարկում է ձեր սովորական իրավունքներով, երբ մեխանիզմն աշխատում է։</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Ավելացնել պլագին…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Ծրագրեր և սկրիպտներ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Բոլոր ֆայլերը|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Հաստատել…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Մեկնարկում է մեխանիզմի հետ</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ֆայլը ստուգվում է մեկնարկից առաջ</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ավարտվեց {0} կոդով։ Նորից մեկնարկում է {1} վ հետո։</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Չմեկնարկեց։ Նորից կփորձի {0} վ հետո։</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Փոխվել է ձեր հաստատումից հետո</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Կանգնեց հինգ անընդմեջ ձախողումից հետո</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Չմեկնարկեց՝ ֆայլն այլևս չկա</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը այս տեսակի ֆայլի համար ծրագիր չունի</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Չմեկնարկեց՝ աշխատասեղանի թաղանթ չկա, որի տակ այն մեկնարկի</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Չմեկնարկեց՝ աշխատասեղանի թաղանթն ունի ադմինիստրատորի իրավունքներ, ուստի պլագինն էլ կունենար դրանք</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Չմեկնարկեց՝ այն ադմինիստրատորի իրավունքներ է պահանջում</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը մերժեց {0} սխալով</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Չմեկնարկեց</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Մեկնարկեց</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Ավարտվեց {0} կոդով</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Մերժեց իր բանալին {0} գործընթացից, որը PadForge-ը չի մեկնարկել</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Ավելացնել պլագին</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Նորից հաստատել պլագինը</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Այս ծրագիրը կաշխատի ձեր իրավունքներով, երբ մեխանիզմն աշխատում է։</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Ֆայլը փոխվել է ձեր հաստատումից հետո։ Այս ծրագիրը կաշխատի ձեր իրավունքներով, երբ մեխանիզմն աշխատում է։</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Ֆայլ՝ {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Ստորագրող՝ {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Չստորագրված</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256՝ {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Ավելացնել պլագինը</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Հաստատել</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge-ը չի կարող կարդալ {0}։</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} արդեն ցանկում է։</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge-ը աշխատեցնում է մինչև 16 պլագին։ Մեկ այլ պլագին ավելացնելու համար հեռացրեք որևէ մեկը։</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Աշխատող պլագիններ՝ {0}։ Նրանց ավելացրած սարքերը՝ {1}։</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Պլագինների հավաքածուն և ձեր ընտրած պլագինի մատյանը</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Պլագինների հավաքածու</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Պահել պլագինների հավաքածուն…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Փոքր պլագին C#-ով և նույն պլագինը AutoHotkey-ի, Python-ի և PowerShell-ի համար, յուրաքանչյուր ֆայլում՝ ինչպես կառուցել կամ գործարկել։</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Մատյան</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Ընտրեք պլագին՝ նրա մատյանը տեսնելու համար։</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Այս պլագինի մատյանում դեռ ոչինչ չկա։</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Շարժման սերվեր</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider արձանագրության սերվեր՝ գիրոյի և արագացուցաչափի տվյալների համար։</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Միացնել DSU շարժման սերվերը (CemuHook Motion Provider Protocol)</value></data>

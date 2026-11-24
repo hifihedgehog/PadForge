@@ -210,6 +210,7 @@ namespace PadForge.Services.Automation
         {
             if (Volatile.Read(ref _disposed) != 0 || engine == null) return;
             Sessions.AttachEngine(engine);
+            EngineChanged?.Invoke(true);
         }
 
         /// <summary>The engine stopped.</summary>
@@ -217,7 +218,16 @@ namespace PadForge.Services.Automation
         {
             if (Volatile.Read(ref _disposed) != 0) return;
             Sessions.DetachEngine();
+            EngineChanged?.Invoke(false);
         }
+
+        /// <summary>Raised after the engine is attached (true) or detached
+        /// (false), on the thread that started or stopped it. The plugins
+        /// start and stop with it.</summary>
+        internal event Action<bool> EngineChanged;
+
+        /// <summary>Whether an engine is attached now.</summary>
+        internal bool EngineAttached => Sessions.Devices.Engine != null;
 
         /// <summary>Plugins went on or off. While it is on, the Automation
         /// pipe serves plugins with Automation off. Called by the plugins'

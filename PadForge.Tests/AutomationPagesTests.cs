@@ -607,7 +607,7 @@ namespace PadForge.Tests
             string body = PageOf("Plugins");
             Assert.Contains("IsLive=\"{Binding IsPluginsRunning}\"", body);
             Assert.Contains("Text=\"{Binding PluginsStatus}\"", body);
-            Assert.Contains("<StackPanel x:Name=\"PluginsCards\"/>", body);
+            Assert.Contains("<StackPanel x:Name=\"PluginsCards\">", body);
         }
 
         // ── Saved, reset, searched ─────────────────────────────────────
@@ -633,7 +633,7 @@ namespace PadForge.Tests
                 var back = (PadForge.Services.AppSettingsData)xml.Deserialize(new System.IO.StringReader(write.ToString()));
                 Assert.True(back.EnablePlugins);
             }
-            Assert.Contains("or nameof(DashboardViewModel.EnablePlugins))", ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs"));
+            Assert.Contains("or nameof(DashboardViewModel.EnablePlugins)", ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs"));
         }
 
         /// <summary>Search finds both extras, the switches, the level, and

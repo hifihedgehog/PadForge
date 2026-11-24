@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>პლაგინების გაშვება</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>არც ერთი პლაგინი არ მუშაობს.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>პლაგინი თქვენი უფლებებით მუშაობს და არა PadForge-ის უფლებებით.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ჩაშენებული</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>სატესტო კონტროლერი</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>კონტროლერი, რომელიც თავისით მოძრაობს, ერთ-ერთი კონტროლი თითო ჯერზე, რათა რუკის გამოცდა აპარატურის გარეშე შეგეძლოთ.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>სიჩქარე</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>ნელი</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ჩვეულებრივი</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>სწრაფი</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>უსწრაფესი</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>გამეორება</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>პრობლემის ჩანაწერს უკან უკრავს იმ მოწყობილობების სახით, რომლებმაც ის შექმნეს, იმავე დროებით. ისინი ამ კომპიუტერზე ახალი მოწყობილობებია, მიბმული ისე, როგორც თქვენ ან პროფილი მიაბამთ.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ჩანაწერი</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>ჩანაწერის გახსნა…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>არც ერთი ჩანაწერი არ არის გახსნილი.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ხანგრძლივობა {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>დაკვრა</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>დაკვრა</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>გამეორება</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (გამეორება)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>პრობლემის ჩანაწერები|*.zip;*.log|ყველა ფაილი|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ს არ შეუძლია {0}-ის დაკვრა. ის პრობლემის ჩანაწერი არ არის ან მოწყობილობის შეყვანას არ შეიცავს.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>თქვენი პლაგინები</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>პლაგინი არის პროგრამა, რომელიც PadForge-ს მოწყობილობებს ამატებს. PadForge მას თქვენი ჩვეულებრივი უფლებებით უშვებს, როცა ძრავა მუშაობს.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>პლაგინის დამატება…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>პროგრამები და სკრიპტები|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ყველა ფაილი|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>დამტკიცება…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>ძრავასთან ერთად ირთვება</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>ფაილის შემოწმება გაშვებამდე</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>დასრულდა კოდით {0}. ხელახლა დაიწყება {1} წამში.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>არ დაიწყო. ხელახლა სცდის {0} წამში.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>შეიცვალა თქვენი დამტკიცების შემდეგ</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>გაჩერდა ზედიზედ ხუთი ხარვეზის შემდეგ</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>არ დაიწყო: ფაილი აღარ არის</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>არ დაიწყო: Windows-ს ამ ტიპის ფაილისთვის პროგრამა არ აქვს</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>არ დაიწყო: არ მუშაობს დესკტოპის გარსი, რომლის ქვეშაც ის გაეშვებოდა</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>არ დაიწყო: დესკტოპის გარსს ადმინისტრატორის უფლებები აქვს, ამიტომ პლაგინსაც ექნებოდა</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>არ დაიწყო: ის ადმინისტრატორის უფლებებს ითხოვს</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>არ დაიწყო: Windows-მა უარყო შეცდომით {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>არ დაიწყო</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>დაიწყო</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>დასრულდა კოდით {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>უარყო მისი გასაღები პროცესისგან {0}, რომელიც PadForge-მა არ გაუშვა</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>პლაგინის დამატება</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>პლაგინის ხელახლა დამტკიცება</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>ეს პროგრამა თქვენი უფლებებით იმუშავებს, როცა ძრავა მუშაობს.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>ფაილი შეიცვალა თქვენი დამტკიცების შემდეგ. ეს პროგრამა თქვენი უფლებებით იმუშავებს, როცა ძრავა მუშაობს.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ფაილი: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>ხელმომწერი: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>ხელმოუწერელია</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>პლაგინის დამატება</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>დამტკიცება</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge-ს არ შეუძლია {0}-ის წაკითხვა.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} სიაში უკვე არის.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge-ს შეუძლია მაქსიმუმ 16 პლაგინის გაშვება. სხვის დასამატებლად ერთი წაშალეთ.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>მოქმედი პლაგინები: {0}. მათ მიერ დამატებული მოწყობილობები: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>პლაგინის ნაკრები და არჩეული პლაგინის ჟურნალი</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>პლაგინის ნაკრები</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>პლაგინის ნაკრების შენახვა…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>პატარა პლაგინი C#-ზე და იგივე პლაგინი AutoHotkey-ის, Python-ისა და PowerShell-ისთვის, თითოეულ ფაილში მისი აგების ან გაშვების აღწერით.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>ჟურნალი</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>აირჩიეთ პლაგინი მისი ჟურნალის სანახავად.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>ამ პლაგინის ჟურნალში ჯერ არაფერია.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>მოძრაობის სერვერი</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider პროტოკოლის სერვერი გიროსკოპისა და აქსელერომეტრის მონაცემებისთვის.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU მოძრაობის სერვერის ჩართვა (CemuHook Motion Provider Protocol)</value></data>

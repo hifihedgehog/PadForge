@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Jalankan Pemalam</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tiada pemalam berjalan.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Pemalam berjalan dengan hak anda, bukan hak PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Terbina Dalam</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Pengawal Ujian</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Pengawal yang bergerak sendiri, satu kawalan pada satu masa, supaya pemetaan boleh dicuba tanpa perkakasan di tangan.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Kelajuan</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Perlahan</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Biasa</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Laju</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Paling Laju</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Main Semula</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Memainkan semula rakaman masalah sebagai peranti yang menghasilkannya, dengan masa yang sama. Peranti itu ialah peranti baharu pada PC ini, dipetakan seperti yang anda atau profil petakan.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rakaman</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Buka Rakaman…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Tiada rakaman dibuka.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, panjang {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Main Balik</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Main</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ulang</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} daripada {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Main Semula)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Rakaman masalah|*.zip;*.log|Semua fail|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge tidak dapat memainkan {0}. Ia bukan rakaman masalah, atau ia tidak mengandungi input peranti.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Pemalam Anda</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Pemalam ialah program yang menambah peranti pada PadForge. PadForge memulakannya dengan hak biasa anda setiap kali enjin berjalan.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Tambah Pemalam…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Program dan skrip|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Semua fail|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Luluskan…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Bermula bersama enjin</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Menyemak fail sebelum bermula</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Keluar dengan kod {0}. Bermula semula dalam {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Tidak bermula. Mencuba semula dalam {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Berubah sejak anda meluluskannya</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Dihentikan selepas lima kegagalan berturut-turut</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Tidak bermula: fail itu telah hilang</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Tidak bermula: Windows tiada program untuk jenis fail ini</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Tidak bermula: tiada shell desktop berjalan untuk memulakannya</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Tidak bermula: shell desktop mempunyai hak pentadbir, jadi pemalam itu akan mempunyainya juga</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Tidak bermula: ia meminta hak pentadbir</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Tidak bermula: Windows menolak dengan ralat {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Tidak bermula</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Dimulakan</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Keluar dengan kod {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Menolak kuncinya daripada proses {0}, yang tidak dimulakan oleh PadForge</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Tambah Pemalam</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Luluskan Pemalam Semula</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Program ini akan berjalan dengan hak anda setiap kali enjin berjalan.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Fail ini berubah sejak anda meluluskannya. Program ini akan berjalan dengan hak anda setiap kali enjin berjalan.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fail: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Ditandatangani oleh: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Tidak ditandatangani</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Tambah Pemalam</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Luluskan</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge tidak dapat membaca {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} sudah ada dalam senarai.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge menjalankan sehingga 16 pemalam. Buang satu untuk menambah yang lain.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Pemalam berjalan: {0}. Peranti yang ditambahnya: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit pemalam, dan log pemalam yang anda pilih</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit Pemalam</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Simpan Kit Pemalam…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Satu pemalam kecil dalam C#, dan pemalam yang sama untuk AutoHotkey, Python dan PowerShell, setiap fail disertakan cara membina atau menjalankannya.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pilih pemalam untuk melihat lognya.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Log pemalam ini belum ada apa-apa.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pelayan Gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Pelayan protokol DSU/CemuHook Motion Provider untuk data giro dan meter pecutan.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Dayakan Pelayan Gerakan DSU (Protokol CemuHook Motion Provider)</value></data>

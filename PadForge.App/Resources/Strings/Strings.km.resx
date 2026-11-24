@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ដំណើរការកម្មវិធីបន្ថែម</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>គ្មានកម្មវិធីបន្ថែមណាកំពុងដំណើរការទេ។</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>កម្មវិធីបន្ថែមដំណើរការដោយសិទ្ធិរបស់អ្នក មិនមែនសិទ្ធិរបស់ PadForge ទេ។</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>ឧបករណ៍បញ្ជាសាកល្បង</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ឧបករណ៍បញ្ជាដែលផ្លាស់ទីដោយខ្លួនឯង ម្ដងមួយការបញ្ជា ដូច្នេះអាចសាកល្បងការម៉ាបបាន ដោយគ្មានផ្នែករឹងនៅក្នុងដៃ។</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>ល្បឿន</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>យឺត</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ធម្មតា</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>លឿន</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>លឿនបំផុត</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>ចាក់ឡើងវិញ</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>ចាក់ការថតបញ្ហាឡើងវិញ ជាឧបករណ៍ដែលបានបង្កើតវា តាមពេលវេលាដែលពួកវាមាន។ ពួកវាជាឧបករណ៍ថ្មីនៅលើកុំព្យូទ័រនេះ ដែលបានម៉ាបតាមរបៀបដែលអ្នក ឬប្រូហ្វាល់ម៉ាបពួកវា។</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ការថត</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>បើកការថត…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>មិនមានការថតណាបើកទេ។</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0} រយៈពេល {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>ការចាក់</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>ចាក់</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>ចាក់ម្ដងទៀត</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} នៃ {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (ចាក់ឡើងវិញ)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>ការថតបញ្ហា|*.zip;*.log|ឯកសារទាំងអស់|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge មិនអាចចាក់ {0} បានទេ។ វាមិនមែនជាការថតបញ្ហា ឬវាមិនមានការបញ្ចូលរបស់ឧបករណ៍ណាមួយទេ។</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>កម្មវិធីបន្ថែមរបស់អ្នក</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>កម្មវិធីបន្ថែម គឺជាកម្មវិធីដែលបន្ថែមឧបករណ៍ទៅ PadForge។ PadForge ចាប់ផ្ដើមវាដោយសិទ្ធិធម្មតារបស់អ្នក រាល់ពេលម៉ាស៊ីនដំណើរការ។</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>បន្ថែមកម្មវិធីបន្ថែម…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>កម្មវិធី និងស្គ្រីប|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ឯកសារទាំងអស់|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>យល់ព្រម…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>ចាប់ផ្ដើមជាមួយម៉ាស៊ីន</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>កំពុងពិនិត្យឯកសារមុនពេលវាចាប់ផ្ដើម</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>បានចេញដោយកូដ {0}។ ចាប់ផ្ដើមម្ដងទៀតក្នុងរយៈ {1} វិនាទី។</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម។ ព្យាយាមម្ដងទៀតក្នុងរយៈ {0} វិនាទី។</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>បានផ្លាស់ប្ដូរតាំងពីអ្នកយល់ព្រមវា</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>បានឈប់បន្ទាប់ពីបរាជ័យប្រាំដងជាប់ៗគ្នា</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ ឯកសារបាត់</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ Windows គ្មានកម្មវិធីសម្រាប់ប្រភេទឯកសារនេះទេ</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ គ្មានសែលផ្ទៃតុណាកំពុងដំណើរការ ដើម្បីចាប់ផ្ដើមវានៅក្រោមនោះទេ</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ សែលផ្ទៃតុមានសិទ្ធិអ្នកគ្រប់គ្រង ដូច្នេះកម្មវិធីបន្ថែមក៏នឹងមានសិទ្ធិនោះដែរ</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ វាស្នើសុំសិទ្ធិអ្នកគ្រប់គ្រង</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ Windows បានបដិសេធដោយកំហុស {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>បានចាប់ផ្ដើម</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>បានចេញដោយកូដ {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>បានបដិសេធសោរបស់វាពីដំណើរការ {0} ដែល PadForge មិនបានចាប់ផ្ដើម</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>បន្ថែមកម្មវិធីបន្ថែម</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>យល់ព្រមកម្មវិធីបន្ថែមម្ដងទៀត</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>កម្មវិធីនេះនឹងដំណើរការដោយសិទ្ធិរបស់អ្នក រាល់ពេលម៉ាស៊ីនដំណើរការ។</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>ឯកសារបានផ្លាស់ប្ដូរតាំងពីអ្នកយល់ព្រមវា។ កម្មវិធីនេះនឹងដំណើរការដោយសិទ្ធិរបស់អ្នក រាល់ពេលម៉ាស៊ីនដំណើរការ។</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ឯកសារ៖ {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>ចុះហត្ថលេខាដោយ៖ {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>គ្មានហត្ថលេខា</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256៖ {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>បន្ថែមកម្មវិធីបន្ថែម</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>យល់ព្រម</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge មិនអាចអាន {0} បានទេ។</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} មាននៅក្នុងបញ្ជីរួចហើយ។</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge ដំណើរការកម្មវិធីបន្ថែមបានរហូតដល់ 16។ ដកមួយចេញ ដើម្បីបន្ថែមមួយទៀត។</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>កម្មវិធីបន្ថែមកំពុងដំណើរការ៖ {0}។ ឧបករណ៍ដែលពួកវាបានបន្ថែម៖ {1}។</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>កញ្ចប់កម្មវិធីបន្ថែម និងកំណត់ហេតុរបស់កម្មវិធីបន្ថែមដែលអ្នកជ្រើស</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>កញ្ចប់កម្មវិធីបន្ថែម</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>រក្សាទុកកញ្ចប់កម្មវិធីបន្ថែម…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>កម្មវិធីបន្ថែមតូចមួយជា C# និងកម្មវិធីបន្ថែមដដែលសម្រាប់ AutoHotkey, Python និង PowerShell ឯកសារនីមួយៗមានរបៀបបង្កើត ឬដំណើរការវា។</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>កំណត់ហេតុ</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>ជ្រើសកម្មវិធីបន្ថែមមួយ ដើម្បីមើលកំណត់ហេតុរបស់វា។</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>មិនទាន់មានអ្វីនៅក្នុងកំណត់ហេតុរបស់កម្មវិធីបន្ថែមនេះទេ។</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ម៉ាស៊ីនមេចលនា</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ម៉ាស៊ីនមេពិធីការ DSU/CemuHook Motion Provider សម្រាប់ទិន្នន័យហ្ស៊ីរ៉ូ និងឧបករណ៍វាស់សំទុះ។</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>បើកម៉ាស៊ីនមេចលនា DSU (CemuHook Motion Provider Protocol)</value></data>

@@ -2150,6 +2150,19 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Kobomba Skill…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kotambwisa ba plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Plugin moko te ezali kotambola.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, molai {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Kobeta</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Kozongela</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} na {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ekobanda elongo na moteur</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ezali kotala fichier liboso ebanda</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ba plugin oyo ezali kotambola: {0}. Ba appareil oyo ebakisi: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit ya ba plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Kobomba kit ya ba plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin moke na C#, mpe plugin wana moko mpo na AutoHotkey, Python mpe PowerShell, fichier moko na moko elongo na ndenge ya kotonga to kotambwisa yango.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Journal</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pona plugin moko mpo na komona journal na yango.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Eloko moko te ezali naino na journal ya plugin oyo.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Kondima</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Kondima te</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Uta na {0}</value></data>

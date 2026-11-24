@@ -4271,6 +4271,69 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Padagana ang mga plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Walay plugin nga nagdagan.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Ang plugin modagan gamit ang imong mga katungod, dili ang sa PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Naa na sulod</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Controller nga pang-test</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Usa ka controller nga molihok sa kaugalingon, usa ka control matag higayon, aron masulayan ang mapping bisan walay hardware nga gikuptan.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Katulin</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Hinay</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Paspas</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Pinakapaspas</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Ipatokar pag-usab ang usa ka recording sa problema isip ang mga device nga naghimo niini, uban sa ilang orihinal nga timing. Bag-ong mga device sila niini nga PC, gi-map sama sa pag-map nimo o sa usa ka profile.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Ablihi ang usa ka recording…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Walay recording nga abli.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} ang gitas-on</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Pagpatokar</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>I-play</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Balikon</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Replay)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Mga recording sa problema|*.zip;*.log|Tanang file|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Dili mapatokar sa PadForge ang {0}. Dili kini recording sa problema, o walay input sa bisan unsang device sulod niini.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Imong mga plugin</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Ang plugin usa ka programa nga magdugang og mga device sa PadForge. Sugdan kini sa PadForge gamit ang imong ordinaryong mga katungod matag dagan sa engine.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Pagdugang og plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Mga programa ug script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tanang file|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprobahi…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Magsugod uban sa engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Gisusi ang file sa dili pa kini magsugod</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Mihunong uban sa code {0}. Magsugod pag-usab sulod sa {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Wala nagsugod. Mosulay pag-usab sulod sa {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Nausab sukad nimo kini giaprobahan</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Nahunong human sa lima ka sunod-sunod nga kapakyasan</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Wala nagsugod: wala na ang file</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Wala nagsugod: walay programa ang Windows para niini nga klase sa file</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Wala nagsugod: walay desktop shell nga nagdagan nga ikasugdan niini</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Wala nagsugod: adunay mga katungod sa administrator ang desktop shell, busa makabaton usab niini ang plugin</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Wala nagsugod: nangayo kini og mga katungod sa administrator</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Wala nagsugod: gibalibaran sa Windows uban sa error {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Wala nagsugod</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Nagsugod</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Mihunong uban sa code {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Gibalibaran ang key niini gikan sa process {0}, nga wala gisugdan sa PadForge</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Pagdugang og plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Aprobahi pag-usab ang plugin</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Kini nga programa modagan gamit ang imong mga katungod matag dagan sa engine.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Nausab ang file sukad nimo kini giaprobahan. Kini nga programa modagan gamit ang imong mga katungod matag dagan sa engine.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Gipirmahan sa: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Walay pirma</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Idugang ang plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Aprobahi</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>Dili mabasa sa PadForge ang {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>Anaa na sa listahan ang {0}.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>Hangtod sa 16 ka plugin ang mapadagan sa PadForge. Tangtangi ang usa aron makadugang og lain.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Mga plugin nga nagdagan: {0}. Mga device nga ilang gidugang: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Ang plugin kit, ug ang log sa plugin nga imong pilion</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>I-save ang plugin kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Usa ka gamay nga plugin sa C#, ug ang parehas nga plugin para sa AutoHotkey, Python ug PowerShell, ang matag file adunay giya unsaon pag-build o pagpadagan niini.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pagpili og plugin aron makita ang log niini.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Wala pay sulod ang log niini nga plugin.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Nakakonektar</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Wala makonektar</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Walay device nga motakdo.</value></data>

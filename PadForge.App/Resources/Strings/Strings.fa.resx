@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>اجرای پلاگین‌ها</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلاگینی اجرا نمی‌شود.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلاگین با دسترسی‌های شما اجرا می‌شود، نه با دسترسی‌های PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>داخلی</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>کنترلر آزمایشی</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>کنترلری که خودش حرکت می‌کند، هر بار یک کنترل، تا بتوان نگاشتی را بدون داشتن سخت‌افزار آزمود.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>سرعت</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>کند</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>عادی</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>تند</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>تندترین</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>پخش مجدد</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>ضبط یک مشکل را با همان دستگاه‌هایی که آن را ساخته‌اند و با همان زمان‌بندی دوباره پخش می‌کند. این‌ها دستگاه‌های تازه‌ای روی این رایانه‌اند و همان‌گونه که شما یا یک پروفایل نگاشت می‌کنید نگاشت می‌شوند.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ضبط</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>باز کردن یک ضبط…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>هیچ ضبطی باز نیست.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}، به طول {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>پخش</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>پخش</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>تکرار</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} از {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (پخش مجدد)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>ضبط‌های مشکل|*.zip;*.log|همه فایل‌ها|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge نمی‌تواند {0} را پخش کند. ضبط مشکل نیست یا ورودی هیچ دستگاهی در آن نیست.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>پلاگین‌های شما</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>پلاگین برنامه‌ای است که دستگاه‌هایی به PadForge اضافه می‌کند. PadForge هر وقت موتور اجرا شود آن را با دسترسی‌های معمولی شما راه‌اندازی می‌کند.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>افزودن پلاگین…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>برنامه‌ها و اسکریپت‌ها|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|همه فایل‌ها|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>تأیید…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>با موتور شروع می‌شود</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>بررسی فایل پیش از شروع</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>با کد {0} خارج شد. {1} ثانیه دیگر دوباره شروع می‌شود.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>شروع نشد. {0} ثانیه دیگر دوباره تلاش می‌کند.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>از زمان تأیید شما تغییر کرده</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>پس از پنج شکست پیاپی متوقف شد</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>شروع نشد: فایل وجود ندارد</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>شروع نشد: Windows برنامه‌ای برای این نوع فایل ندارد</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>شروع نشد: پوسته دسکتاپی برای اجرای آن در حال اجرا نیست</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>شروع نشد: پوسته دسکتاپ دسترسی مدیر دارد، پس پلاگین هم آن را می‌داشت</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>شروع نشد: دسترسی مدیر می‌خواهد</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>شروع نشد: Windows با خطای {0} رد کرد</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>شروع نشد</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>شروع شد</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>با کد {0} خارج شد</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>کلید آن از فرایند {0} که PadForge آن را شروع نکرده بود رد شد</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>افزودن پلاگین</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>تأیید دوباره پلاگین</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>این برنامه هر وقت موتور اجرا شود با دسترسی‌های شما اجرا می‌شود.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>فایل از زمان تأیید شما تغییر کرده است. این برنامه هر وقت موتور اجرا شود با دسترسی‌های شما اجرا می‌شود.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>فایل: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>امضاشده توسط: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>بدون امضا</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>افزودن پلاگین</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge نمی‌تواند {0} را بخواند.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} از قبل در فهرست است.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge حداکثر 16 پلاگین اجرا می‌کند. برای افزودن پلاگین دیگر، یکی را حذف کنید.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>پلاگین‌های در حال اجرا: {0}. دستگاه‌هایی که اضافه کرده‌اند: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>کیت پلاگین و گزارش پلاگینی که انتخاب می‌کنید</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>کیت پلاگین</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>ذخیره کیت پلاگین…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>یک پلاگین کوچک به زبان C# و همان پلاگین برای AutoHotkey، Python و PowerShell، هر فایل همراه با توضیح ساخت یا اجرای آن.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>گزارش</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>برای دیدن گزارش، یک پلاگین انتخاب کنید.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>هنوز چیزی در گزارش این پلاگین نیست.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>سرور حرکت</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>سرور پروتکل DSU/CemuHook Motion Provider برای داده‌های ژیروسکوپ و شتاب‌سنج.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>فعال کردن سرور حرکت DSU (پروتکل CemuHook Motion Provider)</value></data>

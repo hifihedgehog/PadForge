@@ -52,6 +52,13 @@ namespace PadForge.Engine
         public bool Light { get; init; }
         public bool Player { get; init; }
 
+        /// <summary>The <see cref="InputDeviceType"/> the device reports. A
+        /// device a program declares on the pipe is a Program device. The
+        /// built-in Test Controller reports a gamepad's, so it is read and
+        /// mapped in SDL's gamepad layout as a web pad is, and Replay gives
+        /// each device the type its recording names.</summary>
+        public int DeviceType { get; init; } = InputDeviceType.Program;
+
         /// <summary>The rest of axis or slider <paramref name="index"/>:
         /// what was declared, and 0 for one that was not.</summary>
         public int RestOf(int index)
@@ -162,6 +169,18 @@ namespace PadForge.Engine
             CapabilitiesChanged?.Invoke();
         }
 
+        /// <summary>Takes a new name and keeps the shape and the state, as a
+        /// name PadForge words itself does when the interface language
+        /// changes. <see cref="CapabilitiesChanged"/> is raised for the row
+        /// to read the name again.</summary>
+        public void Rename(string name)
+        {
+            name ??= string.Empty;
+            if (string.Equals(Volatile.Read(ref _name), name, StringComparison.Ordinal)) return;
+            Volatile.Write(ref _name, name);
+            CapabilitiesChanged?.Invoke();
+        }
+
         /// <summary>The shape in force.</summary>
         public ProgramDeviceShape Shape => Volatile.Read(ref _shape);
 
@@ -252,6 +271,18 @@ namespace PadForge.Engine
         }
 
         private int _nextContact = 1;
+
+        /// <summary>
+        /// Takes a whole state as the device's next one, as Replay feeds a
+        /// recorded frame. The state is copied, so the caller may change its
+        /// own afterward. Called from the feeder's thread.
+        /// </summary>
+        public void Publish(CustomInputState state)
+        {
+            if (state == null) return;
+            var s = state.Clone();
+            lock (_stateLock) Volatile.Write(ref _state, s);
+        }
 
         private static float Finite(float value) => float.IsFinite(value) ? value : 0f;
 
@@ -447,7 +478,7 @@ namespace PadForge.Engine
             ObjectGuid.RxAxis, ObjectGuid.RyAxis, ObjectGuid.RzAxis,
         };
 
-        public int GetInputDeviceType() => InputDeviceType.Program;
+        public int GetInputDeviceType() => Shape.DeviceType;
 
         // ── Feedback ──
 

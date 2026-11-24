@@ -329,7 +329,11 @@ namespace PadForge.ViewModels
             nameof(AutomationLevel) or
             nameof(EnableDeviceDisconnectedNote) or
             nameof(EnableDeviceConnectedNote) or
-            nameof(EnablePlugins);
+            nameof(EnablePlugins) or
+            nameof(TestControllerOn) or
+            nameof(TestControllerSpeed) or
+            nameof(ReplayOn) or
+            nameof(ReplayRepeat);
 
         private void ResetSetting(string name)
         {
@@ -438,6 +442,26 @@ namespace PadForge.ViewModels
                     // Off is the default: no plugin runs until the user
                     // asks.
                     EnablePlugins = false;
+                    break;
+                }
+                case nameof(TestControllerOn):
+                {
+                    TestControllerOn = false;
+                    break;
+                }
+                case nameof(TestControllerSpeed):
+                {
+                    TestControllerSpeed = NormalSpeed;
+                    break;
+                }
+                case nameof(ReplayOn):
+                {
+                    ReplayOn = false;
+                    break;
+                }
+                case nameof(ReplayRepeat):
+                {
+                    ReplayRepeat = false;
                     break;
                 }
                 default: return;

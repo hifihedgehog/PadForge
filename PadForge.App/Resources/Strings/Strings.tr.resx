@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Eklentileri çalıştır</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hiçbir eklenti çalışmıyor.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Bir eklenti, PadForge'un değil sizin haklarınızla çalışır.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Yerleşik</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Test kontrolcüsü</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kendi kendine hareket eden, her seferinde tek bir kontrolü oynatan bir kontrolcü, böylece elinizde donanım yokken bir eşleme denenebilir.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Hız</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Yavaş</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Hızlı</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>En hızlı</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Yeniden oynatma</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Bir sorun kaydını, onu oluşturan cihazlar olarak, sahip oldukları zamanlamayla geri oynatır. Bunlar bu bilgisayarda yeni cihazlardır ve siz veya bir profil nasıl eşlerse öyle eşlenir.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Kayıt</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Kayıt aç…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Açık bir kayıt yok.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} uzunluğunda</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Oynatma</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Oynat</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Tekrarla</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (yeniden oynatma)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Sorun kayıtları|*.zip;*.log|Tüm dosyalar|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} dosyasını oynatamıyor. Bu bir sorun kaydı değil ya da hiçbir cihazın girişini içermiyor.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Eklentileriniz</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Eklenti, PadForge'a cihaz ekleyen bir programdır. PadForge, motor her çalıştığında onu sıradan haklarınızla başlatır.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Eklenti ekle…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programlar ve betikler|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tüm dosyalar|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Onayla…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Motorla birlikte başlar</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Başlamadan önce dosya denetleniyor</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} koduyla çıktı. {1} sn sonra yeniden başlar.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Başlamadı. {0} sn sonra yeniden dener.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Onayladığınızdan beri değişti</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Art arda beş hatadan sonra durdu</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Başlamadı: dosya yok</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Başlamadı: Windows'ta bu tür dosya için bir program yok</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Başlamadı: altında başlatılacak bir masaüstü kabuğu çalışmıyor</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Başlamadı: masaüstü kabuğunun yönetici hakları var, bu yüzden eklentinin de olurdu</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Başlamadı: yönetici hakları istiyor</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Başlamadı: Windows {0} hatasıyla reddetti</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Başlamadı</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Başladı</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>{0} koduyla çıktı</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge'un başlatmadığı {0} işleminden gelen anahtarı reddetti</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Eklenti ekle</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Eklentiyi yeniden onayla</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Bu program, motor her çalıştığında sizin haklarınızla çalışacak.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Dosya, onayladığınızdan beri değişti. Bu program, motor her çalıştığında sizin haklarınızla çalışacak.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Dosya: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>İmzalayan: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>İmzasız</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Eklentiyi ekle</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Onayla</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge {0} dosyasını okuyamıyor.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} zaten listede.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge en fazla 16 eklenti çalıştırır. Yenisini eklemek için birini kaldırın.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Çalışan eklentiler: {0}. Eklediği cihazlar: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Eklenti kiti ve seçtiğiniz bir eklentinin günlüğü</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Eklenti kiti</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Eklenti kitini kaydet…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# ile küçük bir eklenti ve aynı eklentinin AutoHotkey, Python ve PowerShell sürümleri, her dosyada nasıl derleneceği veya çalıştırılacağı yazılı.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Günlük</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Günlüğünü görmek için bir eklenti seçin.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Bu eklentinin günlüğünde henüz bir şey yok.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hareket sunucusu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Jiroskop ve ivmeölçer verileri için DSU/CemuHook Motion Provider protokol sunucusu.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU hareket sunucusunu etkinleştir (CemuHook Motion Provider protokolü)</value></data>

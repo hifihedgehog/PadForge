@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Uruchamiaj wtyczki</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Żadna wtyczka nie działa.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Wtyczka działa z twoimi uprawnieniami, a nie z uprawnieniami programu PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Wbudowane</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Kontroler testowy</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontroler, który porusza się sam, jeden element sterujący naraz, aby można było wypróbować mapowanie bez sprzętu pod ręką.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Szybkość</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Wolno</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normalnie</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Szybko</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Najszybciej</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Powtórka</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Odtwarza nagranie problemu jako urządzenia, które je wykonały, z ich czasem. To nowe urządzenia na tym komputerze, mapowane tak, jak mapujesz je ty lub profil.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Nagranie</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Otwórz nagranie…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Żadne nagranie nie jest otwarte.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, długość: {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Odtwarzanie</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Odtwórz</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Powtarzaj</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} z {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (powtórka)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Nagrania problemów|*.zip;*.log|Wszystkie pliki|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nie może odtworzyć pliku {0}. Nie jest to nagranie problemu albo nie zawiera wejścia żadnego urządzenia.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Twoje wtyczki</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Wtyczka to program, który dodaje urządzenia do programu PadForge. PadForge uruchamia ją z twoimi zwykłymi uprawnieniami, gdy tylko działa silnik.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Dodaj wtyczkę…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programy i skrypty|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Wszystkie pliki|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Zatwierdź…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Uruchamia się z silnikiem</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Sprawdzanie pliku przed uruchomieniem</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Zakończona z kodem {0}. Uruchomi się ponownie za {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nie uruchomiona. Spróbuje ponownie za {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Zmieniona od zatwierdzenia</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Zatrzymana po pięciu niepowodzeniach z rzędu</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nie uruchomiona: pliku już nie ma</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nie uruchomiona: system Windows nie ma programu dla tego rodzaju plików</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nie uruchomiona: nie działa powłoka pulpitu, w której można ją uruchomić</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nie uruchomiona: powłoka pulpitu ma uprawnienia administratora, więc wtyczka też by je miała</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nie uruchomiona: wymaga uprawnień administratora</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nie uruchomiona: system Windows odmówił z błędem {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nie uruchomiona</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Uruchomiona</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Zakończona z kodem {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Odrzucono jej klucz z procesu {0}, którego PadForge nie uruchomił</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Dodaj wtyczkę</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Zatwierdź wtyczkę ponownie</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Ten program będzie działał z twoimi uprawnieniami, gdy tylko działa silnik.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Plik zmienił się od zatwierdzenia. Ten program będzie działał z twoimi uprawnieniami, gdy tylko działa silnik.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Plik: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Podpisany przez: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Bez podpisu</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Dodaj wtyczkę</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Zatwierdź</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge nie może odczytać pliku {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>Plik {0} jest już na liście.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge uruchamia do 16 wtyczek. Usuń jedną, aby dodać kolejną.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Działające wtyczki: {0}. Dodane przez nie urządzenia: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Zestaw wtyczek i dziennik wybranej wtyczki</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Zestaw wtyczek</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Zapisz zestaw wtyczek…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Mała wtyczka w C# i ta sama wtyczka dla AutoHotkey, Python i PowerShell, każdy plik z opisem, jak go zbudować lub uruchomić.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Dziennik</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Wybierz wtyczkę, aby zobaczyć jej dziennik.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Dziennik tej wtyczki jest jeszcze pusty.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serwer ruchu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Serwer protokołu DSU/CemuHook Motion Provider dla danych żyroskopu i akcelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Włącz serwer ruchu DSU (protokół CemuHook Motion Provider)</value></data>

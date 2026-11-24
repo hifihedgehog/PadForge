@@ -1441,6 +1441,19 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill para sa mga assistant</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>I-save an skill…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Mayong plugin na nagdadalagan.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} an laba</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Patugtogon</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ulitan</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Magpopoon kaiba an engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Sinusuri an file bago ini magpoon</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Mga plugin na nagdadalagan: {0}. Mga device na idinagdag ninda: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit nin plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>I-save an kit nin plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Sarong sadit na plugin sa C#, asin an parehong plugin para sa AutoHotkey, Python asin PowerShell, an kada file kaiba kun paano ini gibohon o padalaganon.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Magpili nin plugin tanganing mahiling an log kaini.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Mayo pang laog an log kaining plugin.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Mayong programang nakakonektar.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonektar: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Dai aram na programa</value></data>

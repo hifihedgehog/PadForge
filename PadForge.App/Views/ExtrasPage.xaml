@@ -2843,9 +2843,9 @@
 
             <!-- ═══ Plugins (#597) ═══
                  Programs that add devices. ECF0 is Segoe MDL2's plug, a
-                 device a program plugs in. The page is the frame: the head
-                 with the switch, the status card and the note. The plugin
-                 manager's cards go in PluginsCards. -->
+                 device a program plugs in. The head with the switch, the
+                 status card, the plugin manager's cards in PluginsCards, and
+                 the note. -->
             <StackPanel x:Name="PluginsPage" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
@@ -2890,8 +2890,211 @@
                     </Grid>
                 </Border>
 
-                <!-- The plugin manager's cards. -->
-                <StackPanel x:Name="PluginsCards"/>
+                <!-- The plugin manager's cards: the two plugins PadForge
+                     carries, the user's own, and under More the kit and a
+                     plugin's log. -->
+                <StackPanel x:Name="PluginsCards">
+                    <!-- Built In. A row's second line appears while its
+                         switch is on, as the Magnifier's rows do. -->
+                    <Border x:Name="PluginsBuiltInCard" Style="{StaticResource ExtraCard}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Plugins_Card_BuiltIn, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Plugins_TestController, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <CheckBox Style="{StaticResource SwitchCheckBox}" AutomationProperties.AutomationId="Plugins_TestController"
+                                          Content="{Binding Plugins_TestController, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TestControllerOn}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TestControllerOn" SettingLabel="{Binding Plugins_TestController, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_TestControllerOn_59704"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" Visibility="{Binding TestControllerOn, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Plugins_Speed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox SelectedIndex="{Binding TestControllerSpeed}" MinWidth="200" MinHeight="34" VerticalAlignment="Center"
+                                          AutomationProperties.AutomationId="Plugins_TestControllerSpeed"
+                                          AutomationProperties.Name="{Binding Plugins_Speed, Source={x:Static strings:Strings.Instance}}">
+                                    <ComboBoxItem Content="{Binding Plugins_Speed_Slow, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Plugins_Speed_Normal, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Plugins_Speed_Fast, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Plugins_Speed_Fastest, Source={x:Static strings:Strings.Instance}}"/>
+                                </ComboBox>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TestControllerSpeed" SettingLabel="{Binding Plugins_Speed, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_TestControllerSpeed_59705"/>
+                            </controls:SettingRow>
+                            <TextBlock Text="{Binding Plugins_TestController_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+
+                            <controls:SettingRow MinHeight="44" Margin="0,8,0,0">
+                                <TextBlock Text="{Binding Plugins_Replay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <CheckBox Style="{StaticResource SwitchCheckBox}" AutomationProperties.AutomationId="Plugins_Replay"
+                                          Content="{Binding Plugins_Replay, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding ReplayOn}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ReplayOn" SettingLabel="{Binding Plugins_Replay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_ReplayOn_59706"/>
+                            </controls:SettingRow>
+                            <StackPanel Visibility="{Binding ReplayOn, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <!-- The open recording, its name and length. -->
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Plugins_Replay_Recording, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Button Style="{StaticResource ExtraButton}" Click="OpenRecording_Click"
+                                            AutomationProperties.AutomationId="Plugins_OpenRecording"
+                                            Content="{Binding Plugins_Replay_Open, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock controls:SettingRow.Fills="True" Margin="14,0,0,0" VerticalAlignment="Center" FontSize="13" TextWrapping="Wrap"
+                                               Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding ReplayFileLine}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasReplayFile}" Value="False">
+                                                        <Setter Property="Text" Value="{Binding Plugins_Replay_None, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </controls:SettingRow>
+                                <!-- Play and Stop and where playback is, then
+                                     Repeat, while a recording is open. -->
+                                <controls:SettingRow MinHeight="44" Visibility="{Binding HasReplayFile, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Plugins_Replay_Playback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Button Style="{StaticResource ExtraButton}" Command="{Binding ReplayPlayCommand}" MinWidth="80"
+                                            AutomationProperties.AutomationId="Plugins_ReplayPlay"
+                                            Content="{Binding Plugins_Replay_Play, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Style="{StaticResource ExtraButton}" Command="{Binding ReplayStopCommand}" MinWidth="80" Margin="10,0,0,0"
+                                            AutomationProperties.AutomationId="Plugins_ReplayStop"
+                                            Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock controls:SettingRow.Fills="True" Margin="18,0,0,0" VerticalAlignment="Center" FontSize="13"
+                                               common:LiveText.Polite="True" Typography.NumeralAlignment="Tabular"
+                                               Text="{Binding ReplayPositionLine}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44" Visibility="{Binding HasReplayFile, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Plugins_Replay_Repeat, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <CheckBox Style="{StaticResource SwitchCheckBox}" AutomationProperties.AutomationId="Plugins_ReplayRepeat"
+                                              Content="{Binding Plugins_Replay_Repeat, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding ReplayRepeat}"/>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ReplayRepeat" SettingLabel="{Binding Plugins_Replay_Repeat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_ReplayRepeat_59707"/>
+                                </controls:SettingRow>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Plugins_Replay_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Your Plugins: a row for each, with the name it gave,
+                         its state, its switch and Remove. Start shows after
+                         five failures or a refused start, Approve for a file
+                         that changed. An empty list says what a plugin
+                         is. -->
+                    <Border x:Name="PluginsYoursCard" Style="{StaticResource ExtraCard}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Plugins_Card_Yours, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding Plugins_Empty, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
+                                       TextWrapping="Wrap" Margin="0,6,0,8"
+                                       Visibility="{Binding HasPluginRows, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                            <ItemsControl x:Name="PluginRowsList" ItemsSource="{Binding PluginRows}" IsTabStop="False"
+                                          Visibility="{Binding HasPluginRows, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- A hairline over every plugin but the first. -->
+                                        <Border BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderThickness" Value="0,1,0,0"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <controls:FlexLinePanel Margin="0,8,0,8" Gap="12" LineGap="8" MinLineHeight="44">
+                                                <StackPanel controls:FlexLinePanel.Basis="240" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center"
+                                                            ToolTip="{Binding Path}">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                    <TextBlock Text="{Binding State}" FontSize="13" TextWrapping="Wrap" common:LiveText.Polite="True"
+                                                               Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                </StackPanel>
+                                                <Button Style="{StaticResource ExtraButton}" Command="{Binding StartCommand}"
+                                                        AutomationProperties.AutomationId="{Binding StartId}"
+                                                        Visibility="{Binding ShowStart, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                        Content="{Binding Common_Start, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Style="{StaticResource ExtraButton}" Click="ApprovePlugin_Click"
+                                                        AutomationProperties.AutomationId="{Binding ApproveId}"
+                                                        Visibility="{Binding ShowApprove, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                        Content="{Binding Plugins_Approve, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" VerticalAlignment="Center"
+                                                           Command="{Binding RemoveCommand}"
+                                                           AutomationProperties.AutomationId="{Binding RemoveId}"
+                                                           Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                                                <!-- The switch stands last, so it keeps one place
+                                                     whichever buttons the row shows. -->
+                                                <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                                          AutomationProperties.AutomationId="{Binding SwitchId}"
+                                                          AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                                                          IsChecked="{Binding IsOn, Mode=TwoWay}"/>
+                                            </controls:FlexLinePanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Style="{StaticResource ExtraButton}" Click="AddPlugin_Click" HorizontalAlignment="Left" Margin="0,8,0,4"
+                                    AutomationProperties.AutomationId="Plugins_Add"
+                                    Content="{Binding Plugins_Add, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <controls:FoldList Gap="0" Margin="0,16,0,0">
+                        <controls:MoreRow x:Name="PluginsMore" Style="{StaticResource MoreCardRow}" StateKey="Extras.Plugins.More"
+                                          AutomationProperties.AutomationId="Extras_More_Plugins"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Plugins_More_Hint, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Plugins_Kit, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Button Style="{StaticResource ExtraButton}" Click="SavePluginKit_Click"
+                                            AutomationProperties.AutomationId="Plugins_SaveKit"
+                                            Content="{Binding Plugins_Kit_Save, Source={x:Static strings:Strings.Instance}}"/>
+                                </controls:SettingRow>
+                                <TextBlock Text="{Binding Plugins_Kit_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+                                <!-- The log of the plugin the user picks: its last
+                                     200 lines, which grow to 240 and then scroll
+                                     inside the row. Nothing is picked as the page
+                                     opens. -->
+                                <StackPanel Visibility="{Binding HasPluginRows, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <controls:SettingRow MinHeight="44" Margin="0,8,0,0">
+                                        <TextBlock Text="{Binding Plugins_Log, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox ItemsSource="{Binding PluginRows}" SelectedItem="{Binding SelectedLogPlugin}" DisplayMemberPath="Name"
+                                                  MinWidth="260" MinHeight="34" VerticalAlignment="Center"
+                                                  AutomationProperties.AutomationId="Plugins_LogPlugin"
+                                                  AutomationProperties.Name="{Binding Plugins_Log, Source={x:Static strings:Strings.Instance}}"/>
+                                    </controls:SettingRow>
+                                    <TextBlock Text="{Binding Plugins_Log_Pick, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"
+                                               Visibility="{Binding HasSelectedLogPlugin, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                    <TextBlock Text="{Binding Plugins_Log_Empty, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"
+                                               Visibility="{Binding IsPluginLogEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <ItemsControl x:Name="PluginLogList" ItemsSource="{Binding PluginLogLines}" MaxHeight="240" Margin="0,4,0,4"
+                                                  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                                  Visibility="{Binding HasPluginLogLines, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <ScrollViewer CanContentScroll="True" PanningMode="VerticalOnly" Focusable="True"
+                                                              AutomationProperties.Name="{Binding Plugins_Log, Source={x:Static strings:Strings.Instance}}">
+                                                    <ItemsPresenter/>
+                                                </ScrollViewer>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" FontSize="13" TextWrapping="Wrap" Margin="0,2,12,2" Typography.NumeralAlignment="Tabular"
+                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </controls:FoldList>
+                </StackPanel>
 
                 <TextBlock Text="{Binding Extras_Plugins_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
             </StackPanel>

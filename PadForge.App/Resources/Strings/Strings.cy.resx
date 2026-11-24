@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Rhedeg Ategion</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nid oes ategyn yn rhedeg.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Mae ategyn yn rhedeg gyda'ch hawliau chi, nid rhai PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Adeiledig</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Rheolydd Prawf</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Rheolydd sy'n symud ar ei ben ei hun, un rheolydd ar y tro, fel y gellir rhoi cynnig ar fapiad heb galedwedd wrth law.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Cyflymder</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Araf</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Arferol</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Cyflym</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Cyflymaf</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Ailchwarae</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Yn chwarae recordiad problem yn ôl fel y dyfeisiau a'i gwnaeth, gyda'r amseru a oedd ganddynt. Dyfeisiau newydd ar y PC hwn ydynt, wedi'u mapio fel y byddwch chi neu broffil yn eu mapio.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recordiad</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Agor Recordiad…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Nid oes recordiad ar agor.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} o hyd</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Chwarae yn ôl</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Chwarae</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ailadrodd</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Ailchwarae)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Recordiadau problem|*.zip;*.log|Pob ffeil|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Ni all PadForge chwarae {0}. Nid yw'n recordiad problem, neu nid oes ynddo fewnbwn dyfais.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Eich Ategion</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Rhaglen sy'n ychwanegu dyfeisiau at PadForge yw ategyn. Mae PadForge yn ei gychwyn gyda'ch hawliau cyffredin pryd bynnag y bydd yr injan yn rhedeg.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Ychwanegu Ategyn…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Rhaglenni a sgriptiau|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Pob ffeil|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Cymeradwyo…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Yn cychwyn gyda'r injan</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Yn gwirio'r ffeil cyn iddo gychwyn</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Wedi gadael gyda chod {0}. Yn cychwyn eto ymhen {1} eiliad.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Heb gychwyn. Yn ceisio eto ymhen {0} eiliad.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Wedi newid ers i chi ei gymeradwyo</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Wedi stopio ar ôl pum methiant yn olynol</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Heb gychwyn: mae'r ffeil wedi mynd</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Heb gychwyn: nid oes gan Windows raglen ar gyfer y math hwn o ffeil</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Heb gychwyn: nid oes cragen bwrdd gwaith yn rhedeg i'w gychwyn oddi tani</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Heb gychwyn: mae gan gragen y bwrdd gwaith hawliau gweinyddwr, felly byddent gan yr ategyn hefyd</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Heb gychwyn: mae'n gofyn am hawliau gweinyddwr</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Heb gychwyn: gwrthododd Windows gyda gwall {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Heb gychwyn</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Wedi cychwyn</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Wedi gadael gyda chod {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Gwrthodwyd ei allwedd gan broses {0}, nad oedd PadForge wedi'i chychwyn</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Ychwanegu Ategyn</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Cymeradwyo'r Ategyn Eto</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Bydd y rhaglen hon yn rhedeg gyda'ch hawliau chi pryd bynnag y bydd yr injan yn rhedeg.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Mae'r ffeil wedi newid ers i chi ei chymeradwyo. Bydd y rhaglen hon yn rhedeg gyda'ch hawliau chi pryd bynnag y bydd yr injan yn rhedeg.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Ffeil: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Wedi'i lofnodi gan: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Heb ei lofnodi</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Ychwanegu Ategyn</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Cymeradwyo</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>Ni all PadForge ddarllen {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>Mae {0} ar y rhestr eisoes.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>Mae PadForge yn rhedeg hyd at 16 ategyn. Tynnwch un i ychwanegu un arall.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ategion yn rhedeg: {0}. Dyfeisiau a ychwanegwyd ganddynt: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Pecyn yr ategion, a log ategyn a ddewiswch</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Pecyn Ategion</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Cadw Pecyn yr Ategion…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ategyn bach yn C#, a'r un ategyn ar gyfer AutoHotkey, Python a PowerShell, pob ffeil gyda sut i'w adeiladu neu ei rhedeg.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Dewiswch ategyn i weld ei log.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Nid oes dim yn log yr ategyn hwn eto.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Gweinydd Symudiad</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Gweinydd protocol DSU/CemuHook Motion Provider ar gyfer data gyrosgop a chyflymiadur.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Galluogi Gweinydd Symudiad DSU (Protocol CemuHook Motion Provider)</value></data>

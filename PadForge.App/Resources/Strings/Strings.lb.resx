@@ -581,6 +581,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Plugins ausféieren</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kee Plugin leeft.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>E Plugin leeft mat Äre Rechter, net mat deene vu PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Agebaut</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>E Controller, deen sech eleng beweegt, ee Bedienelement nom aneren, fir datt eng Zouuerdnung ouni Hardware ausprobéiert ka ginn.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Vitess</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lues</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Séier</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Am séiersten</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Ofspillen</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spillt eng Problemopnam als déi Apparater of, déi se gemaach hunn, mam selwechten Timing. Si sinn nei Apparater op dësem PC a ginn zougeuerdnet, wéi Dir oder e Profil se zouuerdnen.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opnam</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Eng Opnam opmaachen…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Keng Opnam ass op.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} laang</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Wiedergab</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Ofspillen</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Widderhuelen</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} vun {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Ofspillen)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problemopnamen|*.zip;*.log|All Dateien|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kann {0} net ofspillen. Et ass keng Problemopnam, oder et enthält keng Agabe vun engem Apparat.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Är Plugins</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>E Plugin ass e Programm, deen Apparater zu PadForge derbäisetzt. PadForge start en mat Ären normale Rechter, soubal d'Engine leeft.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>E Plugin derbäisetzen…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmer a Scripten|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|All Dateien|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Bestätegen…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Start mat der Engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>D'Datei gëtt virum Start iwwerpréift</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Mam Code {0} beendegt. Start an {1} s nei.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Net gestart. Probéiert an {0} s nach eng Kéier.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Geännert, zënter Dir en bestätegt hutt</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>No fënnef Feeler hannereneen gestoppt</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Net gestart: d'Datei ass net méi do</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Net gestart: Windows huet kee Programm fir dës Zort Datei</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Net gestart: et leeft keen Desktop, ënner deem e gestart ka ginn</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Net gestart: den Desktop huet Administrateurrechter, dofir hätt de Plugin se och</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Net gestart: en freet no Administrateurrechter</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Net gestart: Windows huet mam Feeler {0} refuséiert</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Net gestart</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Gestart</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Mam Code {0} beendegt</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Säi Schlëssel vum Prozess {0} refuséiert, deen PadForge net gestart huet</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>E Plugin derbäisetzen</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>De Plugin nach eng Kéier bestätegen</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Dëse Programm leeft mat Äre Rechter, soubal d'Engine leeft.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>D'Datei huet sech geännert, zënter Dir se bestätegt hutt. Dëse Programm leeft mat Äre Rechter, soubal d'Engine leeft.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Datei: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Signéiert vun: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Net signéiert</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Plugin derbäisetzen</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Bestätegen</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge kann {0} net liesen.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} steet schonn op der Lëscht.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge féiert bis zu 16 Plugins aus. Huelt een ewech, fir en aneren derbäizesetzen.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Aktiv Plugins: {0}. Apparater, déi se derbäigesat hunn: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>De Plugin-Kit an de Protokoll vun engem Plugin, deen Dir auswielt</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin-Kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>De Plugin-Kit späicheren…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>E klenge Plugin a C#, an dee selwechte Plugin fir AutoHotkey, Python a PowerShell, all Datei mat Erklärung, wéi een se kompiléiert oder ausféiert.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Protokoll</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Wielt e Plugin, fir säi Protokoll ze gesinn.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Am Protokoll vun dësem Plugin steet nach näischt.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Beweegungsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook-Motion-Provider-Protokollserver fir Gyro- a Beschleunegungsdaten.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Beweegungsserver aktivéieren (CemuHook-Motion-Provider-Protokoll)</value></data>

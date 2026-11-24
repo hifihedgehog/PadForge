@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Плагиндерді іске қосу</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ешбір плагин жұмыс істемейді.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Плагин PadForge құқықтарымен емес, сіздің құқықтарыңызбен жұмыс істейді.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Кірістірілген</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Сынақ контроллері</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Өздігінен қозғалатын контроллер, бір уақытта бір басқару элементі, сондықтан тағайындауды құрылғысыз-ақ сынап көруге болады.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Жылдамдық</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Баяу</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Қалыпты</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Жылдам</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Ең жылдам</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Қайта ойнату</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Ақау жазбасын оны жасаған құрылғылар ретінде, олардағы уақыт бойынша қайта ойнатады. Олар осы компьютердегі жаңа құрылғылар, оларды өзіңіз немесе профиль тағайындағандай тағайындалады.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Жазба</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Жазбаны ашу…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ешбір жазба ашылмаған.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ұзақтығы {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Ойнату</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Ойнату</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Қайталау</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (қайта ойнату)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Ақау жазбалары|*.zip;*.log|Барлық файлдар|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} файлын ойната алмайды. Ол ақау жазбасы емес немесе онда ешбір құрылғының кірісі жоқ.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Сіздің плагиндеріңіз</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Плагин дегеніміз PadForge-қа құрылғы қосатын бағдарлама. PadForge оны қозғалтқыш жұмыс істеген сайын сіздің қарапайым құқықтарыңызбен іске қосады.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Плагин қосу…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Бағдарламалар мен скрипттер|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Барлық файлдар|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Бекіту…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Қозғалтқышпен бірге іске қосылады</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Іске қосар алдында файл тексерілуде</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} кодымен аяқталды. {1} с ішінде қайта іске қосылады.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Іске қосылмады. {0} с ішінде қайта әрекет етеді.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Сіз бекіткеннен кейін өзгерген</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Қатарынан бес сәтсіздіктен кейін тоқтатылды</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Іске қосылмады: файл жоқ</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Іске қосылмады: Windows жүйесінде мұндай файл түріне арналған бағдарлама жоқ</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Іске қосылмады: оны іске қосатын жұмыс үстелі қабығы жоқ</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Іске қосылмады: жұмыс үстелі қабығында әкімші құқықтары бар, сондықтан плагинде де болар еді</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Іске қосылмады: ол әкімші құқықтарын сұрайды</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Іске қосылмады: Windows {0} қатесімен қабылдамады</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Іске қосылмады</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Іске қосылды</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>{0} кодымен аяқталды</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge іске қоспаған {0} процесінен келген кілт қабылданбады</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Плагин қосу</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Плагинді қайта бекіту</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Бұл бағдарлама қозғалтқыш жұмыс істеген сайын сіздің құқықтарыңызбен жұмыс істейді.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Файл сіз бекіткеннен кейін өзгерді. Бұл бағдарлама қозғалтқыш жұмыс істеген сайын сіздің құқықтарыңызбен жұмыс істейді.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Қол қойған: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Қол қойылмаған</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Плагинді қосу</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Бекіту</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge {0} файлын оқи алмайды.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} тізімде бұрыннан бар.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge ең көбі 16 плагинді іске қосады. Біреуін қосу үшін алдымен басқасын алып тастаңыз.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Жұмыс істеп тұрған плагиндер: {0}. Олар қосқан құрылғылар: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Плагин жинағы және таңдаған плагиннің журналы</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Плагин жинағы</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Плагин жинағын сақтау…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# тіліндегі шағын плагин және AutoHotkey, Python мен PowerShell үшін дәл сондай плагин, әр файлда оны құру немесе іске қосу жолы бар.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Журнал</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Журналын көру үшін плагинді таңдаңыз.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Бұл плагиннің журналы әзірге бос.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Қозғалыс сервері</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп пен акселерометр деректеріне арналған DSU/CemuHook Motion Provider хаттамасының сервері.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU қозғалыс серверін қосу (CemuHook Motion Provider хаттамасы)</value></data>

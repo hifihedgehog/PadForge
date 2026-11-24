@@ -1225,6 +1225,19 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Bokgoni jwa bathusi</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Boloka bokgoni…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ga go na plugin e e dirang.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, boleele {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Tshameka</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Boeletsa</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ya {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>E simolola le enjine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>E tlhatlhoba faele pele e simolola</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Diplugin tse di dirang: {0}. Didirisiwa tse di di okeditseng: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Sephuthelo sa plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Boloka sephuthelo sa plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin e nnye ka C#, le plugin e e tshwanang ya AutoHotkey, Python le PowerShell, faele nngwe le nngwe e na le kafa e agiwang kgotsa e dirisiwang ka teng.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Rekoto</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Tlhopha plugin go bona rekoto ya yone.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ga go na sepe mo rekotong ya plugin e go fitlha jaanong.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ga go na porogeramo e e golaganeng.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tse di golaganeng: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Porogeramo e e sa itsiweng</value></data>

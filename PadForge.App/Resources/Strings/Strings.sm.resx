@@ -1362,6 +1362,19 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Faʻasao le Tomai…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Faʻagaoioi Plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>E leai se plugin o loʻo galue.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, umi {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Taʻalo</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Toe fai</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} o le {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>E amata faʻatasi ma le enisini</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>O loʻo siaki le faila aʻo leʻi amata</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin o loʻo galue: {0}. Masini na latou faʻaopoopo: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Pusa Plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Faʻasao le Pusa Plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>O se plugin laʻititi i le C#, ma le plugin lava lea mo AutoHotkey, Python ma PowerShell, o faila taʻitasi ma le auala e fau ai pe faʻagaoioi ai.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Faʻamaumauga</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Filifili se plugin e vaai ai i ana faʻamaumauga.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>E leai se mea i faʻamaumauga a lenei plugin.</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Na feagai PadForge ma se faʻafitauli</value></data>
   <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>E leai se masini faʻapea</value></data>
   <data name="Automation_Result_Offline" xml:space="preserve"><value>E leʻi fesoʻotaʻi le masini</value></data>

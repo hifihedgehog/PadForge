@@ -4018,6 +4018,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>プラグインを実行</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>実行中のプラグインはありません。</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>プラグインは PadForge の権限ではなく、あなたの権限で実行されます。</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>組み込み</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>テストコントローラー</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>1 つずつコントロールが自動で動くコントローラーです。ハードウェアがなくてもマッピングを試せます。</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>速度</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>遅い</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>標準</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>速い</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>最速</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>リプレイ</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>問題の記録を、それを作ったデバイスとして同じタイミングで再生します。これらはこの PC の新しいデバイスで、あなたまたはプロファイルの設定どおりにマッピングされます。</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>記録</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>記録を開く…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>開いている記録はありません。</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}、長さ {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>再生</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>再生</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>繰り返し</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (リプレイ)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>問題の記録|*.zip;*.log|すべてのファイル|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge は {0} を再生できません。問題の記録ではないか、デバイスの入力が含まれていません。</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>あなたのプラグイン</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>プラグインは、PadForge にデバイスを追加するプログラムです。PadForge は、エンジンの実行中は常に、通常の権限でプラグインを起動します。</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>プラグインを追加…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>プログラムとスクリプト|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|すべてのファイル|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>承認…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>エンジンと同時に起動</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>起動前にファイルを確認中</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>コード {0} で終了しました。{1} 秒後に再開します。</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>起動していません。{0} 秒後に再試行します。</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>承認後に変更されました</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>5 回連続で失敗したため停止しました</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>起動していません: ファイルが見つかりません</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>起動していません: Windows にこの種類のファイルを開くプログラムがありません</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>起動していません: 起動元となるデスクトップシェルが動いていません</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>起動していません: デスクトップシェルが管理者権限を持っているため、プラグインも管理者権限を持ってしまいます</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>起動していません: 管理者権限を要求しています</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>起動していません: Windows がエラー {0} で拒否しました</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>起動していません</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>起動しました</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>コード {0} で終了しました</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge が起動していないプロセス {0} からのキーを拒否しました</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>プラグインを追加</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>プラグインを再承認</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>このプログラムは、エンジンの実行中は常にあなたの権限で実行されます。</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>承認後にファイルが変更されました。このプログラムは、エンジンの実行中は常にあなたの権限で実行されます。</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ファイル: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>署名者: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>署名なし</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>プラグインを追加</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>承認</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge は {0} を読み取れません。</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} はすでに一覧にあります。</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge で実行できるプラグインは最大 16 個です。追加するには、どれか 1 つを削除してください。</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>実行中のプラグイン: {0}。追加されたデバイス: {1}。</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>プラグインキットと、選んだプラグインのログ</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>プラグインキット</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>プラグインキットを保存…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# の小さなプラグインと、AutoHotkey、Python、PowerShell 向けの同じプラグイン。各ファイルにビルドまたは実行の方法を記載しています。</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>ログ</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>ログを見るにはプラグインを選んでください。</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>このプラグインのログはまだ空です。</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>マッピング注釈</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

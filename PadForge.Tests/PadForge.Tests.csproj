@@ -24,6 +24,12 @@
     <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
     <ProjectReference Include="..\PadForge.App\PadForge.App.csproj" />
     <ProjectReference Include="..\PadForge.NativeChecks\PadForge.NativeChecks.csproj" ReferenceOutputAssembly="false" />
+    <!-- The plugin helper (#597): the kit's C# plugin built as a console
+         program, and the program the plugin launcher's real start runs. It
+         is copied into PluginProbe beside the tests, the one folder the
+         launcher's fence lets it start from. -->
+    <ProjectReference Include="..\PadForge.PluginProbe\PadForge.PluginProbe.csproj" ReferenceOutputAssembly="false"
+                      OutputItemType="PluginProbeBuilt" Private="false" />
     <!-- Same pre-built SDK DLL the App references. Reference items don't
          flow transitively, and the FFB LFE-lane tests construct
          HMaestroFfbDecoder, whose ctor parameter is the SDK's
@@ -37,6 +43,7 @@
     <Using Include="Xunit" />
     <None Update="TestData\GyroTiltReference.csv" CopyToOutputDirectory="PreserveNewest" />
     <None Update="TestData\Sbc\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="TestData\Recordings\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <!-- MSBuild copies a referenced project's satellite assemblies only for the
@@ -56,6 +63,16 @@
     <Copy SourceFiles="@(_PadForgeAppSatellite)"
           DestinationFiles="@(_PadForgeAppSatellite->'$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyPluginProbe" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <_PluginProbeDirectory>@(PluginProbeBuilt->'%(RootDir)%(Directory)')</_PluginProbeDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <_PluginProbeFile Include="$(_PluginProbeDirectory)PadForge.PluginProbe.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_PluginProbeFile)" DestinationFolder="$(OutDir)PluginProbe\" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

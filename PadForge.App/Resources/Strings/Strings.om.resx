@@ -2193,6 +2193,20 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Dandeettii gargaartotaaf</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Dandeettii olkaa'i…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Pilaagiin tokkollee hin hojjetu.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, dheerina {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Taphachiisi</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Irra deebi'i</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} kan {1} keessaa</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Injinii wajjin jalqaba</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Osoo hin jalqabin faayilii mirkaneessaa jira</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Pilaagiiwwan hojjechaa jiran: {0}. Meeshaalee isaan dabalan: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kiitii pilaagii, fi galmee pilaagii ati filattu</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kiitii pilaagii</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Kiitii pilaagii olkaa'i…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Pilaagii xiqqaa kan C#, fi pilaagii sanuma kan AutoHotkey, Python fi PowerShell, faayiliin hundi akkaataa itti ijaaramu ykn hojjetu wajjin.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Galmee</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Galmee isaa ilaaluuf pilaagii tokko filadhu.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Galmee pilaagii kanaa keessa ammaaf homtuu hin jiru.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sagantaan biraa maqaa paayippii {0} qabateera. Sagantaa sana cufi.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows paayippii {0} dideera, kanaaf sagantaaleen wal qunnamuu hin danda'an.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Sagantaan wal qunname hin jiru.</value></data>

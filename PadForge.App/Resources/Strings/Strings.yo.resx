@@ -2225,6 +2225,20 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Fi ọgbọ́n náà pamọ́…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ṣiṣẹ́ àwọn ohun ìfikún</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kò sí ohun ìfikún tí ń ṣiṣẹ́.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, gígùn {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Ṣe é</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Tún ṣe</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} nínú {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ó ń bẹ̀rẹ̀ pẹ̀lú ẹ́ńjìnnì</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ń yẹ fáìlì wò kí ó tó bẹ̀rẹ̀</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Àwọn ohun ìfikún tí ń ṣiṣẹ́: {0}. Àwọn ẹ̀rọ tí wọ́n fi kún un: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Àpò irinṣẹ́ ohun ìfikún, àti àkọsílẹ̀ ohun ìfikún tí o bá yàn</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Àpò irinṣẹ́ ohun ìfikún</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Fi àpò irinṣẹ́ ohun ìfikún pamọ́…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ohun ìfikún kékeré kan ní C#, àti ohun ìfikún kan náà fún AutoHotkey, Python àti PowerShell, fáìlì kọ̀ọ̀kan pẹ̀lú bí a ṣe ń kọ́ ọ tàbí ṣiṣẹ́ rẹ̀.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Àkọsílẹ̀</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Yan ohun ìfikún kan láti rí àkọsílẹ̀ rẹ̀.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Kò sí nǹkan kan nínú àkọsílẹ̀ ohun ìfikún yìí síbẹ̀.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Gbà á láàyè</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Má ṣe gbà á láàyè</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Láti {0}</value></data>

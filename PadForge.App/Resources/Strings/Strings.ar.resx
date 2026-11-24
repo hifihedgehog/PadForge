@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>تشغيل المكونات الإضافية</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>لا يعمل أي مكون إضافي.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>يعمل المكون الإضافي بصلاحياتك أنت، لا بصلاحيات PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>المضمّنة</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>وحدة تحكم الاختبار</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>وحدة تحكم تتحرك من تلقاء نفسها، عنصر تحكم بعد آخر، فيمكن تجربة تعيين من دون جهاز في اليد.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>السرعة</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>بطيئة</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>عادية</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>سريعة</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>الأسرع</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>إعادة التشغيل</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>يعيد تشغيل تسجيل مشكلة كما لو كان من الأجهزة التي صنعته، وبالتوقيت نفسه. تظهر كأجهزة جديدة على هذا الكمبيوتر، وتُعيَّن كما تعيّنها أنت أو ملف تعريف.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>التسجيل</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>فتح تسجيل…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>لا يوجد تسجيل مفتوح.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}، المدة {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>التشغيل</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>تشغيل</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>تكرار</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} من {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (إعادة تشغيل)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>تسجيلات المشاكل|*.zip;*.log|كل الملفات|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>لا يستطيع PadForge تشغيل {0}. فهو ليس تسجيل مشكلة، أو لا يحوي مدخلات أي جهاز.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>مكوناتك الإضافية</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>المكون الإضافي برنامج يضيف أجهزة إلى PadForge. يشغله PadForge بصلاحياتك العادية كلما عمل المحرك.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>إضافة مكون إضافي…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>البرامج والنصوص البرمجية|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|كل الملفات|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>الموافقة…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>يبدأ مع المحرك</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>جارٍ فحص الملف قبل البدء</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>انتهى برمز {0}. يبدأ من جديد خلال {1} ث.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>لم يبدأ. تُعاد المحاولة خلال {0} ث.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>تغيّر منذ موافقتك عليه</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>توقف بعد فشل متكرر خمس مرات متتالية</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>لم يبدأ: الملف غير موجود</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>لم يبدأ: لا يوجد في Windows برنامج لهذا النوع من الملفات</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>لم يبدأ: لا يعمل أي غلاف لسطح المكتب لتشغيله تحته</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>لم يبدأ: غلاف سطح المكتب يعمل بصلاحيات المسؤول، فيحصل عليها المكون الإضافي أيضا</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>لم يبدأ: يطلب صلاحيات المسؤول</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>لم يبدأ: رفض Windows مع الخطأ {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>لم يبدأ</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>بدأ</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>انتهى برمز {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>رُفض مفتاحه من العملية {0}، التي لم يشغّلها PadForge</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>إضافة مكون إضافي</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>الموافقة على المكون الإضافي مجددا</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>سيعمل هذا البرنامج بصلاحياتك كلما عمل المحرك.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>تغيّر الملف منذ موافقتك عليه. سيعمل هذا البرنامج بصلاحياتك كلما عمل المحرك.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>الملف: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>موقّع من: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>غير موقّع</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>إضافة المكون</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>موافقة</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>لا يستطيع PadForge قراءة {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} موجود في القائمة بالفعل.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>يشغّل PadForge حتى 16 مكونا إضافيا. أزل واحدا لإضافة آخر.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>المكونات الإضافية قيد التشغيل: {0}. الأجهزة التي أضافتها: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>حزمة المكونات الإضافية، وسجل المكون الذي تختاره</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>حزمة المكونات الإضافية</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>حفظ حزمة المكونات الإضافية…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>مكون إضافي صغير بلغة C#، والمكون نفسه لـ AutoHotkey وPython وPowerShell، وفي كل ملف شرح طريقة بنائه أو تشغيله.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>السجل</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>اختر مكونا إضافيا لرؤية سجله.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>لا يوجد شيء في سجل هذا المكون الإضافي بعد.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>خادم الحركة</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>خادم بروتوكول DSU/CemuHook Motion Provider لبيانات الجيروسكوب ومقياس التسارع.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>تفعيل خادم الحركة DSU (بروتوكول CemuHook Motion Provider)</value></data>

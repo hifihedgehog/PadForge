@@ -1191,7 +1191,7 @@ namespace PadForge.Common
             }
         }
 
-        private static int VerifyAuthenticode(string path)
+        internal static int VerifyAuthenticode(string path)
         {
             var action = WINTRUST_ACTION_GENERIC_VERIFY_V2;
             IntPtr fileInfo = Marshal.AllocHGlobal(Marshal.SizeOf<WINTRUST_FILE_INFO>());

@@ -880,6 +880,16 @@
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Ddamu</value></data>
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Obukugu bw'Abayambi</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tereka Obukugu…</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, obuwanvu {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Zannya</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ddiŋŋana</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ku {1}</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Ekisanduuko kya Plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tereka Ekisanduuko kya Plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin entono mu C#, ne plugin y'emu eya AutoHotkey, Python ne PowerShell, buli fayiro n'engeri y'okugizimba oba okugiddukanya.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Ebiwandiiko</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Londa plugin olabe ebiwandiiko byayo.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Tewali kiri mu biwandiiko bya plugin eno kyali.</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Kikoleddwa</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tekikoleddwa</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tekikkirizibwa ku ddaala lino</value></data>

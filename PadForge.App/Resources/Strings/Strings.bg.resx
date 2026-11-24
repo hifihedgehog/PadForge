@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Изпълнение на приставки</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Не работи приставка.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Приставката работи с вашите права, а не с тези на PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Вградени</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Тестов контролер</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контролер, който се движи сам, по една контрола наведнъж, за да може съпоставяне да се изпробва без устройство под ръка.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Скорост</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Бавно</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Нормално</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Бързо</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Най-бързо</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Повторно възпроизвеждане</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Възпроизвежда запис на проблем като устройствата, които са го направили, със същото време. Те са нови устройства на този компютър и се съпоставят така, както ги съпоставяте вие или профил.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Запис</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Отвори запис…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Няма отворен запис.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, продължителност {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Възпроизвеждане</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Пусни</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Повтаряне</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} от {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (повторно възпроизвеждане)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Записи на проблеми|*.zip;*.log|Всички файлове|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не може да възпроизведе {0}. Това не е запис на проблем или не съдържа вход на устройство.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Вашите приставки</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Приставката е програма, която добавя устройства към PadForge. PadForge я стартира с вашите обикновени права всеки път, когато двигателят работи.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Добави приставка…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програми и скриптове|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Всички файлове|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Одобри…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Стартира се с двигателя</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Проверка на файла преди стартиране</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Приключи с код {0}. Стартира отново след {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Не е стартирана. Опитва отново след {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Променена, откакто я одобрихте</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Спряна след пет поредни неуспеха</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Не е стартирана: файлът го няма</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Не е стартирана: Windows няма програма за този вид файл</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Не е стартирана: няма работеща обвивка на работния плот, под която да се стартира</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Не е стартирана: обвивката на работния плот има права на администратор, така че и приставката би ги имала</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Не е стартирана: иска права на администратор</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Не е стартирана: Windows отказа с грешка {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Не е стартирана</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Стартирана</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Приключи с код {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Отказан ключ от процес {0}, който PadForge не е стартирал</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Добавяне на приставка</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Одобрете приставката отново</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Тази програма ще се изпълнява с вашите права всеки път, когато двигателят работи.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Файлът е променен, откакто го одобрихте. Тази програма ще се изпълнява с вашите права всеки път, когато двигателят работи.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Подписан от: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Неподписан</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Добави приставката</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Одобри</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge не може да прочете {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} вече е в списъка.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge изпълнява до 16 приставки. Премахнете една, за да добавите друга.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Работещи приставки: {0}. Добавени от тях устройства: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Комплектът за приставки и журналът на избрана приставка</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Комплект за приставки</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Запиши комплекта за приставки…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Малка приставка на C# и същата приставка за AutoHotkey, Python и PowerShell, всеки файл с указания как се компилира или стартира.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Журнал</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Изберете приставка, за да видите журнала ѝ.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>В журнала на тази приставка още няма нищо.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сървър за движение</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сървър по протокола DSU/CemuHook Motion Provider за данни от жироскопа и акселерометъра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Включи DSU сървъра за движение (протокол CemuHook Motion Provider)</value></data>

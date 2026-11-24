@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Jalankan plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tidak ada plugin yang berjalan.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin berjalan dengan hak akses Anda, bukan hak akses PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Bawaan</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Kontroler uji</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontroler yang bergerak sendiri, satu kontrol demi satu, sehingga pemetaan dapat dicoba tanpa perangkat keras di tangan.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Kecepatan</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lambat</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Cepat</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Tercepat</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Putar ulang</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Memutar ulang rekaman masalah sebagai perangkat yang membuatnya, dengan waktu yang sama. Perangkat itu adalah perangkat baru di PC ini, dipetakan seperti yang Anda atau profil petakan.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rekaman</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Buka rekaman…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Tidak ada rekaman yang terbuka.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, berdurasi {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Pemutaran</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Putar</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ulangi</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} dari {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Putar ulang)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Rekaman masalah|*.zip;*.log|Semua file|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge tidak dapat memutar {0}. File itu bukan rekaman masalah, atau tidak berisi input perangkat mana pun.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Plugin Anda</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin adalah program yang menambahkan perangkat ke PadForge. PadForge menjalankannya dengan hak akses biasa Anda setiap kali mesin berjalan.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Tambahkan plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Program dan skrip|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Semua file|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Setujui…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Dimulai bersama mesin</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Memeriksa file sebelum dimulai</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Keluar dengan kode {0}. Dimulai lagi dalam {1} dtk.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Tidak dimulai. Mencoba lagi dalam {0} dtk.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Berubah sejak Anda menyetujuinya</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Berhenti setelah lima kegagalan berturut-turut</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Tidak dimulai: file sudah tidak ada</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Tidak dimulai: Windows tidak punya program untuk jenis file ini</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Tidak dimulai: tidak ada shell desktop yang berjalan untuk memulainya</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Tidak dimulai: shell desktop memiliki hak administrator, sehingga plugin juga akan memilikinya</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Tidak dimulai: meminta hak administrator</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Tidak dimulai: Windows menolak dengan galat {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Tidak dimulai</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Dimulai</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Keluar dengan kode {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Menolak kuncinya dari proses {0}, yang tidak dimulai oleh PadForge</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Tambahkan plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Setujui plugin lagi</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Program ini akan berjalan dengan hak akses Anda setiap kali mesin berjalan.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>File berubah sejak Anda menyetujuinya. Program ini akan berjalan dengan hak akses Anda setiap kali mesin berjalan.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Ditandatangani oleh: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Tidak ditandatangani</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Tambahkan plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Setujui</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge tidak dapat membaca {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} sudah ada di daftar.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge menjalankan hingga 16 plugin. Hapus satu untuk menambahkan yang lain.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin yang berjalan: {0}. Perangkat yang mereka tambahkan: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit plugin, dan log plugin yang Anda pilih</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Simpan kit plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Satu plugin kecil dalam C#, dan plugin yang sama untuk AutoHotkey, Python, dan PowerShell, tiap file disertai cara membangun atau menjalankannya.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pilih plugin untuk melihat lognya.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Log plugin ini masih kosong.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokol DSU/CemuHook Motion Provider untuk data giroskop dan akselerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktifkan server gerakan DSU (protokol CemuHook Motion Provider)</value></data>

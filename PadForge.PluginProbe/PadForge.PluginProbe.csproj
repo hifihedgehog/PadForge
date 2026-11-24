@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The tests' helper for plugins (#597). It compiles the plugin kit's C#
+       file as the console program the kit's comment says to build, with the
+       settings dotnet new console gives one, so a kit that would not build
+       or warns fails this build. Run with "kit" it is that plugin. Run with
+       "rights" it writes what rights and variables it started with and
+       waits, which the test that starts it under the desktop shell reads.
+       The tests copy it into their own folder, the one folder their fence
+       lets the plugin launcher start a program from. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <StartupObject>PadForge.PluginProbe.Probe</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\PadForge.App\Resources\Plugins\PadForgePlugin.cs" Link="Kit\PadForgePlugin.cs" />
+  </ItemGroup>
+</Project>

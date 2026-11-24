@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Suorita laajennukset</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Yksikään laajennus ei ole käynnissä.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Laajennus toimii sinun oikeuksillasi, ei PadForge-sovelluksen.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Sisäänrakennetut</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testiohjain</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ohjain, joka liikkuu itsestään yksi ohjauselementti kerrallaan, jotta määritystä voi kokeilla ilman laitteistoa.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Nopeus</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Hidas</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normaali</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Nopea</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Nopein</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Toisto</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Toistaa ongelmatallenteen takaisin niinä laitteina, jotka sen tekivät, samalla ajoituksella. Ne ovat uusia laitteita tässä tietokoneessa, ja ne määritetään niin kuin sinä tai profiili ne määrität.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Tallenne</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Avaa tallenne…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Yhtään tallennetta ei ole auki.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, kesto {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Toisto</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Toista</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Toista uudelleen</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0}/{1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Toisto)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Ongelmatallenteet|*.zip;*.log|Kaikki tiedostot|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ei voi toistaa tiedostoa {0}. Se ei ole ongelmatallenne tai siinä ei ole yhdenkään laitteen syötettä.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Omat laajennukset</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Laajennus on ohjelma, joka lisää laitteita PadForge-sovellukseen. PadForge käynnistää sen tavallisilla oikeuksillasi aina, kun moottori on käynnissä.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Lisää laajennus…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Ohjelmat ja skriptit|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Kaikki tiedostot|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Hyväksy…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Käynnistyy moottorin mukana</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Tarkistetaan tiedostoa ennen käynnistystä</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Päättyi koodilla {0}. Käynnistyy uudelleen {1} s kuluttua.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ei käynnistynyt. Yrittää uudelleen {0} s kuluttua.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Muuttunut hyväksymisesi jälkeen</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Pysähtyi viiden peräkkäisen virheen jälkeen</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ei käynnistynyt: tiedosto on poissa</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ei käynnistynyt: Windowsissa ei ole ohjelmaa tämän tyyppiselle tiedostolle</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ei käynnistynyt: työpöydän kuorta ei ole käynnissä, jonka alla se voisi käynnistyä</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ei käynnistynyt: työpöydän kuorella on järjestelmänvalvojan oikeudet, joten laajennuksellakin olisi ne</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ei käynnistynyt: se pyytää järjestelmänvalvojan oikeuksia</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ei käynnistynyt: Windows hylkäsi virheellä {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ei käynnistynyt</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Käynnistyi</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Päättyi koodilla {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Hylkäsi avaimensa prosessista {0}, jota PadForge ei käynnistänyt</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Lisää laajennus</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Hyväksy laajennus uudelleen</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Tämä ohjelma suoritetaan oikeuksillasi aina, kun moottori on käynnissä.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Tiedosto on muuttunut hyväksymisesi jälkeen. Tämä ohjelma suoritetaan oikeuksillasi aina, kun moottori on käynnissä.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Tiedosto: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Allekirjoittaja: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Ei allekirjoitettu</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Lisää laajennus</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Hyväksy</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ei voi lukea tiedostoa {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} on jo luettelossa.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge ajaa enintään 16 laajennusta. Poista yksi, jotta voit lisätä toisen.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Käynnissä olevat laajennukset: {0}. Niiden lisäämät laitteet: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Laajennuspaketti ja valitsemasi laajennuksen loki</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Laajennuspaketti</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tallenna laajennuspaketti…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Pieni laajennus kielellä C# ja sama laajennus kielille AutoHotkey, Python ja PowerShell, ja jokaisessa tiedostossa ohje sen rakentamiseen tai ajamiseen.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Loki</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Valitse laajennus nähdäksesi sen lokin.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Tämän laajennuksen lokissa ei ole vielä mitään.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikepalvelin</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider -protokollan palvelin gyro- ja kiihtyvyysanturitiedoille.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ota DSU-liikepalvelin käyttöön (CemuHook Motion Provider -protokolla)</value></data>

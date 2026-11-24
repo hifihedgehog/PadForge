@@ -1,0 +1,503 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using Microsoft.Win32.SafeHandles;
+using PadForge.Services.Automation;
+
+namespace PadForge.Services.Plugins
+{
+    /// <summary>Why a plugin was not started. Every one but
+    /// <see cref="None"/> leaves the plugin stopped with its row saying
+    /// why.</summary>
+    internal enum PluginRefusal
+    {
+        None,
+        /// <summary>The file is not where it was approved.</summary>
+        Missing,
+        /// <summary>Windows has no program that runs this kind of file.</summary>
+        NoProgram,
+        /// <summary>No desktop shell runs to start it under, so nothing
+        /// would give it the user's own rights.</summary>
+        NoShell,
+        /// <summary>The desktop shell has administrator rights (UAC is
+        /// off), so a plugin started under it would have them too.</summary>
+        ShellElevated,
+        /// <summary>The program asks for administrator rights in its
+        /// manifest (error 740).</summary>
+        NeedsAdministrator,
+        /// <summary>Windows refused the start, with
+        /// <see cref="PluginLaunch.Error"/>.</summary>
+        Failed,
+        /// <summary>The test host does not start this program.</summary>
+        OffLimits,
+    }
+
+    /// <summary>What a plugin is started as: the program, its whole
+    /// command line and the folder it starts in.</summary>
+    internal sealed record PluginCommand(string Program, string CommandLine, string Folder);
+
+    /// <summary>A start's outcome: the process, or why there is none.</summary>
+    internal sealed class PluginLaunch
+    {
+        public IPluginProcess Process { get; init; }
+        public PluginRefusal Refusal { get; init; }
+
+        /// <summary>The Windows error of a <see cref="PluginRefusal.Failed"/>
+        /// start.</summary>
+        public int Error { get; init; }
+
+        public static PluginLaunch Refused(PluginRefusal why, int error = 0) => new() { Refusal = why, Error = error };
+    }
+
+    /// <summary>A plugin's process as PadForge holds it.</summary>
+    internal interface IPluginProcess : IDisposable
+    {
+        /// <summary>The process PadForge started.</summary>
+        int Id { get; }
+
+        /// <summary>Whether a pipe's client with this process ID is the
+        /// process PadForge started, or one it started in turn, as a script
+        /// launcher starts the interpreter. Read while the handle is held,
+        /// so a reused ID is never taken for it.</summary>
+        bool Owns(int processId);
+
+        /// <summary>Raised once, on a worker, with the exit code, when the
+        /// process ends by itself or by <see cref="Stop"/>.</summary>
+        event Action<int> Exited;
+
+        /// <summary>Ends the process and everything it started, by closing
+        /// the job it runs in.</summary>
+        void Stop();
+    }
+
+    /// <summary>Starts a plugin's process. The app's is
+    /// <see cref="PluginLauncher"/>. A test gives its own.</summary>
+    internal interface IPluginLauncher
+    {
+        PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables);
+    }
+
+    /// <summary>
+    /// Starts a plugin (#597) with the user's ordinary rights, whatever
+    /// rights PadForge has, by the route PowerToys' run_non_elevated takes
+    /// (src/common/utils/elevation.h): the desktop shell's process is named
+    /// the new process's parent through
+    /// <c>PROC_THREAD_ATTRIBUTE_PARENT_PROCESS</c>, so the plugin takes the
+    /// shell's token, and CreateProcess hands PadForge its handle. Unlike
+    /// that reference, a hidden start keeps the attribute: its hidden-window
+    /// branch replaces the extended-startup flag and so drops the parent.
+    ///
+    /// <para>The plugin is made suspended, put in a job object of its own
+    /// that ends every process in it when the job's last handle closes, and
+    /// only then let run. PadForge holds that handle, so the plugin and
+    /// whatever it starts end when PadForge stops it, closes or dies. Its
+    /// environment block is built here: the user's variables and the
+    /// variables given, the one-time key and the pipe's name.</para>
+    ///
+    /// <para>It never falls back to PadForge's own rights. When no shell
+    /// runs, the shell has administrator rights, or the started process
+    /// turns out to have them, nothing is left running.</para>
+    /// </summary>
+    internal sealed class PluginLauncher : IPluginLauncher
+    {
+        /// <summary>Set for the test host's whole life: only a program in the
+        /// test host's own folder, the helper the tests build, is
+        /// started.</summary>
+        internal static bool OffLimitsForTest;
+
+        /// <summary>Whether a program may be started where the test host's
+        /// fence stands: one in the folder the test host runs from.</summary>
+        private static bool Refuses(string program)
+        {
+            if (!OffLimitsForTest) return false;
+            if (string.IsNullOrEmpty(program)) return true;
+            string folder = Path.GetFullPath(AppContext.BaseDirectory);
+            string full = Path.GetFullPath(program);
+            return !full.StartsWith(folder, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>The variables a plugin's environment never takes from
+        /// PadForge's: a compatibility layer that asks for administrator
+        /// rights would raise the plugin's start.</summary>
+        private static readonly string[] Dropped = { "__COMPAT_LAYER" };
+
+        public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
+        {
+            if (Refuses(command?.Program)) return PluginLaunch.Refused(PluginRefusal.OffLimits);
+            if (command == null) return PluginLaunch.Refused(PluginRefusal.NoProgram);
+
+            IntPtr shell = GetShellWindow();
+            if (shell == IntPtr.Zero) return PluginLaunch.Refused(PluginRefusal.NoShell);
+            GetWindowThreadProcessId(shell, out uint shellId);
+            if (shellId == 0) return PluginLaunch.Refused(PluginRefusal.NoShell);
+            using var shellProcess = OpenProcess(ProcessCreateProcess | ProcessQueryLimitedInformation, false, shellId);
+            if (shellProcess.IsInvalid) return PluginLaunch.Refused(PluginRefusal.NoShell);
+            if (HasAdministratorRights(shellProcess) != false) return PluginLaunch.Refused(PluginRefusal.ShellElevated);
+
+            IntPtr size = IntPtr.Zero;
+            InitializeProcThreadAttributeList(IntPtr.Zero, 1, 0, ref size);
+            IntPtr list = Marshal.AllocHGlobal(size);
+            IntPtr parent = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr environment = IntPtr.Zero;
+            bool listMade = false;
+            try
+            {
+                if (!InitializeProcThreadAttributeList(list, 1, 0, ref size))
+                    return PluginLaunch.Refused(PluginRefusal.Failed, Marshal.GetLastWin32Error());
+                listMade = true;
+                Marshal.WriteIntPtr(parent, shellProcess.DangerousGetHandle());
+                if (!UpdateProcThreadAttribute(list, 0, ProcThreadAttributeParentProcess, parent, (IntPtr)IntPtr.Size, IntPtr.Zero, IntPtr.Zero))
+                    return PluginLaunch.Refused(PluginRefusal.Failed, Marshal.GetLastWin32Error());
+
+                environment = Marshal.StringToHGlobalUni(EnvironmentBlock(CurrentVariables(), variables));
+                var startup = new STARTUPINFOEX();
+                startup.StartupInfo.cb = Marshal.SizeOf<STARTUPINFOEX>();
+                startup.lpAttributeList = list;
+                var line = new StringBuilder(command.CommandLine);
+                uint flags = ExtendedStartupInfoPresent | CreateUnicodeEnvironment | CreateNoWindow | CreateSuspended;
+                if (!CreateProcessW(command.Program, line, IntPtr.Zero, IntPtr.Zero, false, flags, environment,
+                        command.Folder, ref startup, out var info))
+                {
+                    int error = Marshal.GetLastWin32Error();
+                    return PluginLaunch.Refused(error == ErrorElevationRequired ? PluginRefusal.NeedsAdministrator : PluginRefusal.Failed, error);
+                }
+
+                var process = new SafeProcessHandle(info.hProcess, true);
+                IntPtr thread = info.hThread;
+                var job = CreateJobObjectW(IntPtr.Zero, null);
+                string refusal = null;
+                int code = 0;
+                if (job.IsInvalid || !KillOnClose(job) || !AssignProcessToJobObject(job, process))
+                {
+                    code = Marshal.GetLastWin32Error();
+                    refusal = "job";
+                }
+                // The shell's token is the user's own. A process that has
+                // administrator rights all the same is never let run.
+                else if (HasAdministratorRights(process) != false) refusal = "rights";
+
+                if (refusal != null)
+                {
+                    TerminateProcess(process, 1);
+                    CloseHandle(thread);
+                    process.Dispose();
+                    job.Dispose();
+                    return refusal == "rights"
+                        ? PluginLaunch.Refused(PluginRefusal.ShellElevated)
+                        : PluginLaunch.Refused(PluginRefusal.Failed, code);
+                }
+
+                ResumeThread(thread);
+                CloseHandle(thread);
+                return new PluginLaunch { Process = new PluginProcess(info.dwProcessId, process, job) };
+            }
+            finally
+            {
+                if (listMade) DeleteProcThreadAttributeList(list);
+                Marshal.FreeHGlobal(list);
+                Marshal.FreeHGlobal(parent);
+                if (environment != IntPtr.Zero) Marshal.FreeHGlobal(environment);
+            }
+        }
+
+        /// <summary>PadForge's own variables, as the user's: an elevated
+        /// start keeps the user's environment.</summary>
+        private static Dictionary<string, string> CurrentVariables()
+        {
+            var all = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (DictionaryEntry e in Environment.GetEnvironmentVariables())
+                if (e.Key is string key && e.Value is string value) all[key] = value;
+            return all;
+        }
+
+        /// <summary>
+        /// The environment block a plugin starts with: the user's variables,
+        /// those of <paramref name="added"/> in place of any of the same
+        /// name, none of <see cref="Dropped"/>, sorted by name without regard
+        /// to case as CreateProcess documents, each as <c>name=value</c> and
+        /// a NUL, and a NUL at the end.
+        /// </summary>
+        internal static string EnvironmentBlock(IReadOnlyDictionary<string, string> user, IReadOnlyDictionary<string, string> added)
+        {
+            var all = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (user != null)
+                foreach (var pair in user)
+                {
+                    if (string.IsNullOrEmpty(pair.Key) || pair.Key.IndexOf('=') >= 0 || pair.Key.IndexOf('\0') >= 0) continue;
+                    if (Array.Exists(Dropped, d => string.Equals(d, pair.Key, StringComparison.OrdinalIgnoreCase))) continue;
+                    all[pair.Key] = (pair.Value ?? string.Empty).Replace("\0", string.Empty);
+                }
+            if (added != null)
+                foreach (var pair in added) all[pair.Key] = pair.Value ?? string.Empty;
+            var block = new StringBuilder(4096);
+            foreach (var pair in all) block.Append(pair.Key).Append('=').Append(pair.Value).Append('\0');
+            if (all.Count == 0) block.Append('\0');
+            block.Append('\0');
+            return block.ToString();
+        }
+
+        /// <summary>Whether a process's token has administrator rights: it is
+        /// elevated, or runs at high integrity or above, as every token of an
+        /// administrator does with UAC off. Null when its token cannot be
+        /// read, which a caller takes as yes.</summary>
+        internal static bool? HasAdministratorRights(SafeProcessHandle process)
+        {
+            if (!OpenProcessToken(process, TokenQuery, out var token)) return null;
+            using (token)
+            {
+                int? elevated = AutomationClientIdentity.ReadInt(token, TokenElevation);
+                int? integrity = AutomationClientIdentity.ReadIntegrity(token);
+                if (elevated == null || integrity == null) return null;
+                return elevated.Value != 0 || integrity.Value >= HighIntegrity;
+            }
+        }
+
+        private static bool KillOnClose(SafeFileHandle job)
+        {
+            var limits = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
+            limits.BasicLimitInformation.LimitFlags = JobObjectLimitKillOnJobClose;
+            return SetInformationJobObject(job, JobObjectExtendedLimitInformation, ref limits,
+                Marshal.SizeOf<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>());
+        }
+
+        /// <summary>A started plugin: its handle, held so its process ID is
+        /// never reused while PadForge watches it, and its job.</summary>
+        private sealed class PluginProcess : IPluginProcess
+        {
+            private readonly SafeProcessHandle _process;
+            private readonly object _gate = new();
+            private SafeFileHandle _job;
+            private RegisteredWaitHandle _wait;
+            private readonly ProcessWait _handle;
+            private int _exited;
+
+            public PluginProcess(int id, SafeProcessHandle process, SafeFileHandle job)
+            {
+                Id = id;
+                _process = process;
+                _job = job;
+                _handle = new ProcessWait(process);
+                _wait = ThreadPool.RegisterWaitForSingleObject(_handle, (_, _) => OnExit(), null, Timeout.Infinite, executeOnlyOnce: true);
+            }
+
+            public int Id { get; }
+
+            private Action<int> _exitedHandlers;
+            private int? _code;
+
+            public event Action<int> Exited
+            {
+                add
+                {
+                    int? code;
+                    lock (_gate)
+                    {
+                        code = _code;
+                        if (code == null) _exitedHandlers += value;
+                    }
+                    // One that ended before anyone listened is told at once.
+                    if (code != null) value?.Invoke(code.Value);
+                }
+                remove { lock (_gate) _exitedHandlers -= value; }
+            }
+
+            public bool Owns(int processId)
+            {
+                if (processId <= 0) return false;
+                if (processId == Id) return true;
+                SafeFileHandle job;
+                lock (_gate) job = _job;
+                if (job == null || job.IsClosed) return false;
+                using var other = OpenProcess(ProcessQueryLimitedInformation, false, (uint)processId);
+                if (other.IsInvalid) return false;
+                return IsProcessInJob(other, job, out bool inJob) && inJob;
+            }
+
+            // The process whose exit this thread is telling, so a Dispose
+            // made from inside an Exited handler does not wait for itself.
+            [ThreadStatic] private static PluginProcess t_telling;
+
+            private void OnExit()
+            {
+                if (Interlocked.Exchange(ref _exited, 1) != 0) return;
+                t_telling = this;
+                try { Tell(); }
+                finally { t_telling = null; }
+            }
+
+            private void Tell()
+            {
+                int code = GetExitCodeProcess(_process, out uint exit) ? unchecked((int)exit) : -1;
+                Action<int> handlers;
+                lock (_gate)
+                {
+                    _code = code;
+                    handlers = _exitedHandlers;
+                    _exitedHandlers = null;
+                }
+                // Whatever the plugin started goes with it.
+                CloseJob();
+                handlers?.Invoke(code);
+            }
+
+            private void CloseJob()
+            {
+                SafeFileHandle job;
+                lock (_gate)
+                {
+                    job = _job;
+                    _job = null;
+                }
+                job?.Dispose();
+            }
+
+            public void Stop() => CloseJob();
+
+            public void Dispose()
+            {
+                CloseJob();
+                var wait = Interlocked.Exchange(ref _wait, null);
+                if (wait != null)
+                {
+                    // The handle stays open until the wait no longer reads it.
+                    if (t_telling == this) wait.Unregister(null);
+                    else
+                    {
+                        using var done = new ManualResetEvent(false);
+                        if (wait.Unregister(done)) done.WaitOne(2000);
+                    }
+                }
+                _handle.Dispose();
+                _process.Dispose();
+            }
+        }
+
+        private sealed class ProcessWait : WaitHandle
+        {
+            public ProcessWait(SafeProcessHandle process)
+                => SafeWaitHandle = new SafeWaitHandle(process.DangerousGetHandle(), ownsHandle: false);
+        }
+
+        // ── Windows ──
+
+        private const uint ProcessCreateProcess = 0x0080;
+        private const uint ProcessQueryLimitedInformation = 0x1000;
+        private const uint TokenQuery = 0x0008;
+        private const int TokenElevation = 20;
+        private const int HighIntegrity = 0x3000;
+        private const uint ExtendedStartupInfoPresent = 0x00080000;
+        private const uint CreateUnicodeEnvironment = 0x00000400;
+        private const uint CreateNoWindow = 0x08000000;
+        private const uint CreateSuspended = 0x00000004;
+        private const int ErrorElevationRequired = 740;
+        private static readonly IntPtr ProcThreadAttributeParentProcess = (IntPtr)0x00020000;
+        private const int JobObjectExtendedLimitInformation = 9;
+        private const uint JobObjectLimitKillOnJobClose = 0x2000;
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct STARTUPINFO
+        {
+            public int cb;
+            public string lpReserved, lpDesktop, lpTitle;
+            public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags;
+            public short wShowWindow, cbReserved2;
+            public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct STARTUPINFOEX
+        {
+            public STARTUPINFO StartupInfo;
+            public IntPtr lpAttributeList;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PROCESS_INFORMATION
+        {
+            public IntPtr hProcess, hThread;
+            public int dwProcessId, dwThreadId;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct JOBOBJECT_BASIC_LIMIT_INFORMATION
+        {
+            public long PerProcessUserTimeLimit, PerJobUserTimeLimit;
+            public uint LimitFlags;
+            public UIntPtr MinimumWorkingSetSize, MaximumWorkingSetSize;
+            public uint ActiveProcessLimit;
+            public UIntPtr Affinity;
+            public uint PriorityClass, SchedulingClass;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct IO_COUNTERS
+        {
+            public ulong ReadOperationCount, WriteOperationCount, OtherOperationCount, ReadTransferCount, WriteTransferCount, OtherTransferCount;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+        {
+            public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
+            public IO_COUNTERS IoInfo;
+            public UIntPtr ProcessMemoryLimit, JobMemoryLimit, PeakProcessMemoryUsed, PeakJobMemoryUsed;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetShellWindow();
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern SafeProcessHandle OpenProcess(uint access, bool inherit, uint processId);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool OpenProcessToken(SafeProcessHandle process, uint access, out SafeAccessTokenHandle token);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool InitializeProcThreadAttributeList(IntPtr list, int count, int flags, ref IntPtr size);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool UpdateProcThreadAttribute(IntPtr list, uint flags, IntPtr attribute, IntPtr value,
+            IntPtr size, IntPtr previous, IntPtr returned);
+
+        [DllImport("kernel32.dll")]
+        private static extern void DeleteProcThreadAttributeList(IntPtr list);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern bool CreateProcessW(string application, StringBuilder commandLine, IntPtr processAttributes,
+            IntPtr threadAttributes, bool inheritHandles, uint flags, IntPtr environment, string folder,
+            ref STARTUPINFOEX startup, out PROCESS_INFORMATION information);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern SafeFileHandle CreateJobObjectW(IntPtr attributes, string name);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetInformationJobObject(SafeFileHandle job, int infoClass,
+            ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION info, int length);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool AssignProcessToJobObject(SafeFileHandle job, SafeProcessHandle process);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool IsProcessInJob(SafeProcessHandle process, SafeFileHandle job, out bool result);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern uint ResumeThread(IntPtr thread);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CloseHandle(IntPtr handle);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool TerminateProcess(SafeProcessHandle process, uint exitCode);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GetExitCodeProcess(SafeProcessHandle process, out uint exitCode);
+    }
+}

@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>jan chelwI'mey tIQapmoH</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Qap pagh jan chelwI'.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>DIblIj lo' jan chelwI', PadForge DIbDaj lo'be'.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>PadForge ngaSbogh</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>waHmeH SeHjan</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>nIteb vIHmoH'eghbogh SeHjan. SeHwI'meyDaj wa' wa' vIHmoH, vaj jan Dughajbe'taHvIS neltaHghach DawaHlaH.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Do</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>QIt</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>motlh</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>nom</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Do 'aqroS</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>ta chu'qa'wI'</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Qagh ta chu'qa', ta chenmoHbogh janmey rur, poHmeychaj nIb lo'. De'wI'vamDaq janmey chu' chaH, 'ej chaH DanelDI' ghap tu'qom nelDI' nellu'.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ta</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>ta yIpoSmoH…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>poSmoHlu'be' ta.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, poH {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>chu'taHghach</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>yIchu'</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>taghqa'</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (ta chu'qa'wI')</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Qagh ta 'a'baqa'mey|*.zip;*.log|Hoch 'a'baqa'mey|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>{0} chu'laHbe' PadForge. Qagh ta 'oHbe', ghap jan 'elmoHghach ngaSbe'.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>jan chelwI'meylIj</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>jan chelwI' 'oH PadForge janmey chelbogh nIqHom'e'. QuQ QaptaHvIS, motlh DIblIj lo'taHvIS jan chelwI' tagh PadForge.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>jan chelwI' yIchel…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>nIqHommey ghItlhmey je|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Hoch 'a'baqa'mey|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>yInaD…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>QuQ taghDI' tagh</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>taghpa' 'a'baqa' 'oltaH</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>ngoq {0} lo'taHvIS 'elHa'pu'. {1} lup loS 'ej taghqa'.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>taghbe'. {0} lup loS 'ej nIDqa'.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>DanaDpu'DI' ghIq choHpu'</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>vaghlogh luj, vaj mevpu'</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>taghbe': tu'lu'be' 'a'baqa'</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>taghbe': 'a'baqa' Seghvam poSmoHbogh nIqHom ghajbe' Windows</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>taghbe': 'oH taghmeH jIH SeHwI' nIqHom QaptaHbe'</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>taghbe': loHwI' DIb ghaj jIH SeHwI' nIqHom, vaj DIbvetlh ghajchoH jan chelwI' je</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>taghbe': loHwI' DIb tlhob</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>taghbe': lajQo' Windows, Qagh {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>taghbe'</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>taghpu'</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>'elHa'pu', ngoq {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>{0} nIqHom ngeHbogh ngoq lajQo'pu'. PadForge taghbe'pu' nIqHomvetlh</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>jan chelwI' yIchel</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>jan chelwI' yInaDqa'</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>QuQ QaptaHvIS, DIblIj lo'taH nIqHomvam.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>DanaDpu'DI' ghIq choHpu' 'a'baqa'. QuQ QaptaHvIS, DIblIj lo'taH nIqHomvam.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>'a'baqa': {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>tlhI'wI': {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>tlhI'lu'be'</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>jan chelwI' yIchel</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>yInaD</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>{0} laDlaHbe' PadForge.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>tetlhDaq {0} tu'lu' DaH.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>16 jan chelwI' 'aqroS QapmoH PadForge. latlh DachelmeH, wa' yIteq.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>QaptaHbogh jan chelwI'mey: {0}. chellu'pu'bogh janmey: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>jan chelwI' vey, DawIvbogh jan chelwI' QonoS je</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>jan chelwI' vey</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>jan chelwI' vey yIpol…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# lo'bogh jan chelwI' mach, 'ej AutoHotkey, Python, PowerShell je lo'meH jan chelwI' rap. Hoch 'a'baqa'Daq, chenmoHmeH ghap QapmoHmeH mIw tu'lu'.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>QonoS</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>QonoSDaj DaleghmeH jan chelwI' yIwIv.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>jan chelwI'vam QonoSDaq wej pagh tu'lu'.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>vIHtaHghach turwI'</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ngaDmoQ De' tom noch De' je turwI', DSU/CemuHook Motion Provider ngoq lo'bogh.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU vIHtaHghach turwI' yIchu' (CemuHook Motion Provider Protocol)</value></data>

@@ -1333,6 +1333,19 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Boloka bokgoni…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Sebedisa diplagini</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ha ho plagini e sebetsang.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, bolelele ba {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Bapala</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Pheta</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ho {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>E qala le enjene</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>E lekola faele pele e qala</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Diplagini tse sebetsang: {0}. Disebediswa tseo di di kentseng: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Sephutheloana sa diplagini</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Boloka sephutheloana sa diplagini…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plagini e nyane ka C#, le plagini yona eo bakeng sa AutoHotkey, Python le PowerShell, faele ka nngwe e na le tsela ya ho e aha kapa ho e sebedisa.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Kgetha plagini ho bona log ya yona.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ha ho letho ho log ya plagini ena hajwale.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dumella</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>O se ke wa dumella</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Ho tswa ho {0}</value></data>

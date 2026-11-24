@@ -1194,6 +1194,20 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Mākau no nā kōkua AI</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Mālama i ka mākau…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ʻAʻohe plugin e holo nei.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} ka lōʻihi</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Pāʻani</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Hana hou</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Hoʻomaka pū me ka ʻenekini</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ke nānā nei i ka faila ma mua o ka hoʻomaka ʻana</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Nā plugin e holo nei: {0}. Nā hāmeʻa a lākou i hoʻohui ai: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Ka pūʻolo plugin, a me ka moʻolelo o kekahi plugin āu e koho ai</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Pūʻolo plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Mālama i ka pūʻolo plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>He plugin liʻiliʻi ma C#, a me ia plugin hoʻokahi no AutoHotkey, Python a me PowerShell, me ke ʻano o ke kūkulu ʻana a holo ʻana i kēlā me kēia faila.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Moʻolelo</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>E koho i kekahi plugin e ʻike ai i kona moʻolelo.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>ʻAʻohe mea i loko o ka moʻolelo o kēia plugin i kēia manawa.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Paʻa ka inoa pipe {0} i kekahi polokalamu ʻē aʻe. E pani i kēlā polokalamu.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Ua hōʻole ʻo Windows i ka pipe {0}, no laila ʻaʻole hiki i nā polokalamu ke hoʻopili.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻAʻohe polokalamu i hoʻopili ʻia.</value></data>

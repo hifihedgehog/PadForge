@@ -1540,6 +1540,17 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Unyanzvi hwevabatsiri</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Chengetedza unyanzvi…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hapana plugin iri kushanda.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, kureba {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Tamba</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Dzokorora</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} pa{1}</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Maplugin ari kushanda: {0}. Midziyo yaakawedzera: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kiti yemaplugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Chengetedza kiti yemaplugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin diki muC#, uye plugin imwe cheteyo ye-AutoHotkey, Python ne-PowerShell, faira imwe neimwe ine kuti ingavakwa kana kumhanyiswa sei.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Rekodhi</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Sarudza plugin kuti uone rekodhi yayo.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Hapana chiri murekodhi yeplugin iyi parizvino.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Chimwe chirongwa chakabata zita repaipi {0}. Vhara chirongwa ichocho.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows yaramba paipi {0}, saka zvirongwa hazvigone kubatana.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Hapana chirongwa chakabatana.</value></data>

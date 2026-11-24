@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Покрени плагине</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ниједан плагин не ради.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Плагин ради са вашим правима, а не са правима програма PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Уграђени</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Пробни контролер</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контролер који се сам креће, једну контролу по једну, па мапирање може да се испроба без уређаја при руци.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Брзина</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Споро</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Нормално</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Брзо</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Најбрже</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Репризирање</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Пушта снимак проблема као уређаји који су га направили, истим темпом. То су нови уређаји на овом рачунару, мапирани онако како их мапирате ви или профил.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Снимак</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Отвори снимак…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ниједан снимак није отворен.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, трајање {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Репродукција</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Пусти</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Понављај</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} од {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (репризирање)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Снимци проблема|*.zip;*.log|Све датотеке|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не може да пусти {0}. То није снимак проблема или не садржи улаз ниједног уређаја.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ваши плагини</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Плагин је програм који додаје уређаје у PadForge. PadForge га покреће са вашим уобичајеним правима кад год механизам ради.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Додај плагин…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програми и скрипте|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Све датотеке|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Одобри…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Покреће се са механизмом</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Провера датотеке пре покретања</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Завршио са кодом {0}. Поново почиње за {1} с.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Није покренут. Поново покушава за {0} с.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Промењено од вашег одобрења</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Заустављен после пет узастопних неуспеха</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Није покренут: датотека више не постоји</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Није покренут: Windows нема програм за ову врсту датотеке</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Није покренут: не ради ниједна шкољка радне површине под којом би се покренуо</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Није покренут: шкољка радне површине има администраторска права, па би их имао и плагин</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Није покренут: тражи администраторска права</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Није покренут: Windows је одбио са грешком {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Није покренут</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Покренут</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Завршио са кодом {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Одбијен кључ из процеса {0}, који PadForge није покренуо</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Додај плагин</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Поново одобрите плагин</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Овај програм ће радити са вашим правима кад год механизам ради.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Датотека је промењена од вашег одобрења. Овај програм ће радити са вашим правима кад год механизам ради.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Датотека: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Потписник: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Није потписан</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Додај плагин</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Одобри</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge не може да прочита {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} је већ на листи.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge покреће до 16 плагина. Уклоните један да бисте додали други.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Плагини који раде: {0}. Уређаји које су додали: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Комплет за плагине и дневник изабраног плагина</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Комплет за плагине</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Сачувај комплет за плагине…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Мали плагин на језику C# и исти плагин за AutoHotkey, Python и PowerShell, свака датотека са упутством како да се направи или покрене.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Дневник</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Изаберите плагин да видите његов дневник.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>У дневнику овог плагина још нема ничега.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер покрета</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер протокола DSU/CemuHook Motion Provider за податке жироскопа и акцелерометра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Омогући DSU сервер покрета (протокол CemuHook Motion Provider)</value></data>

@@ -853,6 +853,13 @@
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>ʻOku ʻikai lava ʻe PadForge ʻo lau ʻa e fakatātā ʻa Steam ki he vaʻinga ko ʻení.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hokohoko ʻa e Fekau</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ʻOku ʻikai ha polokalama tānaki ʻoku lele.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, lōloa {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Fakalele</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Toe fai</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ʻi he {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Kamata fakataha mo e misini</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>ʻOku siviʻi ʻa e faile kimuʻa pea kamata</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Polokalama tānaki ʻoku lele: {0}. Meʻangāue naʻa nau tānaki: {1}.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻOku ʻikai ha polokalama kuo fakafehokotaki.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Fakafehokotaki: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalama taʻeʻiloa</value></data>

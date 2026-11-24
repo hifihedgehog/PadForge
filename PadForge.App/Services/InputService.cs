@@ -8456,9 +8456,14 @@ namespace PadForge.Services
                 case "aggregate://touchpads": return Strings.Instance.Devices_AllTouchpadsMerged;
                 case "aggregate://consumercontrols": return Strings.Instance.Devices_AllConsumerControlsMerged;
                 case "overlay://touchpad":    return Strings.Instance.Dashboard_TouchpadOverlay;
-                default: return ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName;
+                default: return BuiltInName(ud) ?? ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName;
             }
         }
+
+        /// <summary>A built-in plugin's device in the language in use
+        /// (#597), unless the user named it.</summary>
+        private static string BuiltInName(UserDevice ud)
+            => string.IsNullOrEmpty(ud.DisplayName) && Plugins.BuiltInDeviceNames.TryName(ud.InstanceGuid, out string name) ? name : null;
 
         private static int TryParseInt(string value, int defaultValue)
         {
@@ -17201,7 +17206,7 @@ namespace PadForge.Services
                            : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged
                            : ud.DevicePath == "aggregate://consumercontrols" ? Strings.Instance.Devices_AllConsumerControlsMerged
                            : ud.DevicePath == "overlay://touchpad" ? Strings.Instance.Dashboard_TouchpadOverlay
-                           : ud.ResolvedName;
+                           : BuiltInName(ud) ?? ud.ResolvedName;
             row.ProductName = ud.ProductName;
             row.ProductGuid = ud.ProductGuid;
             row.VendorId = ud.VendorId;

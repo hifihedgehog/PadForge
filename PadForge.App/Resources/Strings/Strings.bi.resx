@@ -1970,6 +1970,20 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Seivem Skil…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ronem Ol Plagin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>I no gat plagin i stap ron.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, longfala blong hem {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Plei</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Mekem bakegen</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} long {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>I stat wetem enjin</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>I stap jekem fael bifo i stat</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plagin we oli stap ron: {0}. Divaes we oli putum: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit blong plagin, mo log blong wan plagin we yu jusum</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit blong Plagin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Seivem Kit blong Plagin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Wan smol plagin long C#, mo sem plagin blong AutoHotkey, Python mo PowerShell, evri fael i talem olsem wanem blong bildim o ronem.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Jusum wan plagin blong luk log blong hem.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>I no gat samting long log blong plagin ia yet.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Letem</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>No Letem</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>I kam long {0}</value></data>

@@ -851,6 +851,13 @@
   <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Program biara nfrɛɛ ase. Wɔbɛkyerɛw frɛ biara wɔ ha ne nea efi mu bae.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>San yi</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Plugin biara nnyɛ adwuma.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ne tenten yɛ {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Bɔ</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>San yɛ bio</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} wɔ {1} mu</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ɛfi ase bere a engine no fi ase</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ɛrehwɛ fael no ansa na afi ase</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins a ɛreyɛ adwuma: {0}. Devices a wɔde aka ho: {1}.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Program biara nni nkitahodi mu.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wɔaka abom: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program a wonnim</value></data>

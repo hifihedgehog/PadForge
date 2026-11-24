@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>प्लगइनहरू चलाउनुहोस्</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>कुनै प्लगइन चलिरहेको छैन।</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>प्लगइन PadForge को होइन, तपाईंको अधिकारमा चल्छ।</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>भित्रै समावेश</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>परीक्षण कन्ट्रोलर</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>आफैँ चल्ने कन्ट्रोलर, एक पटकमा एउटा नियन्त्रण, ताकि हातमा हार्डवेयर नभई पनि म्यापिङ परीक्षण गर्न सकियोस्।</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>गति</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>ढिलो</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>सामान्य</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>छिटो</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>सबैभन्दा छिटो</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>रिप्ले</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>समस्या रेकर्डिङलाई त्यसलाई बनाउने यन्त्रहरूकै रूपमा, तिनको समयसहित फेरि बजाउँछ। ती यस PC मा नयाँ यन्त्रहरू हुन्, जसलाई तपाईं वा प्रोफाइलले म्याप गरेअनुसार म्याप गरिन्छ।</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>रेकर्डिङ</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>रेकर्डिङ खोल्नुहोस्…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>कुनै रेकर्डिङ खुला छैन।</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, अवधि {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>प्लेब्याक</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>बजाउनुहोस्</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>दोहोर्याउनुहोस्</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1} मध्ये {0}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (रिप्ले)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>समस्या रेकर्डिङहरू|*.zip;*.log|सबै फाइलहरू|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ले {0} बजाउन सक्दैन। यो समस्या रेकर्डिङ होइन, वा यसमा कुनै यन्त्रको इनपुट छैन।</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>तपाईंका प्लगइनहरू</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>प्लगइन PadForge मा यन्त्रहरू थप्ने प्रोग्राम हो। इन्जिन चल्दा PadForge ले यसलाई तपाईंको साधारण अधिकारमा सुरु गर्छ।</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>प्लगइन थप्नुहोस्…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>प्रोग्राम र स्क्रिप्टहरू|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|सबै फाइलहरू|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>स्वीकृत गर्नुहोस्…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>इन्जिनसँगै सुरु हुन्छ</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>सुरु हुनुअघि फाइल जाँचिँदैछ</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>कोड {0} सहित बन्द भयो। {1} s मा फेरि सुरु हुन्छ।</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>सुरु भएन। {0} s मा फेरि प्रयास गर्छ।</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>तपाईंले स्वीकृत गरेपछि परिवर्तन भएको</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>लगातार पाँच पटक असफल भएपछि रोकियो</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>सुरु भएन: फाइल छैन</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>सुरु भएन: यस प्रकारको फाइलका लागि Windows सँग कुनै प्रोग्राम छैन</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>सुरु भएन: यसलाई अन्तर्गत सुरु गर्ने कुनै डेस्कटप शेल चलिरहेको छैन</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>सुरु भएन: डेस्कटप शेलसँग प्रशासक अधिकार छ, त्यसैले प्लगइनलाई पनि त्यो अधिकार हुन्थ्यो</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>सुरु भएन: यसले प्रशासक अधिकार माग्छ</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>सुरु भएन: Windows ले त्रुटि {0} सहित अस्वीकार गर्यो</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>सुरु भएन</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>सुरु भयो</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>कोड {0} सहित बन्द भयो</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge ले सुरु नगरेको प्रोसेस {0} बाट आएको यसको कुञ्जी अस्वीकार गरियो</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>प्लगइन थप्नुहोस्</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>प्लगइनलाई फेरि स्वीकृत गर्नुहोस्</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>इन्जिन चल्दा यो प्रोग्राम तपाईंको अधिकारमा चल्नेछ।</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>तपाईंले स्वीकृत गरेपछि फाइल परिवर्तन भयो। इन्जिन चल्दा यो प्रोग्राम तपाईंको अधिकारमा चल्नेछ।</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>फाइल: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>हस्ताक्षरकर्ता: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>हस्ताक्षर नगरिएको</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>प्लगइन थप्नुहोस्</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>स्वीकृत गर्नुहोस्</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ले {0} पढ्न सक्दैन।</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} पहिले नै सूचीमा छ।</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge ले बढीमा 16 प्लगइन चलाउँछ। अर्को थप्न एउटा हटाउनुहोस्।</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>चलिरहेका प्लगइन: {0}। तिनले थपेका यन्त्र: {1}।</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>प्लगइन किट, र तपाईंले छान्ने प्लगइनको लग</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>प्लगइन किट</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>प्लगइन किट सेभ गर्नुहोस्…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# मा एउटा सानो प्लगइन, र AutoHotkey, Python र PowerShell का लागि त्यही प्लगइन, हरेक फाइलमा त्यसलाई कसरी बनाउने वा चलाउने भन्ने विवरणसहित।</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>लग</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>लग हेर्न प्लगइन छान्नुहोस्।</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>यो प्लगइनको लगमा अहिलेसम्म केही छैन।</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोसन सर्भर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जाइरो र एक्सेलेरोमिटर डेटाका लागि DSU/CemuHook Motion Provider प्रोटोकल सर्भर।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोसन सर्भर सक्षम गर्नुहोस् (CemuHook Motion Provider Protocol)</value></data>

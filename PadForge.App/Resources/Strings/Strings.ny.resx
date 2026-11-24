@@ -1566,6 +1566,16 @@
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Bwezerani</value></data>
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Luso la othandizira</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Sungani lusoli…</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, kutalika {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Sewerani</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Bwerezani</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} mwa {1}</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Zida za pulagini</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Sungani zida za pulagini…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Pulagini yaing'ono mu C#, ndi pulagini yomweyo ya AutoHotkey, Python ndi PowerShell, fayilo iliyonse ili ndi momwe mungaimangire kapena kuiyendetsa.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Zolemba</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Sankhani pulagini kuti muone zolemba zake.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Palibe chilichonse mu zolemba za pulaginiyi pano.</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Zachitika</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Sizinachitike</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Sizololedwa pa mlingo uwu</value></data>

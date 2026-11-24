@@ -112,7 +112,7 @@ namespace PadForge.Services.Automation
             finally { Marshal.FreeHGlobal(buffer); }
         }
 
-        private static int? ReadInt(SafeAccessTokenHandle token, int what)
+        internal static int? ReadInt(SafeAccessTokenHandle token, int what)
         {
             IntPtr buffer = Marshal.AllocHGlobal(4);
             try
@@ -124,7 +124,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>The integrity level's RID: the last sub-authority of the
         /// label SID in TOKEN_MANDATORY_LABEL.</summary>
-        private static int? ReadIntegrity(SafeAccessTokenHandle token)
+        internal static int? ReadIntegrity(SafeAccessTokenHandle token)
         {
             GetTokenInformation(token, TokenIntegrityLevel, IntPtr.Zero, 0, out int size);
             if (size <= 0) return null;

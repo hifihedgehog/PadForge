@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Palaist spraudņus</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nedarbojas neviens spraudnis.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Spraudnis darbojas ar jūsu tiesībām, nevis ar PadForge tiesībām.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Iebūvētie</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testa kontrolleris</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontrolleris, kas kustas pats, pa vienai vadīklai, lai piesaisti varētu izmēģināt bez aparatūras.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Ātrums</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lēns</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Parasts</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Ātrs</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Ātrākais</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Atkārtojums</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Atskaņo problēmas ierakstu atpakaļ kā ierīces, kas to izveidoja, ar to pašu laiku. Tās ir jaunas ierīces šajā datorā, piesaistītas tā, kā tās piesaistāt jūs vai profils.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Ieraksts</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Atvērt ierakstu…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Neviens ieraksts nav atvērts.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ilgums {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Atskaņošana</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Atskaņot</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Atkārtot</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} no {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (atkārtojums)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problēmu ieraksti|*.zip;*.log|Visi faili|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nevar atskaņot failu {0}. Tas nav problēmas ieraksts vai arī tajā nav ierīces ievades.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Jūsu spraudņi</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Spraudnis ir programma, kas pievieno ierīces PadForge. PadForge to startē ar jūsu parastajām tiesībām ikreiz, kad darbojas dzinējs.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Pievienot spraudni…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmas un skripti|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Visi faili|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Apstiprināt…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Startē līdz ar dzinēju</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Pārbauda failu pirms startēšanas</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Beidza darbu ar kodu {0}. Startēs vēlreiz pēc {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nav startēts. Mēģinās vēlreiz pēc {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Mainīts kopš apstiprināšanas</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Apturēts pēc piecām neveiksmēm pēc kārtas</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nav startēts: faila vairs nav</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nav startēts: sistēmā Windows nav programmas šāda veida failam</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nav startēts: nedarbojas darbvirsmas čaula, zem kuras to startēt</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nav startēts: darbvirsmas čaulai ir administratora tiesības, tāpēc tās būtu arī spraudnim</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nav startēts: tas prasa administratora tiesības</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nav startēts: Windows noraidīja ar kļūdu {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nav startēts</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Startēts</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Beidza darbu ar kodu {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Noraidīta tā atslēga no procesa {0}, ko PadForge nestartēja</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Pievienot spraudni</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Apstiprināt spraudni vēlreiz</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Šī programma darbosies ar jūsu tiesībām ikreiz, kad darbojas dzinējs.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Fails ir mainīts kopš apstiprināšanas. Šī programma darbosies ar jūsu tiesībām ikreiz, kad darbojas dzinējs.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fails: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Parakstījis: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Nav parakstīts</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Pievienot spraudni</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Apstiprināt</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge nevar nolasīt failu {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} jau ir sarakstā.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge palaiž līdz 16 spraudņiem. Noņemiet vienu, lai pievienotu citu.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Darbojas spraudņi: {0}. To pievienotās ierīces: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Spraudņu komplekts un jūsu izvēlētā spraudņa žurnāls</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Spraudņu komplekts</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Saglabāt spraudņu komplektu…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Neliels spraudnis valodā C# un tas pats spraudnis priekš AutoHotkey, Python un PowerShell, katrs fails ar norādi, kā to būvēt vai palaist.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Žurnāls</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Izvēlieties spraudni, lai redzētu tā žurnālu.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Šī spraudņa žurnālā vēl nekā nav.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Kustību serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokola serveris žiroskopa un akselerometra datiem.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Iespējot DSU kustību serveri (CemuHook Motion Provider protokols)</value></data>

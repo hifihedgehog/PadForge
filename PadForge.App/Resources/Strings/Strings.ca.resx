@@ -581,6 +581,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Executa complements</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No s'executa cap complement.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un complement s'executa amb els teus drets, no amb els de PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Inclosos</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Comandament de prova</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un comandament que es mou sol, un control cada cop, per poder provar una assignació sense tenir maquinari a mà.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Velocitat</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lenta</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Ràpida</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Molt ràpida</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Reproducció</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reprodueix una gravació de problema com els dispositius que la van fer, amb el ritme que tenien. Són dispositius nous en aquest PC, assignats com els assignes tu o un perfil.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Gravació</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Obre una gravació…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>No hi ha cap gravació oberta.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} de durada</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Reproducció</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Reprodueix</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Repeteix</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} de {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Reproducció)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Gravacions de problemes|*.zip;*.log|Tots els fitxers|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge no pot reproduir {0}. No és una gravació de problema o no conté entrades de cap dispositiu.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Els teus complements</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Un complement és un programa que afegeix dispositius a PadForge. PadForge l'inicia amb els teus drets habituals sempre que el motor s'executa.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Afegeix un complement…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programes i scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tots els fitxers|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprova…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>S'inicia amb el motor</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>S'està comprovant el fitxer abans d'iniciar-lo</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ha acabat amb el codi {0}. S'inicia de nou d'aquí a {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>No s'ha iniciat. Ho torna a provar d'aquí a {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Ha canviat des que el vas aprovar</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Aturat després de cinc errors seguits</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>No s'ha iniciat: el fitxer ja no hi és</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>No s'ha iniciat: Windows no té cap programa per a aquest tipus de fitxer</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>No s'ha iniciat: no hi ha cap shell d'escriptori per iniciar-lo</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>No s'ha iniciat: el shell d'escriptori té drets d'administrador, així que el complement també els tindria</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>No s'ha iniciat: demana drets d'administrador</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>No s'ha iniciat: Windows l'ha refusat amb l'error {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>No s'ha iniciat</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Iniciat</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Ha acabat amb el codi {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>S'ha refusat la seva clau del procés {0}, que PadForge no ha iniciat</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Afegeix un complement</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Aprova el complement un altre cop</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Aquest programa s'executarà amb els teus drets sempre que el motor s'executi.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>El fitxer ha canviat des que el vas aprovar. Aquest programa s'executarà amb els teus drets sempre que el motor s'executi.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fitxer: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Signat per: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Sense signar</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Afegeix el complement</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Aprova</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge no pot llegir {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ja és a la llista.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge executa fins a 16 complements. Treu-ne un per afegir-ne un altre.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Complements en execució: {0}. Dispositius que han afegit: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>El kit de complements i el registre del complement que triïs</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit de complements</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Desa el kit de complements…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un complement petit en C# i el mateix complement per a AutoHotkey, Python i PowerShell, cada fitxer amb instruccions per compilar-lo o executar-lo.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Registre</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Tria un complement per veure'n el registre.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>El registre d'aquest complement encara és buit.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor del protocol DSU/CemuHook Motion Provider per a dades de giroscopi i acceleròmetre.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activa el servidor de moviment DSU (protocol CemuHook Motion Provider)</value></data>

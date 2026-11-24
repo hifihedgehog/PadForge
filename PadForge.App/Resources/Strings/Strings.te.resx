@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ప్లగిన్లను నడుపు</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ఏ ప్లగిన్ నడవడం లేదు.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>ప్లగిన్ మీ హక్కులతో నడుస్తుంది, PadForge హక్కులతో కాదు.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>అంతర్నిర్మితం</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>టెస్ట్ కంట్రోలర్</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>తనంతట తానే ఒక్కో నియంత్రణను కదిలే కంట్రోలర్, చేతిలో హార్డ్‌వేర్ లేకుండా మ్యాపింగ్‌ను పరీక్షించడానికి.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>వేగం</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>నెమ్మది</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>సాధారణం</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>వేగం ఎక్కువ</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>అత్యంత వేగం</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>రీప్లే</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>సమస్య రికార్డింగ్‌ను దాన్ని చేసిన పరికరాలుగా, వాటి అసలు సమయంతో తిరిగి ప్లే చేస్తుంది. అవి ఈ PC లో కొత్త పరికరాలు, మీరు లేదా ప్రొఫైల్ మ్యాప్ చేసినట్లే మ్యాప్ అవుతాయి.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>రికార్డింగ్</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>రికార్డింగ్ తెరువు…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>ఏ రికార్డింగ్ తెరవలేదు.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, నిడివి {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>ప్లేబ్యాక్</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>ప్లే</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>పునరావృతం</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1} లో {0}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (రీప్లే)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>సమస్య రికార్డింగ్‌లు|*.zip;*.log|అన్ని ఫైళ్లు|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} ను ప్లే చేయలేదు. అది సమస్య రికార్డింగ్ కాదు, లేదా అందులో ఏ పరికరం ఇన్‌పుట్ లేదు.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>మీ ప్లగిన్లు</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>ప్లగిన్ అంటే PadForge కు పరికరాలను జోడించే ప్రోగ్రామ్. ఇంజిన్ నడిచినప్పుడల్లా PadForge దాన్ని మీ సాధారణ హక్కులతో ప్రారంభిస్తుంది.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>ప్లగిన్ జోడించు…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>ప్రోగ్రామ్లు, స్క్రిప్టులు|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|అన్ని ఫైళ్లు|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>ఆమోదించు…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>ఇంజిన్‌తో ప్రారంభమవుతుంది</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>ప్రారంభానికి ముందు ఫైల్‌ను తనిఖీ చేస్తోంది</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>కోడ్ {0} తో ముగిసింది. {1} సెకన్లలో మళ్లీ ప్రారంభమవుతుంది.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>ప్రారంభం కాలేదు. {0} సెకన్లలో మళ్లీ ప్రయత్నిస్తుంది.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>మీరు ఆమోదించిన తర్వాత మారింది</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>వరుసగా ఐదు వైఫల్యాల తర్వాత ఆగింది</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>ప్రారంభం కాలేదు: ఫైల్ లేదు</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>ప్రారంభం కాలేదు: ఈ రకం ఫైల్‌కు Windows లో ప్రోగ్రామ్ లేదు</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>ప్రారంభం కాలేదు: దాన్ని ప్రారంభించడానికి డెస్క్‌టాప్ షెల్ నడవడం లేదు</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>ప్రారంభం కాలేదు: డెస్క్‌టాప్ షెల్‌కు అడ్మినిస్ట్రేటర్ హక్కులు ఉన్నాయి, కాబట్టి ప్లగిన్‌కు కూడా అవి ఉంటాయి</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>ప్రారంభం కాలేదు: అది అడ్మినిస్ట్రేటర్ హక్కులు అడుగుతోంది</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>ప్రారంభం కాలేదు: Windows లోపం {0} తో నిరాకరించింది</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>ప్రారంభం కాలేదు</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>ప్రారంభమైంది</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>కోడ్ {0} తో ముగిసింది</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge ప్రారంభించని ప్రాసెస్ {0} నుండి దాని కీని నిరాకరించింది</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>ప్లగిన్ జోడించు</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>ప్లగిన్‌ను మళ్లీ ఆమోదించండి</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>ఇంజిన్ నడిచినప్పుడల్లా ఈ ప్రోగ్రామ్ మీ హక్కులతో నడుస్తుంది.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>మీరు ఆమోదించిన తర్వాత ఫైల్ మారింది. ఇంజిన్ నడిచినప్పుడల్లా ఈ ప్రోగ్రామ్ మీ హక్కులతో నడుస్తుంది.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ఫైల్: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>సంతకం చేసినది: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>సంతకం లేదు</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>ప్లగిన్ జోడించు</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>ఆమోదించు</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge {0} ను చదవలేదు.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ఇప్పటికే జాబితాలో ఉంది.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge గరిష్టంగా 16 ప్లగిన్లను నడుపుతుంది. మరొకటి జోడించడానికి ఒకదాన్ని తొలగించండి.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>నడుస్తున్న ప్లగిన్లు: {0}. అవి జోడించిన పరికరాలు: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>ప్లగిన్ కిట్, మీరు ఎంచుకున్న ప్లగిన్ లాగ్</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>ప్లగిన్ కిట్</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>ప్లగిన్ కిట్‌ను సేవ్ చేయి…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# లో ఒక చిన్న ప్లగిన్, అదే ప్లగిన్ AutoHotkey, Python, PowerShell కోసం, ప్రతి ఫైల్‌తో దాన్ని ఎలా బిల్డ్ చేయాలో లేదా నడపాలో వివరణ.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>లాగ్</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>లాగ్ చూడటానికి ఒక ప్లగిన్‌ను ఎంచుకోండి.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>ఈ ప్లగిన్ లాగ్‌లో ఇంకా ఏమీ లేదు.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>మోషన్ సర్వర్</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>గైరో, యాక్సిలరోమీటర్ డేటా కోసం DSU/CemuHook Motion Provider ప్రోటోకాల్ సర్వర్.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU మోషన్ సర్వర్‌ను ప్రారంభించు (CemuHook Motion Provider ప్రోటోకాల్)</value></data>

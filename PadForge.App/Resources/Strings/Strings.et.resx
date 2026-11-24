@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Käivita pistikprogrammid</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ükski pistikprogramm ei tööta.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Pistikprogramm töötab teie õigustega, mitte programmi PadForge õigustega.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Sisseehitatud</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testkontroller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontroller, mis liigub ise, üks juhtelement korraga, et vastendust saaks proovida ilma riistvarata.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Kiirus</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Aeglane</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Tavaline</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Kiire</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Kiireim</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Kordusesitus</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Esitab probleemisalvestise uuesti nende seadmetena, mis selle tegid, sama ajastusega. Need on selles arvutis uued seadmed, mis vastendatakse nii, nagu teie või profiil need vastendab.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Salvestis</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Ava salvestis…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ühtegi salvestist pole avatud.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, pikkus {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Esitus</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Esita</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Korda</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (kordusesitus)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Probleemisalvestised|*.zip;*.log|Kõik failid|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ei saa faili {0} esitada. See pole probleemisalvestis või selles pole ühegi seadme sisendit.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Teie pistikprogrammid</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Pistikprogramm on programm, mis lisab seadmeid programmile PadForge. PadForge käivitab selle teie tavaõigustega, kui mootor töötab.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Lisa pistikprogramm…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmid ja skriptid|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Kõik failid|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Kinnita…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Käivitub koos mootoriga</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Faili kontrollimine enne käivitamist</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Lõpetas koodiga {0}. Käivitub uuesti {1} s pärast.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ei käivitunud. Proovib uuesti {0} s pärast.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Muutunud pärast kinnitamist</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Peatatud pärast viit järjestikust tõrget</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ei käivitunud: faili pole enam</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ei käivitunud: Windowsil pole selle failitüübi jaoks programmi</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ei käivitunud: töölauakest, mille all käivitada, ei tööta</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ei käivitunud: töölauakestal on administraatoriõigused, seega oleksid need ka pistikprogrammil</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ei käivitunud: see nõuab administraatoriõigusi</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ei käivitunud: Windows keeldus veaga {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ei käivitunud</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Käivitus</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Lõpetas koodiga {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Keeldus võtmest protsessilt {0}, mida PadForge ei käivitanud</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Lisa pistikprogramm</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Kinnita pistikprogramm uuesti</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>See programm töötab teie õigustega alati, kui mootor töötab.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Fail on pärast kinnitamist muutunud. See programm töötab teie õigustega alati, kui mootor töötab.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fail: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Allkirjastaja: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Allkirjastamata</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Lisa pistikprogramm</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Kinnita</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ei saa faili {0} lugeda.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} on juba loendis.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge käitab kuni 16 pistikprogrammi. Uue lisamiseks eemaldage mõni.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Töötavaid pistikprogramme: {0}. Nende lisatud seadmeid: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Pistikprogrammi komplekt ja valitud pistikprogrammi logi</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Pistikprogrammi komplekt</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Salvesta pistikprogrammi komplekt…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Väike pistikprogramm keeles C# ja sama pistikprogramm keeltele AutoHotkey, Python ja PowerShell, iga fail koos ehitamise või käivitamise juhisega.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Logi</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Valige pistikprogramm, et näha selle logi.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Selle pistikprogrammi logis pole veel midagi.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikumisserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokolli server güroskoobi ja kiirendusanduri andmete jaoks.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Luba DSU liikumisserver (CemuHook Motion Provider Protocol)</value></data>

@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>執行外掛程式</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>沒有執行中的外掛程式。</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>外掛程式以您的權限執行，而不是 PadForge 的權限。</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>內建</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>測試控制器</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>會自己動作的控制器，一次一個控制項，讓您不必手邊有硬體也能試用對應。</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>速度</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>慢</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>一般</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>快</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>最快</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>重播</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>以原本產生錄製內容的裝置身分，依當時的時間點重播問題錄製檔。它們是這部電腦上的新裝置，會依您或設定檔的設定對應。</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>錄製檔</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>開啟錄製檔…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>未開啟任何錄製檔。</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}，長度 {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>播放</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>播放</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>重複</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0}（重播）</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>問題錄製檔|*.zip;*.log|所有檔案|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge 無法播放 {0}。它不是問題錄製檔，或其中沒有任何裝置的輸入。</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>您的外掛程式</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>外掛程式是為 PadForge 加入裝置的程式。每當引擎執行時，PadForge 會以您的一般權限啟動它。</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>加入外掛程式…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>程式與指令碼|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|所有檔案|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>核准…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>隨引擎啟動</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>啟動前正在檢查檔案</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>已結束，結束碼 {0}。{1} 秒後重新啟動。</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>未啟動。{0} 秒後重試。</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>核准後已變更</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>連續失敗五次後已停止</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>未啟動：檔案已不存在</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>未啟動：Windows 沒有可開啟此類檔案的程式</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>未啟動：沒有執行中的桌面殼層可供啟動它</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>未啟動：桌面殼層具有系統管理員權限，外掛程式也會因此取得該權限</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>未啟動：它要求系統管理員權限</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>未啟動：Windows 拒絕，錯誤 {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>未啟動</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>已啟動</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>已結束，結束碼 {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>拒絕了來自處理序 {0} 的金鑰，該處理序不是 PadForge 啟動的</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>加入外掛程式</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>再次核准外掛程式</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>每當引擎執行時，這個程式都會以您的權限執行。</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>檔案在您核准後已變更。每當引擎執行時，這個程式都會以您的權限執行。</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>檔案：{0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>簽署者：{0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>未簽署</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256：{0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>加入外掛程式</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>核准</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge 無法讀取 {0}。</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} 已在清單中。</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge 最多執行 16 個外掛程式。請先移除一個再加入其他的。</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>執行中的外掛程式：{0}。它們加入的裝置：{1}。</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>外掛程式工具包，以及您所選外掛程式的記錄</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>外掛程式工具包</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>儲存外掛程式工具包…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>一個 C# 小型外掛程式，以及適用於 AutoHotkey、Python 和 PowerShell 的同款外掛程式，每個檔案都附有建置或執行方式。</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>記錄</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>選擇外掛程式即可查看其記錄。</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>這個外掛程式的記錄目前是空的。</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>體感伺服器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>提供陀螺儀和加速度計資料的 DSU/CemuHook Motion Provider 通訊協定伺服器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>啟用 DSU 體感伺服器（CemuHook Motion Provider 通訊協定）</value></data>

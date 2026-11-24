@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>کارپێکردنی پلەگینەکان</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلەگینێک کار ناکات.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلەگین بە مافەکانی تۆ کار دەکات، نەک بە مافەکانی PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ناوخۆیی</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>کۆنترۆڵەری تاقیکردنەوە</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>کۆنترۆڵەرێک کە خۆی دەجووڵێت، یەک کۆنترۆڵ لە یەک کاتدا، بۆ ئەوەی بەستنەوەیەک بەبێ ئامێری ڕاستەقینە تاقی بکرێتەوە.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>خێرایی</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>هێواش</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ئاسایی</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>خێرا</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>خێراترین</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>لێدانەوە</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>تۆماری کێشەیەک وەک ئەو ئامێرانەی دروستیان کردووە، بە هەمان کاتبەندی، لێدەداتەوە. ئەوان ئامێری نوێن لەسەر ئەم کۆمپیوتەرە و بەو شێوەیە دەبەسترێنەوە کە تۆ یان پرۆفایلێک دەیانبەستێتەوە.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>تۆمار</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>کردنەوەی تۆمارێک…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>هیچ تۆمارێک کراوە نییە.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}، درێژی {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>لێدان</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>لێدان</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>دووبارەکردنەوە</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} لە {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (لێدانەوە)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>تۆمارەکانی کێشە|*.zip;*.log|هەموو فایلەکان|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ناتوانێت {0} لێبداتەوە. تۆماری کێشە نییە، یان تێخەری هیچ ئامێرێکی تێدا نییە.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>پلەگینەکانی تۆ</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>پلەگین بەرنامەیەکە کە ئامێر بۆ PadForge زیاد دەکات. PadForge هەر کاتێک بزوێنەر کار بکات بە مافە ئاساییەکانی تۆ دەستی پێدەکات.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>زیادکردنی پلەگینێک…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>بەرنامە و سکریپتەکان|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|هەموو فایلەکان|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>پەسەندکردن…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>لەگەڵ بزوێنەر دەست پێدەکات</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>پشکنینی فایلەکە پێش دەستپێکردنی</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>بە کۆدی {0} داخرا. لە ماوەی {1} چرکەدا دووبارە دەست پێدەکاتەوە.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>دەستی پێنەکرد. لە ماوەی {0} چرکەدا دووبارە هەوڵ دەداتەوە.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>لەوەتەی پەسەندت کردووە گۆڕاوە</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>دوای پێنج شکستی لەسەر یەک وەستا</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>دەستی پێنەکرد: فایلەکە نەماوە</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>دەستی پێنەکرد: Windows هیچ بەرنامەیەکی بۆ ئەم جۆرە فایلە نییە</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>دەستی پێنەکرد: هیچ ڕووکاری ڕووی کارێک کار ناکات تا لە ژێریدا دەستی پێبکات</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>دەستی پێنەکرد: ڕووکاری ڕووی کار مافی بەڕێوەبەری هەیە، بۆیە پلەگینەکەش دەیبوو</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>دەستی پێنەکرد: داوای مافی بەڕێوەبەر دەکات</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>دەستی پێنەکرد: Windows بە هەڵەی {0} ڕەتی کردەوە</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>دەستی پێنەکرد</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>دەستی پێکرد</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>بە کۆدی {0} داخرا</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>کلیلەکەی لە پرۆسەی {0} ڕەت کرایەوە، کە PadForge دەستی پێنەکردبوو</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>زیادکردنی پلەگینێک</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>دووبارە پەسەندکردنەوەی پلەگینەکە</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>ئەم بەرنامەیە هەر کاتێک بزوێنەر کار بکات بە مافەکانی تۆ کار دەکات.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>فایلەکە لەوەتەی پەسەندت کردووە گۆڕاوە. ئەم بەرنامەیە هەر کاتێک بزوێنەر کار بکات بە مافەکانی تۆ کار دەکات.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>فایل: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>واژووکراو لەلایەن: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>واژوونەکراو</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>زیادکردنی پلەگین</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>پەسەندکردن</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ناتوانێت {0} بخوێنێتەوە.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} پێشتر لە لیستەکەدایە.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge تا 16 پلەگین کار پێدەکات. یەکێک لاببە بۆ ئەوەی یەکێکی تر زیاد بکەیت.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>پلەگینی کاراو: {0}. ئەو ئامێرانەی زیادیان کردووە: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>کیتی پلەگین، و تۆماری ئەو پلەگینەی هەڵیدەبژێریت</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>کیتی پلەگین</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>پاشەکەوتکردنی کیتی پلەگین…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>پلەگینێکی بچووک بە C#، و هەمان پلەگین بۆ AutoHotkey، Python و PowerShell، هەر فایلێک لەگەڵ چۆنیەتی دروستکردن یان کارپێکردنی.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>تۆمار</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>پلەگینێک هەڵبژێرە بۆ بینینی تۆمارەکەی.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>هێشتا هیچ شتێک لە تۆماری ئەم پلەگینەدا نییە.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ڕاژەکاری جووڵە</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ڕاژەکاری پرۆتۆکۆلی DSU/CemuHook Motion Provider بۆ داتای جایرۆ و ئەکسێلەرۆمیتەر.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>چالاککردنی ڕاژەکاری جووڵەی DSU (پرۆتۆکۆلی CemuHook Motion Provider)</value></data>

@@ -1394,6 +1394,19 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Bokgoni bja bathuši</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Boloka bokgoni…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ga go plagini yeo e šomago.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, botelele bja {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Bapala</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Boeletša</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ya {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>E thoma le enjene</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>E lekola faele pele e thoma</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Diplagini tše di šomago: {0}. Didirišwa tšeo di di okeditšego: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Sephuthelwana sa diplagini</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Boloka sephuthelwana sa diplagini…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plagini ye nnyane ka C#, le plagini yona yeo ya AutoHotkey, Python le PowerShell, faele ye nngwe le ye nngwe e na le ka moo e agwago goba e šomišwago ka gona.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Logo</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Kgetha plagini go bona logo ya yona.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ga go selo ka logong ya plagini ye go fihla bjale.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lenaneo le lengwe le swere leina la pipe {0}. Tswalela lenaneo leo.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e gannye pipe {0}, ka gona mananeo a ka se kgokagane.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ga go lenaneo leo le kgokagantšwego.</value></data>

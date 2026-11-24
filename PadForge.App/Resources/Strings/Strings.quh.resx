@@ -1709,6 +1709,19 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Asistentekunapaq Skill</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Skillta waqaychay…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Mana ni mayqin plugin llamk'achkanchu.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} unay</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Puriy</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Kutipay</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Motorwan qallarin</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Manaraq qallarichkaspa archivota qhawachkan</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Llamk'achkaq pluginkuna: {0}. Yapasqanku dispositivokuna: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Plugin Kitta waqaychay…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Huk huch'uy plugin C# nisqapi, kikin pluginllataq AutoHotkey, Python, PowerShell nisqapaqpas, sapa archivo imayna ruwanapaq utaq llamk'achinapaq willakuyniyuq.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Registro</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Huk pluginta akllay registronta rikunaykipaq.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Kay pluginpa registronpiqa manaraq imapas kanchu.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Huk programa {0} pipe sutita hap'in. Chay programata wisq'ay.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows mana {0} pipeta munarqanchu, chayrayku programakuna mana tinkikuyta atinkuchu.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Mana ni mayqin programa tinkisqachu.</value></data>

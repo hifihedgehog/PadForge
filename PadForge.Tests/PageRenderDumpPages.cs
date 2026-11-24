@@ -218,6 +218,98 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The Plugins page's cards (#597): off, on with no plugin,
+        /// on with the Test Controller and Replay on, a recording open and
+        /// four plugins in four states, its More open on a plugin's log, at
+        /// the window's own width too, and Game Mods beside it at the same
+        /// width. The processes are the test's own stand-ins.</summary>
+        [Fact]
+        public void DrawPlugins()
+        {
+            Run("plugins", drawing =>
+            {
+                const double Board = 1440 - 264, Usual = 1100 - 264;
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.DrawPlugins." + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(dir);
+                using var host = new PadForge.Services.Automation.AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                    "PadForge.Tests.Draw." + Guid.NewGuid().ToString("N"), _ => PadForge.Services.Automation.AutomationProgram.Unknown,
+                    automationPipeName: "PadForge.Tests.Draw.Automation." + Guid.NewGuid().ToString("N"));
+                var launcher = new PluginManagerTests.FakeLauncher();
+                long now = 1_000_000;
+                var manager = new PadForge.Services.Plugins.PluginManager(launcher, "pipe", () => now,
+                    commandFor: p => new PadForge.Services.Plugins.PluginCommand(p, p, dir), timer: false);
+                var dash = new DashboardViewModel
+                {
+                    RemoteLink = new SettingsViewModel(),
+                    DiscoverOpenXrRuntimes = () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>(),
+                };
+                dash.HeadTrackingFreeTrack = false;
+                dash.HeadTrackingOpenXr = false;
+                using var plugins = new PadForge.Services.Plugins.PluginsController(host, dash, drawing.App.Dispatcher, manager);
+                var page = new ExtrasPage { DataContext = dash };
+                var ground = drawing.Ground(page);
+                drawing.Step("the Extras page is made");
+                try
+                {
+                    drawing.Picture(ground, "plugins-off.png", Board, 1100, () => page.Show("Plugins"));
+                    dash.EnablePlugins = true;
+                    drawing.Picture(ground, "plugins-empty.png", Board, 1100);
+
+                    string File(string name)
+                    {
+                        string path = Path.Combine(dir, name);
+                        System.IO.File.WriteAllText(path, name);
+                        return path;
+                    }
+                    foreach (var name in new[] { "WheelBridge.exe", "leds.py", "pedals.ps1", "Gyro Mouse.exe" })
+                        dash.PluginActions.Add(dash.PluginActions.Describe(File(name)));
+                    var runs = manager.Snapshot();
+                    manager.SetEngine(true);
+                    var bridge = manager.AcceptToken(launcher.Starts[0].Variables[PadForge.Services.Plugins.PluginManager.TokenVariable], launcher.Starts[0].Process.Id);
+                    bridge.Named("Wheel Bridge");
+                    bridge.Log("Found a Fanatec base on COM4.");
+                    bridge.Log("Declared Wheel as 3f2a.");
+                    // leds.py exits again and again until it stops.
+                    for (int i = 0; i < 5; i++)
+                    {
+                        launcher.Starts.Last(st => st.Command.Program == runs[1].Path).Process.Exit(1);
+                        now += runs[1].PauseMs;
+                        manager.Tick();
+                    }
+                    // pedals.ps1 changed since it was approved.
+                    manager.SetEnabled(runs[2], false);
+                    System.IO.File.WriteAllText(runs[2].Path, "edited");
+                    manager.SetEnabled(runs[2], true);
+                    // Gyro Mouse is switched off.
+                    manager.SetEnabled(runs[3], false);
+
+                    dash.TestControllerOn = true;
+                    dash.ReplayOn = true;
+                    dash.PluginActions.OpenRecording(PluginBuiltInTests.KeptRecording);
+                    plugins.Refresh();
+                    drawing.Picture(ground, "plugins-on.png", Board, 1500);
+                    drawing.Picture(ground, "plugins-1100.png", Usual, 1700);
+
+                    var more = (Expander)page.FindName("PluginsMore");
+                    more.IsExpanded = true;
+                    dash.SelectedLogPlugin = dash.PluginRows[0];
+                    drawing.Picture(ground, "plugins-more.png", Board, 1900);
+                    more.IsExpanded = false;
+
+                    dash.EnableGameModServer = true;
+                    dash.IsGameModServerRunning = true;
+                    dash.GameModServerStatus = string.Format(s.Server_ListeningOn_Format, 6969);
+                    drawing.Picture(ground, "compare-gamemods.png", Board, 700, () => page.Show("GameMods"));
+                }
+                finally
+                {
+                    dash.EnablePlugins = false;
+                    try { Directory.Delete(dir, true); } catch (IOException) { }
+                }
+            });
+        }
+
         /// <summary>The Automation and Plugins extras (#597): the catalog with
         /// its fourth group, the Automation page off, then on with programs
         /// connected, two questions waiting, a record of calls and every

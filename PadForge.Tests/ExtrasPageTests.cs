@@ -285,13 +285,13 @@ namespace PadForge.Tests
         }
 
         /// <summary>The four pages with few settings show them all: no More
-        /// row with one line under it.</summary>
+        /// row with one line under it. The Plugins page keeps its kit and a
+        /// plugin's log under More (#597).</summary>
         [Theory]
         [InlineData("TwitchChat")]
         [InlineData("Overlays")]
         [InlineData("TouchpadOverlay")]
         [InlineData("ScreenOverlay")]
-        [InlineData("Plugins")]
         public void AShortPage_HasNoMoreRow(string key) =>
             Assert.DoesNotContain("<controls:MoreRow", PageOf(key));
 

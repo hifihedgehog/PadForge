@@ -705,7 +705,12 @@ namespace PadForge
                      or nameof(DashboardViewModel.HomeCards)
                      or nameof(DashboardViewModel.EnableAutomation)
                      or nameof(DashboardViewModel.AutomationLevel)
-                     or nameof(DashboardViewModel.EnablePlugins))
+                     or nameof(DashboardViewModel.EnablePlugins)
+                     or nameof(DashboardViewModel.PluginListRevision)
+                     or nameof(DashboardViewModel.TestControllerOn)
+                     or nameof(DashboardViewModel.TestControllerSpeed)
+                     or nameof(DashboardViewModel.ReplayOn)
+                     or nameof(DashboardViewModel.ReplayRepeat))
                     _settingsService.MarkDirty();
                 // A "Mouse Travel" source shows Lock at Speed only while
                 // Game Telemetry is on (#597), so the rows hear the switch.
@@ -2639,6 +2644,9 @@ namespace PadForge
             // as the app runs, engine or no engine, and the steps of this
             // copy's own command line run through its command set.
             StartAutomationHost();
+            // Plugins (#597) connect over the host's pipe, and start with the
+            // engine while the Plugins switch is on.
+            StartPlugins();
 
             // --engine on or off decides whether the engine starts, whatever
             // Start Engine Automatically says.
@@ -3548,6 +3556,8 @@ namespace PadForge
                 // pipe from here waits for the exit and takes it for what it
                 // is, and no program's command runs into the teardown (#597).
                 App.InstanceSignal?.MarkClosing();
+                // The plugins end first, while the pipe they speak on stands.
+                StopPlugins();
                 _automation?.Dispose();
                 _requestCard?.Close();
                 _requestCard = null;

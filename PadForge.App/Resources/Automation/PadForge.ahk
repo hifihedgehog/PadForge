@@ -21,6 +21,12 @@
 ; writes, and the library then reads everything that waits in the pipe. The
 ; message only wakes the script, so one AutoHotkey drops loses nothing: the
 ; next one reads it all. OnButton works whichever window is active.
+;
+; A plugin is a program PadForge starts itself (Extras, Plugins). It connects
+; with PadForge.Plugin(name), which reads the one-time key and the pipe's
+; name PadForge put in its environment. A plugin declares, drives and removes
+; its own controllers whatever Automation's level, and writes to its log on
+; the Plugins page with Log.
 
 #Requires AutoHotkey v2.0
 
@@ -28,8 +34,19 @@ class PadForge {
     static Protocol := 1
     static DefaultPipe := "PadForge.Automation"
 
+    ; Opens a plugin's connection: PadForge started this script, and its
+    ; environment holds the one-time key and the pipe's name. The key is
+    ; taken once, so a plugin connects once for each start.
+    static Plugin(name, lease := 2000) {
+        token := EnvGet("PADFORGE_PLUGIN_TOKEN")
+        if (token = "")
+            throw Error("PadForge did not start this program as a plugin. Add it on the Plugins page.")
+        pipe := EnvGet("PADFORGE_PIPE")
+        return PadForge(name, pipe != "" ? pipe : PadForge.DefaultPipe, lease, token)
+    }
+
     ; Opens a connection to the PadForge that runs on this PC.
-    __New(name, pipe := PadForge.DefaultPipe, lease := 2000) {
+    __New(name, pipe := PadForge.DefaultPipe, lease := 2000, token := "") {
         this.Pipe := pipe
         this.Lease := lease
         this.Answers := Map()
@@ -52,10 +69,11 @@ class PadForge {
         ; close.
         this.Closed := true
         this.Handle := 0
-        this.Handle := this._Open(pipe)
+        this.Handle := this._Open(pipe, token != "")
         this.Closed := false
         OnMessage(this.WakeMessage, this.WakeFn)
-        hello := this.Request("hello name=" PadForge.Quote(name) " kind=script protocol=" PadForge.Protocol
+        kind := token != "" ? "kind=plugin token=" PadForge.Quote(token) : "kind=script"
+        hello := this.Request("hello name=" PadForge.Quote(name) " " kind " protocol=" PadForge.Protocol
             " lease=" lease " hwnd=" A_ScriptHwnd)
         this.Version := hello.Get("padforge", "")
         this.Level := hello.Get("level", "")
@@ -63,13 +81,21 @@ class PadForge {
         SetTimer(this.BeatFn, Max(50, lease // 3))
     }
 
-    _Open(pipe) {
+    _Open(pipe, plugin := false) {
         path := "\\.\pipe\" pipe
         start := A_TickCount
+        ; A plugin lets the server identify it and no more:
+        ; SECURITY_SQOS_PRESENT and SECURITY_IDENTIFICATION.
+        flags := plugin ? 0x00110000 : 0
         loop {
-            h := DllCall("CreateFile", "Str", path, "UInt", 0xC0000000, "UInt", 0, "Ptr", 0, "UInt", 3, "UInt", 0, "Ptr", 0, "Ptr")
-            if (h != -1)
+            h := DllCall("CreateFile", "Str", path, "UInt", 0xC0000000, "UInt", 0, "Ptr", 0, "UInt", 3, "UInt", flags, "Ptr", 0, "Ptr")
+            if (h != -1) {
+                if (plugin && !PadForge._ServedByPadForge(h, pipe)) {
+                    DllCall("CloseHandle", "Ptr", h)
+                    throw Error("The pipe " pipe " is not PadForge's, so the plugin's key was not sent.")
+                }
                 return h
+            }
             err := A_LastError
             if (err = 231 && A_TickCount - start < 5000) {   ; ERROR_PIPE_BUSY
                 DllCall("WaitNamedPipe", "Str", path, "UInt", 1000)
@@ -84,6 +110,43 @@ class PadForge {
             }
             throw OSError(err)
         }
+    }
+
+    ; Whether the pipe's owner is Administrators or SYSTEM, as a pipe PadForge
+    ; made is: a program without administrator rights cannot make one so
+    ; owned. A pipe of another name than PadForge's own, which only a test
+    ; gives, may also be owned by this program's own user.
+    static _ServedByPadForge(handle, pipe) {
+        owner := 0, descriptor := 0
+        ; SE_KERNEL_OBJECT, OWNER_SECURITY_INFORMATION.
+        if DllCall("advapi32\GetSecurityInfo", "Ptr", handle, "Int", 6, "UInt", 1, "Ptr*", &owner, "Ptr", 0, "Ptr", 0, "Ptr", 0, "Ptr*", &descriptor, "UInt")
+            return false
+        sid := PadForge._SidText(owner)
+        DllCall("LocalFree", "Ptr", descriptor)
+        if (sid = "S-1-5-32-544" || sid = "S-1-5-18")
+            return true
+        return pipe != PadForge.DefaultPipe && sid != "" && sid = PadForge._OwnSid()
+    }
+
+    static _SidText(sid) {
+        text := 0
+        if !DllCall("advapi32\ConvertSidToStringSidW", "Ptr", sid, "Ptr*", &text)
+            return ""
+        s := StrGet(text, "UTF-16")
+        DllCall("LocalFree", "Ptr", text)
+        return s
+    }
+
+    static _OwnSid() {
+        token := 0
+        if !DllCall("advapi32\OpenProcessToken", "Ptr", DllCall("GetCurrentProcess", "Ptr"), "UInt", 8, "Ptr*", &token)
+            return ""
+        size := 0
+        DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 1, "Ptr", 0, "UInt", 0, "UInt*", &size)
+        info := Buffer(size, 0)
+        ok := DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 1, "Ptr", info, "UInt", size, "UInt*", &size)
+        DllCall("CloseHandle", "Ptr", token)
+        return ok ? PadForge._SidText(NumGet(info, 0, "Ptr")) : ""
     }
 
     ; ── Words on the line ──
@@ -500,6 +563,10 @@ class PadForge {
     SetValue(name, value) => this.Request("var " name "=" value)
 
     _Set(id, controls) => this._Write("s " id " " controls)
+
+    ; A line for this plugin's log on the Plugins page. Only a plugin has a
+    ; log.
+    Log(text) => this._Write("log " PadForge.Quote(text))
 
     ; ── Commands ──
 

@@ -17,24 +17,37 @@ Example:
 Buttons, axes and hats use PadForge's own numbers and ranges: an axis runs
 0 to 65535 with a stick at rest on 32768, axes 0 to 23 are the axes and 24
 to 31 the sliders, and a hat is in hundredths of a degree or -1.
+
+A plugin is a program PadForge starts itself (Extras, Plugins). It connects
+with connect_plugin(), which reads the one-time key and the pipe's name
+PadForge put in its environment. A plugin declares, drives and removes its
+own controllers whatever Automation's level, and writes to its log on the
+Plugins page with log().
 """
 
 import _winapi
 import ctypes
 import itertools
 import json
+import os
 import queue
 import threading
 import time
 
 PROTOCOL = 1
 PIPE = "PadForge.Automation"
+TOKEN_VARIABLE = "PADFORGE_PLUGIN_TOKEN"
+PIPE_VARIABLE = "PADFORGE_PIPE"
 
 _ERROR_FILE_NOT_FOUND = 2
 _ERROR_PIPE_BUSY = 231
 _ERROR_IO_PENDING = 997
 _ERROR_OPERATION_ABORTED = 995
 _ERROR_BROKEN_PIPE = 109
+_SECURITY_SQOS_PRESENT = 0x00100000
+_SECURITY_IDENTIFICATION = 0x00010000
+_ADMINISTRATORS = "S-1-5-32-544"
+_SYSTEM = "S-1-5-18"
 _HWND_MESSAGE = -3
 
 
@@ -114,19 +127,77 @@ def _padforge_runs():
         return False
 
 
+def _sid_text(sid):
+    advapi = ctypes.windll.advapi32
+    text = ctypes.c_wchar_p()
+    advapi.ConvertSidToStringSidW.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_wchar_p)]
+    if not advapi.ConvertSidToStringSidW(sid, ctypes.byref(text)):
+        return None
+    try:
+        return text.value
+    finally:
+        ctypes.windll.kernel32.LocalFree(text)
+
+
+def _own_sid():
+    """The user this program runs as, as a SID string."""
+    advapi, kernel = ctypes.windll.advapi32, ctypes.windll.kernel32
+    kernel.GetCurrentProcess.restype = ctypes.c_void_p
+    advapi.OpenProcessToken.argtypes = [ctypes.c_void_p, ctypes.c_uint32, ctypes.POINTER(ctypes.c_void_p)]
+    advapi.GetTokenInformation.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_uint32, ctypes.POINTER(ctypes.c_uint32)]
+    token = ctypes.c_void_p()
+    if not advapi.OpenProcessToken(kernel.GetCurrentProcess(), 8, ctypes.byref(token)):
+        return None
+    try:
+        size = ctypes.c_uint32()
+        advapi.GetTokenInformation(token, 1, None, 0, ctypes.byref(size))
+        buffer = ctypes.create_string_buffer(size.value)
+        if not advapi.GetTokenInformation(token, 1, buffer, size, ctypes.byref(size)):
+            return None
+        return _sid_text(ctypes.c_void_p.from_buffer(buffer).value)
+    finally:
+        kernel.CloseHandle(token)
+
+
+def _served_by_padforge(handle, name):
+    """Whether the pipe's owner is Administrators or SYSTEM, as a pipe
+    PadForge made is: a program without administrator rights cannot make
+    one so owned. A pipe of another name than PadForge's own, which only a
+    test gives, may also be owned by this program's own user."""
+    advapi, kernel = ctypes.windll.advapi32, ctypes.windll.kernel32
+    advapi.GetSecurityInfo.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_uint32, ctypes.POINTER(ctypes.c_void_p),
+                                       ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p)]
+    owner, descriptor = ctypes.c_void_p(), ctypes.c_void_p()
+    # SE_KERNEL_OBJECT, OWNER_SECURITY_INFORMATION.
+    if advapi.GetSecurityInfo(handle, 6, 1, ctypes.byref(owner), None, None, None, ctypes.byref(descriptor)) != 0:
+        return False
+    try:
+        sid = _sid_text(owner)
+    finally:
+        kernel.LocalFree(descriptor)
+    if sid in (_ADMINISTRATORS, _SYSTEM):
+        return True
+    return name != PIPE and sid is not None and sid == _own_sid()
+
+
 class _Pipe:
     """The pipe, opened overlapped, so a read that waits on the reader
     thread never holds up a write from another thread. Windows serializes
     I/O on a handle opened without overlap."""
 
-    def __init__(self, name, timeout):
+    def __init__(self, name, timeout, plugin=False):
         path = "\\\\.\\pipe\\" + name
         deadline = time.monotonic() + timeout
+        # A plugin lets the server identify it and no more: the server
+        # cannot act as the plugin's user.
+        flags = _winapi.FILE_FLAG_OVERLAPPED
+        if plugin:
+            flags |= _SECURITY_SQOS_PRESENT | _SECURITY_IDENTIFICATION
         while True:
             try:
                 self.handle = _winapi.CreateFile(
                     path, _winapi.GENERIC_READ | _winapi.GENERIC_WRITE, 0, _winapi.NULL,
-                    _winapi.OPEN_EXISTING, _winapi.FILE_FLAG_OVERLAPPED, _winapi.NULL)
+                    _winapi.OPEN_EXISTING, flags, _winapi.NULL)
                 break
             except OSError as e:
                 if e.winerror == _ERROR_PIPE_BUSY and time.monotonic() < deadline:
@@ -146,6 +217,9 @@ class _Pipe:
         self._write_lock = threading.Lock()
         self._reading = None
         self._closed = False
+        if plugin and not _served_by_padforge(self.handle, name):
+            _winapi.CloseHandle(self.handle)
+            raise PadForgeError("not-padforge", "The pipe %s is not PadForge's, so the plugin's key was not sent." % name)
 
     def write(self, data):
         with self._write_lock:
@@ -307,8 +381,8 @@ class PadForge:
     run your callbacks on a thread of their own, so a callback may make
     requests."""
 
-    def __init__(self, name, pipe=PIPE, lease=None, timeout=5.0):
-        self._pipe = _Pipe(pipe, timeout)
+    def __init__(self, name, pipe=PIPE, lease=None, timeout=5.0, token=None):
+        self._pipe = _Pipe(pipe, timeout, plugin=bool(token))
         self._timeout = timeout
         self._tags = itertools.count(1)
         self._pending = {}
@@ -329,7 +403,10 @@ class PadForge:
         self._reader.start()
         self._dispatcher = threading.Thread(target=self._dispatch_loop, name="padforge-events", daemon=True)
         self._dispatcher.start()
-        hello = "hello name=%s kind=script protocol=%d" % (quote(name), PROTOCOL)
+        if token:
+            hello = "hello name=%s kind=plugin token=%s protocol=%d" % (quote(name), word(token), PROTOCOL)
+        else:
+            hello = "hello name=%s kind=script protocol=%d" % (quote(name), PROTOCOL)
         if lease:
             hello += " lease=%d" % lease
         _, pairs, _ = self._ask(hello)
@@ -423,6 +500,11 @@ class PadForge:
             words, pairs, _ = split(row)
             result.append((words, pairs))
         return result
+
+    def log(self, text):
+        """A line for this plugin's log on the Plugins page. Only a
+        plugin has a log."""
+        self._pipe.write(("log " + quote(text) + "\n").encode("utf-8"))
 
     def _send_set(self, device_id, controls):
         parts = ["s", device_id] + ["%s=%s" % (k, v) for k, v in controls.items()]
@@ -669,3 +751,13 @@ class PadForge:
 def connect(name, pipe=PIPE, lease=None, timeout=5.0):
     """Opens a connection to the PadForge that runs on this PC."""
     return PadForge(name, pipe=pipe, lease=lease, timeout=timeout)
+
+
+def connect_plugin(name, lease=None, timeout=5.0):
+    """Opens a plugin's connection: PadForge started this program, and its
+    environment holds the one-time key and the pipe's name. The key is
+    taken once, so a plugin connects once for each start."""
+    token = os.environ.get(TOKEN_VARIABLE)
+    if not token:
+        raise PadForgeError("not-a-plugin", "PadForge did not start this program as a plugin. Add it on the Plugins page.")
+    return PadForge(name, pipe=os.environ.get(PIPE_VARIABLE) or PIPE, lease=lease, timeout=timeout, token=token)

@@ -146,5 +146,64 @@ namespace PadForge.Tests
             foreach (var (page, text) in Markup())
                 Assert.Equal(text.Replace("\r\n", "\n"), carried[page].Replace("\r\n", "\n").TrimStart('\uFEFF'));
         }
+        /// <summary>Every setting under a titled ExtraCard of the Extras
+        /// pages carries that card's title in Search, as a setting under a
+        /// CardBorder carries its card's: the page's ExtraCard is based on
+        /// CardBorder and its ExtraCardTitle on CardTitle. Each reset the
+        /// index made an entry of is found in the markup by its line, and
+        /// its own card is the nearest ExtraCard around it.</summary>
+        [Fact]
+        public void EverySettingUnderATitledExtraCard_CarriesThatTitle()
+        {
+            string text = Markup()[SearchPage.Extras];
+            var doc = XDocument.Parse(text, LoadOptions.SetLineInfo);
+            const string Card = "{StaticResource ExtraCard}";
+            const string Title = "{StaticResource ExtraCardTitle}";
+            string StyleOf(XElement e) => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Style" && a.Name.Namespace == XNamespace.None);
+            bool IsCard(XElement e) => e.Name.LocalName == "Border" && StyleOf(e) == Card;
+            // A card's title: its first ExtraCardTitle before any card inside it.
+            string TitleOf(XElement card)
+            {
+                foreach (var e in card.Descendants())
+                {
+                    if (e.Ancestors().TakeWhile(a => a != card).Any(IsCard)) continue;
+                    if (e.Name.LocalName == "TextBlock" && StyleOf(e) == Title)
+                    {
+                        var m = Regex.Match((string)e.Attribute("Text") ?? string.Empty, @"^\{Binding (\w+), Source=\{x:Static strings:Strings\.Instance\}\}$");
+                        return m.Success ? m.Groups[1].Value : null;
+                    }
+                }
+                return null;
+            }
+            var resetsByLine = doc.Descendants().Where(e => e.Name.LocalName == "SettingResetButton")
+                .ToDictionary(e => ((System.Xml.IXmlLineInfo)e).LineNumber);
+
+            var index = Index();
+            var lines = index.Resets.Where(r => r.Page == SearchPage.Extras && r.Outcome == ResetOutcome.Entry).Select(r => r.Line).ToList();
+            var settings = index.Entries.Where(e => e.Page == SearchPage.Extras && e.Kind == SearchKind.Setting).OrderBy(e => e.Order).ToList();
+            // One entry for each reset the index read, in the same order.
+            Assert.Equal(lines.Count, settings.Count);
+
+            int underTitled = 0;
+            var titles = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (!resetsByLine.TryGetValue(lines[i], out var reset)) continue;
+                var card = reset.Ancestors().FirstOrDefault(IsCard);
+                string title = card == null ? null : TitleOf(card);
+                if (title == null) continue;
+                underTitled++;
+                titles.Add(title);
+                var entry = settings[i];
+                Assert.True(entry.CardTitle?.Key == title || entry.Qualifier?.Key == title,
+                    $"the setting {entry.Label.Key ?? entry.Label.Path} on line {lines[i]} does not carry its card's title {title}");
+            }
+            // Positive control: the Extras pages hold settings under titled
+            // ExtraCards, and each such card is an entry of its own.
+            Assert.True(underTitled >= 20, underTitled + " settings under titled ExtraCards");
+            foreach (string title in titles)
+                Assert.Contains(index.Entries, e => e.Page == SearchPage.Extras && e.Kind == SearchKind.Card && e.Label.Key == title);
+            _output.WriteLine($"{underTitled} settings under {titles.Count} titled ExtraCards");
+        }
     }
 }

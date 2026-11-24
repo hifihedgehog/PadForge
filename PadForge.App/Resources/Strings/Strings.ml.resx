@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>പ്ലഗിനുകൾ പ്രവർത്തിപ്പിക്കുക</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ഒരു പ്ലഗിനും പ്രവർത്തിക്കുന്നില്ല.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>ഒരു പ്ലഗിൻ പ്രവർത്തിക്കുന്നത് നിങ്ങളുടെ അവകാശങ്ങളോടെയാണ്, PadForge-ന്റേതോടെയല്ല.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയവ</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>ടെസ്റ്റ് കൺട്രോളർ</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>സ്വയം നീങ്ങുന്ന ഒരു കൺട്രോളർ, ഓരോ തവണയും ഒരു നിയന്ത്രണം, അതിനാൽ ഹാർഡ്‌വെയർ കൈയിലില്ലാതെ ഒരു മാപ്പിംഗ് പരീക്ഷിക്കാം.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>വേഗത</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>സാവധാനം</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>സാധാരണ</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>വേഗത്തിൽ</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>ഏറ്റവും വേഗത്തിൽ</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>റീപ്ലേ</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>ഒരു പ്രശ്ന റെക്കോർഡിംഗ്, അത് ഉണ്ടാക്കിയ ഉപകരണങ്ങളായി, അവയുടെ സമയക്രമത്തോടെ തിരികെ പ്ലേ ചെയ്യുന്നു. അവ ഈ PC-യിലെ പുതിയ ഉപകരണങ്ങളാണ്, നിങ്ങളോ ഒരു പ്രൊഫൈലോ മാപ്പ് ചെയ്യുന്നതുപോലെ മാപ്പ് ചെയ്യപ്പെടും.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>റെക്കോർഡിംഗ്</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>ഒരു റെക്കോർഡിംഗ് തുറക്കുക…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>ഒരു റെക്കോർഡിംഗും തുറന്നിട്ടില്ല.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ദൈർഘ്യം {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>പ്ലേബാക്ക്</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>പ്ലേ ചെയ്യുക</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>ആവർത്തിക്കുക</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0}, ആകെ {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (റീപ്ലേ)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>പ്രശ്ന റെക്കോർഡിംഗുകൾ|*.zip;*.log|എല്ലാ ഫയലുകളും|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ന് {0} പ്ലേ ചെയ്യാനാവില്ല. ഇത് ഒരു പ്രശ്ന റെക്കോർഡിംഗ് അല്ല, അല്ലെങ്കിൽ ഇതിൽ ഒരു ഉപകരണത്തിന്റെയും ഇൻപുട്ട് ഇല്ല.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>നിങ്ങളുടെ പ്ലഗിനുകൾ</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>ഒരു പ്ലഗിൻ PadForge-ലേക്ക് ഉപകരണങ്ങൾ ചേർക്കുന്ന ഒരു പ്രോഗ്രാമാണ്. എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോഴെല്ലാം PadForge അതിനെ നിങ്ങളുടെ സാധാരണ അവകാശങ്ങളോടെ ആരംഭിക്കുന്നു.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>ഒരു പ്ലഗിൻ ചേർക്കുക…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>പ്രോഗ്രാമുകളും സ്ക്രിപ്റ്റുകളും|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|എല്ലാ ഫയലുകളും|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>അംഗീകരിക്കുക…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>എഞ്ചിനോടൊപ്പം ആരംഭിക്കുന്നു</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>ആരംഭിക്കുന്നതിന് മുമ്പ് ഫയൽ പരിശോധിക്കുന്നു</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>കോഡ് {0} ഉപയോഗിച്ച് അവസാനിച്ചു. {1} സെക്കൻഡിൽ വീണ്ടും ആരംഭിക്കും.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>ആരംഭിച്ചില്ല. {0} സെക്കൻഡിൽ വീണ്ടും ശ്രമിക്കും.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>നിങ്ങൾ അംഗീകരിച്ചതിന് ശേഷം മാറിയിരിക്കുന്നു</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>തുടർച്ചയായ അഞ്ച് പരാജയങ്ങൾക്ക് ശേഷം നിർത്തി</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>ആരംഭിച്ചില്ല: ഫയൽ ഇല്ല</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>ആരംഭിച്ചില്ല: ഇത്തരം ഫയലിനായി Windows-ൽ പ്രോഗ്രാം ഇല്ല</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>ആരംഭിച്ചില്ല: ഇതിനെ ആരംഭിക്കാൻ ഡെസ്ക്ടോപ്പ് ഷെൽ പ്രവർത്തിക്കുന്നില്ല</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>ആരംഭിച്ചില്ല: ഡെസ്ക്ടോപ്പ് ഷെല്ലിന് അഡ്മിനിസ്ട്രേറ്റർ അവകാശങ്ങളുണ്ട്, അതിനാൽ പ്ലഗിനും അവ ലഭിക്കും</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>ആരംഭിച്ചില്ല: ഇത് അഡ്മിനിസ്ട്രേറ്റർ അവകാശങ്ങൾ ആവശ്യപ്പെടുന്നു</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>ആരംഭിച്ചില്ല: Windows പിശക് {0} സഹിതം നിരസിച്ചു</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>ആരംഭിച്ചില്ല</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>ആരംഭിച്ചു</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>കോഡ് {0} ഉപയോഗിച്ച് അവസാനിച്ചു</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge ആരംഭിക്കാത്ത പ്രോസസ് {0}-ൽ നിന്നുള്ള അതിന്റെ കീ നിരസിച്ചു</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>ഒരു പ്ലഗിൻ ചേർക്കുക</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>പ്ലഗിൻ വീണ്ടും അംഗീകരിക്കുക</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോഴെല്ലാം ഈ പ്രോഗ്രാം നിങ്ങളുടെ അവകാശങ്ങളോടെ പ്രവർത്തിക്കും.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>നിങ്ങൾ അംഗീകരിച്ചതിന് ശേഷം ഫയൽ മാറി. എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോഴെല്ലാം ഈ പ്രോഗ്രാം നിങ്ങളുടെ അവകാശങ്ങളോടെ പ്രവർത്തിക്കും.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ഫയൽ: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>ഒപ്പിട്ടത്: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>ഒപ്പിട്ടിട്ടില്ല</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>പ്ലഗിൻ ചേർക്കുക</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>അംഗീകരിക്കുക</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge-ന് {0} വായിക്കാനാവില്ല.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ഇതിനകം പട്ടികയിലുണ്ട്.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge പരമാവധി 16 പ്ലഗിനുകൾ പ്രവർത്തിപ്പിക്കും. മറ്റൊന്ന് ചേർക്കാൻ ഒന്ന് നീക്കം ചെയ്യുക.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>പ്രവർത്തിക്കുന്ന പ്ലഗിനുകൾ: {0}. അവ ചേർത്ത ഉപകരണങ്ങൾ: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>പ്ലഗിൻ കിറ്റ്, നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന പ്ലഗിന്റെ ലോഗ്</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>പ്ലഗിൻ കിറ്റ്</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>പ്ലഗിൻ കിറ്റ് സേവ് ചെയ്യുക…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C#-ൽ ഒരു ചെറിയ പ്ലഗിൻ, അതേ പ്ലഗിൻ AutoHotkey, Python, PowerShell എന്നിവയ്ക്കും, ഓരോ ഫയലിലും അത് എങ്ങനെ ബിൽഡ് ചെയ്യാമെന്നോ പ്രവർത്തിപ്പിക്കാമെന്നോ ഉണ്ട്.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>ലോഗ്</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>ലോഗ് കാണാൻ ഒരു പ്ലഗിൻ തിരഞ്ഞെടുക്കുക.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>ഈ പ്ലഗിന്റെ ലോഗിൽ ഇതുവരെ ഒന്നുമില്ല.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>മോഷൻ സെർവർ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ഗൈറോ, ആക്സിലറോമീറ്റർ ഡാറ്റയ്ക്കുള്ള DSU/CemuHook Motion Provider പ്രോട്ടോക്കോൾ സെർവർ.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU മോഷൻ സെർവർ പ്രവർത്തനക്ഷമമാക്കുക (CemuHook Motion Provider പ്രോട്ടോക്കോൾ)</value></data>

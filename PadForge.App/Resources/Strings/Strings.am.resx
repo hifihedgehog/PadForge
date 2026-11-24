@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ተሰኪዎችን አሂድ</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ምንም ተሰኪ እየሄደ አይደለም።</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>ተሰኪ የሚሄደው በእርስዎ መብቶች ነው እንጂ በPadForge መብቶች አይደለም።</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>አብሮ የተሰሩ</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>የሙከራ መቆጣጠሪያ</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>በራሱ የሚንቀሳቀስ መቆጣጠሪያ፣ አንድ መቆጣጠሪያ ክፍል በአንድ ጊዜ፣ ስለዚህ ሃርድዌር በእጅ ሳይኖር ማዛመጃ መሞከር ይቻላል።</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>ፍጥነት</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>ቀርፋፋ</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>መደበኛ</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>ፈጣን</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>በጣም ፈጣን</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>መልሶ ማጫወት</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>የችግር ቀረጻን እንደሠሩት መሣሪያዎች፣ በነበራቸው ጊዜ አጠባበቅ መልሶ ያጫውታል። በዚህ ፒሲ ላይ አዲስ መሣሪያዎች ናቸው፣ እርስዎ ወይም መገለጫ እንደሚያዛምዷቸው ይዛመዳሉ።</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ቀረጻ</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>ቀረጻ ክፈት…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>ምንም ቀረጻ ክፍት አይደለም።</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}፣ ርዝመት {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>ማጫወት</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>አጫውት</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>ድገም</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ከ{1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (መልሶ ማጫወት)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>የችግር ቀረጻዎች|*.zip;*.log|ሁሉም ፋይሎች|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} ማጫወት አይችልም። የችግር ቀረጻ አይደለም፣ ወይም የማንኛውንም መሣሪያ ግብዓት አልያዘም።</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>የእርስዎ ተሰኪዎች</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>ተሰኪ ለPadForge መሣሪያዎችን የሚያክል ፕሮግራም ነው። ሞተሩ በሚሄድ ቁጥር PadForge በተለመዱት መብቶችዎ ያስጀምረዋል።</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>ተሰኪ አክል…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>ፕሮግራሞች እና ስክሪፕቶች|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ሁሉም ፋይሎች|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>አጽድቅ…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>ከሞተሩ ጋር ይጀምራል</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>ከመጀመሩ በፊት ፋይሉን በመፈተሽ ላይ</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>በኮድ {0} ወጥቷል። በ{1} ሰከንድ ውስጥ እንደገና ይጀምራል።</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>አልጀመረም። በ{0} ሰከንድ ውስጥ እንደገና ይሞክራል።</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>ካጸደቁት በኋላ ተቀይሯል</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>በተከታታይ ከአምስት ውድቀቶች በኋላ ቆሟል</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>አልጀመረም፦ ፋይሉ የለም</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>አልጀመረም፦ Windows ለዚህ ዓይነት ፋይል ፕሮግራም የለውም</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>አልጀመረም፦ ከሥሩ የሚጀምርበት የዴስክቶፕ ሼል እየሄደ አይደለም</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>አልጀመረም፦ የዴስክቶፕ ሼሉ የአስተዳዳሪ መብቶች ስላሉት ተሰኪውም ይኖሩታል</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>አልጀመረም፦ የአስተዳዳሪ መብቶችን ይጠይቃል</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>አልጀመረም፦ Windows በስህተት {0} አልፈቀደም</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>አልጀመረም</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>ተጀምሯል</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>በኮድ {0} ወጥቷል</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge ካላስጀመረው ሂደት {0} የመጣውን ቁልፉን አልተቀበለም</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>ተሰኪ አክል</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>ተሰኪውን እንደገና አጽድቅ</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>ይህ ፕሮግራም ሞተሩ በሚሄድ ቁጥር በእርስዎ መብቶች ይሄዳል።</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>ፋይሉ ካጸደቁት በኋላ ተቀይሯል። ይህ ፕሮግራም ሞተሩ በሚሄድ ቁጥር በእርስዎ መብቶች ይሄዳል።</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ፋይል፦ {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>የፈረመው፦ {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>ያልተፈረመ</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256፦ {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>ተሰኪ አክል</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>አጽድቅ</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge {0} ማንበብ አይችልም።</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} አስቀድሞ በዝርዝሩ ውስጥ አለ።</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge እስከ 16 ተሰኪዎችን ያሂዳል። ሌላ ለማከል አንዱን ያስወግዱ።</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>የሚሄዱ ተሰኪዎች፦ {0}። ያከሏቸው መሣሪያዎች፦ {1}።</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>የተሰኪ ኪት፣ እና የመረጡት ተሰኪ ምዝግብ</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>የተሰኪ ኪት</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>የተሰኪ ኪቱን አስቀምጥ…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>በC# የተጻፈ ትንሽ ተሰኪ፣ እና ያው ተሰኪ ለAutoHotkey፣ Python እና PowerShell፣ እያንዳንዱ ፋይል እንዴት እንደሚገነባ ወይም እንደሚሄድ ይዟል።</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>ምዝግብ</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>ምዝግቡን ለማየት ተሰኪ ይምረጡ።</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>በዚህ ተሰኪ ምዝግብ ውስጥ እስካሁን ምንም የለም።</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>የእንቅስቃሴ አገልጋይ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ለጋይሮ እና ለአክስሌሮሜትር ውሂብ የDSU/CemuHook Motion Provider ፕሮቶኮል አገልጋይ።</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>የDSU እንቅስቃሴ አገልጋይን አንቃ (CemuHook Motion Provider Protocol)</value></data>

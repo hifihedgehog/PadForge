@@ -124,7 +124,7 @@ namespace PadForge.Tests
     /// The test process leaves the PC it runs on as it found it: its desktop,
     /// its clipboard, its devices, its radio, its drivers, its certificate
     /// stores, its logon task, its sound, the programs other vendors run on
-    /// it, and the network beyond it. Thirty-five fences hold that
+    /// it, and the network beyond it. Thirty-seven fences hold that
     /// (TestHostFences.cs), beside the ones MachineOffLimitsTests,
     /// HidHideOffLimitsTests and their neighbors pin. The listener gate's
     /// tests are in TestHostListenerTests.cs, and the workshop library's own
@@ -198,6 +198,7 @@ namespace PadForge.Tests
         private const string InstanceSignalFile = Services + "InstanceSignal.cs";
         private const string ClientRunFile = Services + "ClientRun.cs";
         private const string StartWithRightsFile = Services + "StartWithRights.cs";
+        private const string PluginLauncherFile = Services + "Plugins/PluginLauncher.cs";
         private const string Dsu = Services + "DsuMotionServer.cs";
         private const string GameMods = Services + "GameModServer.cs";
         private const string GameModFiles = Services + "GameModPortFiles.cs";
@@ -244,6 +245,7 @@ namespace PadForge.Tests
             (RunningCopyFile, "RunningCopy"),
             (ClientRunFile, "CallerConsole"),
             (StartWithRightsFile, "StartWithRights"),
+            (PluginLauncherFile, "PluginLauncher"),
             (Dsu, "DsuMotionServer"),
             (GameMods, "GameModServer"),
             (GameModFiles, "GameModPortFiles"),
@@ -296,6 +298,7 @@ namespace PadForge.Tests
             Assert.True(RunningCopy.OffLimitsForTest);
             Assert.True(CallerConsole.OffLimitsForTest);
             Assert.True(StartWithRights.OffLimitsForTest);
+            Assert.True(PadForge.Services.Plugins.PluginLauncher.OffLimitsForTest);
             Assert.True(DsuMotionServer.OffLimitsForTest);
             Assert.True(GameModServer.OffLimitsForTest);
             Assert.True(GameModPortFiles.OffLimitsForTest);
@@ -519,6 +522,11 @@ namespace PadForge.Tests
             // The start of the exe with administrator rights.
             new object[] { StartWithRightsFile, "internal static int Run(IReadOnlyList<string> args)", "if (OffLimitsForTest) return NotStarted;" },
 
+            // A plugin's start under the desktop shell (#597): only the
+            // tests' own helper, from the test host's folder.
+            new object[] { PluginLauncherFile, "public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)", "if (Refuses(command?.Program)) return PluginLaunch.Refused(PluginRefusal.OffLimits);" },
+            new object[] { PluginLauncherFile, "private static bool Refuses(string program)", "if (!OffLimitsForTest) return false;" },
+
             // A laptop's lighting through its firmware, and a keyboard's
             // serial port (#557).
             new object[] { OwnLighting, "internal static IAtkAcpiChannel OpenAtkAcpi()", "if (OffLimitsForTest) return null;" },
@@ -657,6 +665,13 @@ namespace PadForge.Tests
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Services + "WebControllerServer.cs"), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
             // And the restart with rights (#597).
             Assert.Contains("Process.Start(start)", FenceSource.Body(OffLimitsSource.Read(StartWithRightsFile), "internal static int Run(IReadOnlyList<string> args)"), StringComparison.Ordinal);
+
+            // A plugin is the one program started through CreateProcess, in
+            // the member that asks its fence first (#597): the import and
+            // its one call.
+            Assert.Equal(Map((PluginLauncherFile, 2)), FenceSource.Census(@"\bCreateProcess(W|A|AsUser\w*|WithToken\w*|WithLogon\w*)?\("));
+            Assert.Contains("CreateProcessW(command.Program, line,",
+                FenceSource.Body(OffLimitsSource.Read(PluginLauncherFile), "public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)"), StringComparison.Ordinal);
         }
 
         [Fact]
@@ -704,7 +719,12 @@ namespace PadForge.Tests
             Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
                 FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log)"), StringComparison.Ordinal);
             Assert.Single(OffLimitsSource.Calls(task, "HoldPipe(name)"));
-            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1)), FenceSource.Census(Creates("NamedPipeClientStream")));
+            // The plugin kit's example plugin connects too. PadForge only
+            // carries it as a file the user saves, and never compiles it
+            // (#597).
+            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1), ("PadForge.App/Resources/Plugins/PadForgePlugin.cs", 1)),
+                FenceSource.Census(Creates("NamedPipeClientStream")));
+            Assert.Contains(@"<Compile Remove=""Resources\Plugins\**"" />", ExtrasPageTests.RepoText("PadForge.App", "PadForge.App.csproj"));
 
             // The client end's one connection is in the member that asks first.
             string client = OffLimitsSource.Read(ClientRunFile);

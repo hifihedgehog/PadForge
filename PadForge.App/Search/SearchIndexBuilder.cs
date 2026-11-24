@@ -26,7 +26,10 @@ namespace PadForge.Search
     /// <para>A setting is a reset button and the row around it, named by the
     /// row's label: a label TextBlock, else the row's first TextBlock bound to
     /// a string, else a switch's words, else the reset's SettingLabel. A card
-    /// is a CardBorder with a CardTitle or a HeroCardTitle, or a FoldCard. An action is a button
+    /// is a CardBorder with a CardTitle or a HeroCardTitle, or a FoldCard. A
+    /// style of the page's own that is based on CardBorder is a card too
+    /// (the Extras pages' ExtraCard), and one based on CardTitle is its
+    /// title (ExtraCardTitle). An action is a button
     /// whose words are a string, less the shared verbs (Common_*), Reset All
     /// and the Extras pages' Back. Each extra's tile, each section of the
     /// controller page and each part of its Buttons and Macros &amp; Menus is
@@ -141,6 +144,8 @@ namespace PadForge.Search
             private readonly XDocument _doc;
             private readonly HashSet<string> _extraKeys;
             private readonly Dictionary<string, XElement> _rowParts = new(StringComparer.Ordinal);
+            private readonly HashSet<string> _cardStyles;
+            private readonly HashSet<string> _cardTitleStyles;
             private int _order;
 
             public PageWalk(SearchPage page, IReadOnlyDictionary<string, int> tabOfGroupName, List<SearchEntry> entries,
@@ -153,10 +158,33 @@ namespace PadForge.Search
                 _doc = doc;
                 _extraKeys = new HashSet<string>(doc.Descendants().Where(e => e.Name.LocalName == "ExtraTile")
                     .Select(e => (string)e.Attribute("Key")).Where(k => !string.IsNullOrEmpty(k)), StringComparer.Ordinal);
+                _cardStyles = StylesBasedOn(doc, "CardBorder");
+                _cardTitleStyles = StylesBasedOn(doc, "CardTitle", "HeroCardTitle");
                 if (page == SearchPage.Pad)
                     foreach (var template in doc.Descendants().Where(e => e.Name.LocalName == "DataTemplate"))
                         if ((string)template.Attribute(Xaml + "Key") is { } key && RowPartTemplates.Contains(key))
                             _rowParts[key] = template;
+            }
+
+            /// <summary>The style keys given and every style of the page based
+            /// on one of them, through any number of steps: a page's own card
+            /// look is a card as CardBorder is.</summary>
+            private static HashSet<string> StylesBasedOn(XDocument doc, params string[] roots)
+            {
+                var keys = new HashSet<string>(roots, StringComparer.Ordinal);
+                var styles = doc.Descendants().Where(e => e.Name.LocalName == "Style")
+                    .Select(e => (Key: (string)e.Attribute(Xaml + "Key"), Base: StyleKey.Match(Attr(e, "BasedOn") ?? string.Empty)))
+                    .Where(x => !string.IsNullOrEmpty(x.Key) && x.Base.Success)
+                    .Select(x => (x.Key, Base: x.Base.Groups[1].Value))
+                    .ToList();
+                bool grew = true;
+                while (grew)
+                {
+                    grew = false;
+                    foreach (var (key, basedOn) in styles)
+                        if (keys.Contains(basedOn) && keys.Add(key)) grew = true;
+                }
+                return keys;
             }
 
             /// <summary>The template a ContentControl of the open row shows
@@ -213,7 +241,7 @@ namespace PadForge.Search
                 return null;
             }
 
-            private static bool IsCard(XElement e) => (Local(e) == "Border" && StyleOf(e) == "CardBorder") || Local(e) == "FoldCard";
+            private bool IsCard(XElement e) => (Local(e) == "Border" && StyleOf(e) is { } style && _cardStyles.Contains(style)) || Local(e) == "FoldCard";
 
             private static bool IsReset(XElement e)
                 => Local(e) == "SettingResetButton" || (Local(e) == "Button" && StyleOf(e) is { } s && ResetStyles.Contains(s));
@@ -429,19 +457,20 @@ namespace PadForge.Search
             }
 
             /// <summary>The title of a CardBorder: its first CardTitle text,
-            /// or HeroCardTitle text for a part's card (a stick's, a
-            /// trigger's, the sections pass's), before any card inside it.</summary>
-            private static SearchLabel CardTitleOf(XElement card)
+            /// HeroCardTitle text for a part's card (a stick's, a trigger's,
+            /// the sections pass's), or text in a title style the page bases
+            /// on one of them, before any card inside it.</summary>
+            private SearchLabel CardTitleOf(XElement card)
             {
                 foreach (var e in Inside(card))
-                    if (Local(e) == "TextBlock" && StyleOf(e) is "CardTitle" or "HeroCardTitle")
+                    if (Local(e) == "TextBlock" && StyleOf(e) is { } style && _cardTitleStyles.Contains(style))
                         return TextLabel(e, true);
                 return null;
             }
 
             /// <summary>An element's descendants in document order, stopping at
             /// nested cards and at property elements that are no content.</summary>
-            private static IEnumerable<XElement> Inside(XElement e)
+            private IEnumerable<XElement> Inside(XElement e)
             {
                 foreach (var c in e.Elements())
                 {

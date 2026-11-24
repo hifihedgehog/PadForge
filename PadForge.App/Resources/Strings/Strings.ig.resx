@@ -1614,6 +1614,17 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Chekwaa skill ahụ…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Gbaa plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ọ dịghị plugin na-agba.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ogologo {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Kpọọ</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Megharịa ọzọ</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} n'ime {1}</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin na-agba: {0}. Ngwaọrụ ha tinyere: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Ngwa plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Chekwaa ngwa plugin ahụ…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Obere plugin na C#, na otu plugin ahụ maka AutoHotkey, Python na PowerShell, faịlụ ọ bụla nwere otu esi ewu ya ma ọ bụ agba ya.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Ndekọ</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Họrọ plugin ka ị hụ ndekọ ya.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ọ dịbeghị ihe dị na ndekọ plugin a.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Kwe</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ekwela</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Site na {0}</value></data>

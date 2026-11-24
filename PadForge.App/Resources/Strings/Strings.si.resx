@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ප්ලගින ධාවනය කරන්න</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>කිසිදු ප්ලගිනයක් ධාවනය නොවේ.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>ප්ලගිනයක් ධාවනය වන්නේ PadForge හි අයිතිවාසිකම්වලින් නොව, ඔබේ අයිතිවාසිකම්වලිනි.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ඇතුළත් කර ඇති</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>පරීක්ෂණ පාලකය</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>දෘඪාංග අතේ නොමැතිව සිතියම්ගත කිරීමක් අත්හදා බැලිය හැකි වන සේ, වරකට එක් පාලනයක් බැගින් තනිවම චලනය වන පාලකයක්.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>වේගය</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>මන්දගාමී</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>සාමාන්‍ය</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>වේගවත්</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>වේගවත්ම</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>නැවත වාදනය</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>ගැටලු පටිගත කිරීමක් එය සෑදූ උපාංග ලෙස, ඒවාට තිබූ කාල නියමයෙන්ම නැවත වාදනය කරයි. ඒවා මෙම පරිගණකයේ නව උපාංග වන අතර, ඔබ හෝ පැතිකඩක් සිතියම්ගත කරන ආකාරයට සිතියම්ගත වේ.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>පටිගත කිරීම</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>පටිගත කිරීමක් විවෘත කරන්න…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>කිසිදු පටිගත කිරීමක් විවෘත කර නැත.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, දිග {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>වාදනය</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>වාදනය කරන්න</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>නැවත කරන්න</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (නැවත වාදනය)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>ගැටලු පටිගත කිරීම්|*.zip;*.log|සියලු ගොනු|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge හට {0} වාදනය කළ නොහැක. එය ගැටලු පටිගත කිරීමක් නොවේ, නැතහොත් එහි කිසිදු උපාංගයක ආදානයක් නැත.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>ඔබේ ප්ලගින</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>ප්ලගිනයක් යනු PadForge වෙත උපාංග එක් කරන වැඩසටහනකි. එන්ජිම ධාවනය වන සෑම විටම PadForge එය ඔබේ සාමාන්‍ය අයිතිවාසිකම් සමඟ ආරම්භ කරයි.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>ප්ලගිනයක් එක් කරන්න…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>වැඩසටහන් සහ ස්ක්‍රිප්ට්|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|සියලු ගොනු|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>අනුමත කරන්න…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>එන්ජිම සමඟ ආරම්භ වේ</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>ආරම්භ වීමට පෙර ගොනුව පරීක්ෂා කරමින්</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>කේතය {0} සමඟ පිටවිය. තත්පර {1} කින් නැවත ආරම්භ වේ.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>ආරම්භ නොවීය. තත්පර {0} කින් නැවත උත්සාහ කරයි.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>ඔබ අනුමත කළ පසු වෙනස් වී ඇත</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>පිළිවෙළින් අසාර්ථක වීම් පහකින් පසු නැවතිණි</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>ආරම්භ නොවීය: ගොනුව නැත</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>ආරම්භ නොවීය: මෙම වර්ගයේ ගොනුවක් සඳහා Windows හි වැඩසටහනක් නැත</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>ආරම්භ නොවීය: එය යටතේ ආරම්භ කිරීමට කිසිදු ඩෙස්ක්ටොප් ෂෙල් එකක් ධාවනය නොවේ</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>ආරම්භ නොවීය: ඩෙස්ක්ටොප් ෂෙල් එකට පරිපාලක අයිතිවාසිකම් ඇති බැවින් ප්ලගිනයටද ඒවා ලැබේ</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>ආරම්භ නොවීය: එය පරිපාලක අයිතිවාසිකම් ඉල්ලයි</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>ආරම්භ නොවීය: Windows දෝෂය {0} සමඟ ප්‍රතික්ෂේප කළේය</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>ආරම්භ නොවීය</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>ආරම්භ විය</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>කේතය {0} සමඟ පිටවිය</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge ආරම්භ නොකළ ක්‍රියාවලිය {0} වෙතින් එහි යතුර ප්‍රතික්ෂේප කළේය</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>ප්ලගිනයක් එක් කරන්න</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>ප්ලගිනය නැවත අනුමත කරන්න</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>එන්ජිම ධාවනය වන සෑම විටම මෙම වැඩසටහන ඔබේ අයිතිවාසිකම් සමඟ ධාවනය වේ.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>ඔබ අනුමත කළ පසු ගොනුව වෙනස් වී ඇත. එන්ජිම ධාවනය වන සෑම විටම මෙම වැඩසටහන ඔබේ අයිතිවාසිකම් සමඟ ධාවනය වේ.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ගොනුව: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>අත්සන් කළේ: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>අත්සන් කර නැත</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>ප්ලගිනය එක් කරන්න</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>අනුමත කරන්න</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge හට {0} කියවිය නොහැක.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} දැනටමත් ලැයිස්තුවේ ඇත.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge ප්ලගින 16ක් දක්වා ධාවනය කරයි. තවත් එකක් එක් කිරීමට එකක් ඉවත් කරන්න.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>ධාවනය වන ප්ලගින: {0}. ඒවා එක් කළ උපාංග: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>ප්ලගින කට්ටලය, සහ ඔබ තෝරන ප්ලගිනයක ලොගය</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>ප්ලගින කට්ටලය</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>ප්ලගින කට්ටලය සුරකින්න…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# හි කුඩා ප්ලගිනයක්, සහ AutoHotkey, Python සහ PowerShell සඳහා එම ප්ලගිනයම, එක් එක් ගොනුව එය ගොඩනඟන්නේ හෝ ධාවනය කරන්නේ කෙසේද යන්න සමඟ.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>ලොගය</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>එහි ලොගය බැලීමට ප්ලගිනයක් තෝරන්න.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>මෙම ප්ලගිනයේ ලොගයේ තවම කිසිවක් නැත.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>චලන සේවාදායකය</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ගයිරෝ සහ ත්වරණමාන දත්ත සඳහා DSU/CemuHook Motion Provider ප්‍රොටෝකෝල සේවාදායකය.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU චලන සේවාදායකය සබල කරන්න (CemuHook Motion Provider Protocol)</value></data>

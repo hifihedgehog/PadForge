@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Chạy plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Không có plugin nào đang chạy.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin chạy với quyền của bạn, không phải quyền của PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Có sẵn</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Tay cầm thử</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Một tay cầm tự chuyển động, từng điều khiển một, để có thể thử một ánh xạ mà không cần phần cứng trong tay.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Tốc độ</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Chậm</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Bình thường</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Nhanh</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Nhanh nhất</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Phát lại</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Phát lại bản ghi sự cố dưới dạng các thiết bị đã tạo ra nó, với đúng nhịp thời gian của chúng. Đó là các thiết bị mới trên PC này, được ánh xạ như bạn hoặc một hồ sơ ánh xạ.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Bản ghi</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Mở một bản ghi…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Chưa mở bản ghi nào.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, dài {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Phát</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Phát</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Lặp lại</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} trên {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Phát lại)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Bản ghi sự cố|*.zip;*.log|Tất cả tệp|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge không phát được {0}. Nó không phải bản ghi sự cố, hoặc không chứa đầu vào của thiết bị nào.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Plugin của bạn</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin là một chương trình thêm thiết bị vào PadForge. PadForge khởi động nó với quyền thông thường của bạn mỗi khi bộ máy chạy.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Thêm một plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Chương trình và tập lệnh|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tất cả tệp|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Chấp thuận…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Khởi động cùng bộ máy</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Đang kiểm tra tệp trước khi khởi động</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Đã thoát với mã {0}. Khởi động lại sau {1} giây.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Chưa khởi động. Thử lại sau {0} giây.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Đã thay đổi kể từ khi bạn chấp thuận</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Đã dừng sau năm lần lỗi liên tiếp</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Chưa khởi động: tệp không còn</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Chưa khởi động: Windows không có chương trình nào cho loại tệp này</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Chưa khởi động: không có shell màn hình nào đang chạy để khởi động nó</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Chưa khởi động: shell màn hình có quyền quản trị, nên plugin cũng sẽ có quyền đó</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Chưa khởi động: nó đòi quyền quản trị</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Chưa khởi động: Windows từ chối với lỗi {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Chưa khởi động</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Đã khởi động</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Đã thoát với mã {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Đã từ chối khóa của nó từ tiến trình {0}, tiến trình mà PadForge không khởi động</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Thêm một plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Chấp thuận lại plugin</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Chương trình này sẽ chạy với quyền của bạn mỗi khi bộ máy chạy.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Tệp đã thay đổi kể từ khi bạn chấp thuận. Chương trình này sẽ chạy với quyền của bạn mỗi khi bộ máy chạy.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Tệp: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Được ký bởi: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Chưa được ký</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Thêm plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Chấp thuận</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge không đọc được {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} đã có trong danh sách.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge chạy tối đa 16 plugin. Hãy gỡ một plugin để thêm plugin khác.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin đang chạy: {0}. Thiết bị chúng đã thêm: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Bộ công cụ plugin và nhật ký của plugin bạn chọn</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Bộ công cụ plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Lưu bộ công cụ plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Một plugin nhỏ bằng C#, và chính plugin đó cho AutoHotkey, Python và PowerShell, mỗi tệp kèm cách dựng hoặc chạy nó.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Nhật ký</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chọn một plugin để xem nhật ký của nó.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Nhật ký của plugin này chưa có gì.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Máy chủ chuyển động</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Máy chủ giao thức DSU/CemuHook Motion Provider cho dữ liệu con quay hồi chuyển và gia tốc kế.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Bật máy chủ chuyển động DSU (giao thức CemuHook Motion Provider)</value></data>

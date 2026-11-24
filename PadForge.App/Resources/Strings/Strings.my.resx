@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ပလပ်အင်များ လည်ပတ်ရန်</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>မည်သည့်ပလပ်အင်မျှ မလည်ပတ်ပါ။</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>ပလပ်အင်သည် PadForge ၏ အခွင့်အရေးဖြင့် မဟုတ်ဘဲ သင့်အခွင့်အရေးဖြင့် လည်ပတ်သည်။</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ပါဝင်ပြီးသား</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>စမ်းသပ် ကွန်ထရိုလာ</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ဟာ့ဒ်ဝဲ မလိုဘဲ မက်ပင်းကို စမ်းကြည့်နိုင်ရန် ထိန်းချုပ်ကိရိယာ တစ်ခုချင်း ၎င်းဘာသာ လှုပ်ရှားသော ကွန်ထရိုလာ။</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>အမြန်နှုန်း</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>နှေး</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ပုံမှန်</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>မြန်</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>အမြန်ဆုံး</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>ပြန်ဖွင့်ခြင်း</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>ပြဿနာ မှတ်တမ်းတင်ချက်ကို ၎င်းကို ပြုလုပ်ခဲ့သော စက်ပစ္စည်းများအဖြစ် ၎င်းတို့၏ မူလ အချိန်ကိုက်ဖြင့် ပြန်ဖွင့်သည်။ ၎င်းတို့သည် ဤ PC ပေါ်ရှိ စက်ပစ္စည်းအသစ်များ ဖြစ်ပြီး သင် သို့မဟုတ် ပရိုဖိုင်တစ်ခု မက်ပင်းလုပ်သည့်အတိုင်း မက်ပင်းလုပ်သည်။</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>မှတ်တမ်းတင်ချက်</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>မှတ်တမ်းတင်ချက် ဖွင့်ရန်…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>ဖွင့်ထားသော မှတ်တမ်းတင်ချက် မရှိပါ။</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}၊ ကြာချိန် {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>ပြန်ဖွင့်မှု</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>ဖွင့်ရန်</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>ထပ်ခါထပ်ခါ</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0}/{1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (ပြန်ဖွင့်ခြင်း)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>ပြဿနာ မှတ်တမ်းတင်ချက်များ|*.zip;*.log|ဖိုင်အားလုံး|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge သည် {0} ကို ဖွင့်၍ မရပါ။ ၎င်းသည် ပြဿနာ မှတ်တမ်းတင်ချက် မဟုတ်ပါ သို့မဟုတ် မည်သည့်စက်ပစ္စည်း၏ အဝင်မျှ မပါပါ။</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>သင့် ပလပ်အင်များ</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>ပလပ်အင်ဆိုသည်မှာ PadForge သို့ စက်ပစ္စည်းများ ထည့်ပေးသော ပရိုဂရမ်တစ်ခု ဖြစ်သည်။ အင်ဂျင် လည်ပတ်တိုင်း PadForge က ၎င်းကို သင့် သာမန်အခွင့်အရေးဖြင့် စတင်သည်။</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>ပလပ်အင် ထည့်ရန်…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>ပရိုဂရမ်များနှင့် စခရစ်များ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ဖိုင်အားလုံး|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>အတည်ပြုရန်…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>အင်ဂျင်နှင့်အတူ စတင်သည်</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>မစတင်မီ ဖိုင်ကို စစ်ဆေးနေသည်</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>ကုဒ် {0} ဖြင့် ထွက်သွားသည်။ {1} စက္ကန့်အတွင်း ပြန်စတင်မည်။</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>မစတင်ခဲ့ပါ။ {0} စက္ကန့်အတွင်း ထပ်ကြိုးစားမည်။</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>သင် အတည်ပြုပြီးနောက် ပြောင်းလဲသွားသည်</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>ဆက်တိုက် ငါးကြိမ် မအောင်မြင်ပြီးနောက် ရပ်သွားသည်</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ဖိုင် မရှိတော့ပါ</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>မစတင်ခဲ့ပါ: Windows တွင် ဤဖိုင်အမျိုးအစားအတွက် ပရိုဂရမ် မရှိပါ</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ၎င်းကို စတင်ပေးမည့် ဒက်စ်တော့ ရှဲလ် မလည်ပတ်ပါ</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ဒက်စ်တော့ ရှဲလ်တွင် စီမံခန့်ခွဲသူ အခွင့်အရေး ရှိသဖြင့် ပလပ်အင်တွင်လည်း ရှိသွားမည်</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ၎င်းက စီမံခန့်ခွဲသူ အခွင့်အရေး တောင်းသည်</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>မစတင်ခဲ့ပါ: Windows က အမှား {0} ဖြင့် ငြင်းပယ်သည်</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>မစတင်ခဲ့ပါ</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>စတင်ခဲ့သည်</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>ကုဒ် {0} ဖြင့် ထွက်သွားသည်</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge မစတင်ခဲ့သော လုပ်ငန်းစဉ် {0} မှ ၎င်း၏ ကီးကို ငြင်းပယ်ခဲ့သည်</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>ပလပ်အင် ထည့်ရန်</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>ပလပ်အင်ကို ထပ်မံ အတည်ပြုရန်</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>ဤပရိုဂရမ်သည် အင်ဂျင် လည်ပတ်တိုင်း သင့်အခွင့်အရေးဖြင့် လည်ပတ်မည်။</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>သင် အတည်ပြုပြီးနောက် ဖိုင် ပြောင်းလဲသွားသည်။ ဤပရိုဂရမ်သည် အင်ဂျင် လည်ပတ်တိုင်း သင့်အခွင့်အရေးဖြင့် လည်ပတ်မည်။</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ဖိုင်: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>လက်မှတ်ထိုးသူ: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>လက်မှတ်မထိုးထားပါ</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>ပလပ်အင် ထည့်ရန်</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>အတည်ပြုရန်</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge သည် {0} ကို ဖတ်၍ မရပါ။</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} သည် စာရင်းထဲတွင် ရှိပြီးသား ဖြစ်သည်။</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge သည် ပလပ်အင် 16 ခုအထိ လည်ပတ်သည်။ နောက်တစ်ခု ထည့်ရန် တစ်ခုကို ဖယ်ရှားပါ။</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>လည်ပတ်နေသော ပလပ်အင်: {0}။ ၎င်းတို့ ထည့်ထားသော စက်ပစ္စည်း: {1}။</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>ပလပ်အင် ကိရိယာအစုံနှင့် သင် ရွေးသော ပလပ်အင်၏ မှတ်တမ်း</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>ပလပ်အင် ကိရိယာအစုံ</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>ပလပ်အင် ကိရိယာအစုံ သိမ်းရန်…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# ဖြင့် ရေးထားသော ပလပ်အင်ငယ်တစ်ခုနှင့် AutoHotkey၊ Python နှင့် PowerShell အတွက် တူညီသော ပလပ်အင်၊ ဖိုင်တိုင်းတွင် တည်ဆောက်နည်း သို့မဟုတ် လည်ပတ်နည်း ပါသည်။</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>မှတ်တမ်း</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>၎င်း၏ မှတ်တမ်းကို ကြည့်ရန် ပလပ်အင်တစ်ခု ရွေးပါ။</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>ဤပလပ်အင်၏ မှတ်တမ်းတွင် မည်သည့်အရာမျှ မရှိသေးပါ။</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>လှုပ်ရှားမှု ဆာဗာ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ဂိုင်ရိုနှင့် အရှိန်တိုင်းကိရိယာ ဒေတာအတွက် DSU/CemuHook Motion Provider ပရိုတိုကော ဆာဗာ။</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU လှုပ်ရှားမှု ဆာဗာကို ဖွင့်ရန် (CemuHook Motion Provider ပရိုတိုကော)</value></data>

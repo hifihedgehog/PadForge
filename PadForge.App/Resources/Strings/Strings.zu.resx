@@ -3022,5 +3022,68 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Qalisa ama-plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ayikho i-plugin esebenzayo.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>I-plugin isebenza ngamalungelo akho, hhayi ngamalungelo e-PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Okwakhelwe ngaphakathi</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Isilawuli sokuhlola</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Isilawuli esizihambisa sona, isilawuli esisodwa ngesikhathi, ukuze ukumaphwa kuzanywe ngaphandle kwehadiwe esandleni.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Isivinini</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Kancane</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Okuvamile</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Ngokushesha</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Ngokushesha kakhulu</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Ukuphinda udlale</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Idlala futhi okuqoshiwe kwenkinga njengamadivayisi akwenzile, ngesikhathi ayenaso. Angamadivayisi amasha kule PC, amephwe njengoba wena noma iphrofayela niwamapha.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Okuqoshiwe</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Vula okuqoshiwe…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Akukho okuqoshiwe okuvuliwe.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ubude obungu-{1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Ukudlala</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Dlala</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Phinda</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} kwangu-{1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Ukuphinda udlale)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Okuqoshiwe kwezinkinga|*.zip;*.log|Wonke amafayela|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukudlala {0}. Akusikho okuqoshiwe kwenkinga, noma akunakho okufakwayo kwanoma iyiphi idivayisi.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ama-plugin akho</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>I-plugin iwuhlelo olwengeza amadivayisi ku-PadForge. I-PadForge iyiqala ngamalungelo akho avamile noma nini lapho injini isebenza.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Engeza i-plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Izinhlelo nemibhalo|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Wonke amafayela|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Gunyaza…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Iqala nenjini</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Kuhlolwa ifayela ngaphambi kokuthi iqale</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Iphume ngekhodi {0}. Iqala futhi ku-{1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ayiqalanga. Izama futhi ku-{0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Ishintshile selokhu wayigunyaza</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Imisiwe ngemuva kokwehluleka kahlanu kulandelana</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ayiqalanga: ifayela alisekho</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ayiqalanga: i-Windows ayinalo uhlelo lwalolu hlobo lwefayela</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ayiqalanga: alikho igobolondo ledeskithophu elisebenzayo ukuze iqale ngaphansi kwalo</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ayiqalanga: igobolondo ledeskithophu linamalungelo omlawuli, ngakho i-plugin nayo ibizowathola</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ayiqalanga: icela amalungelo omlawuli</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ayiqalanga: i-Windows yenqabile ngephutha {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ayiqalanga</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Iqalile</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Iphume ngekhodi {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Kwenqatshwe ukhiye wayo ovela kunqubo {0}, i-PadForge engayiqalanga</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Engeza i-plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Gunyaza i-plugin futhi</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Lolu hlelo luzosebenza ngamalungelo akho noma nini lapho injini isebenza.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Ifayela lishintshile selokhu waligunyaza. Lolu hlelo luzosebenza ngamalungelo akho noma nini lapho injini isebenza.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Ifayela: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Kusayinwe ngu: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Akusayinwe</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Engeza i-plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Gunyaza</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} isivele isohlwini.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>I-PadForge iqalisa ama-plugin afika ku-16. Susa eyodwa ukuze wengeze enye.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ama-plugin asebenzayo: {0}. Amadivayisi awengezile: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Ikhithi ye-plugin, nelogi ye-plugin oyikhethayo</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Ikhithi ye-plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Londoloza ikhithi ye-plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>I-plugin encane ku-C#, ne-plugin efanayo ye-AutoHotkey, i-Python ne-PowerShell, ifayela ngalinye linokuthi lakhiwa noma liqaliswa kanjani.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Ilogi</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Khetha i-plugin ukuze ubone ilogi yayo.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Akukabikho lutho kulogi yale plugin.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Uhlelo</value></data>
 </root>

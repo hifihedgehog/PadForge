@@ -2048,6 +2048,17 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Gcina isakhono…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Qhuba ii-plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Akukho plugin iqhubayo.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ubude {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Dlala</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Phinda</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} kwe-{1}</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ii-plugin eziqhubayo: {0}. Izixhobo ezongezwe zizo: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Ikhithi ye-plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Gcina ikhithi ye-plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>I-plugin encinci ku-C#, kunye ne-plugin efanayo ye-AutoHotkey, Python ne-PowerShell, ifayile nganye inendlela yokuyakha okanye yokuyiqhuba.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Ilogi</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Khetha i-plugin ukuze ubone ilogi yayo.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Akukho nto kwilogi yale plugin okwangoku.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Vumela</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Musa ukuvumela</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Ivela ku-{0}</value></data>

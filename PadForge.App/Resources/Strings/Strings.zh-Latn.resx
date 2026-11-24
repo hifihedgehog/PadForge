@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Yùnxíng chājiàn</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Méiyǒu chājiàn zài yùnxíng.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Chājiàn yǐ nín de quánxiàn yùnxíng, ér fēi PadForge de quánxiàn.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Nèizhì</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Cèshì kòngzhìqì</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yí gè zìxíng dòngzuò de kòngzhìqì, měi cì dòng yí gè kòngjiàn, wúxū shǒu chí yìngjiàn jí kě shìyòng yìngshè.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Sùdù</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Màn</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Zhèngcháng</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Kuài</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Zuì kuài</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Huífàng</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Àn yuánshǐ shíxù, yǐ zhìzuò gāi lùzhì de shèbèi huífàng wèntí lùzhì. Zhèxiē shèbèi shì cǐ diànnǎo shàng de xīn shèbèi, àn nín huò pèizhì wénjiàn de yìngshè jìnxíng yìngshè.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Lùzhì</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Dǎkāi lùzhì…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Wèi dǎkāi rènhé lùzhì.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, shícháng {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Bōfàng</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Bōfàng</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Chóngfù</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Huífàng)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Wèntí lùzhì|*.zip;*.log|Suǒyǒu wénjiàn|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge wúfǎ bōfàng {0}. Tā bú shì wèntí lùzhì, huò bù bāohán rènhé shèbèi de shūrù.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Nín de chājiàn</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Chājiàn shì xiàng PadForge tiānjiā shèbèi de chéngxù. Měi dāng yǐnqíng yùnxíng shí, PadForge huì yǐ nín de pǔtōng quánxiàn qǐdòng tā.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Tiānjiā chājiàn…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Chéngxù hé jiǎoběn|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Suǒyǒu wénjiàn|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Pīzhǔn…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Suí yǐnqíng qǐdòng</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Qǐdòng qián zhèngzài jiǎnchá wénjiàn</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Yǐ tuìchū, dàimǎ {0}. {1} miǎo hòu chóngxīn qǐdòng.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Wèi qǐdòng. {0} miǎo hòu chóngshì.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Zì nín pīzhǔn hòu yǐ gēnggǎi</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Liánxù wǔ cì shībài hòu yǐ tíngzhǐ</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Wèi qǐdòng: wénjiàn yǐ bú cúnzài</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Wèi qǐdòng: Windows méiyǒu dǎkāi cǐ lèi wénjiàn de chéngxù</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Wèi qǐdòng: méiyǒu kě yòng yú qǐdòng tā de zhuōmiàn wàiké zài yùnxíng</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Wèi qǐdòng: zhuōmiàn wàiké jùyǒu guǎnlǐyuán quánxiàn, chājiàn yě huì huòdé zhèxiē quánxiàn</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Wèi qǐdòng: tā yāoqiú guǎnlǐyuán quánxiàn</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Wèi qǐdòng: Windows jùjué, cuòwù {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Wèi qǐdòng</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Yǐ qǐdòng</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Yǐ tuìchū, dàimǎ {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Yǐ jùjué jìnchéng {0} tígōng de mìyào, gāi jìnchéng bú shì PadForge qǐdòng de</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Tiānjiā chājiàn</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Zàicì pīzhǔn chājiàn</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Měi dāng yǐnqíng yùnxíng shí, cǐ chéngxù dōu huì yǐ nín de quánxiàn yùnxíng.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Zì nín pīzhǔn hòu, gāi wénjiàn yǐ gēnggǎi. Měi dāng yǐnqíng yùnxíng shí, cǐ chéngxù dōu huì yǐ nín de quánxiàn yùnxíng.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Wénjiàn: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Qiānmíng zhě: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Wèi qiānmíng</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Tiānjiā chājiàn</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Pīzhǔn</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge wúfǎ dúqǔ {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} yǐ zài lièbiǎo zhōng.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge zuì duō yùnxíng 16 gè chājiàn. Qǐng xiān yíchú yí gè zài tiānjiā.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Yùnxíng zhōng de chājiàn: {0}. Tāmen tiānjiā de shèbèi: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Chājiàn gōngjùbāo, yǐjí suǒ xuǎn chājiàn de rìzhì</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Chājiàn gōngjùbāo</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Bǎocún chājiàn gōngjùbāo…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Yí gè yòng C# biānxiě de xiǎo chājiàn, yǐjí shìyòng yú AutoHotkey, Python hé PowerShell de tóngyàng chājiàn, měi gè wénjiàn dōu fù yǒu gòujiàn huò yùnxíng fāngfǎ.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Rìzhì</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Xuǎnzé yí gè chājiàn yǐ chákàn qí rìzhì.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Cǐ chājiàn de rìzhì zhōng shàng wú nèiróng.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Tǐgǎn fúwùqì</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Yòng yú tuóluóyí hé jiāsùdùjì shùjù de DSU / CemuHook Motion Provider xiéyì fúwùqì.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Qǐyòng DSU tǐgǎn fúwùqì (CemuHook Motion Provider xiéyì)</value></data>

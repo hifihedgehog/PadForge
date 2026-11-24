@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Exekutatu plugin-ak</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ez dago plugin-ik exekutatzen.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin bat zure eskubideekin exekutatzen da, ez PadForge-renekin.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integratuak</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Proba-kontrolagailua</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Berez mugitzen den kontrolagailu bat, kontrol bat aldiko, mapaketa bat probatu ahal izateko hardwarerik eskura izan gabe.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Abiadura</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Motela</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normala</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Azkarra</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Azkarrena</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Berrerreproduzitu</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Arazo baten grabaketa berriro erreproduzitzen du, hura egin zuten gailuak balira bezala eta zuten denborarekin. PC honetako gailu berriak dira, zuk edo profil batek mapatzen dituen moduan mapatuta.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Grabaketa</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Ireki grabaketa bat…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ez dago grabaketarik irekita.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} iraupena</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Erreprodukzioa</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Erreproduzitu</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Errepikatu</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (berrerreprodukzioa)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Arazo-grabaketak|*.zip;*.log|Fitxategi guztiak|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-k ezin du {0} erreproduzitu. Ez da arazo-grabaketa bat, edo ez dauka gailu baten sarrerarik.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Zure plugin-ak</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin bat PadForge-ri gailuak gehitzen dizkion programa bat da. PadForge-k zure eskubide arruntekin abiarazten du motorra martxan dagoen bakoitzean.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Gehitu plugin bat…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programak eta script-ak|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Fitxategi guztiak|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Onartu…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Motorrarekin batera abiatzen da</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Fitxategia egiaztatzen abiarazi aurretik</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} kodearekin irten da. {1} s barru berriro abiaraziko da.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ez da abiarazi. {0} s barru berriro saiatuko da.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Aldatu egin da onartu zenuenetik</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Gelditu da, errenkadan bost hutsegiteren ondoren</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ez da abiarazi: fitxategia ez dago</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ez da abiarazi: Windows-ek ez du programarik fitxategi mota honentzat</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ez da abiarazi: ez dago mahaigaineko shell-ik hura haren pean abiarazteko</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ez da abiarazi: mahaigaineko shell-ak administratzaile-eskubideak ditu, beraz pluginak ere izango lituzke</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ez da abiarazi: administratzaile-eskubideak eskatzen ditu</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ez da abiarazi: Windows-ek {0} errorearekin ukatu du</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ez da abiarazi</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Abiarazita</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>{0} kodearekin irten da</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Bere gakoa ukatu da {0} prozesutik, PadForge-k abiarazi ez duena</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Gehitu plugin bat</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Onartu plugina berriro</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Programa hau zure eskubideekin exekutatuko da motorra martxan dagoen bakoitzean.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Fitxategia aldatu egin da onartu zenuenetik. Programa hau zure eskubideekin exekutatuko da motorra martxan dagoen bakoitzean.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fitxategia: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Sinatzailea: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Sinatu gabe</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Gehitu plugina</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Onartu</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge-k ezin du {0} irakurri.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} zerrendan dago jada.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge-k gehienez 16 plugin exekutatzen ditu. Kendu bat beste bat gehitzeko.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Exekutatzen ari diren plugin-ak: {0}. Gehitu dituzten gailuak: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Plugin-kita eta aukeratzen duzun plugin baten erregistroa</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin-kita</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Gorde plugin-kita…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C#-ko plugin txiki bat, eta plugin bera AutoHotkey, Python eta PowerShell-erako, fitxategi bakoitzak nola eraiki edo exekutatu azalduta.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Erregistroa</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Aukeratu plugin bat bere erregistroa ikusteko.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Plugin honen erregistroan ez dago ezer oraindik.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mugimendu-zerbitzaria</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokoloaren zerbitzaria, giroskopio- eta azelerometro-datuetarako.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Gaitu DSU mugimendu-zerbitzaria (CemuHook Motion Provider protokoloa)</value></data>

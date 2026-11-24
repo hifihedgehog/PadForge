@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Pokreni plugine</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nijedan plugin ne radi.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin radi s vašim pravima, a ne s pravima programa PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ugrađeni</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Probni kontroler</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontroler koji se sam pomiče, jednu po jednu kontrolu, pa se mapiranje može isprobati bez uređaja pri ruci.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Brzina</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Sporo</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normalno</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Brzo</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Najbrže</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Ponovna reprodukcija</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reproducira snimku problema kao uređaji koji su je stvorili, s istim vremenskim slijedom. To su novi uređaji na ovom računalu, mapirani kako ih mapirate vi ili profil.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Snimka</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Otvori snimku…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Nijedna snimka nije otvorena.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, trajanje {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Reprodukcija</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Reproduciraj</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ponavljaj</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} od {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (ponovna reprodukcija)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Snimke problema|*.zip;*.log|Sve datoteke|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ne može reproducirati {0}. To nije snimka problema ili ne sadrži ulaz nijednog uređaja.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Vaši plugini</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin je program koji programu PadForge dodaje uređaje. PadForge ga pokreće s vašim uobičajenim pravima kad god mehanizam radi.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Dodaj plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programi i skripte|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Sve datoteke|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Odobri…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Pokreće se s mehanizmom</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Provjera datoteke prije pokretanja</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Završilo s kodom {0}. Ponovno se pokreće za {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nije pokrenuto. Ponovni pokušaj za {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Promijenjeno nakon vašeg odobrenja</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Zaustavljeno nakon pet uzastopnih neuspjeha</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nije pokrenuto: datoteke nema</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nije pokrenuto: Windows nema program za ovu vrstu datoteke</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nije pokrenuto: ne radi nijedna ljuska radne površine pod kojom bi se pokrenulo</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nije pokrenuto: ljuska radne površine ima administratorska prava, pa bi ih imao i plugin</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nije pokrenuto: traži administratorska prava</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nije pokrenuto: Windows je odbio s pogreškom {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nije pokrenuto</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Pokrenuto</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Završilo s kodom {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Odbijen njegov ključ iz procesa {0}, koji PadForge nije pokrenuo</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Dodaj plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Ponovno odobri plugin</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Ovaj će se program pokretati s vašim pravima kad god mehanizam radi.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Datoteka se promijenila nakon vašeg odobrenja. Ovaj će se program pokretati s vašim pravima kad god mehanizam radi.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Datoteka: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Potpisnik: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Nije potpisano</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Dodaj plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Odobri</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ne može pročitati {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} je već na popisu.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge pokreće do 16 plugina. Uklonite jedan da dodate drugi.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Pokrenuti plugini: {0}. Uređaji koje su dodali: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Komplet za plugine i zapisnik odabranog plugina</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Komplet za plugine</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Spremi komplet za plugine…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Mali plugin u jeziku C# i isti plugin za AutoHotkey, Python i PowerShell, svaka datoteka s uputom kako se izgrađuje ili pokreće.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Zapisnik</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Odaberite plugin da vidite njegov zapisnik.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Zapisnik ovog plugina još je prazan.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Poslužitelj pokreta</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Poslužitelj protokola DSU/CemuHook Motion Provider za podatke žiroskopa i akcelerometra.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Omogući DSU poslužitelj pokreta (protokol CemuHook Motion Provider)</value></data>

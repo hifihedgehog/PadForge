@@ -3367,6 +3367,20 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ka konsigi guarda-l: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Roda plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nenhun plugin ka sta ta roda.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, durason {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Toka</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ripiti</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} di {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ta inisia ku motor</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ta verifika fixeru antis di inisia</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins ta roda: {0}. Dispozitivu ki es adisiona: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit di plugin, i rejistu di un plugin ki bu skodje</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit di plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Guarda kit di plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un plugin pikinoti na C#, i mésmu plugin pa AutoHotkey, Python i PowerShell, kada fixeru ku modi di konpila-l o roda-l.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Rejistu</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Skodje un plugin pa odja se rejistu.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Inda ka ten nada na rejistu di es plugin.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dexa</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ka dexa</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Di {0}</value></data>

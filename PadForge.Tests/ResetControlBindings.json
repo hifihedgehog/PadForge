@@ -1804,5 +1804,29 @@
     "Id": "Reset_DashboardViewModel_EnablePlugins_59703",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnablePlugins"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_TestControllerOn_59704",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "TestControllerOn"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_TestControllerSpeed_59705",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "TestControllerSpeed"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_ReplayOn_59706",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "ReplayOn"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_ReplayRepeat_59707",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "ReplayRepeat"
   }
 ]

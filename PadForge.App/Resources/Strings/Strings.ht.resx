@@ -4876,6 +4876,69 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Fè plugin yo mache</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Okenn plugin pa ap mache.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Yon plugin mache ak dwa pa w, pa ak dwa PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Entegre</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Kontwolè tès</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yon kontwolè ki bouje pou kont li, yon kontwòl alafwa, pou w ka eseye yon asiyasyon san okenn materyèl nan men w.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Vitès</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Dousman</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Nòmal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rapid</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Pi rapid</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Rejwe</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Li rejwe yon anrejistreman pwoblèm kòm aparèy ki te fè l yo, ak menm tan yo te genyen. Se nouvo aparèy sou PC sa a, asiyen jan ou menm oswa yon pwofil asiyen yo.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Anrejistreman</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Louvri yon anrejistreman…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Pa gen okenn anrejistreman ki louvri.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, dire {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Lekti</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Jwe</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Repete</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sou {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Rejwe)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Anrejistreman pwoblèm|*.zip;*.log|Tout fichye|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge pa ka jwe {0}. Se pa yon anrejistreman pwoblèm, oswa li pa gen antre okenn aparèy.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Plugin ou yo</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Yon plugin se yon pwogram ki ajoute aparèy nan PadForge. PadForge lanse l ak dwa òdinè ou chak fwa motè a ap mache.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Ajoute yon plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Pwogram ak script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tout fichye|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Apwouve…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Demare ak motè a</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ap verifye fichye a anvan li demare</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Li fini ak kòd {0}. Li demare ankò nan {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Pa demare. Li eseye ankò nan {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Chanje depi ou te apwouve l</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Kanpe apre senk echèk youn dèyè lòt</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Pa demare: fichye a pa la ankò</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Pa demare: Windows pa gen okenn pwogram pou kalite fichye sa a</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Pa demare: pa gen okenn biwo Windows k ap mache pou demare l anba li</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Pa demare: biwo Windows la gen dwa administratè, kidonk plugin lan t ap genyen yo tou</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Pa demare: li mande dwa administratè</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Pa demare: Windows refize ak erè {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Pa demare</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Demare</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Li fini ak kòd {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Li refize kle li soti nan pwosesis {0}, ke PadForge pa t demare</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Ajoute yon plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Apwouve plugin lan ankò</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Pwogram sa a ap mache ak dwa pa w chak fwa motè a ap mache.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Fichye a chanje depi ou te apwouve l. Pwogram sa a ap mache ak dwa pa w chak fwa motè a ap mache.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fichye: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Siyen pa: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Pa siyen</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Ajoute plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Apwouve</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge pa ka li {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} deja nan lis la.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge fè jiska 16 plugin mache. Retire youn pou ajoute yon lòt.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin k ap mache: {0}. Aparèy yo ajoute: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Twous plugin lan, ak jounal yon plugin ou chwazi</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Twous plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Anrejistre twous plugin lan…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Yon ti plugin an C#, ak menm plugin lan pou AutoHotkey, Python ak PowerShell, chak fichye ak fason pou konstwi l oswa fè l mache.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Jounal</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chwazi yon plugin pou wè jounal li.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Poko gen anyen nan jounal plugin sa a.</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Pwogram</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Anrejistreman pwoblèm</value></data>

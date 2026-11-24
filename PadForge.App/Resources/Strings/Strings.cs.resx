@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Spouštět pluginy</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Neběží žádný plugin.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin běží s vašimi právy, ne s právy programu PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Vestavěné</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Zkušební ovladač</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ovladač, který se hýbe sám, vždy jedním ovládacím prvkem, aby šlo vyzkoušet mapování bez hardwaru po ruce.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Rychlost</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Pomalu</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normálně</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rychle</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Nejrychleji</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Přehrávání</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Přehraje záznam problému jako zařízení, která ho vytvořila, se stejným časováním. Na tomto počítači jsou to nová zařízení, mapovaná tak, jak je mapujete vy nebo profil.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Záznam</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Otevřít záznam…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Není otevřen žádný záznam.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, délka {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Přehrávání</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Přehrát</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Opakovat</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} z {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (přehrávání)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Záznamy problémů|*.zip;*.log|Všechny soubory|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nemůže přehrát {0}. Není to záznam problému, nebo neobsahuje vstup žádného zařízení.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Vaše pluginy</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin je program, který do programu PadForge přidává zařízení. PadForge ho spustí s vašimi běžnými právy vždy, když běží jádro.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Přidat plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programy a skripty|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Všechny soubory|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Schválit…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Spustí se s jádrem</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Kontrola souboru před spuštěním</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Skončil s kódem {0}. Znovu se spustí za {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nespuštěno. Další pokus za {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Změněno od vašeho schválení</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Zastaveno po pěti selháních v řadě</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nespuštěno: soubor je pryč</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nespuštěno: Windows nemá program pro tento druh souboru</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nespuštěno: neběží žádný shell plochy, pod kterým by se dal spustit</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nespuštěno: shell plochy má práva správce, takže by je měl i plugin</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nespuštěno: žádá o práva správce</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nespuštěno: Windows odmítl s chybou {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nespuštěno</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Spuštěno</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Skončil s kódem {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Odmítl klíč od procesu {0}, který PadForge nespustil</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Přidat plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Znovu schválit plugin</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Tento program poběží s vašimi právy vždy, když běží jádro.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Soubor se od vašeho schválení změnil. Tento program poběží s vašimi právy vždy, když běží jádro.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Soubor: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Podepsal: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Nepodepsáno</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Přidat plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Schválit</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge nemůže přečíst {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} už v seznamu je.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge spouští nejvýše 16 pluginů. Chcete li přidat další, jeden odeberte.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Běžící pluginy: {0}. Zařízení, která přidaly: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Sada pro pluginy a protokol vybraného pluginu</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Sada pro pluginy</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Uložit sadu pro pluginy…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Malý plugin v C# a týž plugin pro AutoHotkey, Python a PowerShell, každý soubor s návodem, jak ho sestavit nebo spustit.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Protokol</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Vyberte plugin a zobrazí se jeho protokol.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Protokol tohoto pluginu je zatím prázdný.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pohybový server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokolu DSU/CemuHook Motion Provider pro data gyroskopu a akcelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Povolit pohybový server DSU (protokol CemuHook Motion Provider)</value></data>

@@ -2244,6 +2244,19 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tiaki: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Whakahaerehia ngā monomai</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kāore he monomai e rere ana.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} te roa</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Pūrei</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Tukurua</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ka tīmata me te pūkaha</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>E tirotiro ana i te kōnae i mua i tōna tīmatanga</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ngā monomai e rere ana: {0}. Ngā pūrere i tāpiria e rātou: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kete monomai</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tiakina te kete monomai…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>He monomai iti i te C#, me taua monomai anō mō AutoHotkey, Python me PowerShell, ā, kei ia kōnae te ara hanga, whakahaere rānei.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Rangitaki</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Kōwhiria tētahi monomai kia kite i tōna rangitaki.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Kāore anō he aha i te rangitaki o tēnei monomai.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Whakaae</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Kaua e whakaae</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai i {0}</value></data>

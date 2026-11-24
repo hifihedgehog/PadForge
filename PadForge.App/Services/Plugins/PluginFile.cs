@@ -1,0 +1,168 @@
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+
+namespace PadForge.Services.Plugins
+{
+    /// <summary>
+    /// What PadForge reads of a plugin's file (#597): its SHA-256, its
+    /// Authenticode signer, and how Windows runs it.
+    /// </summary>
+    internal static class PluginFile
+    {
+        /// <summary>
+        /// Opens the file so no program can change, replace or delete it
+        /// while the handle is open, and gives its SHA-256 as hex. The
+        /// handle is held from the hash through the start and for as long
+        /// as the plugin runs, so what runs is what was hashed. Null when
+        /// the file cannot be opened.
+        /// </summary>
+        internal static FileStream OpenHeld(string path, out string sha256)
+        {
+            sha256 = null;
+            FileStream stream;
+            try
+            {
+                stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 16, FileOptions.SequentialScan);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+            {
+                return null;
+            }
+            try
+            {
+                sha256 = Convert.ToHexString(SHA256.HashData(stream));
+                stream.Position = 0;
+                return stream;
+            }
+            catch (IOException)
+            {
+                stream.Dispose();
+                return null;
+            }
+        }
+
+        /// <summary>The file's SHA-256 as hex, or null when it cannot be
+        /// read.</summary>
+        internal static string Sha256(string path)
+        {
+            using var held = OpenHeld(path, out string sha);
+            return sha;
+        }
+
+        /// <summary>The name of the file's Authenticode signer when its
+        /// signature holds by the check Windows runs before it trusts a
+        /// download (DriverInstaller's), or null.</summary>
+        internal static string Signer(string path)
+        {
+            try
+            {
+                if (PadForge.Common.DriverInstaller.VerifyAuthenticode(path) != 0) return null;
+                // CreateFromSignedFile is still the only managed API that
+                // reads the signer out of a signed file (DriverInstaller and
+                // Ds3DriverInstaller use it the same way).
+#pragma warning disable SYSLIB0057
+                using var signed = X509Certificate2.CreateFromSignedFile(path);
+#pragma warning restore SYSLIB0057
+                using var cert = new X509Certificate2(signed);
+                string name = cert.GetNameInfo(X509NameType.SimpleName, false);
+                return string.IsNullOrWhiteSpace(name) ? null : name;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// How Windows runs the file. A program runs itself. A batch file
+        /// runs in the command processor. A PowerShell script runs in
+        /// Windows PowerShell with no profile, under a policy that lets the
+        /// approved file run. Any other script runs in the program Windows
+        /// opens its kind of file with (<c>AssocQueryString</c>,
+        /// <c>ASSOCSTR_EXECUTABLE</c>), with the script as its argument.
+        /// Null when Windows has no such program. Every start is in the
+        /// file's own folder.
+        /// </summary>
+        internal static PluginCommand CommandFor(string path, Func<string, string> programFor = null)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return null;
+            string full = Path.GetFullPath(path);
+            string folder = Path.GetDirectoryName(full);
+            string extension = Path.GetExtension(full).ToLowerInvariant();
+            switch (extension)
+            {
+                case ".exe":
+                case ".com":
+                    return new PluginCommand(full, Quote(full), folder);
+                case ".bat":
+                case ".cmd":
+                {
+                    string cmd = SystemProgram("cmd.exe");
+                    return new PluginCommand(cmd, Quote(cmd) + " /d /c \"" + Quote(full) + "\"", folder);
+                }
+                case ".ps1":
+                {
+                    string powershell = SystemProgram(@"WindowsPowerShell\v1.0\powershell.exe");
+                    return new PluginCommand(powershell,
+                        Quote(powershell) + " -NoProfile -NonInteractive -ExecutionPolicy Bypass -File " + Quote(full), folder);
+                }
+            }
+            string program = (programFor ?? AssociatedProgram)(extension);
+            if (string.IsNullOrEmpty(program)) return null;
+            // A kind of file that runs itself names itself, which is no
+            // program for a script.
+            if (string.Equals(Path.GetFileName(program), "%1", StringComparison.Ordinal)
+                || string.Equals(Path.GetFullPath(program), full, StringComparison.OrdinalIgnoreCase)) return null;
+            return new PluginCommand(program, Quote(program) + " " + Quote(full), folder);
+        }
+
+        private static string SystemProgram(string relative)
+            => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), relative);
+
+        /// <summary>A command-line argument in the quotes CommandLineToArgvW
+        /// reads back as the same text.</summary>
+        internal static string Quote(string argument)
+        {
+            if (string.IsNullOrEmpty(argument)) return "\"\"";
+            var sb = new StringBuilder(argument.Length + 2).Append('"');
+            int slashes = 0;
+            foreach (char c in argument)
+            {
+                if (c == '\\') { slashes++; continue; }
+                if (c == '"') sb.Append('\\', slashes * 2 + 1).Append('"');
+                else sb.Append('\\', slashes).Append(c);
+                slashes = 0;
+            }
+            sb.Append('\\', slashes * 2).Append('"');
+            return sb.ToString();
+        }
+
+        /// <summary>The program Windows opens files of this extension with,
+        /// or null.</summary>
+        internal static string AssociatedProgram(string extension)
+        {
+            if (string.IsNullOrEmpty(extension)) return null;
+            uint size = 0;
+            int hr = AssocQueryStringW(AssocfInitIgnoreUnknown | AssocfNoTruncate, AssocstrExecutable, extension, "open", null, ref size);
+            if (size == 0 || (hr != 0 && hr != SFalse)) return null;
+            var buffer = new StringBuilder((int)size);
+            hr = AssocQueryStringW(AssocfInitIgnoreUnknown | AssocfNoTruncate, AssocstrExecutable, extension, "open", buffer, ref size);
+            if (hr != 0) return null;
+            string program = buffer.ToString();
+            return File.Exists(program) ? program : null;
+        }
+
+        private const uint AssocfNoTruncate = 0x00000020;
+        private const uint AssocfInitIgnoreUnknown = 0x00000400;
+        private const int AssocstrExecutable = 2;
+        private const int SFalse = 1;
+
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern int AssocQueryStringW(uint flags, int what, string association, string extra,
+            StringBuilder output, ref uint size);
+    }
+}

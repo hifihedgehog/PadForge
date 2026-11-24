@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Run Plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No plugin runs.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>A plugin runs with your rights, not PadForge’s.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Built In</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Test Controller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>A controller that moves by itself, one control at a time, so a mapping can be tried with no hardware in hand.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Speed</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Slow</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Fast</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Fastest</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Plays a problem recording back as the devices that made it, with the timing they had. They are new devices on this PC, mapped as you or a profile map them.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Open a Recording…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>No recording is open.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} long</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Playback</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Play</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Repeat</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} of {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Replay)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problem recordings|*.zip;*.log|All files|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge cannot play {0}. It is no problem recording, or it holds no device’s input.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Your Plugins</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>A plugin is a program that adds devices to PadForge. PadForge starts it with your ordinary rights whenever the engine runs.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Add a Plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programs and scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|All files|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Approve…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Starts with the engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Checking the file before it starts</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Exited with code {0}. Starts again in {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Not started. Tries again in {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Changed since you approved it</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Stopped after five failures in a row</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Not started: the file is gone</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Not started: Windows has no program for this kind of file</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Not started: no desktop shell runs to start it under</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Not started: the desktop shell has administrator rights, so the plugin would have them too</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Not started: it asks for administrator rights</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Not started: Windows refused with error {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Not started</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Started</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Exited with code {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Refused its key from process {0}, which PadForge did not start</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Add a Plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Approve the Plugin Again</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>This program will run with your rights whenever the engine runs.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>The file changed since you approved it. This program will run with your rights whenever the engine runs.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Signed by: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Not signed</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Add Plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Approve</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge cannot read {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} is on the list already.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge runs up to 16 plugins. Remove one to add another.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins running: {0}. Devices they added: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>The plugin kit, and the log of a plugin you pick</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Save the Plugin Kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>A small plugin in C#, and the same plugin for AutoHotkey, Python and PowerShell, each file with how to build or run it.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pick a plugin to see its log.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Nothing is in this plugin’s log yet.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>

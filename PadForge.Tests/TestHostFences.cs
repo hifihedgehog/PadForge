@@ -48,6 +48,15 @@ namespace PadForge.Tests
         internal static void Set() => ShellLaunch.OffLimitsForTest = true;
     }
 
+    /// <summary>No plugin is started: the plugin launcher starts only a
+    /// program in the test host's own folder, the helper the tests build
+    /// (#597).</summary>
+    internal static class PluginStartOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.Plugins.PluginLauncher.OffLimitsForTest = true;
+    }
+
     /// <summary>The screen is not read: no capture of a display starts
     /// without a test's own grabber (#559).</summary>
     internal static class ScreenCaptureOffLimits

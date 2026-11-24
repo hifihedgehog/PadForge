@@ -369,6 +369,13 @@ namespace PadForge.Services.Automation
                 case "var": Value(session, r); return;
                 case "call": await CallAsync(session, r).ConfigureAwait(false); return;
 
+                case "log":
+                    // A plugin's own verb: a line for its log on the Plugins
+                    // page. Every other program is answered as for a verb
+                    // PadForge does not know.
+                    if (!session.IsPlugin) goto default;
+                    WriteLog(session, r);
+                    return;
                 case "beat":
                     if (r.Tag != null) session.Answer(r.Tag, "ok");
                     return;
@@ -384,6 +391,23 @@ namespace PadForge.Services.Automation
                     Record(session, new AutomationAsk(AutomationAskKind.Unknown, r.Verb), "err unknown-command", false);
                     return;
             }
+        }
+
+        /// <summary>The longest <c>log</c> line a plugin's log keeps. The
+        /// rest of a longer one is cut.</summary>
+        internal const int LongestLogLine = 500;
+
+        /// <summary><c>log "text"</c>: the plugin's words, cleaned of control
+        /// characters and cut at <see cref="LongestLogLine"/>, go to its log.
+        /// Answered only when the line carries a tag, as <c>beat</c> is, so
+        /// a chatty plugin does not read an answer per line. Activity does
+        /// not list it: the log is the plugin's own.</summary>
+        private static void WriteLog(AutomationSession session, AutomationRequest r)
+        {
+            string text = ProgramDeviceDeclaration.Clean(string.Join(" ", r.Bare()), LongestLogLine);
+            try { session.Grant?.Log?.Invoke(text); }
+            catch { /* a listener's failure is not the plugin's */ }
+            if (r.Tag != null) session.Answer(r.Tag, "ok");
         }
 
         /// <summary>Whether the session may do what needs
@@ -481,7 +505,7 @@ namespace PadForge.Services.Automation
             foreach (var entry in Devices.All())
             {
                 if (seen.Contains(entry.Guid)) continue;
-                if (entry.Owner == null && entry.OfflineAtMs == 0) continue;
+                if (entry.Owner == null && entry.OfflineAtMs == 0 && !entry.BuiltIn) continue;
                 rows.Add(AutomationDevices.Row(Stand(entry)));
             }
             foreach (var row in rows) session.Answer(r.Tag, row);

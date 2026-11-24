@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Keyra viðbætur</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Engin viðbót er í gangi.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Viðbót keyrir með þínum réttindum, ekki réttindum PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Innbyggt</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Prófunarstýring</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Stýring sem hreyfist sjálf, eitt stjórntæki í einu, svo hægt sé að prófa vörpun án tækis við höndina.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Hraði</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Hægur</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Venjulegur</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Hraður</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Hraðastur</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Endurspilun</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spilar vandamálsupptöku aftur sem tækin sem bjuggu hana til, með sama tímasetningu. Þau eru ný tæki í þessari tölvu og varpað eins og þú eða snið varpar þeim.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Upptaka</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Opna upptöku…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Engin upptaka er opin.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} að lengd</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Afspilun</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Spila</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Endurtaka</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} af {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (endurspilun)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Vandamálsupptökur|*.zip;*.log|Allar skrár|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge getur ekki spilað {0}. Það er ekki vandamálsupptaka eða geymir ekki inntak neins tækis.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Þínar viðbætur</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Viðbót er forrit sem bætir tækjum við PadForge. PadForge ræsir hana með þínum venjulegu réttindum í hvert sinn sem vélin keyrir.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Bæta við viðbót…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Forrit og skriftur|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Allar skrár|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Samþykkja…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ræsist með vélinni</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Athugar skrána áður en hún ræsist</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Lauk með kóða {0}. Ræsist aftur eftir {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ekki ræst. Reynir aftur eftir {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Breytt eftir að þú samþykktir hana</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Stöðvuð eftir fimm bilanir í röð</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ekki ræst: skráin er horfin</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ekki ræst: Windows hefur ekkert forrit fyrir þessa tegund skráa</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ekki ræst: engin skjáborðsskel er í gangi til að ræsa hana undir</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ekki ræst: skjáborðsskelin hefur kerfisstjóraréttindi, svo viðbótin fengi þau líka</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ekki ræst: hún biður um kerfisstjóraréttindi</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ekki ræst: Windows hafnaði með villu {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ekki ræst</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Ræst</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Lauk með kóða {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Hafnaði lykli frá ferli {0}, sem PadForge ræsti ekki</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Bæta við viðbót</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Samþykkja viðbótina aftur</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Þetta forrit keyrir með þínum réttindum í hvert sinn sem vélin keyrir.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Skránni var breytt eftir að þú samþykktir hana. Þetta forrit keyrir með þínum réttindum í hvert sinn sem vélin keyrir.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Skrá: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Undirritað af: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Óundirritað</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Bæta við viðbót</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Samþykkja</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge getur ekki lesið {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} er þegar á listanum.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge keyrir allt að 16 viðbætur. Fjarlægðu eina til að bæta annarri við.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Viðbætur í gangi: {0}. Tæki sem þær bættu við: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Viðbótapakkinn og annáll viðbótar sem þú velur</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Viðbótapakki</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Vista viðbótapakkann…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Lítil viðbót í C# og sama viðbót fyrir AutoHotkey, Python og PowerShell, hver skrá með leiðbeiningum um smíði eða keyrslu.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Annáll</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Veldu viðbót til að sjá annál hennar.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ekkert er í annál þessarar viðbótar enn.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hreyfiþjónn</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Þjónn fyrir DSU/CemuHook Motion Provider-samskiptareglurnar, fyrir gögn úr snúningsskynjara og hröðunarmæli.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Virkja DSU-hreyfiþjón (CemuHook Motion Provider-samskiptareglur)</value></data>

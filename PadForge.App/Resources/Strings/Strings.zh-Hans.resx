@@ -4018,6 +4018,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>运行插件</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>没有插件在运行。</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>插件以你的权限运行，而不是 PadForge 的权限。</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>内置</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>测试控制器</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>一个自己动起来的控制器，每次动一个控件，这样没有硬件也能试用映射。</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>速度</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>慢</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>正常</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>快</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>最快</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>回放</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>按录制时的时间节奏，把问题录制内容作为原来的设备回放出来。它们是这台电脑上的新设备，按你或配置文件的设定进行映射。</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>录制内容</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>打开录制内容…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>没有打开录制内容。</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}，时长 {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>播放</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>播放</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>重复</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0}（回放）</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>问题录制|*.zip;*.log|所有文件|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge 无法播放 {0}。它不是问题录制内容，或者其中没有任何设备的输入。</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>你的插件</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>插件是为 PadForge 添加设备的程序。只要引擎在运行，PadForge 就会以你的普通权限启动它。</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>添加插件…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>程序和脚本|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|所有文件|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>批准…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>随引擎启动</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>启动前正在检查文件</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>已退出，退出码 {0}。{1} 秒后重新启动。</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>未启动。{0} 秒后重试。</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>自你批准后已更改</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>连续失败五次后已停止</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>未启动：文件已不存在</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>未启动：Windows 没有可打开此类文件的程序</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>未启动：没有运行中的桌面外壳可用来启动它</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>未启动：桌面外壳拥有管理员权限，插件也会因此获得这些权限</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>未启动：它要求管理员权限</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>未启动：Windows 拒绝启动，错误号 {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>未启动</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>已启动</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>已退出，退出码 {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>拒绝了来自进程 {0} 的密钥，该进程不是 PadForge 启动的</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>添加插件</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>重新批准插件</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>只要引擎在运行，此程序就会以你的权限运行。</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>此文件自你批准后已更改。只要引擎在运行，此程序就会以你的权限运行。</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>文件：{0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>签名者：{0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>未签名</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256：{0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>添加插件</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>批准</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge 无法读取 {0}。</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} 已在列表中。</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge 最多运行 16 个插件。请先移除一个，再添加新的。</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>运行中的插件：{0}。它们添加的设备：{1}。</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>插件工具包，以及所选插件的日志</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>插件工具包</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>保存插件工具包…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>一个 C# 小插件，以及适用于 AutoHotkey、Python 和 PowerShell 的同款插件，每个文件都附有构建或运行方法。</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>日志</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>选择一个插件以查看其日志。</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>此插件的日志中还没有内容。</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>映射标注</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

@@ -1216,6 +1216,20 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Assistant ke liye skill</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Skill save karo…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Koi plugin nai chale hai.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} lamba</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Play karo</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Phir se</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1} me se {0}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Engine ke saathe chalu hoi</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Chalu kare se pahile file check hoe rahaa hai</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Chale wala plugin: {0}. Unke add karaa device: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Plugin kit, aur jon plugin aap chuno oke log</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Plugin kit save karo…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# me ek chhota plugin, aur wahi plugin AutoHotkey, Python aur PowerShell ke liye, har file me likha hai ki kaise build karo ya chalaao.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Log dekhe ke liye ek plugin chuno.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ii plugin ke log me abhi kuch nai hai.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Koi program connect nai hai.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connect hai: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Anjaan program</value></data>

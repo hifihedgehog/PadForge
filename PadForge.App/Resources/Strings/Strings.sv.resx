@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kör insticksprogram</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Inget insticksprogram körs.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Ett insticksprogram körs med dina rättigheter, inte de rättigheter PadForge har.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Inbyggda</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testhandkontroll</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>En handkontroll som rör sig av sig själv, en kontroll i taget, så att en mappning kan prövas utan hårdvara till hands.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Hastighet</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Långsam</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Snabb</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Snabbast</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Återuppspelning</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spelar upp en probleminspelning igen som de enheter som gjorde den, med samma tidpunkter. De är nya enheter på den här datorn och mappas som du eller en profil mappar dem.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Inspelning</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Öppna en inspelning…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ingen inspelning är öppen.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, längd {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Uppspelning</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Spela upp</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Upprepa</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} av {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (återuppspelning)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Probleminspelningar|*.zip;*.log|Alla filer|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kan inte spela upp {0}. Det är ingen probleminspelning, eller så innehåller den ingen enhets inmatning.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Dina insticksprogram</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Ett insticksprogram är ett program som lägger till enheter i PadForge. PadForge startar det med dina vanliga rättigheter så länge motorn körs.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Lägg till ett insticksprogram…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Program och skript|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alla filer|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Godkänn…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Startar med motorn</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Kontrollerar filen innan den startar</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Avslutades med kod {0}. Startar igen om {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Inte startat. Försöker igen om {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Ändrad sedan du godkände den</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Stoppad efter fem misslyckanden i rad</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Inte startat: filen finns inte kvar</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Inte startat: Windows har inget program för den här filtypen</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Inte startat: inget skrivbordsskal körs att starta det under</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Inte startat: skrivbordsskalet har administratörsrättigheter, så insticksprogrammet skulle få dem också</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Inte startat: det begär administratörsrättigheter</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Inte startat: Windows nekade med felet {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Inte startat</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Startat</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Avslutades med kod {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Avvisade dess nyckel från processen {0}, som PadForge inte startade</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Lägg till ett insticksprogram</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Godkänn insticksprogrammet igen</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Det här programmet körs med dina rättigheter så länge motorn körs.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Filen har ändrats sedan du godkände den. Det här programmet körs med dina rättigheter så länge motorn körs.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fil: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Signerad av: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Inte signerad</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Lägg till insticksprogram</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Godkänn</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge kan inte läsa {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} finns redan i listan.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge kör upp till 16 insticksprogram. Ta bort ett för att lägga till ett till.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Insticksprogram som körs: {0}. Enheter de har lagt till: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Insticksprogramspaketet och loggen för ett insticksprogram du väljer</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Insticksprogramspaket</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Spara insticksprogramspaketet…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ett litet insticksprogram i C# och samma insticksprogram för AutoHotkey, Python och PowerShell, varje fil med anvisning om hur den byggs eller körs.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Logg</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Välj ett insticksprogram för att se dess logg.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Det här insticksprogrammets logg är tom än så länge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Rörelseserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server för protokollet DSU/CemuHook Motion Provider, för gyro- och accelerometerdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktivera DSU-rörelseserver (protokollet CemuHook Motion Provider)</value></data>

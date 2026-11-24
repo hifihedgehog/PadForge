@@ -2096,6 +2096,14 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ntiyashoboye kubika: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Koresha plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nta plugin irimo gukora.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, uburebure {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Kina</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Subiramo</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} kuri {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Itangirana na moteri</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Irasuzuma dosiye mbere yo gutangira</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins zikora: {0}. Ibikoresho zongeyeho: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Ibikoresho byo gukora plugin, n'inyandiko y'ibyabaye ya plugin uhisemo</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, inshuro {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emera</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ntubyemere</value></data>

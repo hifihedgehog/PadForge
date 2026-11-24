@@ -3038,6 +3038,20 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge no por a warda esaki: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kore pluginnan</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ningun plugin no ta kore.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} largu</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Toka</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ripití</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} di {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ta kuminsá ku e motor</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ta kontrolá e archivo promé ku e kuminsá</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Pluginnan ku ta kore: {0}. Aparatonan ku nan a agregá: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>E kit di plugin, i e log di un plugin ku bo skohe</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit di plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Warda e kit di plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un plugin chikí na C#, i e mesun plugin pa AutoHotkey, Python i PowerShell, kada archivo ku kon pa traha òf kore e.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Skohe un plugin pa mira su log.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Ainda no tin nada den e log di e plugin aki.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Permití</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>No permití</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>For di {0}</value></data>

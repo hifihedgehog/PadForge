@@ -1890,6 +1890,19 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tipigi ang skill…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Padalagana ang mga plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Wala sing plugin nga nagadalagan.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} ang kalawigon</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>I-play</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Liwaton</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Magasugod upod sa engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ginausisa ang file antes ini magsugod</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Mga plugin nga nagadalagan: {0}. Mga device nga gindugang nila: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tipigi ang plugin kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Isa ka gamay nga plugin sa C#, kag ang amo man nga plugin para sa AutoHotkey, Python kag PowerShell, ang tagsa ka file upod ang paagi sa pag-build ukon pagpadalagan sini.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Magpili sang plugin para makita ang log sini.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Wala pa sing sulod ang log sini nga plugin.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tuguti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Indi pagtuguti</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Halin sa {0}</value></data>

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadForge.NativeChecks", "Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadForge.DsxStandIn", "PadForge.DsxStandIn\PadForge.DsxStandIn.csproj", "{1AEEB98E-B046-491A-A062-F2208829A326}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadForge.PluginProbe", "PadForge.PluginProbe\PadForge.PluginProbe.csproj", "{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{1AEEB98E-B046-491A-A062-F2208829A326}.Release|x64.Build.0 = Release|Any CPU
 		{1AEEB98E-B046-491A-A062-F2208829A326}.Release|x86.ActiveCfg = Release|Any CPU
 		{1AEEB98E-B046-491A-A062-F2208829A326}.Release|x86.Build.0 = Release|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Debug|x64.Build.0 = Debug|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Debug|x86.Build.0 = Debug|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Release|x64.ActiveCfg = Release|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Release|x64.Build.0 = Release|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Release|x86.ActiveCfg = Release|Any CPU
+		{678FFFD2-7E10-4B1B-B074-B99E7EC8868A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

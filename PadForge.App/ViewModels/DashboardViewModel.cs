@@ -21,6 +21,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Home_Title;
             ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
             Crosshairs.Add(new CrosshairItem(this, 1));
+            FollowPluginLog();
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
             // Home's line under the engine's state counts them, and Home shows
             // its first page while there are none.

@@ -2337,6 +2337,19 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Fahaizana ho an'ny mpanampy</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tehirizo ny fahaizana…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tsy misy plugin mandeha.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, faharetana {1}</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Alefaso</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Averimberina</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} amin'ny {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Manomboka miaraka amin'ny motera</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Manamarina ny rakitra alohan'ny hanombohany</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin mandeha: {0}. Fitaovana nampiany: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kitapo plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tehirizo ny kitapo plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin kely amin'ny C#, ary ilay plugin ihany ho an'ny AutoHotkey, Python ary PowerShell, samy milaza ny fomba hanorenana na hampandehanana azy ny rakitra tsirairay.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Rakitsoratra</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Fidio plugin iray mba hahitana ny rakitsoratra.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Mbola tsy misy na inona na inona ao amin'ny rakitsoratr'ity plugin ity.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programa hafa no mitazona ny anaran'ny pipe {0}. Akatony io programa io.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Nolavin'ny Windows ny pipe {0}, ka tsy afaka mifandray ny programa.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tsy misy programa mifandray.</value></data>

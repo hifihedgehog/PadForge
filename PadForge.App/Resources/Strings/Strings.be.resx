@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Запускаць плагіны</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ніводны плагін не працуе.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Плагін працуе з вашымі правамі, а не з правамі PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Убудаваныя</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Тэставы кантролер</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Кантролер, які рухаецца сам, па адным элеменце кіравання, каб можна было паспрабаваць супастаўленне без прылады пад рукой.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Хуткасць</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Павольна</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Звычайна</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Хутка</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Найхутчэй</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Прайграванне</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Прайгрывае запіс праблемы так, як быццам яго зрабілі прылады, якія яго запісалі, з тым жа часам. Гэта новыя прылады на гэтым ПК, і яны прызначаюцца так, як прызначаеце вы або профіль.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Запіс</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Адкрыць запіс…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ніводны запіс не адкрыты.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, працягласць {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Прайграванне</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Прайграць</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Паўтараць</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} з {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Прайграванне)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Запісы праблем|*.zip;*.log|Усе файлы|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не можа прайграць {0}. Гэта не запіс праблемы, або ў ім няма ўводу прылады.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Вашы плагіны</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Плагін гэта праграма, якая дадае прылады ў PadForge. PadForge запускае яе з вашымі звычайнымі правамі, пакуль працуе рухавік.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Дадаць плагін…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Праграмы і скрыпты|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Усе файлы|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Ухваліць…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Запускаецца з рухавіком</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Праверка файла перад запускам</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Завершана з кодам {0}. Паўторны запуск праз {1} с.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Не запушчана. Паўторная спроба праз {0} с.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Змяніўся пасля вашага ўхвалення</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Спынена пасля пяці няўдач запар</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Не запушчана: файла няма</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Не запушчана: у Windows няма праграмы для файлаў такога віду</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Не запушчана: няма абалонкі працоўнага стала, пад якой яго можна запусціць</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Не запушчана: абалонка працоўнага стала мае правы адміністратара, таму іх атрымаў бы і плагін</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Не запушчана: ён патрабуе правы адміністратара</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Не запушчана: Windows адмовіла з памылкай {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Не запушчана</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Запушчана</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Завершана з кодам {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Адхілены яго ключ ад працэсу {0}, які PadForge не запускаў</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Дадаць плагін</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Ухваліць плагін яшчэ раз</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Гэта праграма будзе працаваць з вашымі правамі, пакуль працуе рухавік.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Файл змяніўся пасля вашага ўхвалення. Гэта праграма будзе працаваць з вашымі правамі, пакуль працуе рухавік.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Падпісана: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Без подпісу</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Дадаць плагін</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Ухваліць</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge не можа прачытаць {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ужо ў спісе.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge запускае не больш за 16 плагінаў. Выдаліце адзін, каб дадаць іншы.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Плагінаў працуе: {0}. Дададзена імі прылад: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Камплект для плагінаў і журнал выбранага плагіна</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Камплект для плагінаў</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Захаваць камплект для плагінаў…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Невялікі плагін на C# і той самы плагін для AutoHotkey, Python і PowerShell, а ў кожным файле сказана, як яго сабраць або запусціць.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Журнал</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Абярыце плагін, каб убачыць яго журнал.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>У журнале гэтага плагіна пакуль нічога няма.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер руху</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер пратакола DSU/CemuHook Motion Provider для даных гіраскопа і акселерометра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Уключыць сервер руху DSU (пратакол CemuHook Motion Provider)</value></data>

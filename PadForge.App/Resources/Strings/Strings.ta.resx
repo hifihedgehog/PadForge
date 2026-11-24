@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>செருகுநிரல்களை இயக்கு</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>எந்தச் செருகுநிரலும் இயங்கவில்லை.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>செருகுநிரல் PadForge-இன் உரிமைகளில் அல்ல, உங்கள் உரிமைகளுடன் இயங்கும்.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>உள்ளமைந்தவை</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>சோதனைக் கட்டுப்படுத்தி</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>தானே நகரும் கட்டுப்படுத்தி, ஒரு நேரத்தில் ஒரு கட்டுப்பாடு, எனவே கையில் வன்பொருள் இல்லாமலே மேப்பிங்கைச் சோதிக்கலாம்.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>வேகம்</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>மெதுவாக</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>இயல்பு</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>வேகமாக</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>மிக வேகமாக</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>மறுஇயக்கம்</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>ஒரு சிக்கல் பதிவை, அதை உருவாக்கிய சாதனங்களாக, அவற்றின் நேரத்துடன் மீண்டும் இயக்கும். அவை இந்த PC-யில் புதிய சாதனங்கள், நீங்களோ சுயவிவரமோ மேப் செய்வது போல மேப் செய்யப்படும்.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>பதிவு</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>ஒரு பதிவைத் திற…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>எந்தப் பதிவும் திறக்கப்படவில்லை.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, நீளம் {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>இயக்கம்</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>இயக்கு</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>மீண்டும் செய்</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1}-இல் {0}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (மறுஇயக்கம்)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>சிக்கல் பதிவுகள்|*.zip;*.log|அனைத்துக் கோப்புகள்|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பை இயக்க முடியவில்லை. அது சிக்கல் பதிவு அல்ல, அல்லது அதில் எந்தச் சாதனத்தின் உள்ளீடும் இல்லை.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>உங்கள் செருகுநிரல்கள்</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>செருகுநிரல் என்பது PadForge-க்குச் சாதனங்களைச் சேர்க்கும் நிரல். இன்ஜின் இயங்கும்போதெல்லாம் PadForge அதை உங்கள் சாதாரண உரிமைகளுடன் தொடங்கும்.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>செருகுநிரலைச் சேர்…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>நிரல்களும் ஸ்கிரிப்ட்களும்|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|அனைத்துக் கோப்புகள்|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>அங்கீகரி…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>இன்ஜினுடன் தொடங்கும்</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>தொடங்கும் முன் கோப்பைச் சரிபார்க்கிறது</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>குறியீடு {0} உடன் வெளியேறியது. {1} வினாடியில் மீண்டும் தொடங்கும்.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>தொடங்கவில்லை. {0} வினாடியில் மீண்டும் முயலும்.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>நீங்கள் அங்கீகரித்த பிறகு மாறிவிட்டது</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>தொடர்ச்சியாக ஐந்து தோல்விகளுக்குப் பிறகு நிறுத்தப்பட்டது</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>தொடங்கவில்லை: கோப்பு இல்லை</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>தொடங்கவில்லை: இந்த வகைக் கோப்புக்கு Windows-இல் நிரல் இல்லை</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>தொடங்கவில்லை: அதைத் தொடங்க டெஸ்க்டாப் ஷெல் இயங்கவில்லை</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>தொடங்கவில்லை: டெஸ்க்டாப் ஷெல்லுக்கு நிர்வாகி உரிமைகள் உள்ளன, எனவே செருகுநிரலுக்கும் அவை இருக்கும்</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>தொடங்கவில்லை: அது நிர்வாகி உரிமைகளைக் கேட்கிறது</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>தொடங்கவில்லை: Windows பிழை {0} உடன் மறுத்தது</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>தொடங்கவில்லை</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>தொடங்கியது</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>குறியீடு {0} உடன் வெளியேறியது</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge தொடங்காத செயலி {0}-இலிருந்து வந்த அதன் விசையை மறுத்தது</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>செருகுநிரலைச் சேர்</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>செருகுநிரலை மீண்டும் அங்கீகரி</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>இன்ஜின் இயங்கும்போதெல்லாம் இந்த நிரல் உங்கள் உரிமைகளுடன் இயங்கும்.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>நீங்கள் அங்கீகரித்த பிறகு கோப்பு மாறிவிட்டது. இன்ஜின் இயங்கும்போதெல்லாம் இந்த நிரல் உங்கள் உரிமைகளுடன் இயங்கும்.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>கோப்பு: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>கையொப்பமிட்டவர்: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>கையொப்பமிடப்படவில்லை</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>செருகுநிரலைச் சேர்</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>அங்கீகரி</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பைப் படிக்க முடியவில்லை.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ஏற்கனவே பட்டியலில் உள்ளது.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge அதிகபட்சம் 16 செருகுநிரல்களை இயக்கும். இன்னொன்றைச் சேர்க்க ஒன்றை நீக்கவும்.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>இயங்கும் செருகுநிரல்கள்: {0}. அவை சேர்த்த சாதனங்கள்: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>செருகுநிரல் கருவித்தொகுப்பு, நீங்கள் தேர்ந்தெடுக்கும் செருகுநிரலின் பதிவு</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>செருகுநிரல் கருவித்தொகுப்பு</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>செருகுநிரல் கருவித்தொகுப்பைச் சேமி…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# இல் ஒரு சிறிய செருகுநிரல், அதே செருகுநிரல் AutoHotkey, Python, PowerShell க்கும், ஒவ்வொரு கோப்பிலும் அதை எப்படி உருவாக்குவது அல்லது இயக்குவது என்பதுடன்.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>பதிவு</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>பதிவைப் பார்க்க ஒரு செருகுநிரலைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>இந்தச் செருகுநிரலின் பதிவில் இன்னும் எதுவும் இல்லை.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>அசைவுச் சேவையகம்</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>கைரோ மற்றும் முடுக்கமானித் தரவுக்கான DSU/CemuHook Motion Provider நெறிமுறைச் சேவையகம்.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU அசைவுச் சேவையகத்தை இயக்கு (CemuHook Motion Provider நெறிமுறை)</value></data>

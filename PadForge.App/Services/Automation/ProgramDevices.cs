@@ -209,12 +209,13 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>A name from a program, made safe for the settings file
-        /// and the interface: control characters out, trimmed, and cut at
-        /// <paramref name="longest"/>.</summary>
+        /// and the interface: control characters and Unicode format
+        /// characters out (DisplayText.StripFormatCharacters), trimmed, and
+        /// cut at <paramref name="longest"/>.</summary>
         internal static string Clean(string text, int longest)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
-            text = PadForge.Engine.Common.XmlSafeText.Clean(text);
+            text = DisplayText.StripFormatCharacters(PadForge.Engine.Common.XmlSafeText.Clean(text));
             var sb = new StringBuilder(Math.Min(text.Length, longest));
             foreach (char c in text)
             {
@@ -280,6 +281,10 @@ namespace PadForge.Services.Automation
             public volatile AutomationSession Owner;
             public bool Registered;
             public long OfflineAtMs;
+
+            /// <summary>A built-in plugin's device: it belongs to no
+            /// session and stays on the list while its switch is on.</summary>
+            public bool BuiltIn;
         }
 
         private readonly object _sync = new object();
@@ -511,8 +516,66 @@ namespace PadForge.Services.Automation
             if (due != null) TakeOffline(due);
         }
 
+        /// <summary>
+        /// Puts a built-in plugin's device on the list, or gives the one it
+        /// had the new name and shape: the Test Controller and each device
+        /// Replay plays. It belongs to no session, counts toward no
+        /// program's limit, and stays until <see cref="RemoveBuiltIn"/>.
+        /// Its identity is made from <paramref name="program"/> and
+        /// <paramref name="key"/>, so its mappings survive a restart.
+        /// </summary>
+        /// <summary>The kind a built-in plugin's device's identity is made
+        /// with.</summary>
+        internal const string BuiltInKind = "builtin";
+
+        internal Entry DeclareBuiltIn(string program, string key, string name, ProgramDeviceShape shape)
+        {
+            const string kind = BuiltInKind;
+            Guid guid = ProgramDeviceDeclaration.InstanceGuid(kind, program, key);
+            IAutomationEngine engine;
+            Entry entry;
+            bool known;
+            lock (_sync)
+            {
+                known = _entries.TryGetValue(guid, out entry);
+                if (!known)
+                {
+                    string id = AutomationDevices.IdOf(guid);
+                    var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, program, key),
+                        "program://" + id, name, shape);
+                    entry = new Entry { Guid = guid, Id = id, Kind = kind, Program = program, Key = key, Device = device };
+                    Wire(entry);
+                    _entries[guid] = entry;
+                }
+                entry.BuiltIn = true;
+                entry.OfflineAtMs = 0;
+                engine = _engine;
+                if (engine != null) entry.Registered = true;
+            }
+            // Outside the lock, as Declare's reshape is.
+            if (known) entry.Device.Reshape(name, shape);
+            entry.Device.SetAttached(true);
+            if (engine != null) engine.Register(entry.Device);
+            return entry;
+        }
+
+        /// <summary>Takes a built-in plugin's device offline at once, its
+        /// mapped outputs at rest. Its row stays on the Devices page as any
+        /// disconnected device's does.</summary>
+        internal void RemoveBuiltIn(Entry entry)
+        {
+            if (entry == null) return;
+            lock (_sync)
+            {
+                if (!entry.BuiltIn) return;
+                entry.BuiltIn = false;
+            }
+            TakeOffline(new List<Entry> { entry });
+        }
+
         /// <summary>The engine started: every device a program drives, or
-        /// waits to come back to, goes on the list.</summary>
+        /// waits to come back to, and every built-in plugin's device that is
+        /// on goes on the list.</summary>
         internal void Attach(IAutomationEngine engine)
         {
             var register = new List<ProgramDevice>();
@@ -521,7 +584,7 @@ namespace PadForge.Services.Automation
                 _engine = engine;
                 foreach (var e in _entries.Values)
                 {
-                    if (e.Owner == null && e.OfflineAtMs == 0) continue;
+                    if (e.Owner == null && e.OfflineAtMs == 0 && !e.BuiltIn) continue;
                     e.Registered = true;
                     // The engine that stopped disposed the device with its
                     // list. It is the program's still.

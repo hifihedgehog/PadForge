@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Залгаасуудыг ажиллуулах</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ажиллаж буй залгаас алга.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Залгаас PadForge-ийн биш, таны эрхээр ажиллана.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Суулгагдсан</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Туршилтын контроллер</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Нэг удаад нэг удирдлагыг өөрөө хөдөлгөдөг контроллер. Ингэснээр гартаа төхөөрөмжгүйгээр оноолтыг туршиж болно.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Хурд</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Удаан</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Хэвийн</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Хурдан</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Хамгийн хурдан</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Дахин тоглуулах</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Асуудлын бичлэгийг түүнийг үүсгэсэн төхөөрөмжүүдийн дүрээр, тэдний цаг хугацааны дагуу дахин тоглуулна. Тэдгээр нь энэ компьютер дээр шинэ төхөөрөмж болж, таны эсвэл профайлын оноосноор оноогдоно.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Бичлэг</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Бичлэг нээх…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Нээлттэй бичлэг алга.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, урт нь {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Тоглуулалт</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Тоглуулах</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Давтах</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0}/{1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Дахин тоглуулах)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Асуудлын бичлэгүүд|*.zip;*.log|Бүх файл|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} файлыг тоглуулж чадахгүй. Энэ нь асуудлын бичлэг биш, эсвэл ямар ч төхөөрөмжийн оролт агуулаагүй байна.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Таны залгаасууд</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Залгаас нь PadForge-д төхөөрөмж нэмдэг програм юм. Хөдөлгүүр ажиллах бүрд PadForge үүнийг таны энгийн эрхээр эхлүүлнэ.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Залгаас нэмэх…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програм ба скриптүүд|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Бүх файл|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Зөвшөөрөх…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Хөдөлгүүртэй хамт эхэлнэ</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Эхлэхээс өмнө файлыг шалгаж байна</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} кодоор дууссан. {1} с дараа дахин эхэлнэ.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Эхэлсэнгүй. {0} с дараа дахин оролдоно.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Таныг зөвшөөрснөөс хойш өөрчлөгдсөн</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Дараалан таван удаа алдаа гарсны дараа зогссон</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Эхэлсэнгүй: файл байхгүй болсон</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Эхэлсэнгүй: Windows-д энэ төрлийн файлыг нээх програм алга</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Эхэлсэнгүй: түүнийг эхлүүлэх ширээний бүрхүүл ажиллаж байхгүй</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Эхэлсэнгүй: ширээний бүрхүүл администраторын эрхтэй тул залгаас ч бас тийм эрхтэй болно</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Эхэлсэнгүй: администраторын эрх хүсдэг</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Эхэлсэнгүй: Windows {0} алдаагаар татгалзсан</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Эхэлсэнгүй</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Эхэлсэн</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>{0} кодоор дууссан</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>PadForge-ийн эхлүүлээгүй {0} процессоос ирсэн түлхүүрээс татгалзсан</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Залгаас нэмэх</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Залгаасыг дахин зөвшөөрөх</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Энэ програм хөдөлгүүр ажиллах бүрд таны эрхээр ажиллана.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Таныг зөвшөөрснөөс хойш файл өөрчлөгдсөн. Энэ програм хөдөлгүүр ажиллах бүрд таны эрхээр ажиллана.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Гарын үсэг зурсан: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Гарын үсэггүй</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Залгаас нэмэх</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Зөвшөөрөх</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge {0} файлыг уншиж чадахгүй.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} жагсаалтад аль хэдийн байна.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge 16 хүртэлх залгаас ажиллуулна. Өөр нэгийг нэмэхийн тулд нэгийг хасна уу.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Ажиллаж буй залгаас: {0}. Тэдний нэмсэн төхөөрөмж: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Залгаасын багц болон сонгосон залгаасын бүртгэл</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Залгаасын багц</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Залгаасын багцыг хадгалах…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# хэл дээрх жижиг залгаас, мөн AutoHotkey, Python, PowerShell-д зориулсан ижил залгаас, файл бүр бүтээх эсвэл ажиллуулах зааврын хамт.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Бүртгэл</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Бүртгэлийг нь харах залгаасаа сонгоно уу.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Энэ залгаасын бүртгэлд одоогоор юу ч алга.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Хөдөлгөөний сервер</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп болон акселерометрийн өгөгдөлд зориулсан DSU/CemuHook Motion Provider протоколын сервер.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU хөдөлгөөний серверийг идэвхжүүлэх (CemuHook Motion Provider Protocol)</value></data>

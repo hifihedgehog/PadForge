@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Rulare pluginuri</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Niciun plugin nu rulează.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un plugin rulează cu drepturile dumneavoastră, nu cu cele ale PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Încorporate</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Controler de test</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un controler care se mișcă singur, un control pe rând, ca să puteți încerca o mapare fără echipament la îndemână.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Viteză</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lent</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rapid</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Foarte rapid</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Redare înregistrare</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Redă o înregistrare de problemă ca dispozitivele care au făcut-o, cu aceeași sincronizare. Sunt dispozitive noi pe acest PC, mapate așa cum le mapați dumneavoastră sau un profil.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Înregistrare</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Deschidere înregistrare…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Nicio înregistrare nu este deschisă.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, durată {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Redare</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Redare</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Repetare</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} din {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (redare)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Înregistrări de probleme|*.zip;*.log|Toate fișierele|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nu poate reda {0}. Nu este o înregistrare de problemă sau nu conține intrările niciunui dispozitiv.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Pluginurile dumneavoastră</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Un plugin este un program care adaugă dispozitive în PadForge. PadForge îl pornește cu drepturile dumneavoastră obișnuite ori de câte ori rulează motorul.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Adăugare plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programe și scripturi|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Toate fișierele|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprobare…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Pornește odată cu motorul</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Se verifică fișierul înainte de pornire</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>S-a încheiat cu codul {0}. Pornește din nou în {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nu a pornit. Încearcă din nou în {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Modificat după aprobare</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Oprit după cinci eșecuri la rând</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nu a pornit: fișierul lipsește</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nu a pornit: Windows nu are niciun program pentru acest tip de fișier</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nu a pornit: nu rulează niciun shell de desktop sub care să fie pornit</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nu a pornit: shellul de desktop are drepturi de administrator, deci pluginul le-ar avea și el</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nu a pornit: cere drepturi de administrator</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nu a pornit: Windows a refuzat cu eroarea {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nu a pornit</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Pornit</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>S-a încheiat cu codul {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Cheia lui a fost refuzată de la procesul {0}, pe care PadForge nu l-a pornit</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Adăugare plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Aprobați din nou pluginul</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Acest program va rula cu drepturile dumneavoastră ori de câte ori rulează motorul.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Fișierul s-a modificat după ce l-ați aprobat. Acest program va rula cu drepturile dumneavoastră ori de câte ori rulează motorul.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fișier: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Semnat de: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Nesemnat</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Adăugare plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Aprobare</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge nu poate citi {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} se află deja în listă.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge rulează cel mult 16 pluginuri. Eliminați unul ca să adăugați altul.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Pluginuri în execuție: {0}. Dispozitive adăugate de ele: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Kitul pentru pluginuri și jurnalul unui plugin ales de dumneavoastră</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit pentru pluginuri</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Salvare kit pentru pluginuri…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un plugin mic în C# și același plugin pentru AutoHotkey, Python și PowerShell, fiecare fișier cu instrucțiuni de compilare sau de rulare.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Jurnal</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Alegeți un plugin ca să vedeți jurnalul lui.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Jurnalul acestui plugin este încă gol.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server de mișcare</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server pentru protocolul DSU/CemuHook Motion Provider, pentru datele giroscopului și ale accelerometrului.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activare server de mișcare DSU (protocolul CemuHook Motion Provider)</value></data>

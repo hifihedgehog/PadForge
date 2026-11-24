@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Iesto goiannais</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Goiannas ú-cuia.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Goiannas cuia adh polodh lín, ú adh polodh PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Adabannen</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Maethas tastaith</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Maethas i berna im, minnad er bo lû, sui theinas pol tastannen pen carf vi cam.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Lagor</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Pell</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Senu</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Lim</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Lim beleg</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Rinad</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Rina teithad press sui i cerf i teithant hon, adh i lû în. Hain cerf cîr vi PC hen, sestannen sui le egor panu sesta hain.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Teithad</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Edro teithad…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Teithad ú-edrannen.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} ann</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Teliad</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Telio</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Rino</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Rinad)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Teithad press|*.zip;*.log|Parlas pân|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ú-pol rina {0}. Ú-teithad press, egor gar alnad minnad carf.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Goiannais lín</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Goiannas curu i goianna cerf na PadForge. PadForge iesta hon adh polodh senu lín ir i naur cuia.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Goianno goiannas…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Curu a teithais|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Parlas pân|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Davo…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Iesta ir i naur iesta</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Cetha i barlas nui iestad</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Telant adh noth {0}. Iesta ad ab {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ú-iestannen. Tasta ad ab {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Gwistannen ab davad lín</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Postannen ab dewad leben vi lîr</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ú-iestannen: i parlas gwanwen</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ú-iestannen: Windows ú-gar curu an parlas sui hen</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ú-iestannen: i curu henneth ú-cuia, i iesta hon nu ha</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ú-iestannen: i curu henneth gar polodh herdir, a i goiannas gar hon eithro</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ú-iestannen: mabed polodh herdir</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ú-iestannen: Windows boda adh dŷl {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ú-iestannen</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Iestannen</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Telant adh noth {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Bodant ledil în o curu {0}, i PadForge ú-iestant</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Goianno goiannas</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Davo i goiannas ad</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Curu hen cuia adh polodh lín ir i naur cuia.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>I parlas gwistant ab davad lín. Curu hen cuia adh polodh lín ir i naur cuia.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Parlas: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Ennais: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Alnad ennais</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Goianno goiannas</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Davo</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ú-pol henna {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} gwí vi narth.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge iesta goiannais 16 ero. Haedo er an goianna egel.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Goiannais cuin: {0}. Cerf i goiannant: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Pan goiannas, a narn o goiannas i cilil</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Pan goiannas</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Haudho i phan goiannas…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Goiannas tithen vi C#, a i goiannas ain an AutoHotkey, Python a PowerShell, ilphen parlas adh men an adaba egor iesta hon.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Narn</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Cilo goiannas an tíra narn în.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Alnad vi narn goiannas hen sî.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pethron mîn</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Pethron DSU/CemuHook Motion Provider an sarth pirad a genediad adlod.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Echuido Pethron mîn DSU (CemuHook Motion Provider Protocol)</value></data>

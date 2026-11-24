@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>เรียกใช้ปลั๊กอิน</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ไม่มีปลั๊กอินที่กำลังทำงาน</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>ปลั๊กอินทำงานด้วยสิทธิ์ของคุณ ไม่ใช่สิทธิ์ของ PadForge</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>มีมาในตัว</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>คอนโทรลเลอร์ทดสอบ</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>คอนโทรลเลอร์ที่ขยับเองทีละตัวควบคุม เพื่อให้ลองการแมปได้โดยไม่ต้องมีฮาร์ดแวร์อยู่ในมือ</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>ความเร็ว</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>ช้า</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ปกติ</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>เร็ว</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>เร็วที่สุด</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>เล่นซ้ำการบันทึก</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>เล่นการบันทึกปัญหากลับเป็นอุปกรณ์ที่สร้างมันขึ้นมา ด้วยจังหวะเวลาเดิม อุปกรณ์เหล่านี้เป็นอุปกรณ์ใหม่บนพีซีเครื่องนี้ และแมปตามที่คุณหรือโปรไฟล์แมปไว้</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>การบันทึก</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>เปิดการบันทึก…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>ไม่มีการบันทึกที่เปิดอยู่</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0} ยาว {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>การเล่น</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>เล่น</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>เล่นซ้ำ</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} จาก {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (เล่นซ้ำ)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>การบันทึกปัญหา|*.zip;*.log|ไฟล์ทั้งหมด|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge เล่น {0} ไม่ได้ ไฟล์นี้ไม่ใช่การบันทึกปัญหา หรือไม่มีอินพุตของอุปกรณ์ใดเลย</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>ปลั๊กอินของคุณ</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>ปลั๊กอินคือโปรแกรมที่เพิ่มอุปกรณ์ให้ PadForge PadForge จะเริ่มปลั๊กอินด้วยสิทธิ์ปกติของคุณทุกครั้งที่เอนจินทำงาน</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>เพิ่มปลั๊กอิน…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>โปรแกรมและสคริปต์|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ไฟล์ทั้งหมด|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>อนุมัติ…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>เริ่มพร้อมกับเอนจิน</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>กำลังตรวจไฟล์ก่อนเริ่ม</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>ออกด้วยรหัส {0} จะเริ่มใหม่ใน {1} วินาที</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>ยังไม่ได้เริ่ม จะลองใหม่ใน {0} วินาที</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>เปลี่ยนไปหลังจากที่คุณอนุมัติ</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>หยุดหลังล้มเหลวติดกันห้าครั้ง</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>ยังไม่ได้เริ่ม: ไม่พบไฟล์</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>ยังไม่ได้เริ่ม: Windows ไม่มีโปรแกรมสำหรับไฟล์ประเภทนี้</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>ยังไม่ได้เริ่ม: ไม่มีเชลล์เดสก์ท็อปทำงานอยู่ให้เริ่มภายใต้</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>ยังไม่ได้เริ่ม: เชลล์เดสก์ท็อปมีสิทธิ์ผู้ดูแลระบบ ปลั๊กอินจึงจะมีสิทธิ์นั้นด้วย</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>ยังไม่ได้เริ่ม: ขอสิทธิ์ผู้ดูแลระบบ</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>ยังไม่ได้เริ่ม: Windows ปฏิเสธด้วยข้อผิดพลาด {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>ยังไม่ได้เริ่ม</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>เริ่มแล้ว</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>ออกด้วยรหัส {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>ปฏิเสธคีย์ของมันจากกระบวนการ {0} ซึ่ง PadForge ไม่ได้เริ่ม</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>เพิ่มปลั๊กอิน</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>อนุมัติปลั๊กอินอีกครั้ง</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>โปรแกรมนี้จะทำงานด้วยสิทธิ์ของคุณทุกครั้งที่เอนจินทำงาน</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>ไฟล์เปลี่ยนไปหลังจากที่คุณอนุมัติ โปรแกรมนี้จะทำงานด้วยสิทธิ์ของคุณทุกครั้งที่เอนจินทำงาน</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>ไฟล์: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>ลงนามโดย: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>ไม่ได้ลงนาม</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>เพิ่มปลั๊กอิน</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>อนุมัติ</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge อ่าน {0} ไม่ได้</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} อยู่ในรายการแล้ว</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge รันปลั๊กอินได้สูงสุด 16 ตัว ให้นำออกหนึ่งตัวก่อนจึงจะเพิ่มตัวอื่นได้</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>ปลั๊กอินที่ทำงานอยู่: {0} อุปกรณ์ที่ปลั๊กอินเพิ่ม: {1}</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>ชุดพัฒนาปลั๊กอิน และบันทึกของปลั๊กอินที่คุณเลือก</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>ชุดพัฒนาปลั๊กอิน</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>บันทึกชุดพัฒนาปลั๊กอิน…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>ปลั๊กอินขนาดเล็กใน C# และปลั๊กอินเดียวกันสำหรับ AutoHotkey, Python และ PowerShell โดยแต่ละไฟล์มีวิธีสร้างหรือเรียกใช้</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>บันทึก</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>เลือกปลั๊กอินเพื่อดูบันทึกของมัน</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>ยังไม่มีอะไรในบันทึกของปลั๊กอินนี้</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>เซิร์ฟเวอร์การเคลื่อนไหว</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>เซิร์ฟเวอร์โปรโตคอล DSU/CemuHook Motion Provider สำหรับข้อมูลไจโรและเซนเซอร์วัดความเร่ง</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>เปิดใช้งานเซิร์ฟเวอร์การเคลื่อนไหว DSU (โปรโตคอล CemuHook Motion Provider)</value></data>

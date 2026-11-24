@@ -87,6 +87,11 @@ namespace PadForge.Services.Automation
 
         public bool IsPlugin => Kind == AutomationClientKind.Plugin;
 
+        /// <summary>What PadForge gave a plugin's token: the name it was
+        /// approved under and where its <c>log</c> lines go. Null for every
+        /// other kind.</summary>
+        public AutomationPluginGrant Grant { get; private set; }
+
         /// <summary>Whether hello was answered yes.</summary>
         public bool Opened { get; private set; }
 
@@ -316,6 +321,7 @@ namespace PadForge.Services.Automation
 
             string kind = (request.Get("kind") ?? "script").ToLowerInvariant();
             string name = ProgramDeviceDeclaration.Clean(request.Get("name"), ProgramDeviceDeclaration.LongestName);
+            string given = name;
             if (name.Length == 0 && Process.ImageName != null)
                 name = PadForge.Common.Input.RunningProcessList.ShortName(Process.ImageName);
             ClaimedName = name;
@@ -388,8 +394,14 @@ namespace PadForge.Services.Automation
                         return;
                     }
                     Kind = AutomationClientKind.Plugin;
+                    Grant = grant;
                     IdentityName = ProgramDeviceDeclaration.Clean(grant.Name, ProgramDeviceDeclaration.LongestName);
                     if (ClaimedName.Length == 0) ClaimedName = IdentityName;
+                    if (given.Length > 0)
+                    {
+                        try { grant.Named?.Invoke(given); }
+                        catch { /* the name is for the Plugins page, and the session goes on */ }
+                    }
                     break;
                 }
                 default:
@@ -536,9 +548,16 @@ namespace PadForge.Services.Automation
     /// <param name="ImageName">That process's image, for display.</param>
     internal sealed record AutomationPeer(int Session, string Name, AutomationClientKind Kind, int ProcessId, string ImageName);
 
-    /// <summary>A plugin's token, accepted: the name of the plugin as the
-    /// user approved it, which its devices' identity is made from.</summary>
-    internal sealed record AutomationPluginGrant(string Name);
+    /// <summary>A plugin's token, accepted.</summary>
+    /// <param name="Name">The name of the plugin as the user approved it,
+    /// which its devices' identity is made from.</param>
+    /// <param name="Log">Takes each line the plugin writes with
+    /// <c>log</c>, for its log on the Plugins page. Called on the session's
+    /// worker. Null keeps no log.</param>
+    /// <param name="Named">Takes the name the plugin's hello gave, when it
+    /// gave one, for its row on the Plugins page. Called once, on the
+    /// session's worker.</param>
+    internal sealed record AutomationPluginGrant(string Name, Action<string> Log = null, Action<string> Named = null);
 
     /// <summary>A <c>call</c> line: an assistant tool run from a
     /// script.</summary>

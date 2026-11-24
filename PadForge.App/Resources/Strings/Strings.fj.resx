@@ -873,6 +873,8 @@
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} sa semati</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} sa semati, bateri {1}%</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Sa semati e {0} na iyaya</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Vakaraitaka</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Vakaruataka</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>wiliwili</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ena veigauna kece</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>

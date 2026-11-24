@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Bővítmények futtatása</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Egy bővítmény sem fut.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>A bővítmény az Ön jogaival fut, nem a PadForge jogaival.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Beépített</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Tesztkontroller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Egy magától mozgó kontroller, egyszerre egy vezérlőelemmel, így egy leképezés hardver nélkül is kipróbálható.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Sebesség</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lassú</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normál</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Gyors</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Leggyorsabb</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Visszajátszás</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Egy problémafelvételt játszik vissza az azt készítő eszközökként, az eredeti időzítéssel. Ezek új eszközök ezen a számítógépen, és úgy vannak leképezve, ahogy Ön vagy egy profil leképezi őket.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Felvétel</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Felvétel megnyitása…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Nincs megnyitott felvétel.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, hossza {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Lejátszás</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Lejátszás</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ismétlés</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (visszajátszás)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problémafelvételek|*.zip;*.log|Minden fájl|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>A PadForge nem tudja lejátszani a(z) {0} fájlt. Nem problémafelvétel, vagy nem tartalmaz egyetlen eszköz bemenetét sem.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Az Ön bővítményei</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>A bővítmény olyan program, amely eszközöket ad a PadForge-hoz. A PadForge a szokásos jogaival indítja el, valahányszor a motor fut.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Bővítmény hozzáadása…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programok és szkriptek|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Minden fájl|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Jóváhagyás…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>A motorral együtt indul</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Fájl ellenőrzése az indítás előtt</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Kilépett a(z) {0} kóddal. {1} mp múlva újraindul.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nem indult el. {0} mp múlva újra megpróbálja.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>A jóváhagyás óta megváltozott</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Leállt egymás utáni öt hiba után</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nem indult el: a fájl eltűnt</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nem indult el: a Windowsban nincs program ehhez a fájltípushoz</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nem indult el: nem fut asztali shell, amely alatt elindíthatná</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nem indult el: az asztali shell rendszergazdai jogokkal fut, így a bővítmény is megkapná azokat</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nem indult el: rendszergazdai jogokat kér</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nem indult el: a Windows hibával utasította el, hibakód: {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nem indult el</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Elindult</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Kilépett a(z) {0} kóddal</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Elutasította a kulcsát a(z) {0} folyamattól, amelyet nem a PadForge indított</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Bővítmény hozzáadása</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>A bővítmény újbóli jóváhagyása</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Ez a program az Ön jogaival fut, valahányszor a motor fut.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>A fájl a jóváhagyás óta megváltozott. Ez a program az Ön jogaival fut, valahányszor a motor fut.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fájl: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Aláíró: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Aláíratlan</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Bővítmény hozzáadása</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Jóváhagyás</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>A PadForge nem tudja olvasni a(z) {0} fájlt.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>A(z) {0} már szerepel a listán.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>A PadForge legfeljebb 16 bővítményt futtat. Egy újabb hozzáadásához távolítson el egyet.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Futó bővítmények: {0}. Általuk hozzáadott eszközök: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>A bővítménykészlet és egy kiválasztott bővítmény naplója</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Bővítménykészlet</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>A bővítménykészlet mentése…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Egy kis bővítmény C# nyelven, és ugyanez a bővítmény AutoHotkey, Python és PowerShell számára, minden fájlhoz leírással, hogyan kell lefordítani vagy futtatni.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Napló</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Válasszon egy bővítményt a naplója megtekintéséhez.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>A bővítmény naplójában még nincs semmi.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mozgáskiszolgáló</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokollt használó kiszolgáló a giroszkóp és a gyorsulásmérő adataihoz.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU mozgáskiszolgáló engedélyezése (CemuHook Motion Provider protokoll)</value></data>

@@ -798,6 +798,17 @@
   <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill ren Chón Álillis</value></data>
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Isóni ewe Skill…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Esor plugin a angang.</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Poputá</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Áliwini</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Epwe poputá fiti ewe engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>A etittina ewe file me mwen an epwe poputá</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin mi angang: {0}. Device ra apacha: {1}.</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Isóni ewe Plugin Kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Eu kúkkún plugin non C#, me ewe chök plugin ren AutoHotkey, Python me PowerShell, iteiten file a pachenó usun ifa usun epwe fératá are angangééni.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Filatá eu plugin pwe kopwe kúna nóun log.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Esor mwo met non nóun log ei plugin.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Esor program a riri.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A riri: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program ese silles</value></data>

@@ -4040,6 +4040,69 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Esegui plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nessun plugin in esecuzione.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un plugin viene eseguito con i tuoi diritti, non con quelli di PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integrati</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Controller di prova</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un controller che si muove da solo, un controllo alla volta, così si può provare una mappatura senza hardware a portata di mano.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Velocità</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lenta</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normale</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Veloce</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Velocissima</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Riproduzione</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Riproduce una registrazione di un problema come i dispositivi che l'hanno prodotta, con gli stessi tempi. Sono nuovi dispositivi su questo PC, mappati come li mappi tu o un profilo.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Registrazione</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Apri una registrazione…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Nessuna registrazione aperta.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, durata {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Riproduzione</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Riproduci</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ripeti</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} di {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (riproduzione)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Registrazioni di problemi|*.zip;*.log|Tutti i file|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge non può riprodurre {0}. Non è una registrazione di un problema, oppure non contiene ingressi di dispositivi.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>I tuoi plugin</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Un plugin è un programma che aggiunge dispositivi a PadForge. PadForge lo avvia con i tuoi diritti ordinari ogni volta che il motore è in esecuzione.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Aggiungi un plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmi e script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tutti i file|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Approva…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Si avvia con il motore</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Controllo del file prima dell'avvio</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Terminato con codice {0}. Riparte tra {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Non avviato. Riprova tra {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Modificato dopo la tua approvazione</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Arrestato dopo cinque errori di fila</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Non avviato: il file non c'è più</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Non avviato: Windows non ha un programma per questo tipo di file</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Non avviato: nessuna shell del desktop in esecuzione per avviarlo</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Non avviato: la shell del desktop ha diritti di amministratore, quindi li avrebbe anche il plugin</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Non avviato: richiede diritti di amministratore</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Non avviato: Windows ha rifiutato con l'errore {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Non avviato</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Avviato</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Terminato con codice {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Chiave rifiutata dal processo {0}, che PadForge non ha avviato</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Aggiungi un plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Approva di nuovo il plugin</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Questo programma verrà eseguito con i tuoi diritti ogni volta che il motore è in esecuzione.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Il file è cambiato dopo la tua approvazione. Questo programma verrà eseguito con i tuoi diritti ogni volta che il motore è in esecuzione.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>File: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Firmato da: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Non firmato</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Aggiungi plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Approva</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge non riesce a leggere {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} è già nell'elenco.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge esegue fino a 16 plugin. Rimuovine uno per aggiungerne un altro.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin in esecuzione: {0}. Dispositivi aggiunti: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Il kit per plugin e il registro di un plugin a scelta</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit per plugin</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Salva il kit per plugin…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un piccolo plugin in C# e lo stesso plugin per AutoHotkey, Python e PowerShell, ogni file con le istruzioni per compilarlo o eseguirlo.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Registro</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Scegli un plugin per vederne il registro.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Il registro di questo plugin è ancora vuoto.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Annotazioni di mappatura</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

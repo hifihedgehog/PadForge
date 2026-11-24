@@ -600,6 +600,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kjør utvidelser</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ingen utvidelse kjører.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>En utvidelse kjører med dine rettigheter, ikke med rettighetene til PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Innebygde</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testkontroller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>En kontroller som beveger seg av seg selv, én kontroll om gangen, slik at en tilordning kan prøves uten maskinvare for hånden.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Hastighet</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Sakte</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Raskt</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Raskest</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Gjenspilling</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spiller av en problemopptaking som enhetene som laget den, med samme timing. De er nye enheter på denne PC-en, tilordnet slik du eller en profil tilordner dem.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opptak</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Åpne et opptak…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ingen opptak er åpent.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} lang</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Avspilling</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Spill av</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Gjenta</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} av {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (gjenspilling)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problemopptak|*.zip;*.log|Alle filer|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kan ikke spille av {0}. Det er ikke noe problemopptak, eller det inneholder ingen enhets inndata.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Dine utvidelser</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>En utvidelse er et program som legger til enheter i PadForge. PadForge starter den med dine vanlige rettigheter hver gang motoren kjører.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Legg til en utvidelse…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmer og skript|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alle filer|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Godkjenn…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Starter med motoren</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Sjekker filen før den starter</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Avsluttet med kode {0}. Starter på nytt om {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ikke startet. Prøver igjen om {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Endret siden du godkjente den</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Stoppet etter fem feil på rad</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ikke startet: filen er borte</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ikke startet: Windows har ikke noe program for denne filtypen</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ikke startet: det kjører ikke noe skrivebordsskall å starte den under</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ikke startet: skrivebordsskallet har administratorrettigheter, så utvidelsen ville fått dem også</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ikke startet: den ber om administratorrettigheter</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ikke startet: Windows avviste med feil {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ikke startet</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Startet</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Avsluttet med kode {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Avviste nøkkelen fra prosess {0}, som PadForge ikke startet</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Legg til en utvidelse</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Godkjenn utvidelsen på nytt</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Dette programmet kjører med dine rettigheter hver gang motoren kjører.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Filen er endret siden du godkjente den. Dette programmet kjører med dine rettigheter hver gang motoren kjører.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fil: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Signert av: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Ikke signert</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Legg til utvidelse</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Godkjenn</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge kan ikke lese {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} står allerede på listen.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge kjører opptil 16 utvidelser. Fjern én for å legge til en ny.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Utvidelser som kjører: {0}. Enheter de la til: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Utvidelsessettet og loggen til en utvidelse du velger</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Utvidelsessett</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Lagre utvidelsessettet…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>En liten utvidelse i C#, og den samme utvidelsen for AutoHotkey, Python og PowerShell, hver fil med hvordan den bygges eller kjøres.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Logg</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Velg en utvidelse for å se loggen.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Det er ingenting i loggen til denne utvidelsen ennå.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bevegelsesserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protokollserver for DSU/CemuHook Motion Provider, for gyro- og akselerometerdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktiver DSU-bevegelsesserver (CemuHook Motion Provider Protocol)</value></data>

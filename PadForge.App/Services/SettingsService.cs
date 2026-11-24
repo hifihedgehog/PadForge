@@ -2526,6 +2526,9 @@ namespace PadForge.Services
             SettingsManager.EnableAutomation = appSettings.EnableAutomation;
             _mainVm.Dashboard.EnablePlugins = appSettings.EnablePlugins;
             SettingsManager.EnablePlugins = appSettings.EnablePlugins;
+            // The plugins the user added and the two built in (#597).
+            _mainVm.Dashboard.LoadPluginSettings(appSettings.Plugins, appSettings.TestControllerOn,
+                appSettings.TestControllerSpeed, appSettings.ReplayOn, appSettings.ReplayRepeat);
             vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
             vm.ShowLegacyWorkshopConfigs = appSettings.ShowLegacyWorkshopConfigs;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -5212,6 +5215,11 @@ namespace PadForge.Services
                 EnableAutomation = _mainVm.Dashboard.EnableAutomation,
                 AutomationLevel = (int)_mainVm.Dashboard.AutomationLevel,
                 EnablePlugins = _mainVm.Dashboard.EnablePlugins,
+                Plugins = _mainVm.Dashboard.PluginRecords is { Length: > 0 } plugins ? plugins : null,
+                TestControllerOn = _mainVm.Dashboard.TestControllerOn,
+                TestControllerSpeed = _mainVm.Dashboard.TestControllerSpeed,
+                ReplayOn = _mainVm.Dashboard.ReplayOn,
+                ReplayRepeat = _mainVm.Dashboard.ReplayRepeat,
                 EnableCommunityConfigLookup = vm.EnableCommunityConfigLookup,
                 ShowLegacyWorkshopConfigs = vm.ShowLegacyWorkshopConfigs,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
@@ -6812,6 +6820,34 @@ namespace PadForge.Services
         public string Path { get; set; }
     }
 
+    /// <summary>One plugin the user added (#597).</summary>
+    public class PluginData
+    {
+        /// <summary>The file: a program, or a script for a program Windows
+        /// runs that kind of file with.</summary>
+        [XmlAttribute]
+        public string Path { get; set; }
+
+        /// <summary>The name its devices' identity is made from, fixed when
+        /// it was added: the file's name, with a number after it when
+        /// another plugin had that name.</summary>
+        [XmlAttribute]
+        public string Identity { get; set; }
+
+        /// <summary>The name the plugin gave in its hello, once it has
+        /// run.</summary>
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        /// <summary>The SHA-256 of the bytes the user approved, as
+        /// hex.</summary>
+        [XmlAttribute]
+        public string Sha256 { get; set; }
+
+        [XmlAttribute]
+        public bool Enabled { get; set; }
+    }
+
     /// <summary>One registered sound package (issue #83 follow-up).</summary>
     public class SoundPackageData
     {
@@ -7509,6 +7545,41 @@ namespace PadForge.Services
         /// before it.</summary>
         [XmlElement]
         public bool EnablePlugins { get; set; }
+
+        /// <summary>The plugins the user added (#597), in the order added:
+        /// each one's file, the name its devices' identity is made from, the
+        /// name it gave, the SHA-256 the user approved and its switch.
+        /// Written only when the list holds one.</summary>
+        [XmlArray("Plugins")]
+        [XmlArrayItem("Plugin")]
+        public PluginData[] Plugins { get; set; }
+        public bool ShouldSerializePlugins() => Plugins != null && Plugins.Length > 0;
+
+        /// <summary>The built-in Test Controller's switch (#597). Off, and
+        /// left out of the file, until the user turns it on.</summary>
+        [XmlElement]
+        public bool TestControllerOn { get; set; }
+        public bool ShouldSerializeTestControllerOn() => TestControllerOn;
+
+        /// <summary>The Test Controller's speed, its place in the list Slow,
+        /// Normal, Fast, Fastest. Normal (1), and left out of the file, until
+        /// the user picks another. A number past the list reads as
+        /// Normal.</summary>
+        [XmlElement]
+        public int TestControllerSpeed { get; set; } = 1;
+        public bool ShouldSerializeTestControllerSpeed() => TestControllerSpeed != 1;
+
+        /// <summary>The built-in Replay's switch (#597). The recording it
+        /// plays is picked in each session and never saved.</summary>
+        [XmlElement]
+        public bool ReplayOn { get; set; }
+        public bool ShouldSerializeReplayOn() => ReplayOn;
+
+        /// <summary>Whether Replay starts its recording again at the
+        /// end.</summary>
+        [XmlElement]
+        public bool ReplayRepeat { get; set; }
+        public bool ShouldSerializeReplayRepeat() => ReplayRepeat;
 
         /// <summary>The External Control switch of #366 as files before #597
         /// saved it: a launcher or script could switch profiles over the

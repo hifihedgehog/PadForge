@@ -18,6 +18,12 @@ Buttons, axes and hats use PadForge's own numbers and ranges: an axis runs 0
 to 65535 with a stick at rest on 32768, axes 0 to 23 are the axes and 24 to
 31 the sliders, and a hat is in hundredths of a degree or -1. Event actions
 run while the script waits in Wait-PadForge or Wait-Event.
+
+A plugin is a program PadForge starts itself (Extras, Plugins). It connects
+with Connect-PadForgePlugin, which reads the one-time key and the pipe's
+name PadForge put in its environment. A plugin declares, drives and removes
+its own controllers whatever Automation's level, and writes to its log on
+the Plugins page with Write-PadForgeLog.
 #>
 
 $script:Protocol = 1
@@ -82,12 +88,47 @@ namespace PadForgeAutomation
             return 1;
         }
 
-        public Connection(string name, int timeoutMs)
+        public Connection(string name, int timeoutMs) : this(name, timeoutMs, false) { }
+
+        // A plugin's connection lets the server identify it and no more, and
+        // is made only to a pipe PadForge made: one owned by Administrators
+        // or SYSTEM, which a program without administrator rights cannot
+        // make. A pipe of another name, which only a test gives, may also be
+        // owned by this program's own user.
+        public Connection(string name, int timeoutMs, bool plugin)
         {
-            _pipe = new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous);
+            _pipe = plugin
+                ? new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous, System.Security.Principal.TokenImpersonationLevel.Identification)
+                : new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous);
             _pipe.Connect(timeoutMs);
+            if (plugin && !ServedByPadForge(name))
+            {
+                _pipe.Dispose();
+                throw new InvalidOperationException("The pipe " + name + " is not PadForge's, so the plugin's key was not sent.");
+            }
             BeginRead();
         }
+
+        private bool ServedByPadForge(string name)
+        {
+            IntPtr owner, descriptor;
+            if (GetSecurityInfo(_pipe.SafePipeHandle, 6, 1, out owner, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, out descriptor) != 0) return false;
+            try
+            {
+                var sid = new System.Security.Principal.SecurityIdentifier(owner);
+                if (sid.IsWellKnown(System.Security.Principal.WellKnownSidType.BuiltinAdministratorsSid)
+                    || sid.IsWellKnown(System.Security.Principal.WellKnownSidType.LocalSystemSid)) return true;
+                return name != "PadForge.Automation" && sid == System.Security.Principal.WindowsIdentity.GetCurrent().User;
+            }
+            finally { LocalFree(descriptor); }
+        }
+
+        [DllImport("advapi32.dll")]
+        private static extern uint GetSecurityInfo(SafeHandle handle, int objectType, int what, out IntPtr owner,
+            IntPtr group, IntPtr dacl, IntPtr sacl, out IntPtr descriptor);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LocalFree(IntPtr memory);
 
         public bool IsClosed { get { return _closed; } }
 
@@ -297,7 +338,8 @@ function Connect-PadForge {
         [Parameter(Mandatory, Position = 0)][string]$Name,
         [string]$Pipe = $script:DefaultPipe,
         [int]$Lease = 2000,
-        [int]$TimeoutSeconds = 5
+        [int]$TimeoutSeconds = 5,
+        [string]$Token = ''
     )
     $probe = [PadForgeAutomation.Connection]::Probe($Pipe, $Pipe -eq $script:DefaultPipe)
     if ($probe -eq 2) { throw 'PadForge is running, but Automation is off. Turn it on in Extras, Automation.' }
@@ -305,19 +347,38 @@ function Connect-PadForge {
         if ($Pipe -eq $script:DefaultPipe) { throw 'PadForge is not running.' }
         throw "Nothing serves the pipe $Pipe."
     }
-    $handle = New-Object PadForgeAutomation.Connection($Pipe, ($TimeoutSeconds * 1000))
+    $handle = New-Object PadForgeAutomation.Connection($Pipe, ($TimeoutSeconds * 1000), [bool]$Token)
     $script:Connection = [pscustomobject]@{ Handle = $handle; Lease = $Lease; Session = 0; Version = '' }
     $script:Callbacks = @{}
     $script:Subscribed = @{}
     Register-ObjectEvent -InputObject $handle -EventName Event -SourceIdentifier ('PadForge.Event.' + $handle.GetHashCode()) -Action {
         Invoke-PadForgeEvent $EventArgs.Line
     } | Out-Null
-    $hello = Invoke-PadForgeRequest ("hello name=" + (ConvertTo-PadForgeQuoted $Name) + " kind=script protocol=$($script:Protocol) lease=$Lease")
+    $kind = if ($Token) { 'kind=plugin token=' + (ConvertTo-PadForgeQuoted $Token) } else { 'kind=script' }
+    $hello = Invoke-PadForgeRequest ("hello name=" + (ConvertTo-PadForgeQuoted $Name) + " $kind protocol=$($script:Protocol) lease=$Lease")
     $script:Level = $hello.Pairs['level']
     $script:Connection.Session = [int]$hello.Pairs['session']
     $script:Connection.Version = $hello.Pairs['padforge']
     $handle.KeepLease($Lease)
     [pscustomobject]@{ Version = $hello.Pairs['padforge']; Level = $script:Level; Session = $script:Connection.Session }
+}
+
+function Connect-PadForgePlugin {
+    <# Opens a plugin's connection: PadForge started this script, and its
+       environment holds the one-time key and the pipe's name. The key is
+       taken once, so a plugin connects once for each start. #>
+    param([Parameter(Mandatory, Position = 0)][string]$Name, [int]$Lease = 2000, [int]$TimeoutSeconds = 5)
+    $token = $env:PADFORGE_PLUGIN_TOKEN
+    if (-not $token) { throw 'PadForge did not start this program as a plugin. Add it on the Plugins page.' }
+    $pipe = if ($env:PADFORGE_PIPE) { $env:PADFORGE_PIPE } else { $script:DefaultPipe }
+    Connect-PadForge -Name $Name -Pipe $pipe -Lease $Lease -TimeoutSeconds $TimeoutSeconds -Token $token
+}
+
+function Write-PadForgeLog {
+    <# A line for this plugin's log on the Plugins page. Only a plugin has a
+       log. #>
+    param([Parameter(Mandatory, Position = 0)][string]$Text)
+    (Get-PadForgeConnection).Handle.Send('log ' + (ConvertTo-PadForgeQuoted $Text))
 }
 
 function Disconnect-PadForge {
@@ -601,7 +662,7 @@ function Invoke-PadForgeTool {
     ConvertFrom-Json (Invoke-PadForgeRequest ("call $Tool " + (ConvertTo-Json $Arguments -Compress -Depth 8))).Json
 }
 
-Export-ModuleMember -Function Connect-PadForge, Disconnect-PadForge, Wait-PadForge, Invoke-PadForgeRequest,
+Export-ModuleMember -Function Connect-PadForge, Connect-PadForgePlugin, Write-PadForgeLog, Disconnect-PadForge, Wait-PadForge, Invoke-PadForgeRequest,
     Register-PadForgeButton, Register-PadForgeHat, Register-PadForgeAxis, Register-PadForgeDeviceChange,
     Register-PadForgeProfile, Register-PadForgeEngine, Register-PadForgeLevel, Register-PadForgeRumble, Register-PadForgeLight,
     Get-PadForgeDevice, Find-PadForgeDevice, Get-PadForgeCaps, Read-PadForgeDevice, Get-PadForgeOutputs,

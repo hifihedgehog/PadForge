@@ -1501,6 +1501,20 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Idulin ti skill…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Patarayen dagiti plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Awan ti plugin nga agtartaray.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} ti kaatiddogna</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>I-play</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ulitan</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} iti {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Rugianna a kadua ti engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Ichekna ti file sakbay nga agrugi</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin nga agtartaray: {0}. Device nga innayonda: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Ti plugin kit, ken ti log ti plugin a piliem</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Idulin ti plugin kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Bassit a plugin iti C#, ken isu met laeng a plugin para iti AutoHotkey, Python ken PowerShell, tunggal file adda ti wagas ti panangbuangay wenno panangpatarayna.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Mangpili iti plugin tapno makita ti logna.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Awan pay ti linaon ti log daytoy a plugin.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ipalubos</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Saan nga ipalubos</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Manipud iti {0}</value></data>

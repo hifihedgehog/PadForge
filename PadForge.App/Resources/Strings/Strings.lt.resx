@@ -581,6 +581,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Vykdyti įskiepius</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nė vienas įskiepis neveikia.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Įskiepis veikia su jūsų, o ne „PadForge“ teisėmis.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integruoti</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Bandomasis valdiklis</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Valdiklis, kuris juda pats, po vieną valdymo elementą, kad susiejimą būtų galima išbandyti neturint įrenginio.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Greitis</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lėtas</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Įprastas</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Greitas</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Greičiausias</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Atkūrimas</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Atkuria problemos įrašą kaip įrenginius, kurie jį sukūrė, su tuo pačiu laiku. Tai nauji įrenginiai šiame kompiuteryje, susieti taip, kaip juos susiejate jūs ar profilis.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Įrašas</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Atidaryti įrašą…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Neatidarytas joks įrašas.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, trukmė {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Atkūrimas</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Leisti</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Kartoti</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} iš {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (atkūrimas)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problemų įrašai|*.zip;*.log|Visi failai|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>„PadForge“ negali atkurti {0}. Tai nėra problemos įrašas arba jame nėra jokio įrenginio įvesties.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Jūsų įskiepiai</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Įskiepis yra programa, kuri prideda įrenginių į „PadForge“. „PadForge“ paleidžia jį su įprastomis jūsų teisėmis, kai tik veikia variklis.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Pridėti įskiepį…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programos ir scenarijai|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Visi failai|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Patvirtinti…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Prasideda kartu su varikliu</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Failas tikrinamas prieš paleidimą</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Baigė darbą su kodu {0}. Vėl prasidės po {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Nepaleista. Bandys vėl po {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Pasikeitė po jūsų patvirtinimo</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Sustabdyta po penkių nesėkmių iš eilės</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nepaleista: failo nebėra</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nepaleista: „Windows“ neturi programos šiai failo rūšiai</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nepaleista: neveikia darbalaukio apvalkalas, kuriame jį būtų galima paleisti</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nepaleista: darbalaukio apvalkalas turi administratoriaus teises, todėl jų turėtų ir įskiepis</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nepaleista: prašo administratoriaus teisių</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nepaleista: „Windows“ atsisakė su klaida {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nepaleista</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Paleista</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Baigė darbą su kodu {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Atmestas jo raktas iš proceso {0}, kurio „PadForge“ nepaleido</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Pridėti įskiepį</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Patvirtinkite įskiepį iš naujo</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Ši programa veiks su jūsų teisėmis, kai tik veiks variklis.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Failas pasikeitė po jūsų patvirtinimo. Ši programa veiks su jūsų teisėmis, kai tik veiks variklis.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Failas: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Pasirašė: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Nepasirašyta</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Pridėti įskiepį</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Patvirtinti</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>„PadForge“ negali perskaityti {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} jau yra sąraše.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>„PadForge“ vykdo iki 16 įskiepių. Pašalinkite vieną, kad pridėtumėte kitą.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Veikiantys įskiepiai: {0}. Jų pridėti įrenginiai: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Įskiepių rinkinys ir pasirinkto įskiepio žurnalas</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Įskiepių rinkinys</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Išsaugoti įskiepių rinkinį…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Nedidelis įskiepis C# kalba ir tas pats įskiepis, skirtas AutoHotkey, Python ir PowerShell, o prie kiekvieno failo nurodyta, kaip jį sukompiliuoti ar paleisti.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Žurnalas</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pasirinkite įskiepį, kad pamatytumėte jo žurnalą.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Šio įskiepio žurnale kol kas nieko nėra.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Judesio serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook judesio teikėjo protokolo serveris giroskopo ir akselerometro duomenims.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Įjungti DSU judesio serverį (CemuHook judesio teikėjo protokolas)</value></data>

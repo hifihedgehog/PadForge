@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Mexxi l-plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ebda plugin ma qed jaħdem.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin jaħdem bid-drittijiet tiegħek, mhux dawk ta' PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Inkorporati</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Kontrollur tat-test</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontrollur li jiċċaqlaq waħdu, kontroll wieħed kull darba, biex immappjar jista' jiġi pprovat mingħajr hardware f'idejk.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Veloċità</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Bil-mod</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normali</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Mgħaġġla</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>L-aktar mgħaġġla</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Jerġa' jdoqq reġistrazzjoni ta' problema bħala l-apparati li għamluha, bit-timing li kellhom. Huma apparati ġodda fuq dan il-PC, immappjati kif immappjahom int jew profil.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Reġistrazzjoni</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Iftaħ reġistrazzjoni…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Ebda reġistrazzjoni mhi miftuħa.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, tul {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Tħaddim</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Dewwaq</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Irrepeti</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} minn {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Replay)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Reġistrazzjonijiet ta' problemi|*.zip;*.log|Il-fajls kollha|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ma jistax idoqq {0}. Mhijiex reġistrazzjoni ta' problema, jew ma fiha l-input ta' ebda apparat.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Il-plugins tiegħek</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin huwa programm li jżid apparati ma' PadForge. PadForge jibdih bid-drittijiet ordinarji tiegħek kull meta jaħdem l-engine.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Żid plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmi u skripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Il-fajls kollha|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Approva…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Jibda mal-engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Qed jiċċekkja l-fajl qabel ma jibda</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ħareġ bil-kodiċi {0}. Jibda mill-ġdid fi {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Ma bediex. Jipprova mill-ġdid fi {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Inbidel minn mindu approvajtu</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Waqaf wara ħames fallimenti wara xulxin</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ma bediex: il-fajl m'għadux hemm</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ma bediex: Windows m'għandu l-ebda programm għal dan it-tip ta' fajl</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ma bediex: ebda shell tad-desktop mhi qed taħdem biex jibda taħtha</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ma bediex: ix-shell tad-desktop għandha drittijiet ta' amministratur, għalhekk il-plugin ikollu wkoll</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ma bediex: jitlob drittijiet ta' amministratur</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ma bediex: Windows irrifjuta bl-iżball {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ma bediex</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Beda</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Ħareġ bil-kodiċi {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Irrifjuta ċ-ċavetta tiegħu mill-proċess {0}, li PadForge ma bediex</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Żid plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Approva l-plugin mill-ġdid</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Dan il-programm se jaħdem bid-drittijiet tiegħek kull meta jaħdem l-engine.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Il-fajl inbidel minn mindu approvajtu. Dan il-programm se jaħdem bid-drittijiet tiegħek kull meta jaħdem l-engine.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Fajl: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Iffirmat minn: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Mhux iffirmat</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Żid il-plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Approva</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge ma jistax jaqra {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} diġà qiegħed fil-lista.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge iħaddem sa 16-il plugin. Neħħi wieħed biex iżżid ieħor.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins li qed jaħdmu: {0}. Apparati li żiedu: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Il-kit tal-plugins, u l-log ta' plugin li tagħżel</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit tal-plugins</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Salva l-kit tal-plugins…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin żgħir f'C#, u l-istess plugin għal AutoHotkey, Python u PowerShell, kull fajl b'kif jinbena jew jitħaddem.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Agħżel plugin biex tara l-log tiegħu.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Għadu ma hemm xejn fil-log ta' dan il-plugin.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server tal-moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server tal-protokoll DSU/CemuHook Motion Provider għad-data tal-ġiroskopju u tal-aċċelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Attiva s-server tal-moviment DSU (CemuHook Motion Provider Protocol)</value></data>

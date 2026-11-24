@@ -581,6 +581,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Endesha Programu Jalizi</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hakuna programu jalizi inayoendesha.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Programu jalizi huendesha kwa haki zako, si za PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Zilizojengewa Ndani</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Kidhibiti cha Majaribio</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kidhibiti kinachosogea chenyewe, kidhibiti kimoja kwa wakati, ili ramani ijaribiwe bila kifaa halisi mkononi.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Kasi</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Polepole</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Kawaida</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Haraka</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Haraka Zaidi</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Cheza Tena</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Hucheza tena rekodi ya tatizo kama vifaa vilivyoitengeneza, kwa muda ule ule. Ni vifaa vipya kwenye kompyuta hii, vilivyoramaniwa kama unavyoviramani wewe au wasifu.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rekodi</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Fungua Rekodi…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Hakuna rekodi iliyofunguliwa.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, urefu {1}</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Uchezaji</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Cheza</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Rudia</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} kati ya {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Cheza Tena)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Rekodi za matatizo|*.zip;*.log|Faili zote|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge haiwezi kucheza {0}. Si rekodi ya tatizo, au haina ingizo la kifaa chochote.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Programu Jalizi Zako</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Programu jalizi ni programu inayoongeza vifaa kwenye PadForge. PadForge huianzisha kwa haki zako za kawaida kila injini inapoendesha.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Ongeza Programu Jalizi…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programu na hati|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Faili zote|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Idhinisha…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Huanza na injini</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Inakagua faili kabla ya kuanza</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ilitoka kwa msimbo {0}. Huanza tena baada ya sekunde {1}.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Haikuanza. Hujaribu tena baada ya sekunde {0}.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Imebadilika tangu uliporuhusu</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Ilisimama baada ya kushindwa mara tano mfululizo</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Haikuanza: faili haipo tena</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Haikuanza: Windows haina programu ya aina hii ya faili</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Haikuanza: hakuna ganda la eneo-kazi linaloendesha la kuianzishia</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Haikuanza: ganda la eneo-kazi lina haki za msimamizi, kwa hiyo programu jalizi ingekuwa nazo pia</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Haikuanza: inaomba haki za msimamizi</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Haikuanza: Windows ilikataa kwa hitilafu {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Haikuanza</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Imeanza</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Ilitoka kwa msimbo {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Ilikataa ufunguo wake kutoka mchakato {0}, ambao PadForge haikuuanzisha</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Ongeza Programu Jalizi</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Idhinisha Programu Jalizi Tena</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Programu hii itaendesha kwa haki zako kila injini inapoendesha.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Faili imebadilika tangu uliporuhusu. Programu hii itaendesha kwa haki zako kila injini inapoendesha.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Faili: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Imesainiwa na: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Haijasainiwa</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Ongeza Programu Jalizi</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Idhinisha</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge haiwezi kusoma {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} tayari iko kwenye orodha.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge huendesha hadi programu jalizi 16. Ondoa moja ili kuongeza nyingine.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Programu jalizi zinazoendesha: {0}. Vifaa vilivyoongezwa nazo: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>Seti ya programu jalizi, na kumbukumbu ya programu jalizi unayochagua</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Seti ya Programu Jalizi</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Hifadhi Seti ya Programu Jalizi…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Programu jalizi ndogo ya C#, na ileile kwa AutoHotkey, Python na PowerShell, kila faili ikiwa na maelezo ya jinsi ya kuijenga au kuiendesha.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Kumbukumbu</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chagua programu jalizi kuona kumbukumbu yake.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Hakuna kitu kwenye kumbukumbu ya programu jalizi hii bado.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Seva ya mwendo</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Seva ya itifaki ya DSU/CemuHook Motion Provider ya data ya gyro na accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Washa seva ya mwendo ya DSU (Itifaki ya CemuHook Motion Provider)</value></data>

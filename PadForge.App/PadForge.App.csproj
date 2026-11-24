@@ -219,6 +219,16 @@
     <EmbeddedResource Include="Resources\Automation\PadForge.ahk" LogicalName="PadForge.Automation.PadForge.ahk" />
     <EmbeddedResource Include="Resources\Automation\padforge.py" LogicalName="PadForge.Automation.padforge.py" />
     <EmbeddedResource Include="Resources\Automation\PadForge.psm1" LogicalName="PadForge.Automation.PadForge.psm1" />
+    <!-- The plugin kit Save the Plugin Kit writes (#597): a small plugin in
+         C# and one for each library's language. The C# file is the kit's
+         and never part of PadForge's own build. PadForge.PluginProbe, which
+         the tests build, compiles it, so a kit that would not build fails
+         that build. -->
+    <Compile Remove="Resources\Plugins\**" />
+    <EmbeddedResource Include="Resources\Plugins\PadForgePlugin.cs" LogicalName="PadForge.Plugins.PadForgePlugin.cs" />
+    <EmbeddedResource Include="Resources\Plugins\plugin.py" LogicalName="PadForge.Plugins.plugin.py" />
+    <EmbeddedResource Include="Resources\Plugins\plugin.ps1" LogicalName="PadForge.Plugins.plugin.ps1" />
+    <EmbeddedResource Include="Resources\Plugins\plugin.ahk" LogicalName="PadForge.Plugins.plugin.ahk" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="PadForge.ThirdPartyNotices.txt" />
     <!-- The x64 HidHide setup, for x64 machines. Only the x64 build can run
          on one, so only the x64 build carries its 7.7 MB. -->

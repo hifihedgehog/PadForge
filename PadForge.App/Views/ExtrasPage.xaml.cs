@@ -258,6 +258,125 @@ namespace PadForge.Views
             }
         }
 
+        // ── Plugins (#597) ──
+
+        // A file being read for a confirmation: a second press waits for it.
+        private bool _describingPlugin;
+
+        /// <summary>The path, signer and SHA-256 the confirmation shows, read
+        /// off the interface's thread: a large file's hash and the signature
+        /// check hold no page. Null when the file cannot be read.</summary>
+        private async System.Threading.Tasks.Task<ViewModels.PluginApproval> DescribePluginAsync(ViewModels.IPluginsPageActions actions, string path)
+        {
+            _describingPlugin = true;
+            try { return await DescribeOffTheInterfaceThread(actions, path); }
+            finally { _describingPlugin = false; }
+        }
+
+        internal static System.Threading.Tasks.Task<ViewModels.PluginApproval> DescribeOffTheInterfaceThread(ViewModels.IPluginsPageActions actions, string path)
+            => System.Threading.Tasks.Task.Run(() => actions.Describe(path));
+
+        /// <summary>Add a Plugin…: the file picker, then PadForge's own
+        /// confirmation with the file's path, signer and SHA-256, Cancel the
+        /// default. The plugin is added for the bytes the confirmation
+        /// showed.</summary>
+        private async void AddPlugin_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            if (_describingPlugin) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var owner = Window.GetWindow(this);
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = s.Plugins_Confirm_Title,
+                Filter = s.Plugins_Add_Filter,
+                CheckFileExists = true,
+            };
+            if (dialog.ShowDialog(owner) != true) return;
+            string name = System.IO.Path.GetFileName(dialog.FileName);
+            if (actions.Has(dialog.FileName))
+            {
+                ConfirmDialog.Notice(owner, s.Plugins_Confirm_Title, string.Format(s.Plugins_Already_Format, name));
+                return;
+            }
+            var approval = await DescribePluginAsync(actions, dialog.FileName);
+            if (approval == null)
+            {
+                ConfirmDialog.Notice(owner, s.Plugins_Confirm_Title, string.Format(s.Plugins_NotRead_Format, name));
+                return;
+            }
+            if (!ConfirmDialog.Show(owner, s.Plugins_Confirm_Title, s.Plugins_Confirm_Message, s.Plugins_Confirm_Add,
+                    ApprovalDetail(approval), ConfirmKind.Primary)) return;
+            if (!actions.Add(approval)) ConfirmDialog.Notice(owner, s.Plugins_Confirm_Title, s.Plugins_Full);
+        }
+
+        /// <summary>Approve… on a plugin whose file changed: the same
+        /// confirmation, for the bytes it holds now.</summary>
+        private async void ApprovePlugin_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            if ((sender as FrameworkElement)?.DataContext is not ViewModels.PluginRowItem row) return;
+            if (_describingPlugin) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var owner = Window.GetWindow(this);
+            var approval = await DescribePluginAsync(actions, row.Path);
+            if (approval == null)
+            {
+                ConfirmDialog.Notice(owner, s.Plugins_Confirm_AgainTitle, string.Format(s.Plugins_NotRead_Format, System.IO.Path.GetFileName(row.Path)));
+                return;
+            }
+            if (ConfirmDialog.Show(owner, s.Plugins_Confirm_AgainTitle, s.Plugins_Confirm_Changed, s.Plugins_Confirm_Approve,
+                    ApprovalDetail(approval), ConfirmKind.Primary))
+                actions.Approve(row, approval);
+        }
+
+        /// <summary>The confirmation's lines: the path, the signer and the
+        /// SHA-256.</summary>
+        internal static string ApprovalDetail(ViewModels.PluginApproval approval)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            return string.Format(s.Plugins_Confirm_File_Format, approval.Path) + "\n"
+                + (approval.Signer != null ? string.Format(s.Plugins_Confirm_Signer_Format, approval.Signer) : s.Plugins_Confirm_Unsigned) + "\n"
+                + string.Format(s.Plugins_Confirm_Sha_Format, approval.Sha256);
+        }
+
+        /// <summary>Open a Recording…: a problem recording for Replay, as a
+        /// .zip or a .log.</summary>
+        private void OpenRecording_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var owner = Window.GetWindow(this);
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = s.Plugins_Replay_Open.TrimEnd('…'),
+                Filter = s.Plugins_Replay_Filter,
+                CheckFileExists = true,
+            };
+            if (dialog.ShowDialog(owner) != true) return;
+            if (actions.OpenRecording(dialog.FileName) != null)
+                ConfirmDialog.Notice(owner, s.Plugins_Replay, string.Format(s.Plugins_Replay_NotOpened_Format, System.IO.Path.GetFileName(dialog.FileName)));
+        }
+
+        /// <summary>Save the Plugin Kit…: a folder of example plugins in the
+        /// folder the user picks.</summary>
+        private void SavePluginKit_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            string title = s.Plugins_Kit_Save.TrimEnd('…');
+            var dialog = new Microsoft.Win32.OpenFolderDialog { Title = title };
+            if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            try
+            {
+                actions.SaveKit(dialog.FolderName);
+            }
+            catch (Exception ex)
+            {
+                ConfirmDialog.Notice(Window.GetWindow(this), title, string.Format(s.Extras_Automation_NotSaved_Format, ex.Message));
+            }
+        }
+
         /// <summary>Enter keeps a paired PC's new name and Escape puts the old
         /// one back. Focus leaving the box keeps it too (its binding updates on
         /// LostFocus).</summary>

@@ -587,6 +587,69 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Executar plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nenhum plugin em execução.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Um plugin é executado com os seus direitos, não com os do PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integrados</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Comando de teste</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Um comando que se move sozinho, um controlo de cada vez, para que se possa experimentar um mapeamento sem hardware à mão.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Velocidade</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lenta</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rápida</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Máxima</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Reprodução</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reproduz uma gravação de problema como os dispositivos que a fizeram, com o ritmo que tinham. São dispositivos novos neste PC, mapeados como o utilizador ou um perfil os mapeia.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Gravação</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Abrir uma gravação…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Nenhuma gravação aberta.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} de duração</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Reprodução</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Reproduzir</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Repetir</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} de {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Reprodução)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Gravações de problemas|*.zip;*.log|Todos os ficheiros|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>O PadForge não consegue reproduzir {0}. Não é uma gravação de problema ou não contém entradas de nenhum dispositivo.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Os seus plugins</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Um plugin é um programa que adiciona dispositivos ao PadForge. O PadForge inicia-o com os seus direitos habituais sempre que o motor está em execução.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Adicionar um plugin…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programas e scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Todos os ficheiros|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprovar…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Inicia com o motor</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>A verificar o ficheiro antes de iniciar</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Terminou com o código {0}. Reinicia dentro de {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Não iniciou. Tenta de novo dentro de {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Alterado desde que o aprovou</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Parou após cinco falhas seguidas</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Não iniciou: o ficheiro desapareceu</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Não iniciou: o Windows não tem programa para este tipo de ficheiro</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Não iniciou: não há nenhum shell do ambiente de trabalho onde o iniciar</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Não iniciou: o shell do ambiente de trabalho tem direitos de administrador, por isso o plugin também os teria</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Não iniciou: pede direitos de administrador</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Não iniciou: o Windows recusou com o erro {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Não iniciou</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Iniciou</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Terminou com o código {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Recusou a sua chave vinda do processo {0}, que o PadForge não iniciou</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Adicionar um plugin</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>Aprovar o plugin novamente</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Este programa será executado com os seus direitos sempre que o motor estiver em execução.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>O ficheiro foi alterado desde que o aprovou. Este programa será executado com os seus direitos sempre que o motor estiver em execução.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Ficheiro: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Assinado por: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Sem assinatura</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Adicionar plugin</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Aprovar</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>O PadForge não consegue ler {0}.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} já está na lista.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>O PadForge executa até 16 plugins. Remova um para adicionar outro.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins em execução: {0}. Dispositivos que adicionaram: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>O kit de plugins e o registo de um plugin à escolha</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Kit de plugins</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Guardar o kit de plugins…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Um pequeno plugin em C# e o mesmo plugin para AutoHotkey, Python e PowerShell, cada ficheiro com instruções para compilar ou executar.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Registo</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Escolha um plugin para ver o seu registo.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>O registo deste plugin ainda está vazio.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de movimento</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor do protocolo DSU/CemuHook Motion Provider para dados de giroscópio e acelerómetro.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ativar o servidor de movimento DSU (protocolo CemuHook Motion Provider)</value></data>

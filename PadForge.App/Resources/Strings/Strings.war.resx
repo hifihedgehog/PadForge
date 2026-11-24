@@ -1667,6 +1667,20 @@
   <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tipiga an Skill…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Diri ini natipig han PadForge: {0}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Waray plugin nga nadalagan.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} an kahalaba</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Patokara</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Ulita</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ha {1}</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Nagsisugod upod han engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Gin-che-check an file antes magsugod</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Mga plugin nga nadalagan: {0}. Mga device nga gindugang hira: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>An plugin kit, ngan an log han plugin nga imo pinili</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tipiga an Plugin Kit…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Usa nga gutiay nga plugin ha C#, ngan an pareho nga plugin para ha AutoHotkey, Python ngan PowerShell, kada file upod kun paonan-o ini himuon o padaganon.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pagpili hin plugin basi makita an log hini.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Waray pa sulod an log hini nga plugin.</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>May problema nga naagian an PadForge</value></data>
   <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Waray sugad nga device</value></data>
   <data name="Automation_Result_Offline" xml:space="preserve"><value>Diri nakakonek an device</value></data>

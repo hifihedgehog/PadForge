@@ -4038,6 +4038,69 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Plugins uitvoeren</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Er draait geen plugin.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Een plugin draait met jouw rechten, niet met die van PadForge.</value></data>
+  <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ingebouwd</value></data>
+  <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Een controller die uit zichzelf beweegt, één besturingselement tegelijk, zodat je een koppeling kunt proberen zonder hardware bij de hand.</value></data>
+  <data name="Plugins_Speed" xml:space="preserve"><value>Snelheid</value></data>
+  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Langzaam</value></data>
+  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normaal</value></data>
+  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Snel</value></data>
+  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Het snelst</value></data>
+  <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
+  <data name="Plugins_Replay_Note" xml:space="preserve"><value>Speelt een probleemopname af als de apparaten die haar maakten, met dezelfde timing. Het zijn nieuwe apparaten op deze pc, gekoppeld zoals jij of een profiel ze koppelt.</value></data>
+  <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opname</value></data>
+  <data name="Plugins_Replay_Open" xml:space="preserve"><value>Een opname openen…</value></data>
+  <data name="Plugins_Replay_None" xml:space="preserve"><value>Er is geen opname geopend.</value></data>
+  <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} lang</value></data>
+  <data name="Plugins_Replay_Playback" xml:space="preserve"><value>Afspelen</value></data>
+  <data name="Plugins_Replay_Play" xml:space="preserve"><value>Afspelen</value></data>
+  <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Herhalen</value></data>
+  <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} van {1}</value></data>
+  <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Replay)</value></data>
+  <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Probleemopnames|*.zip;*.log|Alle bestanden|*.*</value></data>
+  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kan {0} niet afspelen. Het is geen probleemopname of het bevat geen invoer van een apparaat.</value></data>
+  <data name="Plugins_Card_Yours" xml:space="preserve"><value>Jouw plugins</value></data>
+  <data name="Plugins_Empty" xml:space="preserve"><value>Een plugin is een programma dat apparaten aan PadForge toevoegt. PadForge start het met je gewone rechten telkens wanneer de engine draait.</value></data>
+  <data name="Plugins_Add" xml:space="preserve"><value>Een plugin toevoegen…</value></data>
+  <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programma's en scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alle bestanden|*.*</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Goedkeuren…</value></data>
+  <data name="Plugins_State_Waiting" xml:space="preserve"><value>Start met de engine</value></data>
+  <data name="Plugins_State_Checking" xml:space="preserve"><value>Het bestand wordt gecontroleerd voor het start</value></data>
+  <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Afgesloten met code {0}. Start opnieuw over {1} s.</value></data>
+  <data name="Plugins_State_Retry_Format" xml:space="preserve"><value>Niet gestart. Probeert opnieuw over {0} s.</value></data>
+  <data name="Plugins_State_Changed" xml:space="preserve"><value>Gewijzigd sinds je het goedkeurde</value></data>
+  <data name="Plugins_State_Failed" xml:space="preserve"><value>Gestopt na vijf mislukkingen achter elkaar</value></data>
+  <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Niet gestart: het bestand is weg</value></data>
+  <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Niet gestart: Windows heeft geen programma voor dit soort bestand</value></data>
+  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Niet gestart: er draait geen bureaubladshell om het onder te starten</value></data>
+  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Niet gestart: de bureaubladshell heeft beheerdersrechten, dus de plugin zou ze ook hebben</value></data>
+  <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Niet gestart: het vraagt om beheerdersrechten</value></data>
+  <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Niet gestart: Windows weigerde met fout {0}</value></data>
+  <data name="Plugins_Refused_Other" xml:space="preserve"><value>Niet gestart</value></data>
+  <data name="Plugins_Log_Started" xml:space="preserve"><value>Gestart</value></data>
+  <data name="Plugins_Log_Exited_Format" xml:space="preserve"><value>Afgesloten met code {0}</value></data>
+  <data name="Plugins_Log_ForeignKey_Format" xml:space="preserve"><value>Weigerde zijn sleutel van proces {0}, dat PadForge niet startte</value></data>
+  <data name="Plugins_Confirm_Title" xml:space="preserve"><value>Een plugin toevoegen</value></data>
+  <data name="Plugins_Confirm_AgainTitle" xml:space="preserve"><value>De plugin opnieuw goedkeuren</value></data>
+  <data name="Plugins_Confirm_Message" xml:space="preserve"><value>Dit programma draait met jouw rechten telkens wanneer de engine draait.</value></data>
+  <data name="Plugins_Confirm_Changed" xml:space="preserve"><value>Het bestand is gewijzigd sinds je het goedkeurde. Dit programma draait met jouw rechten telkens wanneer de engine draait.</value></data>
+  <data name="Plugins_Confirm_File_Format" xml:space="preserve"><value>Bestand: {0}</value></data>
+  <data name="Plugins_Confirm_Signer_Format" xml:space="preserve"><value>Ondertekend door: {0}</value></data>
+  <data name="Plugins_Confirm_Unsigned" xml:space="preserve"><value>Niet ondertekend</value></data>
+  <data name="Plugins_Confirm_Sha_Format" xml:space="preserve"><value>SHA-256: {0}</value></data>
+  <data name="Plugins_Confirm_Add" xml:space="preserve"><value>Plugin toevoegen</value></data>
+  <data name="Plugins_Confirm_Approve" xml:space="preserve"><value>Goedkeuren</value></data>
+  <data name="Plugins_NotRead_Format" xml:space="preserve"><value>PadForge kan {0} niet lezen.</value></data>
+  <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} staat al in de lijst.</value></data>
+  <data name="Plugins_Full" xml:space="preserve"><value>PadForge voert maximaal 16 plugins uit. Verwijder er een om een andere toe te voegen.</value></data>
+  <data name="Plugins_Status_Format" xml:space="preserve"><value>Actieve plugins: {0}. Apparaten die ze toevoegden: {1}.</value></data>
+  <data name="Plugins_More_Hint" xml:space="preserve"><value>De pluginkit en het logboek van een plugin die je kiest</value></data>
+  <data name="Plugins_Kit" xml:space="preserve"><value>Pluginkit</value></data>
+  <data name="Plugins_Kit_Save" xml:space="preserve"><value>De pluginkit opslaan…</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Een kleine plugin in C# en dezelfde plugin voor AutoHotkey, Python en PowerShell, elk bestand met uitleg over bouwen of uitvoeren.</value></data>
+  <data name="Plugins_Log" xml:space="preserve"><value>Logboek</value></data>
+  <data name="Plugins_Log_Pick" xml:space="preserve"><value>Kies een plugin om het logboek te zien.</value></data>
+  <data name="Plugins_Log_Empty" xml:space="preserve"><value>Het logboek van deze plugin is nog leeg.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Toewijzingsannotaties</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

@@ -2619,6 +2619,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>ಮೌಸ್ ಸ್ಥಾನ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ಮೂಲವಾರು ಕರ್ಸರ್ ಸಂವೇದನಾಶೀಲತೆ. 1.0 ಕೇಂದ್ರದಿಂದ ಪರದೆಯ ಅಗಲದ 10% ದೂರದಲ್ಲಿ ಸ್ಟಿಕ್‌ನ ಪೂರ್ಣ ವಿಚಲನೆಯನ್ನು ತಲುಪುತ್ತದೆ. 1.0 ಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಮೌಲ್ಯಗಳು ಕಡಿಮೆ ಕರ್ಸರ್ ಚಲನೆಯಲ್ಲೇ ಪೂರ್ಣ ವಿಚಲನೆಯನ್ನು ತಲುಪುತ್ತವೆ. 1.0 ಕ್ಕಿಂತ ಕಡಿಮೆ ಮೌಲ್ಯಗಳಿಗೆ ಹೆಚ್ಚು ಚಲನೆ ಬೇಕು.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ಮೌಸ್ ಸಂಚಾರ X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ಮೌಸ್ ಸಂಚಾರ Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>ಪೂರ್ಣ ಲಾಕ್‌ವರೆಗಿನ ಸಂಚಾರ</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ಮೌಸ್ ಮಧ್ಯದಿಂದ ಪೂರ್ಣ ಲಾಕ್‌ವರೆಗೆ ಎಷ್ಟು ಚಲಿಸಬೇಕು, ಮೌಸ್ ವರದಿ ಮಾಡುವ ಕೌಂಟ್‌ಗಳಲ್ಲಿ. ಹೆಚ್ಚಿನ ಸಂಖ್ಯೆ ಸೂಕ್ಷ್ಮವಾಗಿ ತಿರುಗಿಸುತ್ತದೆ ಮತ್ತು ಕೈ ಹೆಚ್ಚು ಚಲಿಸಬೇಕಾಗುತ್ತದೆ.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ಕೌಂಟ್‌ಗಳು</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ಕೇಂದ್ರೀಕರಣ</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ಆಫ್ ವೀಲ್ ಅನ್ನು ಕೈ ಬಿಟ್ಟಲ್ಲೇ ಹಿಡಿದಿಡುತ್ತದೆ. ಸ್ಪ್ರಿಂಗ್ ಮರಳುವ ಸಮಯದಲ್ಲಿ ಅದನ್ನು ಹಿಂದಕ್ಕೆ ತರುತ್ತದೆ. ಟೆಲಿಮೆಟ್ರಿಯಿಂದ ಆಟದ ವೇಗ ಮತ್ತು ಹಿಡಿತದಲ್ಲಿ ಕಾರಿನ ಮುಂದಿನ ಟೈರ್‌ಗಳಂತೆ ಹಿಂದಕ್ಕೆ ಎಳೆಯುತ್ತದೆ: ನಿಂತಾಗ ಸ್ಥಿರ, ವೇಗದೊಂದಿಗೆ ಬಿಗಿ, ಟೈರ್‌ಗಳು ಜಾರಿದಾಗ ಹಗುರ. ಟೆಲಿಮೆಟ್ರಿ ಕಳುಹಿಸುವ ಆಟ ಇಲ್ಲದಿದ್ದರೆ ಅದು ಸ್ಪ್ರಿಂಗ್ ಆಗಿರುತ್ತದೆ. ಆಟದ ಬಲದಿಂದ ವರ್ಚುವಲ್ ವೀಲ್‌ನ ಸ್ವಂತ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಅದನ್ನು ತಿರುಗಿಸಲು ಬಿಡುತ್ತದೆ.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ಆಫ್</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ಸ್ಪ್ರಿಂಗ್</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ಟೆಲಿಮೆಟ್ರಿಯಿಂದ</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ಆಟದ ಬಲದಿಂದ</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>ಮರಳುವ ಸಮಯ</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>ಸ್ಪ್ರಿಂಗ್ ವೀಲ್ ಅನ್ನು 95% ಹಿಂದಕ್ಕೆ ತರಲು ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯ. ಟೆಲಿಮೆಟ್ರಿಯಿಂದ ಒಣ ರಸ್ತೆಯಲ್ಲಿ 100 km/h ವೇಗದಲ್ಲಿ ಇಷ್ಟು ಸಮಯ ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ಸ್ಟೀರ್</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ಯಾವಾಗಲೂ ಮೌಸ್ ಎಲ್ಲ ಸಮಯದಲ್ಲೂ ಸ್ಟೀರ್ ಮಾಡಲು ಬಿಡುತ್ತದೆ. ಹಿಡಿದಿರುವಾಗ ಸ್ಟೀರ್ ಇನ್‌ಪುಟ್ ಹಿಡಿದಿರುವಾಗ ಮಾತ್ರ ಬಿಡುತ್ತದೆ. ಟಾಗಲ್ ಸ್ಟೀರ್ ಇನ್‌ಪುಟ್ ಒತ್ತಿದಾಗಲೆಲ್ಲ ಸ್ಟೀರಿಂಗ್ ಅನ್ನು ಆನ್ ಅಥವಾ ಆಫ್ ಮಾಡುತ್ತದೆ. ಮೌಸ್ ಸ್ಟೀರ್ ಮಾಡದಿರುವಾಗ ವೀಲ್ ಇದ್ದಲ್ಲೇ ಉಳಿಯುತ್ತದೆ ಅಥವಾ ಮಧ್ಯಕ್ಕೆ ಬರುತ್ತದೆ, ಆದ್ದರಿಂದ ಒಂದೇ ಮೌಸ್‌ನಿಂದ ಸ್ಟೀರ್ ಮಾಡಲೂ ಸುತ್ತ ನೋಡಲೂ ಸಾಧ್ಯ.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ಯಾವಾಗಲೂ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ಹಿಡಿದಿರುವಾಗ</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ಟಾಗಲ್</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ಸ್ಟೀರ್ ಇನ್‌ಪುಟ್</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ಮೌಸ್ ಸ್ಟೀರ್ ಮಾಡಲು ಬಿಡುವ ಬಟನ್, ಮೌಸ್‌ನ ಸಂಚಾರ ಇರುವ ಅದೇ ಸಾಧನದಲ್ಲಿರುವುದು. ಯಾವುದನ್ನೂ ಆರಿಸದಿದ್ದರೆ ಮೌಸ್ ಯಾವಾಗಲೂ ಸ್ಟೀರ್ ಮಾಡುತ್ತದೆ.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ಸ್ಮೂತಿಂಗ್</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ಅಸಮವಾಗಿ ವರದಿ ಮಾಡುವ ಮೌಸ್ ಅನ್ನು ಸರಾಗಗೊಳಿಸುತ್ತದೆ. ವೀಲ್ ಕೈಗಿಂತ ಸುಮಾರು ಇಷ್ಟು ಸಮಯ ಹಿಂದೆ ಇರುತ್ತದೆ. 0 ಆಫ್ ಎಂದರ್ಥ.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>ವೇಗದಲ್ಲಿ ಲಾಕ್</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಆನ್ ಇದ್ದಾಗ, 200 km/h ವೇಗದಲ್ಲಿ ಲಾಕ್‌ನ ಎಷ್ಟು ಭಾಗ ಉಳಿಯುತ್ತದೆ. 100% ಇದ್ದರೆ ಪ್ರತಿ ವೇಗದಲ್ಲೂ ಪೂರ್ಣ ಲಾಕ್ ಇರುತ್ತದೆ.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ಪಾಯಿಂಟರ್ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ಪಾಯಿಂಟರ್ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR ಪ್ರಕಾಶಮಾನತೆ</value></data>
@@ -3313,8 +3337,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>ಇಡೀ ಫ್ಲಿಕ್ ನಕ್ಷೆಯನ್ನು ಇಷ್ಟು ಡಿಗ್ರಿ ತಿರುಗಿಸುತ್ತದೆ. ಧನಾತ್ಮಕ ಎಂದರೆ ಗಡಿಯಾರದ ದಿಕ್ಕಿನಲ್ಲಿ. ಸ್ನ್ಯಾಪ್ ಆಫ್‌ಸೆಟ್ ನಂತರ ಅನ್ವಯವಾಗುತ್ತದೆ.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ ಇರುವ ಲೇಯರ್ ತೊಡಗುವಾಗ ಸ್ಟಿಕ್ ಈಗಾಗಲೇ ವಾಲಿದ್ದರೆ, ಫ್ಲಿಕ್ ತಕ್ಷಣ ಕಾರ್ಯಗತವಾಗುತ್ತದೆ. ಆಫ್ ಇದ್ದರೆ ಕ್ಯಾಮೆರಾ ಸ್ಥಿರವಾಗಿರುತ್ತದೆ ಮತ್ತು ಈಗಿನ ಸ್ಟಿಕ್ ಕೋನದಿಂದ ತಿರುಗುವಿಕೆಯನ್ನು ಅನುಸರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಲಾಕ್ ಪ್ರತಿಕ್ರಿಯೆ</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಮೋಡ್‌ನ ಸ್ಟಿಕ್ ಪೂರ್ಣ ಲಾಕ್ ತಲುಪಿದಾಗ ಸೂಚನೆ</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಮೋಡ್‌ಗೆ ಹೊಂದಿಸಿದ ಸ್ಟಿಕ್ ಅನ್ನು ಪೂರ್ಣ ಲಾಕ್‌ವರೆಗೆ ತಿರುಗಿಸಿದಾಗ, ಮಿತಿಯನ್ನು ಅನುಭವಿಸಲು ಒಂದು ಸೂಚನೆಯನ್ನು (ಕಂಪನ, ಟ್ರಿಗರ್ ಅಥವಾ ಲೈಟ್ ಬಾರ್) ನೀಡುತ್ತದೆ. ಎಲ್ಲವೂ ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಪೂರ್ಣ ಲಾಕ್ ತಲುಪಿದಾಗ ಸೂಚನೆ</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಮೋಡ್‌ನಲ್ಲಿರುವ ಸ್ಟಿಕ್, ಚಲನೆ ವಾಲುವಿಕೆ ಇನ್‌ಪುಟ್ ಅಥವಾ ಮೌಸ್ ಸಂಚಾರ ಇನ್‌ಪುಟ್ ಪೂರ್ಣ ಲಾಕ್ ತಲುಪಿದಾಗ, ಮಿತಿಯನ್ನು ಅನುಭವಿಸಲು ಒಂದು ಸೂಚನೆಯನ್ನು (ಕಂಪನ, ಟ್ರಿಗರ್ ಅಥವಾ ಲೈಟ್ ಬಾರ್) ನೀಡುತ್ತದೆ. ಎಲ್ಲವೂ ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಕಂಪನ ಪಲ್ಸ್</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಟ್ರಿಗರ್ ಕಂಪನ</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಲೈಟ್ ಬಾರ್ ಪಲ್ಸ್</value></data>
@@ -4261,6 +4285,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ಕೀಗಳನ್ನು ಟಾಗಲ್ ಮಾಡಿ {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ಜೈರೋ ಮರುಕೇಂದ್ರೀಕರಣ</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>ಒತ್ತಿದಾಗ ಪ್ಯಾಡ್‌ನ ಸಂಗ್ರಹವಾದ ಜೈರೋ ಗುರಿ ಉಲ್ಲೇಖಗಳನ್ನು ಸೊನ್ನೆಗೊಳಿಸುತ್ತದೆ. ಸ್ಮೂತಿಂಗ್ ಇತಿಹಾಸ ತೆರವಾಗುತ್ತದೆ, ಚಲನೆ ವಾಲುವಿಕೆಯ ತಟಸ್ಥವನ್ನು ಮತ್ತೆ ಸೆರೆಹಿಡಿಯಲಾಗುತ್ತದೆ, ಗುರುತ್ವ ಅಂದಾಜನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಈಗಿನ ಭಂಗಿಯಿಂದ ಮತ್ತೆ ಹೊಂದಿಸಲಾಗುತ್ತದೆ, ಮತ್ತು ಚಲನೆ ಪಿಚ್, ಯಾ ಮತ್ತು ರೋಲ್ ಸಾಲುಗಳು ನಿರ್ಮಿಸಿದ ತಿರುವನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುತ್ತದೆ.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>ಮೌಸ್ ಸ್ಟೀರಿಂಗ್ ಕೇಂದ್ರೀಕರಿಸಿ</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನ ಪ್ರತಿ ಮೌಸ್ ಸಂಚಾರ ಇನ್‌ಪುಟ್‌ನ ವೀಲ್ ಅನ್ನು ಮತ್ತೆ ಮಧ್ಯಕ್ಕೆ ತರುತ್ತದೆ.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ಯಾವುದೇ ಸಾಧನ)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>ಮೆನುಗಳು</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>ಮೆನುಗಳು ಭೌತಿಕ ಸ್ಟಿಕ್ ಅಥವಾ ಟಚ್‌ಪ್ಯಾಡ್ ಅನ್ನು ಪರದೆಯ ಮೇಲಿನ ರಿಂಗ್ ಅಥವಾ ಗ್ರಿಡ್ ಆಗಿ ಪರಿವರ್ತಿಸುತ್ತವೆ. ಒಂದನ್ನು ರಚಿಸಲು "ಮೆನುಗಳು" ಪಕ್ಕದ + ಒತ್ತಿ, ಅದನ್ನು ಯಾವುದು ತೆರೆಯುತ್ತದೆ ಎಂದು ಆರಿಸಿ, ನಂತರ ಪ್ರತಿ ಕೋಶಕ್ಕೆ ಹೆಸರು ಮತ್ತು ಕ್ರಿಯೆ ನೀಡಿ.</value></data>

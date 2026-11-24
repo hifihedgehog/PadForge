@@ -1223,4 +1223,10 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Pichhla update se community database nai badla hai.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Naya mapping agla baar use hoi jab uske controller connect hoi.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Badla mapping agla baar use hoi jab PadForge chalu hoi.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetry se</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Hamesa</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Uu button jon mouse ke steer kare deve hai, mouse ke travel wala device pe. Koi nai chuna to mouse hamesa steer kare hai.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game telemetry On rahe pe, 200 km/h pe kitna lock bache hai. 100% pe pura lock har speed pe rahe hai.</value></data>
 </root>

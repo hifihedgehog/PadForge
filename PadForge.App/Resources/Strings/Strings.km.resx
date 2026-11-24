@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>ទីតាំងកណ្ដុរ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ភាពរសើបទ្រនិចកណ្ដុរតាមប្រភពនីមួយៗ។ 1.0 ឈានដល់កម្រិតរុញពេញរបស់ដងបញ្ជា នៅ 10% នៃទទឹងអេក្រង់ពីកណ្ដាល។ តម្លៃលើស 1.0 ឈានដល់កម្រិតរុញពេញដោយផ្លាស់ទីទ្រនិចកណ្ដុរតិចជាង។ តម្លៃក្រោម 1.0 ត្រូវការច្រើនជាង។</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ចម្ងាយកណ្ដុរ X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ចម្ងាយកណ្ដុរ Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>ចម្ងាយដល់កំណត់ពេញ</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ចម្ងាយដែលកណ្ដុរផ្លាស់ទីពីកណ្ដាលដល់កំណត់ពេញ គិតជាចំនួនជំហានដែលកណ្ដុររាយការណ៍។ លេខខ្ពស់ជាង បត់ចង្កូតបានល្អិតជាង ហើយត្រូវការចលនាដៃច្រើនជាង។</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ជំហាន</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ការត្រឡប់ទៅកណ្ដាល</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«បិទ» រក្សាចង្កូតនៅកន្លែងដែលដៃបានទុក។ «រ៉ឺស័រ» នាំវាត្រឡប់មកវិញក្នុងរយៈ «ពេលត្រឡប់»។ «ពីតេឡេម៉ែត្រ» ទាញវាត្រឡប់មកវិញដូចកង់មុខរថយន្ត តាមល្បឿន និងការក្ដាប់របស់ហ្គេម៖ នៅស្ងៀមពេលឈប់ រឹងជាងតាមល្បឿន និងស្រាលពេលកង់រអិល។ បើគ្មានហ្គេមណាផ្ញើតេឡេម៉ែត្រ វាជារ៉ឺស័រ។ «ពីកម្លាំងរបស់ហ្គេម» អនុញ្ញាតឱ្យកម្លាំងប្រតិកម្មរបស់ចង្កូតនិម្មិតផ្ទាល់ បង្វិលវា។</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>បិទ</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>រ៉ឺស័រ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ពីតេឡេម៉ែត្រ</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ពីកម្លាំងរបស់ហ្គេម</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>ពេលត្រឡប់</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>រយៈពេលដែល «រ៉ឺស័រ» ត្រូវការដើម្បីនាំចង្កូតត្រឡប់មកវិញ 95% នៃផ្លូវ។ «ពីតេឡេម៉ែត្រ» ត្រូវការរយៈពេលនេះនៅ 100 km/h លើផ្លូវស្ងួត។</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>បត់ចង្កូត</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«ជានិច្ច» អនុញ្ញាតឱ្យកណ្ដុរបត់ចង្កូតគ្រប់ពេល។ «ខណៈសង្កត់ជាប់» អនុញ្ញាតឱ្យវាបត់ចង្កូតតែខណៈ «ការបញ្ចូលសម្រាប់បត់ចង្កូត» ត្រូវបានសង្កត់។ «បិទ/បើក» បើក ឬបិទការបត់ចង្កូត រាល់ពេលចុច «ការបញ្ចូលសម្រាប់បត់ចង្កូត»។ ខណៈកណ្ដុរមិនបត់ចង្កូត ចង្កូតនៅកន្លែងដដែល ឬត្រឡប់ទៅកណ្ដាល ដូច្នេះកណ្ដុរតែមួយអាចបត់ចង្កូត និងមើលជុំវិញបាន។</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ជានិច្ច</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ខណៈសង្កត់ជាប់</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>បិទ/បើក</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ការបញ្ចូលសម្រាប់បត់ចង្កូត</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ប៊ូតុងដែលអនុញ្ញាតឱ្យកណ្ដុរបត់ចង្កូត នៅលើឧបករណ៍ដដែលនឹងចម្ងាយកណ្ដុរ។ បើមិនបានជ្រើសណាមួយ កណ្ដុរបត់ចង្កូតជានិច្ច។</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ការធ្វើឱ្យរលូន</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ធ្វើឱ្យកណ្ដុរដែលរាយការណ៍មិនស្មើគ្នា មានភាពស្មើ។ ចង្កូតយឺតតាមដៃប្រហែលរយៈពេលនេះ។ 0 គឺបិទ។</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>កំណត់ពេញពេលល្បឿនលឿន</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ពេល «តេឡេម៉ែត្រហ្គេម» បើក ចំណែកនៃកំណត់ពេញដែលនៅសល់នៅ 200 km/h។ នៅ 100% កំណត់ពេញទាំងមូលមាននៅគ្រប់ល្បឿន។</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>ទ្រនិច IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>ទ្រនិច IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>កម្រិតពន្លឺ IR</value></data>
@@ -3334,8 +3358,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>បង្វិលផែនទីហ្វ្លិកទាំងមូលតាមចំនួនដឺក្រេនេះ។ តម្លៃវិជ្ជមានគឺតាមទិសទ្រនិចនាឡិកា។ ការតម្រឹមអនុវត្តបន្ទាប់ពីគម្លាត។</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ពេលស្រទាប់ដែលមានហ្វ្លិកស្ទីកក្លាយជាសកម្ម ខណៈដងបញ្ជាត្រូវបានរុញរួចហើយ ធ្វើការហ្វ្លិកភ្លាមៗ។ បិទ រក្សាកាមេរ៉ានៅស្ងៀម ហើយតាមដានការបង្វិលពីមុំដងបញ្ជាបច្ចុប្បន្ន។</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>សញ្ញាពេលបត់ចង្កូតដល់កំណត់</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>សញ្ញាពេលដងបញ្ជារបៀបបត់ចង្កូតបត់ដល់កំណត់ពេញ</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ពេលដងបញ្ជាដែលកំណត់ជារបៀបបត់ចង្កូត ត្រូវបានបត់រហូតដល់កំណត់ពេញ បញ្ចេញសញ្ញា (ការញ័រ ទ្រីហ្គឺ ឬរបារភ្លើង) ដើម្បីឱ្យអ្នកដឹងពីដែនកំណត់។ ទាំងអស់បិទតាមលំនាំដើម។</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>សញ្ញាពេលការបត់ចង្កូតដល់កំណត់ពេញ</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ពេលដងបញ្ជាក្នុងរបៀបបត់ចង្កូត ការបញ្ចូល «ចលនាទ្រេត» ឬការបញ្ចូល «ចម្ងាយកណ្ដុរ» ដល់កំណត់ពេញ បញ្ចេញសញ្ញា (ការញ័រ ទ្រីហ្គឺ ឬរបារភ្លើង) ដើម្បីឱ្យអ្នកដឹងពីដែនកំណត់។ ទាំងអស់បិទតាមលំនាំដើម។</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ការញ័រខ្លីពេលដល់កំណត់</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ការញ័រទ្រីហ្គឺពេលដល់កំណត់</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ការភ្លឺភ្លែតរបារភ្លើងពេលដល់កំណត់</value></data>
@@ -4281,6 +4305,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>បិទ/បើកគ្រាប់ចុច {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>កំណត់កណ្ដាលហ្ស៊ីរ៉ូឡើងវិញ</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>កំណត់សេចក្ដីយោងការតម្រង់ហ្ស៊ីរ៉ូដែលបានប្រមូលផ្ដុំរបស់ផេដទៅសូន្យពេលចុច។ ប្រវត្តិធ្វើឱ្យរលូនត្រូវបានសម្អាត ទីតាំងអព្យាក្រឹតនៃ «ចលនាទ្រេត» ចាប់យកឡើងវិញ ការប៉ាន់ស្មានទំនាញចាប់ផ្ដើមឡើងវិញពីទីតាំងបច្ចុប្បន្នរបស់ឧបករណ៍បញ្ជា ហើយការបង្វិលដែលជួរ «ចលនាងើបឱន» «ចលនាងាកឆ្វេងស្ដាំ» និង «ចលនាផ្អៀង» បានបង្កើតត្រូវបានលុបចោល។</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>ដាក់ចង្កូតកណ្ដុរទៅកណ្ដាល</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>ដាក់ចង្កូតនៃការបញ្ចូល «ចម្ងាយកណ្ដុរ» នីមួយៗនៅលើឧបករណ៍បញ្ជានិម្មិតនេះ ត្រឡប់ទៅកណ្ដាលវិញ។</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ឧបករណ៍ណាមួយ)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>ម៉ឺនុយ</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>ម៉ឺនុយប្រែក្លាយដងបញ្ជា ឬផ្ទាំងប៉ះរូបវន្តទៅជារង្វង់ ឬក្រឡាចត្រង្គនៅលើអេក្រង់។ ចុច + នៅក្បែរ «ម៉ឺនុយ» ដើម្បីបង្កើតមួយ ជ្រើសអ្វីដែលបើកវា រួចផ្ដល់ឈ្មោះ និងសកម្មភាពឱ្យក្រឡានីមួយៗ។</value></data>

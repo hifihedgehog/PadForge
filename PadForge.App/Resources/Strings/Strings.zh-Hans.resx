@@ -2104,6 +2104,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>鼠标位置 Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>每个来源的光标灵敏度。1.0 时，从中心移动屏幕宽度的 10% 即可使摇杆完全偏转。大于 1.0 时用更少的光标移动即可完全偏转，小于 1.0 时需要更多。</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>鼠标行程 X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>鼠标行程 Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>到极限的行程</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>鼠标从中心移动到极限的距离，以鼠标上报的计数为单位。数值越大，转向越细腻，手需要移动的距离也越长。</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>计数</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>回中</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>“关”让方向盘停在手松开的位置。“弹簧”会在回位时间内把它拉回。“来自遥测”像汽车前轮那样按游戏的车速和抓地力把它拉回：静止时不动，车速越高越紧，轮胎打滑时变轻。没有游戏发送遥测时，效果同弹簧。“来自游戏的力”则让虚拟方向盘自己的力反馈来转动它。</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>关</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>弹簧</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>来自遥测</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>来自游戏的力</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>回位时间</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>弹簧把方向盘拉回 95% 所需的时间。“来自遥测”在干燥路面时速 100 km/h 时需要这么长。</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>转向</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>“始终”让鼠标随时转向。“按住时”只在按住转向输入时让它转向。“切换”每按一次转向输入就开启或关闭转向。鼠标不转向时，方向盘停在原处或回中，因此一只鼠标既能转向也能环顾四周。</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>始终</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>按住时</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>切换</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>转向输入</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>让鼠标转向的按钮，与鼠标行程在同一设备上。未选择时，鼠标始终转向。</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>平滑</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>平稳处理上报不均匀的鼠标。方向盘会比手慢大约这么长时间。0 表示关闭。</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>高速时的极限</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>开启游戏遥测时，在 200 km/h 时还剩多少极限行程。为 100% 时，任何车速下都有完整的极限行程。</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y</value></data>
@@ -2836,8 +2860,8 @@
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>体感倾斜输入的设置：像方向盘一样倾斜手柄。在“映射”中将“体感倾斜”映射到摇杆轴。</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置体感转向</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>转向模式摇杆到达极限时的提示</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>转向到达极限时的提示</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当转向模式下的摇杆、Motion Lean 输入或鼠标行程输入到达极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到达极限时扳机振动</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>到达极限时灯条脉冲</value></data>
@@ -4492,6 +4516,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切换按键 {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺仪重新居中</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化，运动 俯仰、偏航和翻滚行产生的旋转被撤销。</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>鼠标转向回中</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>把此虚拟控制器上每个鼠标行程输入的方向盘都放回中心。</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>菜单</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>菜单可以把物理摇杆或触控板变成屏幕上的环形或网格菜单。点击“菜单”旁的 + 新建一个，选择打开方式，然后为每个单元格设置名称和动作。</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>新建菜单</value></data>

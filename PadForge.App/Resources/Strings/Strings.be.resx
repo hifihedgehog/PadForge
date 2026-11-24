@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Пазіцыя мышы Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Адчувальнасць</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Адчувальнасць курсора для крыніцы. Пры 1.0 поўнае адхіленне стыка дасягаецца на адлегласці 10% шырыні экрана ад цэнтра. Значэнні вышэй за 1.0 даюць поўнае адхіленне пры меншым руху курсора. Значэнням ніжэй за 1.0 патрэбна больш.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ход мышы X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ход мышы Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ход да ўпора</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Наколькі мыш рухаецца ад цэнтра да ўпора, у адзінках, якія паведамляе мыш. Большая лічба рулявое кіраванне робіць больш дакладным і патрабуе большага руху рукі.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>адзінак</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Цэнтраванне</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Выключана» пакідае руль там, дзе яго пакінула рука. «Спружына» вяртае яго за Час вяртання. «З тэлеметрыі» цягне яго назад, як пярэднія шыны машыны пры хуткасці і счапленні з гульні: на месцы руль нерухомы, з хуткасцю цвярдзейшы, лёгкі, калі шыны слізгаюць. Калі гульня не шле тэлеметрыю, гэта спружына. «Ад сілы гульні» дазваляе павярнуць яго ўласнай зваротнай сілай віртуальнага руля.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Выключана</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Спружына</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>З тэлеметрыі</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Ад сілы гульні</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Час вяртання</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Колькі «Спружына» вяртае руль на 95% шляху назад. «З тэлеметрыі» займае гэты час пры 100 km/h на сухой дарозе.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Кіраванне</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Заўсёды» дазваляе мышы кіраваць увесь час. «Пакуль утрымліваецца» дазваляе кіраваць, толькі пакуль утрымліваецца Увод кіравання. «Пераключэнне» ўключае або выключае кіраванне пры кожным націсканні Уводу кіравання. Пакуль мыш не кіруе, руль застаецца на месцы або вяртаецца ў цэнтр, таму адной мышшу можна і кіраваць, і азірацца.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Заўсёды</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Пакуль утрымліваецца</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Пераключэнне</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Увод кіравання</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Кнопка, якая дазваляе мышы кіраваць, на той жа прыладзе, што і ход мышы. Калі нічога не абрана, мыш кіруе заўсёды.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Згладжванне</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Згладжвае мыш, якая паведамляе нераўнамерна. Руль адстае ад рукі прыкладна на гэты час. 0 выключае.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Ход на хуткасці</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Калі ўключана «Гульнявая тэлеметрыя», колькі ходу застаецца пры 200 km/h. На 100% увесь ход даступны на любой хуткасці.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>ІЧ-паказальнік X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>ІЧ-паказальнік Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Яркасць ІЧ</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Паварочвае ўсю карту фліку на гэтую колькасць градусаў. Дадатныя значэнні паварочваюць па гадзіннікавай стрэлцы. Прывязка ўжываецца пасля зруху.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Калі слой з флік-стыкам актывуецца пры ўжо адхіленым стыку, флік спрацоўвае адразу. Калі выключана, камера застаецца нерухомай, а паварот адлічваецца ад бягучага вугла стыка.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Сігнал упора руля</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сігнал пры ўпоры для стыка ў рэжыме руля</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Калі стык у рэжыме руля павернуты да ўпора, падаецца сігнал (вібрацыя, курок або светлавая панэль), каб вы адчулі мяжу. Па змаўчанні ўсё выключана.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сігнал, калі кіраванне даходзіць да ўпора</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Калі стык у рэжыме руля, увод нахілу руху або ўвод Ход мышы даходзіць да ўпора, падаецца сігнал (вібрацыя, курок або светлавая панэль), каб вы адчулі мяжу. Па змаўчанні ўсё выключана.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Імпульс вібрацыі пры ўпоры</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вібрацыя курка пры ўпоры</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Імпульс светлавой панэлі пры ўпоры</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Пераключыць клавішы {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Паўторнае цэнтраванне гіраскопа</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Абнуляе назапашаныя апорныя кропкі гіраскопа для прыцэльвання на панэлі пры націску. Гісторыя згладжвання ачышчаецца, нейтраль нахілу руху зноў фіксуецца, ацэнка гравітацыі пераналаджваецца з бягучага становішча кантролера, а паварот, створаны радкамі тангажу, рысканню і крэну руху, адмяняецца.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Цэнтраваць рулявое кіраванне мышшу</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Вяртае ў цэнтр руль кожнага ўводу Ход мышы на гэтым віртуальным кантролеры.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Любая прылада)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Меню</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Меню ператвараюць фізічны стык або сэнсарную панэль у экраннае кола або сетку. Націсніце + побач з загалоўкам «Меню», каб стварыць новае, абярыце, што яго адкрывае, затым задайце кожнай ячэйцы назву і дзеянне.</value></data>

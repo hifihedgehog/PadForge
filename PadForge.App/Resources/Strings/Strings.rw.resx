@@ -1831,7 +1831,7 @@
   <data name="Search_Placeholder" xml:space="preserve"><value>Shakisha igenamiterere, ibikoresho n'imyirondoro</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Shakisha</value></data>
   <data name="Search_Results" xml:space="preserve"><value>Ibisubizo</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ikimenyetso iyo agati ko kuyobora kageze ku iherezo</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ikimenyetso iyo kuyobora bigeze ku iherezo</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Yohereza kunyeganyega kwa moteri nkuru kuri trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Bass y'amajwi ya sisitemu itera trigger kunyeganyega</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone zo guhengama, icyerekezo cya controller</value></data>
@@ -2044,4 +2044,28 @@
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Vugurura nonaha imanura ububiko bw'amakuru bwa kontorola bw'umuryango (SDL_GameControllerDB) kuri GitHub kandi ikabika, muri dosiye y'igenamiterere, ihuzwa iyi verisiyo ya PadForge idafite. Ihuzwa rishya rikoreshwa gusa kuri kontorola nta kindi gisoma nka gamepad, idahujwe kandi itari muri Force Raw Joystick Mode. Gusubiza uko byari biri bikuraho ihuzwa ryose ryamanuwe.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Vugurura nonaha</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Iravugurura…</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Urugendo rw'imbeba X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Urugendo rw'imbeba Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Urugendo kugeza ku iherezo</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Intera imbeba igenda kuva hagati kugeza ku iherezo, mu ntambwe imbeba itanga. Umubare munini uyobora neza kurushaho kandi usaba ko ukuboko kugenda kure.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>intambwe</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Gusubiza hagati</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Bizimye bigumisha ivola aho ukuboko kwarusize. Isubiza ryikora riyisubiza hagati mu Gihe cyo gusubira. Biturutse kuri telemetry biyisubiza nk'uko amapine y'imbere y'imodoka yabikora ku muvuduko n'ifata ry'umukino: nta kintu iyo imodoka ihagaze, bikomera uko umuvuduko wiyongera, byoroha iyo amapine anyerera. Nta mukino wohereza telemetry, ni Isubiza ryikora. Biturutse ku mbaraga z'umukino bireka force feedback ya ivola y'ikoranabuhanga ikayihindukiza.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Bizimye</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Isubiza ryikora</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Biturutse kuri telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Biturutse ku mbaraga z'umukino</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Igihe cyo gusubira</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Igihe Isubiza ryikora rifata ngo risubize ivola 95% by'inzira. Biturutse kuri telemetry bifata iki gihe ku muvuduko wa 100 km/h ku muhanda wumutse.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kuyobora</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Buri gihe ireka imbeba iyobora igihe cyose. Igihe ufashe iyireka iyobora gusa igihe Icyinjiza cyo kuyobora gifashwe. Fungura/funga ifungura cyangwa ifunga kuyobora uko ukanze Icyinjiza cyo kuyobora. Igihe imbeba itayobora, ivola iguma aho iri cyangwa igasubira hagati, bityo imbeba imwe ishobora kuyobora no kureba hirya no hino.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Buri gihe</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Igihe ufashe</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Fungura/funga</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Icyinjiza cyo kuyobora</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Buto yemerera imbeba kuyobora, ku gikoresho kimwe n'urugendo rw'imbeba. Nta yatoranyijwe, imbeba ihora iyobora.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Koroshya</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Iringaniza imbeba itanga amakuru atangana. Ruhuri ikurikira ukuboko itinzeho hafi iki gihe. 0 bisobanura ko bizimye.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Iherezo ku muvuduko</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Iyo Game Telemetry ifunguye, igice cy'iherezo gisigara ku muvuduko wa 200 km/h. Kuri 100% iherezo ryose riraboneka ku muvuduko uwo ari wo wose.</value></data>
 </root>

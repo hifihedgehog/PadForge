@@ -2618,6 +2618,30 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Mauspositioun Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Empfindlechkeet vum Mauszeiger pro Quell. 1.0 erreecht de vollen Ausschlag vum Stick bei 10% vun der Bildschiermbreet vun der Mëtt aus. Wäerter iwwer 1.0 erreechen de vollen Ausschlag mat manner Wee vum Mauszeiger. Wäerter ënner 1.0 brauche méi.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Mauswee X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Mauswee Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Wee bis zum Uschlag</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Wéi wäit d'Maus sech vun der Mëtt bis zum Uschlag beweegt, an de Schrëtt, déi d'Maus mellt. Eng méi héich Zuel steiert méi fein a brauch méi Handbeweegung.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>Schrëtt</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Zentréierung</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>„Aus“ hält d'Steierrad do, wou d'Hand et gelooss huet. „Fieder“ bréngt et iwwer d'„Zréckstellzäit“ zréck. „Vun der Telemetrie“ zitt et zréck, wéi d'Virderreder vun engem Auto et bei der Vitess an der Haftung vum Spill géifen: roueg am Stand, méi fest mat der Vitess, liicht, wann d'Pneue rutschen. Ouni Spill, dat Telemetrie schéckt, ass et d'Fieder. „Vun der Kraaft vum Spill“ léisst d'Force-Feedback vun engem virtuelle Steierrad et dréinen.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Fieder</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Vun der Telemetrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Vun der Kraaft vum Spill</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Zréckstellzäit</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Wéi laang „Fieder“ brauch, fir d'Steierrad 95 % vum Wee zréckzebréngen. „Vun der Telemetrie“ brauch esou laang bei 100 km/h op enger dréchener Strooss.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Steieren</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>„Ëmmer“ léisst d'Maus zu all Moment steieren. „Soulaang gehalen“ léisst se nëmme steieren, soulaang d'„Steier-Agab“ gehale gëtt. „Ëmschalten“ schalt d'Steierung mat all Drock op d'„Steier-Agab“ un oder aus. Soulaang d'Maus net steiert, bleift d'Steierrad, wou et ass, oder geet an d'Mëtt, sou datt eng Maus steieren a ronderëm kucke kann.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ëmmer</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Soulaang gehalen</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Ëmschalten</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Steier-Agab</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>De Knäppchen, deen d'Maus steiere léisst, um selwechten Apparat wéi de Mauswee. Ouni Auswiel steiert d'Maus ëmmer.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Glättung</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Gläicht eng Maus aus, déi onregelméisseg mellt. D'Steierrad leeft der Hand ongeféier esou laang hannendrun. 0 ass aus.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Uschlag bei Vitess</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Wéi vill vum Uschlag bei 200 km/h bleift, wann d'Spill-Telemetrie un ass. Bei 100 % ass de ganzen Uschlag bei all Vitess do.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-Zeiger X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-Zeiger Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-Hellegkeet</value></data>
@@ -3305,8 +3329,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Dréint déi ganz Flick-Zouuerdnung ëm sou vill Grad. Positiv ass mat der Auer. De Raster gëtt no der Verschiebung applizéiert.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wann d'Schicht mam Flick Stick aktivéiert gëtt, wärend de Stick schonn ausgeschloen ass, gëtt de Flick direkt ausgeléist. Aus hält d'Kamera roueg a verfollegt d'Dréiung vum aktuelle Stickwénkel aus.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback um Steieruschlag</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>E Signal beim Uschlag fir e Stick an engem Steiermodus</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wann e Stick an engem Steiermodus bis zum Uschlag gedréint gëtt, spillt e Signal (Vibratioun, Trigger oder Liichtbalken), fir datt Dir d'Limit spiert. Standardméisseg alles aus.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>E Signal, wann d'Steierung den Uschlag erreecht</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wann e Stick an engem Steiermodus, eng Agab „Beweegung Neigung“ oder eng Agab „Mauswee“ den Uschlag erreecht, spillt e Signal (Vibratioun, Trigger oder Liichtbalken), fir datt Dir d'Limit spiert. Standardméisseg alles aus.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibratiounspuls um Uschlag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger-Vibratioun um Uschlag</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Liichtbalken-Puls um Uschlag</value></data>
@@ -5371,4 +5395,5 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>E Standbild aus „Raumschiff Enterprise: Das nächste Jahrhundert“: d'Bild vum Star-Trek-Thema Starfleet. Op Memory Alpha fonnt.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Liichtbalken</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Liichtbalken {0}</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Maussteierung zentréieren</value></data>
 </root>

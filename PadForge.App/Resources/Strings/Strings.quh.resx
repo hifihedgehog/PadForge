@@ -1520,7 +1520,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kuyuy &amp; Llamiy</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>K'anchaykuna &amp; Audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrokuna &amp; Menúkuna</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Volante modopi palanca tukukama chayaqtin willakuy</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Volante tukukama chayaqtin willakuy</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hatun motorkunapa vibraciónninta gatillokunaman apachin</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Sistema audiopa bajonmanta gatillo vibración</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kinrayaypa zona muertankuna, controlpa orientacionnin</value></data>
@@ -1715,6 +1715,13 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Comunidadpa base de datosninqa qhipa musuqyachiymanta mana t'ikrakunchu.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Musuq asignaciónqa controlnin hamuq kutipi tinkikuqtin llamk'achikun.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>T'ikrasqa asignaciónqa PadForge hamuq kutipi qallariqtin llamk'achikun.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetríamanta</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sapa kuti</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Hap'ishaqtin</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mouseta volante hina kamachichiq botón, mousep puriyninpa kikin dispositivonpi. Mana akllasqa kaqtinqa, mouseqa sapa kuti kamachin.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Pukllay telemetría hap'isqa kaqtin, 200 km/h nisqapi lockmanta hayk'a puchun. 100% nisqapi tukuy lock tukuy velocidadpi kan.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Dispositivo t'aqakusqa willakuy</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Dispositivo tinkikusqa willakuy</value></data>
 </root>

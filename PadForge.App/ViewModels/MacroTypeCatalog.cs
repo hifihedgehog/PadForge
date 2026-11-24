@@ -133,6 +133,7 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.MouseFixPosition, S.MacroAction_Type_MouseFixPosition, S.Macro_Cat_Mouse, S.MacroAction_MouseFixPosition_Tooltip);
                 Add(MacroActionType.MouseLimitRegion, S.MacroAction_Type_MouseLimitRegion, S.Macro_Cat_Mouse, S.MacroAction_MouseLimitRegion_Tooltip);
                 Add(MacroActionType.MoveMouseToScreenPosition, S.MacroAction_Type_MoveMouseToScreenPosition, S.Macro_Cat_Mouse, S.MacroAction_MoveMouseToScreenPosition_Tooltip);
+                Add(MacroActionType.CenterMouseSteering, S.MacroAction_Type_CenterMouseSteering, S.Macro_Cat_Mouse, S.MacroAction_CenterMouseSteering_Tooltip);
                 Add(MacroActionType.Delay, S.Macro_Delay, S.Macro_Cat_Flow, null);
                 Add(MacroActionType.ComboBreak, S.MacroAction_Type_ComboBreak, S.Macro_Cat_Flow, S.MacroAction_ComboBreak_Tooltip);
                 Add(MacroActionType.CycleTapList, S.MacroAction_Type_CycleTapList, S.Macro_Cat_Flow, S.MacroAction_CycleTapList_Tooltip);

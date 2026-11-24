@@ -804,7 +804,14 @@ namespace PadForge.ViewModels
             nameof(ParamRapidTriggerDistance) or
             nameof(ParamUpInputChoice) or
             nameof(ParamDownInputChoice) or
-            nameof(ParamModifierInputChoice);
+            nameof(ParamModifierInputChoice) or
+            nameof(ParamTravelCounts) or
+            nameof(ParamTravelCentering) or
+            nameof(ParamTravelReturnTime) or
+            nameof(ParamTravelSteer) or
+            nameof(TravelSteerInputChoice) or
+            nameof(ParamTravelSmoothingMs) or
+            nameof(ParamTravelLockAtSpeed);
 
         private void ResetSetting(string name)
         {
@@ -895,6 +902,42 @@ namespace PadForge.ViewModels
                     SetParamKey(ParamRecordTarget.Modifier, "", null);
                     break;
                 }
+                case nameof(ParamTravelCounts):
+                {
+                    ParamTravelCounts = Engine.Data.MappingSource.DefaultTravelCounts;
+                    break;
+                }
+                case nameof(ParamTravelCentering):
+                {
+                    ParamTravelCentering = Engine.Data.MappingSource.TravelCenteringOff;
+                    break;
+                }
+                case nameof(ParamTravelReturnTime):
+                {
+                    ParamTravelReturnTime = Engine.Data.MappingSource.DefaultTravelReturnTime;
+                    break;
+                }
+                case nameof(ParamTravelSteer):
+                {
+                    ParamTravelSteer = Engine.Data.MappingSource.TravelSteerAlways;
+                    break;
+                }
+                case nameof(TravelSteerInputChoice):
+                {
+                    // The Steer input is the source's gate.
+                    GateDescriptor = string.Empty;
+                    break;
+                }
+                case nameof(ParamTravelSmoothingMs):
+                {
+                    ParamTravelSmoothingMs = 0;
+                    break;
+                }
+                case nameof(ParamTravelLockAtSpeed):
+                {
+                    ParamTravelLockAtSpeed = Engine.Data.MappingSource.DefaultTravelLockAtSpeed;
+                    break;
+                }
                 default: return;
             }
             // Refresh pending editor text even when the stored value was already the default.
@@ -920,7 +963,14 @@ namespace PadForge.ViewModels
             nameof(MotionSpeed) or
             nameof(MotionMinSpeed) or
             nameof(MotionAngle) or
-            nameof(MotionDeadzone);
+            nameof(MotionDeadzone) or
+            nameof(ParamTravelCounts) or
+            nameof(ParamTravelCentering) or
+            nameof(ParamTravelReturnTime) or
+            nameof(ParamTravelSteer) or
+            nameof(TravelSteerInputChoice) or
+            nameof(ParamTravelSmoothingMs) or
+            nameof(ParamTravelLockAtSpeed);
 
         private void ResetSetting(string name)
         {
@@ -989,6 +1039,42 @@ namespace PadForge.ViewModels
                 case nameof(NoInherit):
                 {
                     NoInherit = false;
+                    break;
+                }
+                case nameof(ParamTravelCounts):
+                {
+                    ParamTravelCounts = Engine.Data.MappingSource.DefaultTravelCounts;
+                    break;
+                }
+                case nameof(ParamTravelCentering):
+                {
+                    ParamTravelCentering = Engine.Data.MappingSource.TravelCenteringOff;
+                    break;
+                }
+                case nameof(ParamTravelReturnTime):
+                {
+                    ParamTravelReturnTime = Engine.Data.MappingSource.DefaultTravelReturnTime;
+                    break;
+                }
+                case nameof(ParamTravelSteer):
+                {
+                    ParamTravelSteer = Engine.Data.MappingSource.TravelSteerAlways;
+                    break;
+                }
+                case nameof(TravelSteerInputChoice):
+                {
+                    // The Steer input is the source's gate.
+                    GateDescriptor = string.Empty;
+                    break;
+                }
+                case nameof(ParamTravelSmoothingMs):
+                {
+                    ParamTravelSmoothingMs = 0;
+                    break;
+                }
+                case nameof(ParamTravelLockAtSpeed):
+                {
+                    ParamTravelLockAtSpeed = Engine.Data.MappingSource.DefaultTravelLockAtSpeed;
                     break;
                 }
                 default: return;

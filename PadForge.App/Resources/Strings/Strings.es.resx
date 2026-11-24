@@ -2104,6 +2104,30 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posición ratón Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidad del cursor por fuente. 1.0 alcanza la deflexión completa del stick al 10 % del ancho de pantalla desde el centro. Valores superiores a 1.0 alcanzan la deflexión completa con menos recorrido del cursor. Valores inferiores a 1.0 necesitan más.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Recorrido del ratón X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Recorrido del ratón Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Recorrido hasta el tope</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Cuánto se mueve el ratón del centro al tope, en las cuentas que informa el ratón. Un número mayor dirige con más precisión y pide más recorrido de la mano.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>cuentas</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrado</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desactivado deja el volante donde la mano lo dejó. Resorte lo devuelve durante el Tiempo de retorno. Desde telemetría lo tira como lo harían las ruedas delanteras de un coche a la velocidad y el agarre del juego: quieto en parado, más firme con la velocidad, ligero cuando las ruedas derrapan. Sin un juego que envíe telemetría es el resorte. Desde la fuerza del juego deja que la propia fuerza de un volante virtual lo gire.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desactivado</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Resorte</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Desde telemetría</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Desde la fuerza del juego</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tiempo de retorno</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Cuánto tarda Resorte en devolver el volante el 95% del camino. Desde telemetría tarda esto a 100 km/h en carretera seca.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Dirigir</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Siempre deja que el ratón dirija en todo momento. Mientras se mantiene lo deja dirigir solo mientras se mantiene la Entrada de dirección. Alternar activa o desactiva la dirección con cada pulsación de la Entrada de dirección. Mientras el ratón no dirige, el volante se queda donde está o se centra, así un mismo ratón puede dirigir y mirar alrededor.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Siempre</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mientras se mantiene</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrada de dirección</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>El botón que permite al ratón dirigir, en el mismo dispositivo que el recorrido del ratón. Si no eliges ninguno, el ratón dirige siempre.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavizado</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Alisa un ratón que informa de forma irregular. El volante va detrás de la mano más o menos este tiempo. 0 lo desactiva.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Tope a velocidad</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Con Telemetría de juego activada, cuánto del tope queda a 200 km/h. Al 100% todo el tope está disponible a cualquier velocidad.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic del touchpad</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} dedo {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} dedo {1} Y</value></data>
@@ -2837,8 +2861,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ajustes de la entrada "Inclinación de movimiento": incline el mando como un volante. Asigne "Inclinación de movimiento" a un eje de stick en Asignaciones.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Restablecer Dirección por movimiento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Respuesta al tope del volante</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Una señal al llegar al tope con un stick en modo de dirección</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Cuando un stick configurado en modo de dirección se gira al máximo hasta el tope, se emite una señal (vibración, gatillo o barra de luz) para que sientas el límite. Todo desactivado de forma predeterminada.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Una señal cuando la dirección llega al tope</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Cuando un stick en modo de dirección, una entrada Motion Lean o una entrada Recorrido del ratón llega al tope, se emite una señal (vibración, gatillo o barra de luz) para que sientas el límite. Todo desactivado de forma predeterminada.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de vibración al llegar al tope</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibración del gatillo al llegar al tope</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso de barra de luz al llegar al tope</value></data>
@@ -4492,6 +4516,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrar giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Pone a cero las referencias acumuladas de apuntado del giroscopio del pad al presionar. El historial de suavizado se borra, el punto neutro de Motion Lean se vuelve a capturar, la estimación de gravedad se reinicia desde la pose actual del mando y el giro de las filas Movimiento cabeceo, guiñada y alabeo se deshace.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centrar dirección del ratón</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Devuelve al centro el volante de cada entrada Recorrido del ratón de este control virtual.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menús</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Los menús convierten un stick o panel táctil físico en un anillo o cuadrícula en pantalla. Pulse + junto a Menús para crear uno, elija con qué se abre y luego dé a cada celda un nombre y una acción.</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Nuevo menú</value></data>

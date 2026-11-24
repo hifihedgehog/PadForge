@@ -1839,7 +1839,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Kobenda analogique</value></data>
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lobɔkɔ ya mwasi</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, lobɔkɔ ya mobali</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Elembo ntango stick ya volant ekómi na nsuka</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Elembo ntango volant ekómi na nsuka</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Etindi vibration ya ba moteur monene na ba gâchette</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration ya gâchette uta na basse ya audio ya système</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ba zone morte ya kogumbama, Orientation ya manette</value></data>
@@ -2091,4 +2091,28 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Base ya communauté ebongwani te banda mise à jour ya suka.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Assignation ya sika esalelamaka ntango manette na yango ekokangana mbala ekoya.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Assignation oyo ebongwani esalelamaka ntango PadForge ekobanda mbala ekoya.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Mobembo ya souris X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Mobembo ya souris Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Mobembo kino na lock mobimba</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ndenge souris esengeli kotambola uta na katikati kino na lock mobimba, na ba counts oyo souris eyebisaka. Motango ya likolo etambwisaka malamu koleka mpe esengaka mobembo mingi ya loboko.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Kozongisa na katikati</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ezimi esimbaka volant esika loboko etikaki yango. Ressort ezongisaka yango na boumeli ya Ntango ya kozonga. Uta na télémétrie ebendaka yango lokola ba pneu ya liboso ya motuka elandi vitesse mpe grip ya lisano: ekangami ntango motuka etelemi, makasi koleka na vitesse, pete ntango ba pneu ezali kotiolola. Soki lisano moko te ezali kotinda télémétrie, ezali Ressort. Uta na makasi ya lisano etikaka force feedback ya volant virtuel yango moko ebalusa yango.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Ezimi</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Ressort</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Uta na télémétrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Uta na makasi ya lisano</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Ntango ya kozonga</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Ntango Ressort esengeli mpo na kozongisa volant 95% ya nzela. Uta na télémétrie ezwaka ntango oyo na 100 km/h na nzela ya kokauka.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kotambwisa volant</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ntango nyonso etikaka souris etambwisa volant tango nyonso. Ntango esimbami etikaka yango etambwisa kaka ntango Bouton ya kotambwisa esimbami. Basculer epelisaka to ezimisaka kotambwisa na kofina moko na moko ya Bouton ya kotambwisa. Ntango souris ezali kotambwisa te, volant etikalaka esika ezali to ezongaka na katikati, yango wana souris moko ekoki kotambwisa mpe kotala zingazinga.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ntango nyonso</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ntango esimbami</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Basculer</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Bouton ya kotambwisa</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton oyo etikaka souris etambwisa volant, na appareil moko na mobembo ya souris. Soki moko te eponami, souris etambwisaka ntango nyonso.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Kolembisa</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ebongisaka souris oyo eyebisaka na ndenge ekokani te. Volant elandaka loboko na sima pene na ntango oyo. 0 ezali ezimi.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock na vitesse</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Soki Télémétrie ya masano efungwami, ndambo nini ya lock etikalaka na 200 km/h. Na 100%, lock mobimba ezalaka na vitesse nyonso.</value></data>
 </root>

@@ -1005,7 +1005,7 @@
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Haʻalulu a me force feedback</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kukui a me ka leo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Nā macro a me nā papa kuhikuhi</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He hōʻailona ke piha ka wili ʻana o ka stick ma ke ʻano huila</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He hōʻailona ke piha ka wili ʻana o ka hoʻokele</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Haʻalulu mai ka bass o ke kani ʻōnaehana</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Hoʻouna i ka haʻalulu o nā mīkini nui i nā trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Haʻalulu trigger mai ka bass o ke kani ʻōnaehana</value></data>
@@ -1201,4 +1201,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Nīnau i ka mana o PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Nīnau i nā mea e holo nei</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Hoʻouna i kekahi laina ʻike ʻole ʻia e PadForge: {0}</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Neʻe ʻiole X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Neʻe ʻiole Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Neʻe a hiki i ka wili piha</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ka lōʻihi o ka neʻe ʻana o ka ʻiole mai waenakonu a hiki i ka wili piha, ma nā helu a ka ʻiole e hōʻike ai. ʻOi aku ka nui o ka helu, ʻoi aku ka pololei o ka hoʻokele ʻana a ʻoi aku ka neʻe ʻana o ka lima.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>helu</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Hoʻi i waenakonu</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Mālama ʻo “Pio” i ka huila ma kahi a ka lima i waiho ai. Hoʻihoʻi ʻo “Puna” iā ia i loko o ka “Manawa hoʻi”. Huki ʻo “Mai ka telemetry” iā ia e like me nā taea mua o kekahi kaʻa ma ka māmā a me ka paʻa o ka pāʻani: noho mālie ke kū ke kaʻa, ʻoi aku ka ikaika me ka māmā, māmā ke paheʻe nā taea. Inā ʻaʻohe pāʻani e hoʻouna ana i ka telemetry, he “Puna” ia. ʻAe ʻo “Mai ka ikaika o ka pāʻani” i ka force feedback ponoʻī o kekahi huila kikohoʻe e wili iā ia.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Pio</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Puna</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Mai ka telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Mai ka ikaika o ka pāʻani</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Manawa hoʻi</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Ka lōʻihi o ka manawa a “Puna” e hoʻihoʻi ai i ka huila he 95% o ke ala. Lawe ʻo “Mai ka telemetry” i kēia manawa like ma 100 km/h ma ke alanui maloʻo.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Hoʻokele</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ʻAe ʻo “I nā manawa a pau” i ka ʻiole e hoʻokele i nā manawa a pau. ʻAe ʻo “Ke paʻa ʻia” iā ia e hoʻokele wale nō i ka wā e paʻa ʻia ai ka “Hoʻokomo hoʻokele”. Hoʻā a hoʻopio ʻo “Hoʻā a hoʻopio” i ka hoʻokele ʻana i kēlā me kēia kaomi ʻana i ka “Hoʻokomo hoʻokele”. I ka wā ʻaʻole e hoʻokele ana ka ʻiole, noho ka huila ma kona wahi a i ʻole hoʻi i waenakonu, no laila hiki i hoʻokahi ʻiole ke hoʻokele a nānā a puni.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>I nā manawa a pau</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ke paʻa ʻia</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Hoʻā a hoʻopio</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Hoʻokomo hoʻokele</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ke pihi e ʻae ai i ka ʻiole e hoʻokele, ma ka hāmeʻa hoʻokahi me ka neʻe ʻana o ka ʻiole. Inā ʻaʻohe i koho ʻia, hoʻokele mau ka ʻiole.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Hoʻolaumania</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Hoʻolaumania i ka ʻiole e hōʻike like ʻole ana. Hahai ka huila ma hope o ka lima ma kahi o kēia lōʻihi. ʻO 0 ka pio.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Wili ma ka māmā</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ke ā ʻo Telemetry pāʻani, ka nui o ka wili e koe ana ma 200 km/h. Ma 100%, aia ka wili holoʻokoʻa ma nā māmā a pau.</value></data>
 </root>

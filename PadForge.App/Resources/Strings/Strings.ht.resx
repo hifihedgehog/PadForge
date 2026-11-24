@@ -2243,6 +2243,30 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozisyon sourit Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sansiblite</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sansiblite kisè a pou chak sous. Avèk 1.0, stick la rive nan deplasman konplè lè kisè a 10% lajè ekran an lwen sant lan. Valè ki pi wo pase 1.0 rive nan deplasman konplè ak mwens mouvman kisè. Valè ki pi ba pase 1.0 bezwen plis.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Deplasman sourit X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Deplasman sourit Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Deplasman jouk nan limit</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Konbyen sourit la deplase soti nan sant jouk nan limit, an inite sourit la rapòte. Yon nimewo pi wo dirije pi fen epi mande plis mouvman men.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>inite</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Santraj</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Dezaktive kenbe volan an kote men an kite l. Resò mennen l tounen nan Tan retou. Soti nan telemetri rale l tounen jan kawotchou devan yon machin ta fè a vitès ak adezyon jwèt la: anyen lè machin nan kanpe, pi fò ak vitès, lejè lè kawotchou yo glise. Si okenn jwèt pa voye telemetri, se resò a. Soti nan fòs jwèt la kite pwòp retou fòs yon volan vityèl vire l.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Dezaktive</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Resò</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Soti nan telemetri</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Soti nan fòs jwèt la</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tan retou</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Konbyen tan Resò pran pou mennen volan an 95% nan chemen retou a. Soti nan telemetri pran menm tan sa a a 100 km/h sou yon wout sèk.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Dirije</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Toujou kite sourit la dirije tout tan. Pandan ou kenbe kite l dirije sèlman pandan ou kenbe Antre direksyon an. Limen/etenn aktive oswa dezaktive direksyon an chak fwa ou peze Antre direksyon an. Pandan sourit la pa dirije, volan an rete kote li ye oswa li retounen nan sant, kidonk yon sèl sourit ka dirije epi gade alantou.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Toujou</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Pandan ou kenbe</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Limen/etenn</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Antre direksyon</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton ki kite sourit la dirije, sou menm aparèy ak deplasman sourit la. Si pa gen okenn chwazi, sourit la toujou dirije.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Adousisman</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Li egalize yon sourit ki rapòte yon fason inegal. Volan an rete dèyè men an anviwon tan sa a. 0 vle di dezaktive.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limit a vitès</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Lè Telemetri jwèt aktive, konbyen nan limit la ki rete a 200 km/h. A 100%, tout limit la la a tout vitès.</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Klète IR</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouvman sourit X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouvman sourit Y</value></data>
@@ -2787,8 +2811,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Vire tout kat flick la pa kantite degre sa a. Pozitif se nan direksyon zegui mont. Fiksasyon an aplike apre dekalaj la.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Lè kouch ki gen Flick Stick la aktive pandan stick la deja deplase, deklanche flick la touswit. Etenn kenbe kamera a fiks epi swiv wotasyon an apati ang stick la kounye a.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Siyal limit direksyon</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Yon siyal nan limit pou yon stick nan mòd direksyon</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Lè yon stick ki nan yon mòd direksyon vire jouk nan limit la, jwe yon siyal (vibrasyon, gachèt oswa ba limyè) pou w santi limit la. Tout etenn pa defo.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Yon siyal lè direksyon an rive nan limit</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Lè yon stick nan yon mòd direksyon, yon antre Mouvman panche oswa yon antre Deplasman sourit rive nan limit la, jwe yon siyal (vibrasyon, gachèt oswa ba limyè) pou w santi limit la. Tout etenn pa defo.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrasyon kout nan limit</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrasyon gachèt nan limit</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Flach ba limyè nan limit</value></data>
@@ -4744,4 +4768,5 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Maket yo te filme pou seri orijinal Star Trek la, nan yon foto Smithsonian National Air and Space Museum, mize ki kenbe l la: imaj tèm Star Trek LCARS la.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imaj tèm: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Yon imaj nan Star Trek: The Next Generation: imaj tèm Star Trek Starfleet la. Yo jwenn li sou Memory Alpha.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
 </root>

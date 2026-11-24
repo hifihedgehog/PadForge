@@ -2859,6 +2859,30 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozycja myszy Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Czułość</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Czułość kursora dla źródła. 1.0 daje pełne wychylenie drążka w odległości 10% szerokości ekranu od środka. Wartości powyżej 1.0 osiągają pełne wychylenie przy krótszym ruchu kursora. Wartości poniżej 1.0 wymagają dłuższego.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Przesuw myszy X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Przesuw myszy Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Przesuw do pełnego skrętu</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Jak daleko mysz przesuwa się od środka do pełnego skrętu, w zliczeniach zgłaszanych przez mysz. Wyższa liczba kieruje dokładniej i wymaga większego ruchu ręki.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>zliczeń</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrowanie</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Wyłączone zostawia kierownicę tam, gdzie ręka ją puściła. Sprężyna przywraca ją w czasie powrotu. Z telemetrii ciągnie ją tak, jak robiłyby to przednie opony samochodu przy prędkości i przyczepności z gry: nieruchomo w miejscu, mocniej wraz z prędkością, lekko przy poślizgu opon. Gdy żadna gra nie wysyła telemetrii, działa jak sprężyna. Z siły gry pozwala obracać ją własnemu force feedback wirtualnej kierownicy.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Wyłączone</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Sprężyna</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Z telemetrii</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Z siły gry</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Czas powrotu</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Jak długo Sprężyna przywraca kierownicę na 95% drogi z powrotem. Z telemetrii trwa to tyle przy 100 km/h na suchej drodze.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kieruj</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Zawsze pozwala myszy kierować cały czas. Podczas przytrzymania pozwala jej kierować tylko wtedy, gdy wejście kierowania jest przytrzymane. Przełączanie włącza lub wyłącza kierowanie przy każdym naciśnięciu wejścia kierowania. Gdy mysz nie kieruje, kierownica zostaje tam, gdzie jest, albo wraca na środek, więc jedna mysz może kierować i rozglądać się.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Zawsze</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Podczas przytrzymania</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Przełączanie</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Wejście kierowania</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Przycisk, który pozwala myszy kierować, na tym samym urządzeniu co przesuw myszy. Gdy nie wybrano żadnego, mysz kieruje zawsze.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Wygładzanie</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Wyrównuje mysz, która zgłasza dane nierówno. Kierownica pozostaje za ręką mniej więcej o tyle czasu. 0 wyłącza.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Skręt przy prędkości</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Gdy Telemetria gier jest włączona, ile skrętu zostaje przy 200 km/h. Przy 100% pełny skręt jest dostępny przy każdej prędkości.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Wskaźnik IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Wskaźnik IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Jasność IR</value></data>
@@ -3567,8 +3591,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Obraca całą mapę flicków o podaną liczbę stopni. Wartość dodatnia oznacza kierunek zgodny z ruchem wskazówek zegara. Przyciąganie działa po przesunięciu.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Gdy warstwa z flick stickiem aktywuje się przy już wychylonym drążku, flick jest wykonywany natychmiast. Wyłączenie pozostawia kamerę w miejscu i śledzi obrót od bieżącego kąta drążka.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Sygnał pełnego skrętu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sygnał przy pełnym skręcie drążka w trybie kierowania</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Gdy drążek ustawiony w trybie kierowania zostanie obrócony do pełnego skrętu, odtwarzany jest sygnał (wibracje, spust lub pasek świetlny), aby można było poczuć granicę. Domyślnie wszystko wyłączone.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sygnał, gdy kierowanie osiąga pełny skręt</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Gdy drążek w trybie kierowania, wejście Ruch: nachylenie lub wejście Przesuw myszy osiąga pełny skręt, odtwarzany jest sygnał (wibracje, spust lub pasek świetlny), aby można było poczuć granicę. Domyślnie wszystko wyłączone.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impuls wibracji przy pełnym skręcie</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Wibracje spustów przy pełnym skręcie</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Impuls paska świetlnego przy pełnym skręcie</value></data>
@@ -4547,6 +4571,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Przełącz klawisze {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Wyśrodkowanie żyroskopu</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Po naciśnięciu zeruje zgromadzone odniesienia celowania żyroskopem pada. Historia wygładzania jest czyszczona, pozycja neutralna wejścia Ruch: nachylenie jest ustalana na nowo, oszacowanie grawitacji jest inicjowane od nowa z bieżącego ułożenia kontrolera, a obrót zbudowany przez wiersze Ruch: pochylenie, odchylenie i przechylenie jest cofany.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Wyśrodkuj kierowanie myszą</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Przywraca do środka kierownicę każdego wejścia Przesuw myszy na tym wirtualnym kontrolerze.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Dowolne urządzenie)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu zamieniają fizyczny drążek lub panel dotykowy w ekranowy pierścień albo siatkę. Naciśnij + obok nagłówka Menu, aby utworzyć nowe, wybierz, co je otwiera, a potem nadaj każdej komórce nazwę i akcję.</value></data>

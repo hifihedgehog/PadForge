@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Положення миші Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Чутливість</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Чутливість курсора для окремого джерела. За 1.0 повне відхилення стіка досягається на відстані 10% ширини екрана від центру. Значення понад 1.0 досягають повного відхилення за меншого шляху курсора. Значенням нижче 1.0 потрібен більший.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Хід миші X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Хід миші Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Хід до повного упору</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Наскільки миша рухається від центру до повного упору, у відліках, які повідомляє миша. Більше число керує точніше й потребує більшого ходу руки.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>відліків</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Центрування</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Вимкнено» лишає кермо там, де його залишила рука. «Пружина» повертає його за «Час повернення». «Із телеметрії» тягне назад так, як передні шини авто на швидкості та зчепленні гри: на місці кермо вільне, зі швидкістю твердішає, а коли шини ковзають, легке. Якщо гра не надсилає телеметрію, це пружина. «Із сили гри» дозволяє повертати кермо власному зворотному зв'язку віртуального керма.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Вимкнено</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Пружина</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Із телеметрії</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Із сили гри</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Час повернення</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>За скільки «Пружина» повертає кермо на 95% шляху назад. «Із телеметрії» витрачає стільки на 100 km/h по сухій дорозі.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Кермувати</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Завжди» дозволяє миші кермувати постійно. «Поки утримується» дозволяє кермувати, лише поки утримується вхід кермування. «Перемикання» вмикає або вимикає кермування кожним натисканням входу кермування. Поки миша не кермує, кермо лишається на місці або центрується, тож одна миша може і кермувати, і оглядатися.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Завжди</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Поки утримується</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Перемикання</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Вхід кермування</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Кнопка, яка дозволяє миші кермувати, на тому самому пристрої, що й хід миші. Якщо нічого не вибрано, миша кермує завжди.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Згладжування</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Вирівнює мишу, що повідомляє нерівно. Кермо відстає від руки приблизно на цей час. 0 вимикає.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Упор на швидкості</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Коли ввімкнено ігрову телеметрію, скільки упору лишається на 200 km/h. На 100% повний упор доступний на будь-якій швидкості.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>ІЧ-вказівник X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>ІЧ-вказівник Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>ІЧ-яскравість</value></data>
@@ -3333,8 +3357,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Повертає всю карту фліків на стільки градусів. Додатне значення означає за годинниковою стрілкою. Прилипання застосовується після зміщення.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Коли шар із флік-стіком задіюється за вже відхиленого стіка, флік виконується негайно. Якщо вимкнено, камера залишається нерухомою, а поворот відстежується від поточного кута стіка.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Відгук на упор керма</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал на упорі для стіка в режимі кермування</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Коли стік у режимі кермування повернуто до упору, відтворюється сигнал (вібрація, тригер або світлова панель), щоб ви відчули межу. Типово все вимкнено.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал, коли кермування сягає упору</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Коли стік у режимі кермування, вхід «Рух: нахил» або вхід «Хід миші» сягає повного упору, відтворюється сигнал (вібрація, тригер або світлова панель), щоб ви відчули межу. Типово все вимкнено.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Імпульс вібрації на упорі</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вібрація тригерів на упорі</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Імпульс світлової панелі на упорі</value></data>
@@ -4281,6 +4305,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Перемкнути клавіші {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Центрування гіроскопа</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Після натискання обнуляє накопичені опорні значення прицілювання гіроскопом цього геймпада. Історія згладжування очищається, нейтраль «Рух: нахил» фіксується заново, оцінка гравітації ініціалізується з поточного положення контролера, а поворот, набраний рядками «Рух: тангаж», «Рух: рискання» та «Рух: крен», скасовується.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Центрувати кермування мишею</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Повертає до центру кермо кожного входу «Хід миші» на цьому віртуальному контролері.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Будь-який пристрій)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Меню</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Меню перетворюють фізичний стік або сенсорну панель на екранне кільце чи сітку. Додайте меню кнопкою + біля заголовка «Меню», виберіть, що його відкриває, а потім дайте кожній комірці назву й дію.</value></data>

@@ -1395,6 +1395,16 @@ namespace PadForge.Services
             bool winningIsMouse = _isMouseByDevice.TryGetValue(winningDevice, out bool winMouse) && winMouse;
             UserDevice winningUserDevice = FindUserDevice(winningDevice);
 
+            // A mouse moved sideways onto a virtual wheel's steering axis is
+            // mouse steering (#597): the row takes the mouse's travel, held
+            // as the wheel's position, where the mouse's speed would let the
+            // wheel spring back the moment the hand stops. Every other row,
+            // and every other axis of the mouse, records as it did. A key of
+            // a mode (Up, Down, a modifier) is no axis of the row.
+            if (winningIsMouse && type == MapType.Axis && index == 0 && paramTarget == ParamTarget.None
+                && IsVirtualWheelSteeringRow(mapping))
+                descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor;
+
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -1520,6 +1530,36 @@ namespace PadForge.Services
                 Descriptor = finalDescriptor,
                 Type = type,
             });
+        }
+
+        /// <summary>True for the steering axis of a virtual wheel: the stick
+        /// axis of an Extended slot that carries the wheel's own HID axis,
+        /// on a slot whose HIDMaestro profile is a wheel. The axis is the one
+        /// the profile's layout names for its wheel, and X where the layout
+        /// names none, the axis every wheel profile that names one names. An
+        /// Extended slot lays out its rows by stick, so the row is found
+        /// through the profile's sticks, and a wheel whose axis is on none
+        /// of them has no such row.</summary>
+        internal static bool IsVirtualWheelSteeringRow(MappingItem mapping)
+        {
+            var pad = mapping?.Owner;
+            if (pad == null || pad.OutputType != VirtualControllerType.Extended) return false;
+            var profile = HMaestroProfileCatalog.GetProfileById(pad.ProfileId);
+            if (profile == null || !string.Equals(profile.Type, "wheel", StringComparison.OrdinalIgnoreCase))
+                return false;
+            var wheelAxis = profile.AsWheel()?.Wheel?.Axis ?? HIDMaestro.HMAxis.None;
+            if (wheelAxis == HIDMaestro.HMAxis.None) wheelAxis = HIDMaestro.HMAxis.X;
+            var profileSticks = profile.Sticks;
+            var slotSticks = pad.GetSteerableSticks();
+            for (int g = 0; g < profileSticks.Count && g < slotSticks.Count; g++)
+            {
+                string target = profileSticks[g].XAxis == wheelAxis ? slotSticks[g].XTarget
+                    : profileSticks[g].YAxis == wheelAxis ? slotSticks[g].YTarget
+                    : null;
+                if (target != null)
+                    return string.Equals(target, mapping.TargetSettingName, StringComparison.Ordinal);
+            }
+            return false;
         }
 
         /// <summary>Whether an axis recorded onto <paramref name="mapping"/> is

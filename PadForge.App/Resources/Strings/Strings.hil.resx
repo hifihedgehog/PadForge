@@ -1609,7 +1609,7 @@
   <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog nga pagguyod</value></data>
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, wala nga kamot</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tuo nga kamot</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas kon ang stick sa steering mode umabot sa full lock</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas kon ang pagmaneho umabot sa full lock</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble halin sa bass sang audio sang sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ginapadala ang rumble sang main motor sa mga trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble sang trigger halin sa bass sang audio sang sistema</value></data>
@@ -1827,6 +1827,30 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Wala nagbaylo ang community database kutob sang katapusan nga update.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ang bag-o nga mapping gamiton sa masunod nga pag-connect sang iya controller.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ang ginbaylo nga mapping gamiton sa masunod nga pagsugod sang PadForge.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Lakat sang mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Lakat sang mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Lakat tubtob sa full lock</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kon daw ano kalayo ang hulag sang mouse halin sa tunga tubtob sa full lock, sa counts nga ginareport sang mouse. Ang mas mataas nga numero nagamaneho sing mas pino kag nagakinahanglan sang mas madamo nga hulag sang kamot.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Pagbalik sa tunga</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ang Naka-off nagauyat sang manibela kon diin ini ginbilin sang kamot. Ang Spring nagabalik sini sa sulod sang Tion sang pagbalik. Ang Halin sa telemetry nagabalik sini pareho sang ginahimo sang atubang nga mga goma sang salakyan sa tulin kag kapit sa dula: wala sang hulag kon nagapundo, mas mabaskog kon matulin, kag magaan kon nagadanlog ang mga goma. Kon wala sing dula nga nagapadala sang telemetry, spring ini. Ang Halin sa pwersa sang dula nagatugot sa kaugalingon nga force feedback sang virtual nga manibela nga magliko sini.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Halin sa telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Halin sa pwersa sang dula</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tion sang pagbalik</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Kon daw ano kadugay ang Spring sa pagbalik sang manibela sa 95% sang dalan. Ang Halin sa telemetry amo man sini kadugay sa 100 km/h sa uga nga dalan.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Magmaneho</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ang Pirme nagatugot sa mouse nga magmaneho sa tanan nga tion. Ang Samtang ginauyatan nagatugot sini nga magmaneho lang samtang ginauyatan ang Input sang pagmaneho. Ang Toggle nagapa-on ukon nagapa-off sang pagmaneho sa tagsa ka pindot sang Input sang pagmaneho. Samtang wala nagamaneho ang mouse, ang manibela nagapabilin sa iya lugar ukon nagabalik sa tunga, gani ang isa ka mouse makamaneho kag makatan-aw sa palibot.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Pirme</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Samtang ginauyatan</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input sang pagmaneho</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button nga nagatugot sa mouse nga magmaneho, sa amo man nga device sang lakat sang mouse. Kon wala sing ginpili, pirme nagamaneho ang mouse.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pagpahapsay</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ginapahapsay ang mouse nga indi pareho ang pagreport. Ang manibela nagasunod sa kamot sing mga amo sini kadugay. Ang 0 naka-off.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock sa tulin</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kon naka-on ang Telemetry sang dula, pila ang nabilin sang lock sa 200 km/h. Sa 100% yara ang bug-os nga lock sa tanan nga tulin.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibalo sang nag-disconnect nga device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibalo sang nag-connect nga device</value></data>
 </root>

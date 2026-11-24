@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Хулганы байрлал Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн курсорын мэдрэмж. 1.0 бол төвөөс дэлгэцийн өргөний 10%-д стикийн бүтэн хазайлтад хүрнэ. 1.0-ээс их утга курсорын бага шилжилтээр бүтэн хазайлтад хүрнэ. 1.0-ээс бага утгад илүү их шилжилт хэрэгтэй.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Хулганы шилжилт X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Хулганы шилжилт Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Бүрэн эргэлт хүртэлх шилжилт</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Хулгана төвөөс бүрэн эргэлт хүртэл хэр хол хөдлөхийг хулганы мэдээлдэг тоолуураар заана. Их тоо илүү нарийн жолоодож, гарыг илүү их хөдөлгөнө.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>тоолуур</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Төвлөрөл</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Унтраалттай нь жолоог гар орхисон байрлалд нь барина. Пүрш нь Буцах хугацааны туршид төвд буцаана. Телеметрээс нь тоглоомын хурд ба наалдалтад машины урд дугуй татах шиг буцаана: зогсож байхад хөдөлгөөнгүй, хурдтай хамт чангарч, дугуй гулсахад хөнгөрнө. Телеметр илгээх тоглоом байхгүй бол пүрш болно. Тоглоомын хүчнээс нь виртуал жолооны өөрийн хүчний хариу үйлдлээр жолоог эргүүлнэ.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Унтраалттай</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Пүрш</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Телеметрээс</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Тоглоомын хүчнээс</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Буцах хугацаа</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Пүрш жолоог замын 95% хүртэл буцаахад зарцуулах хугацаа. Телеметрээс нь хуурай зам дээр 100 km/h хурдтай үед ийм хугацаа зарцуулна.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Жолоодох</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Үргэлж нь хулганаар байнга жолоодох боломж олгоно. Дарж барих үед нь Жолоодох оролтыг дарж байх үед л жолоодох боломж олгоно. Сэлгэх нь Жолоодох оролтыг дарах бүрд жолоодлогыг асааж эсвэл унтраана. Хулгана жолоодоогүй үед жолоо байрандаа үлдэх эсвэл төвд буцдаг тул нэг хулганаар жолоодож, мөн эргэн тойрноо харж болно.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Үргэлж</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Дарж барих үед</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Сэлгэх</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Жолоодох оролт</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Хулганаар жолоодох боломж олгох товч, хулганы шилжилттэй ижил төхөөрөмж дээр. Сонгоогүй бол хулгана үргэлж жолооддог.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Зөөллөлт</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Жигд бус мэдээлдэг хулганыг жигдрүүлнэ. Жолоо гараас ойролцоогоор энэ хугацаагаар хоцорно. 0 бол унтраалттай.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Хурдан үеийн эргэлтийн хязгаар</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Тоглоомын телеметр асаалттай үед 200 km/h хурдтай байхад эргэлтийн хэдэн хувь үлдэхийг заана. 100% бол бүх хурдад бүтэн эргэлт хүртээмжтэй.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR заагч X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR заагч Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR тод байдал</value></data>
@@ -3338,8 +3362,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Флик зураглалыг бүхэлд нь энэ хэдэн градусаар эргүүлнэ. Эерэг нь цагийн зүүний дагуу. Татах нь шилжилтийн дараа хэрэгжинэ.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Флик стик байрлах давхарга стик аль хэдийн хазайсан үед идэвхжвэл фликийг шууд гүйцэтгэнэ. Унтраалттай үед камер хөдлөхгүй бөгөөд эргэлтийг стикийн одоогийн өнцгөөс эхлэн хянана.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Жолооны хязгаарын эргэх холбоо</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Жолоодлогын горимын стик бүрэн хязгаарт хүрэхэд өгөх дохио</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Жолоодлогын горимд тохируулсан стикийг бүрэн хязгаар хүртэл эргүүлэхэд хязгаарыг мэдрэхийн тулд дохио (чичиргээ, гох эсвэл гэрлийн зурвас) өгнө. Үндсэн тохиргоогоор бүгд унтраалттай.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Жолоодлого бүрэн хязгаарт хүрэхэд өгөх дохио</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Жолоодлогын горимын стик, “Хөдөлгөөн: налалт” оролт эсвэл “Хулганы шилжилт” оролт бүрэн хязгаарт хүрэхэд хязгаарыг мэдрэхийн тулд дохио (чичиргээ, гох эсвэл гэрлийн зурвас) өгнө. Үндсэн тохиргоогоор бүгд унтраалттай.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Хязгаарт чичиргээний импульс</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Хязгаарт гохны чичиргээ</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Хязгаарт гэрлийн зурвасын импульс</value></data>
@@ -4286,6 +4310,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>{0} товчлууруудыг сэлгэх</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Гироскопыг төвд буцаах</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Дарахад контроллерын хуримтлагдсан гироскопын онилгын лавлах утгуудыг тэглэнэ. Зөөлрүүлэлтийн түүх цэвэрлэгдэж, хөдөлгөөний налалтын саармаг байрлал дахин бүртгэгдэж, таталцлын тооцоо контроллерын одоогийн байрлалаас дахин эхэлж, хөдөлгөөний урагш-хойш хазайлт, зүүн-баруун эргэлт, хажуу тийш хазайлтын мөрүүдийн үүсгэсэн эргэлт буцаагдана.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Хулганы жолоодлогыг төвд буцаах</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Энэ виртуал контроллер дээрх бүх Хулганы шилжилт оролтын жолоог төвд буцаана.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Дурын төхөөрөмж)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Цэсүүд</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Цэс нь физик стик эсвэл мэдрэгч самбарыг дэлгэц дээрх цагираг эсвэл тор болгоно. Цэсүүд гарчгийн хажууд байгаа + товчийг дарж цэс үүсгээд, түүнийг юугаар нээхийг сонгож, дараа нь нүд бүрт нэр болон үйлдэл өгнө үү.</value></data>

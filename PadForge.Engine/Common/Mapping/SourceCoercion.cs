@@ -183,6 +183,14 @@ namespace PadForge.Engine.Common.Mapping
                              // read PER DEVICE from CustomInputState.AnalogKeys.
                              // Leading 'A' keeps it clear of the I/H prefix
                              // grammar.
+            MouseTravel,     // "Mouse Travel X" / "Mouse Travel Y" (issue #597).
+                             // A mouse's raw counts added up and held as a
+                             // position, bipolar [-1..+1]. The position is a
+                             // mapping row's own, kept in the slot's
+                             // SourceKindRuntime, so SourceEvaluator reads it
+                             // and this class's own readers, which have no
+                             // row, read it at rest. Leading 'M' keeps it
+                             // clear of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -1469,6 +1477,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return SourceType.MouseCursor;
+            if (s.StartsWith(MouseTravelPrefix, StringComparison.Ordinal))
+                return SourceType.MouseTravel;
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
                 return SourceType.JoyCon2Mouse;
             if (s.StartsWith("Mouse Gesture ", StringComparison.Ordinal))
@@ -2249,6 +2259,107 @@ namespace PadForge.Engine.Common.Mapping
             return v;
         }
 
+        // ─── Mouse Travel (#597) ───────────────────────────────────────
+        // "Mouse Travel X" / "Mouse Travel Y": a mouse's raw counts
+        // (CustomInputState.MouseRawDX / MouseRawDY) added up and held as a
+        // position from -1 to 1. The position is a mapping row's own, kept
+        // in the slot's SourceKindRuntime with the row's settings, so only
+        // a read through SourceEvaluator moves it or answers it. The
+        // readers of this class have no row: there the family reads at
+        // rest, as a flick stick does off its mouse row.
+
+        /// <summary>The family's prefix, before the X or the Y.</summary>
+        public const string MouseTravelPrefix = "Mouse Travel ";
+
+        /// <summary>The two descriptors of the family.</summary>
+        public const string MouseTravelXDescriptor = "Mouse Travel X", MouseTravelYDescriptor = "Mouse Travel Y";
+
+        /// <summary>True for "Mouse Travel X" and "Mouse Travel Y".</summary>
+        public static bool IsMouseTravelDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith(MouseTravelPrefix, StringComparison.Ordinal);
+
+        /// <summary>The counts one pass of a mouse adds to a "Mouse Travel"
+        /// source: sideways for X, toward the user for Y, the frame the
+        /// mouse's speed axes have. 0 for any other descriptor.</summary>
+        public static int MouseTravelCounts(CustomInputState state, string descriptor)
+        {
+            if (state == null || descriptor == null) return 0;
+            if (descriptor.EndsWith(" X", StringComparison.Ordinal)) return state.MouseRawDX;
+            if (descriptor.EndsWith(" Y", StringComparison.Ordinal)) return state.MouseRawDY;
+            return 0;
+        }
+
+        /// <summary>The road a game reports, for a "Mouse Travel" source
+        /// whose Centering is From Telemetry or whose Lock at Speed is set:
+        /// the car's speed in meters a second, below 0 while no game sends
+        /// one, the grip under its front wheels against dry asphalt's, 0
+        /// while no game says, and whether Lock at Speed applies (the Game
+        /// Telemetry extra is on). The app answers from its telemetry hub
+        /// and asks the hub to keep reading, so only a source that uses the
+        /// answer asks. Unwired, no game sends anything.</summary>
+        public static Func<(double speed, double grip, bool lockAtSpeed)> MouseTravelRoadProvider { get; set; }
+
+        /// <summary>The steering force a game sends the slot's virtual
+        /// wheel, from -1 to 1, for a "Mouse Travel" source whose Centering
+        /// is From the Game's Force. Its sign is the axis's, as
+        /// ForceFeedbackState.ComputeWheelSteeringPeak reads a game's force:
+        /// a positive force comes from the positive side and pushes toward
+        /// lower values. 0 while no game sends one. Unwired, none does.</summary>
+        public static Func<int, double> MouseTravelForceProvider { get; set; }
+
+        /// <summary>A "Mouse Travel" position as a button: pressed once the
+        /// wheel is past the source's deadzone, the gravity-lean pair's
+        /// grammar for a position. Half picks one side and Invert which,
+        /// and Either reads both sides again.</summary>
+        public static bool MouseTravelAsButton(double position, MappingSource src, int globalThresholdPercent)
+        {
+            if (src == null) return false;
+            float v = (float)position;
+            float threshold = Math.Max(EffectiveThresholdPercent(src, globalThresholdPercent), 1) / 100f;
+            if (src.HalfAxis && !src.Bidirectional)
+                return src.Invert ? v < -threshold : v > threshold;
+            return Math.Abs(v) > threshold;
+        }
+
+        /// <summary>A "Mouse Travel" position on a stick or another two-way
+        /// axis. The whole axis takes the source's own shaping (inner
+        /// deadzone, outer range, curve and anti-deadzone, with the deadzone
+        /// read on this axis alone since the wheel has no partner axis) and
+        /// Invert turns it around. Under Half the side Invert picks runs 0
+        /// to 1 and the other reads 0, Either folds both sides to one, and
+        /// Flip Output turns the result around.</summary>
+        public static float MouseTravelAsBipolar(double position, MappingSource src)
+        {
+            if (src == null) return 0f;
+            float v = (float)position;
+            if (src.HalfAxis)
+            {
+                float half = src.Bidirectional ? Math.Min(1f, Math.Abs(v))
+                    : src.Invert ? (v < 0 ? Math.Min(1f, -v) : 0f)
+                    : (v > 0 ? Math.Min(1f, v) : 0f);
+                return src.InvertOutput ? -half : half;
+            }
+            if (src.ParamStickDeadZoneShape != 0)
+                v = ApplyStickDeadZoneShape(null, src, -1, v);
+            v = ApplyCurveRangeShaping(v, src);
+            return src.Invert ? -v : v;
+        }
+
+        /// <summary>A "Mouse Travel" position as a trigger's pull: how far
+        /// the wheel is from center, either way, and Invert reads the pull
+        /// the other way around. Under Half one side pulls and Invert picks
+        /// which.</summary>
+        public static float MouseTravelAsTrigger(double position, MappingSource src)
+        {
+            if (src == null) return 0f;
+            float v = (float)position;
+            if (src.HalfAxis)
+                return src.Bidirectional ? Math.Min(1f, Math.Abs(v)) : Math.Max(0f, Math.Min(1f, src.Invert ? -v : v));
+            float pull = Math.Min(1f, Math.Abs(v));
+            return src.Invert ? 1f - pull : pull;
+        }
+
         /// <summary>The lineage's default aim-range normalization. All four
         /// Touchmote variants on disk ship pointer_marginsLeftRight = 0.4 and
         /// pointer_marginsTopBottom = 0.5 as DEFAULTS (each repo's
@@ -2826,7 +2937,8 @@ namespace PadForge.Engine.Common.Mapping
                 || string.Equals(descriptor.Trim(), "Midi Pitch Bend", StringComparison.Ordinal)
                 || IsRumbleDescriptor(descriptor)
                 || IsRingConDescriptor(descriptor)
-                || IsAnalogKeyDescriptor(descriptor);
+                || IsAnalogKeyDescriptor(descriptor)
+                || IsMouseTravelDescriptor(descriptor);
         }
 
         /// <summary>True for a source with press depth, the inputs Rapid
@@ -5838,10 +5950,13 @@ namespace PadForge.Engine.Common.Mapping
             // magnitude either way, so no output flip may ride the flag.
             // The gravity-lean pair (v26) consumes Invert as its wedge
             // direction selector, the Mouse Motion shape.
+            // Mouse Travel (#597) is a position and takes the gravity-lean
+            // pair's grammar: under Half, Invert picks the side.
             return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
                 || s.StartsWith("Mouse Motion ", StringComparison.Ordinal)
                 || IsStickRingDescriptor(s)
-                || IsGravityTiltFamilyDescriptor(s);
+                || IsGravityTiltFamilyDescriptor(s)
+                || IsMouseTravelDescriptor(s);
         }
 
         /// <summary>Evaluates a source for a POV-direction target

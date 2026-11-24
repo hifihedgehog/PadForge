@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>မောက်စ် တည်နေရာ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်တစ်ခုချင်းစီအလိုက် ကာဆာ အာရုံခံနိုင်စွမ်း။ 1.0 သည် ဗဟိုမှ မျက်နှာပြင်အကျယ်၏ 10% တွင် စတစ်တွန်းရွှေ့မှုပမာဏ အပြည့်သို့ ရောက်သည်။ 1.0 ထက်မြင့်သော တန်ဖိုးများသည် ကာဆာ ရွေ့လျားမှု နည်းနည်းဖြင့် အပြည့်သို့ ရောက်သည်။ 1.0 ထက်နိမ့်သော တန်ဖိုးများသည် ပိုလိုအပ်သည်။</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>မောက်စ် ရွေ့လျားမှု X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>မောက်စ် ရွေ့လျားမှု Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>အဆုံးထိ လှည့်ရန် ရွေ့လျားမှု</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ဗဟိုမှ အဆုံးထိ ရောက်ရန် မောက်စ် ရွေ့ရမည့် အကွာအဝေး၊ မောက်စ် ပေးပို့သော အရေအတွက်ဖြင့်။ နံပါတ်မြင့်လေ ပိုသေချာစွာ ထိန်းကျောင်းနိုင်ပြီး လက်ကို ပိုရွှေ့ရလေ ဖြစ်သည်။</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>အရေအတွက်</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ဗဟိုပြန်ခြင်း</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>“ပိတ်” သည် စတီယာရင်ဘီးကို လက် ထားခဲ့သည့်နေရာတွင် ထိန်းထားသည်။ “စပရိန်” သည် ၎င်းကို “ပြန်လာချိန်” အတွင်း ပြန်ယူသည်။ “တယ်လီမီထရီမှ” သည် ဂိမ်း၏ အမြန်နှုန်းနှင့် ဆုပ်ကိုင်အားတွင် ကား၏ ရှေ့တာယာများ ဆွဲသကဲ့သို့ ပြန်ဆွဲသည်: ရပ်နေစဉ် မလှုပ်၊ အမြန်နှုန်းနှင့်အတူ ပိုတင်း၊ တာယာ ချော်သည့်အခါ ပေါ့သည်။ တယ်လီမီထရီ ပို့သော ဂိမ်း မရှိလျှင် ၎င်းသည် စပရိန် ဖြစ်သည်။ “ဂိမ်း၏ အားမှ” သည် ဗာချွယ်စတီယာရင်ဘီး၏ ကိုယ်ပိုင် အားတုံ့ပြန်မှုက ၎င်းကို လှည့်စေသည်။</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ပိတ်</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>စပရိန်</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>တယ်လီမီထရီမှ</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ဂိမ်း၏ အားမှ</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>ပြန်လာချိန်</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>“စပရိန်” သည် စတီယာရင်ဘီးကို လမ်းကြောင်း၏ 95% ပြန်ယူရန် ကြာချိန်။ “တယ်လီမီထရီမှ” သည် ခြောက်သွေ့သော လမ်းပေါ်တွင် 100 km/h ၌ ဤမျှ ကြာသည်။</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ထိန်းကျောင်းရန်</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>“အမြဲ” သည် မောက်စ်ကို အချိန်တိုင်း ထိန်းကျောင်းခွင့်ပေးသည်။ “ဖိထားစဉ်” သည် “ထိန်းကျောင်းခြင်း အဝင်” ကို ဖိထားစဉ်သာ ထိန်းကျောင်းခွင့်ပေးသည်။ “အဖွင့်အပိတ်” သည် “ထိန်းကျောင်းခြင်း အဝင်” ကို နှိပ်တိုင်း ထိန်းကျောင်းခြင်းကို ဖွင့်သည် သို့မဟုတ် ပိတ်သည်။ မောက်စ် မထိန်းကျောင်းစဉ် စတီယာရင်ဘီးသည် ရှိရာနေရာတွင် နေသည် သို့မဟုတ် ဗဟိုသို့ ပြန်သွားသဖြင့် မောက်စ်တစ်ခုတည်းဖြင့် ထိန်းကျောင်းနိုင်ပြီး ပတ်ပတ်လည် ကြည့်နိုင်သည်။</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>အမြဲ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ဖိထားစဉ်</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>အဖွင့်အပိတ်</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ထိန်းကျောင်းခြင်း အဝင်</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>မောက်စ် ရွေ့လျားမှုနှင့် တူညီသော စက်ပစ္စည်းပေါ်ရှိ မောက်စ်ကို ထိန်းကျောင်းခွင့်ပေးသော ခလုတ်။ မရွေးထားလျှင် မောက်စ်သည် အမြဲ ထိန်းကျောင်းသည်။</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ချောမွေ့စေခြင်း</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>မညီမညာ ပေးပို့သော မောက်စ်ကို ညီညာစေသည်။ စတီယာရင်ဘီးသည် လက်နောက်မှ ဤမျှခန့် နောက်ကျသည်။ 0 သည် ပိတ်ခြင်း ဖြစ်သည်။</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>အမြန်နှုန်းတွင် လှည့်ထောင့်</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>“ဂိမ်း တယ်လီမီထရီ” ဖွင့်ထားလျှင် 200 km/h တွင် လှည့်ထောင့် မည်မျှ ကျန်သည်။ 100% တွင် အမြန်နှုန်းတိုင်း၌ လှည့်ထောင့် အပြည့် ရှိသည်။</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ညွှန်တံ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ညွှန်တံ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR အလင်းအား</value></data>
@@ -3332,8 +3356,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>ဖလစ်မြေပုံတစ်ခုလုံးကို ဤဒီဂရီအရေအတွက်ဖြင့် လှည့်သည်။ အပေါင်းတန်ဖိုးသည် နာရီလက်တံအတိုင်း ဖြစ်သည်။ ကပ်ညှိခြင်းသည် အလွဲ ပြီးမှ သက်ရောက်သည်။</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ဖလစ်စတစ် ပါသော အလွှာ အသက်ဝင်ချိန်တွင် စတစ်ကို တွန်းထားပြီး ဖြစ်လျှင် ဖလစ်ကို ချက်ချင်း လုပ်ဆောင်သည်။ ပိတ်ထားလျှင် ကင်မရာ ငြိမ်နေပြီး လက်ရှိ စတစ်ထောင့်မှ စ၍ လှည့်မှုကို ခြေရာခံသည်။</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>စတီယာရင် အဆုံးထိ တုံ့ပြန်မှု</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>စတီယာရင် မုဒ်ရှိ စတစ် အဆုံးထိရောက်ချိန် အချက်ပြမှု</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>စတီယာရင် မုဒ် သတ်မှတ်ထားသော စတစ်ကို အဆုံးထိ လှည့်လိုက်လျှင် ကန့်သတ်ချက်ကို ခံစားရစေရန် အချက်ပြမှု (တုန်ခါမှု၊ ထရီဂါ သို့မဟုတ် အလင်းတန်း) ကို ပြသည်။ မူလအားဖြင့် အားလုံး ပိတ်ထားသည်။</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>စတီယာရင် အဆုံးထိရောက်ချိန် အချက်ပြမှု</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>စတီယာရင် မုဒ်ရှိ စတစ်၊ လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း အဝင် သို့မဟုတ် မောက်စ် ရွေ့လျားမှု အဝင်သည် အဆုံးထိ ရောက်လျှင် ကန့်သတ်ချက်ကို ခံစားရစေရန် အချက်ပြမှု (တုန်ခါမှု၊ ထရီဂါ သို့မဟုတ် အလင်းတန်း) ကို ပြသည်။ မူလအားဖြင့် အားလုံး ပိတ်ထားသည်။</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>အဆုံးထိရောက်ချိန် တုန်ခါမှု အချက်ပြ</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>အဆုံးထိရောက်ချိန် ထရီဂါ တုန်ခါမှု</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>အဆုံးထိရောက်ချိန် အလင်းတန်း အချက်ပြ</value></data>
@@ -4279,6 +4303,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ကီးများ {0} အဖွင့်အပိတ်</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ဂိုင်ရို ဗဟိုပြန်ထားရန်</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>နှိပ်သည့်အခါ ပက်၏ စုဆောင်းထားသော ဂိုင်ရို ချိန်ရွယ်ကိုးကားချက်များကို သုညပြန်ထားသည်။ ချောမွေ့စေမှု မှတ်တမ်း ရှင်းလင်းသွားပြီး လှုပ်ရှားမှု စောင်းခြင်း၏ ကြားနေအနေအထားကို ပြန်ဖမ်းယူကာ ဆွဲငင်အား ခန့်မှန်းချက်ကို ကွန်ထရိုလာ၏ လက်ရှိ အနေအထားမှ ပြန်စတင်ပြီး လှုပ်ရှားမှု ရှေ့နောက်စောင်းခြင်း၊ ဘယ်ညာလှည့်ခြင်းနှင့် ဘေးစောင်းခြင်း အတန်းများ တည်ဆောက်ခဲ့သော လှည့်မှုကို ပြန်ဖျက်သည်။</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>မောက်စ် ထိန်းကျောင်းခြင်းကို ဗဟိုပြန်ထားရန်</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာပေါ်ရှိ “မောက်စ် ရွေ့လျားမှု” အဝင်တိုင်း၏ စတီယာရင်ဘီးကို ဗဟိုသို့ ပြန်ထားသည်။</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(မည်သည့် စက်ပစ္စည်းမဆို)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>မီနူးများ</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>မီနူးများသည် ရုပ်ပိုင်းဆိုင်ရာ စတစ် သို့မဟုတ် တာ့ချ်ပက်ကို ဖန်သားပြင်ပေါ်ရှိ ကွင်း သို့မဟုတ် ဇယားကွက်အဖြစ် ပြောင်းပေးသည်။ မီနူးတစ်ခု ဖန်တီးရန် “မီနူးများ” ဘေးရှိ + ကို နှိပ်ပါ၊ ၎င်းကို ဖွင့်မည့်အရာကို ရွေးပါ၊ ထို့နောက် အကွက်တစ်ခုစီကို အမည်နှင့် လုပ်ဆောင်ချက် ပေးပါ။</value></data>

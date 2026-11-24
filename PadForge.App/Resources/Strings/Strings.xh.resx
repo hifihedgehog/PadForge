@@ -1781,7 +1781,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Intshukumo &amp; Ukuchukumisa</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanya &amp; Isandi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Iimakhro &amp; Iimenyu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu xa intonga yokuqhuba ifika esiphelweni</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu xa ukuqhuba kufika esiphelweni</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela okuvela kwi-bass yesandi senkqubo</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ithumela ukungcangcazela kweemoto eziphambili kwii-trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela kwe-trigger okuvela kwi-bass yesandi senkqubo</value></data>
@@ -1987,4 +1987,11 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>I-PadForge ilale ukukhuphela kuba asiso isiseko sedatha sezilawuli esisilindeleyo. Akukho nto itshintshileyo.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Imephu entsha isetyenziswa kwixesha elilandelayo isilawuli sayo siqhagamshela.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Imephu etshintshiweyo isetyenziswa kwixesha elilandelayo i-PadForge iqala.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>izibalo</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Ukusuka kwi-telemetry</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Rhoqo</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ngelixa kubanjiwe</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>I-toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Iqhosha elivumela imouse ukuba iqhube, kwisixhobo esinye nohambo lwemouse. Ukuba akukho likhethiweyo, imouse ihlala iqhuba.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Xa i-telemetry yemidlalo ivuliwe, kungakanani komda wokujika oseleyo ku-200 km/h. Ku-100% wonke umda wokujika ukhona kuso nasiphi na isantya.</value></data>
 </root>

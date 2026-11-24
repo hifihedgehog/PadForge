@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>ماؤس کی پوزیشن Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>حساسیت</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ہر ماخذ کے لیے کرسر کی حساسیت۔ 1.0 پر مرکز سے اسکرین کی چوڑائی کے 10% فاصلے پر اسٹک کا پورا انحراف ملتا ہے۔ 1.0 سے زیادہ قدروں پر کرسر کے کم سفر سے پورا انحراف مل جاتا ہے۔ 1.0 سے کم قدروں پر زیادہ سفر درکار ہوتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ماؤس کا سفر X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ماؤس کا سفر Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>مکمل لاک تک سفر</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماؤس مرکز سے مکمل لاک تک کتنا ہلتا ہے، ماؤس کے بتائے ہوئے کاؤنٹس میں۔ زیادہ عدد زیادہ باریک اسٹیئرنگ دیتا ہے اور ہاتھ کو زیادہ حرکت کرنی پڑتی ہے۔</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>کاؤنٹس</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>مرکز پر واپسی</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>آف وہیل کو وہیں رکھتا ہے جہاں ہاتھ نے چھوڑا۔ اسپرنگ اسے واپسی کے وقت میں واپس لاتا ہے۔ ٹیلی میٹری سے اسے ایسے کھینچتا ہے جیسے کار کے اگلے ٹائر کھینچتے، گیم کی رفتار اور گرفت پر: رکنے پر ساکن، رفتار کے ساتھ سخت، ٹائر پھسلیں تو ہلکا۔ ٹیلی میٹری بھیجنے والی کوئی گیم نہ ہو تو یہ اسپرنگ ہے۔ گیم کی قوت سے ورچوئل وہیل کی اپنی فورس فیڈ بیک اسے گھمانے دیتی ہے۔</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>آف</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>اسپرنگ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ٹیلی میٹری سے</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>گیم کی قوت سے</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>واپسی کا وقت</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>اسپرنگ وہیل کو 95% واپس لانے میں کتنا وقت لیتا ہے۔ ٹیلی میٹری سے خشک سڑک پر 100 km/h پر اتنا وقت لیتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>اسٹیئر کریں</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ہمیشہ ماؤس کو ہر وقت اسٹیئر کرنے دیتا ہے۔ دبائے رکھنے کے دوران اسے صرف اسی وقت اسٹیئر کرنے دیتا ہے جب اسٹیئر ان پٹ دبا ہو۔ ٹوگل اسٹیئر ان پٹ کے ہر دباؤ پر اسٹیئرنگ آن یا آف کرتا ہے۔ جب ماؤس اسٹیئر نہیں کرتا تو وہیل وہیں رہتا ہے یا مرکز پر آ جاتا ہے، اس لیے ایک ماؤس اسٹیئر بھی کر سکتا ہے اور اردگرد بھی دیکھ سکتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ہمیشہ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>دبائے رکھنے کے دوران</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ٹوگل</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>اسٹیئر ان پٹ</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>وہ بٹن جو ماؤس کو اسٹیئر کرنے دیتا ہے، ماؤس کے سفر والے ہی آلے پر۔ کوئی منتخب نہ ہو تو ماؤس ہمیشہ اسٹیئر کرتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ہموار کاری</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ناہموار رپورٹ کرنے والے ماؤس کو ہموار کرتا ہے۔ وہیل ہاتھ سے تقریباً اتنا پیچھے رہتا ہے۔ 0 پر آف۔</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>رفتار پر لاک</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>گیم ٹیلی میٹری آن ہو تو 200 km/h پر لاک کا کتنا حصہ باقی رہتا ہے۔ 100% پر ہر رفتار پر پورا لاک موجود ہوتا ہے۔</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR پوائنٹر X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR پوائنٹر Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR چمک</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>پورے فلک نقشے کو اتنی ڈگری گھما دیتا ہے۔ مثبت کا مطلب گھڑی کی سمت ہے۔ اسنیپنگ آفسیٹ کے بعد لاگو ہوتی ہے۔</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>جب فلک اسٹک والی لیئر اس حالت میں فعال ہو کہ اسٹک پہلے سے منحرف ہے تو فلک فوراً چلا دیں۔ آف ہونے پر کیمرا ساکن رہتا ہے اور گردش اسٹک کے موجودہ زاویے سے شمار ہوتی ہے۔</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>اسٹیئرنگ لاک فیڈبیک</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>مکمل لاک پر اسٹیئرنگ موڈ والی اسٹک کے لیے اشارہ</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>جب اسٹیئرنگ موڈ پر سیٹ کی گئی اسٹک کو پورے لاک تک گھما دیا جائے تو ایک اشارہ (رمبل، ٹرگر یا لائٹ بار) چلائیں تاکہ آپ کو حد محسوس ہو۔ ڈیفالٹ طور پر سب آف۔</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>مکمل لاک پر اسٹیئرنگ پہنچنے پر اشارہ</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>جب اسٹیئرنگ موڈ والی اسٹک، موشن جھکاؤ کا ان پٹ یا ماؤس کے سفر کا ان پٹ مکمل لاک تک پہنچے تو ایک اشارہ (رمبل، ٹرگر یا لائٹ بار) چلائیں تاکہ آپ کو حد محسوس ہو۔ ڈیفالٹ طور پر سب آف۔</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>لاک پر رمبل پلس</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>لاک پر ٹرگر وائبریشن</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>لاک پر لائٹ بار پلس</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>کلیدیں {0} ٹوگل کریں</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>جائرو ری سینٹر</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>دبانے پر پیڈ کے جمع شدہ جائرو نشانے کے حوالے صفر کر دیتا ہے۔ ہموار کاری کی ہسٹری صاف ہو جاتی ہے، موشن جھکاؤ کا نیوٹرل دوبارہ لیا جاتا ہے، کشش ثقل کا تخمینہ کنٹرولر کے موجودہ پوز سے نئے سرے سے شروع ہوتا ہے، اور موشن پچ، یاؤ اور رول قطاروں سے بنا موڑ ختم کر دیا جاتا ہے۔</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>ماؤس اسٹیئرنگ کو مرکز پر لائیں</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>اس ورچوئل کنٹرولر پر ماؤس کے سفر کے ہر ان پٹ کے وہیل کو مرکز پر واپس لاتا ہے۔</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(کوئی بھی آلہ)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>مینوز</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>مینوز کسی فزیکل اسٹک یا ٹچ پیڈ کو اسکرین پر حلقے یا گرڈ میں بدل دیتے ہیں۔ نیا مینو بنانے کے لیے "مینوز" کے ساتھ والا + دبائیں، منتخب کریں کہ وہ کس سے کھلے، پھر ہر خانے کو نام اور ایکشن دیں۔</value></data>

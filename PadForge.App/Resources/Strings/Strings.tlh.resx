@@ -2860,6 +2860,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>'eQway' DoD Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>jemlaHghach</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Hal Hoch ghaSwI' jemlaHghach. 1.0: botlhvo' jIH juch 10% lIDDI' ghaSwI', naQ botlh chuq naQ SIchlu'. mI' law' 1.0 puSchugh, ghaSwI' lID puS poQ. mI' puS 1.0 law'chugh, lID law' poQ.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>'eQway' lIDtaHghach X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>'eQway' lIDtaHghach Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>HeH SIchmeH lIDtaHghach</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>botlhvo' HeH SIchmeH 'eQway' lIDtaHghach, 'eQway' ja'bogh mI'mey. mI' law'chugh, Hab lurgh SeH 'ej ghop lIDtaHghach law' poQ.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>mI'mey</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>botlhDaq cheghmoH</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>chu'Ha': ghop mejDaq rutlh 'uch. 'IqngIl: cheghmeH poH qaStaHvIS botlhDaq rutlh cheghmoH. Quj De'vo': Quj Do 'uchtaHghach je rur, Duj tlhop rutlhmey luchegh rur, rutlh cheghmoH: Duj ratlhtaHvIS cheghmoHbe', Do ghurDI' HoS ghur, rutlhmey tlhamDI' puS. Quj De' ngeHbe'chugh Quj, 'IqngIl rur. Quj Surma'vo': rutlh tlhe'moH rutlh velqa' cheghbogh Surma'.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>chu'Ha'</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>'IqngIl</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Quj De'vo'</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Quj Surma'vo'</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>cheghmeH poH</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>'IqngIl lo'lu'DI', rutlh 95% cheghmoHmeH poH. Quj De'vo' lo'lu'DI', poHvam lo' 100 km/h Do, taw QaDDaq.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>lurgh yISeH</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>reH: reH lurgh SeH 'eQway'. 'uytaHvIS: lurgh SeH 'elmoHghach 'uytaHvIS neH lurgh SeH 'eQway'. choHwI': lurgh SeH 'elmoHghach 'uylu'DI', lurgh SeH chu' ghap chu'Ha'. lurgh SeHbe'taHvIS 'eQway', ratlh rutlh ghap botlhDaq chegh, vaj lurgh SeHlaH 'ej Dat leghlaH wa' 'eQway'.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>reH</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>'uytaHvIS</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>choHwI'</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>lurgh SeH 'elmoHghach</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>lurgh SeH 'e' chaw'bogh leQ, 'eQway' lIDtaHghach janDaq. pagh wIvlu'chugh, reH lurgh SeH 'eQway'.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>HabmoHghach</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Hab ja'be'bogh 'eQway' HabmoH. poHvam rap, ghop tlha' rutlh. 0: chu'Ha'.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Do HeH</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Quj De' chu'lu'taHvIS, 200 km/h DoDaq HeH 'ay' ratlhbogh. 100% Daq Hoch DoDaq HeH naQ ratlh.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ghaSwI' X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ghaSwI' Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR wovtaHghach</value></data>
@@ -3581,8 +3605,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>moD naQ tlhe'moH lawrI' mI'vam. mI' ruS: 'Ing. tlhe' choH qaSpu'DI' ngaQmoHtaHghach Qap.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>naQ moD ghajbogh patlh chu'lu'DI', botlh chuqtaHvIS naQ, SIbI' moDlu'. chu'Ha' lo'lu'DI', ratlh mIllogh qonwI', 'ej 'a'ren naQ tajvajvo' tlhe'taHghach ghoch.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>lurgh SeH HeH ghuH</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>lurgh SeH lo'Daq naQ, HeH SIchDI' ghuH</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>lurgh SeH lo' lo'bogh naQ tlhe'lu'DI' HeH SIchmeH, ghuH chu'lu' (jelmoHghach, chu'wI', wovmoHwI' naQ pagh), vaj vuS Dajem. motlh: Hoch chu'Ha'.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>lurgh SeH HeH SIchDI' ghuH</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>lurgh SeH lo' lo'bogh naQ, vIHtaHghach lav 'elmoHghach, 'eQway' lIDtaHghach 'elmoHghach ghap HeH SIchDI', ghuH chu'lu' (jelmoHghach, chu'wI', wovmoHwI' naQ pagh), vaj veH Dajem. motlh: Hoch chu'Ha'.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>HeH jelmoHghach</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>HeH chu'wI' waltaHghach</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>HeH wovmoHwI' naQ wovmoHghach</value></data>
@@ -4568,6 +4592,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>nItlh leQmey {0} tIchoH</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ngaDmoQ botlh cheghmoHghach</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>'uylu'DI', SeHjan ngaDmoQ DoS ghaSmey boSlu'pu'bogh pagh moj. HabmoHghach qun teqlu'. vIHtaHghach Lean botlh Suqqa'lu'. DaH SeHjan lol lo'lu'meH, tlham noH taghqa'lu'. 'ej vIHtaHghach tor, Der, ron je wevmey tlhe'taHghach chenmoHpu'bogh teqlu'.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>'eQway' lurgh SeH botlhDaq yIcheghmoH</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>SeHjan velqa'vamDaq Hoch 'eQway' lIDtaHghach 'elmoHghach rutlh botlhDaq cheghmoH.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(jan Hoch)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>HIDjolevmey</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>HIDjolevmey lo'lu'DI', jIHDaq Qeb tlhat ghap moj naQ teH 'echlet Hab ghap. wa' DachenmoHmeH HIDjolevmey retlhDaq + yI'uy, poSmoHbogh Doch yIwIv, vaj Hoch HanDI'vaD pong ta' je yInob.</value></data>

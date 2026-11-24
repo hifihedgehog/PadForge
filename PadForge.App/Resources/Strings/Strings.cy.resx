@@ -2627,6 +2627,30 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Safle'r Llygoden Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitifrwydd</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensitifrwydd y cyrchwr fesul ffynhonnell. Mae 1.0 yn cyrraedd gwyriad llawn y ffon ar 10% o led y sgrin o'r canol. Mae gwerthoedd uwchlaw 1.0 yn cyrraedd gwyriad llawn gyda llai o symud y cyrchwr. Mae gwerthoedd islaw 1.0 angen mwy.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Teithio'r Llygoden X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Teithio'r Llygoden Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Teithio i'r Clo Llawn</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Pa mor bell y mae'r llygoden yn symud o'r canol i'r clo llawn, yn y cyfrifon y mae'r llygoden yn eu hadrodd. Mae rhif uwch yn llywio'n fwy manwl ac yn cymryd mwy o symud llaw.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>cyfrif</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Canoli</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Mae I ffwrdd yn dal yr olwyn lle gadawodd y llaw hi. Mae Sbring yn ei dod yn ôl dros yr Amser Dychwelyd. Mae O Delemetreg yn ei thynnu'n ôl fel y byddai teiars blaen car ar gyflymder a gafael y gêm: llonydd pan fydd yn sefyll, cadarnach gyda chyflymder, ysgafn pan fydd y teiars yn llithro. Heb gêm yn anfon telemetreg, y sbring yw hi. Mae O Rym y Gêm yn gadael i rym adborth olwyn rithwir ei throi.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>I ffwrdd</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Sbring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>O Delemetreg</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>O Rym y Gêm</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Amser Dychwelyd</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Pa mor hir y mae Sbring yn ei gymryd i ddod â'r olwyn 95% o'r ffordd yn ôl. Mae O Delemetreg yn cymryd cyhyd â hyn ar 100 km/h ar ffordd sych.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Llywio</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Mae Bob amser yn gadael i'r llygoden lywio drwy'r amser. Mae Tra bydd yn cael ei Ddal yn gadael iddi lywio dim ond tra bydd y Mewnbwn Llywio yn cael ei ddal. Mae Toglo yn troi llywio ymlaen neu i ffwrdd â phob gwasg o'r Mewnbwn Llywio. Tra nad yw'r llygoden yn llywio, mae'r olwyn yn aros lle mae neu'n canoli, fel y gall un llygoden lywio ac edrych o gwmpas.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Bob amser</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Tra bydd yn cael ei Ddal</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toglo</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Mewnbwn Llywio</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Y botwm sy'n gadael i'r llygoden lywio, ar yr un ddyfais â theithio'r llygoden. Heb yr un wedi'i ddewis, mae'r llygoden bob amser yn llywio.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Llyfnhau</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Yn llyfnhau llygoden sy'n adrodd yn anwastad. Mae'r olwyn yn llusgo y tu ôl i'r llaw tua'r hyd hwn. Mae 0 i ffwrdd.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Clo ar Gyflymder</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Gyda Telemetreg Gêm ymlaen, faint o'r clo sydd ar ôl ar 200 km/h. Ar 100% mae'r clo cyfan yno ar bob cyflymder.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Pwyntydd IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Pwyntydd IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Disgleirdeb IR</value></data>
@@ -3330,8 +3354,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Yn troi'r map fflic cyfan gan y nifer hwn o raddau. Mae positif yn clocwedd. Mae snapio'n berthnasol ar ôl y gwrthbwyso.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Pan fydd yr haen sy'n cynnal Flick stick yn ysgogi â'r ffon eisoes wedi gwyro, tanio'r fflic ar unwaith. Mae i ffwrdd yn cadw'r camera'n llonydd ac yn olrhain cylchdro o ongl bresennol y ffon.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Adborth clo llywio</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Arwydd ar glo llawn i ffon mewn modd llywio</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Pan fydd ffon a osodwyd i fodd llywio yn cael ei throi yr holl ffordd i'r clo llawn, chwaraeir arwydd (dirgryniad, sbardun neu far golau) fel eich bod yn teimlo'r terfyn. Pob un i ffwrdd yn rhagosodedig.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Arwydd pan fydd llywio'n cyrraedd y clo llawn</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Pan fydd ffon mewn modd llywio, mewnbwn Pwyso symudiad neu fewnbwn Teithio'r Llygoden yn cyrraedd y clo llawn, chwaraeir arwydd (dirgryniad, sbardun neu far golau) fel eich bod yn teimlo'r terfyn. Pob un i ffwrdd yn rhagosodedig.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pwls dirgryniad wrth glo</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Dirgrynu'r sbardun wrth glo</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pwls bar golau wrth glo</value></data>
@@ -4278,6 +4302,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toglo bysellau {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ailganoli gyrosgop</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Yn sero cyfeirnodau nod gyrosgop cronedig y pad wrth wasgu. Mae hanes llyfnhau yn clirio, mae niwtral Pwyso symudiad yn ailddal, mae'r amcangyfrif disgyrchiant yn ail-hadu o osgo presennol y rheolydd, ac mae'r tro a adeiladodd y rhesi Traw symudiad, Gwyro symudiad a Rholio symudiad yn cael ei ddadwneud.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Canoli Llywio'r Llygoden</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Yn rhoi olwyn pob mewnbwn Teithio'r Llygoden ar y rheolydd rhithwir hwn yn ôl yn y canol.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Unrhyw ddyfais)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Dewislenni</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Mae dewislenni yn troi ffon ffisegol neu bad cyffwrdd yn fodrwy neu'n grid ar y sgrin. Pwyswch + wrth ymyl Dewislenni i greu un, dewiswch beth sy'n ei hagor, yna rhowch enw a gweithred i bob cell.</value></data>

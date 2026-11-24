@@ -2631,6 +2631,30 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posição do rato Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do cursor por origem. 1.0 atinge a deflexão total do manípulo a 10% da largura do ecrã a partir do centro. Valores acima de 1.0 atingem a deflexão total com menos deslocação do cursor. Valores abaixo de 1.0 precisam de mais.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Deslocamento do rato X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Deslocamento do rato Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Deslocamento até ao batente</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quanto o rato se move do centro ao batente, nas contagens que o rato comunica. Um número maior dirige com mais precisão e exige mais movimento da mão.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>contagens</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centragem</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desligado deixa o volante onde a mão o largou. Mola traz-o de volta durante o Tempo de retorno. Da telemetria puxa-o como os pneus da frente de um carro à velocidade e aderência do jogo: parado em repouso, mais firme com a velocidade, leve quando os pneus derrapam. Sem jogo a enviar telemetria, é a mola. Da força do jogo deixa a própria força de retorno de um volante virtual rodá-lo.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desligado</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Mola</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Da telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Da força do jogo</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tempo de retorno</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Quanto tempo a Mola demora a trazer o volante 95% do caminho de volta. Da telemetria demora este tempo a 100 km/h numa estrada seca.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Dirigir</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre deixa o rato dirigir a todo o momento. Enquanto premido deixa-o dirigir só enquanto a Entrada de direção está premida. Alternar liga ou desliga a direção a cada premir da Entrada de direção. Enquanto o rato não dirige, o volante fica onde está ou centra-se, para que um só rato possa dirigir e olhar em redor.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempre</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Enquanto premido</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrada de direção</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>O botão que deixa o rato dirigir, no mesmo dispositivo que o deslocamento do rato. Sem nenhum escolhido, o rato dirige sempre.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavização</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Uniformiza um rato que comunica de forma irregular. O volante segue a mão com um atraso de cerca deste valor. 0 é desligado.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Batente à velocidade</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Com a Telemetria de jogos ativa, quanto do batente resta a 200 km/h. A 100%, todo o batente existe a qualquer velocidade.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Ponteiro IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Ponteiro IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Brilho IR</value></data>
@@ -3338,8 +3362,8 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Roda todo o mapa de flick este número de graus. Positivo é no sentido horário. O encaixe aplica-se depois do desvio.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quando a camada que contém o Flick stick é ativada com o manípulo já desviado, dispara o flick de imediato. Desligado mantém a câmara parada e acompanha a rotação a partir do ângulo atual do manípulo.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Resposta no batente da direção</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Um sinal no batente para um manípulo em modo de direção</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um manípulo definido para um modo de direção é rodado até ao batente, reproduz um sinal (vibração, gatilho ou barra de luz) para que sinta o limite. Tudo desligado por predefinição.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Um sinal quando a direção chega ao batente</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um manípulo num modo de direção, uma entrada de Inclinação de movimento ou uma entrada de Deslocamento do rato chega ao batente, reproduz um sinal (vibração, gatilho ou barra de luz) para que sinta o limite. Tudo desligado por predefinição.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impulso de vibração no batente</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibração dos gatilhos no batente</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulsação da barra de luz no batente</value></data>
@@ -4286,6 +4310,8 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrar giroscópio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Repõe a zero, ao premir, as referências de mira por giroscópio acumuladas do comando. O histórico de suavização é limpo, a posição neutra da Inclinação de movimento é capturada de novo, a estimativa da gravidade é reiniciada a partir da pose atual do comando e a rotação acumulada pelas linhas Arfagem, Guinada e Rolamento de movimento é desfeita.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centrar direção do rato</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Repõe no centro o volante de cada entrada de Deslocamento do rato neste comando virtual.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Qualquer dispositivo)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Os menus transformam um manípulo ou painel tátil físico num anel ou numa grelha no ecrã. Prima + ao lado de Menus para criar um, escolha o que o abre e depois dê a cada célula um nome e uma ação.</value></data>

@@ -2860,6 +2860,30 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Sad nigol Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Felf</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Felf till an pân minnad. 1.0 raetha haered bang pant ben 10% i cenedril o enedh. Noth or 1.0 raetha haered pant na glennad dithen i till. Noth nu 1.0 baurar am.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Glennad nigol X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Glennad nigol Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Glennad na daeg pân</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ann i nigol glenna o enedh na daeg pân, vi nediad i nigol menna. Noth am drinna dail a baura glennad cam am.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>nediad</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Enedhad</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Lorn heb i rind mivan i gam leithiant hon. Thagad dammena hon vi Lû dammen. O ment thaga hon sui i rind minui noriod vi lagor a manc i delias: alnad ir i noriod dartha, taug am adh lagor, colui ir i rind talthar. Ir alnad telias menna ment, hen Thagad. O balt i delias dava na dangweth balt i rind nem perna hon.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Lorn</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Thagad</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>O ment</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>O balt i delias</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Lû dammen</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Lû i Thagad baura an menna i rind 95% na enedh. O ment baura lû hen vi 100 km/h bo bâd apharch.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Drinno</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Anuir dava i nigol drinna. Lo manc dava hon drinna lo Minnad drinnad mangannen ero. Gwistad echuida egor lortha drinnad adh ilphen nistad Minnad drinnad. Lo i nigol ú-drinna, i rind dartha egor tôl na enedh, sui nigol er pol drinna a tíra os.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Anuir</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Lo manc</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Gwistad</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Minnad drinnad</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>I sarn i dava i nigol drinna, vi carf ain sui glennad i nigol. Ir alnad cilannen, i nigol drinna anuir.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pathad</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Patha nigol i menna minnad ú-ain. I rind aphad i gam ab lû sui hen. 0 lorn.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Taeg vi lagor</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Adh Ment telias cui, men o i daeg dartha vi 200 km/h. Vi 100% i daeg pân dartha vi ilphen lagor.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Till IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Till IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Calad IR</value></data>
@@ -3581,8 +3605,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Perna sad cabed pân ah noth sen. Noth ortho perna na forvo. Tagad lúda ab tíradad.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ir i dalan ah Cabed Bang echuia a i bang gwí haered, car i cabed hí. Lorn: i hen bar, a pernad aphad naith bang cýren.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Dangweth Taeg Drinnad</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Taith ir taeg pân an bang mi rhaed drinnad</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Ir bang mi rhaed drinnad perna naden taeg pân, car taith (pothad, tas egor rib celias) an felf i daeg. Pân lorn senu.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Têw ir drinnad tôl na daeg pân</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Ir bang vi rhaed drinnad, minnad Adlannad mîn egor minnad Glennad nigol tôl na daeg pân, car têw (pothad, tas, egor rib celias) an felf i daeg. Pân lorn senu.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Blabed Pothad mi Daeg</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Pothad Tas mi Daeg</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Blabed Rib Celias mi Daeg</value></data>
@@ -4568,6 +4592,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Gwisto ledil {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Enedh ad pirad</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Vi nistad, sesta i dangweth pirad na 0. I gwanwas glannen, Adlannad mîn (Lean) ged i enedh cîr, i genediad dant iesta ad o i sad hí i vaethas, a i pernad o rib Nunnad mîn, Pernad mîn a Tholad mîn dannodannen.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Enedh drinnad nigol</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Panna i rind o ilphen minnad Glennad nigol vi maethas nem hen dan na enedh.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Carf pân)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Narth</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Narth gwista bang egor plad aphas na rind egor raew bo cenedril. Nisto + vi Narth an carad min, cilo ma edra hon, a anno eneth a cared na ilphen sad.</value></data>

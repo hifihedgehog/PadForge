@@ -729,7 +729,7 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Ekiseera</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ebyongerwako</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ettaala n'Eddoboozi</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akabonero stick bw'etuuka ku nkomerero mu nkola y'okuvuga</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akabonero ng'okuvuga kutuuka ku nkomerero</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Esindika okukankana kwa mmota enkulu ku triggers</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Okukankana kwa triggers okuva ku bass mu ddoboozi lya kompyuta</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzones z'okwekiika, Obulagirizi bwa controller</value></data>
@@ -886,4 +886,6 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Buuza enkyusa ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Buuza ekikola</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sindika olunyiriri PadForge lw'etamanyi: {0}</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>emitendera</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Bulijjo</value></data>
 </root>

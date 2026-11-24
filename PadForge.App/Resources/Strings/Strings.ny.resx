@@ -1353,7 +1353,7 @@
   <data name="Search_Results" xml:space="preserve"><value>Zotsatira</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ma stick ndi ma trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Magetsi ndi mawu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chizindikiro pamene stick yoyendetsa yafika kumapeto</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chizindikiro pamene chiwongolero chafika kumapeto</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Zokonza za Flick Stick</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Imatumiza kunjenjemera kwa mota zazikulu ku ma trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kwa trigger kochokera ku bass ya mawu a kompyuta</value></data>
@@ -1580,4 +1580,28 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Nkhokwe ya anthu onse sinasinthe kuyambira pomwe inasinthidwa komaliza.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mapu atsopano amagwiritsidwa ntchito nthawi ina kontrola yake ikalumikizidwa.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mapu osinthidwa amagwiritsidwa ntchito nthawi ina PadForge ikayamba.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Kuyenda kwa mbewa X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Kuyenda kwa mbewa Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Kuyenda mpaka kumapeto</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Mtunda womwe mbewa imayenda kuchokera pakati mpaka kumapeto, mu masitepe omwe mbewa imanena. Nambala yokwera imayendetsa mosamala kwambiri ndipo imafuna kuti dzanja liyende kwambiri.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>masitepe</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Kubwerera pakati</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Zimitsidwa imasiya chiwongolero pomwe dzanja linachisiya. Supuringi imachibweza mkati mwa Nthawi yobwerera. Kuchokera ku telemetry imachikoka ngati momwe matayala akutsogolo a galimoto angachitire pa liwiro ndi kugwira kwa masewera: sichikoka galimoto ikaima, chimakoka mwamphamvu liwiro likakwera, mopepuka matayala akaterereka. Ngati palibe masewera omwe akutumiza telemetry, imakhala supuringi. Kuchokera ku mphamvu ya masewera imalola mphamvu yobwerera ya chiwongolero cha pakompyuta kuchitembenuza.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Zimitsidwa</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Supuringi</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Kuchokera ku telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Kuchokera ku mphamvu ya masewera</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Nthawi yobwerera</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Nthawi yomwe Supuringi imatenga kuti ibweze chiwongolero 95% ya njira yonse. Kuchokera ku telemetry imatenga nthawi imeneyi pa 100 km/h pa msewu wouma.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Yendetsani</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Nthawi zonse imalola mbewa kuyendetsa nthawi iliyonse. Pamene yagwiridwa imalola kuyendetsa pokhapokha Batani loyendetsera likagwiridwa. Yatsani/zimitsani imayatsa kapena kuzimitsa kuyendetsa pa kukanikiza kulikonse kwa Batani loyendetsera. Mbewa ikapanda kuyendetsa, chiwongolero chimakhala pomwe chili kapena chimabwerera pakati, kotero mbewa imodzi imatha kuyendetsa ndi kuyang'ana mozungulira.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Nthawi zonse</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Pamene yagwiridwa</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Yatsani/zimitsani</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Batani loyendetsera</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Batani lomwe limalola mbewa kuyendetsa, pa chipangizo chomwecho ndi kuyenda kwa mbewa. Ngati palibe losankhidwa, mbewa imayendetsa nthawi zonse.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Kusalaza</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Imasalaza mbewa yomwe imanena mosagwirizana. Chiwongolero chimatsatira dzanja mochedwa pafupifupi nthawi imeneyi. 0 ndi kuzimitsa.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kumapeto pa liwiro</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry ikayatsidwa, gawo la kumapeto lomwe latsala pa 200 km/h. Pa 100% kumapeto konse kulipo pa liwiro lililonse.</value></data>
 </root>

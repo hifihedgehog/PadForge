@@ -181,6 +181,48 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamTravelCounts",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamTravelCounts"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamTravelCentering",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamTravelCentering"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamTravelReturnTime",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamTravelReturnTime"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamTravelSteer",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamTravelSteer"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_TravelSteerInputChoice",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "TravelSteerInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamTravelSmoothingMs",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamTravelSmoothingMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamTravelLockAtSpeed",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamTravelLockAtSpeed"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MappingSourceItem_Kind_4282",
     "Owner": "PadForge.ViewModels.MappingSourceItem",
     "Property": "Kind"

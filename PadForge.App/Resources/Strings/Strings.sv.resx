@@ -2859,6 +2859,30 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Musposition Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Känslighet</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Känslighet för muspekaren per källa. 1.0 når fullt spakutslag vid 10 % av skärmbredden från mitten. Värden över 1.0 når fullt utslag med mindre muspekarrörelse. Värden under 1.0 kräver mer.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Musrörelse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Musrörelse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Rörelse till fullt rattutslag</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hur långt musen rör sig från mitten till fullt rattutslag, i de steg musen rapporterar. Ett högre värde ger finare styrning och kräver mer handrörelse.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>steg</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrering</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Av låter ratten stå kvar där handen lämnade den. Fjäder för tillbaka den under Återgångstid. Från spelstatistik drar tillbaka den som en bils framdäck skulle göra vid spelets hastighet och grepp: stilla vid stillastående, fastare med farten, lätt när däcken glider. Utan spel som skickar statistik blir det fjädern. Från spelets kraft låter en virtuell ratts egen kraftåterkoppling vrida den.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Av</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Fjäder</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Från spelstatistik</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Från spelets kraft</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Återgångstid</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hur lång tid Fjäder tar på sig att föra ratten 95 % av vägen tillbaka. Från spelstatistik tar så lång tid vid 100 km/h på torr väg.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Styr</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Alltid låter musen styra hela tiden. Medan nedhållen låter den styra bara medan Styrinmatning hålls nedtryckt. Växla slår på eller av styrningen vid varje tryck på Styrinmatning. Medan musen inte styr står ratten kvar eller centreras, så att en mus kan styra och titta runt.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Alltid</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Medan nedhållen</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Växla</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Styrinmatning</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Knappen som låter musen styra, på samma enhet som musens rörelse. Om ingen är vald styr musen alltid.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Utjämning</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jämnar ut en mus som rapporterar ojämnt. Ratten släpar efter handen ungefär så här länge. 0 är av.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Utslag vid fart</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Med Spelstatistik på, hur stor del av rattutslaget som finns kvar vid 200 km/h. Vid 100 % finns hela utslaget vid varje hastighet.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-pekare X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-pekare Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-ljusstyrka</value></data>
@@ -3567,8 +3591,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Vrider hela snärtkartan så här många grader. Positivt är medurs. Fästningen tillämpas efter förskjutningen.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>När lagret som innehåller Flick stick aktiveras med spaken redan utslagen utlöses snärten direkt. Av håller kameran stilla och följer rotationen från spakens aktuella vinkel.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Återkoppling vid fullt styrutslag</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>En signal vid fullt utslag för en spak i ett styrningsläge</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>När en spak som är inställd på ett styrningsläge vrids hela vägen till fullt utslag spelas en signal upp (vibration, avtryckare eller ljusfält) så att du känner gränsen. Allt är av som standard.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>En signal när styrningen når fullt utslag</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>När en spak i ett styrningsläge, en Rörelse lutning-inmatning eller en Musrörelse-inmatning når fullt utslag spelas en signal upp (vibration, avtryckare eller ljusfält) så att du känner gränsen. Allt är av som standard.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrationspuls vid fullt utslag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Avtryckarvibration vid fullt utslag</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Ljusfältspuls vid fullt utslag</value></data>
@@ -4547,6 +4571,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Växla tangenter {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Centrera gyro</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Nollställer handkontrollens ackumulerade referenser för gyrosikte vid tryck. Utjämningshistoriken rensas, neutralläget för Rörelse lutning fångas på nytt, gravitationsuppskattningen utgår på nytt från handkontrollens aktuella läge, och den vridning som raderna Rörelse tipp, gir och roll har byggt upp ångras.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centrera musstyrning</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>För tillbaka ratten för varje Musrörelse-inmatning på den här virtuella handkontrollen till mitten.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Valfri enhet)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menyer</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menyer gör en fysisk spak eller styrplatta till en ring eller ett rutnät på skärmen. Tryck på + bredvid Menyer för att skapa en, välj vad som öppnar den, och ge sedan varje cell ett namn och en åtgärd.</value></data>

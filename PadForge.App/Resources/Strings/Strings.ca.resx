@@ -2625,6 +2625,30 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posició del ratolí Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitat del cursor per a cada font. Amb 1.0, s'arriba a la desviació completa de la palanca al 10% de l'amplada de la pantalla des del centre. Els valors per sobre d'1.0 hi arriben amb menys recorregut del cursor. Els valors per sota d'1.0 en necessiten més.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Desplaçament del ratolí X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Desplaçament del ratolí Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Desplaçament fins al tope</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quant es mou el ratolí des del centre fins al tope, en els recomptes que informa el ratolí. Un número més alt dirigeix amb més precisió i demana més recorregut de la mà.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>recomptes</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrat</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desactivat deixa el volant on la mà l'ha deixat. Moll el torna durant el Temps de retorn. De la telemetria l'estira com ho farien les rodes davanteres d'un cotxe amb la velocitat i l'adherència del joc: quiet en aturar-se, més ferm amb la velocitat, lleuger quan les rodes llisquen. Si cap joc envia telemetria, és el moll. De la força del joc deixa que el feedback de força d'un volant virtual el giri.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desactivat</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Moll</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>De la telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>De la força del joc</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Temps de retorn</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>El temps que triga Moll a tornar el volant el 95% del camí. De la telemetria triga això a 100 km/h sobre asfalt sec.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Direcció</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre deixa que el ratolí dirigeixi en tot moment. Mentre es manté premut el deixa dirigir només mentre es manté premuda l'Entrada de direcció. Commutació activa o desactiva la direcció a cada pulsació de l'Entrada de direcció. Mentre el ratolí no dirigeix, el volant es queda on és o es centra, de manera que un sol ratolí pot dirigir i mirar al voltant.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempre</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mentre es manté premut</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Commutació</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrada de direcció</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>El botó que deixa que el ratolí dirigeixi, al mateix dispositiu que el desplaçament del ratolí. Si no se'n tria cap, el ratolí sempre dirigeix.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavitzat</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Suavitza un ratolí que informa de manera irregular. El volant va darrere de la mà aproximadament aquest temps. 0 ho desactiva.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Tope a velocitat</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Amb Telemetria de joc activada, quant del tope queda a 200 km/h. Al 100% hi ha tot el tope a qualsevol velocitat.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Punter IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Punter IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Brillantor IR</value></data>
@@ -3332,8 +3356,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Fa girar tot el mapa del flick aquests graus. Els valors positius van en sentit horari. L'ajust s'aplica després del desplaçament.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quan la capa que conté el Flick Stick s'activa amb la palanca ja desviada, fa el flick immediatament. Desactivat manté la càmera quieta i segueix la rotació des de l'angle actual de la palanca.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Avís de tope de direcció</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un senyal al tope d'una palanca en mode de direcció</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quan una palanca configurada en un mode de direcció es gira fins al tope, reprodueix un senyal (vibració, gallet o barra de llum) perquè notis el límit. Tot desactivat per defecte.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un senyal quan la direcció arriba al tope</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quan una palanca en un mode de direcció, una entrada d'Inclinació de moviment o una entrada de Desplaçament del ratolí arriba al tope, reprodueix un senyal (vibració, gallet o barra de llum) perquè notis el límit. Tot desactivat per defecte.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pols de vibració al tope</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibració dels gallets al tope</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pols de la barra de llum al tope</value></data>
@@ -4280,6 +4304,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Commuta les tecles {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentra el giroscopi</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>En prémer, posa a zero les referències de punteria acumulades del giroscopi del comandament. S'esborra l'historial de suavitzat, es torna a capturar el punt neutre d'Inclinació de moviment, l'estimació de la gravetat es reinicia a partir de la posició actual del comandament i es desfà el gir acumulat per les files Capcineig, Guinyada i Balanceig de moviment.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centra la direcció del ratolí</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Torna al centre el volant de cada entrada de Desplaçament del ratolí d'aquest comandament virtual.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Qualsevol dispositiu)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menús</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Els menús converteixen una palanca física o un panell tàctil en un anell o una graella a la pantalla. Prem + al costat de Menús per crear-ne un, tria què l'obre i després posa a cada cel·la un nom i una acció.</value></data>

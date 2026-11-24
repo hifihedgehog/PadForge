@@ -188,6 +188,7 @@ namespace PadForge.ViewModels
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanLineRecord)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsLineUnassigned)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LineDirection)));
+            RaiseMouseTravel();
         }
 
         /// <summary>A source of the row changed: one was added or removed,
@@ -295,6 +296,7 @@ namespace PadForge.ViewModels
                 PrimarySourceDeviceGuid = source.DeviceGuid ?? string.Empty;
                 PrimarySourceDeviceLabel = deviceLabelOf?.Invoke(source.DeviceGuid) ?? string.Empty;
                 LoadShapingAndGates(source);
+                LoadMouseTravel(source);
                 LoadPrimaryKind(source);
                 return;
             }
@@ -311,6 +313,7 @@ namespace PadForge.ViewModels
             Sensitivity = 1.0;
             // A mode that reads keys keeps these on its own holder.
             LoadShapingAndGates(null);
+            LoadMouseTravel(null);
             LoadPrimaryKind(readsKeys ? source : null);
             // The mode's holder carries the source's device, and its line
             // names it, as an added source's line names its own.

@@ -2630,6 +2630,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>ຕຳແໜ່ງເມົ້າ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>ຄວາມອ່ອນໄຫວ</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ຄວາມອ່ອນໄຫວຂອງຕົວຊີ້ແຍກຕາມແຫຼ່ງ. 1.0 ຈະເຖິງການເບນສະຕິກເຕັມທີ່ທີ່ 10% ຂອງຄວາມກວ້າງໜ້າຈໍຈາກຈຸດກາງ. ຄ່າທີ່ສູງກວ່າ 1.0 ຈະເຖິງການເບນເຕັມທີ່ດ້ວຍການເລື່ອນຕົວຊີ້ໜ້ອຍກວ່າ. ຄ່າທີ່ຕ່ຳກວ່າ 1.0 ຕ້ອງເລື່ອນຫຼາຍກວ່າ.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ການເລື່ອນເມົ້າ X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ການເລື່ອນເມົ້າ Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>ໄລຍະຈົນໝຸນສຸດ</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ໄລຍະທີ່ເມົ້າເລື່ອນຈາກຈຸດກາງຈົນໝຸນສຸດ, ເປັນຈຳນວນນັບທີ່ເມົ້າລາຍງານ. ຕົວເລກສູງຂຶ້ນ ບັງຄັບລ້ຽວໄດ້ລະອຽດຂຶ້ນ ແລະ ຕ້ອງເລື່ອນມືຫຼາຍຂຶ້ນ.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ນັບ</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ການກັບຈຸດກາງ</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ປິດ ຈະຄ້າງພວງມາໄລໄວ້ບ່ອນທີ່ມືປ່ອຍ. ສະປິງ ຈະພາມັນກັບຄືນພາຍໃນ ເວລາກັບຄືນ. ຈາກເທເລເມທຣີ ຈະດຶງມັນກັບຄືນຄືກັບຢາງໜ້າຂອງລົດຢູ່ທີ່ຄວາມໄວ ແລະ ການຍຶດເກາະຂອງເກມ: ນິ່ງເມື່ອຈອດຢູ່, ແໜ້ນຂຶ້ນຕາມຄວາມໄວ, ເບົາເມື່ອຢາງລື່ນ. ເມື່ອບໍ່ມີເກມສົ່ງເທເລເມທຣີ ມັນຈະເປັນສະປິງ. ຈາກແຮງຂອງເກມ ໃຫ້ແຮງສະທ້ອນຂອງພວງມາໄລສະເໝືອນເອງໝຸນມັນ.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ປິດ</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ສະປິງ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ຈາກເທເລເມທຣີ</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ຈາກແຮງຂອງເກມ</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>ເວລາກັບຄືນ</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>ເວລາທີ່ ສະປິງ ໃຊ້ເພື່ອພາພວງມາໄລກັບຄືນ 95% ຂອງທາງ. ຈາກເທເລເມທຣີ ໃຊ້ເວລາເທົ່ານີ້ທີ່ 100 km/h ເທິງຖະໜົນແຫ້ງ.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ບັງຄັບລ້ຽວ</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ຕະຫຼອດ ໃຫ້ເມົ້າບັງຄັບລ້ຽວໄດ້ທຸກເວລາ. ຂະນະກົດຄ້າງ ໃຫ້ມັນບັງຄັບລ້ຽວສະເພາະຂະນະທີ່ກົດ ອິນພຸດບັງຄັບລ້ຽວ ຄ້າງໄວ້. ສະຫຼັບ ເປີດ ຫຼື ປິດການບັງຄັບລ້ຽວທຸກຄັ້ງທີ່ກົດ ອິນພຸດບັງຄັບລ້ຽວ. ໃນຂະນະທີ່ເມົ້າບໍ່ໄດ້ບັງຄັບລ້ຽວ, ພວງມາໄລຈະຢູ່ບ່ອນເກົ່າ ຫຼື ກັບຈຸດກາງ, ສະນັ້ນເມົ້າດຽວສາມາດທັງບັງຄັບລ້ຽວ ແລະ ເບິ່ງອ້ອມຮອບໄດ້.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ຕະຫຼອດ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ຂະນະກົດຄ້າງ</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ສະຫຼັບ</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ອິນພຸດບັງຄັບລ້ຽວ</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ປຸ່ມທີ່ໃຫ້ເມົ້າບັງຄັບລ້ຽວ, ຢູ່ໃນອຸປະກອນດຽວກັນກັບການເລື່ອນຂອງເມົ້າ. ຖ້າບໍ່ໄດ້ເລືອກ, ເມົ້າຈະບັງຄັບລ້ຽວຕະຫຼອດ.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ການເຮັດໃຫ້ລຽບ</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ເຮັດໃຫ້ເມົ້າທີ່ລາຍງານບໍ່ສະໝ່ຳສະເໝີລຽບຂຶ້ນ. ພວງມາໄລຈະຊ້າກວ່າມືປະມານເທົ່ານີ້. 0 ແມ່ນປິດ.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>ການໝຸນສຸດທີ່ຄວາມໄວ</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ເມື່ອເປີດ ເທເລເມທຣີເກມ, ການໝຸນສຸດຍັງເຫຼືອເທົ່າໃດທີ່ 200 km/h. ທີ່ 100% ການໝຸນສຸດທັງໝົດມີຢູ່ທຸກຄວາມໄວ.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>ຕົວຊີ້ IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>ຕົວຊີ້ IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>ຄວາມສະຫວ່າງ IR</value></data>
@@ -3319,8 +3343,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>ໝຸນແຜນຜັງຟລິກທັງໝົດຕາມຈຳນວນອົງສານີ້. ຄ່າບວກແມ່ນຕາມເຂັມໂມງ. ການສະແນັບມີຜົນຫຼັງການຊົດເຊີຍ.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ເມື່ອຊັ້ນທີ່ມີຟລິກສະຕິກເປີດໃຊ້ຂະນະທີ່ສະຕິກເບນຢູ່ແລ້ວ, ໃຫ້ຟລິກທັນທີ. ປິດ ຈະໃຫ້ກ້ອງຢູ່ນິ່ງ ແລະ ຕິດຕາມການໝຸນຈາກມຸມສະຕິກປັດຈຸບັນ.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ການແຈ້ງເຕືອນເມື່ອລ້ຽວສຸດ</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ສັນຍານເມື່ອສະຕິກໂໝດບັງຄັບລ້ຽວໝຸນຈົນສຸດ</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ເມື່ອສະຕິກທີ່ຕັ້ງເປັນໂໝດບັງຄັບລ້ຽວຖືກໝຸນໄປຈົນສຸດ, ໃຫ້ຫຼິ້ນສັນຍານ (ການສັ່ນ, ທຣິກເກີ ຫຼື ແຖບໄຟ) ເພື່ອໃຫ້ທ່ານຮູ້ສຶກເຖິງຂີດຈຳກັດ. ປິດທັງໝົດເປັນຄ່າເລີ່ມຕົ້ນ.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ສັນຍານເມື່ອການບັງຄັບລ້ຽວໝຸນຈົນສຸດ</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ເມື່ອສະຕິກໃນໂໝດບັງຄັບລ້ຽວ, ອິນພຸດ ການອຽງ (ການເຄື່ອນໄຫວ) ຫຼື ອິນພຸດ ການເລື່ອນເມົ້າ ໝຸນໄປຈົນສຸດ, ໃຫ້ຫຼິ້ນສັນຍານ (ການສັ່ນ, ທຣິກເກີ ຫຼື ແຖບໄຟ) ເພື່ອໃຫ້ທ່ານຮູ້ສຶກເຖິງຂີດຈຳກັດ. ປິດທັງໝົດເປັນຄ່າເລີ່ມຕົ້ນ.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ສັ່ນເປັນຈັງຫວະເມື່ອລ້ຽວສຸດ</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ທຣິກເກີສັ່ນເມື່ອລ້ຽວສຸດ</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ແຖບໄຟກະພິບເມື່ອລ້ຽວສຸດ</value></data>
@@ -4265,6 +4289,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ສະຫຼັບປຸ່ມ {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ຕັ້ງຈຸດກາງໄຈໂຣໃໝ່</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>ຕັ້ງຄ່າອ້າງອີງການເລັງຂອງໄຈໂຣທີ່ສະສົມໄວ້ໃນແພດເປັນສູນເມື່ອກົດ. ປະຫວັດການເຮັດໃຫ້ລຽບຈະຖືກລຶບ, ຈຸດກາງຂອງການອຽງ (ການເຄື່ອນໄຫວ) ຈະຖືກບັນທຶກໃໝ່, ຄ່າປະມານແຮງໂນ້ມຖ່ວງຈະເລີ່ມໃໝ່ຈາກທ່າປັດຈຸບັນຂອງຕົວຄວບຄຸມ, ແລະ ການໝູນທີ່ແຖວການກົ້ມເງີຍ, ການຫັນຊ້າຍຂວາ ແລະ ການອຽງຂ້າງ ຂອງການເຄື່ອນໄຫວສ້າງໄວ້ຈະຖືກຍົກເລີກ.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>ຕັ້ງການບັງຄັບລ້ຽວດ້ວຍເມົ້າກັບຈຸດກາງ</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>ພາພວງມາໄລຂອງທຸກອິນພຸດ ການເລື່ອນເມົ້າ ໃນຕົວຄວບຄຸມສະເໝືອນນີ້ກັບຄືນຈຸດກາງ.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ອຸປະກອນໃດກໍໄດ້)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>ເມນູ</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>ເມນູປ່ຽນສະຕິກ ຫຼື ທັດແພດທາງກາຍະພາບໃຫ້ເປັນວົງ ຫຼື ຕາຕະລາງເທິງໜ້າຈໍ. ກົດ + ຂ້າງ “ເມນູ” ເພື່ອສ້າງໃໝ່, ເລືອກສິ່ງທີ່ເປີດມັນ, ແລ້ວຕັ້ງຊື່ ແລະ ການກະທຳໃຫ້ແຕ່ລະເຊວ.</value></data>

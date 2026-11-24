@@ -1089,7 +1089,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le ho Ama</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Mabone le Molumo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros le Dimenyu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tshupo ha stick e fihla pheletsong mokgweng wa ho kganna</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tshupo ha ho kganna ho fihla pheletsong</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela ho thothomela ha di-motor tse kgolo ho di-trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ho thothomela ha trigger ho tswa ho bass ya modumo wa sistimi</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tsa ho sekama, Tsela eo controller e lebileng ka yona</value></data>
@@ -1267,4 +1267,8 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Disebediswa tse {0} di kgaotswe</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Disebediswa tse {0} di hokahantswe</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} e ntse e kgaoha kgafetsa</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dikhaonto</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kamehla</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ha o ntse o tshwere</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Konopo e dumellang mouse ho kganna, sesebedisweng se le seng le leeto la mouse. Ha ho se e kgethilweng, mouse e kganna kamehla.</value></data>
 </root>

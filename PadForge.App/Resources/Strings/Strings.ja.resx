@@ -2104,6 +2104,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>マウス位置 Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのカーソル感度。1.0 で中心から画面幅の 10% でスティックが最大まで倒れます。1.0 より大きいと少ないカーソル移動で最大に達し、1.0 より小さいとより多くの移動が必要です。</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>マウス移動量 X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>マウス移動量 Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>フルロックまでの移動量</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>中央からフルロックまでにマウスが動く量で、マウスが報告するカウント単位です。数値を大きくすると操舵が細かくなり、手の移動量が増えます。</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>カウント</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>センタリング</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>オフは、手を離した位置でステアリングを保持します。バネは、戻り時間をかけて中央に戻します。テレメトリーからは、ゲームの速度とグリップに応じて、実際の車の前輪のように引き戻します。停止中は動かず、速度が上がるほど重くなり、タイヤが滑ると軽くなります。テレメトリーを送るゲームがない場合はバネになります。ゲームのフォースからは、仮想ステアリングホイール自身のフォースフィードバックで回します。</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>バネ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>テレメトリーから</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ゲームのフォースから</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>戻り時間</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>バネがステアリングを 95% 戻すのにかかる時間です。テレメトリーからは、乾いた路面の時速 100 km/h でこの時間になります。</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ステア</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>常時は、マウスを常に操舵に使います。押している間は、ステア入力を押している間だけ操舵します。トグルは、ステア入力を押すたびに操舵のオンとオフを切り替えます。マウスが操舵しない間、ステアリングはその位置のままか中央に戻るため、1 つのマウスで操舵と視点操作を両立できます。</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>常時</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>押している間</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ステア入力</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>マウスによる操舵を有効にするボタンです。マウスの移動量と同じデバイスのボタンを選びます。何も選ばない場合、マウスは常に操舵します。</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>スムージング</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>報告が不均一なマウスを滑らかにします。ステアリングは手の動きより、この時間ほど遅れて追従します。0 でオフです。</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>高速時のロック</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ゲームテレメトリーがオンのとき、時速 200 km/h でロックがどれだけ残るかを指定します。100% なら、どの速度でも全ロックが使えます。</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>タッチパッドクリック</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y</value></data>
@@ -2837,8 +2861,8 @@
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「モーションリーン」入力の設定。コントローラーをハンドルのように傾けます。「マッピング」セクションで「モーションリーン」をスティック軸に割り当ててください。</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>モーションステアリングをリセット</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバック</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ステアリングモードのスティックがフルロックで合図</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ステアリングモードに設定したスティックをフルロックまで操作しきると、合図（振動、トリガー、ライトバー）を発生させて操舵限界を体感できます。すべて既定でオフです。</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ステアリングがフルロックに達したときの合図</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ステアリングモードのスティック、Motion Lean 入力、またはマウス移動量入力がフルロックに達すると、合図（振動、トリガー、ライトバー）を発生させて操舵限界を体感できます。すべて既定でオフです。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルス</value></data>
@@ -4492,6 +4516,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定され、モーション ピッチ、ヨー、ロールの行による回転が取り消されます。</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>マウス操舵を中央に戻す</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>この仮想コントローラー上のすべてのマウス移動量入力のステアリングを中央に戻します。</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>メニュー</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>メニューは、物理的なスティックやタッチパッドを画面上のリングやグリッドに変えます。「メニュー」の横の + を押して作成し、開く操作を選んでから、各セルに名前とアクションを設定してください。</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>新規メニュー</value></data>

@@ -2630,6 +2630,30 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pożizzjoni tal-maws Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensittività</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensittività tal-kursur għal kull sors. 1.0 jilħaq id-devjazzjoni sħiħa tal-istick f'10% tal-wisa' tal-iskrin miċ-ċentru. Valuri 'l fuq minn 1.0 jilħqu d-devjazzjoni sħiħa b'inqas moviment tal-kursur. Valuri taħt 1.0 jeħtieġu aktar.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Vjaġġ tal-maws X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Vjaġġ tal-maws Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Vjaġġ sal-limitu sħiħ</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kemm iċaqlaq il-maws miċ-ċentru sal-limitu sħiħ, fl-għadd li jirrapporta l-maws. Numru ogħla jmexxi aktar fin u jieħu aktar vjaġġ tal-id.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>għadd</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Ċentrar</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Mitfi jżomm ir-rota fejn ħalliha l-id. Molla terġa' ġġibha lura matul Ħin tal-irritorn. Mit-telemetrija tiġbidha lura kif jagħmlu t-tajers ta' quddiem ta' karozza bil-veloċità u l-grip tal-logħba: wieqfa fiż-żmien tas-skiet, aktar sod bil-veloċità, ħafif meta t-tajers jiżolqu. Mingħajr logħba li tibgħat telemetrija hija l-molla. Mill-forza tal-logħba iħalli l-force feedback ta' rota virtwali tdawwarha.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Mitfi</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Molla</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Mit-telemetrija</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Mill-forza tal-logħba</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Ħin tal-irritorn</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Kemm tieħu Molla biex terġa' ġġib ir-rota 95% tat-triq lura. Mit-telemetrija tieħu daqshekk f'100 km/h fuq triq niexfa.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Sewqan</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Dejjem iħalli l-maws isuq fil-ħin kollu. Waqt iż-żamma iħallih isuq biss waqt li jinżamm l-Input tas-sewqan. Ibdel jixgħel jew jitfi s-sewqan b'kull għafsa tal-Input tas-sewqan. Waqt li l-maws ma jsuqx, ir-rota tibqa' fejn hi jew tiċċentra, biex maws wieħed jista' jsuq u jħares madwar.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Dejjem</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Waqt iż-żamma</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Ibdel</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input tas-sewqan</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Il-buttuna li tħalli l-maws isuq, fuq l-istess apparat bħall-vjaġġ tal-maws. Jekk ma tintgħażel ebda waħda, il-maws dejjem isuq.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Twittija</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Iwittu maws li jirrapporta b'mod irregolari. Ir-rota tmur wara l-id b'madwar dan il-ħin. 0 huwa mitfi.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limitu bil-veloċità</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Bit-Telemetrija tal-logħob mixgħula, kemm jibqa' mil-limitu f'200 km/h. F'100% il-limitu sħiħ jibqa' hemm f'kull veloċità.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Puntatur IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Puntatur IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminożità IR</value></data>
@@ -3276,8 +3300,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Iddawwar il-mappa kollha tal-flick b'dawn il-gradi. Pożittiv huwa fid-direzzjoni tal-arloġġ. It-twaħħil jiġi applikat wara l-offset.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Meta s-saff li fih hemm il-flick stick jattiva bl-istick diġà mbiegħed miċ-ċentru, il-flick isir minnufih. Mitfi jżomm il-kamera wieqfa u jsegwi r-rotazzjoni mill-angolu attwali tal-istick.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback fil-limitu tas-sewqan</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal fil-limitu sħiħ għal stick f'modalità tas-sewqan</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Meta stick issettjat għal modalità tas-sewqan jiddawwar sal-limitu sħiħ, agħti sinjal (rumble, trigger jew lightbar) biex tħoss il-limitu. Kollha mitfija b'default.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal meta s-sewqan jilħaq il-limitu sħiħ</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Meta stick f'modalità tas-sewqan, input ta' Tmil tal-moviment jew input ta' Vjaġġ tal-maws jilħaq il-limitu sħiħ, agħti sinjal (rumble, trigger jew lightbar) biex tħoss il-limitu. Kollha mitfija b'default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Polz ta' rumble fil-limitu</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrazzjoni tat-trigger fil-limitu</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Polz tal-lightbar fil-limitu</value></data>
@@ -4221,6 +4245,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Ibdel it-tasti {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ċentrar mill-ġdid tal-ġiroskopju</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Iżżero r-referenzi akkumulati tal-mira tal-ġiroskopju tal-pad meta tagħfas. L-istorja tal-illixxar titħassar, in-newtrali ta' Tmil tal-moviment jerġa' jinqabad, l-istima tal-gravità terġa' tinbeda mill-pożizzjoni attwali tal-kontrollur, u d-dawran li bnew ir-ringieli Pitch, Yaw u Roll tal-moviment jitħassar.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Ċentra s-sewqan tal-maws</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Iġib ir-rota ta' kull input tal-Vjaġġ tal-maws fuq dan il-kontrollur virtwali lura fiċ-ċentru.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Kwalunkwe apparat)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Il-menus ibiddlu stick jew touchpad fiżiku f'ċirku jew grilja fuq l-iskrin. Agħfas + ħdejn Menus biex toħloq wieħed, agħżel x'jiftħu, imbagħad agħti lil kull ċellola isem u azzjoni.</value></data>

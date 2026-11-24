@@ -2104,6 +2104,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>마우스 위치 Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>소스별 커서 감도입니다. 1.0이면 중앙에서 화면 너비의 10% 지점에서 스틱이 최대로 기울어집니다. 1.0보다 크면 더 적은 커서 이동으로 최대에 도달하고, 1.0보다 작으면 더 많이 움직여야 합니다.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>마우스 이동량 X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>마우스 이동량 Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>최대 회전까지의 이동량</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>마우스가 중앙에서 최대 회전까지 움직이는 거리이며, 마우스가 보고하는 카운트로 나타냅니다. 값이 높을수록 조향이 더 세밀해지고 손을 더 많이 움직여야 합니다.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>카운트</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>센터링</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>끔은 손을 뗀 자리에 휠을 그대로 둡니다. 스프링은 복귀 시간에 걸쳐 휠을 되돌립니다. 텔레메트리 기준은 게임의 속도와 그립에 따라 자동차 앞바퀴가 당기듯 되돌립니다. 정지 상태에서는 가만히 있고, 속도가 높을수록 단단해지며, 타이어가 미끄러지면 가벼워집니다. 텔레메트리를 보내는 게임이 없으면 스프링으로 동작합니다. 게임의 힘 기준은 가상 휠 자체의 포스 피드백이 휠을 돌리게 합니다.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>끔</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>스프링</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>텔레메트리 기준</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>게임의 힘 기준</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>복귀 시간</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>스프링이 휠을 95% 되돌리는 데 걸리는 시간입니다. 텔레메트리 기준은 마른 도로에서 100 km/h일 때 이만큼 걸립니다.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>조향</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>항상은 마우스가 언제나 조향하게 합니다. 누르는 동안은 조향 입력을 누르고 있는 동안에만 조향하게 합니다. 토글은 조향 입력을 누를 때마다 조향을 켜거나 끕니다. 마우스가 조향하지 않는 동안 휠은 그 자리에 있거나 중앙으로 돌아가므로, 마우스 하나로 조향하면서 주변을 둘러볼 수 있습니다.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>항상</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>누르는 동안</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>토글</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>조향 입력</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>마우스가 조향하게 하는 버튼이며, 마우스 이동량과 같은 장치에 있어야 합니다. 선택하지 않으면 마우스가 항상 조향합니다.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>부드럽게</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>고르지 않게 보고하는 마우스를 매끄럽게 합니다. 휠이 이 시간 정도 손보다 늦게 따라갑니다. 0이면 꺼집니다.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>속도에서 회전 제한</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>게임 텔레메트리를 켜면 200 km/h에서 남는 회전 범위입니다. 100%이면 모든 속도에서 전체 회전 범위를 쓸 수 있습니다.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>터치패드 클릭</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} Y</value></data>
@@ -2837,8 +2861,8 @@
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"모션 기울임" 입력 설정: 컨트롤러를 핸들처럼 기울이세요. 매핑 섹션에서 "모션 기울임"을 스틱 축에 할당하세요.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>모션 조향 초기화</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>조향 모드 스틱이 끝점에 닿을 때의 신호</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>조향 모드로 설정한 스틱을 끝까지 완전히 꺾으면 신호(진동, 트리거, 라이트바)를 주어 한계를 느끼게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>조향이 끝점에 닿을 때의 신호</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>조향 모드의 스틱, Motion Lean 입력 또는 마우스 이동량 입력이 끝까지 꺾이면 신호(진동, 트리거, 라이트바)를 주어 한계를 느끼게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>끝점에서 트리거 진동</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>끝점에서 라이트바 펄스</value></data>
@@ -4492,6 +4516,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>키 {0} 토글</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>자이로 재중심</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화되고, 모션 피치, 요, 롤 행이 만든 회전이 취소됩니다.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>마우스 조향 중앙 맞춤</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러에 있는 모든 마우스 이동량 입력의 휠을 중앙으로 되돌립니다.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>메뉴</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>메뉴는 실제 스틱이나 터치패드를 화면 위의 링이나 그리드로 바꿉니다. ‘메뉴’ 옆의 +를 눌러 메뉴를 만들고 여는 입력을 고른 뒤, 각 셀에 이름과 동작을 지정하세요.</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>새 메뉴</value></data>

@@ -1746,6 +1746,30 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posisyon sa mouse X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posisyon sa mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity sa cursor matag tinubdan. Ang 1.0 moabot sa bug-os nga deflection sa stick sa 10% sa gilapdon sa screen gikan sa sentro. Ang mga value nga labaw sa 1.0 moabot sa bug-os nga deflection nga mas mubo ang lihok sa cursor. Ang ubos sa 1.0 manginahanglan og mas daghan.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Lakaw sa mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Lakaw sa mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Lakaw hangtod sa full lock</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Unsa ka layo molihok ang mouse gikan sa sentro hangtod sa full lock, sa mga count nga gi-report sa mouse. Ang mas taas nga numero mas pino nga pagmaneho ug mas taas nga lakaw sa kamot.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Pagsentro</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ang Naka-off magkupot sa manibela diin kini gibiyaan sa kamot. Ang Spring mobalik niini sulod sa Oras sa pagbalik. Ang Gikan sa telemetry mobira niini balik sama sa mga ligid sa atubangan sa sakyanan sumala sa katulin ug kapit sa dula: walay bira kung nakahunong, mas lig-on uban sa katulin, gaan kung modalusdos ang mga ligid. Kung walay dula nga nagpadala og telemetry, spring kini. Ang Gikan sa force sa dula motugot sa kaugalingong force feedback sa virtual nga manibela sa pagtuyok niini.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Gikan sa telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Gikan sa force sa dula</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Oras sa pagbalik</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Unsa ka dugay ibalik sa Spring ang manibela sa 95% sa agianan. Ang Gikan sa telemetry mokuha niini ka dugay sa 100 km/h sa uga nga dalan.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Pagmaneho</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ang Kanunay motugot sa mouse sa pagmaneho sa tanang oras. Ang Samtang gikuptan motugot niini sa pagmaneho samtang gikuptan lamang ang Input sa pagmaneho. Ang Toggle mo-on o mo-off sa pagmaneho matag pindot sa Input sa pagmaneho. Samtang dili magmaneho ang mouse, ang manibela magpabilin diin kini o mobalik sa sentro, busa ang usa ka mouse makamaneho ug makalantaw sa palibot.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kanunay</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Samtang gikuptan</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input sa pagmaneho</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button nga motugot sa mouse sa pagmaneho, sa samang device sa lakaw sa mouse. Kung walay gipili, kanunay nga magmaneho ang mouse.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pagpahapsay</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Pahapsayon ang mouse nga dili parehas ang pag-report. Ang manibela mosunod sa kamot sa mga ingon niini ka dugay. Ang 0 kay naka-off.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock sa katulin</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kung naka-on ang Game telemetry, pila sa lock ang nahabilin sa 200 km/h. Sa 100% ang tibuok lock anaa sa matag katulin.</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Kahayag sa IR</value></data>
   <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Pagpuga sa Ring-Con</value></data>
   <data name="Mapping_RingConPull" xml:space="preserve"><value>Pagbira sa Ring-Con</value></data>
@@ -2247,8 +2271,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Ituyok ang tibuok mapa sa flick niini nga gidaghanon sa degree. Ang positibo kay sama sa direksyon sa orasan. Ang snapping mahitabo human sa offset.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kung moaktibo ang layer nga adunay Flick Stick samtang nakatulod na ang stick, ipalihok dayon ang flick. Ang off magpabilin sa camera ug mosunod sa pagtuyok gikan sa kasamtangang anggulo sa stick.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sa lock sa pagmaneho</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Cue sa full lock alang sa stick sa mode sa pagmaneho</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kung ang stick nga naka-set sa mode sa pagmaneho gituyok hangtod sa full lock, magpatokar og cue (rumble, trigger, o lightbar) aron mabati nimo ang limitasyon. Off tanan sa default.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Cue kung maabot sa pagmaneho ang full lock</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kung ang stick sa mode sa pagmaneho, usa ka Kiling sa motion nga input o usa ka Lakaw sa mouse nga input moabot sa full lock, magpatokar og cue (rumble, trigger, o lightbar) aron mabati nimo ang limitasyon. Off tanan sa default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble nga pulso sa lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Pagkurog sa trigger sa lock</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso sa lightbar sa lock</value></data>
@@ -4294,4 +4318,5 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang I-update karon modownload sa database sa controller sa komunidad (SDL_GameControllerDB) gikan sa GitHub ug magtipig, sa file sa mga setting, sa mga mapping nga wala niini nga bersyon sa PadForge. Ang bag-ong mapping gamiton lamang para sa controller nga walay laing mobasa isip gamepad, nga wala gi-assign ug wala sa Pugson ang raw joystick mode. Ang reset motangtang sa matag na-download nga mapping.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>I-update karon</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Nag-update…</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Isentro ang pagmaneho sa mouse</value></data>
 </root>

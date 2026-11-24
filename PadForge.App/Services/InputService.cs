@@ -2264,6 +2264,13 @@ namespace PadForge.Services
                 return im.WithPersonaHaptics(slotIndex, im.GetInboundRumblePack(slotIndex), Environment.TickCount64);
             };
 
+            // Mouse Travel (#597): the road a game reports and the force it
+            // sends a slot's virtual wheel, for a source whose Centering or
+            // Lock at Speed reads one. Each is asked only by such a source.
+            PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelRoadProvider = InputManager.MouseTravelRoad;
+            PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelForceProvider =
+                slotIndex => _inputManager?.MouseTravelForce(slotIndex) ?? 0;
+
             // The rumble-to-audio renderer reconciles endpoints on its own
             // worker. Cheap when no slot has a config (one array walk per
             // 5 s pass), so it starts unconditionally like the haptic
@@ -2806,6 +2813,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.MenuItemFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelRoadProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelForceProvider = null;
                 // #241: unhook the NFC providers and power the MCU down.
                 PadForge.Engine.SdlDeviceWrapper.NfcArmedProvider = null;
                 PadForge.Engine.SdlDeviceWrapper.NfcTagButtonResolver = null;

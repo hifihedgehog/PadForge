@@ -731,7 +731,7 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Berɛ</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Nkekaho</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kanea ne Nnyegyeɛ</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Nkaebɔ bere a steering stick du n'awieeɛ</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Nkaebɔ bere a steering du n'awieeɛ</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble a efi system nnyegyeɛ bass mu</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ɛde motor akɛseɛ no rumble kɔ triggers no so</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Trigger rumble a efi system nnyegyeɛ bass mu</value></data>
@@ -866,4 +866,7 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Bisa PadForge version</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Bisa nea ɛreyɛ adwuma</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Mane line bi a PadForge nnim: {0}</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Daa</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Button a ɛma mouse no kanyan steering no, wɔ device koro a mouse no travel wɔ so no ara so. Sɛ wompaw biara a, mouse no kanyan steering no daa.</value></data>
 </root>

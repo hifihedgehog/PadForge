@@ -2619,6 +2619,30 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posisyon ng Mouse X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posisyon ng Mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity ng cursor kada source. Ang 1.0 ay umaabot sa buong deflection ng stick sa 10% ng lapad ng screen mula sa gitna. Ang mga halagang mas mataas sa 1.0 ay umaabot sa buong deflection nang mas maikli ang galaw ng cursor. Ang mga halagang mas mababa sa 1.0 ay nangangailangan ng mas marami.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Galaw ng Mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Galaw ng Mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Layo Hanggang Full Lock</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Gaano kalayo gumagalaw ang mouse mula sa gitna hanggang full lock, sa mga count na iniuulat ng mouse. Mas pino ang pagpipihit kapag mas mataas ang numero, at mas malaking galaw ng kamay ang kailangan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centering</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Iniiwan ng Naka-off ang wheel kung saan ito iniwan ng kamay. Ibinabalik ito ng Spring sa loob ng Oras ng Pagbalik. Hinihila ito ng Mula sa Telemetry gaya ng gagawin ng mga gulong sa harap ng kotse sa bilis at kapit ng laro: tahimik kapag nakahinto, mas matigas habang bumibilis, magaan kapag dumudulas ang mga gulong. Kapag walang larong nagpapadala ng telemetry, ito ang spring. Hinahayaan ng Mula sa Force ng Laro na ang sariling force feedback ng virtual wheel ang magpihit nito.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Mula sa Telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Mula sa Force ng Laro</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Oras ng Pagbalik</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Gaano katagal ibabalik ng Spring ang wheel nang 95% ng daan pabalik. Ganito katagal ito sa Mula sa Telemetry sa 100 km/h sa tuyong kalsada.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Magpihit</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Hinahayaan ng Palagi na magpihit ang mouse sa lahat ng oras. Hinahayaan ng Habang Hawak na magpihit ito habang hawak lang ang Input ng Pagpipihit. Ino-on o ino-off ng I-toggle ang pagpipihit sa bawat pindot ng Input ng Pagpipihit. Habang hindi nagpipihit ang mouse, nananatili ang wheel kung nasaan ito o bumabalik sa gitna, kaya makakapagpihit at makakatingin sa paligid ang iisang mouse.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Palagi</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Habang Hawak</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>I-toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input ng Pagpipihit</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button na nagpapahintulot sa mouse na magpihit, sa parehong device ng galaw ng mouse. Kapag walang napili, palaging nagpipihit ang mouse.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Smoothing</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Pinapantay ang mouse na hindi pantay mag-ulat. Nahuhuli ang wheel sa kamay nang ganito katagal. Naka-off ang 0.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock sa Bilis</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kapag naka-on ang Game Telemetry, kung gaano karami ng lock ang natitira sa 200 km/h. Sa 100%, buo ang lock sa bawat bilis.</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Liwanag ng IR</value></data>
   <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Pagpisil sa Ring-Con</value></data>
   <data name="Mapping_RingConPull" xml:space="preserve"><value>Paghila sa Ring-Con</value></data>
@@ -3131,8 +3155,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Iniikot ang buong flick map nang ganito karaming degree. Clockwise ang positibo. Inilalapat ang snapping pagkatapos ng offset.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kapag nag-engage ang layer na may Flick Stick habang naka-deflect na ang stick, agad i-fire ang flick. Kapag naka-off, nananatiling nakatigil ang camera at sinusubaybayan ang pag-ikot mula sa kasalukuyang anggulo ng stick.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sa Steering Lock</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Cue sa full lock para sa stick na nasa steering mode</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kapag ang stick na naka-set sa steering mode ay iniikot hanggang full lock, magpapatugtog ng cue (rumble, trigger, o lightbar) para maramdaman mo ang limitasyon. Naka-off lahat bilang default.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isang cue kapag umabot sa full lock ang steering</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kapag ang stick na nasa steering mode, isang input ng Motion Lean o isang input ng Galaw ng Mouse ay umabot sa full lock, magpapatugtog ng cue (rumble, trigger, o lightbar) para maramdaman mo ang limitasyon. Naka-off lahat bilang default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse sa Lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibration ng Trigger sa Lock</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar Pulse sa Lock</value></data>
@@ -4079,6 +4103,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>I-toggle ang mga key na {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Ibinabalik sa zero ang naipong gyro aim reference ng pad sa pagpindot. Nawawala ang smoothing history, muling kinukuha ang Motion Lean neutral, muling sini-seed ang gravity estimate mula sa kasalukuyang pose ng controller, at binabawi ang pag-ikot na binuo ng mga row ng Motion Pitch, Yaw, at Roll.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Gitnahin ang Pagpipihit ng Mouse</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Ibinabalik sa gitna ang wheel ng bawat input ng Galaw ng Mouse sa virtual controller na ito.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Anumang Device)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Mga Menu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Ginagawang on-screen na ring o grid ng mga menu ang pisikal na stick o touchpad. Pindutin ang + sa tabi ng Mga Menu para gumawa ng isa, piliin kung ano ang magbubukas dito, saka bigyan ang bawat cell ng pangalan at aksyon.</value></data>

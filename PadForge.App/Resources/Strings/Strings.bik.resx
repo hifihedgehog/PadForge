@@ -1424,6 +1424,11 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Dai nagbago an database kan komunidad poon kan huring update.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Gagamiton an bagong mapping sa sunod na pagkonektar kan controller kaini.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Gagamiton an liniwat na mapping sa sunod na pagpoon kan PadForge.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Hale sa telemetry</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Pirmi</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kun bukas an Game telemetry, gurano kadakol an natatada sa lock sa 200 km/h. Sa 100% bilog an lock sa gabos na speed.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Abiso nin naputol na device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Abiso nin nakonektar na device</value></data>
 </root>

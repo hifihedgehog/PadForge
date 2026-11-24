@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Позиција на глушецот Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Осетливост</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Осетливост на курсорот за секој извор. 1.0 достигнува целосен отклон на палката на 10% од ширината на екранот од центарот. Вредностите над 1.0 достигнуваат целосен отклон со помало поместување на курсорот. Вредностите под 1.0 бараат поголемо.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Поместување на глушецот X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Поместување на глушецот Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Поместување до крајна положба</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Колку се движи глушецот од центарот до крајна положба, во точките што ги пријавува глушецот. Повисок број управува пофино и бара повеќе движење на раката.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>точки</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Центрирање</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Исклучено го држи воланот таму каде што го оставила раката. Пружина го враќа во текот на Време на враќање. Од телеметрија го влече назад како предните гуми на автомобил, според брзината и приврзноста на играта: мирно при застој, потврдо со брзината, лесно кога гумите лизгаат. Ако ниту една игра не испраќа телеметрија, делува како пружина. Од силата на играта му дозволува на сопствената повратна сила на виртуелниот волан да го врти.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Исклучено</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Пружина</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Од телеметрија</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Од силата на играта</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Време на враќање</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Колку време му треба на Пружина да го врати воланот 95% од патот назад. Од телеметрија го трае тоа при 100 km/h на сув пат.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Управувај</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Секогаш му дозволува на глушецот да управува постојано. Додека се држи му дозволува да управува само додека се држи Влез за управување. Префрлување го вклучува или исклучува управувањето со секој притисок на Влез за управување. Додека глушецот не управува, воланот останува каде што е или се центрира, па еден глушец може и да управува и да се свртува наоколу.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Секогаш</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Додека се држи</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Префрлување</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Влез за управување</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Копчето што му дозволува на глушецот да управува, на истиот уред како поместувањето на глушецот. Ако не е избрано ниту едно, глушецот управува секогаш.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Измазнување</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Израмнува глушец што пријавува нерамномерно. Воланот заостанува зад раката за околу ова време. 0 е исклучено.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Крајна положба при брзина</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Кога е вклучена Игрина телеметрија, колку од крајната положба останува при 200 km/h. Со 100% целата положба е достапна при секоја брзина.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-покажувач X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-покажувач Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-осветленост</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Ја врти целата мапа на флик за толку степени. Позитивно е во насока на стрелките на часовникот. Прилепувањето се применува по поместувањето.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Кога слојот со флик-стикот ќе се вклучи додека палката е веќе отклонета, фликот се извршува веднаш. Кога е исклучено, камерата мирува и ротацијата се следи од тековниот агол на палката.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Повратна реакција при крајна положба</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал во крајна положба за палка во режим на управување</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Кога палка поставена во режим на управување ќе се сврти до крајната положба, се пушта сигнал (вибрации, тригер или светлосна лента) за да ја почувствувате границата. Стандардно сѐ е исклучено.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал кога управувањето ќе стигне до крајна положба</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Кога палка во режим на управување, влез „Движење: наведнување“ или влез Поместување на глушецот ќе стигне до крајна положба, се пушта сигнал (вибрации, тригер или светлосна лента) за да ја почувствувате границата. Стандардно сѐ е исклучено.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Импулс на вибрации во крајна положба</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вибрација на тригерот во крајна положба</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Импулс на светлосната лента во крајна положба</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Префрли тастери {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Повторно центрирање на жироскопот</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>При притисок ги поставува на нула натрупаните референци за нишанење со жироскопот. Историјата на измазнување се брише, неутралната положба за „Движење: наведнување“ повторно се снима, проценката на гравитацијата повторно се иницијализира од тековната положба на контролерот, а вртењето што го натрупале редовите „Движење: наклон“, „Движење: вртење“ и „Движење: навалување“ се поништува.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Центрирај го управувањето со глушец</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Го враќа воланот на секој влез Поместување на глушецот на овој виртуелен контролер назад во центар.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Кој било уред)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Менија</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Менијата претвораат физичка палка или допирна табла во прстен или мрежа на екранот. Притиснете + покрај „Менија“ за да создадете мени, изберете што го отвора, а потоа дајте ѝ на секоја ќелија име и дејство.</value></data>

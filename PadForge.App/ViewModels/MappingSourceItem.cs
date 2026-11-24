@@ -664,6 +664,9 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ParamUpDeviceLabel));
             OnPropertyChanged(nameof(ParamDownDeviceLabel));
             OnPropertyChanged(nameof(ParamModifierDeviceLabel));
+            // The Steer Input picker of a "Mouse Travel" source lists the
+            // slot's on/off inputs of the source's device (#597).
+            RaiseTravelSteerInput();
         }
 
         /// <summary>Device label of the device whose button is currently
@@ -779,9 +782,12 @@ namespace PadForge.ViewModels
         /// the gravity-tilt pairs are POSITION reads whose engine path
         /// applies only the curve/range channel, never ParamAccel, so the
         /// slider would be a dead control there. Gyro Tilt's gain is its
-        /// range card; Gyro Lean's is its Sensitivity dial.</summary>
+        /// range card; Gyro Lean's is its Sensitivity dial. A "Mouse
+        /// Travel" input is a position too, and its wheel takes no
+        /// acceleration (#597).</summary>
         public bool IsParamAccelApplicable => IsHalfAxisApplicable
-            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(_descriptor);
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(_descriptor)
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(_descriptor);
 
         /// <summary>True when this source's descriptor is an absolute cursor axis
         /// ("Mouse Position X" / "Mouse Position Y", issue #107). Drives the
@@ -906,6 +912,11 @@ namespace PadForge.ViewModels
                 // direction and Invert chooses which (right/down vs left/up),
                 // which is how issue #154's four-way "weapon wheel" is built.
                 if (d.StartsWith("Mouse Motion ", System.StringComparison.Ordinal))
+                    return true;
+
+                // A mouse's travel is a wheel's position on either side of
+                // center (#597): Half picks one side and Invert which.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(d))
                     return true;
 
                 // Touchpad: X / Y / Pressure (whole-pad or the #9 B-1
@@ -1524,6 +1535,7 @@ namespace PadForge.ViewModels
         {
             var src = ToDomainFields();
             StoreShapingAndGates(src);
+            StoreMouseTravel(src);
             return src;
         }
 
@@ -1606,6 +1618,7 @@ namespace PadForge.ViewModels
                 ParamRapidTriggerDistance = Engine.Data.MappingSource.EffectiveRapidTriggerDistance(src.ParamRapidTriggerDistance),
             };
             item.LoadShapingAndGates(src);
+            item.LoadMouseTravel(src);
             // Last, with the kind and the Descriptor in.
             item.RememberSavedDescriptorController(src.DescriptorDeviceGuid);
             return item;

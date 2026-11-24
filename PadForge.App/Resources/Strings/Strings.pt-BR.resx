@@ -2104,6 +2104,30 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posição do Mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do cursor por fonte. 1.0 atinge a deflexão total do direcional a 10% da largura da tela a partir do centro. Valores acima de 1.0 atingem a deflexão total com menos movimento do cursor. Valores abaixo de 1.0 precisam de mais.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Curso do Mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Curso do Mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Curso até o Esterçamento Máximo</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quanto o mouse se move do centro até o esterçamento máximo, nas contagens que o mouse informa. Um número maior esterça com mais precisão e exige mais curso da mão.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>contagens</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centralização</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desativado mantém o volante onde a mão o deixou. Mola o traz de volta durante o Tempo de Retorno. Da Telemetria o puxa de volta como as rodas dianteiras de um carro fariam, pela velocidade e aderência do jogo: parado em repouso, mais firme com a velocidade, leve quando as rodas derrapam. Sem jogo enviando telemetria, é a mola. Da Força do Jogo deixa a própria força de retorno de um volante virtual girá-lo.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Mola</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Da Telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Da Força do Jogo</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tempo de Retorno</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Quanto tempo a Mola leva para trazer o volante 95% do caminho de volta. Da Telemetria leva este tempo a 100 km/h em pista seca.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Esterçar</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre deixa o mouse esterçar o tempo todo. Enquanto Pressionado deixa esterçar só enquanto a Entrada de Direção está pressionada. Alternar liga ou desliga a direção a cada toque na Entrada de Direção. Enquanto o mouse não esterça, o volante fica onde está ou se centraliza, então um mouse pode esterçar e olhar ao redor.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempre</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Enquanto Pressionado</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrada de Direção</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>O botão que deixa o mouse esterçar, no mesmo dispositivo do curso do mouse. Sem nenhum escolhido, o mouse sempre esterça.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavização</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Uniformiza um mouse que informa de modo irregular. O volante fica atrás da mão por cerca deste tempo. 0 é desativado.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Esterçamento em Velocidade</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Com a Telemetria de Jogos ativada, quanto do esterçamento resta a 200 km/h. Com 100%, todo o esterçamento está disponível em qualquer velocidade.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clique no Touchpad</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Y</value></data>
@@ -2837,8 +2861,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configurações da entrada "Inclinação de Movimento": incline o controle como um volante. Atribua "Inclinação de Movimento" a um eixo do analógico em Mapeamentos.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Redefinir Direção por Movimento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente do Volante</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Um sinal no batente para um analógico em modo de volante</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um analógico configurado como volante é girado até o esterçamento máximo, emite um sinal (vibração, gatilho ou barra de luz) para você sentir o limite. Tudo desativado por padrão.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Um sinal quando o volante chega ao esterçamento máximo</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um analógico em modo de volante, uma entrada Motion Lean ou uma entrada Curso do Mouse chega ao esterçamento máximo, emite um sinal (vibração, gatilho ou barra de luz) para você sentir o limite. Tudo desativado por padrão.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de Vibração no Batente</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibração do Gatilho no Batente</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso da Barra de Luz no Batente</value></data>
@@ -4486,6 +4510,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentralizar Giroscópio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado, a estimativa de gravidade é reiniciada a partir da pose atual do controle e o giro das linhas Movimento Pitch, Yaw e Roll é desfeito.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centralizar Direção do Mouse</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Devolve ao centro o volante de cada entrada Curso do Mouse neste controle virtual.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Os menus transformam um analógico ou touchpad físico em um anel ou grade na tela. Clique em + ao lado de Menus para criar um, escolha o que o abre e depois dê a cada célula um nome e uma ação.</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Novo Menu</value></data>

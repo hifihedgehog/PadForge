@@ -2995,6 +2995,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsToggleVcButtonType));
                     OnPropertyChanged(nameof(IsToggleKeyType));
                     OnPropertyChanged(nameof(IsGyroRecenterType));
+                    OnPropertyChanged(nameof(IsCenterMouseSteeringType));
                     OnPropertyChanged(nameof(IsToggleMouseButtonType));
                     OnPropertyChanged(nameof(IsToggleVcAxisType));
                     OnPropertyChanged(nameof(IsRepeatVcAxisWhileHeldType));
@@ -3220,6 +3221,12 @@ namespace PadForge.ViewModels
         /// Gates the parameter-less info card in the macro editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsGyroRecenterType => _type == MacroActionType.GyroRecenter;
+
+        /// <summary>True when Type is CenterMouseSteering (#597). Gates the
+        /// parameter-less info card in the macro editor, the GyroRecenter
+        /// card shape.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCenterMouseSteeringType => _type == MacroActionType.CenterMouseSteering;
 
         /// <summary>True when Type is ToggleMouseButton (v19, M1). Surfaces
         /// the mouse-button picker (shared with Mouse Button Press) plus the
@@ -6561,6 +6568,8 @@ namespace PadForge.ViewModels
                         keyDisplay),
                     MacroActionType.GyroRecenter =>
                         Strings.Instance.MacroAction_Type_GyroRecenter,
+                    MacroActionType.CenterMouseSteering =>
+                        Strings.Instance.MacroAction_Type_CenterMouseSteering,
                     MacroActionType.DisconnectController => string.Format(
                         Strings.Instance.MacroAction_DisconnectController_Format,
                         DisconnectTargetDisplayName()),
@@ -7581,7 +7590,15 @@ namespace PadForge.ViewModels
         /// lapsing a moment after the last, as
         /// <see cref="VoiceListenWhileHeld"/> does. Continuous. Ordinal
         /// pinned.</summary>
-        MagnifierWhileHeld = 70
+        MagnifierWhileHeld = 70,
+
+        /// <summary>Puts the wheels of the slot's "Mouse Travel" inputs back
+        /// at center (#597), as <see cref="GyroRecenter"/> re-references the
+        /// slot's gyro state: every position those inputs hold goes to 0,
+        /// with its smoothed output, and a Toggle keeps the state its input
+        /// last set (SourceKindRuntime.CenterMouseTravel). One-shot. Ordinal
+        /// pinned.</summary>
+        CenterMouseSteering = 71
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

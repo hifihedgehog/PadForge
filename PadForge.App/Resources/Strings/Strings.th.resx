@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>ตำแหน่งเมาส์ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>ความไว</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ความไวเคอร์เซอร์รายแหล่งที่มา 1.0 จะถึงระยะโยกเต็มของสติ๊กที่ 10% ของความกว้างหน้าจอจากกึ่งกลาง ค่าที่สูงกว่า 1.0 จะถึงระยะโยกเต็มด้วยระยะเคลื่อนของเคอร์เซอร์ที่น้อยลง ค่าที่ต่ำกว่า 1.0 ต้องใช้ระยะมากขึ้น</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ระยะเคลื่อนเมาส์ X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ระยะเคลื่อนเมาส์ Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>ระยะเมาส์จนพวงมาลัยสุดล็อก</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ระยะที่เมาส์เคลื่อนจากกึ่งกลางจนสุดล็อก นับเป็นเคานต์ที่เมาส์รายงาน ค่ายิ่งสูงยิ่งบังคับละเอียดขึ้นและต้องใช้ระยะมือมากขึ้น</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>เคานต์</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>การคืนศูนย์</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ปิดจะคงพวงมาลัยไว้ตรงที่มือปล่อย สปริงจะพากลับตามเวลาคืนศูนย์ จากเทเลเมทรีจะดึงกลับเหมือนยางหน้าของรถที่ความเร็วและการยึดเกาะของเกม คือนิ่งเมื่อจอดอยู่ แน่นขึ้นตามความเร็ว และเบาเมื่อยางลื่น หากไม่มีเกมส่งเทเลเมทรีจะใช้สปริงแทน จากแรงของเกมให้แรงสะท้อนกลับของพวงมาลัยเสมือนเป็นตัวหมุนเอง</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ปิด</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>สปริง</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>จากเทเลเมทรี</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>จากแรงของเกม</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>เวลาคืนศูนย์</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>เวลาที่สปริงใช้พาพวงมาลัยกลับมา 95% ของระยะ จากเทเลเมทรีใช้เวลานี้ที่ 100 km/h บนถนนแห้ง</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>บังคับเลี้ยว</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ตลอดเวลาให้เมาส์บังคับเลี้ยวได้ทุกเมื่อ ขณะกดค้างให้บังคับเลี้ยวเฉพาะขณะที่กดอินพุตการบังคับเลี้ยวค้างไว้ สลับเปิด/ปิดจะเปิดหรือปิดการบังคับเลี้ยวทุกครั้งที่กดอินพุตการบังคับเลี้ยว ขณะที่เมาส์ไม่บังคับเลี้ยว พวงมาลัยจะอยู่ที่เดิมหรือคืนศูนย์ เมาส์ตัวเดียวจึงทั้งบังคับเลี้ยวและมองรอบตัวได้</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ตลอดเวลา</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ขณะกดค้าง</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>สลับเปิด/ปิด</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>อินพุตการบังคับเลี้ยว</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ปุ่มที่ให้เมาส์บังคับเลี้ยวได้ บนอุปกรณ์เดียวกับระยะเคลื่อนเมาส์ หากไม่เลือก เมาส์จะบังคับเลี้ยวตลอดเวลา</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>การปรับเรียบ</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ทำให้เมาส์ที่รายงานไม่สม่ำเสมอนิ่มขึ้น พวงมาลัยจะตามหลังมือราวช่วงเวลานี้ 0 คือปิด</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>ล็อกที่ความเร็ว</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>เมื่อเปิดเทเลเมทรีเกม คือช่วงล็อกที่เหลืออยู่ที่ 200 km/h ที่ 100% ช่วงล็อกทั้งหมดอยู่ครบทุกความเร็ว</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>ตัวชี้ IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>ตัวชี้ IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>ความสว่าง IR</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>หมุนแผนที่การฟลิกทั้งหมดตามจำนวนองศานี้ ค่าบวกคือตามเข็มนาฬิกา การสแนปจะมีผลหลังค่าชดเชย</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>เมื่อเลเยอร์ที่มีฟลิกสติ๊กถูกเปิดใช้ขณะที่สติ๊กถูกโยกอยู่แล้ว ให้ฟลิกทันที เมื่อปิด กล้องจะอยู่นิ่งและติดตามการหมุนจากมุมสติ๊กปัจจุบัน</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>การตอบสนองเมื่อเลี้ยวสุด</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>สัญญาณเมื่อสติ๊กโหมดบังคับเลี้ยวหมุนสุด</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>เมื่อสติ๊กที่ตั้งเป็นโหมดการบังคับเลี้ยวถูกหมุนจนสุด จะเล่นสัญญาณ (การสั่น ทริกเกอร์ หรือแถบไฟ) เพื่อให้คุณรู้สึกถึงขีดจำกัด ค่าเริ่มต้นคือปิดทั้งหมด</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>สัญญาณเมื่อการบังคับเลี้ยวหมุนสุด</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>เมื่อสติ๊กในโหมดบังคับเลี้ยว อินพุตการเอนจากการเคลื่อนไหว หรืออินพุตระยะเคลื่อนเมาส์หมุนจนสุด จะเล่นสัญญาณ (การสั่น ทริกเกอร์ หรือแถบไฟ) เพื่อให้คุณรู้สึกถึงขีดจำกัด ค่าเริ่มต้นคือปิดทั้งหมด</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>พัลส์การสั่นเมื่อเลี้ยวสุด</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>การสั่นสะเทือนของทริกเกอร์เมื่อเลี้ยวสุด</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>พัลส์แถบไฟเมื่อเลี้ยวสุด</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>สลับเปิด/ปิดคีย์ {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>จัดไจโรกลับกึ่งกลาง</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>ตั้งศูนย์ค่าอ้างอิงการเล็งด้วยไจโรที่สะสมไว้ของเกมแพดเมื่อกด ประวัติการปรับเรียบจะถูกล้าง ตำแหน่งกลางของการเอนจากการเคลื่อนไหวจะถูกจับใหม่ ค่าประมาณแรงโน้มถ่วงจะตั้งต้นใหม่จากท่าทางปัจจุบันของคอนโทรลเลอร์ และการหมุนที่แถวพิตช์ ยอว์ และโรลจากการเคลื่อนไหวสะสมไว้จะถูกยกเลิก</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>คืนศูนย์การบังคับเลี้ยวด้วยเมาส์</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>คืนพวงมาลัยของทุกอินพุตระยะเคลื่อนเมาส์บนคอนโทรลเลอร์เสมือนนี้กลับสู่กึ่งกลาง</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(อุปกรณ์ใดก็ได้)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>เมนู</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>เมนูเปลี่ยนสติ๊กหรือทัชแพดจริงให้เป็นวงแหวนหรือตารางบนหน้าจอ กด + ข้าง “เมนู” เพื่อสร้างเมนูใหม่ เลือกสิ่งที่ใช้เปิด แล้วตั้งชื่อและแอ็กชันให้แต่ละเซลล์</value></data>

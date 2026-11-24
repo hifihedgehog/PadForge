@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Тінтуір орны Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Сезімталдық</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін меңзер сезімталдығы. 1.0 мәнінде толық стик ауытқуына орталықтан экран енінің 10% қашықтығында жетеді. 1.0 мәнінен жоғары мәндер толық ауытқуға меңзердің азырақ жылжуымен жетеді. 1.0 мәнінен төмен мәндерге көбірек жылжу керек.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Тінтуір жүрісі X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Тінтуір жүрісі Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Толық шекке дейінгі жүріс</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Тінтуірдің ортадан толық шекке дейін жылжитын қашықтығы, тінтуір хабарлайтын санақпен. Сан көбірек болса, рөлдеу нәзік болады және қол көбірек жылжиды.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>санақ</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Орталау</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Өшірулі рөлді қол қалдырған жерде ұстайды. Серіппе оны қайту уақыты ішінде қайтарады. Телеметриядан оны көліктің алдыңғы дөңгелектері ойын жылдамдығы мен ілінісінде тартатындай тартады: тоқтап тұрғанда қозғалмайды, жылдамдықпен қатая түседі, дөңгелектер сырғанағанда жеңіл. Телеметрия жіберетін ойын болмаса, ол серіппе болады. Ойын күшінен виртуалды рөлдің өз күш кері байланысына оны бұруға мүмкіндік береді.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Өшірулі</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Серіппе</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Телеметриядан</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Ойын күшінен</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Қайту уақыты</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Серіппенің рөлді 95% қайтаруға кететін уақыты. Телеметриядан құрғақ жолда 100 km/h кезінде осыншама уақыт алады.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Рөлдеу</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Әрқашан тінтуірдің үнемі рөлдеуіне мүмкіндік береді. Ұстап тұрғанда оны тек Рөлдеу кірісі басылып тұрғанда рөлдетеді. Ауыстырғыш Рөлдеу кірісінің әр басылуымен рөлдеуді қосады немесе өшіреді. Тінтуір рөлдемегенде рөл тұрған жерінде қалады немесе ортаға оралады, сондықтан бір тінтуірмен рөлдеуге де, айналаға қарауға да болады.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Әрқашан</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ұстап тұрғанда</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Ауыстырғыш</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Рөлдеу кірісі</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Тінтуірдің рөлдеуіне мүмкіндік беретін түйме, тінтуір жүрісімен бір құрылғыда. Ештеңе таңдалмаса, тінтуір әрқашан рөлдейді.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Тегістеу</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Біркелкі емес хабарлайтын тінтуірді тегістейді. Рөл қолдан шамамен осыншама уақытқа кешігеді. 0 өшіреді.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Жылдамдықтағы шек</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ойын телеметриясы қосулы болғанда, 200 km/h кезінде шектің қаншасы қалады. 100% болса, бүкіл шек кез келген жылдамдықта қолжетімді.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR меңзер X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR меңзер Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR жарықтығы</value></data>
@@ -3333,8 +3357,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Бүкіл сілтеу картасын осынша градусқа бұрады. Оң мән сағат тілімен. Бекіту ығысудан кейін қолданылады.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick орналасқан қабат стик ауытқып тұрғанда іске қосылса, сілтеуді бірден орындау. Өшірулі болса, камера қозғалмайды және бұрылысты стиктің ағымдағы бұрышынан бастап қадағалайды.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Рөл шегіндегі кері байланыс</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Рөлдеу режиміндегі стиктің шекке жеткендегі белгісі</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Рөлдеу режиміне орнатылған стик толық шекке дейін бұрылғанда, шекті сезу үшін белгі (діріл, триггер немесе жарық жолағы) ойнату. Әдепкі бойынша барлығы өшірулі.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Рөлдеу толық шекке жеткендегі белгі</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Рөлдеу режиміндегі стик, «Қозғалыс: көлбеу» кірісі немесе Тінтуір жүрісі кірісі толық шекке жеткенде, шекті сезу үшін белгі (діріл, триггер немесе жарық жолағы) ойнату. Әдепкі бойынша барлығы өшірулі.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Шекте діріл импульсі</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Шекте триггер дірілі</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Шекте жарық жолағы импульсі</value></data>
@@ -4281,6 +4305,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Пернелерді ауыстыру: {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Гироскопты қайта орталықтау</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Басқанда геймпадтың жинақталған гироскоп көздеу сілтемелерін нөлдейді. Тегістеу тарихы тазаланады, «Қозғалыс: көлбеу» бейтарап күйі қайта түсіріледі, гравитация бағасы контроллердің ағымдағы орнынан қайта есептеледі, ал «Қозғалыс: еңкею», бұрылу және қисаю жолдары жасаған бұрылыс жойылады.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Тінтуірмен рөлдеуді орталау</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Осы виртуалды контроллердегі әр Тінтуір жүрісі кірісінің рөлін қайтадан ортаға қояды.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Кез келген құрылғы)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Мәзірлер</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Мәзірлер физикалық стикті немесе сенсорлық тақтаны экрандағы сақинаға не торға айналдырады. Мәзір жасау үшін «Мәзірлер» жанындағы + түймесін басыңыз, оны не ашатынын таңдаңыз, содан кейін әр торкөзге атау мен әрекет беріңіз.</value></data>

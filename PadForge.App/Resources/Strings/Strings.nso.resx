@@ -1183,7 +1183,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le go Kgoma</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Seetša le Modumo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Dimakro le Malokelelo</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temošo ge stick ya go otlela e fihla mafelelong</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temošo ge go otlela go fihla mafelelong</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela rumble ya dimotoro tše dikgolo go di-trigger</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tša go sekama, Tebelelo ya controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, go boreledišwa, Koketšo ya lebelo, Kgopamo ya ditšweletšo</value></data>
@@ -1408,4 +1408,10 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge e gannye go laolla ka gobane ga se polokelo ya tshedimošo ya dikhontroulara yeo e e letetšego. Ga go selo seo se fetogilego.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mmapo wo moswa o šomišwa ka lekga le le latelago leo khontroulara ya wona e kgokaganago.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mmapo wo o fetotšwego o šomišwa ka lekga le le latelago leo PadForge e thomago.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dipalo</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Go tšwa go Telemetry</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ka mehla</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ge o swere</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ge Telemetry ya papadi e butšwe, ke bokae bja lock bjo bo šalago ka 200 km/h. Ka 100% lock ka moka e gona ka lebelo le lengwe le le lengwe.</value></data>
 </root>

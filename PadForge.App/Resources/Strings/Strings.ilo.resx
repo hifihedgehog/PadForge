@@ -1259,7 +1259,7 @@
   <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog a guyod</value></data>
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, kannigid nga ima</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, kannawan nga ima</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senial no dumanon ti stick iti pagpatinggaan iti steering mode</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senial no dumanon ti panagmaneho iti pagpatinggaan</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Panangiyannatop kadagiti input ti Flick Stick</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble manipud iti bass ti audio ti sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipatulodna ti rumble dagiti kangrunaan a motor kadagiti trigger</value></data>
@@ -1440,4 +1440,10 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Saan a nagbaliw ti database ti komunidad manipud iti maudi a panag-update.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ti baro a mapping ket mausar inton sumaruno a kumonekta ti controllerna.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ti nabaliwan a mapping ket mausar inton sumaruno nga agrugi ti PadForge.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Manipud iti telemetry</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kanayon</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ti button a mangipalubos iti mouse nga agmaneho, iti isu met laeng a device a kas ti travel ti mouse. No awan ti napili, kanayon nga agmaneho ti mouse.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>No nakasindi ti Telemetry ti game, kasano kaadu ti lock a mabati iti 200 km/h. Iti 100%, adda ti intero a lock iti tunggal kapardas.</value></data>
 </root>

@@ -2630,6 +2630,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>የመዳፊት አቀማመጥ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>ትብነት</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የጠቋሚ ትብነት። 1.0 ከመሃል በማያ ገጹ ስፋት 10% ላይ ሙሉ የስቲክ ማፈንገጥ ይደርሳል። ከ1.0 በላይ የሆኑ እሴቶች በአነሰ የጠቋሚ ጉዞ ሙሉ ማፈንገጥ ይደርሳሉ። ከ1.0 በታች የሆኑት የበለጠ ጉዞ ያስፈልጋቸዋል።</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>የመዳፊት ጉዞ X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>የመዳፊት ጉዞ Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>እስከ ሙሉ መቆለፊያ ያለው ጉዞ</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>መዳፊቱ ከመሃል እስከ ሙሉ መቆለፊያ የሚንቀሳቀስበት ርቀት፣ መዳፊቱ በሚዘግባቸው ቆጠራዎች። ከፍ ያለ ቁጥር በይበልጥ በጥንቃቄ ይመራል እና ተጨማሪ የእጅ እንቅስቃሴ ይወስዳል።</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ቆጠራዎች</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ማዕከል ማድረጊያ</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«ጠፍቷል» መሪውን እጁ በተወው ቦታ ይይዛል። «ስፕሪንግ» በ«የመመለሻ ጊዜ» ውስጥ መልሶ ያመጣዋል። «ከቴሌሜትሪ» የመኪና የፊት ጎማዎች በጨዋታው ፍጥነት እና መያዣ እንደሚያደርጉት መልሶ ይጎትተዋል፦ ቆሞ ሳለ አይጎትትም፣ በፍጥነት ይጠነክራል፣ ጎማዎቹ ሲንሸራተቱ ቀላል ይሆናል። ቴሌሜትሪ የሚልክ ጨዋታ ከሌለ እንደ ስፕሪንግ ይሠራል። «ከጨዋታው ኃይል» የምናባዊ መሪ የራሱ የኃይል ግብረመልስ እንዲያዞረው ያደርጋል።</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ስፕሪንግ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ከቴሌሜትሪ</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ከጨዋታው ኃይል</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>የመመለሻ ጊዜ</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>«ስፕሪንግ» መሪውን 95% መልሶ ለማምጣት የሚወስድበት ጊዜ። «ከቴሌሜትሪ» ይህን ያህል ጊዜ የሚወስደው በደረቅ መንገድ ላይ በ100 km/h ነው።</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ምራ</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«ሁልጊዜ» መዳፊቱ በማንኛውም ጊዜ እንዲመራ ያደርጋል። «ተይዞ ሳለ» «የመሪ ግብዓት» ተይዞ ሳለ ብቻ እንዲመራ ያደርጋል። «ቀያይር» በእያንዳንዱ የ«የመሪ ግብዓት» ጭነት መምራትን ያበራል ወይም ያጠፋል። መዳፊቱ በማይመራበት ጊዜ መሪው ባለበት ይቆያል ወይም ወደ መሃል ይመለሳል፣ ስለዚህ አንድ መዳፊት መምራትም ዙሪያውን መመልከትም ይችላል።</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ሁልጊዜ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ተይዞ ሳለ</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ቀያይር</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>የመሪ ግብዓት</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>መዳፊቱ እንዲመራ የሚያስችለው አዝራር፣ ከመዳፊቱ ጉዞ ጋር በተመሳሳዩ መሣሪያ ላይ። ምንም ካልተመረጠ መዳፊቱ ሁልጊዜ ይመራል።</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ማለስለሻ</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ያልተስተካከለ ሪፖርት የሚያደርግ መዳፊትን ያስተካክላል። መሪው እጁን በዚህ ያህል ጊዜ ገደማ ዘግይቶ ይከተላል። 0 ጠፍቷል ማለት ነው።</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>በፍጥነት ላይ ያለ መቆለፊያ</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>«የጨዋታ ቴሌሜትሪ» በርቶ ሳለ በ200 km/h ምን ያህል መቆለፊያ እንደሚቀር። በ100% ሙሉ መቆለፊያው በእያንዳንዱ ፍጥነት ይገኛል።</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>የIR ጠቋሚ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>የIR ጠቋሚ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>የIR ብሩህነት</value></data>
@@ -3300,8 +3324,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>መላውን የፍሊክ ካርታ በዚህ ያህል ዲግሪ ያዞራል። አዎንታዊ እሴት በሰዓት አቅጣጫ ነው። ማሰለፍ ከማካካሻው በኋላ ይተገበራል።</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ፍሊክ ስቲክን የያዘው ንብርብር ስቲኩ አስቀድሞ ተገፍቶ እያለ ሲነቃ፣ ፍሊኩ ወዲያውኑ ይፈጸማል። ሲጠፋ ካሜራው ሳይንቀሳቀስ ይቆያል፣ ዙሩንም ከአሁኑ የስቲክ ማዕዘን ጀምሮ ይከታተላል።</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>የመሪ መቆለፊያ ግብረመልስ</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>በመሪ ሁነታ ያለ ስቲክ ሙሉ መቆለፊያ ሲደርስ የሚጫወት ምልክት</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ወደ መሪ ሁነታ የተዘጋጀ ስቲክ እስከ ሙሉ መቆለፊያ ድረስ ሲዞር፣ ገደቡ እንዲሰማዎት ምልክት (ንዝረት፣ ትሪገር ወይም የብርሃን አሞሌ) ይጫወታል። ሁሉም በነባሪ ጠፍተዋል።</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>መሪው ሙሉ መቆለፊያ ሲደርስ የሚጫወት ምልክት</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>በመሪ ሁነታ ያለ ስቲክ፣ የእንቅስቃሴ ማዘንበል ግብዓት ወይም የመዳፊት ጉዞ ግብዓት ሙሉ መቆለፊያ ሲደርስ፣ ገደቡ እንዲሰማዎት ምልክት (ንዝረት፣ ትሪገር ወይም የብርሃን አሞሌ) ይጫወታል። ሁሉም በነባሪ ጠፍተዋል።</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>በመቆለፊያ ላይ የንዝረት ምት</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>በመቆለፊያ ላይ የትሪገር ንዝረት</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>በመቆለፊያ ላይ የብርሃን አሞሌ ምት</value></data>
@@ -4248,6 +4272,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ቁልፎችን {0} ቀያይር</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ጋይሮን እንደገና አማክል</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>በመጫን ላይ የፓዱን የተከማቹ የጋይሮ ማነጣጠሪያ ማጣቀሻዎች ወደ ዜሮ ይመልሳል። የማለስለስ ታሪክ ይጸዳል፣ የእንቅስቃሴ ማዘንበል ገለልተኛ አቀማመጥ እንደገና ይያዛል፣ የስበት ግምቱ ከመቆጣጠሪያው የአሁኑ አቀማመጥ እንደገና ይጀምራል፣ የእንቅስቃሴ ፒች፣ ያው እና ሮል ረድፎች የገነቡት ማዞርም ይቀለበሳል።</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>የመዳፊት መሪን አማክል</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>በዚህ ምናባዊ መቆጣጠሪያ ላይ ያለውን የእያንዳንዱን «የመዳፊት ጉዞ» ግብዓት መሪ ወደ መሃል ይመልሳል።</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ማንኛውም መሣሪያ)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>ምናሌዎች</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>ምናሌዎች አካላዊ ስቲክን ወይም የመዳሰሻ ሰሌዳን ወደ የማያ ላይ ቀለበት ወይም ፍርግርግ ይቀይራሉ። አዲስ ለመፍጠር ከ«ምናሌዎች» አጠገብ ያለውን + ይጫኑ፣ የሚከፍተውን ይምረጡ፣ ከዚያ ለእያንዳንዱ ሕዋስ ስም እና ድርጊት ይስጡት።</value></data>

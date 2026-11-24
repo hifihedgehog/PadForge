@@ -5810,6 +5810,13 @@ namespace PadForge.Views
                 double oldGyroSensitivity = mi.GyroSensitivity;
                 double oldMouseCursorSensitivity = mi.MouseCursorSensitivity;
                 double oldIrPointerSensitivity = mi.IrPointerSensitivity;
+                // What a "Mouse Travel" primary is tuned by (#597), and its
+                // Steer input, which is the row's gate. Both belong to that
+                // input, so they move with it, and the row that takes the
+                // cloned input starts with neither.
+                var oldTravel = new PadForge.Engine.Data.MappingSource();
+                mi.StoreMouseTravel(oldTravel);
+                string oldSteerInput = mi.IsMouseTravelSource ? mi.GateDescriptor : string.Empty;
                 // A Toggle (#461) or Rapid Trigger (#482) primary reads the
                 // same descriptor, so it moves over with its kind rather than
                 // as a plain Direct read, and Rapid Trigger with its distance.
@@ -5828,6 +5835,8 @@ namespace PadForge.Views
                 mi.MouseCursorSensitivity = 1.0;
                 mi.IrPointerSensitivity = 1.0;
                 mi.Sensitivity = 1.0;
+                mi.LoadMouseTravel(null);
+                if (oldSteerInput.Length > 0) mi.GateDescriptor = string.Empty;
 
                 if (demote)
                 {
@@ -5851,7 +5860,7 @@ namespace PadForge.Views
                     }
                     if (!duplicate)
                     {
-                        mi.ExtraSources.Add(new MappingSourceItem
+                        var moved = new MappingSourceItem
                         {
                             Kind = oldKind,
                             DeviceGuid = oldGuid,
@@ -5870,7 +5879,12 @@ namespace PadForge.Views
                             MouseCursorSensitivity = oldMouseCursorSensitivity,
                             IrPointerSensitivity = oldIrPointerSensitivity,
                             ParamRapidTriggerDistance = oldRapidTriggerDistance,
-                        });
+                        };
+                        // The Steer input first, as a load reads a gate
+                        // before the settings that go with it.
+                        if (oldSteerInput.Length > 0) moved.GateDescriptor = oldSteerInput;
+                        moved.LoadMouseTravel(oldTravel);
+                        mi.ExtraSources.Add(moved);
                     }
                 }
 

@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Положај миша Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Осетљивост</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Осетљивост курсора за појединачни извор. 1.0 достиже пун отклон палице на 10% ширине екрана од центра. Вредности изнад 1.0 достижу пун отклон уз мањи помак курсора. Вредностима испод 1.0 потребан је већи.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Помак миша X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Помак миша Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Помак до пуног угла</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Колико се миш помера од центра до пуног угла, у корацима које миш пријављује. Већи број управља финије и тражи више померања руке.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>помака</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Центрирање</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Искључено држи волан где га је рука оставила. Опруга га враћа током Времена повратка. Из телеметрије га вуче назад као предње гуме аутомобила при брзини и приањању које игра шаље: мирно у месту, чвршће са брзином, лагано када гуме клизају. Ако ниједна игра не шаље телеметрију, ради као опруга. Из силе игре допушта да га окреће сопствена повратна сила виртуелног волана.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Искључено</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Опруга</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Из телеметрије</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Из силе игре</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Време повратка</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Колико Опруге треба да врати волан 95% пута назад. Из телеметрије траје ово дуго при 100 km/h на сувом путу.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Управљање</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Увек допушта мишу да управља стално. Док је притиснуто допушта му то само док се држи Улаз за управљање. Прекидач укључује или искључује управљање сваким притиском на Улаз за управљање. Док миш не управља, волан остаје где јесте или се центрира, па један миш може да управља и да гледа около.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Увек</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Док је притиснуто</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Прекидач</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Улаз за управљање</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Дугме које омогућава мишу да управља, на истом уређају као и помак миша. Ако ниједно није изабрано, миш увек управља.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Изглађивање</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Изглађује миш који пријављује неравномерно. Волан касни за руком отприлике толико. 0 је искључено.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Угао при брзини</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Када је Телеметрија игре укључена, колики део угла остаје при 200 km/h. При 100% читав угао је доступан при свакој брзини.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR показивач X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR показивач Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR осветљеност</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Окреће целу мапу окрета за оволико степени. Позитивно је у смеру казаљке на сату. Поравнање се примењује после помака.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Када се слој са Flick Stick функцијом активира док је палица већ отклоњена, окрет се изводи одмах. „Искључено“ задржава камеру мирном и прати ротацију од тренутног угла палице.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Повратна информација при крајњем углу волана</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал на крајњем углу за палицу у режиму управљања</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Када се палица у режиму управљања окрене до краја, репродукује се сигнал (вибрација, окидач или светлосна трака) да бисте осетили границу. Подразумевано је све искључено.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал када управљање достигне пун угао</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Када палица у режиму управљања, улаз Покрет: нагињање или улаз Помак миша достигне пун угао, репродукује се сигнал (вибрација, окидач или светлосна трака) да бисте осетили границу. Подразумевано је све искључено.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Импулс вибрације на крајњем углу</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вибрација окидача на крајњем углу</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Импулс светлосне траке на крајњем углу</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Прекидач за тастере {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Центрирање жироскопа</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>При притиску нулира нагомилане референце нишањења жироскопом. Историја изглађивања се брише, неутрални положај за „Покрет: нагињање“ поново се бележи, процена гравитације се поново поставља из тренутног положаја контролера, а окрет који су изградили редови „Покрет: нагиб“, „Покрет: скретање“ и „Покрет: ваљање“ се поништава.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Центрирај управљање мишем</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Враћа у центар волан сваког улаза Помак миша на овом виртуелном контролеру.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Било који уређај)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Менији</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Менији претварају физичку палицу или тачпед у прстен или мрежу на екрану. Притисните + поред „Менији“ да бисте направили мени, изаберите шта га отвара, а затим свакој ћелији дајте назив и радњу.</value></data>

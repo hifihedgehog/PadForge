@@ -2859,6 +2859,30 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Hiiren sijainti Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Herkkyys</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Lähdekohtainen osoittimen herkkyys. 1.0 saavuttaa sauvan täyden poikkeaman, kun osoitin on 10 % näytön leveydestä keskeltä. Arvot yli 1.0 saavuttavat täyden poikkeaman pienemmällä osoittimen liikkeellä. Arvot alle 1.0 vaativat enemmän.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Hiiren liike X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Hiiren liike Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Liike ääriasentoon</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kuinka pitkälle hiiri liikkuu keskeltä ääriasentoon hiiren raportoimina askelina. Suurempi luku ohjaa hienovaraisemmin ja vaatii enemmän käden liikettä.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>askelta</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Keskitys</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Pois pitää ratin siinä, mihin käsi sen jätti. Jousi palauttaa sen Palautusajan kuluessa. Telemetriasta vetää sen takaisin kuin auton eturenkaat pelin nopeudella ja pidolla: paikallaan seisoessa ei voimaa, nopeuden mukana tiukemmin ja kevyesti, kun renkaat luistavat. Jos mikään peli ei lähetä telemetriaa, se on jousi. Pelin voimasta antaa virtuaalisen ratin oman voimapalautteen kääntää sitä.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Pois päältä</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Jousi</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriasta</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Pelin voimasta</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Palautusaika</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Kuinka kauan Jousi kestää palauttaa ratti 95 % matkasta takaisin. Telemetriasta kestää tämän ajan nopeudella 100 km/h kuivalla tiellä.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Ohjaa</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Aina antaa hiiren ohjata koko ajan. Pidettäessä antaa sen ohjata vain, kun Ohjaussyötettä pidetään painettuna. Vaihto kytkee ohjauksen päälle tai pois jokaisella Ohjaussyötteen painalluksella. Kun hiiri ei ohjaa, ratti pysyy paikallaan tai keskittyy, joten yhdellä hiirellä voi ohjata ja katsella ympärilleen.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Aina</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Pidettäessä</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Vaihto</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ohjaussyöte</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Painike, joka antaa hiiren ohjata, samalla laitteella kuin hiiren liike. Jos mitään ei ole valittu, hiiri ohjaa aina.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Tasoitus</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Tasoittaa epätasaisesti raportoivaa hiirtä. Ratti seuraa kättä noin näin pitkällä viiveellä. 0 on pois päältä.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Ääriasento nopeudessa</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kun Pelitelemetria on päällä, kuinka suuri osa ääriasennosta on jäljellä nopeudella 200 km/h. Arvolla 100 % koko kiertoalue on käytössä joka nopeudella.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-osoitin X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-osoitin Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-kirkkaus</value></data>
@@ -3567,8 +3591,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Kääntää koko heilautuskarttaa näin monta astetta. Positiivinen on myötäpäivään. Tarttuminen tehdään siirtymän jälkeen.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kun Flick Stick -syötteen sisältävä kerros aktivoituu sauvan ollessa jo poikkeutettuna, heilautus laukeaa heti. Pois päältä pitää kameran paikallaan ja seuraa kiertoa sauvan nykyisestä kulmasta.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ohjauksen ääriasentopalaute</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Vihje ääriasennossa ohjaustilaan asetetulle sauvalle</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kun ohjaustilaan asetettu sauva käännetään ääriasentoon asti, toistetaan vihje (tärinä, liipaisin tai valopalkki), jotta tunnet rajan. Kaikki oletuksena pois päältä.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Vihje, kun ohjaus yltää ääriasentoon</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kun ohjaustilassa oleva sauva, Liikkeen nojaus -syöte tai Hiiren liike -syöte yltää ääriasentoon, toistetaan vihje (tärinä, liipaisin tai valopalkki), jotta tunnet rajan. Kaikki oletuksena pois päältä.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Tärinäpulssi ääriasennossa</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Liipaisinvärinä ääriasennossa</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Valopalkin pulssi ääriasennossa</value></data>
@@ -4547,6 +4571,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Näppäimet {0} päälle/pois</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyron keskitys</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Nollaa painettaessa ohjaimen kertyneet gyrotähtäyksen viitearvot. Tasoitushistoria tyhjennetään, Liikkeen nojaus -neutraaliasento tallennetaan uudelleen, painovoimaestimaatti alustetaan ohjaimen nykyisestä asennosta ja Liikkeen nyökkäys-, kiertymä- ja kallistusrivien muodostama kääntö kumotaan.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Keskitä hiiriohjaus</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Palauttaa tämän virtuaaliohjaimen jokaisen Hiiren liike -syötteen ratin keskelle.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(mikä tahansa laite)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Valikot</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Valikot muuttavat fyysisen sauvan tai kosketuslevyn näytöllä näkyväksi renkaaksi tai ruudukoksi. Luo valikko painamalla Valikot-otsikon vieressä olevaa +-painiketta, valitse, mikä sen avaa, ja anna sitten jokaiselle solulle nimi ja toiminto.</value></data>

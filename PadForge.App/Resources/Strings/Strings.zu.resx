@@ -1369,6 +1369,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Indawo yegundane Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Ukuzwela</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ukuzwela kwekhesa ngomthombo ngamunye. U-1.0 ufinyelela ukuchezuka okugcwele kwenduku ku-10% wobubanzi besikrini usuka phakathi nendawo. Amanani angaphezu kuka-1.0 afinyelela ukuchezuka okugcwele ngokuhamba okuncane kwekhesa. Amanani angaphansi kuka-1.0 adinga okwengeziwe.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ukuhamba kwegundane X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ukuhamba kwegundane Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ukuhamba kuze kufike emkhawulweni</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ibanga igundane elihamba ngalo kusuka maphakathi kuya emkhawulweni, ngezibalo igundane elizibikayo. Inombolo ephakeme ishayela kahle kakhulu futhi idinga ukuhamba okwengeziwe kwesandla.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>izibalo</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Ukubuyisela maphakathi</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Valiwe kubamba isondo lapho isandla sishiye khona. Isipringi kulibuyisela phakathi ngokuthi Isikhathi sokubuya. Kusuka ku-telemetry kulidonsela emuva njengamathayi angaphambili emoto ngesivinini nokubamba komdlalo: kuthule uma imoto imile, kuqine ngesivinini, kulula uma amathayi eshibilika. Uma kungekho mdlalo othumela i-telemetry, kuyisipringi. Kusuka emandleni omdlalo kuvumela impendulo yamandla yesondo elibonakalayo ukuthi ilijike.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Valiwe</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Isipringi</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Kusuka ku-telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Kusuka emandleni omdlalo</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Isikhathi sokubuya</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Isikhathi Isipringi esisithathayo ukubuyisela isondo u-95% wendlela. Kusuka ku-telemetry kuthatha lesi sikhathi ku-100 km/h emgwaqweni owomile.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Shayela</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Njalo kuvumela igundane ukuthi lishayele ngaso sonke isikhathi. Ngesikhathi kubanjwe kulivumela ukuthi lishayele kuphela ngenkathi Okufakwayo kokushayela kubanjiwe. Shintsha kuvula noma kuvale ukushayela ngokucindezela ngakunye kokufakwayo kokushayela. Ngenkathi igundane lingashayeli, isondo lihlala lapho likhona noma libuyela maphakathi, ngakho igundane elilodwa lingashayela futhi libheke nxazonke.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Njalo</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ngesikhathi kubanjwe</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Shintsha</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Okufakwayo kokushayela</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Inkinobho evumela igundane ukuthi lishayele, kudivayisi efanayo nokuhamba kwegundane. Uma ingekho ekhethiwe, igundane lihlala lishayela.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ukushelelisa</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Kulinganisa igundane elibika ngokungalingani. Isondo lilandela isandla ngemuva kwalesi sikhathi cishe. U-0 uvaliwe.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Umkhawulo ngesivinini</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Uma i-telemetry yemidlalo ivuliwe, ingxenye yomkhawulo esala ku-200 km/h. Ku-100% umkhawulo wonke ukhona kuso sonke isivinini.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Isikhombi se-IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Isikhombi se-IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Ukukhanya kwe-IR</value></data>
@@ -2664,7 +2688,7 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Izimbobo, Isivinini esiphelele, Amafomethi angokwezifiso</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Bheka nxazonke ngesilandeleli sekhanda noma ngehedsethi ye-VR ngenkathi izithupha zombili zihlala ezinkinobhweni.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mepha isivinini, amaphedali namagiya athunyelwa umdlalo wokushayela, njenganoma yikuphi okokufaka.</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu lapho induku yokushayela ifika emkhawulweni</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu lapho ukushayela kufika emkhawulweni</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ithumela ukudlidliza kwezimoto ezinkulu kumathrigha</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza kwamathrigha okuvela kumaza aphansi omsindo wesistimu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Izindawo ezifile zokuncika, Ukubhekiswa kwesilawuli</value></data>

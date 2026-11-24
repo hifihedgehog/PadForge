@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Fare konumu Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına imleç hassasiyeti. 1.0, merkezden ekran genişliğinin %10'u kadar uzakta tam çubuk itmesine ulaşır. 1.0'ın üzerindeki değerler tam itmeye daha az imleç hareketiyle ulaşır. 1.0'ın altındaki değerler daha fazlasını gerektirir.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Fare yolu X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Fare yolu Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Tam kilide kadar yol</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Farenin merkezden tam kilide kadar hareket ettiği mesafe, farenin bildirdiği sayımlarla. Daha yüksek bir sayı daha ince yönlendirir ve daha fazla el hareketi gerektirir.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>sayım</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Ortalama</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Kapalı, direksiyonu elin bıraktığı yerde tutar. Yay, onu Dönüş süresi boyunca geri getirir. Telemetriden, bir aracın ön lastiklerinin oyunun hızında ve tutuşunda yapacağı gibi geri çeker: duruyorken yerinde, hızla daha sert, lastikler kayarken hafif. Telemetri gönderen oyun yoksa yay gibi davranır. Oyunun kuvvetinden, sanal bir direksiyonun kendi kuvvet geri bildiriminin onu döndürmesine izin verir.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Yay</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriden</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Oyunun kuvvetinden</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Dönüş süresi</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Yay, direksiyonu yolun %95'ine kadar geri getirmek için bu kadar zaman alır. Telemetriden, kuru yolda 100 km/h hızda bu kadar sürer.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Yönlendir</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Her zaman, farenin her an yönlendirmesine izin verir. Basılı tutulurken, yalnızca Yönlendirme girişi basılıyken yönlendirmesine izin verir. Aç/kapat, Yönlendirme girişine her basışta yönlendirmeyi açar veya kapatır. Fare yönlendirmediği sürece direksiyon olduğu yerde kalır ya da ortalanır, böylece tek bir fare hem yönlendirebilir hem etrafa bakabilir.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Her zaman</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Basılı tutulurken</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Aç/kapat</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Yönlendirme girişi</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Farenin yönlendirmesine izin veren düğme, farenin hareketiyle aynı cihazda. Hiçbiri seçilmezse fare her zaman yönlendirir.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Yumuşatma</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Düzensiz bildiren bir fareyi düzgünleştirir. Direksiyon, eli yaklaşık bu kadar geriden izler. 0 kapalıdır.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Hızda kilit</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Oyun telemetrisi açıkken, 200 km/h hızda kilidin ne kadarının kaldığı. %100'de tüm kilit her hızda vardır.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR işaretçi X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR işaretçi Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR parlaklığı</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Tüm flick haritasını bu kadar derece döndürür. Pozitif değer saat yönündedir. Hizalama ofsetten sonra uygulanır.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick'i barındıran katman, çubuk zaten itilmişken devreye girerse flick hemen tetiklenir. Kapalıyken kamera sabit kalır ve dönüş geçerli çubuk açısından itibaren izlenir.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Tam kilit geri bildirimi</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tam kilitte, yönlendirme modundaki çubuk için bir işaret</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Yönlendirme moduna ayarlı bir çubuk sonuna kadar (tam kilit) çevrildiğinde, sınırı hissetmeniz için bir işaret (titreşim, tetik veya ışık çubuğu) oynatır. Varsayılan olarak hepsi kapalıdır.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Yönlendirme tam kilide ulaştığında bir işaret</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Yönlendirme modundaki bir çubuk, bir Hareket yatırması girişi veya bir Fare yolu girişi tam kilide ulaştığında, sınırı hissetmeniz için bir işaret (titreşim, tetik veya ışık çubuğu) oynatır. Varsayılan olarak hepsi kapalıdır.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Tam kilitte titreşim darbesi</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Tam kilitte tetik titreşimi</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Tam kilitte ışık çubuğu darbesi</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tuşları aç/kapat: {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Jiroskopu yeniden ortala</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Basıldığında kumandanın birikmiş jiroskop nişan referanslarını sıfırlar. Yumuşatma geçmişi temizlenir, Hareket yatırması nötr konumu yeniden yakalanır, yer çekimi tahmini kontrolcünün geçerli duruşundan yeniden başlatılır ve Hareket yunuslaması, sapması ve yuvarlanması satırlarının oluşturduğu dönüş geri alınır.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Fare yönlendirmesini ortala</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Bu sanal kontrolcüdeki her Fare yolu girişinin direksiyonunu yeniden merkeze getirir.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Herhangi bir cihaz)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menüler</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menüler, fiziksel bir çubuğu veya dokunmatik yüzeyi ekranda bir halkaya veya ızgaraya dönüştürür. Bir menü oluşturmak için Menüler'in yanındaki + düğmesine basın, onu neyin açacağını seçin, ardından her hücreye bir ad ve bir eylem verin.</value></data>

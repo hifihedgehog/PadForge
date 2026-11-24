@@ -2859,6 +2859,30 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Egérpozíció Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Érzékenység</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti egérmutató-érzékenység. 1.0 esetén a teljes karkitérés a középponttól a képernyőszélesség 10%-ánál érhető el. Az 1.0 fölötti értékek kisebb egérmutató-elmozdulással érik el a teljes kitérést, az 1.0 alattiakhoz több kell.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Egérelmozdulás X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Egérelmozdulás Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Elmozdulás a végállásig</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Mennyit mozog az egér a középponttól a végállásig, az egér által jelentett számlálóértékekben. Magasabb érték finomabban kormányoz, és több kézmozgást igényel.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>számláló</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Középre állítás</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>A Ki ott tartja a kormányt, ahol a kéz hagyta. A Rugó a Visszatérési idő alatt hozza vissza. A Telemetriából úgy húzza vissza, ahogy egy autó első kerekei tennék a játék sebességén és tapadásán: állva nyugodt, sebességgel keményebb, könnyű, ha a kerekek csúsznak. Ha egy játék sem küld telemetriát, ez a rugó. A Játék erejéből lehetővé teszi, hogy a virtuális kormány saját erővisszacsatolása fordítsa.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Ki</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Rugó</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriából</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>A játék erejéből</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Visszatérési idő</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Mennyi idő alatt hozza vissza a Rugó a kormányt az út 95%-ára. A Telemetriából ennyi ideig tart 100 km/h sebességnél, száraz úton.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kormányzás</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>A Mindig az egérrel mindenkor kormányozni enged. A Nyomva tartva csak a Kormányzó bemenet nyomva tartása alatt. A Kapcsoló a Kormányzó bemenet minden lenyomásával be- vagy kikapcsolja a kormányzást. Amíg az egér nem kormányoz, a kormány ott marad, ahol van, vagy középre áll, így egyetlen egérrel lehet kormányozni és körülnézni.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Mindig</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nyomva tartva</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Kapcsoló</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Kormányzó bemenet</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Az a gomb, amely lehetővé teszi az egér kormányzását, ugyanazon az eszközön, mint az egér elmozdulása. Ha egyet sem választ, az egér mindig kormányoz.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Simítás</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Kiegyenlíti az egyenetlenül jelentő egeret. A kormány nagyjából ennyivel késik a kéz mögött. A 0 kikapcsolja.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Végállás sebességnél</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Bekapcsolt Játéktelemetria mellett megmutatja, a végállás mekkora része marad meg 200 km/h sebességnél. 100%-nál a teljes végállás minden sebességnél elérhető.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-mutató X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-mutató Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-fényerő</value></data>
@@ -3567,8 +3591,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>A teljes flick-térképet ennyi fokkal forgatja el. A pozitív érték az óramutató járásával megegyező. Az illesztés az eltolás után érvényesül.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ha a Flick sticket tartalmazó réteg úgy aktiválódik, hogy a kar már ki van térítve, a flick azonnal végrehajtódik. Kikapcsolva a kamera mozdulatlan marad, és a program a kar aktuális szögétől követi az elfordulást.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Visszajelzés kormányvégállásnál</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Jelzés végállásnál kormányzási módú karhoz</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Amikor egy kormányzási módra állított kart egészen a végállásig fordít, a program jelzést ad (rezgés, ravasz vagy fénysáv), hogy érezze a határt. Alapértelmezés szerint mind ki van kapcsolva.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Jelzés, amikor a kormányzás eléri a végállást</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Amikor egy kormányzási módú kar, egy Mozgás: dőlés bemenet vagy egy Egérelmozdulás bemenet eléri a végállást, a program jelzést ad (rezgés, ravasz vagy fénysáv), hogy érezze a határt. Alapértelmezés szerint mind ki van kapcsolva.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rezgésimpulzus végállásnál</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Ravaszvibráció végállásnál</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Fénysávimpulzus végállásnál</value></data>
@@ -4547,6 +4571,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Billentyűk átkapcsolása: {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Giroszkóp középre igazítása</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Lenyomásra nullázza a kontroller halmozott giroszkópos célzási referenciáit. Törlődik a simítási előzmény, újra rögzül a Mozgás: dőlés semleges helyzete, a gravitációbecslés a kontroller jelenlegi helyzetéből indul újra, és visszavonódik a Mozgás: bólintás, legyezés és orsózás sorok által felépített elfordulás.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Egérkormányzás középre állítása</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Ezen a virtuális kontrolleren minden Egérelmozdulás bemenet kormányát visszaállítja középre.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Bármely eszköz)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menük</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>A menük egy fizikai kart vagy érintőpadot képernyőn megjelenő gyűrűvé vagy ráccsá alakítanak. Hozzon létre egyet a Menük melletti + gombbal, válassza ki, mi nyissa meg, majd adjon minden cellának nevet és műveletet.</value></data>

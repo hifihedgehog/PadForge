@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Θέση ποντικιού Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ευαισθησία δείκτη ανά πηγή. Με 1.0, η πλήρης απόκλιση μοχλού επιτυγχάνεται στο 10% του πλάτους της οθόνης από το κέντρο. Οι τιμές πάνω από 1.0 φτάνουν στην πλήρη απόκλιση με μικρότερη διαδρομή του δείκτη. Οι τιμές κάτω από 1.0 χρειάζονται μεγαλύτερη.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Διαδρομή ποντικιού X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Διαδρομή ποντικιού Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Διαδρομή μέχρι το τέρμα</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Πόσο μετακινείται το ποντίκι από το κέντρο μέχρι το τέρμα, στις μονάδες (counts) που αναφέρει το ποντίκι. Μεγαλύτερος αριθμός δίνει πιο λεπτό έλεγχο και απαιτεί μεγαλύτερη διαδρομή του χεριού.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Κεντράρισμα</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Το Ανενεργό κρατά την τιμονιέρα εκεί που την άφησε το χέρι. Το Ελατήριο την επαναφέρει μέσα στον Χρόνο επαναφοράς. Το Από την τηλεμετρία την τραβά όπως τα μπροστινά ελαστικά ενός αυτοκινήτου, με την ταχύτητα και την πρόσφυση του παιχνιδιού: ακίνητη όταν το όχημα είναι ακίνητο, πιο σφιχτή με την ταχύτητα, ελαφριά όταν τα ελαστικά γλιστρούν. Αν κανένα παιχνίδι δεν στέλνει τηλεμετρία, λειτουργεί ως ελατήριο. Το Από τη δύναμη του παιχνιδιού αφήνει την ανάδραση δύναμης μιας εικονικής τιμονιέρας να την στρίβει.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Ανενεργό</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Ελατήριο</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Από την τηλεμετρία</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Από τη δύναμη του παιχνιδιού</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Χρόνος επαναφοράς</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Πόσο χρόνο χρειάζεται το Ελατήριο για να επαναφέρει την τιμονιέρα κατά το 95% της διαδρομής. Το Από την τηλεμετρία χρειάζεται τόσο στα 100 km/h σε στεγνό δρόμο.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Στρίψιμο</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Το Πάντα αφήνει το ποντίκι να στρίβει συνεχώς. Το Όσο κρατιέται το αφήνει να στρίβει μόνο όσο κρατιέται η Είσοδος τιμονιού. Η Εναλλαγή ενεργοποιεί ή απενεργοποιεί το στρίψιμο με κάθε πάτημα της Εισόδου τιμονιού. Όσο το ποντίκι δεν στρίβει, η τιμονιέρα μένει εκεί που είναι ή κεντράρεται, ώστε ένα ποντίκι να στρίβει και να κοιτά γύρω.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Πάντα</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Όσο κρατιέται</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Εναλλαγή</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Είσοδος τιμονιού</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Το κουμπί που αφήνει το ποντίκι να στρίβει, στην ίδια συσκευή με τη διαδρομή του ποντικιού. Αν δεν επιλεγεί κανένα, το ποντίκι στρίβει πάντα.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Εξομάλυνση</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Εξομαλύνει ένα ποντίκι που αναφέρει άνισα. Η τιμονιέρα καθυστερεί σε σχέση με το χέρι κατά περίπου τόσο χρόνο. Το 0 την απενεργοποιεί.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Τέρμα στην ταχύτητα</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Με ενεργή την Τηλεμετρία παιχνιδιών, πόσο από το τέρμα απομένει στα 200 km/h. Στο 100% ολόκληρο το τέρμα υπάρχει σε κάθε ταχύτητα.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Δείκτης IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Δείκτης IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Φωτεινότητα IR</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Στρέφει ολόκληρο τον χάρτη του flick κατά τόσες μοίρες. Οι θετικές τιμές είναι δεξιόστροφες. Η προσκόλληση εφαρμόζεται μετά τη μετατόπιση.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Όταν το επίπεδο που φιλοξενεί το flick stick ενεργοποιείται με τον μοχλό ήδη σε απόκλιση, το flick εκτελείται αμέσως. Όταν είναι ανενεργό, η κάμερα μένει ακίνητη και η περιστροφή παρακολουθείται από την τρέχουσα γωνία του μοχλού.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ανάδραση τέρματος τιμονιού</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ένδειξη στο τέρμα για μοχλό σε λειτουργία τιμονιού</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Όταν ένας μοχλός σε λειτουργία τιμονιού στρίψει μέχρι το τέρμα, αναπαράγεται μια ένδειξη (δόνηση, σκανδάλη ή φωτεινή μπάρα), ώστε να αισθάνεστε το όριο. Όλα απενεργοποιημένα από προεπιλογή.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ένδειξη όταν το τιμόνι φτάνει στο τέρμα</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Όταν ένας μοχλός σε λειτουργία τιμονιού, μια είσοδος «Κίνηση: γέρσιμο» ή μια είσοδος «Διαδρομή ποντικιού» φτάσει στο τέρμα, αναπαράγεται μια ένδειξη (δόνηση, σκανδάλη ή φωτεινή μπάρα), ώστε να αισθάνεστε το όριο. Όλα απενεργοποιημένα από προεπιλογή.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Παλμός δόνησης στο τέρμα</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Δόνηση σκανδάλης στο τέρμα</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Παλμός φωτεινής μπάρας στο τέρμα</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Εναλλαγή πλήκτρων {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Επανακεντράρισμα γυροσκοπίου</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Μηδενίζει με το πάτημα τις συσσωρευμένες αναφορές στόχευσης γυροσκοπίου του χειριστηρίου. Το ιστορικό εξομάλυνσης διαγράφεται, η ουδέτερη θέση του «Κίνηση: γέρσιμο» καταγράφεται ξανά, η εκτίμηση της βαρύτητας αρχικοποιείται ξανά από την τρέχουσα στάση του χειριστηρίου και η στροφή που έχτισαν οι γραμμές «Κίνηση: πρόνευση», «Κίνηση: εκτροπή» και «Κίνηση: διατοιχισμός» αναιρείται.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Κεντράρισμα τιμονιού ποντικιού</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Επαναφέρει στο κέντρο την τιμονιέρα κάθε εισόδου Διαδρομή ποντικιού σε αυτό το εικονικό χειριστήριο.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Οποιαδήποτε συσκευή)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Μενού</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Τα μενού μετατρέπουν έναν φυσικό μοχλό ή μια επιφάνεια αφής σε δακτύλιο ή πλέγμα στην οθόνη. Πατήστε το + δίπλα στην επικεφαλίδα «Μενού» για να δημιουργήσετε ένα, επιλέξτε τι το ανοίγει και έπειτα δώστε σε κάθε κελί ένα όνομα και μια ενέργεια.</value></data>

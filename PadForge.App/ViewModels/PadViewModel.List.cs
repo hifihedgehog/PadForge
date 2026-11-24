@@ -231,6 +231,18 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>The Game Telemetry extra went on or off. A "Mouse
+        /// Travel" source shows Lock at Speed only while it is on (#597),
+        /// so each source's line reads the switch again.</summary>
+        internal void RaiseMouseTravelRoadChanged()
+        {
+            foreach (var row in Mappings)
+            {
+                row.RaiseMouseTravelRoad();
+                foreach (var extra in row.ExtraSources) extra?.RaiseMouseTravelRoad();
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  The fold and the sideways scroll
         // ─────────────────────────────────────────────

@@ -1166,8 +1166,10 @@ namespace PadForge.Services
                                 ?? MappingSource.DefaultRapidTriggerDistance,
                         };
                         // The source line's shaping dials and gates (the row's
-                        // own, edited under the first source).
+                        // own, edited under the first source), and what a
+                        // "Mouse Travel" input is tuned by (#597).
                         mapping.StoreShapingAndGates(primarySource);
+                        mapping.StoreMouseTravel(primarySource);
                         rebuiltSources.Add(primarySource);
 
                         // For bipolar axis rows, also encode the Neg
@@ -1216,6 +1218,7 @@ namespace PadForge.Services
                             // The same axis, so the same shaping. A gate
                             // belongs to the source that carries it.
                             mapping.StoreShapingAndGates(negSource, gates: false);
+                            mapping.StoreMouseTravel(negSource);
                             rebuiltSources.Add(negSource);
                         }
                     }

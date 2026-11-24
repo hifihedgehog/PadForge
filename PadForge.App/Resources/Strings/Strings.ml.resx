@@ -2629,6 +2629,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>മൗസ് സ്ഥാനം Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ഓരോ ഉറവിടത്തിനുമുള്ള കഴ്സർ സെൻസിറ്റിവിറ്റി. 1.0 ആയാൽ, മധ്യത്തിൽ നിന്ന് സ്ക്രീൻ വീതിയുടെ 10% അകലത്തിൽ സ്റ്റിക്ക് പൂർണ്ണ വ്യതിയാനത്തിലെത്തും. 1.0-ൽ കൂടുതൽ മൂല്യങ്ങളിൽ കഴ്സർ കുറച്ച് നീങ്ങിയാൽ മതി. 1.0-ൽ കുറഞ്ഞ മൂല്യങ്ങളിൽ കൂടുതൽ നീങ്ങണം.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>മൗസ് സഞ്ചാരം X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>മൗസ് സഞ്ചാരം Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>പൂർണ്ണ ലോക്കിലേക്കുള്ള സഞ്ചാരം</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>മൗസ് റിപ്പോർട്ട് ചെയ്യുന്ന കൗണ്ടുകളിൽ, മധ്യത്തിൽ നിന്ന് പൂർണ്ണ ലോക്കിലേക്ക് മൗസ് എത്ര നീങ്ങണം. ഉയർന്ന സംഖ്യ കൂടുതൽ സൂക്ഷ്മമായി സ്റ്റിയർ ചെയ്യുന്നു, കൈ കൂടുതൽ നീക്കേണ്ടി വരും.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>കൗണ്ടുകൾ</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>സെന്ററിംഗ്</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ഓഫ് വീലിനെ കൈ വിട്ട സ്ഥാനത്ത് നിർത്തുന്നു. സ്പ്രിംഗ് അതിനെ മടങ്ങൽ സമയം കൊണ്ട് തിരികെ കൊണ്ടുവരുന്നു. ടെലിമെട്രിയിൽ നിന്ന് ഗെയിമിന്റെ വേഗതയിലും ഗ്രിപ്പിലും ഒരു കാറിന്റെ മുൻ ടയറുകൾ വലിക്കുന്നതുപോലെ വലിക്കുന്നു: നിശ്ചലമായിരിക്കുമ്പോൾ അനങ്ങാതെ, വേഗത കൂടുമ്പോൾ ഉറപ്പോടെ, ടയറുകൾ തെന്നുമ്പോൾ ലഘുവായി. ടെലിമെട്രി അയയ്ക്കുന്ന ഗെയിം ഇല്ലെങ്കിൽ അത് സ്പ്രിംഗ് ആണ്. ഗെയിമിന്റെ ബലത്തിൽ നിന്ന് ഒരു വെർച്വൽ വീലിന്റെ സ്വന്തം ഫോഴ്സ് ഫീഡ്ബാക്ക് അതിനെ തിരിക്കാൻ അനുവദിക്കുന്നു.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ഓഫ്</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>സ്പ്രിംഗ്</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ടെലിമെട്രിയിൽ നിന്ന്</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ഗെയിമിന്റെ ബലത്തിൽ നിന്ന്</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>മടങ്ങൽ സമയം</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>സ്പ്രിംഗ് വീലിനെ 95% വഴി തിരികെ കൊണ്ടുവരാൻ എടുക്കുന്ന സമയം. ടെലിമെട്രിയിൽ നിന്ന് എന്നതിൽ, വരണ്ട റോഡിൽ 100 km/h വേഗതയിൽ ഇത്രയും സമയമെടുക്കും.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>സ്റ്റിയർ</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>എപ്പോഴും മൗസിനെ എല്ലായ്പ്പോഴും സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുന്നു. അമർത്തിപ്പിടിക്കുമ്പോൾ സ്റ്റിയർ ഇൻപുട്ട് അമർത്തിപ്പിടിക്കുമ്പോൾ മാത്രം അനുവദിക്കുന്നു. ടോഗിൾ സ്റ്റിയർ ഇൻപുട്ടിന്റെ ഓരോ അമർത്തലിലും സ്റ്റിയറിംഗ് ഓണും ഓഫും ആക്കുന്നു. മൗസ് സ്റ്റിയർ ചെയ്യാത്തപ്പോൾ വീൽ ഇരുന്നിടത്ത് തുടരുകയോ മധ്യത്തിലേക്ക് വരികയോ ചെയ്യും, അതിനാൽ ഒരു മൗസിന് സ്റ്റിയർ ചെയ്യാനും ചുറ്റും നോക്കാനും കഴിയും.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>എപ്പോഴും</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുമ്പോൾ</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ടോഗിൾ</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>സ്റ്റിയർ ഇൻപുട്ട്</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>മൗസിന്റെ സഞ്ചാരത്തിന്റെ അതേ ഉപകരണത്തിലെ, മൗസിനെ സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുന്ന ബട്ടൺ. ഒന്നും തിരഞ്ഞെടുത്തില്ലെങ്കിൽ മൗസ് എപ്പോഴും സ്റ്റിയർ ചെയ്യുന്നു.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>സ്മൂത്തിംഗ്</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>അസമമായി റിപ്പോർട്ട് ചെയ്യുന്ന മൗസിനെ സമമാക്കുന്നു. വീൽ കൈയെ ഏകദേശം ഇത്രയും സമയം പിന്തുടരുന്നു. 0 ഓഫ് ആണ്.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>വേഗതയിലെ ലോക്ക്</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ഗെയിം ടെലിമെട്രി ഓണായിരിക്കുമ്പോൾ, 200 km/h വേഗതയിൽ ലോക്കിൽ എത്ര ബാക്കിയുണ്ട്. 100% ആയാൽ എല്ലാ വേഗതയിലും മുഴുവൻ ലോക്കും ഉണ്ടാകും.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR പോയിന്റർ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR പോയിന്റർ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR തെളിച്ചം</value></data>
@@ -3301,8 +3325,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>മുഴുവൻ ഫ്ലിക്ക് മാപ്പും ഇത്ര ഡിഗ്രി തിരിക്കുന്നു. പോസിറ്റീവ് എന്നാൽ ഘടികാരദിശയിൽ. ഓഫ്സെറ്റിന് ശേഷമാണ് സ്നാപ്പിംഗ് പ്രയോഗിക്കുന്നത്.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ഫ്ലിക്ക് സ്റ്റിക്ക് ഉള്ള ലെയർ, സ്റ്റിക്ക് ഇതിനകം ചരിഞ്ഞിരിക്കെ സജീവമാകുമ്പോൾ, ഫ്ലിക്ക് ഉടൻ പ്രവർത്തിപ്പിക്കുക. ഓഫ് ആണെങ്കിൽ ക്യാമറ അനങ്ങാതെ നിൽക്കുകയും നിലവിലെ സ്റ്റിക്ക് കോണിൽ നിന്ന് തിരിവ് പിന്തുടരുകയും ചെയ്യും.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ലോക്ക് ഫീഡ്ബാക്ക്</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>സ്റ്റിയറിംഗ് മോഡിലെ സ്റ്റിക്ക് പൂർണ്ണ ലോക്കിലെത്തുമ്പോൾ ഒരു സൂചന</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>സ്റ്റിയറിംഗ് മോഡിലുള്ള ഒരു സ്റ്റിക്ക് പൂർണ്ണ ലോക്കിലേക്ക് തിരിക്കുമ്പോൾ, പരിധി അനുഭവിക്കാൻ ഒരു സൂചന (റംബിൾ, ട്രിഗർ, അല്ലെങ്കിൽ ലൈറ്റ്ബാർ) പ്ലേ ചെയ്യുക. എല്ലാം സ്ഥിരസ്ഥിതിയായി ഓഫ് ആണ്.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>സ്റ്റിയറിംഗ് പൂർണ്ണ ലോക്കിലെത്തുമ്പോൾ ഒരു സൂചന</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>സ്റ്റിയറിംഗ് മോഡിലുള്ള ഒരു സ്റ്റിക്ക്, ഒരു മോഷൻ ലീൻ ഇൻപുട്ട് അല്ലെങ്കിൽ ഒരു മൗസ് സഞ്ചാരം ഇൻപുട്ട് പൂർണ്ണ ലോക്കിലെത്തുമ്പോൾ, പരിധി അനുഭവിക്കാൻ ഒരു സൂചന (റംബിൾ, ട്രിഗർ, അല്ലെങ്കിൽ ലൈറ്റ്ബാർ) പ്ലേ ചെയ്യുക. എല്ലാം സ്ഥിരസ്ഥിതിയായി ഓഫ് ആണ്.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ലോക്കിൽ റംബിൾ പൾസ്</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ലോക്കിൽ ട്രിഗർ വൈബ്രേഷൻ</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ലോക്കിൽ ലൈറ്റ്ബാർ പൾസ്</value></data>
@@ -4249,6 +4273,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>കീകൾ {0} ടോഗിൾ ചെയ്യുക</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ഗൈറോ റീസെന്റർ</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>അമർത്തുമ്പോൾ പാഡിന്റെ കൂട്ടിച്ചേർത്ത ഗൈറോ എയിം റഫറൻസുകൾ പൂജ്യമാക്കുന്നു. സ്മൂത്തിംഗ് ചരിത്രം മായ്ക്കുന്നു, മോഷൻ ലീൻ ന്യൂട്രൽ വീണ്ടും പിടിച്ചെടുക്കുന്നു, ഗ്രാവിറ്റി എസ്റ്റിമേറ്റ് കൺട്രോളറിന്റെ നിലവിലെ പോസിൽ നിന്ന് വീണ്ടും തുടങ്ങുന്നു, മോഷൻ പിച്ച്, യോ, റോൾ വരികൾ ഉണ്ടാക്കിയ തിരിയൽ പഴയപടിയാക്കുന്നു.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>മൗസ് സ്റ്റിയറിംഗ് മധ്യത്തിലാക്കുക</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>ഈ വെർച്വൽ കൺട്രോളറിലെ എല്ലാ മൗസ് സഞ്ചാരം ഇൻപുട്ടുകളുടെയും വീൽ മധ്യത്തിലേക്ക് തിരികെ കൊണ്ടുവരുന്നു.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ഏതെങ്കിലും ഉപകരണം)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>മെനുകൾ</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>ഫിസിക്കൽ സ്റ്റിക്കിനെയോ ടച്ച്പാഡിനെയോ ഓൺ-സ്ക്രീൻ റിംഗോ ഗ്രിഡോ ആക്കി മെനുകൾ മാറ്റുന്നു. പുതിയത് സൃഷ്ടിക്കാൻ മെനുകൾ എന്നതിന് അരികിലുള്ള + അമർത്തുക, അത് തുറക്കുന്നത് എന്തെന്ന് തിരഞ്ഞെടുക്കുക, തുടർന്ന് ഓരോ സെല്ലിനും ഒരു പേരും ഒരു പ്രവർത്തനവും നൽകുക.</value></data>

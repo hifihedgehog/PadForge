@@ -1979,7 +1979,7 @@
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Kí ni àwọn eré yóò rí?</value></data>
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ń sọ ẹ̀rọ ìdarí yìí di èyí tí àwọn eré rẹ ń retí. Yan ọ̀kan láti bẹ̀rẹ̀. O lè yí i padà nígbà mìíràn pẹ̀lú títẹ̀ kan ṣoṣo.</value></data>
   <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ń sọ ẹ̀rọ ìdarí rẹ di èyí tí àwọn eré rẹ ń retí. Yan ọ̀kan láti bẹ̀rẹ̀. O lè yí i padà nígbà mìíràn pẹ̀lú títẹ̀ kan ṣoṣo.</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Àmì ní òpin yíyí fún ọ̀pá ní ipò ìdarí</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Àmì nígbà tí ìdarí bá dé òpin yíyí</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ń fi ìmìtìtì àwọn mọ́tò àkọ́kọ́ ránṣẹ́ sí àwọn tírígà</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ìmìtìtì tírígà láti inú baasi ohùn ètò</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Àwọn deadzone ìtẹ̀sí, Ìdojúkọ adarí</value></data>
@@ -2164,4 +2164,28 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ibi ìpamọ́ àwùjọ kò yípadà láti ìgbà ìmúdójúìwọ̀n tó kẹ́yìn.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A ó lo ìsopọ̀ tuntun nígbà míràn tí ẹ̀rọ ìdarí rẹ̀ bá sopọ̀.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A ó lo ìsopọ̀ tí a yí padà nígbà míràn tí PadForge bá bẹ̀rẹ̀.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ìrìn máòsì X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ìrìn máòsì Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ìrìn dé òpin yíyí</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Bí máòsì ṣe ń rìn jìnnà tó láti àárín dé òpin yíyí, ní ìkà tí máòsì ń ròyìn. Nọ́mbà tí ó ga jù ń darí ní kíkúnná jù, ó sì ń béèrè ìrìn ọwọ́ púpọ̀ sí i.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ìkà</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Ìpadà sí àárín</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Pa ń di kẹ̀kẹ́ ìdarí mú níbi tí ọwọ́ fi í sílẹ̀ sí. Sípírínìgì ń mú un padà láàárín Àkókò ìpadà. Láti Telemetry ń fà á padà bí táyà iwájú ọkọ̀ ṣe máa ń ṣe ní ìyára àti ìdìmú eré náà: kò fà á nígbà tí ọkọ̀ dúró, ó ń le sí i pẹ̀lú ìyára, ó sì ń fúyẹ́ nígbà tí táyà bá ń yọ̀. Bí kò bá sí eré tí ń fi telemetry ránṣẹ́, ó máa ń ṣiṣẹ́ bí Sípírínìgì. Láti agbára eré ń jẹ́ kí force feedback kẹ̀kẹ́ àfarawé fúnra rẹ̀ yí i.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Pa</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Sípírínìgì</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Láti Telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Láti agbára eré</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Àkókò ìpadà</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Bí Sípírínìgì ṣe ń pẹ́ tó láti mú kẹ̀kẹ́ ìdarí padà ní 95% ọ̀nà. Láti Telemetry ń gba àkókò yìí ní 100 km/h lórí ọ̀nà gbígbẹ.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Darí</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Nígbà gbogbo ń jẹ́ kí máòsì darí ní gbogbo ìgbà. Nígbà tí a dì í mú ń jẹ́ kí ó darí kìkì nígbà tí a bá di Ìgbéwọlé ìdarí mú. Yí padà ń tan ìdarí tàbí pa á pẹ̀lú títẹ̀ Ìgbéwọlé ìdarí kọ̀ọ̀kan. Nígbà tí máòsì kò bá ń darí, kẹ̀kẹ́ ìdarí máa ń dúró sí ibi tí ó wà tàbí padà sí àárín, kí máòsì kan lè darí kí ó sì wo àyíká.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Nígbà gbogbo</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nígbà tí a dì í mú</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Yí padà</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ìgbéwọlé ìdarí</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bọ́tìnnì tí ń jẹ́ kí máòsì darí, lórí ẹ̀rọ kan náà pẹ̀lú ìrìn máòsì. Bí a kò bá yan èyíkéyìí, máòsì máa ń darí nígbà gbogbo.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ìmúdọ́gba</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ó ń mú máòsì tí ń ròyìn láìdọ́gba dọ́gba. Kẹ̀kẹ́ ìdarí máa ń tẹ̀lé ọwọ́ lẹ́yìn ní nǹkan bí àkókò yìí. 0 túmọ̀ sí pa.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Òpin yíyí ní ìyára</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Nígbà tí Telemetry eré bá tàn, iye òpin yíyí tí ó kù ní 200 km/h. Ní 100%, gbogbo òpin yíyí wà níbẹ̀ ní ìyára èyíkéyìí.</value></data>
 </root>

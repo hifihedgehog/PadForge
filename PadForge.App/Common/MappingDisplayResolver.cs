@@ -125,6 +125,8 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
+                    // A mouse's travel (#597) has the picker's two names.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(t)
                     // #241: route NFC to the friendly resolver. The numeric
                     // token-2 path below would leave the raw descriptor on the
                     // chip.
@@ -259,6 +261,8 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
+                    // A mouse's travel (#597) has the picker's two names.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(t)
                     // #241: route NFC to the friendly resolver. The numeric
                     // token-2 path below would leave the raw descriptor on the
                     // chip.
@@ -665,6 +669,15 @@ namespace PadForge.Common
                 // Index 5 = the Custom activation (discussion #216).
                 string[] mgNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2", si.Mapping_MouseGestureCustom };
                 return prefix + string.Format(si.Mapping_MouseGesture_Format, mgNames[mgBtn], word);
+            }
+
+            // A mouse's travel held as a wheel (#597): the picker's own two
+            // names, with no device objects to read them from.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(s))
+            {
+                if (s == PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor) return prefix + Strings.Instance.Mapping_MouseTravelX;
+                if (s == PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelYDescriptor) return prefix + Strings.Instance.Mapping_MouseTravelY;
+                return null;
             }
 
             // Abstract "Gamepad ..." family (issue #9) → localized display.
@@ -2242,6 +2255,14 @@ namespace PadForge.Common
             {
                 list.Add(new InputChoice { Descriptor = "Mouse Position X", DisplayName = si.Mapping_MousePositionX });
                 list.Add(new InputChoice { Descriptor = "Mouse Position Y", DisplayName = si.Mapping_MousePositionY });
+                // Mouse steering (#597): this mouse's own raw travel, added
+                // up and held as a wheel's position. Every kind of mouse row
+                // carries the counts (CustomInputState.MouseRawDX and
+                // MouseRawDY): a single mouse, All Mice (Merged), a mouse
+                // bound to WinUSB, a TouchSense mouse, a touchpad's mouse and
+                // a Remote Link peer's.
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor, DisplayName = si.Mapping_MouseTravelX });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelYDescriptor, DisplayName = si.Mapping_MouseTravelY });
             }
 
             // Wii Remote IR-camera pointer (#146). Absolute aim from the two

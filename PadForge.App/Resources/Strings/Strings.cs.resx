@@ -2859,6 +2859,30 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozice myši Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Citlivost</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Citlivost kurzoru pro jednotlivý zdroj. 1.0 dosáhne plné výchylky páčky ve vzdálenosti 10 % šířky obrazovky od středu. Hodnoty nad 1.0 dosáhnou plné výchylky při kratší dráze kurzoru. Hodnoty pod 1.0 potřebují delší.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Dráha myši X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Dráha myši Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Dráha k plnému rejdu</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Jak daleko se myš pohne od středu k plnému rejdu, v krocích, které myš hlásí. Vyšší číslo řídí jemněji a vyžaduje větší pohyb ruky.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kroků</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrování</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Vypnuto nechá volant tam, kde ho ruka nechala. Pružina ho vrátí během Doby návratu. Z telemetrie ho vrací, jako by to dělaly přední pneumatiky auta při rychlosti a přilnavosti, které posílá hra: na místě stojí, s rychlostí je pevnější, při smyku lehký. Bez telemetrie ze hry je to pružina. Ze síly hry nechá volant otáčet vlastní zpětnou vazbou virtuálního volantu.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Vypnuto</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Pružina</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Z telemetrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Ze síly hry</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Doba návratu</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Jak dlouho trvá Pružině vrátit volant z 95 % cesty. Z telemetrie to trvá tak dlouho při 100 km/h na suché silnici.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Řízení</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vždy nechá myš řídit neustále. Při držení ji nechá řídit jen po dobu držení vstupu řízení. Přepínač zapíná nebo vypíná řízení každým stiskem vstupu řízení. Dokud myš neřídí, volant zůstane, kde je, nebo se vystředí, takže jedna myš může řídit i rozhlížet se.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Vždy</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Při držení</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Přepínač</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vstup řízení</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Tlačítko, které myši dovolí řídit, na stejném zařízení jako dráha myši. Když není vybráno žádné, myš řídí vždy.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Vyhlazování</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Vyrovnává myš, která hlásí nerovnoměrně. Volant se za rukou zpožďuje zhruba o tuto dobu. 0 je vypnuto.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Rejd při rychlosti</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Při zapnuté herní telemetrii určuje, kolik rejdu zbývá při 200 km/h. Při 100 % je celý rejd dostupný při každé rychlosti.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ukazatel X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ukazatel Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Jas IR</value></data>
@@ -3567,8 +3591,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Otočí celou mapu flicku o zadaný počet stupňů. Kladná hodnota je po směru hodinových ručiček. Přichycení se použije až po posunu.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Když se vrstva s flick stickem aktivuje při už vychýlené páčce, provede se flick okamžitě. Při vypnutí zůstane kamera v klidu a otáčení se sleduje od aktuálního úhlu páčky.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Odezva na dorazu řízení</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signál na dorazu pro páčku v režimu řízení</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Když se páčka v režimu řízení otočí až na doraz, přehraje se signál (vibrace, spoušť nebo světelný panel), abyste limit ucítili. Ve výchozím stavu je vše vypnuté.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signál, když řízení dosáhne dorazu</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Když páčka v režimu řízení, vstup Náklon pohybem nebo vstup Dráha myši dosáhne plného rejdu, přehraje se signál (vibrace, spoušť nebo světelný panel), abyste limit ucítili. Ve výchozím stavu je vše vypnuté.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulz vibrací na dorazu</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrace spouště na dorazu</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulz světelného panelu na dorazu</value></data>
@@ -4547,6 +4571,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Přepnout klávesy {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Vystředění gyroskopu</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Při stisku vynuluje nahromaděné reference míření gyroskopem tohoto gamepadu. Vymaže se historie vyhlazování, znovu se zachytí neutrál vstupu Pohyb – náklon, odhad gravitace se znovu nastaví z aktuální polohy ovladače a zruší se otočení, které vytvořily řádky Pohyb – pitch, yaw a roll.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Vystředit řízení myší</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Vrátí volant každého vstupu Dráha myši na tomto virtuálním ovladači do středu.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Libovolné zařízení)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Nabídky</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Nabídky promění fyzickou páčku nebo touchpad v prstenec či mřížku na obrazovce. Nabídku vytvořte stisknutím + vedle nadpisu Nabídky, vyberte, čím se otevírá, a pak každé buňce zadejte název a akci.</value></data>

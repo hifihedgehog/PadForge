@@ -1951,7 +1951,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muvmen na tasim</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ol lait na nois</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ol makro na menu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Saen taim stik bilong stiaring i kamap long las hap</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Saen taim stiaring i kamap long las hap</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Salim guria bilong bikpela mota i go long ol triga</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Guria bilong triga long bes bilong nois bilong sistem</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, mekim isi, Spid i go antap, Kev bilong aut</value></data>
@@ -2214,6 +2214,19 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge i no kisim daunlod long wanem em i no data bilong ol kontrola em i wetim. I no gat samting i senis.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Nupela mep i wok long neks taim kontrola bilong en i konek.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mep i senis i wok long neks taim PadForge i stat.</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Wokabaut i go long las hap</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hamas maus i muv long namel i go long las hap, long ol kaunt maus i salim. Namba i antap moa i stia gut moa na i nidim han i muv longpela moa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kaunt</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Go bek long namel</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Of i holim wil long hap han i lusim. Spring i bringim i go bek insait long Taim bilong kam bek. Long telemetri i pulim i go bek olsem ol fran taia bilong ka i mekim long spit na holim bilong gem: i no muv taim ka i sanap, i strong moa wantaim spit, i no strong taim ol taia i slip. Sapos i no gat gem i salim telemetri, em i Spring. Long pos bilong gem i larim force feedback bilong virtual wil yet i tanim em.</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Long telemetri</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Long pos bilong gem</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hamas taim Spring i kisim long bringim wil 95% bilong rot i go bek. Long telemetri i kisim wankain taim long 100 km/h long rot i drai.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Oltaim</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taim yu holim</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Tanim on o of</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Las hap long spit</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Tok taim masin i no konek moa</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Tok taim masin i konek</value></data>
 </root>

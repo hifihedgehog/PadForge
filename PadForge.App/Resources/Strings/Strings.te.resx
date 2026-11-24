@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>మౌస్ స్థానం Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ప్రతి మూలానికి కర్సర్ సున్నితత్వం. 1.0 వద్ద, మధ్య నుండి స్క్రీన్ వెడల్పులో 10% దూరంలో స్టిక్ పూర్తి విక్షేపం చేరుతుంది. 1.0 కంటే ఎక్కువ విలువలు తక్కువ కర్సర్ కదలికతో పూర్తి విక్షేపం చేరుతాయి. 1.0 కంటే తక్కువ విలువలకు ఎక్కువ కదలిక కావాలి.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>మౌస్ కదలిక X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>మౌస్ కదలిక Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>పూర్తి లాక్ వరకు కదలిక</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>మౌస్ మధ్య నుండి పూర్తి లాక్ వరకు కదలాల్సిన దూరం, మౌస్ నివేదించే కౌంట్లలో. ఎక్కువ సంఖ్య సూక్ష్మంగా తిప్పుతుంది, చేతి కదలిక ఎక్కువ కావాలి.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>కౌంట్లు</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>సెంటరింగ్</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ఆఫ్ వీల్‌ను చేతి వదిలిన చోటే ఉంచుతుంది. స్ప్రింగ్ దాన్ని తిరిగి వచ్చే సమయం లోపు వెనక్కి తెస్తుంది. టెలిమెట్రీ నుండి గేమ్ వేగం, గ్రిప్ వద్ద కారు ముందు టైర్లు లాగినట్లు లాగుతుంది: ఆగి ఉన్నప్పుడు నిశ్చలంగా, వేగంతో బిగుతుగా, టైర్లు జారినప్పుడు తేలికగా. టెలిమెట్రీ పంపే గేమ్ లేకపోతే అది స్ప్రింగ్. గేమ్ ఫోర్స్ నుండి వర్చువల్ వీల్ సొంత ఫోర్స్ ఫీడ్‌బ్యాక్ దాన్ని తిప్పనిస్తుంది.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ఆఫ్</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>స్ప్రింగ్</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>టెలిమెట్రీ నుండి</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>గేమ్ ఫోర్స్ నుండి</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>తిరిగి వచ్చే సమయం</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>స్ప్రింగ్ వీల్‌ను 95% వెనక్కి తేవడానికి పట్టే సమయం. టెలిమెట్రీ నుండి పొడి రోడ్డుపై 100 km/h వద్ద ఇంత సమయం తీసుకుంటుంది.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>స్టీర్</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ఎల్లప్పుడూ మౌస్‌ను అన్ని వేళలా తిప్పనిస్తుంది. నొక్కి ఉన్నంతసేపు స్టీర్ ఇన్‌పుట్ నొక్కి ఉన్నప్పుడు మాత్రమే తిప్పనిస్తుంది. టోగుల్ స్టీర్ ఇన్‌పుట్ ప్రతి నొక్కడంతో స్టీరింగ్‌ను ఆన్ లేదా ఆఫ్ చేస్తుంది. మౌస్ తిప్పనప్పుడు వీల్ ఉన్నచోటే ఉంటుంది లేదా మధ్యకు వస్తుంది, కాబట్టి ఒకే మౌస్ తిప్పగలదు, చుట్టూ చూడగలదు.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ఎల్లప్పుడూ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>నొక్కి ఉన్నంతసేపు</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>టోగుల్</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>స్టీర్ ఇన్‌పుట్</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>మౌస్ తిప్పడానికి అనుమతించే బటన్, మౌస్ కదలిక ఉన్న పరికరంలోనిదే. ఏదీ ఎంచుకోకపోతే మౌస్ ఎల్లప్పుడూ తిప్పుతుంది.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>స్మూతింగ్</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>అసమానంగా నివేదించే మౌస్‌ను సరిచేస్తుంది. వీల్ చేతి కంటే ఇంత సమయం వెనకబడుతుంది. 0 అయితే ఆఫ్.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>వేగంలో లాక్</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ ఆన్‌లో ఉన్నప్పుడు, 200 km/h వద్ద లాక్‌లో ఎంత మిగిలి ఉంటుందో. 100% అయితే ప్రతి వేగంలో మొత్తం లాక్ ఉంటుంది.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR పాయింటర్ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR పాయింటర్ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR ప్రకాశం</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>మొత్తం ఫ్లిక్ మ్యాప్ను ఇన్ని డిగ్రీలు తిప్పుతుంది. ధనాత్మకం అంటే సవ్యదిశ. ఆఫ్సెట్ తర్వాత స్నాపింగ్ వర్తిస్తుంది.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ను ఉంచే లేయర్ క్రియాశీలమైనప్పుడు స్టిక్ ఇప్పటికే వంగి ఉంటే, ఫ్లిక్ వెంటనే జరుగుతుంది. ఆఫ్ అయితే కెమెరా కదలకుండా ఉండి, ప్రస్తుత స్టిక్ కోణం నుండి భ్రమణాన్ని అనుసరిస్తుంది.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>స్టీరింగ్ లాక్ ఫీడ్బ్యాక్</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>స్టీరింగ్ మోడ్‌లోని స్టిక్ పూర్తి లాక్‌కు చేరినప్పుడు సూచన</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>స్టీరింగ్ మోడ్కు సెట్ చేసిన స్టిక్ను పూర్తి లాక్ వరకు తిప్పినప్పుడు, పరిమితిని అనుభవించేలా సూచన (రంబుల్, ట్రిగ్గర్ లేదా లైట్ బార్) ప్లే అవుతుంది. అన్నీ డిఫాల్ట్గా ఆఫ్.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>స్టీరింగ్ పూర్తి లాక్‌కు చేరినప్పుడు సూచన</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>స్టీరింగ్ మోడ్‌లోని స్టిక్, మోషన్ లీన్ ఇన్‌పుట్ లేదా మౌస్ కదలిక ఇన్‌పుట్ పూర్తి లాక్‌కు చేరినప్పుడు, పరిమితిని అనుభవించేలా సూచన (రంబుల్, ట్రిగ్గర్ లేదా లైట్ బార్) ప్లే అవుతుంది. అన్నీ డిఫాల్ట్‌గా ఆఫ్.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>లాక్ వద్ద రంబుల్ పల్స్</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>లాక్ వద్ద ట్రిగ్గర్ కంపనం</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>లాక్ వద్ద లైట్ బార్ పల్స్</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>కీలు {0} టోగుల్</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>గైరో రీసెంటర్</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>నొక్కినప్పుడు ప్యాడ్ పోగైన గైరో లక్ష్య సూచనలను సున్నా చేస్తుంది. స్మూతింగ్ చరిత్ర క్లియర్ అవుతుంది, మోషన్ లీన్ న్యూట్రల్ మళ్లీ సంగ్రహించబడుతుంది, గురుత్వాకర్షణ అంచనా కంట్రోలర్ ప్రస్తుత భంగిమ నుండి మళ్లీ ప్రారంభమవుతుంది, మోషన్ పిచ్, యా, రోల్ వరుసలు నిర్మించిన తిరుగుడు రద్దవుతుంది.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>మౌస్ స్టీరింగ్‌ను సెంటర్ చేయి</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్‌లోని ప్రతి మౌస్ కదలిక ఇన్‌పుట్ వీల్‌ను మధ్యకు తిరిగి తెస్తుంది.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ఏదైనా పరికరం)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>మెనూలు</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>మెనూలు భౌతిక స్టిక్ లేదా టచ్ ప్యాడ్ను స్క్రీన్పై రింగ్ లేదా గ్రిడ్గా మారుస్తాయి. ఒకటి సృష్టించడానికి “మెనూలు” పక్కన ఉన్న + నొక్కి, అది దేనితో తెరుచుకోవాలో ఎంచుకుని, ఆ తర్వాత ప్రతి సెల్కు ఒక పేరు, ఒక చర్య ఇవ్వండి.</value></data>

@@ -2859,6 +2859,30 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Poziție mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilitate</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitatea cursorului pentru fiecare sursă. 1.0 atinge deplasarea completă a stickului la 10% din lățimea ecranului față de centru. Valorile peste 1.0 ating deplasarea completă cu o deplasare mai mică a cursorului. Valorile sub 1.0 necesită mai mult.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Cursă mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Cursă mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Cursă până la limită</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Cât se mișcă mouse-ul de la centru până la limită, în unitățile raportate de mouse. Un număr mai mare face direcția mai fină și cere mai multă mișcare a mâinii.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>unități</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrare</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Dezactivat ține volanul unde l-a lăsat mâna. Arc îl readuce în timpul de revenire. Din telemetrie îl trage înapoi ca roțile din față ale unei mașini, la viteza și aderența din joc: nemișcat când mașina stă, mai ferm cu viteza, ușor când roțile alunecă. Fără un joc care trimite telemetrie, se comportă ca arcul. Din forța jocului lasă forța de reacție a unui volan virtual să îl rotească.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Dezactivat</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Arc</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Din telemetrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Din forța jocului</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Timp de revenire</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Cât durează ca Arc să readucă volanul 95% din drum. Din telemetrie durează atât la 100 km/h pe drum uscat.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Direcție</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Întotdeauna lasă mouse-ul să conducă tot timpul. Cât timp este ținut apăsat îl lasă să conducă doar cât timp este ținută Intrarea de direcție. Comutare pornește sau oprește conducerea la fiecare apăsare a Intrării de direcție. Cât timp mouse-ul nu conduce, volanul rămâne pe loc sau se centrează, așa că același mouse poate conduce și privi în jur.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Întotdeauna</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Cât timp este ținut apăsat</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Comutare</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Intrare de direcție</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butonul care permite mouse-ului să conducă, de pe același dispozitiv cu mișcarea mouse-ului. Dacă nu este ales niciunul, mouse-ul conduce întotdeauna.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Netezire</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Netezește un mouse care raportează neuniform. Volanul rămâne în urma mâinii cam cât această durată. 0 înseamnă dezactivat.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limită la viteză</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Cu Telemetrie de joc activată, cât din cursă rămâne la 200 km/h. La 100% toată cursa este disponibilă la orice viteză.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Indicator IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Indicator IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminozitate IR</value></data>
@@ -3567,8 +3591,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Rotește întreaga hartă de flick cu acest număr de grade. Valorile pozitive înseamnă sens orar. Alinierea se aplică după decalaj.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Când stratul care găzduiește Flick Stick se activează cu stickul deja deplasat, declanșează imediat flick-ul. Dezactivat păstrează camera nemișcată și urmărește rotația de la unghiul curent al stickului.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback la limita direcției</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un semnal la limita direcției pentru un stick în mod de direcție</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Când un stick setat pe un mod de direcție este rotit complet până la limită, redă un semnal (vibrație, trăgaci sau bară luminoasă) ca să simțiți limita. Toate sunt dezactivate implicit.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un semnal când direcția ajunge la limită</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Când un stick pe un mod de direcție, o intrare de tip Mișcare: înclinare sau o intrare Cursă mouse ajunge la limită, redă un semnal (vibrație, trăgaci sau bară luminoasă) ca să simțiți limita. Toate sunt dezactivate implicit.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impuls de vibrație la limită</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrație în trăgaci la limită</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Puls al barei luminoase la limită</value></data>
@@ -4547,6 +4571,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Comutare taste {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrare giroscop</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>La apăsare, readuce la zero referințele acumulate de țintire cu giroscopul ale controlerului. Istoricul netezirii se golește, poziția neutră pentru Mișcare: înclinare se recaptează, estimarea gravitației se reinițializează din poziția curentă a controlerului, iar rotația acumulată de rândurile Mișcare: tangaj, girație și ruliu este anulată.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centrare direcție cu mouse-ul</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Readuce în centru volanul fiecărei intrări Cursă mouse de pe acest controler virtual.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Orice dispozitiv)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Meniuri</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Meniurile transformă un stick fizic sau un touchpad într-un inel sau o grilă pe ecran. Apăsați + de lângă Meniuri pentru a crea unul, alegeți ce îl deschide, apoi dați fiecărei celule un nume și o acțiune.</value></data>

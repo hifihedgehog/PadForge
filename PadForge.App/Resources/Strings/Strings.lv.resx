@@ -2859,6 +2859,30 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Peles pozīcija Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Jutība</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Katra avota kursora jutība. Ar 1.0 pilna sviras novirze tiek sasniegta 10% ekrāna platuma attālumā no centra. Vērtības virs 1.0 sasniedz pilnu novirzi ar mazāku kursora pārvietojumu. Vērtībām zem 1.0 vajag vairāk.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Peles nobīde X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Peles nobīde Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Nobīde līdz galējam pagriezienam</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Cik tālu pele pārvietojas no centra līdz galējam pagriezienam, skaitījumos, ko pele ziņo. Lielāks skaitlis stūrē smalkāk un prasa lielāku rokas kustību.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>skaitījumi</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrēšana</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Izslēgts notur stūri tur, kur roka to atstāja. Atspere to atgriež laikā Atgriešanās laiks. No telemetrijas velk to atpakaļ kā automašīnas priekšējās riepas pēc spēles ātruma un saķeres: miera stāvoklī nekustīgi, ar ātrumu stingrāk, vieglāk, kad riepas slīd. Ja spēle nesūta telemetriju, tā ir atspere. No spēles spēka ļauj to pagriezt virtuālās stūres pašas atgriezeniskajai saitei.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Izslēgts</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Atspere</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>No telemetrijas</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>No spēles spēka</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Atgriešanās laiks</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Cik ilgi Atspere atgriež stūri 95% ceļa atpakaļ. No telemetrijas tas aizņem tikpat ilgi pie 100 km/h uz sausa ceļa.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Stūrēšana</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vienmēr ļauj pelei stūrēt visu laiku. Kamēr turēts ļauj stūrēt tikai tad, kamēr tiek turēta Stūrēšanas ievade. Pārslēgšana ieslēdz vai izslēdz stūrēšanu ar katru Stūrēšanas ievades nospiešanu. Kamēr pele nestūrē, stūre paliek vietā vai atgriežas centrā, tāpēc ar vienu peli var gan stūrēt, gan skatīties apkārt.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Vienmēr</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Kamēr turēts</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Pārslēgšana</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Stūrēšanas ievade</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Poga, kas ļauj pelei stūrēt, tajā pašā ierīcē, kur peles nobīde. Ja neviena nav izvēlēta, pele stūrē vienmēr.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Izlīdzināšana</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Izlīdzina peli, kas ziņo nevienmērīgi. Stūre atpaliek no rokas par aptuveni šādu laiku. 0 ir izslēgts.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Pagrieziens ātrumā</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kad Spēļu telemetrija ir ieslēgta, cik daudz no pagrieziena ir atlicis pie 200 km/h. Pie 100% viss pagrieziens ir pieejams jebkurā ātrumā.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR rādītājs X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR rādītājs Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR spilgtums</value></data>
@@ -3567,8 +3591,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Pagriež visu rāvienu karti par šo grādu skaitu. Pozitīvas vērtības pagriež pulksteņrādītāja virzienā. Fiksēšana tiek piemērota pēc nobīdes.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ja slānis ar rāviena sviru tiek aktivizēts, kad svira jau ir novirzīta, rāviens tiek izpildīts nekavējoties. Izslēgtā stāvoklī kamera paliek nekustīga, un rotācija tiek izsekota no pašreizējā sviras leņķa.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Stūres galējā stāvokļa atgriezeniskā saite</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signāls galējā stāvoklī sviras stūrēšanas režīmā</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kad svira stūrēšanas režīmā ir pagriezta līdz galējam stāvoklim, tiek atskaņots signāls (vibrācija, mēlīte vai gaismas josla), lai jūs sajustu robežu. Pēc noklusējuma viss ir izslēgts.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signāls, kad stūrēšana sasniedz galējo stāvokli</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kad svira stūrēšanas režīmā, ievade „Kustības noliekums” vai ievade „Peles nobīde” sasniedz galējo stāvokli, tiek atskaņots signāls (vibrācija, mēlīte vai gaismas josla), lai jūs sajustu robežu. Pēc noklusējuma viss ir izslēgts.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrācijas impulss galējā stāvoklī</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Mēlīšu vibrācija galējā stāvoklī</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Gaismas joslas impulss galējā stāvoklī</value></data>
@@ -4547,6 +4571,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Pārslēgt taustiņus {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Žiroskopa centrēšana</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Nospiežot nonullē spēļu pults uzkrātās žiroskopa tēmēšanas atsauces. Izlīdzināšanas vēsture tiek notīrīta, „Kustības noliekums” neitrālais stāvoklis tiek uzņemts no jauna, gravitācijas novērtējums tiek atjaunots no kontrollera pašreizējās pozas, un rindu „Kustības slīpums”, „Kustības pagrieziens” un „Kustības sānsvere” uzkrātais pagrieziens tiek atcelts.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centrēt peles stūrēšanu</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Atgriež centrā katras ievades Peles nobīde stūri šajā virtuālajā kontrollerī.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Jebkura ierīce)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Izvēlnes</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Izvēlnes pārvērš fizisku sviru vai skārienpaliktni par ekrāna apli vai režģi. Nospiediet + blakus virsrakstam „Izvēlnes”, lai izveidotu izvēlni, izvēlieties, kas to atver, un pēc tam katrai šūnai piešķiriet nosaukumu un darbību.</value></data>

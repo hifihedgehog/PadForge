@@ -2631,6 +2631,30 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Kedudukan Tetikus Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Kepekaan</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Kepekaan kursor bagi setiap sumber. 1.0 mencapai pesongan kayu bedik penuh pada 10% lebar skrin dari tengah. Nilai di atas 1.0 mencapai pesongan penuh dengan pergerakan kursor yang lebih sedikit. Nilai di bawah 1.0 memerlukan lebih banyak.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Perjalanan Tetikus X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Perjalanan Tetikus Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Perjalanan ke Kunci Penuh</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Sejauh mana tetikus bergerak dari tengah ke kunci penuh, dalam kiraan yang dilaporkan tetikus. Nombor yang lebih tinggi mengemudi lebih halus dan memerlukan lebih banyak gerakan tangan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kiraan</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Pemusatan</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Mati menahan roda stereng di tempat tangan melepaskannya. Spring membawanya kembali sepanjang Masa Kembali. Daripada Telemetri menariknya kembali seperti tayar hadapan kereta pada kelajuan dan cengkaman permainan: diam ketika berhenti, lebih tegas dengan kelajuan, ringan apabila tayar tergelincir. Tanpa permainan yang menghantar telemetri, ia ialah spring. Daripada Daya Permainan membiarkan maklum balas daya roda stereng maya memutarkannya.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Mati</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Daripada Telemetri</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Daripada Daya Permainan</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Masa Kembali</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Berapa lama Spring membawa roda stereng kembali 95% jaraknya. Daripada Telemetri mengambil masa sebegini pada 100 km/h di jalan kering.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kemudi</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sentiasa membenarkan tetikus mengemudi pada setiap masa. Semasa Ditahan membenarkannya mengemudi hanya semasa Input Kemudi ditahan. Togol menghidupkan atau mematikan kemudi pada setiap tekanan Input Kemudi. Semasa tetikus tidak mengemudi, roda stereng kekal di tempatnya atau ke tengah, jadi satu tetikus boleh mengemudi dan melihat sekeliling.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sentiasa</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Semasa Ditahan</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Togol</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input Kemudi</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butang yang membolehkan tetikus mengemudi, pada peranti yang sama dengan perjalanan tetikus. Jika tiada yang dipilih, tetikus sentiasa mengemudi.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pelicinan</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Melicinkan tetikus yang melapor secara tidak sekata. Roda stereng ketinggalan di belakang tangan selama kira-kira ini. 0 ialah mati.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kunci pada Kelajuan</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Dengan Telemetri Permainan dihidupkan, berapa banyak kunci yang tinggal pada 200 km/h. Pada 100%, seluruh kunci ada pada setiap kelajuan.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Penuding IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Penuding IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Kecerahan IR</value></data>
@@ -3332,8 +3356,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Memutar seluruh peta flick sebanyak darjah ini. Positif ialah ikut arah jam. Tangkapan dikenakan selepas ofset.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Apabila lapisan yang menjadi hos Flick Stick diaktifkan dengan kayu bedik sudah terpesong, laksanakan flick serta-merta. Mati mengekalkan kamera diam dan menjejak putaran daripada sudut kayu bedik semasa.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Maklum Balas Kunci Stereng</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat pada kunci penuh untuk kayu bedik dalam mod stereng</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Apabila kayu bedik yang ditetapkan kepada mod stereng diputar sepenuhnya ke kunci penuh, mainkan isyarat (getaran, pencetus atau bar cahaya) supaya anda merasai had. Semuanya mati secara lalai.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat apabila stereng mencapai kunci penuh</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Apabila kayu bedik dalam mod stereng, input Condong Gerakan atau input Perjalanan Tetikus mencapai kunci penuh, mainkan isyarat (getaran, pencetus atau bar cahaya) supaya anda merasai had. Semuanya mati secara lalai.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Denyut Getaran semasa Kunci</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Getaran Pencetus semasa Kunci</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Denyut Bar Cahaya semasa Kunci</value></data>
@@ -4280,6 +4304,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Togol kekunci {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Pemusatan Semula Giro</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Menyifarkan rujukan sasaran giro terkumpul pad semasa ditekan. Sejarah pelicinan dikosongkan, neutral Condong Gerakan ditangkap semula, anggaran graviti dibenih semula daripada pose semasa pengawal, dan putaran yang dibina oleh baris Pic, Yaw dan Golek Gerakan dibatalkan.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Tengahkan Kemudi Tetikus</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Membawa roda stereng setiap input Perjalanan Tetikus pada pengawal maya ini kembali ke tengah.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Mana-mana Peranti)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu menukar kayu bedik fizikal atau pad sentuh menjadi cincin atau grid atas skrin. Tekan + di sebelah Menu untuk mencipta satu, pilih apa yang membukanya, kemudian beri setiap sel nama dan tindakan.</value></data>

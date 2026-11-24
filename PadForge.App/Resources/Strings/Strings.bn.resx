@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>মাউসের অবস্থান Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>সংবেদনশীলতা</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>প্রতিটি উৎসের আলাদা কার্সার সংবেদনশীলতা। 1.0 দিলে কেন্দ্র থেকে স্ক্রিনের প্রস্থের 10% দূরত্বে স্টিকের পূর্ণ বিক্ষেপ হয়। 1.0-এর বেশি মানে কার্সার কম সরলেই পূর্ণ বিক্ষেপ হয়। 1.0-এর কম মানে বেশি সরাতে হয়।</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>মাউস সরণ X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>মাউস সরণ Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>পূর্ণ লক পর্যন্ত সরণ</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>মাউস কেন্দ্র থেকে পূর্ণ লক পর্যন্ত কতটা সরে, মাউসের জানানো কাউন্টে। সংখ্যা বেশি হলে স্টিয়ারিং সূক্ষ্ম হয় এবং হাতকে বেশি সরাতে হয়।</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>কাউন্ট</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>কেন্দ্রে ফেরা</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>বন্ধ থাকলে চাকা হাত যেখানে ছেড়েছে সেখানেই থাকে। স্প্রিং ফেরার সময় ধরে তাকে ফিরিয়ে আনে। টেলিমেট্রি থেকে গেমের গতি ও গ্রিপ অনুযায়ী গাড়ির সামনের টায়ারের মতো টানে: থেমে থাকলে স্থির, গতির সঙ্গে শক্ত, টায়ার পিছলালে হালকা। গেম টেলিমেট্রি না পাঠালে এটি স্প্রিং। গেমের ফোর্স থেকে ভার্চুয়াল হুইলের নিজের ফোর্স ফিডব্যাককে তা ঘোরাতে দেয়।</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>বন্ধ</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>স্প্রিং</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>টেলিমেট্রি থেকে</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>গেমের ফোর্স থেকে</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>ফেরার সময়</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>স্প্রিং চাকাকে 95% ফিরিয়ে আনতে কত সময় নেয়। টেলিমেট্রি থেকে শুকনো রাস্তায় 100 km/h গতিতে এই সময় নেয়।</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>স্টিয়ার</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>সব সময় মাউসকে সব সময় স্টিয়ার করতে দেয়। চেপে ধরে রাখলে স্টিয়ার ইনপুট ধরে রাখা অবস্থায় শুধু স্টিয়ার করতে দেয়। টগল স্টিয়ার ইনপুটের প্রতিটি চাপে স্টিয়ারিং চালু বা বন্ধ করে। মাউস স্টিয়ার না করার সময় চাকা যেখানে আছে সেখানেই থাকে বা কেন্দ্রে ফেরে, ফলে একটি মাউসে স্টিয়ার করা ও চারপাশে তাকানো দুটোই চলে।</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>সব সময়</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>চেপে ধরে রাখলে</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>টগল</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>স্টিয়ার ইনপুট</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>যে বোতাম মাউসকে স্টিয়ার করতে দেয়, মাউসের সরণের একই ডিভাইসে। কিছু বাছাই না করলে মাউস সব সময় স্টিয়ার করে।</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>মসৃণকরণ</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>অসমভাবে রিপোর্ট করা মাউসকে মসৃণ করে। চাকা হাতের চেয়ে প্রায় এই সময় পিছিয়ে থাকে। 0 মানে বন্ধ।</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>গতিতে লক</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>গেম টেলিমেট্রি চালু থাকলে 200 km/h গতিতে লকের কতটা বাকি থাকে। 100% হলে প্রতিটি গতিতে পুরো লক থাকে।</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR পয়েন্টার X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR পয়েন্টার Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR উজ্জ্বলতা</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>পুরো ফ্লিক ম্যাপকে এত ডিগ্রি ঘোরায়। ধনাত্মক মান ঘড়ির কাঁটার দিকে। স্ন্যাপ অফসেটের পরে প্রযোজ্য হয়।</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ফ্লিক স্টিক যে লেয়ারে আছে সেটি সক্রিয় হওয়ার সময় স্টিক আগে থেকেই সরানো থাকলে সঙ্গে সঙ্গে ফ্লিক চালু হয়। বন্ধ থাকলে ক্যামেরা স্থির থাকে এবং স্টিকের বর্তমান কোণ থেকে ঘূর্ণন ট্র্যাক করা হয়।</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>স্টিয়ারিং লক ফিডব্যাক</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>স্টিয়ারিং মোডে থাকা স্টিকের পূর্ণ লকে একটি সংকেত</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>স্টিয়ারিং মোডে সেট করা স্টিক পুরো লক পর্যন্ত ঘোরালে একটি সংকেত দেয় (রাম্বল, ট্রিগার বা লাইটবার), যাতে আপনি সীমাটি টের পান। ডিফল্টভাবে সব বন্ধ।</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>স্টিয়ারিং পূর্ণ লকে পৌঁছালে একটি সংকেত</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>স্টিয়ারিং মোডে থাকা স্টিক, মোশন হেলানো ইনপুট বা মাউস সরণ ইনপুট পূর্ণ লকে পৌঁছালে একটি সংকেত দেয় (রাম্বল, ট্রিগার বা লাইটবার), যাতে আপনি সীমাটি টের পান। ডিফল্টভাবে সব বন্ধ।</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>লকে রাম্বল পালস</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>লকে ট্রিগার কম্পন</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>লকে লাইটবার পালস</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>কী {0} টগল করুন</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>জাইরো কেন্দ্রে আনা</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>চাপলে প্যাডের জমা হওয়া জাইরো নিশানার রেফারেন্স শূন্য করে। মসৃণকরণের ইতিহাস মুছে যায়, মোশন হেলানোর নিরপেক্ষ অবস্থান নতুন করে নেওয়া হয়, মাধ্যাকর্ষণের অনুমান কন্ট্রোলারের বর্তমান ভঙ্গি থেকে নতুন করে শুরু হয়, আর মোশন পিচ, ইয়ো ও রোল সারিতে জমা ঘূর্ণন বাতিল হয়।</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>মাউস স্টিয়ারিং কেন্দ্রে আনা</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলারের প্রতিটি মাউস সরণ ইনপুটের চাকাকে আবার কেন্দ্রে আনে।</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(যেকোনো ডিভাইস)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>মেনু</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>মেনু একটি ফিজিক্যাল স্টিক বা টাচপ্যাডকে অন-স্ক্রিন রিং বা গ্রিডে পরিণত করে। নতুন একটি তৈরি করতে “মেনু”-এর পাশের + চাপুন, কী দিয়ে খুলবে তা বেছে নিন, তারপর প্রতিটি সেলকে একটি নাম ও একটি অ্যাকশন দিন।</value></data>

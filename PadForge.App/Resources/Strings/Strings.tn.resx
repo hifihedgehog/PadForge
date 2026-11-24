@@ -1057,7 +1057,7 @@
   <data name="Search_Group_Actions" xml:space="preserve"><value>Ditiro</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Di stick le di trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lesedi le modumo</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temoso fa stick ya go kgweetsa e fitlha bokhutlo</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Temoso fa go kgweetsa go fitlha bokhutlo</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Go baakanya ditsenyo tsa Flick Stick</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Thothomelo go tswa mo bass ya modumo wa sistimi</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela thothomelo ya dimotoro tse dikgolo kwa ditrigger</value></data>
@@ -1238,4 +1238,8 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Database ya setšhaba ga e a fetoga fa e sale e ntšhafatswa la bofelo.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mapo e ntšha e dirisiwa lekgetlo le le latelang fa controller ya yone e golagana.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mapo e e fetotsweng e dirisiwa lekgetlo le le latelang fa PadForge e simolola.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dipalo</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ka metlha</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Fa o ntse o tshwara</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Konopo e e letlang mouse go kgweetsa, mo sedirisiweng se le sengwe le motsamao wa mouse. Fa go sa tlhophiwa sepe, mouse e kgweetsa ka metlha.</value></data>
 </root>

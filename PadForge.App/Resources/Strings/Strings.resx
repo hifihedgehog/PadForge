@@ -2860,6 +2860,30 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Mouse Position Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Per-source cursor sensitivity. 1.0 reaches full stick deflection at 10% of screen width from center. Values above 1.0 reach full deflection with less cursor travel. Values below 1.0 need more.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Mouse Travel X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Mouse Travel Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Travel to Full Lock</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>How far the mouse moves from center to full lock, in the counts the mouse reports. A higher number steers finer and takes more hand travel.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centering</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Off holds the wheel where the hand left it. Spring brings it back over Return Time. From Telemetry pulls it back as a car’s front tires would at the game’s speed and grip: still at a standstill, firmer with speed, light when the tires slide. With no game sending telemetry it is the spring. From the Game’s Force lets a virtual wheel’s own force feedback turn it.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>From Telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>From the Game’s Force</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Return Time</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>How long Spring takes to bring the wheel 95% of the way back. From Telemetry takes this long at 100 km/h on a dry road.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Steer</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Always lets the mouse steer at all times. While Held lets it steer only while the Steer Input is held. Toggle turns steering on or off with each press of the Steer Input. While the mouse does not steer, the wheel stays where it is or centers, so one mouse can steer and look around.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Always</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>While Held</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Steer Input</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>The button that lets the mouse steer, on the same device as the mouse’s travel. With none picked, the mouse always steers.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Smoothing</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Evens out a mouse that reports unevenly. The wheel trails the hand by about this long. 0 is off.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock at Speed</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>With Game Telemetry on, how much of the lock is left at 200 km/h. At 100% the whole lock is there at every speed.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR Pointer X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR Pointer Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR Brightness</value></data>
@@ -3581,8 +3605,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Turns the whole flick map by this many degrees. Positive is clockwise. Snapping applies after the offset.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>When the layer hosting Flick Stick engages with the stick already deflected, fire the flick immediately. Off keeps the camera still and tracks rotation from the current stick angle.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>A cue at full lock for a stick in a steering mode</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>A cue when steering reaches full lock</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick in a steering mode, a Motion Lean input or a Mouse Travel input reaches full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse on Lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger Vibration on Lock</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar Pulse on Lock</value></data>
@@ -4568,6 +4592,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad’s accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, the gravity estimate re-seeds from the controller’s current pose, and the turn the Motion Pitch, Yaw, and Roll rows built is undone.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Center Mouse Steering</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Puts the wheel of every Mouse Travel input on this virtual controller back at center.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Any Device)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menus turn a physical stick or touchpad into an on-screen ring or grid. Press + beside Menus to make one, pick what opens it, then give each cell a name and an action.</value></data>

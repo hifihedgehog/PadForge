@@ -2859,6 +2859,30 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Položaj miške Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Občutljivost</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Občutljivost kazalca za posamezen vir. Pri 1.0 je poln odklon palice dosežen pri 10% širine zaslona od središča. Vrednosti nad 1.0 dosežejo poln odklon z manjšim premikom kazalca. Vrednosti pod 1.0 potrebujejo večjega.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Pot miške X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Pot miške Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Pot do polnega zasuka</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kako daleč se miška premakne od središča do polnega zasuka, v točkah, ki jih miška poroča. Višje število krmili natančneje in zahteva več poti roke.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>točk</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Središčenje</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Izklopljeno pusti volan tam, kjer ga je roka pustila. Vzmet ga vrne v času vračanja. Iz telemetrije ga vleče nazaj, kot bi ga vlekla sprednja kolesa avtomobila pri hitrosti in oprijemu igre: pri mirovanju nič, z hitrostjo trše, lahko, ko kolesa drsijo. Če nobena igra ne pošilja telemetrije, je to vzmet. Iz sile igre ga lahko zavrti lastna povratna sila navideznega volana.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Izklopljeno</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Vzmet</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Iz telemetrije</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Iz sile igre</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Čas vračanja</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Koliko časa traja, da vzmet vrne volan 95% poti nazaj. Iz telemetrije traja toliko pri 100 km/h na suhi cesti.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Krmili</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vedno omogoči, da miška krmili ves čas. Med držanjem omogoči krmiljenje le, dokler držite vhod za krmiljenje. Preklop vklopi ali izklopi krmiljenje ob vsakem pritisku vhoda za krmiljenje. Ko miška ne krmili, volan ostane, kjer je, ali se središči, tako da ena miška lahko krmili in se tudi razgleduje.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Vedno</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Med držanjem</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Preklop</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vhod za krmiljenje</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Gumb, ki miški omogoči krmiljenje, na isti napravi kot pot miške. Če ni izbran noben, miška krmili vedno.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Glajenje</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Zgladi miško, ki poroča neenakomerno. Volan zaostaja za roko za približno toliko časa. 0 je izklopljeno.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Zaklep pri hitrosti</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ko je vklopljena Telemetrija iger, koliko zasuka ostane pri 200 km/h. Pri 100% je cel zasuk na voljo pri vsaki hitrosti.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Kazalec IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Kazalec IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Svetlost IR</value></data>
@@ -3567,8 +3591,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Celotno preslikavo obratov zavrti za toliko stopinj. Pozitivno je v smeri urnega kazalca. Zaskok se uporabi po zamiku.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Ko se plast s flick stick vklopi, palica pa je že odklonjena, takoj sproži obrat. Ko je izklopljeno, kamera ostane pri miru in sledi vrtenju od trenutnega kota palice.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Odziv ob skrajnem zasuku</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Znak ob skrajnem zasuku palice v načinu krmiljenja</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Ko palico v načinu krmiljenja zasučete do skrajnega položaja, se predvaja znak (vibriranje, sprožilec ali svetlobni trak), da začutite mejo. Privzeto je vse izklopljeno.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Znak, ko krmiljenje doseže skrajni zasuk</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Ko palica v načinu krmiljenja, vhod „Gibanje: nagnjenost“ ali vhod Pot miške doseže skrajni zasuk, se predvaja znak (vibriranje, sprožilec ali svetlobni trak), da začutite mejo. Privzeto je vse izklopljeno.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Utrip vibriranja ob skrajnem zasuku</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibriranje sprožilca ob skrajnem zasuku</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Utrip svetlobnega traku ob skrajnem zasuku</value></data>
@@ -4547,6 +4571,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Preklopi tipke {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ponovno središčenje žiroskopa</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Ob pritisku izniči nakopičene referenčne točke ciljanja z žiroskopom. Zgodovina glajenja se počisti, nevtralni položaj za „Gibanje: nagnjenost“ se znova zajame, ocena gravitacije se znova nastavi iz trenutne drže krmilnika, vrtenje, ki so ga ustvarile vrstice „Gibanje: naklon“, „Gibanje: zasuk“ in „Gibanje: nagib“, pa se razveljavi.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Središči krmiljenje z miško</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Vrne volan vsakega vhoda Pot miške na tem navideznem krmilniku v središče.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(katera koli naprava)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Meniji</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Meniji fizično palico ali sledilno ploščico spremenijo v zaslonski obroč ali mrežo. Za nov meni pritisnite + ob naslovu Meniji, izberite, kaj ga odpre, nato pa vsaki celici določite ime in dejanje.</value></data>

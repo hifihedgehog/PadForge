@@ -1690,7 +1690,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muv mo taj</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Laet mo saon</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro mo menu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Wan saen taem stik blong stia i kasem en blong hem</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Wan saen taem stia i kasem en blong hem</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>I sanem seksek blong ol bigfala mota i go long ol triga</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Seksek blong triga we i kam long bes blong saon blong sistem</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ol dedzon blong lin, Daereksen blong kontrola</value></data>
@@ -1913,4 +1913,9 @@
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>I no save kasem GitHub: {0}</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Wan niu mapping i stat wok nekis taem we kontrola blong hem i konekt.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Wan mapping we i jenis i stat wok nekis taem we PadForge i stat.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kaon</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Oltaem</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taem yu holem</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>On/of</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Baten we i letem maos i stia, long sem divaes olsem muvmen blong maos. Sapos yu no jusum wan, maos i stia oltaem.</value></data>
 </root>

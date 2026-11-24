@@ -2628,6 +2628,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>پێگەی ماوس Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>هەستیاری</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>هەستیاری نیشاندەر بۆ هەر سەرچاوەیەک. 1.0 لە 10%ی پانی شاشە لە ناوەندەوە دەگاتە تەواوی لادانی ستیک. بەهاکانی سەرووی 1.0 بە جووڵەی کەمتری نیشاندەر دەگەنە تەواوی لادان. بەهاکانی خوار 1.0 جووڵەی زیاتریان پێویستە.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ڕێڕەوی ماوس X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ڕێڕەوی ماوس Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>ڕێڕەو تا کۆتایی سووڕان</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماوس چەند لە ناوەندەوە دەجووڵێت تا کۆتایی سووڕان، بەو هەنگاوانەی ماوسەکە ڕاپۆرتیان دەکات. ژمارەیەکی بەرزتر وردتر ئاراستە دەکات و جووڵەی دەستی زیاتری دەوێت.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>هەنگاو</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ناوەندکردن</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>داخراوە سوکانەکە لەو شوێنە ڕادەگرێت کە دەست جێی هێشت. فەنەر لە ماوەی کاتی گەڕانەوەدا دەیگەڕێنێتەوە. لە تێلێمەترییەوە وەک تایەی پێشەوەی ئۆتۆمبێلێک بە خێرایی و گرتنی یارییەکە ڕایدەکێشێتەوە: لە وەستاندا جێگیر، بە خێرایی توندتر، سووک کاتێک تایەکان دەخلیسکێن. ئەگەر هیچ یارییەک تێلێمەتری نەنێرێت فەنەرەکەیە. لە هێزی یارییەکەوە ڕێگە دەدات هێزی گەڕانەوەی سوکانێکی مەجازی خۆی بیسووڕێنێت.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>داخراوە</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>فەنەر</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>لە تێلێمەترییەوە</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>لە هێزی یارییەکەوە</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>کاتی گەڕانەوە</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>فەنەر چەند کاتی پێدەچێت تا سوکانەکە 95% ی ڕێگاکە بگەڕێنێتەوە. لە تێلێمەترییەوە لە 100 km/h لەسەر ڕێگایەکی وشک ئەوەندە کات دەبات.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ئاراستەکردن</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«هەمیشە» ڕێگە دەدات ماوسەکە لە هەموو کاتێکدا ئاراستە بکات. «لە کاتی ڕاگرتن» تەنها کاتێک ڕێگەی پێدەدات کە «تێخەری ئاراستەکردن» ڕاگیراوە. «گۆڕین» بە هەر داگرتنێکی «تێخەری ئاراستەکردن» ئاراستەکردن هەڵدەکات یان دەیکوژێنێتەوە. تا ماوسەکە ئاراستە ناکات، سوکانەکە لە شوێنی خۆی دەمێنێتەوە یان دەگەڕێتەوە ناوەند، بۆیە یەک ماوس دەتوانێت ئاراستە بکات و بە دەوروبەردا بڕوانێت.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>هەمیشە</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>لە کاتی ڕاگرتن</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>گۆڕین</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>تێخەری ئاراستەکردن</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ئەو دوگمەیەی ڕێگە بە ماوسەکە دەدات ئاراستە بکات، لەسەر هەمان ئامێری ڕێڕەوی ماوسەکە. ئەگەر هیچ نەهەڵبژێردرابێت، ماوسەکە هەمیشە ئاراستە دەکات.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>نەرمکردن</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ماوسێک کە بە ناڕێکی ڕاپۆرت دەکات ڕێک دەکاتەوە. سوکانەکە نزیکەی ئەوەندە لە دوای دەستەوە دێت. 0 کوژاوەیە.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>کۆتایی سووڕان لە خێراییدا</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>کاتێک تێلێمەتریی یاری چالاکە، چەند لە سووڕانی تەواو لە 200 km/h دا دەمێنێتەوە. لە 100% دا هەموو سووڕانەکە لە هەموو خێراییەکدا هەیە.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>نیشاندەری IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>نیشاندەری IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>ئاستی ڕووناکی IR</value></data>
@@ -3323,8 +3347,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>هەموو نەخشەی فلیک بەم ژمارە پلەیە دەسووڕێنێت. ئەرێنی بە ئاراستەی میلی کاتژمێرە. چەسپاندن دوای لادانەکە جێبەجێ دەکرێت.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>کاتێک ئەو چینەی فلیک ستیکی تێدایە چالاک دەبێت و ستیکەکە پێشتر لادراوە، فلیکەکە دەستبەجێ ئەنجام بدە. کوژاوە کامێراکە جێگیر دەهێڵێتەوە و سووڕانەوە لە گۆشەی ئێستای ستیکەوە بەدوادا دەچێت.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>فیدباکی کۆتایی ئاراستەکردن</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نیشانەیەک لە کۆتایی بۆ ستیکی دۆخی ئاراستەکردن</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>کاتێک ستیکێک کە دۆخی ئاراستەکردنی بۆ دانراوە تا کۆتایی دەسووڕێنرێت، نیشانەیەک لێبدە (لەرزین، تریگەر، یان شریتی ڕووناکی) بۆ ئەوەی هەست بە سنوورەکە بکەیت. هەمووی بە بنەڕەت کوژاوەیە.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نیشانەیەک کاتێک ئاراستەکردن دەگاتە کۆتایی</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>کاتێک ستیکێک لە دۆخی ئاراستەکردندا، تێخەرێکی لاربوونەوەی جووڵە یان تێخەرێکی ڕێڕەوی ماوس دەگاتە کۆتایی، نیشانەیەک لێبدە (لەرزین، تریگەر، یان شریتی ڕووناکی) بۆ ئەوەی هەست بە سنوورەکە بکەیت. هەمووی بە بنەڕەت کوژاوەیە.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ترپەی لەرزین لە کۆتایی</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>لەرینەوەی تریگەر لە کۆتایی</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ترپەی شریتی ڕووناکی لە کۆتایی</value></data>
@@ -4270,6 +4294,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>گۆڕینی کلیلەکان {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ناوەندکردنەوەی جایرۆ</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>لە کاتی داگرتندا ئاماژە کۆکراوەکانی ئامانجگرتنی جایرۆی گەیمپادەکە سفر دەکاتەوە. مێژووی نەرمکردن پاک دەبێتەوە، بێلایەنی لاربوونەوەی جووڵە دووبارە دەگیرێتەوە، خەمڵاندنی کێشکردن لە باری ئێستای کۆنترۆڵەرەکەوە دووبارە دادەنرێت، و ئەو سووڕانەوەیەی ڕیزەکانی پیچ، یاو و ڕۆڵی جووڵە دروستیان کردبوو هەڵدەوەشێتەوە.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>ناوەندکردنی ئاراستەکردنی ماوس</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>سوکانی هەموو تێخەرێکی ڕێڕەوی ماوس لەسەر ئەم کۆنترۆڵەرە مەجازییە دەگەڕێنێتەوە بۆ ناوەند.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(هەر ئامێرێک)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>مێنیوەکان</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>مێنیوەکان ستیک یان تاچپادێکی فیزیکی دەکەن بە ئەڵقە یان تۆڕێک لەسەر شاشە. دوگمەی + لە تەنیشت «مێنیوەکان» دابگرە بۆ دروستکردنی یەکێک، ئەوەی دەیکاتەوە هەڵبژێرە، پاشان ناوی هەر خانەیەک دابنێ و کردارێکی پێبدە.</value></data>

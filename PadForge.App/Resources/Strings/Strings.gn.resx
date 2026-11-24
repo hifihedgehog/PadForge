@@ -1156,7 +1156,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Ñemongu'e ha ñepoko</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Tesape ha audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ha menúkuéra</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Señal palanca volante ohupytývo ipaha</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Señal volante ohupytývo ipaha</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Vibración sistema audio bajo rehegua</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Omondo motor guasu vibración gatillokuérape</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatillo vibración sistema audio bajo rehegua</value></data>
@@ -1370,4 +1370,8 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Mando aty tekoha rehegua noñemoambuéi ipaha ñembopyahu guive.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Peteĩ mapeo pyahu ojeporu imando oñembojoaju jey vove.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Peteĩ mapeo oñemoambuéva ojeporu PadForge oñepyrũ jey vove.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Akóinte</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Botõ ombohapéva mouse omboguata hag̃ua, upe mba'e'oka mouse jeguata ndive. Ndojeiporavóiramo mba'eve, mouse omboguata akóinte.</value></data>
 </root>

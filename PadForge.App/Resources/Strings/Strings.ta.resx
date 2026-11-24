@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>சுட்டி நிலை Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான சுட்டிக்குறி உணர்திறன். 1.0 எனில், மையத்திலிருந்து திரை அகலத்தின் 10%-இல் முழு ஸ்டிக் விலகலை எட்டும். 1.0-க்கு மேலான மதிப்புகள் குறைவான சுட்டிக்குறி நகர்விலேயே முழு விலகலை எட்டும். 1.0-க்குக் கீழான மதிப்புகளுக்கு அதிக நகர்வு தேவை.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>சுட்டிப் பயணம் X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>சுட்டிப் பயணம் Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>முழு லாக் வரையிலான பயணம்</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>சுட்டி மையத்திலிருந்து முழு லாக் வரை நகரும் தூரம், சுட்டி தெரிவிக்கும் எண்ணிக்கைகளில். அதிக எண் நுணுக்கமாகத் திருப்பும், அதிகக் கை நகர்வு தேவைப்படும்.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>எண்ணிக்கைகள்</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>மையப்படுத்தல்</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ஆஃப் வீலை கை விட்ட இடத்திலேயே வைத்திருக்கும். ஸ்பிரிங் திரும்பும் நேரத்தில் அதைத் திரும்பக் கொண்டுவரும். டெலிமெட்ரியிலிருந்து, கேமின் வேகம் மற்றும் பிடிப்பில் காரின் முன் டயர்கள் இழுப்பது போல இழுக்கும்: நின்றிருக்கும்போது அசையாமல், வேகத்துடன் உறுதியாக, டயர்கள் சறுக்கும்போது லேசாக. டெலிமெட்ரி அனுப்பும் கேம் இல்லையெனில் அது ஸ்பிரிங் ஆகும். கேமின் விசையிலிருந்து, மெய்நிகர் வீலின் சொந்த ஃபோர்ஸ் ஃபீட்பேக் அதைத் திருப்ப விடும்.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ஆஃப்</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ஸ்பிரிங்</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>டெலிமெட்ரியிலிருந்து</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>கேமின் விசையிலிருந்து</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>திரும்பும் நேரம்</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>ஸ்பிரிங் வீலை 95% திரும்பக் கொண்டுவர எடுக்கும் நேரம். டெலிமெட்ரியிலிருந்து, உலர்ந்த சாலையில் மணிக்கு 100 km/h வேகத்தில் இவ்வளவு நேரம் எடுக்கும்.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>திருப்பு</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>எப்போதும் சுட்டியை எல்லா நேரமும் திருப்ப விடும். பிடித்திருக்கும்போது திருப்ப உள்ளீடு பிடிக்கப்பட்டிருக்கும்போது மட்டும் திருப்ப விடும். நிலைமாற்று திருப்ப உள்ளீட்டை ஒவ்வொரு முறை அழுத்தும்போதும் திருப்புதலை இயக்கும் அல்லது அணைக்கும். சுட்டி திருப்பாதபோது வீல் இருக்கும் இடத்திலேயே இருக்கும் அல்லது மையத்துக்கு வரும், எனவே ஒரே சுட்டியால் திருப்பவும் சுற்றிப் பார்க்கவும் முடியும்.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>எப்போதும்</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>பிடித்திருக்கும்போது</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>நிலைமாற்று</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>திருப்ப உள்ளீடு</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>சுட்டியைத் திருப்ப விடும் பொத்தான், சுட்டியின் பயணம் உள்ள அதே சாதனத்தில். எதுவும் தேர்ந்தெடுக்காவிட்டால் சுட்டி எப்போதும் திருப்பும்.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>மென்மையாக்கம்</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>சீரற்றுத் தெரிவிக்கும் சுட்டியைச் சமப்படுத்தும். வீல் கையைவிட இவ்வளவு நேரம் பின்தங்கும். 0 என்றால் ஆஃப்.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>வேகத்தில் லாக்</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>கேம் டெலிமெட்ரி ஆன் ஆக இருக்கும்போது, 200 km/h வேகத்தில் லாக்கில் எவ்வளவு மீதமிருக்கும். 100% என்றால் எந்த வேகத்திலும் முழு லாக்கும் இருக்கும்.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR சுட்டிக்குறி X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR சுட்டிக்குறி Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR ஒளிர்வு</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>முழு ஃபிளிக் வரைபடத்தையும் இத்தனை டிகிரி திருப்பும். நேர்மறை என்பது கடிகாரத் திசை. ஆஃப்செட்டுக்குப் பிறகு ஸ்னாப் பொருந்தும்.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் உள்ள அடுக்கு, ஸ்டிக் ஏற்கெனவே விலகியிருக்கும் நிலையில் செயல்பட்டால், ஃபிளிக்கை உடனே தூண்டும். ஆஃப் எனில் கேமரா அசையாது, தற்போதைய ஸ்டிக் கோணத்திலிருந்து சுழற்சி கண்காணிக்கப்படும்.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ஸ்டீயரிங் லாக் ஃபீட்பேக்</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ஸ்டீயரிங் பயன்முறை ஸ்டிக் முழு லாக்கில் ஒரு குறிப்பு</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ஸ்டீயரிங் பயன்முறைக்கு அமைக்கப்பட்ட ஸ்டிக் முழு லாக் வரை திருப்பப்படும்போது, வரம்பை நீங்கள் உணரும்படி ஒரு குறிப்பை (அதிர்வு, டிரிகர் அல்லது லைட்பார்) இயக்கும். இயல்பாக அனைத்தும் ஆஃப்.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ஸ்டீயரிங் முழு லாக்கை அடையும்போது ஒரு குறிப்பு</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ஸ்டீயரிங் பயன்முறையில் உள்ள ஸ்டிக், அசைவுச் சாய்வு உள்ளீடு அல்லது சுட்டிப் பயண உள்ளீடு முழு லாக்கை அடையும்போது, வரம்பை நீங்கள் உணரும்படி ஒரு குறிப்பை (அதிர்வு, டிரிகர் அல்லது லைட்பார்) இயக்கும். இயல்பாக அனைத்தும் ஆஃப்.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>லாக்கில் அதிர்வுத் துடிப்பு</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>லாக்கில் டிரிகர் அதிர்வு</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>லாக்கில் லைட்பார் துடிப்பு</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>விசைகள் {0} நிலைமாற்று</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>கைரோ மறுமையப்படுத்தல்</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>அழுத்தும்போது பேடின் திரண்ட கைரோ குறிவைப்புக் குறிப்புகளைப் பூஜ்ஜியமாக்கும். மென்மையாக்க வரலாறு அழிக்கப்படும், அசைவுச் சாய்வின் நடுநிலை மீண்டும் பதிவுசெய்யப்படும், ஈர்ப்பு மதிப்பீடு கட்டுப்படுத்தியின் தற்போதைய நிலையிலிருந்து மீண்டும் தொடங்கும், அசைவு பிட்ச், யா, ரோல் வரிசைகள் உருவாக்கிய திருப்பம் நீக்கப்படும்.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>சுட்டித் திருப்பத்தை மையப்படுத்து</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தியில் உள்ள ஒவ்வொரு சுட்டிப் பயண உள்ளீட்டின் வீலையும் மீண்டும் மையத்துக்குக் கொண்டுவரும்.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(எந்தச் சாதனமும்)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>மெனுக்கள்</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>மெனுக்கள் ஓர் இயற்பியல் ஸ்டிக்கை அல்லது டச்பேடைத் திரையில் தோன்றும் வளையமாக அல்லது கட்டமாக மாற்றும். ஒன்றை உருவாக்க மெனுக்கள் என்பதன் அருகிலுள்ள + பொத்தானை அழுத்தி, அதை எது திறக்கும் என்பதைத் தேர்ந்தெடுத்து, பிறகு ஒவ்வொரு கலத்துக்கும் ஒரு பெயரையும் ஒரு செயலையும் கொடுக்கவும்.</value></data>

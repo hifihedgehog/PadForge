@@ -2859,6 +2859,30 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Vị trí chuột Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Độ nhạy</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Độ nhạy con trỏ theo từng nguồn. 1.0 đạt độ lệch tối đa của cần analog ở khoảng cách 10% chiều rộng màn hình tính từ tâm. Giá trị trên 1.0 đạt độ lệch tối đa với quãng di chuyển con trỏ ngắn hơn. Giá trị dưới 1.0 cần nhiều hơn.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Hành trình chuột X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Hành trình chuột Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Hành trình đến hết lái</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Chuột di chuyển bao xa từ tâm đến hết lái, tính theo số đếm mà chuột báo. Số càng cao thì lái càng mịn và cần di tay nhiều hơn.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>số đếm</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Về tâm</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Tắt giữ vô lăng ở nơi tay bỏ lại. Lò xo đưa nó về trong Thời gian quay về. Từ telemetry kéo nó về như hai bánh trước của xe sẽ làm ở tốc độ và độ bám của trò chơi: đứng yên khi xe dừng, chắc hơn khi nhanh, nhẹ khi bánh trượt. Khi không trò chơi nào gửi telemetry, nó là lò xo. Từ lực của trò chơi để lực phản hồi của vô lăng ảo tự xoay nó.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Tắt</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Lò xo</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Từ telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Từ lực của trò chơi</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Thời gian quay về</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Thời gian Lò xo đưa vô lăng về được 95% quãng đường. Từ telemetry mất chừng này ở 100 km/h trên đường khô.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Lái</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Luôn luôn cho chuột lái mọi lúc. Khi đang giữ chỉ cho chuột lái trong lúc Đầu vào lái được giữ. Bật/tắt bật hoặc tắt việc lái mỗi lần nhấn Đầu vào lái. Khi chuột không lái, vô lăng giữ nguyên chỗ hoặc về tâm, nên một con chuột vừa lái vừa nhìn quanh được.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Luôn luôn</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Khi đang giữ</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Bật/tắt</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Đầu vào lái</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Nút cho phép chuột lái, trên cùng thiết bị với hành trình của chuột. Khi không chọn nút nào, chuột luôn lái.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Làm mượt</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Làm đều một con chuột báo không đều. Vô lăng chậm sau tay chừng này thời gian. 0 là tắt.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Khóa theo tốc độ</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Khi bật Telemetry trò chơi, còn lại bao nhiều hành trình lái ở 200 km/h. Ở 100% toàn bộ hành trình có ở mọi tốc độ.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Con trỏ IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Con trỏ IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Độ sáng IR</value></data>
@@ -3567,8 +3591,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Xoay toàn bộ bản đồ gạt đi số độ này. Dương là theo chiều kim đồng hồ. Bắt dính được áp dụng sau độ lệch.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Khi lớp chứa Flick stick được kích hoạt trong lúc cần analog đã lệch sẵn, thực hiện cú gạt ngay lập tức. Tắt sẽ giữ camera đứng yên và theo dõi độ xoay từ góc cần hiện tại.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Phản hồi khi hết lái</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tín hiệu khi cần analog ở chế độ đánh lái hết lái</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Khi một cần analog đặt ở chế độ đánh lái được xoay đến hết lái, phát một tín hiệu (rung, cò hoặc thanh đèn) để bạn cảm nhận được giới hạn. Mặc định tắt hết.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Tín hiệu khi lái đến hết lái</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Khi một cần analog ở chế độ đánh lái, một đầu vào Chuyển động ngả hoặc một đầu vào Hành trình chuột đến hết lái, phát một tín hiệu (rung, cò hoặc thanh đèn) để bạn cảm nhận được giới hạn. Mặc định tắt hết.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Xung rung khi hết lái</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Rung cò khi hết lái</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Xung thanh đèn khi hết lái</value></data>
@@ -4547,6 +4571,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Bật/tắt phím {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Đưa con quay hồi chuyển về giữa</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Đưa các mốc ngắm tích lũy của con quay hồi chuyển trên tay cầm về không khi nhấn. Lịch sử làm mượt được xóa, vị trí trung lập của Chuyển động ngả được lấy lại, ước lượng trọng lực được khởi tạo lại từ tư thế hiện tại của tay cầm, và độ xoay mà các hàng Chuyển động pitch, yaw và roll đã tạo ra được hoàn tác.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Đưa lái bằng chuột về giữa</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Đưa vô lăng của mọi đầu vào Hành trình chuột trên tay cầm ảo này về lại tâm.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Bất kỳ thiết bị nào)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu biến một cần analog hoặc bàn cảm ứng vật lý thành một vòng tròn hoặc lưới trên màn hình. Hãy nhấn + bên cạnh Menu để tạo một menu, chọn thứ sẽ mở nó, rồi đặt cho từng ô một tên và một hành động.</value></data>

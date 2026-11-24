@@ -260,6 +260,7 @@ namespace PadForge.ViewModels
             Raise(nameof(IsLineUnassigned));
             Raise(nameof(LineDirection));
             Raise(nameof(ModeChoices));
+            RaiseMouseTravel();
         }
     }
 }

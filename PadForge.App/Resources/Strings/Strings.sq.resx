@@ -2625,6 +2625,30 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozicioni i mausit Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Ndjeshmëri</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ndjeshmëria e kursorit për çdo burim. 1.0 arrin devijimin e plotë të levës në 10% të gjerësisë së ekranit nga qendra. Vlerat mbi 1.0 arrijnë devijimin e plotë me më pak lëvizje të kursorit. Vlerat nën 1.0 kërkojnë më shumë.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Lëvizja e mausit X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Lëvizja e mausit Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Lëvizja deri në kyçje të plotë</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Sa lëviz mausi nga qendra deri në kyçje të plotë, në njësitë që raporton mausi. Një numër më i lartë drejton më imët dhe kërkon më shumë lëvizje të dorës.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>njësi</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Qendërzimi</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Joaktiv e mban timonin aty ku e la dora. Susta e kthen brenda Kohës së kthimit. Nga telemetria e tërheq si gomat e përparme të një makine, me shpejtësinë dhe ngjitjen e lojës: i palëvizur kur makina qëndron, më i fortë me shpejtësinë, i lehtë kur gomat rrëshqasin. Pa lojë që dërgon telemetri është susta. Nga forca e lojës lejon që reagimi i forcës i vetë timonit virtual ta kthejë.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Joaktiv</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Susta</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Nga telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Nga forca e lojës</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Koha e kthimit</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Sa kohë i duhet Sustës për ta kthyer timonin 95% të rrugës mbrapsht. Nga telemetria e merr këtë kohë në 100 km/h në rrugë të thatë.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Drejto</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Gjithmonë e lë mausin të drejtojë çdo çast. Gjatë mbajtjes e lë të drejtojë vetëm ndërsa mbahet Hyrja e drejtimit. Ndërro e ndez ose e fik drejtimin me çdo shtypje të Hyrjes së drejtimit. Ndërsa mausi nuk drejton, timoni qëndron ku është ose qendërzohet, ndaj një maus mund të drejtojë dhe të shikojë përreth.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Gjithmonë</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Gjatë mbajtjes</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Ndërro</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Hyrja e drejtimit</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butoni që e lejon mausin të drejtojë, në të njëjtën pajisje me lëvizjen e mausit. Pa asnjë të zgjedhur, mausi drejton gjithmonë.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Zbutja</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Rregullon një maus që raporton në mënyrë të pabarabartë. Timoni mbetet pas dorës me afërsisht kaq kohë. 0 e çaktivizon.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kyçja me shpejtësi</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Me Telemetrinë e lojës aktive, sa nga kyçja mbetet në 200 km/h. Në 100% e gjithë kyçja është aty në çdo shpejtësi.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Treguesi IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Treguesi IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Shkëlqimi IR</value></data>
@@ -3283,8 +3307,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>E kthen gjithë hartën e flick-ut me kaq gradë. Pozitive është në drejtim orar. Kapja zbatohet pas zhvendosjes.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kur shtresa që strehon Flick Stick aktivizohet me levën tashmë të devijuar, flick-u zhvillohet menjëherë. Joaktiv e mban kamerën të qetë dhe ndjek rrotullimin nga këndi aktual i levës.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Reagimi i kyçjes së drejtimit</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Sinjal në kyçje të plotë për një levë në mënyrë drejtimi</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kur një levë me mënyrë drejtimi kthehet deri në kyçje të plotë, luaj një sinjal (dridhje, këmbëz ose shirit drite) që ta ndiesh kufirin. Të gjitha joaktive si parazgjedhje.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Një sinjal kur drejtimi arrin kyçjen e plotë</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kur një levë në një mënyrë drejtimi, një hyrje Përkulje lëvizjeje ose një hyrje Lëvizja e mausit arrin kyçjen e plotë, luaj një sinjal (dridhje, këmbëz ose shirit drite) që ta ndiesh kufirin. Të gjitha joaktive si parazgjedhje.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Puls dridhjeje në kyçje</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Dridhje e këmbëzës në kyçje</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Puls i shiritit të dritës në kyçje</value></data>
@@ -4231,6 +4255,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Ndërro tastet {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Rivendos qendrën e xhiros</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Në shtypje, zeroon referencat e akumuluara të shënjestrimit me xhiro të kontrolluesit. Historiku i zbutjes pastrohet, pozicioni neutral i „Përkulje lëvizjeje“ rimerret, vlerësimi i gravitetit rinis nga pozicioni aktual i kontrolluesit, dhe kthimi që ndërtuan rreshtat „Anim lëvizjeje“, „Kthim lëvizjeje“ dhe „Rrotullim lëvizjeje“ zhbëhet.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Qendëro drejtimin me maus</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>E kthen në qendër timonin e çdo hyrjeje Lëvizja e mausit në këtë kontrollues virtual.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Çdo pajisje)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menytë</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menytë e kthejnë një levë fizike ose touchpad në një unazë ose rrjetë në ekran. Shtyp + pranë titullit Menytë për të krijuar një, zgjidh çfarë e hap, pastaj jepi çdo qelize një emër dhe një veprim.</value></data>

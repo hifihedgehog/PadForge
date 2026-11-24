@@ -2626,6 +2626,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Մուկի դիրք Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Զգայնութիւն</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Նշորդի զգայնութիւն՝ ըստ աղբիւրի։ 1.0-ի պարագային լծակի լման շեղումը կը հասնի կեդրոնէն էկրանի լայնութեան 10%-ին։ 1.0-էն բարձր արժէքները լման շեղման կը հասնին նշորդի աւելի քիչ տեղաշարժով։ 1.0-էն ցած արժէքները աւելի շատ կը պահանջեն։</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Մուկի ընթացք X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Մուկի ընթացք Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ընթացք մինչեւ սահման</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Որքան մուկը կը շարժի կեդրոնէն մինչեւ սահման, մուկին տուած հաշուարկներով։ Աւելի բարձր թիւը աւելի նուրբ կը ղեկավարէ եւ ձեռքի աւելի շատ շարժում կը պահանջէ։</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>հաշուարկ</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Կեդրոնացում</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Անջատուած» կերպով ղեկը կը մնայ հոն, ուր ձեռքը թողուց։ «Զսպանակ» կերպը զայն կը վերադարձնէ «Վերադարձի ժամանակ»-ի ընթացքին։ «Հեռաչափութենէն» կերպը զայն ետ կը քաշէ այնպէս, ինչպէս ինքնաշարժին առջեւի անուադողերը պիտի քաշէին խաղին արագութեան եւ կառչումին համեմատ՝ անշարժ վիճակի մէջ ոչինչ, արագութեան հետ աւելի ամուր, թեթեւ՝ երբ անուադողերը սահին։ Երբ ոչ մէկ խաղ հեռաչափութիւն կը ղրկէ, ան զսպանակի պէս կը գործէ։ «Խաղի ուժէն» կերպը թոյլ կու տայ, որ վիրթուալ ղեկին սեփական ուժային հետադարձ կապը զայն դարձնէ։</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Անջատուած</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Զսպանակ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Հեռաչափութենէն</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Խաղի ուժէն</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Վերադարձի ժամանակ</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Որքան ժամանակի մէջ «Զսպանակ» կերպը ղեկը կը վերադարձնէ ճամբուն 95%-ը։ «Հեռաչափութենէն» կերպը նոյնքան կը տեւէ 100 km/h արագութեամբ, չոր ճամբու վրայ։</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Ղեկավարել</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Միշտ» կերպով մուկը կը ղեկավարէ ամէն ժամանակ։ «Սեղմած պահած ատեն» կերպով ան կը ղեկավարէ միայն մինչ «Ղեկավարման մուտք»-ը սեղմուած է։ «Փոխարկում» կերպը «Ղեկավարման մուտք»-ի ամէն սեղմումով ղեկավարումը կը միացնէ կամ կ՚անջատէ։ Մինչ մուկը չի ղեկավարեր, ղեկը կը մնայ իր տեղը կամ կը կեդրոնանայ, որպէսզի նոյն մուկը կարենայ թէ՛ ղեկավարել, թէ՛ շուրջը նայիլ։</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Միշտ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Սեղմած պահած ատեն</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Փոխարկում</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ղեկավարման մուտք</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Այն կոճակը, որ թոյլ կու տայ մուկին ղեկավարել, նոյն սարքին վրայ, ուր մուկին ընթացքն է։ Եթէ ոչ մէկը ընտրուած է, մուկը միշտ կը ղեկավարէ։</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Հարթեցում</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Կը հաւասարեցնէ անհաւասարաչափ տեղեկագրող մուկը։ Ղեկը ձեռքէն մօտաւորապէս այսքան ետ կը մնայ։ 0՝ անջատուած։</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Սահման արագութեան ատեն</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Երբ «Խաղի հեռաչափութիւն» միացած է, սահմանին որքանը կը մնայ 200 km/h արագութեամբ։ 100%-ի պարագային ամբողջ սահմանը հասանելի է ամէն արագութեան։</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ցուցիչ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ցուցիչ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR պայծառութիւն</value></data>
@@ -3300,8 +3324,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Ամբողջ ֆլիքի քարտէսը կը պտտցնէ այսքան աստիճանով։ Դրական արժէքը ժամացոյցի սլաքի ուղղութեամբ է։ Կլորացումը կը կիրարկուի շեղումէն ետք։</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Երբ ֆլիք լծակը պարունակող շերտը կը գործարկուի, եւ լծակը արդէն շեղուած է, ֆլիքը անմիջապէս կը գործէ։ Անջատ ըլլալու պարագային տեսախցիկը անշարժ կը մնայ, եւ պտոյտը կը հետեւի լծակի ներկայ անկիւնէն։</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Ղեկի սահմանի արձագանգ</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ազդանշան սահմանին՝ ղեկի կերպով լծակի համար</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Երբ ղեկի կերպով լծակը ամբողջովին կը դարձուի մինչեւ սահմանը, ազդանշան մը կը տրուի (թրթռում, ձգան կամ լուսաշերտ), որպէսզի սահմանը զգաք։ Լռելեայն բոլորը անջատ են։</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ազդանշան, երբ ղեկը սահմանին հասնի</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Երբ ղեկի կերպով լծակը, «Շարժման թեքում» մուտքը կամ «Մուկի ընթացք» մուտքը հասնի սահմանին, ազդանշան մը կը տրուի (թրթռում, ձգան կամ լուսաշերտ), որպէսզի սահմանը զգաք։ Լռելեայն բոլորը անջատ են։</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Թրթռման զարկ սահմանին</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Ձգանի թրթռում սահմանին</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Լուսաշերտի զարկ սահմանին</value></data>
@@ -4248,6 +4272,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Փոխարկել ստեղները՝ {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ժիրոսքոփի վերակեդրոնացում</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Սեղմելու պահուն կը զերօյացնէ կառավարիչին ժիրոսքոփի կուտակուած նշանառութեան յենակէտերը։ Հարթեցման պատմութիւնը կը մաքրուի, «Շարժման թեքում»-ի չէզոքը նորէն կ'արձանագրուի, ծանրութեան գնահատումը կը վերսկսի կառավարիչին ներկայ դիրքէն, եւ «Շարժման առաջ-ետ թեքում», «աջ-ձախ դարձ» եւ «կողային թեքում» տողերուն կառուցած դարձը կը չեղարկուի։</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Կեդրոնացնել մուկի ղեկը</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Այս վիրթուալ կառավարիչին վրայ «Մուկի ընթացք» ամէն մուտքի ղեկը կեդրոն կը վերադարձնէ։</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Որեւէ սարք)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Ցանկեր</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Ցանկերը ֆիզիքական լծակը կամ հպման վահանակը կը վերածեն պաստառի վրայ օղակի կամ ցանցի։ Սեղմեցէք «Ցանկեր» վերնագրին քովի + նշանը՝ ցանկ մը ստեղծելու համար, ընտրեցէք զայն բացողը, ապա իւրաքանչիւր բջիջի անուն եւ գործողութիւն տուէք։</value></data>

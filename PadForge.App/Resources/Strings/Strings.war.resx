@@ -1400,7 +1400,7 @@
   <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog nga pagguyod</value></data>
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, wala nga kamot</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tuo nga kamot</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas ha full lock han stick nga ginagamit nga manibela</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas kun naabot han manibela an full lock</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble tikang ha bass han audio han sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Nagpapadara han rumble han mga main nga motor ngadto ha mga trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble han trigger tikang ha bass han audio han sistema</value></data>
@@ -1643,6 +1643,30 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Gindiri han PadForge an download kay diri ini an database han controller nga ginlalaoman hini. Waray nagbag-o.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ginagamit an bag-o nga mapping ha sunod nga pagkonek han controller hini.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ginagamit an ginbag-o nga mapping ha sunod nga pagsugod han PadForge.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Lakat han mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Lakat han mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Lakat tubtob ha Full Lock</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kun kakadiin an lakat han mouse tikang ha butnga tubtob ha full lock, ha counts nga ginrereport han mouse. An mas hitaas nga numero mas pino magmanibela ngan mas damo an lakat han kamot.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Pagbalik ha butnga</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>An Sarado nagkakapot han manibela kun diin ini ginbayaan han kamot. An Spring nagbabalik hini ha sulod han Oras han pagbalik. An Tikang ha telemetry nagbabalik hini sugad han atubangan nga ligid han awto ha kakusog ngan kapot han dula: waray lihok kun nakaundang, mas mabaskog kun makusog, magaan kun nadadanlog an ligid. Kun waray dula nga nagpapadara hin telemetry, sugad ini han Spring. An Tikang ha pwersa han dula nagtutugot ha kalugaringon nga force feedback han virtual nga manibela nga magliko hini.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Sarado</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Tikang ha telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Tikang ha pwersa han dula</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Oras han pagbalik</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Kun pira ka oras an kinahanglan han Spring basi ibalik an manibela hin 95% han agianan. An Tikang ha telemetry nagkikinahanglan hini nga oras ha 100 km/h ha mamara nga dalan.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Magmanibela</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>An Pirme nagtutugot ha mouse nga magmanibela ha ngatanan nga oras. An Samtang ginpipindot nagtutugot hini nga magmanibela la samtang ginpipindot an Input han pagmanibela. An Toggle nagbubukas o nagsasara han pagmanibela ha kada pindot han Input han pagmanibela. Samtang diri nagmamanibela an mouse, nagpapabilin an manibela o nabalik ha butnga, salit an usa nga mouse makakamanibela ngan makakakita ha palibot.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Pirme</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Samtang ginpipindot</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input han pagmanibela</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>An button nga nagtutugot ha mouse nga magmanibela, ha pareho nga device han lakat han mouse. Kun waray pinili, pirme nagmamanibela an mouse.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pagpahamis</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ginpapapareho an mouse nga diri pareho an pag-report. Nasunod an manibela ha kamot hin mga sugad hini kahalaba. 0 an sarado.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock ha kakusog</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kun bukas an Game Telemetry, kun pira han lock an nabibilin ha 200 km/h. Ha 100% an bug-os nga lock aada ha kada kakusog.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibaro han nadiskonek nga device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibaro han nakakonek nga device</value></data>
 </root>

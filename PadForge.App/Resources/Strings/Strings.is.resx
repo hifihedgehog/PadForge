@@ -2859,6 +2859,30 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Staðsetning músar Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Næmi</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Næmi bendils fyrir hverja uppsprettu. 1.0 nær fullu útslagi pinna við 10% af breidd skjásins frá miðju. Gildi yfir 1.0 ná fullu útslagi með minni hreyfingu bendils. Gildi undir 1.0 þurfa meiri.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Færsla músar X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Færsla músar Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Færsla að endastoppi</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hve langt músin færist frá miðju að endastoppi, í þeim punktum sem músin tilkynnir. Hærri tala stýrir nákvæmar og krefst meiri handarfærslu.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>punktar</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Miðjun</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Slökkt heldur stýrinu þar sem höndin skildi við það. Gormur færir það til baka á skilatímanum. Úr fjarmælingum togar það til baka eins og framdekk bíls gera á hraða og gripi leiksins: kyrrt í kyrrstöðu, fastara með hraða, létt þegar dekkin skrika. Ef enginn leikur sendir fjarmælingar er það gormur. Úr krafti leiksins lætur kraftmótstöðu sýndarstýris snúa því.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Slökkt</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Gormur</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Úr fjarmælingum</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Úr krafti leiksins</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Skilatími</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hve lengi Gormur er að færa stýrið 95% af leiðinni til baka. Úr fjarmælingum tekur þetta langan tíma á 100 km/h á þurrum vegi.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Stýring</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Alltaf lætur músina stýra hvenær sem er. Á meðan haldið er lætur hana stýra aðeins á meðan Stýrinntak er haldið. Víxla kveikir eða slekkur á stýringu við hverja ýtingu á Stýrinntak. Á meðan músin stýrir ekki helst stýrið þar sem það er eða miðjast, svo ein mús getur stýrt og litið um.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Alltaf</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Á meðan haldið er</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Víxla</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Stýrinntak</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Takkinn sem lætur músina stýra, á sama tæki og færsla músarinnar. Ef enginn er valinn stýrir músin alltaf.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Sléttun</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jafnar út mús sem tilkynnir ójafnt. Stýrið dregst aftur úr hendinni um þennan tíma. 0 er slökkt.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Endastopp á hraða</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Með Leikjafjarmælingar í gangi, hve mikið af endastoppinu er eftir á 200 km/h. Við 100% er allt endastoppið til staðar á öllum hraða.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-bendill X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-bendill Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-birtustig</value></data>
@@ -3567,8 +3591,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Snýr öllu snúningskortinu um þennan fjölda gráða. Jákvætt er réttsælis. Festing gildir eftir hliðrunina.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Þegar lagið sem hýsir flick stick virkjast og pinninn er þegar með útslag er snúningurinn framkvæmdur strax. „Slökkt“ heldur myndavélinni kyrri og fylgir snúningi frá núverandi horni pinnans.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Svörun við endastopp</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Merki við endastopp fyrir pinna í stýrisham</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Þegar pinna í stýrisham er snúið alla leið að endastoppi er spilað merki (titringur, gikkur eða ljósrönd) svo þú finnir mörkin. Allt sjálfgefið slökkt.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Merki þegar stýring nær endastoppi</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Þegar pinni í stýrisham, inntakið Hreyfiskynjun: hneiging eða inntakið Færsla músar nær endastoppi er spilað merki (titringur, gikkur eða ljósrönd) svo þú finnir mörkin. Allt sjálfgefið slökkt.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Titringspúls við endastopp</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Gikkjatitringur við endastopp</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Ljósrandarpúls við endastopp</value></data>
@@ -4547,6 +4571,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Víxla lyklum {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Miðjusetja snúningsskynjara</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Núllstillir uppsafnaðar miðunarviðmiðanir snúningsskynjara leikjastýringarinnar við ýtingu. Sléttunarsaga hreinsast, hlutlaus staða fyrir „Hreyfiskynjun: hneiging“ er tekin upp aftur, mat á þyngdarafli er endurræst út frá núverandi stöðu leikjastýringarinnar og snúningurinn sem línurnar fyrir halla, snúning og veltu hreyfiskynjunar byggðu upp er afturkallaður.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Miðjusetja músarstýringu</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Setur stýri hvers inntaks Færsla músar á þessari sýndarstýringu aftur í miðju.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Hvaða tæki sem er)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Valmyndir</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Valmyndir breyta raunverulegum pinna eða snertifleti í hring eða hnitanet á skjánum. Ýttu á + við hliðina á „Valmyndir“ til að búa til valmynd, veldu hvað opnar hana og gefðu svo hverjum reit heiti og aðgerð.</value></data>

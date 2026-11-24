@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>მაუსის პოზიცია Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>მგრძნობელობა</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>კურსორის მგრძნობელობა თითოეული წყაროსთვის. 1.0-ზე სტიკის სრული გადახრა მიიღწევა ცენტრიდან ეკრანის სიგანის 10%-ზე. 1.0-ზე მეტი მნიშვნელობისას სრულ გადახრას კურსორის ნაკლები გადაადგილება აღწევს. 1.0-ზე ნაკლებისას მეტი სჭირდება.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>მაუსის სვლა X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>მაუსის სვლა Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>სვლა სრულ ზღვრამდე</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>რამდენს გადაადგილდება მაუსი ცენტრიდან სრულ ზღვრამდე, მაუსის მიერ გადაცემული ერთეულებით. რაც მეტია რიცხვი, მით უფრო ზუსტად ბრუნავს საჭე და მეტი ხელის სვლა სჭირდება.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ერთეული</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ცენტრირება</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>გამორთული ტოვებს საჭეს იქ, სადაც ხელმა დატოვა. ზამბარა მას უკან აბრუნებს დაბრუნების დროის განმავლობაში. ტელემეტრიიდან მას ისე უკან ექაჩება, როგორც მანქანის წინა საბურავები ექაჩებოდა თამაშის სიჩქარისა და მიჭერის მიხედვით: გაჩერებისას უძრავია, სიჩქარესთან ერთად მაგრდება, საბურავების სრიალისას მსუბუქია. თუ თამაში ტელემეტრიას არ აგზავნის, ის ზამბარაა. თამაშის ძალიდან ვირტუალური საჭის საკუთარ ძალურ უკუკავშირს საშუალებას აძლევს, ის მოაბრუნოს.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>გამორთული</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ზამბარა</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ტელემეტრიიდან</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>თამაშის ძალიდან</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>დაბრუნების დრო</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>რამდენ ხანში აბრუნებს ზამბარა საჭეს გზის 95%-ზე. ტელემეტრიიდან ამდენ ხანს მოითხოვს 100 km/h სიჩქარეზე მშრალ გზაზე.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>მართვა</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ყოველთვის მაუსს მუდმივად აძლევს მართვის საშუალებას. დაჭერისას მას მხოლოდ მაშინ აძლევს, როცა მართვის შეყვანა დაჭერილია. გადართვა მართვას რთავს ან თიშავს მართვის შეყვანის ყოველი დაჭერით. სანამ მაუსი არ მართავს, საჭე რჩება იქ, სადაც არის, ან ცენტრში ბრუნდება, ამიტომ ერთ მაუსს შეუძლია მართვაც და მიმოხედვაც.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ყოველთვის</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>დაჭერისას</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>გადართვა</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>მართვის შეყვანა</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ღილაკი, რომელიც მაუსს მართვის საშუალებას აძლევს, იმავე მოწყობილობაზე, რომელზეც მაუსის სვლაა. თუ არაფერია არჩეული, მაუსი ყოველთვის მართავს.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>გაგლუვება</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>არათანაბრად მოხსენებულ მაუსს არეგულირებს. საჭე ხელს დაახლოებით ამდენი ხნით ჩამორჩება. 0 გამორთულია.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>ზღვარი სიჩქარეზე</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ჩართული თამაშის ტელემეტრიისას, რამდენი რჩება ზღვრიდან 200 km/h სიჩქარეზე. 100%-ზე მთელი ზღვარი ყველა სიჩქარეზე არის.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR მაჩვენებელი X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR მაჩვენებელი Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR სიკაშკაშე</value></data>
@@ -3334,8 +3358,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>მთელ ფლიკ-რუკას ამდენი გრადუსით აბრუნებს. დადებითი არის საათის ისრის მიმართულებით. მიჯრა წანაცვლების შემდეგ მოქმედებს.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>როცა ფლიკ-სტიკის მასპინძელი შრე ჩაირთვება და სტიკი უკვე გადახრილია, ფლიკი მაშინვე გააქტიურდება. გამორთულის შემთხვევაში კამერა უძრავი რჩება და შემობრუნებას სტიკის მიმდინარე კუთხიდან აკვირდება.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>მართვის ზღვარზე უკუკავშირი</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>სიგნალი სრულ ზღვარზე მართვის რეჟიმის სტიკისთვის</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>როცა მართვის რეჟიმზე დაყენებული სტიკი ბოლომდე, სრულ ზღვრამდე ბრუნდება, ირთვება სიგნალი (ვიბრაცია, ტრიგერი ან შუქის ზოლი), რათა ზღვარი იგრძნოთ. ნაგულისხმევად ყველა გამორთულია.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>სიგნალი, როცა მართვა სრულ ზღვარს აღწევს</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>როცა მართვის რეჟიმის სტიკი, „მოძრაობის დახრის“ შეყვანა ან „მაუსის სვლის“ შეყვანა სრულ ზღვარს აღწევს, ირთვება სიგნალი (ვიბრაცია, ტრიგერი ან შუქის ზოლი), რათა ზღვარი იგრძნოთ. ნაგულისხმევად ყველა გამორთულია.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ვიბრაციის იმპულსი ზღვარზე</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ტრიგერის ვიბრაცია ზღვარზე</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>შუქის ზოლის იმპულსი ზღვარზე</value></data>
@@ -4282,6 +4306,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>კლავიშების გადართვა {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>გიროსკოპის ცენტრირება</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>დაჭერისას ანულებს კონტროლერის დაგროვებულ გიროსკოპის დამიზნების საორიენტაციო მნიშვნელობებს. დაგლუვების ისტორია იწმინდება, „მოძრაობის დახრის“ ნეიტრალური ხელახლა ფიქსირდება, სიმძიმის შეფასება კონტროლერის მიმდინარე პოზიდან ახლდება, ხოლო „მოძრაობის პიჩის“, „იაუსა“ და „როლის“ რიგებით აგებული ბრუნვა უქმდება.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>მაუსის საჭის ცენტრირება</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>აბრუნებს ცენტრში ამ ვირტუალური კონტროლერის ყველა „მაუსის სვლის“ შეყვანის საჭეს.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ნებისმიერი მოწყობილობა)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>მენიუები</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>მენიუები ფიზიკურ სტიკს ან ტაჩპედს ეკრანულ რგოლად ან ბადედ აქცევს. მენიუს შესაქმნელად დააჭირეთ + ღილაკს „მენიუების“ გვერდით, აირჩიეთ, რა ხსნის მას, შემდეგ კი თითოეულ უჯრას მიუთითეთ სახელი და მოქმედება.</value></data>

@@ -2124,6 +2124,30 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Muis positie Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Cursorgevoeligheid per bron. 1.0 bereikt volledige stickuitslag bij 10% van de schermbreedte vanaf het midden. Waarden boven 1.0 bereiken volledige uitslag met minder cursorbeweging. Waarden onder 1.0 hebben meer nodig.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Muisbeweging X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Muisbeweging Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Beweging tot volledige stuuraanslag</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hoe ver de muis van het midden tot de volledige stuuraanslag beweegt, in de tellen die de muis meldt. Een hoger getal stuurt fijner en vraagt meer handbeweging.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>tellen</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centreren</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Uit laat het stuur staan waar de hand het liet. Veer brengt het terug binnen de Terugkeertijd. Uit telemetrie trekt het terug zoals de voorbanden van een auto dat doen bij de snelheid en grip van het spel: stil bij stilstand, steviger met snelheid, licht als de banden glijden. Zonder een spel dat telemetrie stuurt is het de veer. Uit de kracht van het spel laat de eigen force feedback van een virtueel stuur het draaien.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Veer</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Uit telemetrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Uit de kracht van het spel</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Terugkeertijd</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hoe lang Veer erover doet om het stuur 95% van de weg terug te brengen. Uit telemetrie doet er zo lang over bij 100 km/h op een droge weg.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Sturen</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Altijd laat de muis te allen tijde sturen. Zolang ingedrukt laat hem alleen sturen zolang de Stuurinvoer wordt ingedrukt. Schakelen zet het sturen aan of uit bij elke druk op de Stuurinvoer. Zolang de muis niet stuurt, blijft het stuur staan of centreert het, zodat één muis kan sturen en rondkijken.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Altijd</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Zolang ingedrukt</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Schakelen</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Stuurinvoer</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>De knop waarmee de muis mag sturen, op hetzelfde apparaat als de muisbeweging. Als er geen is gekozen, stuurt de muis altijd.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Vloeiend maken</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Egaliseert een muis die onregelmatig meldt. Het stuur loopt ongeveer zo lang achter op de hand. 0 is uit.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Aanslag bij snelheid</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Met Gametelemetrie aan: hoeveel van de stuuraanslag er over is bij 200 km/h. Bij 100% is de hele aanslag bij elke snelheid beschikbaar.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-klik</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} Y</value></data>
@@ -2857,8 +2881,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellingen voor de invoer "Bewegingshelling": kantel de controller als een stuur. Wijs "Bewegingshelling" toe aan een stick-as onder Toewijzingen.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Bewegingsbesturing herstellen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Een signaal bij volledige stuuraanslag van een stick</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer een stick die op een stuurmodus is ingesteld helemaal tot de volledige stuuraanslag wordt gedraaid, krijg je een signaal (rumble, trigger of lichtbalk) zodat je de limiet voelt. Alles staat standaard uit.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Een signaal wanneer het sturen de volledige stuuraanslag bereikt</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer een stick in een stuurmodus, een Motion Lean-invoer of een Muisbeweging-invoer de volledige stuuraanslag bereikt, krijg je een signaal (rumble, trigger of lichtbalk) zodat je de limiet voelt. Alles staat standaard uit.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Triggervibratie bij stuuraanslag</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag</value></data>
@@ -4512,6 +4536,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toetsen {0} schakelen</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro hercentreren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zet de opgebouwde gyro-richtreferenties van de pad op nul bij indrukken. De smoothing-geschiedenis wordt gewist, het Motion Lean-neutraalpunt wordt opnieuw vastgelegd, de zwaartekrachtschatting wordt opnieuw geïnitialiseerd vanuit de huidige stand van de controller, en de draaiing van de rijen Beweging Pitch, Yaw en Roll wordt ongedaan gemaakt.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Muissturing centreren</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Brengt het stuur van elke Muisbeweging-invoer op deze virtuele controller terug naar het midden.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu's</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu's veranderen een fysieke stick of touchpad in een ring of raster op het scherm. Druk op + naast Menu's om er een te maken, kies waarmee het opent en geef elke cel daarna een naam en een actie.</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Nieuw menu</value></data>

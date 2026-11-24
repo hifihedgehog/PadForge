@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>موقعیت ماوس Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>حساسیت</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>حساسیت نشانگر برای هر منبع. در 1.0، انحراف کامل استیک در فاصله 10% پهنای صفحه از مرکز به دست می‌آید. مقادیر بالاتر از 1.0 با حرکت کمتر نشانگر به انحراف کامل می‌رسند. مقادیر پایین‌تر از 1.0 به حرکت بیشتری نیاز دارند.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>جابه‌جایی ماوس X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>جابه‌جایی ماوس Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>جابه‌جایی تا قفل کامل</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماوس از مرکز تا قفل کامل چقدر حرکت می‌کند، بر حسب شمارش‌هایی که ماوس گزارش می‌دهد. عدد بالاتر ظریف‌تر هدایت می‌کند و حرکت بیشتری از دست می‌خواهد.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>شمارش</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>مرکزگیری</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«خاموش» فرمان را همان‌جا که دست رها کرده نگه می‌دارد. «فنر» آن را در «زمان بازگشت» برمی‌گرداند. «از تله‌متری» آن را مثل لاستیک‌های جلوی یک خودرو، با سرعت و چسبندگی بازی برمی‌کشد: در توقف ثابت، با سرعت سفت‌تر، و وقتی لاستیک‌ها سر می‌خورند سبک. وقتی هیچ بازی تله‌متری نمی‌فرستد همان فنر است. «از نیروی بازی» اجازه می‌دهد بازخورد نیروی خود فرمان مجازی آن را بچرخاند.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>خاموش</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>فنر</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>از تله‌متری</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>از نیروی بازی</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>زمان بازگشت</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>«فنر» چقدر طول می‌کشد تا فرمان را 95% راه برگرداند. «از تله‌متری» در 100 km/h روی جاده خشک همین‌قدر طول می‌کشد.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>هدایت</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«همیشه» به ماوس اجازه می‌دهد همیشه هدایت کند. «هنگام نگه داشتن» فقط تا وقتی «ورودی هدایت» نگه داشته شده است. «تغییر وضعیت» با هر فشار «ورودی هدایت» هدایت را روشن یا خاموش می‌کند. تا وقتی ماوس هدایت نمی‌کند، فرمان همان‌جا می‌ماند یا به مرکز برمی‌گردد، پس یک ماوس هم می‌تواند هدایت کند و هم اطراف را نگاه کند.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>همیشه</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>هنگام نگه داشتن</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>تغییر وضعیت</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ورودی هدایت</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>دکمه‌ای که به ماوس اجازه هدایت می‌دهد، روی همان دستگاهی که جابه‌جایی ماوس از آن است. اگر هیچ‌کدام انتخاب نشود، ماوس همیشه هدایت می‌کند.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>هموارسازی</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ماوسی را که ناهموار گزارش می‌دهد هموار می‌کند. فرمان به‌اندازه این مدت پشت دست می‌ماند. 0 یعنی خاموش.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>قفل در سرعت</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>با روشن بودن «تله‌متری بازی»، چقدر از قفل در 200 km/h می‌ماند. در 100% کل قفل در هر سرعتی هست.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>نشانگر IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>نشانگر IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>روشنایی IR</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>کل نقشه فلیک را به این تعداد درجه می‌چرخاند. مثبت ساعت‌گرد است. چسبیدن پس از آفست اعمال می‌شود.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>وقتی لایه میزبان فلیک استیک در حالی فعال شود که استیک از پیش منحرف است، فلیک بی‌درنگ اجرا می‌شود. «خاموش» دوربین را ثابت نگه می‌دارد و چرخش را از زاویه کنونی استیک دنبال می‌کند.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>بازخورد قفل هدایت</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نشانه‌ای در قفل کامل برای استیک در حالت هدایت</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>وقتی استیکی که روی یک حالت هدایت تنظیم شده تا انتها (قفل کامل) چرخانده شود، نشانه‌ای (لرزش، ماشه یا نوار نوری) پخش می‌شود تا این حد را حس کنید. به‌طور پیش‌فرض همه خاموش‌اند.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>نشانه‌ای هنگام رسیدن هدایت به قفل کامل</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>وقتی استیکی در حالت هدایت، یک ورودی «کج کردن حرکتی» یا یک ورودی «جابه‌جایی ماوس» به قفل کامل برسد، نشانه‌ای (لرزش، ماشه یا نوار نوری) پخش می‌شود تا این حد را حس کنید. به‌طور پیش‌فرض همه خاموش‌اند.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>تپش لرزش هنگام قفل</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>لرزش ماشه هنگام قفل</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>تپش نوار نوری هنگام قفل</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>تغییر وضعیت کلیدهای {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>بازگرداندن ژیروسکوپ به مرکز</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>با فشار دادن، مرجع‌های انباشته نشانه‌گیری ژیروسکوپ گیم‌پد را صفر می‌کند. تاریخچه هموارسازی پاک می‌شود، حالت خنثی «کج کردن حرکتی» دوباره ثبت می‌شود، برآورد گرانش از وضعیت کنونی کنترلر از نو مقداردهی می‌شود و چرخشی که ردیف‌های «پیچ حرکتی»، «یاو حرکتی» و «رول حرکتی» ساخته بودند لغو می‌شود.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>مرکز کردن هدایت ماوس</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>فرمان هر ورودی «جابه‌جایی ماوس» روی این کنترلر مجازی را به مرکز برمی‌گرداند.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(هر دستگاه)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>منوها</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>منوها یک استیک یا تاچ‌پد فیزیکی را به یک حلقه یا شبکه روی صفحه تبدیل می‌کنند. برای ساختن منو، + کنار «منوها» را فشار دهید، انتخاب کنید با چه چیزی باز شود و سپس به هر خانه یک نام و یک کنش بدهید.</value></data>

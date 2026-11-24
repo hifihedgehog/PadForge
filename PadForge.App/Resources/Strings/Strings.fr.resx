@@ -2104,6 +2104,30 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Position souris Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilité du curseur par source. 1.0 atteint la déflexion complète du stick à 10 % de la largeur de l'écran depuis le centre. Les valeurs supérieures à 1.0 atteignent la déflexion complète avec moins de déplacement du curseur. Les valeurs inférieures à 1.0 en demandent plus.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Course souris X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Course souris Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Course jusqu'à la butée</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>La distance dont la souris se déplace du centre à la butée, en pas rapportés par la souris. Un nombre plus élevé donne une direction plus fine et demande plus de course de la main.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>pas</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Recentrage</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Désactivé laisse le volant là où la main l'a laissé. Ressort le ramène sur la Durée de retour. Selon la télémétrie le tire comme le feraient les roues avant d'une voiture à la vitesse et à l'adhérence du jeu : immobile à l'arrêt, plus ferme avec la vitesse, léger quand les pneus glissent. Sans jeu qui envoie la télémétrie, c'est le ressort. Selon la force du jeu laisse le retour de force d'un volant virtuel le faire tourner.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Ressort</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Selon la télémétrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Selon la force du jeu</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Durée de retour</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Le temps que met Ressort à ramener le volant à 95% du chemin. Selon la télémétrie met ce temps à 100 km/h sur route sèche.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Direction</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Toujours laisse la souris diriger en permanence. Tant que maintenu la laisse diriger seulement tant que l'Entrée de direction est maintenue. Bascule active ou désactive la direction à chaque appui sur l'Entrée de direction. Quand la souris ne dirige pas, le volant reste en place ou se recentre, si bien qu'une seule souris peut diriger et regarder autour.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Toujours</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Tant que maintenu</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Bascule</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrée de direction</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Le bouton qui permet à la souris de diriger, sur le même appareil que la course de la souris. Si aucun n'est choisi, la souris dirige toujours.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Lissage</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Lisse une souris qui rapporte son mouvement de façon irrégulière. Le volant suit la main avec environ ce retard. 0 désactive.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Butée à vitesse</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Avec la télémétrie de jeu activée, la part de la butée qui reste à 200 km/h. À 100%, toute la butée est disponible à chaque vitesse.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic du pavé tactile</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} Y</value></data>
@@ -2837,8 +2861,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Réglages de l’entrée "Inclinaison de mouvement" : inclinez la manette comme un volant. Affectez "Inclinaison de mouvement" à un axe de stick dans la section Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Réinitialiser la direction par mouvement</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée de braquage</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un signal en butée pour un stick en mode direction</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quand un stick configuré en mode direction est tourné à fond jusqu'en butée de braquage, déclenche un signal (vibration, gâchette ou barre lumineuse) pour vous faire sentir la limite. Tout est désactivé par défaut.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un signal quand la direction atteint la butée</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quand un stick en mode direction, une entrée Motion Lean ou une entrée Course souris atteint la butée, déclenche un signal (vibration, gâchette ou barre lumineuse) pour vous faire sentir la limite. Tout est désactivé par défaut.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibration des gâchettes en butée</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulsation de la barre lumineuse en butée</value></data>
@@ -4492,6 +4516,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Basculer les touches {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrer le gyroscope</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Remet à zéro les références de visée gyroscopique accumulées du pad à l'appui. L'historique de lissage s'efface, le neutre du Motion Lean se recapture, l'estimation de gravité se réinitialise depuis la pose actuelle de la manette, et la rotation des lignes Mouvement tangage, lacet et roulis est annulée.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Recentrer la direction à la souris</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Remet au centre le volant de chaque entrée Course souris de ce contrôleur virtuel.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Les menus transforment un stick ou un pavé tactile physique en anneau ou grille à l'écran. Appuyez sur + à côté de Menus pour en créer un, choisissez ce qui l'ouvre, puis donnez à chaque cellule un nom et une action.</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Nouveau menu</value></data>

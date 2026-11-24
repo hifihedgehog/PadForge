@@ -7,7 +7,7 @@ using PadForge.ViewModels;
 namespace PadForge.Common.Input
 {
     // Steering at-lock feedback layer (#94). When a steering source (winding /
-    // 2D angle-to-axis / motion-lean) saturates at full lock, fire opt-in haptic
+    // 2D angle-to-axis / motion-lean / mouse travel) saturates at full lock, fire opt-in haptic
     // feedback so the wheel "hits a wall." Every channel is per-slot and off by
     // default; physical writes honor the per-slot test target. Runs after the
     // MappingSet eval has updated this frame's lock state in SourceKindRuntime.
@@ -109,7 +109,8 @@ namespace PadForge.Common.Input
             float maxApproach = 0f;
             foreach (var row in ms.Rows)
             {
-                if (row?.Sources == null || !IsSteeringTarget(row.Target)) continue;
+                if (row?.Sources == null) continue;
+                bool stickRow = IsSteeringTarget(row.Target);
                 for (int si = 0; si < row.Sources.Count; si++)
                 {
                     var src = row.Sources[si];
@@ -118,10 +119,16 @@ namespace PadForge.Common.Input
                     // lock state lives in the same SourceKindRuntime machine.
                     // A row modifier keeps the descriptor its source had and
                     // steers nothing, so its stale lock state is no feedback.
-                    if (src == null || IsRowModifierSource(src)
-                        || !(IsSteeringKind(src.Kind)
-                             || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)
-                             || SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor)))
+                    // A "Mouse Travel" input (#597) keeps its lock state there
+                    // too, and on any row: its wheel has locks of its own
+                    // whatever it drives, a virtual wheel's steering axis
+                    // first of all, which is no gamepad stick.
+                    if (src == null || IsRowModifierSource(src)) continue;
+                    if (!SourceEvaluator.IsMouseTravel(src)
+                        && !(stickRow
+                             && (IsSteeringKind(src.Kind)
+                                 || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)
+                                 || SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor))))
                         continue;
 
                     if (atRes)

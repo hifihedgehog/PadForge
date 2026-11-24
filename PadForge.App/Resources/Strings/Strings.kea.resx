@@ -3107,7 +3107,7 @@
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Resebe efeitus di gatilhu adaptativu i di lus di mods di jogu skrebedu pa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Liga saída di telemetria na jogu i manda-l pa es PC i pa es porta.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Na un emulador na es PC, djunta un fonti di muvimentu na 127.0.0.1 ku es porta.</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Avizu na limiti di un stick na modu di volanti</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Avizu kantu volanti txiga limiti</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrason di motoris prinsipal pa gatilhus</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrason di gatilhu di baxu di áudiu di sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morta di inklinason, Orientason di komandu</value></data>
@@ -3301,6 +3301,30 @@
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualiza gosi ta baxa bazi di dadus di komandus di komunidadi (SDL_GameControllerDB) di GitHub i ta guarda, na fixeru di konfigurason, mapiamentus ki es vérson di PadForge ka ten. Un mapiamentu novu ta uzadu só pa un komandu ki nada más ka ta lé suma gamepad, ki ka sta atribuídu i ki ka sta na Modu joystick brutu forsadu. Ripoi ta rimove tudu mapiamentu baxadu.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualiza gosi</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ta atualiza…</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Perkursu di mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Perkursu di mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Perkursu ti limiti</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kantu mouse ta move di sentru ti limiti, na kontajen ki mouse ta manda. Un númeru más altu ta guia más finu i ta pidi más movimentu di mon.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kontajen</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Sentraji</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Disligadu ta dexa volanti la undi mon dexa-l. Mola ta volta-l dentu di Tenpu di volta. Di telemetria ta puxa-l pa trás sima pneus di frenti di un karu ta faze ku velosidadi i aderénsia di jogu: fixu ku karu paradu, más firmi ku velosidadi, leve kantu pneus ta skorega. Si nenhun jogu ka sta ta manda telemetria, e ta funsiona sima Mola. Di forsa di jogu ta dexa force feedback di un volanti virtual vira-l.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Disligadu</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Mola</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Di telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Di forsa di jogu</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tenpu di volta</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Tenpu ki Mola ta leva pa volta volanti 95% di kaminhu. Di telemetria ta leva es tenpu a 100 km/h na un strada seku.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Guia</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempri ta dexa mouse guia tudu ora. Timenti ki sta primidu ta dexa-l guia só timenti ki Entrada di guia sta primidu. Alterna ta liga o disliga guia ku kada primida di Entrada di guia. Timenti ki mouse ka sta ta guia, volanti ta fika undi e sta o ta volta pa sentru, pur isu un mouse podi guia i odja ronda.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempri</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Timenti ki sta primidu</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alterna</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrada di guia</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Boton ki ta dexa mouse guia, na mésmu dispozitivu di perkursu di mouse. Sen nenhun skodjidu, mouse ta guia sempri.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavizason</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ta iguala un mouse ki ta manda dadus irregular. Volanti ta sigi mon ku más o menus es atrazu. 0 e disligadu.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limiti na velosidadi</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di jogu ligadu, kantu di limiti ki ta fika a 200 km/h. A 100% limiti interu sta la na tudu velosidadi.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avizu di dispozitivu dizkonektadu</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avizu di dispozitivu konektadu</value></data>
 </root>

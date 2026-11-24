@@ -2630,6 +2630,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>මූසික පිහිටීම Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>සංවේදීතාව</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>එක් එක් ප්‍රභවයට කර්සර සංවේදීතාව. 1.0 මධ්‍යයේ සිට තිර පළලින් 10% දී පූර්ණ ස්ටික් අපගමනයට ළඟා වේ. 1.0 ට වැඩි අගයන් අඩු කර්සර චලනයකින් පූර්ණ අපගමනයට ළඟා වේ. 1.0 ට අඩු අගයන්ට වැඩි චලනයක් අවශ්‍ය වේ.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>මූසික ගමන X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>මූසික ගමන Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>සම්පූර්ණ අගුල දක්වා ගමන</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>මූසිකය වාර්තා කරන ගණන් කිරීම්වලින්, මැද සිට සම්පූර්ණ අගුල දක්වා මූසිකය චලනය වන දුර. වැඩි අගයක් වඩා සියුම්ව හසුරුවන අතර අතේ වැඩි චලනයක් ගනී.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ගණන්</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>මධ්‍යගත කිරීම</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>“ක්‍රියාවිරහිතයි” අත තැබූ තැනම සුක්කානම රඳවා තබයි. “ස්ප්‍රිංගය” එය “ආපසු පැමිණීමේ කාලය” තුළ ආපසු ගෙන එයි. “ටෙලිමෙට්‍රි මඟින්” ක්‍රීඩාවේ වේගය සහ ග්‍රහණය අනුව මෝටර් රථයක ඉදිරි ටයර් අදින ආකාරයට එය ආපසු අදියි: නැවතී සිටින විට නිශ්චලයි, වේගය සමඟ ශක්තිමත්, ටයර් ලිස්සන විට සැහැල්ලුයි. කිසිදු ක්‍රීඩාවක් ටෙලිමෙට්‍රි නොයවන විට එය ස්ප්‍රිංගය වේ. “ක්‍රීඩාවේ බලයෙන්” අතථ්‍ය සුක්කානමක බල ප්‍රතිපෝෂණයට එය හැරවීමට ඉඩ දෙයි.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ක්‍රියාවිරහිතයි</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ස්ප්‍රිංගය</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ටෙලිමෙට්‍රි මඟින්</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ක්‍රීඩාවේ බලයෙන්</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>ආපසු පැමිණීමේ කාලය</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>“ස්ප්‍රිංගය” සුක්කානම 95% ක් ආපසු ගෙන ඒමට ගන්නා කාලය. “ටෙලිමෙට්‍රි මඟින්” වියළි මාර්ගයක 100 km/h දී මෙපමණ කාලයක් ගනී.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>හසුරුවන්න</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>“සැමවිටම” මූසිකයට සෑම විටම හැසිරවීමට ඉඩ දෙයි. “ඔබාගෙන සිටින අතරතුර” “හැසිරවීමේ ආදානය” ඔබාගෙන සිටින අතරතුර පමණක් හැසිරවීමට ඉඩ දෙයි. “ටොගල්” “හැසිරවීමේ ආදානය” එබීමෙන් එබීමට හැසිරවීම ක්‍රියාත්මක හෝ අක්‍රිය කරයි. මූසිකය හසුරුවන්නේ නැති අතරතුර සුක්කානම තිබෙන තැනම රැඳේ හෝ මැදට පැමිණේ, එබැවින් එක් මූසිකයකට හැසිරවීමටත් වටපිට බැලීමටත් හැක.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>සැමවිටම</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ඔබාගෙන සිටින අතරතුර</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ටොගල්</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>හැසිරවීමේ ආදානය</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>මූසිකයේ ගමනට අයත් උපාංගයේම, මූසිකයට හැසිරවීමට ඉඩ දෙන බොත්තම. කිසිවක් තෝරා නොමැති විට මූසිකය සැමවිටම හසුරුවයි.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>සුමටනය</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>අසමානව වාර්තා කරන මූසිකයක් සමාන කරයි. සුක්කානම ආසන්න වශයෙන් මෙපමණ කාලයක් අතට පසුපසින් පැමිණේ. 0 යනු අක්‍රියයි.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>වේගයේදී අගුල</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ක්‍රීඩා ටෙලිමෙට්‍රි ක්‍රියාත්මක විට, 200 km/h දී ඉතිරි වන අගුලේ ප්‍රමාණය. 100% දී සෑම වේගයකදීම සම්පූර්ණ අගුල ලැබේ.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR දර්ශකය X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR දර්ශකය Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR දීප්තිය</value></data>
@@ -3296,8 +3320,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>සම්පූර්ණ ෆ්ලික් සිතියම මෙම අංශක ගණනින් හරවයි. ධන අගය දක්ෂිණාවර්ත වේ. ස්නැප් කිරීම ඕෆ්සෙට් එකෙන් පසුව යෙදේ.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ඇති ස්ථරය, ස්ටික් එක දැනටමත් අපගමනය වී තිබියදී සක්‍රිය වූ විට, ෆ්ලික් එක වහාම ක්‍රියාත්මක කරන්න. අක්‍රිය නම් කැමරාව නිශ්චලව තබා, වත්මන් ස්ටික් කෝණයේ සිට භ්‍රමණය අනුගමනය කරයි.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>සුක්කානම් අගුළු ප්‍රතිපෝෂණය</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයේ ස්ටික් එකක සම්පූර්ණ අගුලේදී සංඥාවක්</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයකට සැකසූ ස්ටික් එකක් සම්පූර්ණ අගුල දක්වාම හරවන විට, ඔබට සීමාව දැනෙන ලෙස සංඥාවක් (කම්පනය, ට්‍රිගරය හෝ ලයිට්බාර්) ලබා දෙන්න. පෙරනිමියෙන් සියල්ල අක්‍රියයි.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>සුක්කානම් හැසිරවීම සම්පූර්ණ අගුලට ළඟා වන විට සංඥාවක්</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>සුක්කානම් ප්‍රකාරයක ඇති ස්ටික් එකක්, චලන ඇල වීමේ ආදානයක් හෝ මූසික ගමන ආදානයක් සම්පූර්ණ අගුලට ළඟා වන විට, ඔබට සීමාව දැනෙන ලෙස සංඥාවක් (කම්පනය, ට්‍රිගරය හෝ ලයිට්බාර්) ලබා දෙන්න. පෙරනිමියෙන් සියල්ල අක්‍රියයි.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>අගුලේදී කම්පන ස්පන්දනය</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>අගුලේදී ට්‍රිගර කම්පනය</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>අගුලේදී ලයිට්බාර් ස්පන්දනය</value></data>
@@ -4244,6 +4268,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>යතුරු {0} ටොගල් කරන්න</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ගයිරෝ යළි කේන්ද්‍රගත කිරීම</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>එබීමේදී පෑඩ් එකේ සමුච්චිත ගයිරෝ ඉලක්ක යොමු ශුන්‍ය කරයි. සුමට කිරීමේ ඉතිහාසය හිස් වේ, චලන ඇල වීමේ උදාසීනය නැවත ග්‍රහණය කරයි, ගුරුත්ව ඇස්තමේන්තුව පාලකයේ වත්මන් ඉරියව්වෙන් නැවත ආරම්භ වේ, සහ චලන පිච්, යෝ, සහ රෝල් පේළි ගොඩනැඟූ කරකැවීම අහෝසි වේ.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>මූසික හැසිරවීම මධ්‍යගත කරන්න</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයේ සෑම මූසික ගමන ආදානයකම සුක්කානම නැවත මැදට ගෙන එයි.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ඕනෑම උපාංගයක්)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>මෙනු</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>මෙනු භෞතික ස්ටික් එකක් හෝ ටච්පෑඩ් එකක් තිරය මත වළල්ලක් හෝ ජාලකයක් බවට පත් කරයි. එකක් සෑදීමට මෙනු අසල ඇති + ඔබා, එය විවෘත කරන දේ තෝරා, පසුව සෑම කොටුවකටම නමක් සහ ක්‍රියාවක් දෙන්න.</value></data>

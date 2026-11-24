@@ -531,6 +531,117 @@ namespace PadForge.Engine.Data
         /// can create quirky behaviors on transition").</summary>
         [XmlAttribute] public bool ParamFlickOnEngage { get; set; } = false;
 
+        // ─── Mouse Travel (#597, descriptor family "Mouse Travel X" /
+        // "Mouse Travel Y"). A mouse's raw counts are added up and held as
+        // a position from -1 to 1, the way a hand holds a wheel
+        // (SourceKindRuntime.TickMouseTravel). The input that Steer waits
+        // on is the source's own gate (GateDescriptor). Each field below
+        // is left out of the file while it holds its default, so a source
+        // that reads another input saves as it did before the family
+        // existed, and a file from before it loads with the defaults. ───
+
+        public const double DefaultTravelCounts = 2000, MinTravelCounts = 100, MaxTravelCounts = 50000;
+        public const double DefaultTravelReturnTime = 0.75, MinTravelReturnTime = 0.05, MaxTravelReturnTime = 5.0;
+        public const double MaxTravelSmoothingMs = 100;
+        public const double DefaultTravelLockAtSpeed = 100, MinTravelLockAtSpeed = 20, MaxTravelLockAtSpeed = 100;
+
+        /// <summary>The values of <see cref="ParamTravelCentering"/>.</summary>
+        public const string TravelCenteringOff = "Off", TravelCenteringSpring = "Spring",
+            TravelCenteringTelemetry = "Telemetry", TravelCenteringGameForce = "GameForce";
+
+        /// <summary>The values of <see cref="ParamTravelSteer"/>.</summary>
+        public const string TravelSteerAlways = "Always", TravelSteerHeld = "Held", TravelSteerToggle = "Toggle";
+
+        /// <summary>Travel to Full Lock: the counts a mouse moves from center
+        /// to full lock, <see cref="MinTravelCounts"/> to
+        /// <see cref="MaxTravelCounts"/>, read through
+        /// <see cref="EffectiveTravelCounts"/>.</summary>
+        [XmlAttribute] public double ParamTravelCounts { get => _paramTravelCounts; set => _paramTravelCounts = Finite(value, _paramTravelCounts); }
+        private double _paramTravelCounts = DefaultTravelCounts;
+        public bool ShouldSerializeParamTravelCounts() => _paramTravelCounts != DefaultTravelCounts;
+
+        /// <summary>Centering: what brings the wheel back. "Off" holds it
+        /// where the hand left it, "Spring" returns it over
+        /// <see cref="ParamTravelReturnTime"/>, "Telemetry" returns it as a
+        /// car's front tires would at the game's speed and grip, and
+        /// "GameForce" lets the force a game sends the slot's virtual wheel
+        /// turn it. A string and no serialized enum, so the set only grows.
+        /// A value this build does not know reads as Off
+        /// (<see cref="EffectiveTravelCentering"/>).</summary>
+        [XmlAttribute] public string ParamTravelCentering { get; set; } = TravelCenteringOff;
+        public bool ShouldSerializeParamTravelCentering()
+            => !string.IsNullOrEmpty(ParamTravelCentering) && ParamTravelCentering != TravelCenteringOff;
+
+        /// <summary>Return Time in seconds: how long Spring takes to bring a
+        /// let-go wheel 95% of the way back, and Telemetry at 100 km/h on a
+        /// dry road. <see cref="MinTravelReturnTime"/> to
+        /// <see cref="MaxTravelReturnTime"/>, read through
+        /// <see cref="EffectiveTravelReturnTime"/>.</summary>
+        [XmlAttribute] public double ParamTravelReturnTime { get => _paramTravelReturnTime; set => _paramTravelReturnTime = Finite(value, _paramTravelReturnTime); }
+        private double _paramTravelReturnTime = DefaultTravelReturnTime;
+        public bool ShouldSerializeParamTravelReturnTime() => _paramTravelReturnTime != DefaultTravelReturnTime;
+
+        /// <summary>Steer: when the mouse turns the wheel. "Always", "Held"
+        /// (only while the gate's input is held) or "Toggle" (each press of
+        /// the gate's input turns steering on or off). With no gate picked
+        /// the mouse always steers. A gate beside "Always" holds the mouse
+        /// as it does beside "Held", the way a gate holds any source, and
+        /// the editor shows such a source as While Held and keeps no gate
+        /// under Always. A value this build does not know reads as Always
+        /// (<see cref="EffectiveTravelSteer"/>).</summary>
+        [XmlAttribute] public string ParamTravelSteer { get; set; } = TravelSteerAlways;
+        public bool ShouldSerializeParamTravelSteer()
+            => !string.IsNullOrEmpty(ParamTravelSteer) && ParamTravelSteer != TravelSteerAlways;
+
+        /// <summary>Smoothing in milliseconds, 0 to
+        /// <see cref="MaxTravelSmoothingMs"/>: the time constant the output
+        /// follows the wheel with, for a mouse that reports unevenly. 0 is
+        /// off.</summary>
+        [XmlAttribute] public double ParamTravelSmoothingMs { get => _paramTravelSmoothingMs; set => _paramTravelSmoothingMs = Finite(value, _paramTravelSmoothingMs); }
+        private double _paramTravelSmoothingMs;
+        public bool ShouldSerializeParamTravelSmoothingMs() => _paramTravelSmoothingMs != 0;
+
+        /// <summary>Lock at Speed in percent: how much of the lock is left
+        /// at 200 km/h, <see cref="MinTravelLockAtSpeed"/> to
+        /// <see cref="MaxTravelLockAtSpeed"/>. 100
+        /// leaves the lock alone at every speed.</summary>
+        [XmlAttribute] public double ParamTravelLockAtSpeed { get => _paramTravelLockAtSpeed; set => _paramTravelLockAtSpeed = Finite(value, _paramTravelLockAtSpeed); }
+        private double _paramTravelLockAtSpeed = DefaultTravelLockAtSpeed;
+        public bool ShouldSerializeParamTravelLockAtSpeed() => _paramTravelLockAtSpeed != DefaultTravelLockAtSpeed;
+
+        /// <summary>The counts to full lock the engine and the editors read
+        /// for a stored value. A value at or under 0 (a hand-edited profile)
+        /// reads as the default, since no travel reaches a lock at 0.</summary>
+        public static double EffectiveTravelCounts(double stored)
+            => stored > 0 ? System.Math.Clamp(stored, MinTravelCounts, MaxTravelCounts) : DefaultTravelCounts;
+
+        /// <summary>The Return Time the engine and the editors read for a
+        /// stored value, by the rule of <see cref="EffectiveTravelCounts"/>.</summary>
+        public static double EffectiveTravelReturnTime(double stored)
+            => stored > 0 ? System.Math.Clamp(stored, MinTravelReturnTime, MaxTravelReturnTime) : DefaultTravelReturnTime;
+
+        /// <summary>The Smoothing the engine and the editors read for a
+        /// stored value.</summary>
+        public static double EffectiveTravelSmoothingMs(double stored)
+            => System.Math.Clamp(stored, 0, MaxTravelSmoothingMs);
+
+        /// <summary>The Lock at Speed the engine and the editors read for a
+        /// stored value. A value at or under 0 reads as 100, which leaves
+        /// the lock alone.</summary>
+        public static double EffectiveTravelLockAtSpeed(double stored)
+            => stored > 0 ? System.Math.Clamp(stored, MinTravelLockAtSpeed, MaxTravelLockAtSpeed) : DefaultTravelLockAtSpeed;
+
+        /// <summary>The Centering the engine and the editors read for a
+        /// stored value: one of the four, Off for anything else.</summary>
+        public static string EffectiveTravelCentering(string stored)
+            => stored is TravelCenteringSpring or TravelCenteringTelemetry or TravelCenteringGameForce
+                ? stored : TravelCenteringOff;
+
+        /// <summary>The Steer the engine and the editors read for a stored
+        /// value: one of the three, Always for anything else.</summary>
+        public static string EffectiveTravelSteer(string stored)
+            => stored is TravelSteerHeld or TravelSteerToggle ? stored : TravelSteerAlways;
+
         // ─── Runtime "Menu {id} Item {k}" parse cache (not serialized:
         // XmlSerializer ignores non-public members). The per-tick readers
         // re-split the descriptor per row per tick on the poll thread;

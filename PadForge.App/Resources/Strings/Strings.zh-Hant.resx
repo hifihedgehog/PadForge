@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>滑鼠位置 Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>靈敏度</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>各來源的游標靈敏度。1.0 時，游標離中心達螢幕寬度的 10% 就達到搖桿完全偏轉。高於 1.0 時，較少的游標移動就能達到完全偏轉。低於 1.0 則需要更多。</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>滑鼠行程 X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>滑鼠行程 Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>轉到極限所需行程</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>滑鼠從中心移到極限所需的距離，以滑鼠回報的計數表示。數字越高，轉向越細緻，但需要更大的手部移動。</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>計數</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>回中</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>「關閉」會讓方向盤停在手放開的位置。「彈簧」會在「回位時間」內把它拉回。「來自遙測」會依遊戲的車速和抓地力，像車子前輪一樣把它拉回：靜止時不動，速度越快越緊，輪胎打滑時變輕。沒有遊戲傳送遙測時，就等同彈簧。「來自遊戲的力」讓虛擬方向盤自己的力回饋來轉動它。</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>關閉</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>彈簧</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>來自遙測</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>來自遊戲的力</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>回位時間</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>「彈簧」讓方向盤回到 95% 位置所需的時間。「來自遙測」則是在乾燥路面時速 100 km/h 下所需的時間。</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>轉向</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>「一律」讓滑鼠隨時轉向。「按住時」只在按住「轉向輸入」期間讓它轉向。「切換」每按一次「轉向輸入」就開啟或關閉轉向。滑鼠不轉向時，方向盤會停在原位或回中，所以同一支滑鼠可以轉向也可以環顧四周。</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>一律</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>按住時</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>切換</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>轉向輸入</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>讓滑鼠轉向的按鈕，與滑鼠行程位於同一個裝置。未選擇時，滑鼠一律轉向。</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>平滑</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>讓回報不穩定的滑鼠更平順。方向盤會比手慢大約這麼久。0 表示關閉。</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>高速時的轉角</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>開啟「遊戲遙測」時，在 200 km/h 下還剩多少轉角。設為 100% 時，任何速度都有完整轉角。</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>紅外線游標 X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>紅外線游標 Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>紅外線亮度</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>將整個快速轉向的方向對應旋轉這個度數。正值為順時針。貼齊會在偏移之後套用。</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>當 Flick Stick 所在的層啟用時搖桿已經偏轉，就立即執行快速轉向。關閉時鏡頭會保持不動，並從目前的搖桿角度開始追蹤旋轉。</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>轉向極限回饋</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>搖桿轉向到達極限時的提示</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>當設為轉向模式的搖桿一路轉到極限時，播放提示（震動、扳機或燈條），讓您感覺到極限。預設全部關閉。</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>轉向到達極限時的提示</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>當轉向模式的搖桿、「體感傾斜」輸入或「滑鼠行程」輸入到達極限時，播放提示（震動、扳機或燈條），讓您感覺到極限。預設全部關閉。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到達極限時震動脈衝</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到達極限時扳機震動</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>到達極限時燈條脈動</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切換按鍵 {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺儀回中</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下時將手把累積的陀螺儀瞄準基準歸零。平滑記錄會清除、「體感傾斜」的中立位置會重新擷取、重力估計會以控制器目前的姿態重新初始化，而「體感俯仰」、「體感偏航」和「體感滾轉」列累積的轉動也會復原。</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>滑鼠轉向回中</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>讓此虛擬控制器上每個「滑鼠行程」輸入的方向盤回到中心。</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>（任何裝置）</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>選單</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>選單可以將實體搖桿或觸控板變成螢幕上的環形或網格選單。按「選單」旁的 + 建立一個，選擇用什麼開啟它，然後為每個格子設定名稱和動作。</value></data>

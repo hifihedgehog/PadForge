@@ -1902,7 +1902,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rama me te oro</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ngā mākoro me ngā tahua</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ka pupuri i tētahi paku whakanekenga o te rākau kia whakaatu tonu ngā kēmu i ngā tohu controller</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He tohu ina tae te stick urungi ki tōna mutunga</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>He tohu ina tae te urungi ki tōna mutunga</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ka tuku i te wiri o ngā mōta matua ki ngā trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>He wiri trigger mai i te bass o te oro pūnaha</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ngā deadzone tītaha, te takotoranga o te controller</value></data>
@@ -2180,4 +2180,28 @@
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ka tikiake a Whakahōu ināianei i te pātengi raraunga controller a te hapori (SDL_GameControllerDB) mai i GitHub, ā, ka puritia ki te kōnae tautuhinga ngā mahere kāore i tēnei putanga o PadForge. Ka whakamahia he mahere hou mō tētahi controller anake e kore e pānuitia hei gamepad e tētahi atu mea, kāore i tautapatia, ā, kāore i te Aratau Joystick Mata. Ka tangohia e Tautuhi anō ngā mahere katoa i tikiakehia.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Whakahōu ināianei</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>E whakahōu ana…</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Nekenga kiore X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Nekenga kiore Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Nekenga ki te mutunga urungi</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Te tawhiti e neke ai te kiore mai i te pokapū ki te mutunga urungi, i ngā tatau e pūrongo ai te kiore. Ko te tau teitei ake ka urungi ngāwari ake, ā, ka nui ake te nekenga o te ringa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>tatau</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Whakapokapū</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ka pupuri a Weto i te wira ki te wāhi i waiho ai e te ringa. Ka whakahoki a Tāwhana i a ia i roto i te Wā hokinga. Ka tōia mai e Mai i te telemetry pērā i ngā wīra o mua o te motukā i te tere me te kukume o te kēmu: ka tū ina tū te motukā, ka kaha ake i te tere, ka māmā ina paheke ngā wīra. Ki te kore he kēmu e tuku telemetry, ka rite ki a Tāwhana. Ka tukua e Mai i te tōpana o te kēmu te urupare tōpana o te wira mariko kia huri i a ia.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Weto</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Tāwhana</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Mai i te telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Mai i te tōpana o te kēmu</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Wā hokinga</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Te roa e whakahoki ai a Tāwhana i te wira 95% o te ara. Ka pēnei te roa o Mai i te telemetry i te 100 km/h i te huarahi maroke.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Urungi</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ka tukua e I ngā wā katoa te kiore kia urungi i ngā wā katoa. Ka tukua e I te wā e puritia ana kia urungi anake i te wā e puritia ana te Tāuru urungi. Ka whakakā, ka whakaweto rānei a Whakawhiti i te urungi i ia pēhanga o te Tāuru urungi. I te wā kāore te kiore e urungi ana, ka noho te wira ki tōna wāhi, ka hoki rānei ki te pokapū, kia taea ai e te kiore kotahi te urungi me te titiro haere.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>I ngā wā katoa</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>I te wā e puritia ana</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Whakawhiti</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Tāuru urungi</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ko te pātene e taea ai e te kiore te urungi, i te pūrere kotahi me te nekenga o te kiore. Ki te kore he mea i kōwhiria, ka urungi te kiore i ngā wā katoa.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Whakamāeneene</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ka whakamāeneene i tētahi kiore e pūrongo kōtiti ana. Ka whai te wira i te ringa i muri tata i tēnei roa. Ko te 0 he weto.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Mutunga urungi i te tere</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ina kā te Telemetry kēmu, te nui o te mutunga urungi e toe ana i te 200 km/h. I te 100% kei reira te mutunga katoa i ia tere.</value></data>
 </root>

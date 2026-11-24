@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>माउस स्थिति Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>स्रोत-अनुसारको कर्सर संवेदनशीलता। 1.0 मा केन्द्रबाट स्क्रिन चौडाइको 10% मा पूर्ण स्टिक विचलन पुग्छ। 1.0 भन्दा माथिका मानहरू कम कर्सर यात्रामै पूर्ण विचलनमा पुग्छन्। 1.0 भन्दा तलका मानहरूलाई बढी यात्रा चाहिन्छ।</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>माउस यात्रा X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>माउस यात्रा Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>पूरा लकसम्मको यात्रा</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>केन्द्रबाट पूरा लकसम्म माउस कति सर्छ, माउसले रिपोर्ट गर्ने काउन्टमा। ठूलो सङ्ख्याले अझ मसिनो स्टियर गर्छ र हात बढी सार्नुपर्छ।</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>काउन्ट</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>केन्द्रीकरण</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>“अफ” ले ह्विललाई हातले छोडेकै ठाउँमा राख्छ। “स्प्रिङ” ले यसलाई फर्कने समयभित्र फर्काउँछ। “टेलिमेट्रीबाट” ले खेलको गति र पकडमा कारका अगाडिका टायरहरूले जस्तै यसलाई फर्काउँछ: रोकिँदा स्थिर, गतिसँगै बलियो, टायर चिप्लिँदा हलुका। कुनै खेलले टेलिमेट्री नपठाउँदा यो स्प्रिङ हुन्छ। “खेलको बलबाट” ले भर्चुअल ह्विलकै फोर्स फिडब्याकलाई यसलाई घुमाउन दिन्छ।</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>अफ</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>स्प्रिङ</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>टेलिमेट्रीबाट</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>खेलको बलबाट</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>फर्कने समय</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>“स्प्रिङ” ले ह्विललाई 95% फर्काउन लाग्ने समय। “टेलिमेट्रीबाट” लाई सुक्खा सडकमा 100 km/h मा यति नै समय लाग्छ।</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>स्टियर गर्नुहोस्</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>“सधैं” ले माउसलाई हर समय स्टियर गर्न दिन्छ। “थिचिराख्दा” ले स्टियर इनपुट थिचिराख्दा मात्र स्टियर गर्न दिन्छ। “टगल” ले स्टियर इनपुटको हरेक थिचाइमा स्टियरिङ अन वा अफ गर्छ। माउसले स्टियर नगर्दा ह्विल जहाँ छ त्यहीँ रहन्छ वा केन्द्रमा फर्कन्छ, त्यसैले एउटै माउसले स्टियर गर्न र वरिपरि हेर्न सक्छ।</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>सधैं</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>थिचिराख्दा</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>टगल</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>स्टियर इनपुट</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>माउसलाई स्टियर गर्न दिने बटन, माउसको यात्रा भएकै यन्त्रमा। कुनै नछानिएमा माउसले सधैं स्टियर गर्छ।</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>स्मूदिङ</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>असमान रूपमा रिपोर्ट गर्ने माउसलाई सम्याउँछ। ह्विल हातभन्दा लगभग यति समय पछि आउँछ। 0 भनेको बन्द हो।</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>गतिमा लक</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>गेम टेलिमेट्री अन हुँदा, 200 km/h मा लकको कति भाग बाँकी रहन्छ। 100% मा हरेक गतिमा पूरा लक उपलब्ध हुन्छ।</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR पोइन्टर X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR पोइन्टर Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR चमक</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>पूरै फ्लिक नक्सालाई यति डिग्रीले घुमाउँछ। धनात्मक मान घडीको दिशा हो। स्न्याप अफसेटपछि लागू हुन्छ।</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>फ्लिक स्टिक भएको लेयर स्टिक पहिल्यै विचलित अवस्थामा सक्रिय हुँदा, फ्लिक तुरुन्तै चलाउनुहोस्। बन्द हुँदा क्यामेरा स्थिर रहन्छ र हालको स्टिक कोणबाट घुमाइ ट्र्याक गर्छ।</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>स्टियरिङ लक फिडब्याक</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>स्टियरिङ मोडको स्टिक पूरा लकमा पुग्दा संकेत</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>स्टियरिङ मोडमा सेट गरिएको स्टिक पूरा लकसम्म घुमाइँदा, सीमा महसुस होस् भनेर संकेत (कम्पन, ट्रिगर वा लाइटबार) दिनुहोस्। पूर्वनिर्धारित रूपमा सबै बन्द।</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>स्टियरिङ पूरा लकमा पुग्दा संकेत</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>स्टियरिङ मोडमा रहेको स्टिक, मोसन झुकाव इनपुट वा माउस यात्रा इनपुट पूरा लकमा पुग्दा, सीमा महसुस होस् भनेर संकेत (कम्पन, ट्रिगर वा लाइटबार) दिनुहोस्। पूर्वनिर्धारित रूपमा सबै बन्द।</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>लकमा कम्पन पल्स</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>लकमा ट्रिगर कम्पन</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>लकमा लाइटबार पल्स</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>कुञ्जीहरू {0} टगल गर्नुहोस्</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>जाइरो रिसेन्टर</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>थिच्दा प्याडका सञ्चित जाइरो लक्ष्य सन्दर्भहरू शून्यमा फर्काउँछ। स्मूथिङ इतिहास खाली हुन्छ, मोसन झुकावको तटस्थ फेरि लिइन्छ, गुरुत्व अनुमान कन्ट्रोलरको हालको मुद्राबाट फेरि सुरु हुन्छ, र मोसन पिच, याउ र रोल पङ्क्तिहरूले बनाएको घुमाइ रद्द हुन्छ।</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>माउस स्टियरिङ केन्द्रमा ल्याउनुहोस्</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरका हरेक माउस यात्रा इनपुटको ह्विललाई केन्द्रमा फर्काउँछ।</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(कुनै पनि यन्त्र)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>मेनुहरू</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>मेनुहरूले भौतिक स्टिक वा टचप्याडलाई स्क्रिनमा देखिने रिङ वा ग्रिडमा बदल्छन्। मेनु बनाउन “मेनुहरू” छेउको + थिच्नुहोस्, त्यसलाई केले खोल्ने छान्नुहोस्, त्यसपछि प्रत्येक सेललाई नाम र कार्य दिनुहोस्।</value></data>

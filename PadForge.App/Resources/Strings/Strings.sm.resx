@@ -1158,7 +1158,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Gaioiga ma Paʻi</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Moli ma Leo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ma Menu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Se faʻailo pe a oʻo le stick foeuli i lona tapulaʻa</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Se faʻailo pe a oʻo le foeuli i lona tapulaʻa</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Gatete mai le bass i le leo o le komepiuta</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E auina atu le gatete o afi autū i trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatete o trigger mai le bass i le leo o le komepiuta</value></data>
@@ -1336,6 +1336,11 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>E leʻi suia le faʻamaumauga a le nuʻu talu mai le faʻafouga mulimuli.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>E faʻaaogā se faʻafanua fou i le isi taimi e fesoʻotaʻi ai lona masini.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>E faʻaaogā se faʻafanua ua suia i le isi taimi e amata ai PadForge.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>I taimi uma</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>A o ʻuʻu</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Le faamau e mafai ai e le mouse ona foeuli, i le masini lava e tasi ma le gaoioiga a le mouse. Afai e leai se mea ua filifilia, e foeuli pea le mouse.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Faʻailo o le Motusia o se Masini</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Faʻailo o le Fesoʻotaʻi o se Masini</value></data>
 </root>

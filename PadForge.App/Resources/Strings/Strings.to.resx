@@ -730,7 +730,7 @@
   <data name="Extras_Title" xml:space="preserve"><value>Ngaahi meʻa fakalahi</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ngalulu mo e Ongoʻi</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Maama mo e Leʻo</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Fakaʻilonga ʻi he ngataʻanga ʻo e stick ʻi he mode fakaʻuli</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Fakaʻilonga ʻi he taimi ʻoku aʻu ai ʻa e fakaʻuli ki hono ngataʻanga</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Tetetete mei he bass ʻi he ongo ʻo e sisitemi</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Fekauʻi ʻa e tetetete ʻo e ongo motor lalahi ki he ongo trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Tetetete trigger mei he bass ʻi he ongo ʻo e sisitemi</value></data>
@@ -852,4 +852,6 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Toʻo ʻa e lanu ʻe fā mei he fakatātā.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>ʻOku ʻikai lava ʻe PadForge ʻo lau ʻa e fakatātā ʻa Steam ki he vaʻinga ko ʻení.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hokohoko ʻa e Fekau</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>lau</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Maʻu pē</value></data>
 </root>

@@ -2625,6 +2625,30 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pelės padėtis Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Jautrumas</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio žymeklio jautrumas. Su 1.0 visas svirtelės nuokrypis pasiekiamas 10% ekrano pločio atstumu nuo centro. Didesnės nei 1.0 reikšmės visą nuokrypį pasiekia mažiau pajudinus žymeklį. Mažesnėms nei 1.0 reikia daugiau.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Pelės eiga X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Pelės eiga Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Eiga iki kraštinės padėties</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kiek pelė juda nuo centro iki kraštinės padėties, pelės pranešamais taškais. Didesnis skaičius vairuoja tiksliau ir reikalauja daugiau rankos judesio.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>taškų</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centravimas</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Išjungta palieka vairą ten, kur jį paliko ranka. Spyruoklė grąžina jį per Grįžimo laiką. Iš telemetrijos traukia jį atgal kaip automobilio priekiniai ratai, esant žaidimo greičiui ir sukibimui: stovint vietoje nejuda, didėjant greičiui tvirčiau, lengvai, kai ratai slysta. Jei joks žaidimas nesiunčia telemetrijos, tai spyruoklė. Iš žaidimo jėgos leidžia pačiam virtualaus vairo jėgos grįžtamajam ryšiui jį pasukti.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Išjungta</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spyruoklė</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Iš telemetrijos</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Iš žaidimo jėgos</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Grįžimo laikas</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Tiek laiko Spyruoklė grąžina vairą 95% kelio atgal. Iš telemetrijos tiek užtrunka esant 100 km/h sausame kelyje.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Vairuoti</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Visada leidžia pelei vairuoti nuolat. Kol laikoma leidžia vairuoti tik laikant vairavimo įvestį. Perjungimas įjungia arba išjungia vairavimą kiekvieną kartą paspaudus vairavimo įvestį. Kai pelė nevairuoja, vairas lieka vietoje arba grįžta į centrą, todėl viena pele galima ir vairuoti, ir dairytis.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Visada</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Kol laikoma</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Perjungimas</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vairavimo įvestis</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mygtukas, leidžiantis pelei vairuoti, tame pačiame įrenginyje kaip ir pelės eiga. Nepasirinkus nieko, pelė vairuoja visada.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Glotninimas</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Išlygina netolygiai pranešančią pelę. Vairas atsilieka nuo rankos maždaug tiek laiko. 0 išjungia.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Riba esant greičiui</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Įjungus žaidimų telemetriją, kiek kraštinės eigos lieka esant 200 km/h. Esant 100% visa eiga yra prie bet kokio greičio.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR žymeklis X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR žymeklis Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR ryškumas</value></data>
@@ -3327,8 +3351,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Pasuka visą mostelėjimo žemėlapį tiek laipsnių. Teigiama reikšmė – pagal laikrodžio rodyklę. Pritraukimas taikomas po poslinkio.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kai mostelėjimo svirtelę turintis sluoksnis įsijungia, o svirtelė jau pakreipta, mostelėjimas įvykdomas iš karto. Išjungus kamera lieka nejudanti, o sukimas sekamas nuo dabartinio svirtelės kampo.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Kraštinės vairo padėties signalas</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signalas kraštinėje padėtyje vairavimo režimo svirtelei</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kai vairavimo režimu nustatyta svirtelė pasukama iki galo į kraštinę padėtį, pateikiamas signalas (vibracija, gaidukas ar šviesos juosta), kad pajustumėte ribą. Pagal numatytuosius nustatymus viskas išjungta.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signalas, kai vairavimas pasiekia kraštinę padėtį</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kai vairavimo režimo svirtelė, įvestis „Judesio pakrypimas“ ar įvestis „Pelės eiga“ pasiekia kraštinę padėtį, pateikiamas signalas (vibracija, gaidukas ar šviesos juosta), kad pajustumėte ribą. Pagal numatytuosius nustatymus viskas išjungta.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibracijos impulsas kraštinėje padėtyje</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Gaiduko vibracija kraštinėje padėtyje</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Šviesos juostos impulsas kraštinėje padėtyje</value></data>
@@ -4275,6 +4299,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Perjungti klavišus {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Giroskopo centravimas</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Paspaudus nunulina pulto sukauptas giroskopo taikymo atskaitas. Išvaloma glotninimo istorija, iš naujo užfiksuojama „Judesio pakrypimas“ neutrali padėtis, gravitacijos įvertis iš naujo nustatomas pagal dabartinę valdiklio padėtį, o eilučių „Judesio polinkis“, „Judesio posūkis“ ir „Judesio posvyris“ sukauptas pasukimas atšaukiamas.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centruoti pelės vairavimą</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Grąžina į centrą kiekvienos šio virtualaus valdiklio įvesties „Pelės eiga“ vairą.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Bet kuris įrenginys)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Meniu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Meniu paverčia fizinę svirtelę ar jutiklinį skydelį ekrane rodomu žiedu arba tinkleliu. Spustelėkite + šalia „Meniu“, kad sukurtumėte naują, pasirinkite, kas jį atidaro, tada kiekvienam langeliui nurodykite pavadinimą ir veiksmą.</value></data>

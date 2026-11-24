@@ -2722,7 +2722,7 @@
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lus i zonido</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro i menu</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Ta tene e palanka un tiki fo'i sentro pa wega keda mustra indikashon di kontrol</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un señal ora un stick den modo di stür yega su límite</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un señal ora e stür yega su límite</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrashon di e motornan prinsipal na e triggernan</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrashon di trigger for di e bas den audio di sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morto di inklinashon, Orientashon di kontrol</value></data>
@@ -2968,4 +2968,28 @@
   <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge no por lesa e archivo ei komo potrèt.</value></data>
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Potrèt: arte di biblioteka di Steam pa {0}.</value></data>
   <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktivá Konfigurashon di komunidat den Konfigurashon pa haña e potrèt di e wega for di Steam.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Rekorido di mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Rekorido di mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Rekorido te límite kompleto</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kuantu e mouse ta move for di sentro te límite kompleto, den e pasonan ku e mouse ta reportá. Un número mas haltu ta stür mas fini i ta pidi mas rekorido di man.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>pasonan</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Sentramentu</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Pagá ta tene e stür kaminda e man a lag'é. Hòfi ta trese e bek den Tempu di bolbe. For di telemetria ta hal e bek manera e kabuchanan dilanti di un outo lo hasi na e velosidat i agarre di e wega: ketu ora e outo ta para, mas firme ku velosidat, liviano ora e kabuchanan ta slep. Si ningun wega no ta manda telemetria, e ta e hòfi. For di e forsa di e wega ta laga e force feedback propio di un stür virtual draai e.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Pagá</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Hòfi</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>For di telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>For di e forsa di e wega</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tempu di bolbe</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Kuantu tempu Hòfi ta tuma pa trese e stür 95% di e kaminda bek. For di telemetria ta tuma e tempu aki na 100 km/h riba un kaminda seku.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Stür</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Semper ta laga e mouse stür tur ora. Miéntras bo tene primí ta laga e stür solamente miéntras bo tene Input di stür primí. Aktivá/desaktivá ta sende òf paga e stür ku kada primi di Input di stür. Miéntras e mouse no ta stür, e stür ta keda kaminda e ta òf ta bolbe na sentro, asina un mouse so por stür i wak rond.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Semper</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Miéntras bo tene primí</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Aktivá/desaktivá</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input di stür</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>E boton ku ta laga e mouse stür, riba e mesun aparato ku e rekorido di e mouse. Sin ningun skohí, e mouse ta stür semper.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavisashon</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ta nivelá un mouse ku ta reportá desigual. E stür ta bai tras di e man mas o ménos asina largu. 0 ta pagá.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Límite na velosidat</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di wega sendí, kuantu di e límite ta keda na 200 km/h. Na 100% henter e límite ta keda na tur velosidat.</value></data>
 </root>

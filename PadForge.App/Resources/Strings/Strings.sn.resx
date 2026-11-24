@@ -1361,7 +1361,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kufamba neKubata</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Mwenje neInzwi</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mamacro neMenyu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chiratidzo kana stick yekutyaira yasvika pamugumo</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chiratidzo kana kutyaira kwasvika pamugumo</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Inotumira kudedera kwemota huru kumatrigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kudedera kwetrigger kunobva kubass yeinzwi resystem</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone dzekurereka, Kutarisa kwecontroller</value></data>
@@ -1553,4 +1553,28 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Dhatabhesi yenharaunda haina kuchinja kubva pakugadziridza kwekupedzisira.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mepu itsva inoshandiswa kana kontiroura yayo yabatanidzwa zvakare.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mepu yakachinjwa inoshandiswa kana PadForge yatanga zvakare.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Rwendo rwembeva X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Rwendo rwembeva Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Rwendo kusvika pamugumo</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kuti mbeva inofamba zvakadii kubva pakati kusvika pamugumo, mu-counts dzinotaurwa nembeva. Nhamba yakakwira inotyaira zvakanyatsojeka uye inoda kufamba kwakawanda kweruoko.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Kudzokera pakati</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Kwete inosiya vhiri paruoko parakarisiya. Spring inoridzosa mukati meNguva yekudzoka. Kubva kuTelemetry inoridzosa sematayi epamberi emotokari aizoita pakumhanya nekubata kwemutambo: rakamira kana motokari isingafambi, rakasimba pakumhanya, rakareruka kana matayi achitsvedza. Kana pasina mutambo uri kutumira telemetry, rinova Spring. Kubva kusimba remutambo inorega force feedback yevhiri renhema pacharo ichiritenderedza.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Kwete</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Kubva kuTelemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Kubva kusimba remutambo</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Nguva yekudzoka</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Nguva inotorwa neSpring kudzosa vhiri 95% yenzira. Kubva kuTelemetry inotora nguva iyi pa100 km/h mumugwagwa wakaoma.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Tyaira</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Nguva dzose inorega mbeva ichityaira nguva yese. Uchibata inoirega ichityaira chete kana Input yekutyaira yakabatwa. Toggle inobatidza kana kudzima kutyaira pese paunodzvanya Input yekutyaira. Kana mbeva isiri kutyaira, vhiri rinogara parakamira kana kudzokera pakati, saka mbeva imwe chete inogona kutyaira nekutarisa-tarisa.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Nguva dzose</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Uchibata</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input yekutyaira</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bhatani rinobvumira mbeva kutyaira, pamudziyo mumwe chete nerwendo rwembeva. Kana pasina rasarudzwa, mbeva inogara ichityaira.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Kutsetsereka</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Inoenzanisa mbeva inotaura zvisina kuenzana. Vhiri rinotevera ruoko nenguva inenge iyi. 0 zvinoreva kuti yakadzimwa.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Mugumo pakumhanya</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kana Game Telemetry yakabatidzwa, chikamu chemugumo chinosara pa200 km/h. Pa100%, mugumo wese uripo pakumhanya kwese.</value></data>
 </root>

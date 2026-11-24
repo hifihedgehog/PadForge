@@ -1988,7 +1988,7 @@
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Taphoonni maal arguu qabu?</value></data>
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge kontirolaa kana isa taphoonni kee eegan godha. Jalqabuuf tokko filadhu. Booda cuqaasa tokkoon jijjiiruu dandeessa.</value></data>
   <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge kontirolaa kee isa taphoonni kee eegan godha. Jalqabuuf tokko filadhu. Booda cuqaasa tokkoon jijjiiruu dandeessa.</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akeekkachiisa sitikii konkolaachisuu yeroo daangaa guutuu ga'u</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Akeekkachiisa yeroo konkolaachisuun daangaa guutuu ga'u</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Raafama mootora ijoo gara tiriigaraatti erga</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Raafama tiriigarii sagalee gadi aanaa sirnaa irraa</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deedzoonii jallachuu, Kallattii kontirolaa</value></data>
@@ -2202,4 +2202,28 @@
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kuusa odeeffannoo kontirolaa</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Amma haaromsi kuusa odeeffannoo kontirolaa hawaasaa (SDL_GameControllerDB) GitHub irraa buufata, walqabsiisa veershiniin PadForge kun hin qabne immoo faayilii qindaa'inaa keessatti kuusa. Walqabsiisni haaraan kan fayyadamu kontirolaa wanti biraa akka gamepad hin dubbisne, hin ramadamne fi Haala joystick dheedhii dirqisiisi keessa hin jirreef qofa. Deebisuun walqabsiisa buufatame hunda haqa.</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Haaromsaa jira…</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Deemsa maawusii X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Deemsa maawusii Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Deemsa hanga daangaa guutuu</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Maawusiin giddu-galeessa irraa hanga daangaa guutuu hammam akka socho'u, lakkoofsa maawusiin gabaasuun. Lakkoofsi ol'aanaan sirriitti oofa, harka immoo caalaa sochoosa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>lakkoofsa</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Giddu-galeessatti deebisuu</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Cufaa geengoo bakka harki itti dhiise qabata. Sipiriingii Yeroo deebii keessatti deebisa. Telemeetirii irraa akka gommaa fuulduraa konkolaataa saffisaa fi qabannaa tapha irratti hundaa'ee deebisa: dhaabbii irratti hin harkisu, saffisaan cimaa ta'a, yeroo gommaan mucucaatu salphaa ta'a. Yoo taphi telemeetirii hin ergine, Sipiriingii ta'a. Humna tapha irraa force feedback geengoo fakkeessaa mataa isaa akka isa garagalchu hayyama.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Cufaa</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Sipiriingii</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemeetirii irraa</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Humna tapha irraa</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Yeroo deebii</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Sipiriingiin geengoo karaa 95% deebisuuf yeroo hammamii akka fudhatu. Telemeetirii irraa 100 km/h irratti karaa gogaa irratti yeroo kana fudhata.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Oofi</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Yeroo hunda maawusiin yeroo hunda akka oofu hayyama. Yeroo qabamee jiru yeroo Galtee oofuu qabamee jiru qofa akka oofu hayyama. Jijjiiri tuqaa Galtee oofuu hundaan oofuu bana ykn cufa. Yeroo maawusiin hin oofne, geengoon bakka isaa irra tura ykn giddu-galeessatti deebi'a, kanaaf maawusiin tokko oofuu fi naannoo ilaaluu danda'a.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Yeroo hunda</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Yeroo qabamee jiru</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Jijjiiri</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Galtee oofuu</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Qabduu maawusiin akka oofu hayyamu, meeshaa deemsa maawusii wajjin tokko irratti. Yoo homtuu hin filatamne, maawusiin yeroo hunda oofa.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Lallaafsuu</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maawusii wal qixa hin taane gabaasu wal qixxeessa. Geengoon harka gara yeroo kanaan duubaan hordofa. 0 jechuun cufaa.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Daangaa saffisa irratti</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry yoo banaa ta'e, daangaan hammam 200 km/h irratti akka hafu. 100% irratti daangaan guutuun saffisa hunda irratti jira.</value></data>
 </root>

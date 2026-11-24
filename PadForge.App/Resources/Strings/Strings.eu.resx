@@ -2631,6 +2631,30 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Saguaren posizioa Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sentikortasuna</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Iturburu bakoitzeko kurtsore-sentikortasuna. 1.0 balioarekin, palankaren desbideratze osoa erdigunetik pantaila-zabaleraren %10era lortzen da. 1.0 baino balio handiagoek kurtsore-ibilbide txikiagoarekin lortzen dute desbideratze osoa. 1.0 baino balio txikiagoek ibilbide handiagoa behar dute.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Saguaren ibilbidea X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Saguaren ibilbidea Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ibilbidea muturrera arte</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Saguak erditik muturrerainoko ibilbidean zenbat mugitzen den, sagu-puntuetan. Zenbaki altuago batek finago gidatzen du eta esku-ibilbide gehiago behar du.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>puntu</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Zentratzea</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desaktibatuta aukerak bolantea eskuak utzi zuen lekuan uzten du. Malgukiak Itzulera-denboran zehar itzularazten du. Telemetriatik aukerak autoaren aurreko gurpilek bezala tiratzen du, jokoaren abiadura eta atxikimenduaren arabera: geldirik gelditzean, gero eta tinkoago abiadurarekin, arina gurpilak irristatzen direnean. Jokoak telemetriarik bidaltzen ez badu, malgukia da. Jokoaren indarretik aukerak bolante birtualaren indar-feedbackak biratzen uzten du.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desaktibatuta</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Malgukia</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriatik</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Jokoaren indarretik</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Itzulera-denbora</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Malgukiak bolantea %95 itzultzeko behar duen denbora. Telemetriatik aukerak denbora hori behar du 100 km/h-n bide lehorrean.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Gidatu</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Beti aukerak sagua une oro gidatzen uzten du. Eutsi bitartean aukerak Gidatze-sarrerari eusten zaion bitartean soilik gidatzen uzten du. Txandakatu aukerak gidatzea aktibatu edo desaktibatzen du Gidatze-sarrera sakatzen den bakoitzean. Sagua gidatzen ari ez den bitartean, bolantea dagoen lekuan geratzen da edo zentratzen da, beraz sagu batek gidatu eta inguruan begira dezake.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Beti</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Eutsi bitartean</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Txandakatu</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Gidatze-sarrera</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Saguari gidatzen uzten dion botoia, saguaren ibilbidearen gailu berean. Bat ere aukeratu gabe, sagua beti gidatzen da.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Leuntzea</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Irregularki jakinarazten duen sagu bat leuntzen du. Bolantea eskuaren atzetik doa gutxi gorabehera denbora horretan. 0 desaktibatuta dago.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Blokeoa abiaduran</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Jokoaren telemetria aktibatuta dagoenean, blokeoaren zenbat geratzen den 200 km/h-n. %100ean blokeo osoa dago abiadura guztietan.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR erakuslea X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR erakuslea Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR distira</value></data>
@@ -3328,8 +3352,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Flick-mapa osoa gradu kopuru honetan biratzen du. Positiboa erlojuaren norabidean da. Doitzea desplazamenduaren ondoren aplikatzen da.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick duen geruza palanka dagoeneko desbideratuta dagoela aktibatzen denean, abiarazi flick-a berehala. Desaktibatuta badago, kamera geldi mantentzen da, eta biraketa palankaren uneko angelutik jarraitzen da.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Bolantearen muturraren erantzuna</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Seinalea palanka muturrera iristean gidatze-moduan</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Gidatze-modu batean ezarritako palanka bat muturreraino biratzen denean, erreproduzitu seinale bat (bibrazioa, katua edo argi-barra), muga nabaritzeko. Denak desaktibatuta lehenespenez.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Seinalea gidatzeak muturrera iristean</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Gidatze-modu bateko palanka batek, Mugimendua: inklinazioa sarrera batek edo Saguaren ibilbidea sarrera batek muturrera iristen denean, erreproduzitu seinale bat (bibrazioa, katua edo argi-barra), muga nabaritzeko. Denak desaktibatuta lehenespenez.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Bibrazio-pultsua muturrean</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Katuaren bibrazioa muturrean</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Argi-barraren pultsua muturrean</value></data>
@@ -4276,6 +4300,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Txandakatu teklak {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Zentratu berriro giroskopioa</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Sakatzean, kontrolagailuaren giroskopio-apuntatzearen erreferentzia metatuak zeroan jartzen ditu. Leuntze-historia garbitzen da, «Mugimendua: inklinazioa» sarreraren neutroa berriro atzematen da, grabitatearen estimazioa kontrolagailuaren uneko jarreratik berriro hasten da, eta mugimenduaren aurrera-atzerako makurdura, ezker-eskuineko biraketa eta alboko makurdura errenkadek eraikitako bira desegiten da.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Zentratu sagu-gidatzea</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Kontrolagailu birtual honetako Saguaren ibilbidea sarrera guztien bolantea erdira itzularazten du.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Edozein gailu)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menuak</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menuek palanka edo ukipen-panel fisiko bat pantailako eraztun edo sareta bihurtzen dute. Sakatu Menuak izenburuaren ondoko + bat sortzeko, aukeratu zerk irekitzen duen, eta gero eman izen bat eta ekintza bat gelaxka bakoitzari.</value></data>

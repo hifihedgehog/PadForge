@@ -2624,6 +2624,30 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Mahali pa Kipanya Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Unyeti</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Unyeti wa kielekezi kwa kila chanzo. 1.0 hufikia mkengeuko kamili wa kijiti kwa asilimia 10 ya upana wa skrini kutoka katikati. Thamani zaidi ya 1.0 hufikia mkengeuko kamili kwa mwendo mfupi wa kielekezi. Thamani chini ya 1.0 zinahitaji mwendo zaidi.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Mwendo wa Kipanya X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Mwendo wa Kipanya Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Mwendo hadi Kufunga Kikamilifu</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Umbali ambao kipanya husogea kutoka katikati hadi kufunga kikamilifu, kwa hesabu ambazo kipanya huripoti. Nambari ya juu huelekeza kwa ulaini zaidi na huhitaji mwendo mkubwa wa mkono.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>hesabu</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Kuelekeza Katikati</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Imezimwa huacha usukani pale mkono ulipouacha. Chemchemi huurudisha ndani ya Muda wa Kurudi. Kutoka Telemetria huuvuta nyuma kama matairi ya mbele ya gari yangefanya kwa kasi na mshiko wa mchezo: tulivu gari likiwa limesimama, mzito kasi inapoongezeka, mwepesi matairi yanapoteleza. Mchezo usipotuma telemetria ni chemchemi. Kutoka Nguvu ya Mchezo huruhusu mrejesho wa nguvu wa usukani pepe wenyewe kuugeuza.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Imezimwa</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Chemchemi</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Kutoka Telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Kutoka Nguvu ya Mchezo</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Muda wa Kurudi</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Muda ambao Chemchemi huchukua kurudisha usukani asilimia 95 ya njia. Kutoka Telemetria huchukua muda huu kwa 100 km/h kwenye barabara kavu.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Elekeza</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Kila Wakati huruhusu kipanya kuelekeza wakati wote. Kinaposhikiliwa huruhusu kuelekeza tu Ingizo la Kuelekeza likishikiliwa. Badilisha huwasha au kuzima kuelekeza kwa kila mbonyezo wa Ingizo la Kuelekeza. Kipanya kisipoelekeza, usukani hubaki ulipo au huelekea katikati, kwa hiyo kipanya kimoja kinaweza kuelekeza na kutazama pande zote.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kila Wakati</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Kinaposhikiliwa</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Badilisha</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ingizo la Kuelekeza</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Kitufe kinachoruhusu kipanya kuelekeza, kwenye kifaa kilekile cha mwendo wa kipanya. Kisipochaguliwa, kipanya huelekeza kila wakati.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ulainishaji</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Hulainisha kipanya kinachoripoti bila usawa. Usukani hubaki nyuma ya mkono kwa takriban muda huu. 0 ni imezimwa.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kufunga Kasi Inapopanda</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Telemetria ya Michezo ikiwashwa, ni kiasi gani cha kufunga kinabaki kwa 200 km/h. Kwa 100% kufunga kote kupo kwa kila kasi.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Kielekezi cha IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Kielekezi cha IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Mwangaza wa IR</value></data>
@@ -3273,8 +3297,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Hugeuza ramani nzima ya flick kwa digrii hizi. Chanya ni mwendo wa saa. Kunasa hutumika baada ya marekebisho.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Tabaka linalohifadhi Flick Stick likiwashwa kijiti kikiwa tayari kimekengeushwa, tekeleza flick mara moja. Ikizimwa, kamera hubaki tuli na hufuatilia mzunguko kutoka pembe ya sasa ya kijiti.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Mrejesho wa Kufunga Usukani</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ishara ya kufunga kikamilifu kwa kijiti cha usukani</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kijiti kilichowekwa hali ya usukani kikigeuzwa hadi kufunga kikamilifu, cheza ishara (mtetemo, kichochezi, au lightbar) ili uhisi kikomo. Vyote vimezimwa kwa chaguomsingi.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ishara usukani unapofika kufunga kikamilifu</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kijiti kwenye hali ya usukani, ingizo la Kuegemea kwa Mwendo au ingizo la Mwendo wa Kipanya likifika kufunga kikamilifu, cheza ishara (mtetemo, kichochezi, au lightbar) ili uhisi kikomo. Vyote vimezimwa kwa chaguomsingi.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Mdundo wa Mtetemo Wakati wa Kufunga</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Mtetemo wa Kichochezi Wakati wa Kufunga</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Mdundo wa Lightbar Wakati wa Kufunga</value></data>
@@ -4221,6 +4245,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Badilisha vitufe {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Weka Gyro Katikati</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Huweka sifuri marejeleo ya lengo la gyro yaliyokusanywa ya kidhibiti unapobonyeza. Historia ya ulainishaji husafishwa, kituo cha kuegemea kwa mwendo hunaswa tena, makadirio ya mvuto huanzishwa upya kutoka mkao wa sasa wa kidhibiti, na zamu iliyojengwa na safu za Pitch, Yaw na Roll ya Mwendo hutenguliwa.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Weka Uelekezaji wa Kipanya Katikati</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Hurudisha katikati usukani wa kila ingizo la Mwendo wa Kipanya kwenye kidhibiti pepe hiki.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Kifaa Chochote)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menyu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menyu hugeuza kijiti au touchpad halisi kuwa pete au gridi kwenye skrini. Bonyeza + kando ya Menyu ili kuunda mpya, chagua kinachoifungua, kisha ipe kila seli jina na kitendo.</value></data>

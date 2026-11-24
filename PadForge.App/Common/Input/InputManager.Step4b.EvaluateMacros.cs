@@ -3779,6 +3779,11 @@ namespace PadForge.Common.Input
                     ApplyGyroRecenterAction(macro);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.CenterMouseSteering:
+                    ApplyCenterMouseSteeringAction(macro);
+                    AdvanceAction(macro);
+                    break;
             }
         }
 
@@ -4588,6 +4593,20 @@ namespace PadForge.Common.Input
             // to the real controller's attitude when one is mapped (#475).
             // The motion stage runs after this pass, so it lands this poll.
             RequestMotionRowsLevel(slotIndex);
+        }
+
+        /// <summary>Executes a CenterMouseSteering action (#597): every
+        /// wheel the slot's "Mouse Travel" inputs hold goes back to center.
+        /// The reset runs inline, as GyroRecenter's engine-side resets do:
+        /// the wheels are the slot runtime's and only the polling thread
+        /// writes them, which this is. The mapping pass of this poll has
+        /// run, so the mouse steers from center on the next one.</summary>
+        private void ApplyCenterMouseSteeringAction(MacroItem macro)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            GetSlotSourceKindRuntime(slotIndex)?.CenterMouseTravel();
         }
 
         /// <summary>Advances the action's cycle position and writes the
@@ -6376,6 +6395,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.GyroRecenter:
                     ApplyGyroRecenterAction(macro);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.CenterMouseSteering:
+                    ApplyCenterMouseSteeringAction(macro);
                     AdvanceAction(macro);
                     break;
 

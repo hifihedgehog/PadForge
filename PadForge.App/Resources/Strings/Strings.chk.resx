@@ -807,4 +807,5 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eis ren version an PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Eis met a angang</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tinala eu line PadForge ese silei: {0}</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
 </root>

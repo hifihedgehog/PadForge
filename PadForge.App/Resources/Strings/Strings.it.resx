@@ -2124,6 +2124,30 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posizione mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilità del cursore per sorgente. 1.0 raggiunge la deflessione completa dello stick al 10% della larghezza dello schermo dal centro. Valori superiori a 1.0 raggiungono la deflessione completa con meno movimento del cursore. Valori inferiori a 1.0 ne richiedono di più.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Corsa mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Corsa mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Corsa fino al fine corsa</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quanto si sposta il mouse dal centro al fine corsa, nei conteggi che il mouse riporta. Un numero più alto sterza con più finezza e richiede più movimento della mano.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>conteggi</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centraggio</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Disattivato lascia il volante dove la mano lo ha lasciato. Molla lo riporta nel tempo di ritorno. Dalla telemetria lo richiama come farebbero gli pneumatici anteriori di un'auto, in base alla velocità e all'aderenza del gioco: fermo da fermi, più deciso con la velocità, leggero quando gli pneumatici scivolano. Se nessun gioco invia telemetria, vale Molla. Dalla forza del gioco lascia che a girarlo sia il force feedback del volante virtuale.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Disattivato</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Molla</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Dalla telemetria</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Dalla forza del gioco</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tempo di ritorno</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Quanto impiega Molla a riportare il volante al 95% della strada. Dalla telemetria impiega questo tempo a 100 km/h su strada asciutta.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Sterza</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre lascia sterzare il mouse in ogni momento. Mentre premuto lo lascia sterzare solo mentre l'ingresso sterzo è premuto. Alterna attiva o disattiva lo sterzo a ogni pressione dell'ingresso sterzo. Quando il mouse non sterza, il volante resta dov'è o si centra, così un solo mouse può sterzare e guardarsi intorno.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempre</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mentre premuto</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alterna</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ingresso sterzo</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Il pulsante che permette al mouse di sterzare, sullo stesso dispositivo del movimento del mouse. Se non ne scegli nessuno, il mouse sterza sempre.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Smussatura</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Uniforma un mouse che riporta in modo irregolare. Il volante segue la mano con circa questo ritardo. 0 la disattiva.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Blocco alla velocità</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Con la telemetria di gioco attiva, quanta parte del fine corsa resta a 200 km/h. Al 100% tutto il fine corsa è disponibile a ogni velocità.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic touchpad</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} dito {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} dito {1} Y</value></data>
@@ -2859,8 +2883,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Impostazioni per l’input "Inclinazione di movimento": inclina il controller come un volante. Assegna "Inclinazione di movimento" a un asse dello stick nella sezione Mappature.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reimposta Sterzo di movimento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sterzo a fine corsa</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un segnale al fine corsa per una levetta in modalità sterzo</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando una levetta impostata su una modalità di sterzo viene portata fino al fine corsa, riproduce un segnale (vibrazione, grilletto o barra luminosa) per farti percepire il limite. Tutto disattivato per impostazione predefinita.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un segnale quando lo sterzo raggiunge il fine corsa</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando una levetta in modalità sterzo, un ingresso Motion Lean o un ingresso Corsa mouse raggiunge il fine corsa, riproduce un segnale (vibrazione, grilletto o barra luminosa) per farti percepire il limite. Tutto disattivato per impostazione predefinita.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impulso di vibrazione al fine corsa</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrazione dei grilletti al fine corsa</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Impulso della barra luminosa al fine corsa</value></data>
@@ -4514,6 +4538,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Attiva/disattiva tasti {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ricentra giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Azzera alla pressione i riferimenti di mira del giroscopio accumulati dal pad. La cronologia di smussatura si svuota, il punto neutro di Motion Lean viene ricatturato, la stima della gravità si reinizializza dalla posa attuale del controller e la rotazione delle righe Movimento beccheggio, imbardata e rollio viene annullata.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centra sterzo mouse</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Riporta al centro il volante di ogni ingresso Corsa mouse di questo controller virtuale.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>I menu trasformano uno stick o un touchpad fisico in un anello o una griglia sullo schermo. Premi + accanto a Menu per crearne uno, scegli con cosa si apre, poi dai a ogni cella un nome e un'azione.</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Nuovo menu</value></data>

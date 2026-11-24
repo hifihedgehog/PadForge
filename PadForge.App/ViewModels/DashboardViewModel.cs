@@ -367,8 +367,12 @@ namespace PadForge.ViewModels
             get => _enableGameTelemetry;
             set
             {
-                if (SetProperty(ref _enableGameTelemetry, value))
-                    PadForge.Common.Input.Telemetry.GameTelemetryRuntime.Enabled = value;
+                if (_enableGameTelemetry == value) return;
+                // The engine's flag first, then the change: a listener reads
+                // the flag, as a "Mouse Travel" source's Lock at Speed does
+                // to show or hide itself (#597).
+                PadForge.Common.Input.Telemetry.GameTelemetryRuntime.Enabled = value;
+                SetProperty(ref _enableGameTelemetry, value);
             }
         }
 

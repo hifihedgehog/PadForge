@@ -1324,7 +1324,7 @@
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick na Trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ọkụ na Ụda</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro na Menu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ngosi mgbe stick n'ọnọdụ steering ruru njedebe ya</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ngosi mgbe steering ruru njedebe ya</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble sitere na bass nke ụda sistemụ</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Na-eziga rumble nke motor ndị isi na trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble trigger sitere na bass nke ụda sistemụ</value></data>
@@ -1555,6 +1555,13 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge jụrụ ihe e budatara n'ihi na ọ bụghị ọdụ data controller ọ na-atụ anya ya. Ọ dịghị ihe gbanwere.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A ga-eji mapping ọhụrụ oge ọzọ controller ya jikọrọ.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A ga-eji mapping gbanwere agbanwe oge ọzọ PadForge malitere.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Site na telemetry</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Mgbe niile</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mgbe a na-ejide ya</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bọtịn na-ekwe ka mouse tụgharịa, n'otu ngwaọrụ ahụ dị ka ije mouse. Ọ bụrụ na a họrọghị nke ọ bụla, mouse na-atụgharị mgbe niile.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Mgbe Telemetry egwuregwu gbanyere, ole n'ime lock fọdụrụ na 200 km/h. Na 100%, lock niile dị na ọsọ ọ bụla.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ kwụsịrị njikọ</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ jikọrọ</value></data>
 </root>

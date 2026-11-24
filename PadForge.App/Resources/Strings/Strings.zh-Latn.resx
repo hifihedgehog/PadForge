@@ -2628,6 +2628,30 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Shǔbiāo wèizhì Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Língmǐndù</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Měi gè láiyuán de guāngbiāo língmǐndù. 1.0 shí, cóng zhōngxīn yídòng píngmù kuāndù de 10% jí kě shǐ yáogǎn wánquán piānzhuǎn. Dàyú 1.0 shí, yòng gèng shǎo de guāngbiāo yídòng jí kě wánquán piānzhuǎn. Xiǎoyú 1.0 shí xūyào gèng duō.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Shǔbiāo xíngchéng X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Shǔbiāo xíngchéng Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Dào jíxiàn de xíngchéng</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Shǔbiāo cóng zhōngwèi yídòng dào jíxiàn de jùlí, yǐ shǔbiāo bàogào de jìshù wéi dānwèi. Shùzhí yuè gāo, zhuǎnxiàng yuè jīngxì, shǒu xū yídòng de jùlí yě yuè cháng.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>jìshù</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Huízhōng</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Guān: fāngxiàngpán tíng zài shǒu sōngkāi de wèizhì. Tánhuáng: zài Huíwèi shíjiān nèi jiāng qí lā huí. Láizì yáocè: xiàng qìchē qiánlún zài yóuxì de chēsù hé zhuādìlì xià nàyàng jiāng qí lā huí, jìngzhǐ shí bù lā, chēsù yuè kuài lì yuè dà, lúntāi dǎhuá shí lì hěn qīng. Méiyǒu yóuxì fāsòng yáocè shí, tā děngtóng yú tánhuáng. Láizì yóuxì de lì: ràng xūnǐ fāngxiàngpán zìshēn de lì fǎnkuì zhuǎndòng tā.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Guān</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Tánhuáng</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Láizì yáocè</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Láizì yóuxì de lì</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Huíwèi shíjiān</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Tánhuáng jiāng fāngxiàngpán lā huí 95% suǒ xū de shíjiān. Láizì yáocè zài gānzào lùmiàn, 100 km/h shí xūyào tóngyàng de shíjiān.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Zhuǎnxiàng</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Shǐzhōng: shǔbiāo suíshí dōu kě zhuǎnxiàng. Ànzhù shí: jǐn zài ànzhù Zhuǎnxiàng shūrù shí zhuǎnxiàng. Qiēhuàn: měi àn yí cì Zhuǎnxiàng shūrù jiù kāiqǐ huò guānbì zhuǎnxiàng. Shǔbiāo bù zhuǎnxiàng shí, fāngxiàngpán tíng zài yuánchù huò huízhōng, zhèyàng yí gè shǔbiāo jì kě zhuǎnxiàng yě kě huánshì sìzhōu.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Shǐzhōng</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ànzhù shí</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Qiēhuàn</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Zhuǎnxiàng shūrù</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ràng shǔbiāo zhuǎnxiàng de ànniǔ, wèiyú yǔ shǔbiāo xíngchéng xiāngtóng de shèbèi shàng. Wèi xuǎnzé shí, shǔbiāo shǐzhōng zhuǎnxiàng.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pínghuá</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Pínghuá bàogào bù jūnyún de shǔbiāo. Fāngxiàngpán dàyuē zhìhòu shǒu zhème cháng shíjiān. 0 biǎoshì guānbì.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Gāosù jíxiàn</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Yóuxì yáocè kāiqǐ shí, 200 km/h shí réng kě dádào de jíxiàn bǐlì. 100% shí, rènhé chēsù xià dōu kě dádào wánzhěng jíxiàn.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Hóngwài zhǐzhēn X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Hóngwài zhǐzhēn Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Hóngwài liángdù</value></data>
@@ -3309,8 +3333,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Jiāng zhěng gè shuǎigǎn yìngshè xuánzhuǎn cǐ jiǎodù. Zhèngzhí wèi shùnshízhēn. Xīfù zài piānyí zhīhòu yìngyòng.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Dāng chéngzài Flick Stick de céng zài yáogǎn yǐ piānzhuǎn shí jīhuó, lìjí zhíxíng shuǎigǎn. Guānbì shí jìngtóu bǎochí bú dòng, bìng cóng dāngqián yáogǎn jiǎodù kāishǐ zhuīzōng xuánzhuǎn.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Zhuǎnxiàng jíxiàn fǎnkuì</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Zhuǎnxiàng móshì de yáogǎn dádào jíxiàn shí de tíshì</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Dāng shèwéi zhuǎnxiàng móshì de yáogǎn zhuǎndào jíxiàn shí, fāchū tíshì (zhèndòng, bānjī huò dēngtiáo), ràng nǐ gǎnshòu dào jíxiàn. Mòrèn quánbù guānbì.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Zhuǎnxiàng dádào jíxiàn shí de tíshì</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Dāng zhuǎnxiàng móshì de yáogǎn, Motion Lean shūrù huò Shǔbiāo xíngchéng shūrù dádào jíxiàn shí, fāchū tíshì (zhèndòng, bānjī huò dēngtiáo), ràng nǐ gǎnshòu dào jíxiàn. Mòrèn quánbù guānbì.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Dádào jíxiàn shí zhèndòng màichōng</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Dádào jíxiàn shí bānjī zhèndòng</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Dádào jíxiàn shí dēngtiáo màichōng</value></data>
@@ -4257,6 +4281,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Qiēhuàn jiàn {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Tuóluóyí chóngxīn jūzhōng</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Àn xià shí jiāng kòngzhìqì lěijī de tuóluóyí miáozhǔn jīzhǔn guī líng. Pínghuá lìshǐ bèi qīngchú, Motion Lean zhōnglì diǎn chóngxīn bǔhuò, zhònglì gūjì cóng kòngzhìqì dāngqián zītài chóngxīn chūshǐhuà, tǐgǎn fǔyǎng, piānháng hé gǔnzhuàn háng chǎnshēng de xuánzhuǎn bèi chèxiāo.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Shǔbiāo zhuǎnxiàng huízhōng</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Jiāng cǐ xūnǐ kòngzhìqì shàng suǒyǒu Shǔbiāo xíngchéng shūrù de fāngxiàngpán fàng huí zhōngwèi.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Rènyì shèbèi)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Càidān</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Càidān kěyǐ bǎ wùlǐ yáogǎn huò chùkòngbǎn biànchéng píngmù shàng de huánxíng huò wǎnggé càidān. Diǎnjī “Càidān” pángbiān de + xīnjiàn yí gè, xuǎnzé dǎkāi fāngshì, ránhòu wèi měi gè dānyuángé shèzhì míngchēng hé dòngzuò.</value></data>

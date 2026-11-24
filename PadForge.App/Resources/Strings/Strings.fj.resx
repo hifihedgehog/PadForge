@@ -740,7 +740,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Yavala kei na Tara</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rarama kei na Rorogo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro kei na Menu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ivakatakilakila ni stick ena iyalayala ni kena vuki</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ivakatakilakila ni gauna e yaco kina na vuki ki na kena iyalayala</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Yavavala mai na bass ni domo ni sisitemu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ni seva, Ituvaki ni controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, vakamalumutaki, Vakatotolotaki, Kaba ni output</value></data>
@@ -873,4 +873,7 @@
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} sa semati</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} sa semati, bateri {1}%</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Sa semati e {0} na iyaya</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>wiliwili</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ena veigauna kece</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
 </root>

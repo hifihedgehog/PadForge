@@ -961,12 +961,16 @@ namespace PadForge.ViewModels
             _keyInputsView = null;
             OnPropertyChanged(nameof(KeyInputs));
             OnPropertyChanged(nameof(KeyInputsView));
+            RaiseTravelSteerInput();
         }
 
         internal void EndSharedListRebuild()
         {
             _suppressSelectionSync = false;
             SyncSelectedInputFromDescriptor();
+            // The Steer Input picker of a "Mouse Travel" source lists the
+            // slot's on/off inputs of the source's device (#597).
+            RaiseTravelSteerInput();
         }
 
         private ICollectionView _availableInputsView;
@@ -1623,9 +1627,11 @@ namespace PadForge.ViewModels
 
         /// <summary>Mirrors <see cref="MappingSourceItem.IsParamAccelApplicable"/>:
         /// the Acceleration slider hides on gravity-tilt primaries because
-        /// the engine's lean/tilt path never applies ParamAccel (#292).</summary>
+        /// the engine's lean/tilt path never applies ParamAccel (#292), and
+        /// on a "Mouse Travel" primary, whose wheel takes none (#597).</summary>
         public bool IsParamAccelApplicable => IsHalfAxisApplicable
-            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(StripLegacyPrefix(_sourceDescriptor ?? ""));
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(StripLegacyPrefix(_sourceDescriptor ?? ""))
+            && !IsMouseTravelSource;
 
         /// <summary>
         /// True when the deadzone column is applicable for this row:
@@ -1766,6 +1772,11 @@ namespace PadForge.ViewModels
                 // direction, Invert chooses which (#154, mirrors the grid's
                 // MappingSourceItem.IsHalfAxisApplicable).
                 if (desc.StartsWith("Mouse Motion ", StringComparison.Ordinal))
+                    return true;
+
+                // A mouse's travel is a wheel's position on either side of
+                // center (#597): Half picks one side and Invert which.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(desc))
                     return true;
 
                 // Touchpad: X / Y / Pressure (whole-pad or the #9 B-1

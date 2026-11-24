@@ -2859,6 +2859,30 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Museposisjon Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Følsomhet</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Pekerfølsomhet per kilde. 1.0 gir fullt stikkeutslag ved 10 % av skjermbredden fra midten. Verdier over 1.0 gir fullt utslag med kortere pekerbevegelse. Verdier under 1.0 krever mer.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Museforflytning X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Museforflytning Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Forflytning til fullt utslag</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hvor langt musen beveger seg fra midten til fullt utslag, i de tellingene musen melder. Et høyere tall styrer finere og krever mer håndbevegelse.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>tellinger</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Sentrering</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Av lar rattet bli der hånden slapp det. Fjær henter det tilbake over Returtid. Fra telemetri trekker det tilbake slik forhjulene på en bil ville gjort ved spillets fart og grep: i ro ved stillstand, fastere med farten, lett når dekkene sklir. Uten spill som sender telemetri blir det fjæren. Fra spillets kraft lar et virtuelt ratts egen kraftrespons dreie det.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Av</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Fjær</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Fra telemetri</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Fra spillets kraft</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Returtid</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hvor lang tid Fjær bruker på å hente rattet 95 % av veien tilbake. Fra telemetri bruker like lang tid ved 100 km/h på tørr vei.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Styr</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Alltid lar musen styre hele tiden. Mens holdt nede lar den styre bare mens Inndata for styring holdes nede. Veksle slår styring på eller av ved hvert trykk på Inndata for styring. Mens musen ikke styrer, blir rattet stående eller sentreres, så én mus kan både styre og se seg rundt.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Alltid</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mens holdt nede</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Veksle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Inndata for styring</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Knappen som lar musen styre, på samme enhet som museforflytningen. Uten valgt knapp styrer musen alltid.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Utjevning</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jevner ut en mus som melder ujevnt. Rattet henger etter hånden omtrent så lenge. 0 er av.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Utslag ved fart</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Med Spilltelemetri på, hvor mye av utslaget som er igjen ved 200 km/h. Ved 100 % er hele utslaget der ved enhver fart.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-peker X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-peker Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-lysstyrke</value></data>
@@ -3567,8 +3591,8 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Dreier hele flick-kartet med så mange grader. Positivt er med klokken. Fastlåsing brukes etter forskyvningen.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Når laget med flick stick aktiveres mens stikken allerede har utslag, utløses flicket umiddelbart. Av holder kameraet i ro og følger rotasjonen fra den gjeldende stikkevinkelen.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Tilbakemelding ved fullt rattutslag</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signal ved fullt utslag for en stikke i styremodus</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Når en stikke i en styremodus vris helt til fullt utslag, gis et signal (vibrasjon, avtrekker eller lyslist) slik at du kjenner grensen. Alt er av som standard.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signal når styringen når fullt utslag</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Når en stikke i en styremodus, en inngang for Bevegelse: helning eller en inngang for museforflytning når fullt utslag, gis et signal (vibrasjon, avtrekker eller lyslist) slik at du kjenner grensen. Alt er av som standard.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrasjonspuls ved fullt utslag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Avtrekkervibrasjon ved fullt utslag</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lyslistpuls ved fullt utslag</value></data>
@@ -4547,6 +4571,8 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Veksle taster {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Sentrer gyro</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Nullstiller de akkumulerte siktereferansene for gyroen ved trykk. Utjevningshistorikken tømmes, nøytralpunktet for Bevegelse: helning fanges på nytt, tyngdekraftsestimatet startes på nytt fra kontrollerens gjeldende stilling, og dreiningen som radene Bevegelse: stamping, giring og rulling har bygd opp, oppheves.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Sentrer musestyring</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Setter rattet til hver inngang for museforflytning på denne virtuelle kontrolleren tilbake i midten.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Hvilken som helst enhet)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menyer</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menyer gjør en fysisk stikke eller berøringsplate om til en ring eller et rutenett på skjermen. Trykk på + ved siden av Menyer for å opprette en, velg hva som åpner den, og gi deretter hver celle et navn og en handling.</value></data>

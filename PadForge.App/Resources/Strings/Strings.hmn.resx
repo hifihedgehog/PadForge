@@ -1424,7 +1424,7 @@
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kev txav thiab kev kov</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Teeb thiab suab</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Cov macro thiab menu</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Lub cim thaum stick tig kawg nkaus hauv hom tsav tsheb</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Lub cim thaum tsav tsheb tig kawg nkaus</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Xa kev co ntawm cov motor loj mus rau cov trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kev co trigger los ntawm suab bass ntawm lub computer</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone thaum qaij, Kev taw ntawm lub controller</value></data>
@@ -1661,6 +1661,30 @@
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Ib qho mapping tshiab tsuas siv rau ib lub controller uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Kev rov teeb tsa dua tshem txhua qho mapping uas rub tawm lawm.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Hloov tshiab tam sim no</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Tab tom hloov tshiab…</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Kev mus ntawm mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Kev mus ntawm mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Kev mus txog thaum tig kawg nkaus</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Mouse txav deb npaum li cas ntawm nruab nrab mus txog thaum tig kawg nkaus, suav raws li cov counts uas mouse qhia. Tus lej siab dua tsav tau me dua thiab siv tes txav ntau dua.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Rov los nruab nrab</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Kaw tuav lub kauj tsheb rau qhov chaw uas tes tso nws. Spring coj nws rov qab hauv Sij hawm rov qab. Los ntawm telemetry rub nws rov qab ib yam li lub tsheb cov log pem hauv ntej ua raws li lub game qhov ceev thiab kev tuav txoj kev: tsis rub thaum nres, rub ntau dua thaum ceev, rub me ntsis thaum cov log plam. Yog tsis muaj game xa telemetry, nws ua ib yam li spring. Los ntawm lub game lub zog cia lub kauj tsheb virtual tus kheej force feedback tig nws.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Kaw</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Los ntawm telemetry</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Los ntawm lub game lub zog</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Sij hawm rov qab</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Spring siv sij hawm ntev npaum li cas los coj lub kauj tsheb rov qab 95% ntawm txoj kev. Los ntawm telemetry siv sij hawm ntev li no thaum 100 km/h ntawm txoj kev qhuav.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Tsav</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ib txwm cia mouse tsav txhua lub sij hawm. Thaum tuav cia nws tsav tsuas yog thaum tuav Input tsav xwb. Toggle qhib los yog kaw kev tsav txhua zaus nias Input tsav. Thaum mouse tsis tsav, lub kauj tsheb nyob qhov chaw nws nyob los yog rov los nruab nrab, yog li ib lub mouse tsav tau thiab saib ib ncig tau.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ib txwm</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Thaum tuav</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input tsav</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Lub khawm uas cia mouse tsav, nyob ntawm tib lub khoom siv li mouse qhov kev mus. Yog tsis xaiv ib lub, mouse ib txwm tsav.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ua kom du</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ua kom du ib lub mouse uas qhia tsis sib luag. Lub kauj tsheb lag tom qab tes li ntawm ntev npaum no. 0 yog kaw.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kev tig thaum ceev</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Thaum qhib Game Telemetry, kev tig kawg nkaus tseem tshuav npaum li cas thaum 200 km/h. Thaum 100% tag nrho kev tig kawg nkaus muaj nyob txhua qhov ceev.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv tsis txuas</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv txuas</value></data>
 </root>

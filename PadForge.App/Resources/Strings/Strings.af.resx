@@ -2629,6 +2629,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Muisposisie Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitiwiteit</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Wysersensitiwiteit per bron. 1.0 bereik volle stokkie-uitwyking by 10% van die skermwydte vanaf die middel. Waardes bo 1.0 bereik volle uitwyking met minder wyserbeweging. Waardes onder 1.0 het meer nodig.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Muisbeweging X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Muisbeweging Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Beweging tot volle slot</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hoe ver die muis van die middel tot volle slot beweeg, in die tellings wat die muis rapporteer. 'n Hoër getal stuur fyner en vra meer handbeweging.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>tellings</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Sentrering</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Af hou die stuurwiel waar die hand dit gelos het. Veer bring dit terug oor die Terugkeertyd. Uit telemetrie trek dit terug soos 'n motor se voorbande by die speletjie se spoed en greep sou doen: stil by stilstand, fermer met spoed, lig wanneer die bande gly. Sonder 'n speletjie wat telemetrie stuur, is dit die veer. Uit die speletjie se krag laat 'n virtuele stuurwiel se eie kragterugvoer dit draai.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Af</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Veer</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Uit telemetrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Uit die speletjie se krag</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Terugkeertyd</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hoe lank Veer neem om die stuurwiel 95% van die pad terug te bring. Uit telemetrie neem hierdie lank by 100 km/h op 'n droë pad.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Stuur</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Altyd laat die muis te alle tye stuur. Terwyl vasgehou laat dit net stuur terwyl die Stuurinvoer vasgehou word. Wissel skakel stuur aan of af met elke druk op die Stuurinvoer. Terwyl die muis nie stuur nie, bly die stuurwiel waar dit is of sentreer, so een muis kan stuur en rondkyk.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Altyd</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Terwyl vasgehou</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Wissel</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Stuurinvoer</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Die knoppie wat die muis laat stuur, op dieselfde toestel as die muis se beweging. As geen gekies is nie, stuur die muis altyd.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Gladmaak</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maak 'n muis gelyk wat ongelyk rapporteer. Die stuurwiel volg die hand ongeveer so lank agterna. 0 is af.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Slot by spoed</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Met Speletjietelemetrie aan, hoeveel van die slot oor is by 200 km/h. By 100% is die hele slot by elke spoed daar.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-wyser X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-wyser Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-helderheid</value></data>
@@ -3209,8 +3233,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Draai die hele flick-kaart met soveel grade. Positief is kloksgewys. Vasklik geld ná die verskuiwing.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wanneer die laag wat Flick Stick huisves aktief word terwyl die stokkie reeds uitgewyk is, vuur die flick dadelik. Af hou die kamera stil en volg rotasie vanaf die huidige stokkiehoek.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Stuurslot-terugvoer</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>'n Sein by volle slot vir 'n stokkie in 'n stuurmodus</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer 'n stokkie wat op 'n stuurmodus gestel is heeltemal tot volle slot gedraai word, speel 'n sein (vibrasie, sneller of ligbalk) sodat jy die limiet voel. Alles is by verstek af.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>'n Sein wanneer stuur volle slot bereik</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer 'n stokkie in 'n stuurmodus, 'n Beweging Leun-invoer of 'n Muisbeweging-invoer volle slot bereik, speel 'n sein (vibrasie, sneller of ligbalk) sodat jy die limiet voel. Alles is by verstek af.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrasiepuls by slot</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Snellervibrasie by slot</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Ligbalkpuls by slot</value></data>
@@ -4156,6 +4180,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Wissel sleutels {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Giro-hersentrering</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Stel die pad se opgehoopte giro-rigverwysings by druk op nul. Gladmaakgeskiedenis word uitgevee, die Beweging Leun-neutraal word weer vasgelê, die swaartekragskatting word weer gesaai uit die controller se huidige houding, en die draai wat die rye Beweging Pitch, Yaw en Roll opgebou het, word ongedaan gemaak.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Sentreer muisstuur</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Bring die stuurwiel van elke Muisbeweging-invoer op hierdie virtuele controller terug na die middel.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Enige toestel)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Kieslyste</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Kieslyste verander ’n fisiese stokkie of raakplaat in ’n ring of rooster op die skerm. Druk + langs Kieslyste om een te skep, kies wat dit oopmaak, en gee dan elke sel ’n naam en ’n aksie.</value></data>

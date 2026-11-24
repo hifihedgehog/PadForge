@@ -8732,6 +8732,7 @@ namespace PadForge.ViewModels
                 m.InvertOutput = false;
                 m.ParamAccel = 0;
                 m.LoadShapingAndGates(null);
+                m.LoadMouseTravel(null);
                 m.GyroSensitivity = 1.0;
                 m.MouseCursorSensitivity = 1.0;
                 m.IrPointerSensitivity = 1.0;

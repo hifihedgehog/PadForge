@@ -2859,6 +2859,30 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posisi mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivitas</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensitivitas kursor per sumber. 1.0 mencapai defleksi stik penuh pada 10% lebar layar dari tengah. Nilai di atas 1.0 mencapai defleksi penuh dengan gerak kursor yang lebih pendek. Nilai di bawah 1.0 memerlukan lebih banyak.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Gerak mouse X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Gerak mouse Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Gerak hingga batas kemudi</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Seberapa jauh mouse bergerak dari tengah hingga batas kemudi, dalam hitungan yang dilaporkan mouse. Angka lebih tinggi membuat kemudi lebih halus dan memerlukan gerakan tangan lebih jauh.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>hitungan</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Pemusatan</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Nonaktif membiarkan setir di tempat tangan melepasnya. Pegas mengembalikannya selama Waktu kembali. Dari telemetri menariknya kembali seperti ban depan mobil pada kecepatan dan cengkeraman game: diam saat berhenti, lebih kuat seiring kecepatan, ringan saat ban tergelincir. Tanpa game yang mengirim telemetri, hasilnya sama dengan pegas. Dari gaya game membiarkan umpan balik gaya setir virtual yang memutarnya.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Nonaktif</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Pegas</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Dari telemetri</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Dari gaya game</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Waktu kembali</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Berapa lama Pegas mengembalikan setir 95% dari jaraknya. Dari telemetri memerlukan waktu sebanyak ini pada 100 km/h di jalan kering.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Mengemudi</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Selalu membiarkan mouse mengemudi setiap saat. Saat ditahan membiarkannya mengemudi hanya selama Input kemudi ditahan. Alih menyalakan atau mematikan kemudi pada setiap penekanan Input kemudi. Selama mouse tidak mengemudi, setir tetap di tempatnya atau kembali ke tengah, sehingga satu mouse dapat mengemudi dan melihat sekeliling.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Selalu</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Saat ditahan</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alih</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input kemudi</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Tombol yang memungkinkan mouse mengemudi, pada perangkat yang sama dengan gerak mouse. Jika tidak ada yang dipilih, mouse selalu mengemudi.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Penghalusan</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Meratakan mouse yang melaporkan secara tidak merata. Setir tertinggal dari tangan selama kira-kira waktu ini. 0 berarti nonaktif.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kunci pada kecepatan</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Dengan Telemetri Game aktif, seberapa banyak batas kemudi yang tersisa pada 200 km/h. Pada 100% seluruh batas tersedia di setiap kecepatan.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Penunjuk IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Penunjuk IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Kecerahan IR</value></data>
@@ -3567,8 +3591,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Memutar seluruh peta flick sebesar sekian derajat. Positif berarti searah jarum jam. Kunci sudut diterapkan setelah offset.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Saat lapisan yang memuat Flick stick aktif ketika stik sudah terdefleksi, jalankan flick seketika. Nonaktif membiarkan kamera diam dan melacak rotasi dari sudut stik saat ini.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Umpan balik batas kemudi</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat di batas kemudi untuk stik dalam mode kemudi</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Saat stik yang diatur ke suatu mode kemudi diputar habis hingga batas kemudi, mainkan isyarat (getaran, pelatuk, atau bilah lampu) agar Anda merasakan batasnya. Semua nonaktif secara default.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Isyarat saat kemudi mencapai batas</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Saat stik dalam mode kemudi, input Condong gerakan, atau input Gerak mouse mencapai batas kemudi, mainkan isyarat (getaran, pelatuk, atau bilah lampu) agar Anda merasakan batasnya. Semua nonaktif secara default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Denyut getaran di batas kemudi</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Getaran pelatuk di batas kemudi</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Denyut bilah lampu di batas kemudi</value></data>
@@ -4547,6 +4571,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alihkan tombol {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Pusatkan ulang giroskop</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Menolkan referensi bidik giroskop yang terakumulasi pada gamepad saat ditekan. Riwayat penghalusan dibersihkan, posisi netral Condong gerakan ditangkap ulang, estimasi gravitasi diisi ulang dari pose kontroler saat ini, dan putaran yang dibangun baris Pitch, Yaw, dan Roll gerakan diurungkan.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Pusatkan kemudi mouse</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Mengembalikan setir setiap input Gerak mouse pada kontroler virtual ini ke tengah.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Perangkat mana pun)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu mengubah stik atau panel sentuh fisik menjadi cincin atau kisi di layar. Tekan + di samping Menu untuk membuatnya, pilih apa yang membukanya, lalu beri setiap sel nama dan tindakan.</value></data>

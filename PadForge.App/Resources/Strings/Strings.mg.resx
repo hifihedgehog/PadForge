@@ -2068,7 +2068,7 @@
   <data name="Search_Group_Actions" xml:space="preserve"><value>Asa</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Izay fanindriana hitan'ny lalao rehefa samy tazomina ny bokotra fitendry roa</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mitazona deflection kely amin'ny stick mba hampisehoan'ny lalao foana ny famantarana contrôleur</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Famantarana rehefa tonga amin'ny fetrany ny stick amin'ny fomba familiana</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Famantarana rehefa tonga amin'ny fetrany ny familiana</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Mandefa ny vibration an'ny motera lehibe any amin'ny gâchette</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration amin'ny gâchette avy amin'ny bass ao amin'ny feon'ny rafitra</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone amin'ny fitongilanana, fironan'ny contrôleur</value></data>
@@ -2346,4 +2346,28 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Nolavin'ny PadForge ilay rakitra nalaina satria tsy ilay tahiry contrôleur andrasany izy. Tsy nisy niova.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ampiasaina ny mapping vaovao amin'ny manaraka hifandraisan'ny contrôleur misy azy.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ampiasaina ny mapping niova amin'ny manaraka hanombohan'ny PadForge.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Dian'ny totozy X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Dian'ny totozy Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Dia hatramin'ny lock feno</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ny halaviran'ny dian'ny totozy avy eo afovoany hatramin'ny lock feno, amin'ny dingana tatiran'ny totozy. Ny isa ambony kokoa dia mamily amin'ny antsipiriany kokoa ary mila dia lavitra kokoa amin'ny tanana.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dingana</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Famerenana eo afovoany</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ny Tsy miasa dia mitazona ny familiana eo amin'izay namelan'ny tanana azy. Ny Ressort dia mamerina azy ao anatin'ny Fotoana fiverenana. Ny Avy amin'ny Télémétrie dia misintona azy hiverina toy ny ataon'ny kodiarana aloha amin'ny fiara araka ny hafainganana sy ny fifikirana ao amin'ny lalao: tsy mihetsika rehefa mijanona, mafy kokoa rehefa haingana, maivana rehefa mikisaka ny kodiarana. Raha tsy misy lalao mandefa télémétrie dia ressort izy. Ny Avy amin'ny herin'ny lalao dia mamela ny force feedback an'ny familiana virtoaly hanodina azy.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Tsy miasa</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Ressort</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Avy amin'ny Télémétrie</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Avy amin'ny herin'ny lalao</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Fotoana fiverenana</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Ny fotoana ilain'ny Ressort hamerenana ny familiana 95% amin'ny lalana. Io fotoana io ihany no ilain'ny Avy amin'ny Télémétrie amin'ny 100 km/h eny amin'ny lalana maina.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Familio</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ny Mandrakariva dia mamela ny totozy hamily foana. Ny Raha mbola tazomina dia mamela azy hamily raha mbola tazomina ny Bokotra familiana ihany. Ny Toggle dia mamelona na mamono ny familiana isaky ny tsindry ny Bokotra familiana. Raha tsy mamily ny totozy dia mijanona eo amin'ny toerany na miverina eo afovoany ny familiana, ka totozy iray dia afaka mamily sy mijery manodidina.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Mandrakariva</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Raha mbola tazomina</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Bokotra familiana</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ny bokotra mamela ny totozy hamily, ao amin'ny fitaovana misy ny dian'ny totozy ihany. Raha tsy misy voafidy dia mamily foana ny totozy.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Fanalefahana</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Mampitovy ny fihetsiky ny totozy tsy mitovy ny fitaterany. Manaraka ny tanana aorian'io fotoana io eo ho eo ny familiana. 0 dia tsy miasa.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock amin'ny hafainganana</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Rehefa mandeha ny Télémétrie lalao, ny ampahany amin'ny lock sisa amin'ny 200 km/h. Amin'ny 100% dia eo foana ny lock manontolo na inona na inona hafainganana.</value></data>
 </root>

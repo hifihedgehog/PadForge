@@ -2631,6 +2631,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>موضع الماوس Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>الحساسية</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>حساسية المؤشر لكل مصدر. 1.0 تبلغ الانحراف الكامل للعصا عند 10% من عرض الشاشة بعيدا عن المركز. القيم فوق 1.0 تبلغ الانحراف الكامل بحركة مؤشر أقل. القيم دون 1.0 تحتاج إلى أكثر.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>حركة الماوس X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>حركة الماوس Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>المسافة إلى أقصى انعطاف</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>المسافة التي يقطعها الماوس من المركز إلى أقصى انعطاف، بالنقاط التي يبلغ عنها الماوس. الرقم الأعلى يعطي توجيها أدق ويتطلب حركة يد أكبر.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>نقطة</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>التوسيط</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«إيقاف» يُبقي العجلة حيث تركتها اليد. «الزنبرك» يعيدها خلال «زمن العودة». «من بيانات القياس» يسحبها كما تفعل الإطارات الأمامية للسيارة بحسب سرعة اللعبة وتماسكها: ساكنة عند التوقف، وأشد مع السرعة، وخفيفة عند انزلاق الإطارات. إن لم ترسل لعبة بيانات القياس فهو الزنبرك. «من قوة اللعبة» يتيح لقوة الارتجاع في عجلة ظاهرية أن تديرها.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>إيقاف</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>الزنبرك</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>من بيانات القياس</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>من قوة اللعبة</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>زمن العودة</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>المدة التي يحتاجها «الزنبرك» لإعادة العجلة 95% من الطريق. «من بيانات القياس» يستغرق هذه المدة عند 100 km/h على طريق جافة.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>التوجيه</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«دائما» يتيح للماوس التوجيه في كل وقت. «أثناء الضغط المستمر» يتيحه فقط ما دام «مدخل التوجيه» مضغوطا. «تبديل» يشغّل التوجيه أو يوقفه مع كل ضغطة على «مدخل التوجيه». وما دام الماوس لا يوجّه، تبقى العجلة حيث هي أو تعود إلى المركز، فيستطيع ماوس واحد أن يوجّه وأن ينظر حوله.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>دائما</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>أثناء الضغط المستمر</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>تبديل</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>مدخل التوجيه</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>الزر الذي يتيح للماوس التوجيه، على الجهاز نفسه الذي يتحرك عليه الماوس. إن لم يُختر شيء يوجّه الماوس دائما.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>التنعيم</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>يعدّل ماوسا يبلّغ بشكل غير منتظم. تتأخر العجلة عن اليد بهذه المدة تقريبا. 0 للإيقاف.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>الانعطاف عند السرعة</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>مع تشغيل «بيانات قياس الألعاب»، المتبقي من الانعطاف عند 200 km/h. عند 100% يتوفر الانعطاف كله عند كل سرعة.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>مؤشر IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>مؤشر IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>سطوع IR</value></data>
@@ -3337,8 +3361,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>يدير خريطة الالتفات كلها بهذا العدد من الدرجات. الموجب مع عقارب الساعة. تسري المحاذاة بعد الإزاحة.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>عندما تتفعل الطبقة التي تحتوي عصا الالتفات السريع والعصا منحرفة بالفعل، ينطلق الالتفات فورا. الإيقاف يبقي الكاميرا ثابتة ويتتبع الدوران من زاوية العصا الحالية.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ردود فعل أقصى انعطاف</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>إشارة عند أقصى انعطاف لعصا في وضع توجيه</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>عند إدارة عصا مضبوطة على وضع توجيه حتى أقصى انعطاف، يتم تشغيل إشارة (اهتزاز أو زناد أو شريط إضاءة) لتشعر بالحد. كلها متوقفة افتراضيا.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>إشارة عند بلوغ التوجيه أقصى انعطاف</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>عندما تبلغ عصا في وضع توجيه أو مدخل «ميل الحركة» أو مدخل «حركة الماوس» أقصى انعطاف، تُشغَّل إشارة (اهتزاز أو زناد أو شريط إضاءة) لتشعر بالحد. كلها متوقفة افتراضيا.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>نبضة اهتزاز عند أقصى انعطاف</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>اهتزاز الزناد عند أقصى انعطاف</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>نبضة شريط الإضاءة عند أقصى انعطاف</value></data>
@@ -4285,6 +4309,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>تبديل المفاتيح {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>إعادة توسيط الجيروسكوب</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>يصفّر مراجع التصويب بالجيروسكوب المتراكمة في ذراع التحكم عند الضغط. يمسح سجل التنعيم، ويعاد التقاط الوضع المحايد لمدخل «ميل الحركة»، ويعاد تأسيس تقدير الجاذبية من الوضعية الحالية لوحدة التحكم، ويلغى الدوران الذي بنته صفوف انحدار الحركة وانعراجها ودحرجتها.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>توسيط توجيه الماوس</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>يعيد عجلة كل مدخل «حركة الماوس» على وحدة التحكم الظاهرية هذه إلى المركز.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(أي جهاز)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>القوائم</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>القوائم تحوّل عصا فعلية أو لوحة لمس إلى حلقة أو شبكة على الشاشة. اضغط + بجانب «القوائم» لإنشاء واحدة، واختر ما يفتحها، ثم أعط كل خلية اسما وإجراء.</value></data>

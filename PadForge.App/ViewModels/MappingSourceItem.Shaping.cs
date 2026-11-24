@@ -121,7 +121,8 @@ namespace PadForge.ViewModels
         /// device card (a mouse axis, a raw axis), where they are the only
         /// shaping there is. A stick or trigger output's shaping lives on
         /// the device's own card, which takes an import's at assignment.</summary>
-        public bool IsShapingShown => HasShaping || (IsParamAccelApplicable && !TargetHasDeviceCard);
+        public bool IsShapingShown => HasShaping
+            || ((IsParamAccelApplicable || IsMouseTravelSource) && !TargetHasDeviceCard);
 
         /// <summary>True when the row's output is one of the six a device
         /// card shapes.</summary>
@@ -145,6 +146,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(GateText));
                     OnPropertyChanged(nameof(HasGate));
+                    RaiseTravelSteerInput();
                 }
             }
         }

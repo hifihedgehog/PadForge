@@ -2631,6 +2631,30 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Hiire asukoht Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Allikapõhine kursori tundlikkus. 1.0 korral saavutatakse kangi täielik kõrvalekalle 10% ekraani laiuse kaugusel keskelt. Väärtused üle 1.0 saavutavad täieliku kõrvalekalde väiksema kursori liikumisega. Väärtused alla 1.0 vajavad rohkem.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Hiire liikumine X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Hiire liikumine Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Käik lõppasendini</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kui kaugele hiir keskkohast lõppasendini liigub, hiire teatatud loendustes. Suurem arv juhib täpsemalt ja nõuab rohkem käeliigutust.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>loendust</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Tsentreerimine</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Väljas hoiab rooli seal, kuhu käsi selle jättis. Vedru toob selle tagasi ajaga Tagasipöörde aeg. Telemeetriast tõmbab selle tagasi nagu auto esirehvid mängu kiiruse ja haardega: paigal seistes pehmelt, kiirusega kindlamalt, kergelt, kui rehvid libisevad. Kui ükski mäng telemeetriat ei saada, on see vedru. Mängu jõust laseb virtuaalse rooli enda jõutagasidel seda keerata.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Väljas</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Vedru</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemeetriast</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Mängu jõust</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tagasipöörde aeg</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Aeg, mille jooksul Vedru toob rooli 95% teest tagasi. Telemeetriast kulub selleks nii kaua 100 km/h kiirusel kuival teel.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Roolimine</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Alati laseb hiirel rooli keerata kogu aeg. Hoidmise ajal laseb sel rooli keerata ainult siis, kui Roolimise nuppu hoitakse. Lülitus lülitab roolimise sisse või välja iga Roolimise nupu vajutusega. Kui hiir ei roolita, jääb rool paigale või tsentreerub, nii et üks hiir saab nii rooli keerata kui ringi vaadata.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Alati</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Hoidmise ajal</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Lülitus</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Roolimise nupp</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Nupp, mis laseb hiirel rooli keerata, samas seadmes, kus on hiire liikumine. Kui ühtegi pole valitud, roolib hiir alati.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Silumine</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Silub ebaühtlaselt teatava hiire. Rool jääb käest maha umbes nii pikaks ajaks. 0 on väljas.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lukk kiirusel</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kui Mängu telemeetria on sees, kui suur osa lõppasendist on 200 km/h juures alles. 100% korral on kogu käik igal kiirusel olemas.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-osuti X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-osuti Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-heledus</value></data>
@@ -3337,8 +3361,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Pöörab kogu nipsukaarti nii mitme kraadi võrra. Positiivne on päripäeva. Kinnitamine rakendub pärast nihet.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Kui Flick Sticki sisaldav kiht aktiveerub ajal, mil kang on juba kõrvale kallutatud, käivitatakse nips kohe. Väljas hoiab kaamera paigal ja jälgib pööret kangi praegusest nurgast.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Roolilukuni jõudmise tagasiside</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Märguanne lõppasendis roolimisrežiimi kangile</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kui roolimisrežiimile seatud kang keeratakse lõpuni välja, esitatakse märguanne (vibratsioon, päästik või valgusriba), et tunneksite piiri. Vaikimisi kõik väljas.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Märguanne, kui roolimine jõuab lõppasendisse</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Kui roolimisrežiimis kang, sisend Liikumine: kallutus või sisend Hiire liikumine jõuab lõppasendisse, esitatakse märguanne (vibratsioon, päästik või valgusriba), et tunneksite piiri. Vaikimisi kõik väljas.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibratsiooniimpulss lõppasendis</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Päästikuvibratsioon lõppasendis</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Valgusriba impulss lõppasendis</value></data>
@@ -4285,6 +4309,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Lülita klahvid {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Güroskoobi tsentreerimine</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Nullib vajutamisel mängupuldi kogunenud güroskoobi sihtimise lähtepunktid. Silumise ajalugu tühjendatakse, sisendi Liikumine: kallutus neutraalasend jäädvustatakse uuesti, raskusjõu hinnang lähtestatakse kontrolleri praeguse asendi järgi ja ridade Liikumine: pikikalle, pööre ja külgkalle kogutud pööre tühistatakse.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Tsentreeri hiirega roolimine</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Toob selle virtuaalse kontrolleri iga hiire liikumise sisendi rooli tagasi keskele.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(mis tahes seade)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menüüd</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menüüd muudavad füüsilise kangi või puuteplaadi ekraanil kuvatavaks ringiks või ruudustikuks. Uue loomiseks vajutage nuppu + pealkirja Menüüd kõrval, valige, mis selle avab, ning andke seejärel igale lahtrile nimi ja toiming.</value></data>

@@ -2859,6 +2859,30 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Позиция на мишката Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Чувствителност</value></data>
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Чувствителност на курсора за всеки източник. При 1.0 пълно отклонение на стика се достига на 10% от ширината на екрана от центъра. Стойностите над 1.0 достигат пълно отклонение с по-малко движение на курсора. Стойностите под 1.0 изискват повече.</value></data>
+  <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ход на мишката X</value></data>
+  <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ход на мишката Y</value></data>
+  <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ход до краен ъгъл</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Колко се движи мишката от центъра до крайния ъгъл, в единиците, които мишката отчита. По-голямо число управлява по-фино и изисква повече ход на ръката.</value></data>
+  <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>единици</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Центриране</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>„Изключено“ държи волана там, където ръката го е оставила. „Пружина“ го връща за времето за връщане. „От телеметрията“ го дърпа както предните гуми на автомобил при скоростта и сцеплението в играта: неподвижен в покой, по-твърд със скоростта, лек, когато гумите се плъзгат. Ако никоя игра не изпраща телеметрия, работи като пружина. „От силата на играта“ оставя собствената обратна връзка със сила на виртуалния волан да го върти.</value></data>
+  <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Изключено</value></data>
+  <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Пружина</value></data>
+  <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>От телеметрията</value></data>
+  <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>От силата на играта</value></data>
+  <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Време за връщане</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>За колко време „Пружина“ връща волана на 95% от пътя назад. „От телеметрията“ отнема толкова при 100 km/h по сух път.</value></data>
+  <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Управление</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>„Винаги“ позволява на мишката да управлява постоянно. „Докато е задържан“ я оставя да управлява само докато вход за управление е задържан. „Превключване“ включва или изключва управлението при всяко натискане на входа за управление. Докато мишката не управлява, воланът остава на място или се центрира, така че една мишка да може да управлява и да оглежда.</value></data>
+  <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Винаги</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Докато е задържан</value></data>
+  <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Превключване</value></data>
+  <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Вход за управление</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Бутонът, който позволява на мишката да управлява, на същото устройство като хода на мишката. Ако не е избран нито един, мишката управлява винаги.</value></data>
+  <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Изглаждане</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Изравнява мишка, която отчита неравномерно. Воланът изостава от ръката с около толкова време. 0 е изключено.</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Ъгъл при скорост</value></data>
+  <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>При включена игрова телеметрия, каква част от крайния ъгъл остава при 200 km/h. При 100% целият ъгъл е наличен при всяка скорост.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR показалец X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR показалец Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR яркост</value></data>
@@ -3567,8 +3591,8 @@
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Завърта цялата карта на флика с толкова градуса. Положителните стойности са по часовниковата стрелка. Прилепването се прилага след отместването.</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Когато слоят с флик стик се активира, докато стикът вече е отклонен, флик се изпълнява незабавно. „Изключено“ оставя камерата неподвижна и следи въртенето от текущия ъгъл на стика.</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Обратна връзка при краен ъгъл на волана</value></data>
-  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал при краен ъгъл за стик в режим на управление</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Когато стик в режим на управление е завъртян докрай до крайното положение, подава сигнал (вибрация, спусък или светлинна лента), за да усетите границата. Всичко е изключено по подразбиране.</value></data>
+  <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Сигнал, когато управлението достигне краен ъгъл</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Когато стик в режим на управление, вход „Движение: навеждане“ или вход „Ход на мишката“ достигне краен ъгъл, подава сигнал (вибрация, спусък или светлинна лента), за да усетите границата. Всичко е изключено по подразбиране.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Импулс на вибрация при крайно положение</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Вибрация на спусъка при крайно положение</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Импулс на светлинната лента при крайно положение</value></data>
@@ -4547,6 +4571,8 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Превключване на клавиши {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Повторно центриране на жироскопа</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>При натискане нулира натрупаните опорни точки за прицелване на жироскопа на контролера. Историята на изглаждането се изчиства, неутралната позиция на „Движение: навеждане“ се записва отново, оценката на гравитацията се изчислява наново от текущото положение на контролера, а завъртането, натрупано от редовете „Движение: наклон“, „Движение: завъртане“ и „Движение: крен“, се отменя.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Центриране на управлението с мишка</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Връща в центъра волана на всеки вход „Ход на мишката“ на този виртуален контролер.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Всяко устройство)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Менюта</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Менютата превръщат физически стик или тъчпад в екранен пръстен или мрежа. Натиснете + до „Менюта“, за да създадете меню, изберете с какво се отваря, след което дайте на всяка клетка име и действие.</value></data>

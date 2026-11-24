@@ -696,6 +696,10 @@ namespace PadForge
                      or nameof(DashboardViewModel.EnableAutomation)
                      or nameof(DashboardViewModel.AutomationLevel))
                     _settingsService.MarkDirty();
+                // A "Mouse Travel" source shows Lock at Speed only while
+                // Game Telemetry is on (#597), so the rows hear the switch.
+                if (e.PropertyName == nameof(DashboardViewModel.EnableGameTelemetry))
+                    foreach (var pad in _viewModel.Pads) pad.RaiseMouseTravelRoadChanged();
             };
 
             // Wire HidHide install/uninstall commands.
@@ -7499,7 +7503,13 @@ namespace PadForge
                     or nameof(MappingItem.ParamStickDeadZoneShape)
                     or nameof(MappingItem.ParamStickDeadZoneInner)
                     or nameof(MappingItem.GateDescriptor)
-                    or nameof(MappingItem.Gate2Descriptor))
+                    or nameof(MappingItem.Gate2Descriptor)
+                    or nameof(MappingItem.ParamTravelCounts)
+                    or nameof(MappingItem.ParamTravelCentering)
+                    or nameof(MappingItem.ParamTravelReturnTime)
+                    or nameof(MappingItem.ParamTravelSteer)
+                    or nameof(MappingItem.ParamTravelSmoothingMs)
+                    or nameof(MappingItem.ParamTravelLockAtSpeed))
                 {
                     _settingsService.MarkDirty();
 
@@ -7652,7 +7662,13 @@ namespace PadForge
                         or nameof(MappingSourceItem.ParamStickDeadZoneShape)
                         or nameof(MappingSourceItem.ParamStickDeadZoneInner)
                         or nameof(MappingSourceItem.GateDescriptor)
-                        or nameof(MappingSourceItem.Gate2Descriptor))
+                        or nameof(MappingSourceItem.Gate2Descriptor)
+                        or nameof(MappingSourceItem.ParamTravelCounts)
+                        or nameof(MappingSourceItem.ParamTravelCentering)
+                        or nameof(MappingSourceItem.ParamTravelReturnTime)
+                        or nameof(MappingSourceItem.ParamTravelSteer)
+                        or nameof(MappingSourceItem.ParamTravelSmoothingMs)
+                        or nameof(MappingSourceItem.ParamTravelLockAtSpeed))
                         _settingsService.MarkDirty();
                 };
             }

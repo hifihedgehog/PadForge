@@ -402,7 +402,7 @@
 
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto Centring Strength</value></data>
   <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>How strongly a flick pulls towards the snapped angle. 1 snaps fully, 0 disables snapping, values between blend.</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger or lightbar) so you feel the limit. All off by default.</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick in a steering mode, a Motion Lean input or a Mouse Travel input reaches full lock, play a cue (rumble, trigger or lightbar) so you feel the limit. All off by default.</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar Colour</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Reset Auto Centring Strength</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colours to step through, one per lock.</value></data>
@@ -644,6 +644,12 @@
   <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Set light colour</value></data>
   <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentre camera</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimise the window</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>How far the mouse moves from centre to full lock, in the counts the mouse reports. A higher number steers finer and takes more hand travel.</value></data>
+  <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centring</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Off holds the wheel where the hand left it. Spring brings it back over Return Time. From Telemetry pulls it back as a car’s front tyres would at the game’s speed and grip: still at a standstill, firmer with speed, light when the tyres slide. With no game sending telemetry it is the spring. From the Game’s Force lets a virtual wheel’s own force feedback turn it.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Always lets the mouse steer at all times. While Held lets it steer only while the Steer Input is held. Toggle turns steering on or off with each press of the Steer Input. While the mouse does not steer, the wheel stays where it is or centres, so one mouse can steer and look around.</value></data>
+  <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Centre Mouse Steering</value></data>
+  <data name="MacroAction_CenterMouseSteering_Tooltip" xml:space="preserve"><value>Puts the wheel of every Mouse Travel input on this virtual controller back at centre.</value></data>
   <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automation is on: programs can switch profiles, read devices and settings and send inputs</value></data>
   <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Check GitHub for new versions of PadForge and install them from here, and update the controller database. PadForge contacts only GitHub (api.github.com, github.com and its download servers and raw.githubusercontent.com for the controller database). The only data it sends is its own version number and, for the controller database, the tag GitHub gave the last download.</value></data>
 </root>

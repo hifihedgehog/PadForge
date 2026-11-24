@@ -31,9 +31,13 @@ namespace PadForge.Tests
         private readonly BlockingCollection<string> _events = new();
         private readonly Task _reader;
 
-        public AutomationTestClient(string pipeName)
+        public AutomationTestClient(string pipeName, System.Security.Principal.TokenImpersonationLevel? level = null)
         {
-            _pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+            // A level given opens the pipe the way the libraries do, at the
+            // identification level, which the server's token read takes.
+            _pipe = level is { } asked
+                ? new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous, asked)
+                : new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
             _pipe.Connect(5000);
             _reader = Task.Run(() =>
             {
@@ -179,6 +183,16 @@ namespace PadForge.Tests
             var client = new AutomationTestClient(PipeName);
             _clients.Add(client);
             return client;
+        }
+
+        /// <summary>From here every connection stands for a process of its
+        /// own, with this test's image: a test has one process, and the
+        /// sessions count by process.</summary>
+        public void EachConnectionItsOwnProcess()
+        {
+            string path = Environment.ProcessPath;
+            int next = 100000;
+            Host.AutomationPipe.ProcessOf = _ => AutomationClientProcess.ForTest(Interlocked.Increment(ref next), path);
         }
 
         /// <summary>A connected client whose hello was answered.</summary>
@@ -448,7 +462,8 @@ namespace PadForge.Tests
             Assert.Equal("e level read", client.Event());
             Assert.Null(ControlHolds.Current);
             Assert.Equal(0f, ScriptValues.Read("lap"));
-            Assert.Null(rig.Host.Sessions.Devices.Find(id).Owner);
+            // Nobody assigned the device, so it went with its row.
+            Assert.Null(rig.Host.Sessions.Devices.Find(id));
             Assert.StartsWith("err not-allowed ", client.Final("own " + AutomationPipeRig.IdOf(pad) + " b2=1"));
             Assert.True(rig.Host.Sessions.Watch.Hooked, "Read still follows");
 
@@ -466,10 +481,11 @@ namespace PadForge.Tests
         // ── Limits ──
 
         [Fact]
-        public void SixteenSessions_AreTaken_AndTheSeventeenthIsRefused()
+        public void TwelveScriptSessions_AreTaken_AndTheThirteenthIsRefused_ForFourAreKeptForPlugins()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.Read);
-            for (int i = 0; i < AutomationSessions.MostSessions; i++) rig.Open("Script " + i);
+            rig.EachConnectionItsOwnProcess();
+            for (int i = 0; i < AutomationSessions.MostSessions - AutomationSessions.KeptForPlugins; i++) rig.Open("Script " + i);
             using var extra = rig.Connect();
             Assert.StartsWith("err too-many ", extra.Final("hello name=extra"));
             Assert.True(extra.ClosedWithin(3000));
@@ -497,6 +513,7 @@ namespace PadForge.Tests
         public void EightDevicesASession_And32InAll()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+            rig.EachConnectionItsOwnProcess();
             var clients = Enumerable.Range(0, 5).Select(i => rig.Open("Maker " + i)).ToList();
             for (int i = 0; i < ProgramDevices.MostPerSession; i++)
                 Assert.StartsWith("ok id=", clients[0].Final("declare key=d" + i + " name=\"D\" {}"));
@@ -1099,12 +1116,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Gone_TakesTheDeviceOfflineAtOnce()
+        public void Gone_TakesTheDeviceOfflineAtOnce_AndAnAssignedOneKeepsItsRow()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
             using var client = rig.Open();
             string id = client.Final("declare key=rig name=\"Sim\" {}").Substring(6);
             var guid = rig.Host.Sessions.Devices.Find(id).Guid;
+            // The user assigned it: a row of its mappings stands.
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = guid, MapTo = 0 });
             Assert.Equal("ok", client.Final("gone " + id));
             Assert.False(SettingsManager.FindDeviceByInstanceGuid(guid).IsOnline);
             Assert.StartsWith("err not-owner ", client.Final("gone " + id));

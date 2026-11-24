@@ -18,7 +18,8 @@ namespace PadForge.Services.Automation
     ///
     /// <para>What a program reads is scrubbed: a device is named by its
     /// product and a short ID PadForge makes up, never its serial number,
-    /// path, Bluetooth address or a name the user typed.</para>
+    /// path, Bluetooth address or a name the user typed, and every name a
+    /// read gives goes through the scrubber (AutomationReadScrub).</para>
     /// </summary>
     internal static class AutomationDevices
     {
@@ -84,12 +85,21 @@ namespace PadForge.Services.Automation
         };
 
         /// <summary>The name a device is shown by to a program: the name its
-        /// product gives, never one the user typed.</summary>
+        /// product gives, scrubbed, never one the user typed or the name a
+        /// Bluetooth device carries for its owner. A device whose product
+        /// names nothing is "Device".</summary>
         internal static string NameOf(UserDevice ud)
         {
-            if (!string.IsNullOrWhiteSpace(ud.ProductName)) return ud.ProductName;
-            if (!string.IsNullOrWhiteSpace(ud.InstanceName)) return ud.InstanceName;
-            return "Device";
+            string name = string.IsNullOrWhiteSpace(ud.ProductName) ? null : AutomationReadScrub.Text(ud.ProductName.Trim());
+            return string.IsNullOrWhiteSpace(name) ? "Device" : name;
+        }
+
+        /// <summary>A control's name as a program reads it: scrubbed, or the
+        /// name PadForge gives the control by its index.</summary>
+        private static string ControlName(string name, string fallback)
+        {
+            string scrubbed = string.IsNullOrWhiteSpace(name) ? null : AutomationReadScrub.Text(name.Trim());
+            return string.IsNullOrWhiteSpace(scrubbed) ? fallback : scrubbed;
         }
 
         private static int SliderCount(DeviceObjectItem[] objects)
@@ -162,9 +172,8 @@ namespace PadForge.Services.Automation
             foreach (var (index, name) in axes)
             {
                 var row = new StringBuilder("axis index=").Append(index)
-                    .Append(" name=").Append(AutomationLine.Quote(string.IsNullOrEmpty(name)
-                        ? (index >= ProgramAxis.FirstSlider ? "Slider " + (index - ProgramAxis.FirstSlider) : "Axis " + index)
-                        : name));
+                    .Append(" name=").Append(AutomationLine.Quote(ControlName(name,
+                        index >= ProgramAxis.FirstSlider ? "Slider " + (index - ProgramAxis.FirstSlider) : "Axis " + index)));
                 int? rest = RestOf(ud, index);
                 if (rest.HasValue) row.Append(" rest=").Append(rest.Value);
                 rows.Add(row.ToString());
@@ -180,14 +189,14 @@ namespace PadForge.Services.Automation
                 if (o.IsButton && o.InputIndex >= 0 && o.InputIndex < CustomInputState.MaxButtons)
                     buttons[o.InputIndex] = o.Name;
             foreach (var (index, name) in buttons)
-                rows.Add("button index=" + index + " name=" + AutomationLine.Quote(string.IsNullOrEmpty(name) ? "Button " + index : name));
+                rows.Add("button index=" + index + " name=" + AutomationLine.Quote(ControlName(name, "Button " + index)));
 
             var hats = new SortedDictionary<int, string>();
             for (int i = 0; i < Math.Min(ud.CapPovCount, CustomInputState.MaxPovs); i++) hats[i] = null;
             foreach (var o in objects)
                 if (o.IsPov && o.InputIndex >= 0 && o.InputIndex < CustomInputState.MaxPovs) hats[o.InputIndex] = o.Name;
             foreach (var (index, name) in hats)
-                rows.Add("hat index=" + index + " name=" + AutomationLine.Quote(string.IsNullOrEmpty(name) ? "Hat " + index : name));
+                rows.Add("hat index=" + index + " name=" + AutomationLine.Quote(ControlName(name, "Hat " + index)));
 
             if (ud.HasGyro) rows.Add("gyro");
             if (ud.HasAccel) rows.Add("accel");

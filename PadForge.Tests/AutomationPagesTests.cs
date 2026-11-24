@@ -246,8 +246,10 @@ namespace PadForge.Tests
             var item = vm.AutomationRequests[0];
             Assert.Equal("Run a program when a profile starts", item.Title);
             Assert.Equal(new[] { @"C:\Tools\run.exe", "--fast" }, item.Detail);
-            Assert.Equal(string.Format(Strings.Instance.Automation_Request_FromClaimed_Format, "Playnite", "Playnite.DesktopApp.exe"), item.From);
-            Assert.Equal(string.Format(Strings.Instance.Automation_Request_From_Format, "powershell.exe"), vm.AutomationRequests[1].From);
+            Assert.Equal(string.Format(Strings.Instance.Automation_Request_FromClaimed_Format, "Playnite",
+                string.Format(Strings.Instance.Automation_Program_NotSigned_Format, "Playnite.DesktopApp.exe")), item.From);
+            Assert.Equal(string.Format(Strings.Instance.Automation_Request_From_Format,
+                string.Format(Strings.Instance.Automation_Program_NotSigned_Format, "powershell.exe")), vm.AutomationRequests[1].From);
             Assert.Equal("Automation_Allow_" + item.Id, item.AllowId);
             Assert.Equal("Automation_Deny_" + item.Id, item.DenyId);
 
@@ -300,12 +302,17 @@ namespace PadForge.Tests
         public void WhoAsks_MarksTheProgramsOwnName_AsItsClaim()
         {
             var s = Strings.Instance;
-            Assert.Equal(string.Format(s.Automation_Request_From_Format, "powershell.exe"),
+            string NotSigned(string image) => string.Format(s.Automation_Program_NotSigned_Format, image);
+            Assert.Equal(string.Format(s.Automation_Request_From_Format, NotSigned("powershell.exe")),
                 AutomationRequestItem.FromLine(new AutomationProgram("powershell", 1, "powershell.exe")));
-            Assert.Equal(string.Format(s.Automation_Request_From_Format, "powershell.exe"),
+            Assert.Equal(string.Format(s.Automation_Request_From_Format, NotSigned("powershell.exe")),
                 AutomationRequestItem.FromLine(new AutomationProgram(null, 1, "powershell.exe")));
-            Assert.Equal(string.Format(s.Automation_Request_FromClaimed_Format, "My Launcher", "python.exe"),
+            Assert.Equal(string.Format(s.Automation_Request_FromClaimed_Format, "My Launcher", NotSigned("python.exe")),
                 AutomationRequestItem.FromLine(new AutomationProgram("My Launcher", 1, "python.exe")));
+            // The full path and the signer, where Windows gave them.
+            Assert.Equal(string.Format(s.Automation_Request_From_Format,
+                    string.Format(s.Automation_Program_Signed_Format, @"C:\Program Files\PowerShell\pwsh.exe", "Microsoft Corporation")),
+                AutomationRequestItem.FromLine(new AutomationProgram("pwsh", 1, "pwsh.exe", @"C:\Program Files\PowerShell\pwsh.exe", "Microsoft Corporation")));
             Assert.Equal(string.Format(s.Automation_Request_FromClaimedOnly_Format, "My Launcher"),
                 AutomationRequestItem.FromLine(new AutomationProgram("My Launcher", 1, null)));
             Assert.Equal(s.Automation_Request_FromUnknown, AutomationRequestItem.FromLine(AutomationProgram.Unknown));
@@ -353,12 +360,21 @@ namespace PadForge.Tests
             Assert.Equal(new DateTimeOffset(2026, 11, 23, 14, 2, 0, TimeSpan.Zero).ToLocalTime().ToString("T", System.Globalization.CultureInfo.CurrentUICulture), engine.Time);
             Assert.Contains(engine.Program, engine.ToString());
 
-            // A full record drops its oldest, and the list follows.
+            // A full record takes no newcomer's read, and the list follows.
             for (int i = 0; i < AutomationActivity.Capacity; i++)
                 host.Activity.Add(Entry(4, "script" + i, AutomationAskKind.Version, true));
             Assert.Equal(AutomationActivity.Capacity, vm.AutomationActivity.Count);
-            Assert.Equal("script" + (AutomationActivity.Capacity - 1), vm.AutomationActivity[0].Program);
-            Assert.Equal("script0", vm.AutomationActivity[^1].Program);
+            Assert.Equal("script" + (AutomationActivity.Capacity - 4), vm.AutomationActivity[0].Program);
+            Assert.Equal("playnite", vm.AutomationActivity[^1].Program);
+            // An ask the program made before merges with it, and moves to
+            // the top with its count.
+            var ahk = vm.AutomationActivity.Single(a => a.Program == "ahk");
+            host.Activity.Add(Entry(3, "ahk", AutomationAskKind.State, true));
+            Assert.Equal(AutomationActivity.Capacity, vm.AutomationActivity.Count);
+            Assert.Equal("ahk", vm.AutomationActivity[0].Program);
+            Assert.Equal(2, vm.AutomationActivity[0].Entry.Asked.Count);
+            Assert.DoesNotContain(ahk, vm.AutomationActivity);
+            Assert.Equal("playnite", vm.AutomationActivity[^1].Program);
 
             vm.ClearAutomationActivityCommand.Execute(null);
             Assert.Equal(0, host.Activity.Count);

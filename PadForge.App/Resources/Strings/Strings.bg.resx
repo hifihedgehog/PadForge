@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Няма свързана програма.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Свързани: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Неизвестна програма</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, подписана от {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, неподписана</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Готово</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Не е направено</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Не е разрешено на това ниво</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програмата говори версия, която PadForge не познава</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не даде този ключ за приставка</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не прие връзката на тази програма</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Поискано отново твърде скоро</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Не повече от тях, докато PadForge не стартира отново</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Превключване към профила {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Връщане към профила по подразбиране</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Запитване кой профил е активен</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задаване на стойността {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Изпълнение на инструмента {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} пъти</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, последното от {1} такива</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скриптове за AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

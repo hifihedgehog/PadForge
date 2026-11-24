@@ -117,6 +117,11 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Tells a scrubber the names the user typed, for a file
+        /// other than a recording that is scrubbed the same way: a
+        /// snapshot a program asked for (#597).</summary>
+        internal void KnowTypedNames(PrivacyScrubber scrubber) => KnowNames(scrubber);
+
         /// <summary>Tells a scrubber the names the user typed, so a line of
         /// free text that holds one is scrubbed like the settings part.</summary>
         protected virtual void KnowNames(PrivacyScrubber scrubber)

@@ -164,6 +164,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Programme moko te ekangani.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Ekangani: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programme eyebani te</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, esinyami na {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, esinyami te</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Esalemi</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Esalemi te</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Endimami te na niveau oyo</value></data>
@@ -189,6 +191,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programme ezali koloba version oyo PadForge eyebi te</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge epesaki clé wana ya plugin te</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge endimaki connexion ya programme oyo te</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Esengami lisusu noki mingi</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Lisusu te kino PadForge ebanda lisusu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kokende na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kozonga na profil ya liboso</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Kotuna profil nini ezali kosala</value></data>
@@ -225,6 +229,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Kotia motuya {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kotambwisa esaleli {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mbala {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya suka kati na {1} ya ndenge wana</value></data>
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Window" xml:space="preserve"><value>Lininisa</value></data>

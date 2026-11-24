@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Không có chương trình nào đang kết nối.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Đang kết nối: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Chương trình không rõ</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, được ký bởi {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, chưa được ký</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Đã xong</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Chưa thực hiện</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Không được phép ở mức này</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Chương trình dùng một phiên bản mà PadForge không biết</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge đã không cấp khóa plugin đó</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge đã không nhận kết nối của chương trình này</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Hỏi lại quá sớm</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Không còn thêm loại này cho đến khi PadForge khởi động lại</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chuyển sang hồ sơ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Quay về hồ sơ mặc định</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Hỏi hồ sơ nào đang hoạt động</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Đặt giá trị {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Chạy công cụ {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} lần</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, lần cuối trong {1} yêu cầu tương tự</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Tập lệnh AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

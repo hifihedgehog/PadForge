@@ -44,11 +44,15 @@ _ERROR_PIPE_BUSY = 231
 _ERROR_IO_PENDING = 997
 _ERROR_OPERATION_ABORTED = 995
 _ERROR_BROKEN_PIPE = 109
+_HWND_MESSAGE = -3
 _SECURITY_SQOS_PRESENT = 0x00100000
 _SECURITY_IDENTIFICATION = 0x00010000
-_ADMINISTRATORS = "S-1-5-32-544"
-_SYSTEM = "S-1-5-18"
-_HWND_MESSAGE = -3
+_SE_KERNEL_OBJECT = 6
+_OWNER_SECURITY_INFORMATION = 1
+
+# The owners a PadForge pipe has: Administrators and the system. A program
+# without administrator rights cannot give a pipe it makes either one.
+_PADFORGE_OWNERS = ("S-1-5-32-544", "S-1-5-18")
 
 
 class PadForgeError(Exception):
@@ -115,89 +119,172 @@ def split(line):
 
 # ── The pipe ──
 
+def _integrity(pid):
+    """A process's integrity level as its RID (0x3000 is high), or None."""
+    try:
+        kernel = ctypes.windll.kernel32
+        advapi = ctypes.windll.advapi32
+        kernel.OpenProcess.restype = ctypes.c_void_p
+        kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+        advapi.OpenProcessToken.argtypes = [ctypes.c_void_p, ctypes.c_uint32, ctypes.POINTER(ctypes.c_void_p)]
+        advapi.GetTokenInformation.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_uint32,
+                                               ctypes.POINTER(ctypes.c_uint32)]
+        advapi.GetSidSubAuthorityCount.restype = ctypes.POINTER(ctypes.c_ubyte)
+        advapi.GetSidSubAuthorityCount.argtypes = [ctypes.c_void_p]
+        advapi.GetSidSubAuthority.restype = ctypes.POINTER(ctypes.c_uint32)
+        advapi.GetSidSubAuthority.argtypes = [ctypes.c_void_p, ctypes.c_uint32]
+        process = kernel.OpenProcess(0x1000, False, pid)
+        if not process:
+            return None
+        try:
+            token = ctypes.c_void_p()
+            if not advapi.OpenProcessToken(process, 0x0008, ctypes.byref(token)):
+                return None
+            try:
+                size = ctypes.c_uint32()
+                advapi.GetTokenInformation(token, 25, None, 0, ctypes.byref(size))
+                if size.value == 0:
+                    return None
+                buffer = ctypes.create_string_buffer(size.value)
+                if not advapi.GetTokenInformation(token, 25, buffer, size, ctypes.byref(size)):
+                    return None
+                sid = ctypes.c_void_p.from_buffer(buffer).value
+                count = advapi.GetSidSubAuthorityCount(sid).contents.value
+                return advapi.GetSidSubAuthority(sid, count - 1).contents.value
+            finally:
+                kernel.CloseHandle(token)
+        finally:
+            kernel.CloseHandle(process)
+    except Exception:
+        return None
+
+
 def _padforge_runs():
     """Whether a PadForge runs on this PC: its message-only window
-    PadForge.Instance stands while it does."""
+    PadForge.Instance stands while it does. A window of that name counts
+    only when its process runs with administrator rights, which a program
+    that made one without them does not."""
     try:
-        find = ctypes.windll.user32.FindWindowExW
-        find.restype = ctypes.c_void_p
-        find.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_wchar_p]
-        return bool(find(ctypes.c_void_p(_HWND_MESSAGE), None, None, "PadForge.Instance"))
+        user = ctypes.windll.user32
+        user.FindWindowExW.restype = ctypes.c_void_p
+        user.FindWindowExW.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_wchar_p]
+        user.GetWindowThreadProcessId.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_uint32)]
+        after = None
+        for _ in range(64):
+            after = user.FindWindowExW(ctypes.c_void_p(_HWND_MESSAGE), after, None, "PadForge.Instance")
+            if not after:
+                return False
+            pid = ctypes.c_uint32()
+            user.GetWindowThreadProcessId(ctypes.c_void_p(after), ctypes.byref(pid))
+            level = _integrity(pid.value)
+            if level is not None and level >= 0x3000:
+                return True
+        return False
     except Exception:
         return False
 
 
 def _sid_text(sid):
+    """A SID as text, or None."""
     advapi = ctypes.windll.advapi32
-    text = ctypes.c_wchar_p()
-    advapi.ConvertSidToStringSidW.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_wchar_p)]
+    kernel = ctypes.windll.kernel32
+    kernel.LocalFree.argtypes = [ctypes.c_void_p]
+    advapi.ConvertSidToStringSidW.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p)]
+    text = ctypes.c_void_p()
     if not advapi.ConvertSidToStringSidW(sid, ctypes.byref(text)):
         return None
     try:
-        return text.value
+        return ctypes.wstring_at(text.value)
     finally:
-        ctypes.windll.kernel32.LocalFree(text)
+        kernel.LocalFree(text)
 
 
-def _own_sid():
-    """The user this program runs as, as a SID string."""
-    advapi, kernel = ctypes.windll.advapi32, ctypes.windll.kernel32
-    kernel.GetCurrentProcess.restype = ctypes.c_void_p
-    advapi.OpenProcessToken.argtypes = [ctypes.c_void_p, ctypes.c_uint32, ctypes.POINTER(ctypes.c_void_p)]
-    advapi.GetTokenInformation.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_uint32, ctypes.POINTER(ctypes.c_uint32)]
-    token = ctypes.c_void_p()
-    if not advapi.OpenProcessToken(kernel.GetCurrentProcess(), 8, ctypes.byref(token)):
-        return None
+def _pipe_owner(handle):
+    """The SID of the pipe's owner as text, or None when it cannot be read."""
     try:
-        size = ctypes.c_uint32()
-        advapi.GetTokenInformation(token, 1, None, 0, ctypes.byref(size))
-        buffer = ctypes.create_string_buffer(size.value)
-        if not advapi.GetTokenInformation(token, 1, buffer, size, ctypes.byref(size)):
+        advapi = ctypes.windll.advapi32
+        kernel = ctypes.windll.kernel32
+        kernel.LocalFree.argtypes = [ctypes.c_void_p]
+        advapi.GetSecurityInfo.restype = ctypes.c_uint32
+        advapi.GetSecurityInfo.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_uint32,
+                                           ctypes.POINTER(ctypes.c_void_p), ctypes.c_void_p, ctypes.c_void_p,
+                                           ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p)]
+        owner = ctypes.c_void_p()
+        descriptor = ctypes.c_void_p()
+        if advapi.GetSecurityInfo(ctypes.c_void_p(handle), _SE_KERNEL_OBJECT, _OWNER_SECURITY_INFORMATION,
+                                  ctypes.byref(owner), None, None, None, ctypes.byref(descriptor)) != 0:
             return None
-        return _sid_text(ctypes.c_void_p.from_buffer(buffer).value)
-    finally:
-        kernel.CloseHandle(token)
+        try:
+            return _sid_text(owner)
+        finally:
+            kernel.LocalFree(descriptor)
+    except Exception:
+        return None
+
+
+def _own_user():
+    """The SID of the user this script runs as, as text, or None."""
+    try:
+        advapi = ctypes.windll.advapi32
+        kernel = ctypes.windll.kernel32
+        kernel.GetCurrentProcess.restype = ctypes.c_void_p
+        kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+        advapi.OpenProcessToken.argtypes = [ctypes.c_void_p, ctypes.c_uint32, ctypes.POINTER(ctypes.c_void_p)]
+        advapi.GetTokenInformation.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_uint32,
+                                               ctypes.POINTER(ctypes.c_uint32)]
+        token = ctypes.c_void_p()
+        if not advapi.OpenProcessToken(kernel.GetCurrentProcess(), 0x0008, ctypes.byref(token)):
+            return None
+        try:
+            size = ctypes.c_uint32()
+            advapi.GetTokenInformation(token, 1, None, 0, ctypes.byref(size))
+            if size.value == 0:
+                return None
+            buffer = ctypes.create_string_buffer(size.value)
+            if not advapi.GetTokenInformation(token, 1, buffer, size, ctypes.byref(size)):
+                return None
+            # TOKEN_USER opens with the pointer to the user's SID.
+            return _sid_text(ctypes.c_void_p.from_buffer(buffer).value)
+        finally:
+            kernel.CloseHandle(token)
+    except Exception:
+        return None
 
 
 def _served_by_padforge(handle, name):
-    """Whether the pipe's owner is Administrators or SYSTEM, as a pipe
-    PadForge made is: a program without administrator rights cannot make
-    one so owned. A pipe of another name than PadForge's own, which only a
-    test gives, may also be owned by this program's own user."""
-    advapi, kernel = ctypes.windll.advapi32, ctypes.windll.kernel32
-    advapi.GetSecurityInfo.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_uint32, ctypes.POINTER(ctypes.c_void_p),
-                                       ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p)]
-    owner, descriptor = ctypes.c_void_p(), ctypes.c_void_p()
-    # SE_KERNEL_OBJECT, OWNER_SECURITY_INFORMATION.
-    if advapi.GetSecurityInfo(handle, 6, 1, ctypes.byref(owner), None, None, None, ctypes.byref(descriptor)) != 0:
-        return False
-    try:
-        sid = _sid_text(owner)
-    finally:
-        kernel.LocalFree(descriptor)
-    if sid in (_ADMINISTRATORS, _SYSTEM):
+    """Whether PadForge serves the pipe. Its owner must be Administrators
+    or the system, which a program without administrator rights cannot
+    give a pipe it makes. A pipe of another name than PadForge's own,
+    which only a test serves, is also taken from this script's own user.
+    Windows reads a pipe's name without regard to case, so PadForge's own
+    is told apart the same way."""
+    found = _pipe_owner(handle)
+    if found in _PADFORGE_OWNERS:
         return True
-    return name != PIPE and sid is not None and sid == _own_sid()
+    return name.lower() != PIPE.lower() and found is not None and found == _own_user()
 
 
 class _Pipe:
     """The pipe, opened overlapped, so a read that waits on the reader
     thread never holds up a write from another thread. Windows serializes
-    I/O on a handle opened without overlap."""
+    I/O on a handle opened without overlap.
 
-    def __init__(self, name, timeout, plugin=False):
+    It is opened at the identification level, so a server that is not
+    PadForge cannot act as this script's user, and nothing is sent until
+    its owner is PadForge's: Administrators or the system, which a program
+    without administrator rights cannot give a pipe it made under
+    PadForge's name. A pipe of another name, which a test serves, is
+    taken from this script's own user too."""
+
+    def __init__(self, name, timeout):
         path = "\\\\.\\pipe\\" + name
         deadline = time.monotonic() + timeout
-        # A plugin lets the server identify it and no more: the server
-        # cannot act as the plugin's user.
-        flags = _winapi.FILE_FLAG_OVERLAPPED
-        if plugin:
-            flags |= _SECURITY_SQOS_PRESENT | _SECURITY_IDENTIFICATION
         while True:
             try:
                 self.handle = _winapi.CreateFile(
                     path, _winapi.GENERIC_READ | _winapi.GENERIC_WRITE, 0, _winapi.NULL,
-                    _winapi.OPEN_EXISTING, flags, _winapi.NULL)
+                    _winapi.OPEN_EXISTING,
+                    _winapi.FILE_FLAG_OVERLAPPED | _SECURITY_SQOS_PRESENT | _SECURITY_IDENTIFICATION, _winapi.NULL)
                 break
             except OSError as e:
                 if e.winerror == _ERROR_PIPE_BUSY and time.monotonic() < deadline:
@@ -214,12 +301,14 @@ class _Pipe:
                             "off", "PadForge is running, but Automation is off. Turn it on in Extras, Automation.") from None
                     raise PadForgeError("closed", "PadForge is not running.") from None
                 raise
+        if not _served_by_padforge(self.handle, name):
+            _winapi.CloseHandle(self.handle)
+            raise PadForgeError(
+                "not-padforge",
+                "Another program holds the pipe %s. It is not PadForge, so nothing was sent to it." % name)
         self._write_lock = threading.Lock()
         self._reading = None
         self._closed = False
-        if plugin and not _served_by_padforge(self.handle, name):
-            _winapi.CloseHandle(self.handle)
-            raise PadForgeError("not-padforge", "The pipe %s is not PadForge's, so the plugin's key was not sent." % name)
 
     def write(self, data):
         with self._write_lock:
@@ -382,7 +471,7 @@ class PadForge:
     requests."""
 
     def __init__(self, name, pipe=PIPE, lease=None, timeout=5.0, token=None):
-        self._pipe = _Pipe(pipe, timeout, plugin=bool(token))
+        self._pipe = _Pipe(pipe, timeout)
         self._timeout = timeout
         self._tags = itertools.count(1)
         self._pending = {}

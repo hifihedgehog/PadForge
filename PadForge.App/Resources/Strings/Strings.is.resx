@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ekkert forrit er tengt.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tengd: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Óþekkt forrit</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, undirritað af {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, óundirritað</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Gert</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ekki gert</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ekki leyft á þessu stigi</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Forritið talar útgáfu sem PadForge þekkir ekki</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gaf ekki þennan viðbótarlykil</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tók ekki við tengingu þessa forrits</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Beðið aftur of fljótt</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ekki fleiri af þessu fyrr en PadForge ræsist aftur</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skipta yfir í sniðið {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fara aftur í sjálfgefna sniðið</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spyrja hvaða snið er virkt</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Stilla gildið {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Keyra tólið {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} sinnum</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, síðasta af {1} slíkum</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skriftur (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

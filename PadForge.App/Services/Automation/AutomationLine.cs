@@ -238,6 +238,8 @@ namespace PadForge.Services.Automation
             "denied" => "the token is not one PadForge gave",
             "refused" => "PadForge does not take this program's connection",
             "engine-stopped" => "the engine is stopped",
+            "too-soon" => "this was asked too soon after the last time",
+            "limit-reached" => "PadForge takes no more of these until it starts again",
             _ => "the request failed",
         };
 

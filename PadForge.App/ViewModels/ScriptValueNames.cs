@@ -6,9 +6,9 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// The names a Custom Expression variable's Script Value picker offers
-    /// (#597): every name a program set this run, in the order they came. The
-    /// picker takes a typed name too, so a macro can wait for a value its
-    /// script has not set yet. Kept on the interface's thread.
+    /// (#597): every name a program that is still connected set, in the order
+    /// they came. The picker takes a typed name too, so a macro can wait for a
+    /// value its script has not set yet. Kept on the interface's thread.
     /// </summary>
     public static class ScriptValueNames
     {
@@ -24,7 +24,21 @@ namespace PadForge.ViewModels
                 if (dispatcher == null || dispatcher.CheckAccess()) Add(items, name);
                 else dispatcher.BeginInvoke(new System.Action(() => Add(items, name)));
             };
+            // A name whose last session ended is offered no more, so a
+            // program that makes up names in a loop cannot grow the list.
+            ScriptValues.NameRemoved += name =>
+            {
+                var dispatcher = Application.Current?.Dispatcher;
+                if (dispatcher == null || dispatcher.CheckAccess()) Remove(items, name);
+                else dispatcher.BeginInvoke(new System.Action(() => Remove(items, name)));
+            };
             return items;
+        }
+
+        private static void Remove(ObservableCollection<string> items, string name)
+        {
+            for (int i = items.Count - 1; i >= 0; i--)
+                if (string.Equals(items[i], name, System.StringComparison.OrdinalIgnoreCase)) items.RemoveAt(i);
         }
 
         private static void Add(ObservableCollection<string> items, string name)

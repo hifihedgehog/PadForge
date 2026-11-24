@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nav pievienota neviena programma.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Pievienotās programmas: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Nezināma programma</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, parakstījis {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, neparakstīts</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Izdarīts</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nav izdarīts</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Šajā līmenī nav atļauts</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programma lieto versiju, ko PadForge nepazīst</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nedeva šo spraudņa atslēgu</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nepieņēma šīs programmas savienojumu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Pieprasīts atkal par ātru</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Šādu vairs nebūs, līdz PadForge startēs no jauna</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Pārslēgties uz profilu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Atgriezties pie noklusējuma profila</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pajautāt, kurš profils ir aktīvs</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Iestatīt vērtību {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Palaist rīku {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, reizes: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, pēdējais no šādiem pieprasījumiem (kopā {1})</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skripti (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

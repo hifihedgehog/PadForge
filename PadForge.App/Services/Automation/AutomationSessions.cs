@@ -17,9 +17,13 @@ namespace PadForge.Services.Automation
     /// to macro triggers and what they follow. Every line a session reads is
     /// run here, at the level in force when it runs.
     ///
-    /// <para>Limits: <see cref="MostSessions"/> sessions, 8 devices a
-    /// session and 32 in all (<see cref="ProgramDevices"/>),
-    /// <see cref="MostSubscriptions"/> subscriptions a session, and the
+    /// <para>Limits: <see cref="MostSessions"/> sessions, of which
+    /// <see cref="KeptForPlugins"/> only plugins take, and
+    /// <see cref="MostPerProcess"/> for one process.
+    /// <see cref="MostWaitingForHello"/> connections that have not said
+    /// hello, the oldest let go when another comes. 8 devices a session and
+    /// 32 in all (<see cref="ProgramDevices"/>).
+    /// <see cref="MostSubscriptions"/> subscriptions a session. And the
     /// line rate and length a session keeps itself.</para>
     ///
     /// <para>A session that holds a control or drives a device keeps a
@@ -32,6 +36,9 @@ namespace PadForge.Services.Automation
     internal sealed class AutomationSessions : IDisposable
     {
         internal const int MostSessions = 16;
+        internal const int KeptForPlugins = 4;
+        internal const int MostPerProcess = 4;
+        internal const int MostWaitingForHello = 32;
         internal const int MostSubscriptions = 256;
 
         /// <summary>How often the sessions' clock runs: leases, devices
@@ -51,6 +58,7 @@ namespace PadForge.Services.Automation
         private readonly Func<long> _nowMs;
         private readonly object _sync = new object();
         private readonly List<AutomationSession> _sessions = new();
+        private readonly LinkedList<AutomationSession> _waiting = new();
         private readonly Dictionary<AutomationSession, Owned> _owned = new();
         private readonly Dictionary<(Guid Device, char Kind, int Index), (AutomationSession Owner, int Value)> _holds = new();
         private readonly Timer _clock;
@@ -107,25 +115,67 @@ namespace PadForge.Services.Automation
         {
             if (Volatile.Read(ref _disposed) != 0) return;
             var session = new AutomationSession(this, stream, process, Interlocked.Increment(ref _lastNumber), stopping, _nowMs);
-            // A connection that never says hello is let go.
+            // A connection that never says hello is let go, and so is the
+            // oldest of those that wait when too many do: each holds a
+            // buffer and a thread's worth of waiting.
+            AutomationSession dropped = null;
+            LinkedListNode<AutomationSession> node;
+            lock (_sync)
+            {
+                if (_waiting.Count >= MostWaitingForHello)
+                {
+                    dropped = _waiting.First.Value;
+                    _waiting.RemoveFirst();
+                }
+                node = _waiting.AddLast(session);
+            }
+            dropped?.Close("too-many");
             _ = Task.Delay(HelloWithinMs, session.Stopping).ContinueWith(t =>
             {
                 if (!t.IsCanceled && !session.Opened) session.Close("no-hello");
             }, TaskScheduler.Default);
-            await session.RunAsync().ConfigureAwait(false);
+            try
+            {
+                await session.RunAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                lock (_sync)
+                {
+                    if (node.List != null) _waiting.Remove(node);
+                }
+            }
+        }
+
+        /// <summary>How many connections wait for their hello, for
+        /// tests.</summary>
+        internal int Waiting
+        {
+            get { lock (_sync) return _waiting.Count; }
         }
 
         /// <summary>Lists a session whose hello was taken. False with the
-        /// error's code when the sessions are full.</summary>
+        /// error's code when the sessions are full: all of them, the ones
+        /// that are not kept for plugins, or those one process may
+        /// hold.</summary>
         internal bool Open(AutomationSession session, out string error)
         {
             lock (_sync)
             {
-                if (_sessions.Count >= MostSessions)
+                int ofProcess = 0, notPlugins = 0;
+                foreach (var open in _sessions)
+                {
+                    if (open.Process.Id == session.Process.Id) ofProcess++;
+                    if (!open.IsPlugin) notPlugins++;
+                }
+                if (_sessions.Count >= MostSessions
+                    || (!session.IsPlugin && notPlugins >= MostSessions - KeptForPlugins)
+                    || ofProcess >= MostPerProcess)
                 {
                     error = "too-many";
                     return false;
                 }
+                _waiting.Remove(session);
                 _sessions.Add(session);
                 _owned[session] = new Owned();
                 EnsureClock();
@@ -281,7 +331,7 @@ namespace PadForge.Services.Automation
             {
                 string name = null;
                 try { name = _host.ProfileName?.Invoke(); } catch { }
-                string line = string.IsNullOrEmpty(name) ? "e profile default" : "e profile " + AutomationLine.Quote(name);
+                string line = string.IsNullOrEmpty(name) ? "e profile default" : "e profile " + AutomationLine.Quote(AutomationReadScrub.Text(name));
                 foreach (var session in followers) session.Outbox.Line(line);
             });
         }
@@ -322,9 +372,12 @@ namespace PadForge.Services.Automation
                     _holds.Clear();
                     foreach (var owned in _owned.Values) owned.Holds = 0;
                     PublishHoldsLocked();
+                    // Under the lock a value is set in (Value), so a line
+                    // that passed the old level's check before this cannot
+                    // set its value after it.
+                    ScriptValues.ReleaseAll();
                 }
             }
-            if (!on || level < AutomationLevel.SendInputs) ScriptValues.ReleaseAll();
             foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
             foreach (var session in close) session.CloseAfterWritten();
         }
@@ -410,6 +463,11 @@ namespace PadForge.Services.Automation
             if (r.Tag != null) session.Answer(r.Tag, "ok");
         }
 
+        /// <summary>Test seam: runs between a line's first check of the
+        /// level and the work it does, where a level that drops in that
+        /// moment lands. Null in the app.</summary>
+        internal Action AfterTheLevelCheck;
+
         /// <summary>Whether the session may do what needs
         /// <paramref name="needed"/>. A plugin declares, drives and removes
         /// its own devices at any level while the pipe serves it.</summary>
@@ -486,6 +544,7 @@ namespace PadForge.Services.Automation
         private void ListDevices(AutomationSession session, AutomationRequest r)
         {
             if (!Allows(session, AutomationLevel.Read)) { Refuse(session, r, AutomationAskKind.Devices); return; }
+            AutomationReadScrub.Prepare();
             var rows = new List<string>();
             var seen = new HashSet<Guid>();
             var devices = SettingsManager.UserDevices;
@@ -528,6 +587,7 @@ namespace PadForge.Services.Automation
             if (!Allows(session, AutomationLevel.Read)) { Refuse(session, r, AutomationAskKind.Caps, id); return; }
             var (ud, entry) = FindDevice(id);
             if (ud == null && entry == null) { Fail(session, r, AutomationAskKind.Caps, id, "unknown-device"); return; }
+            AutomationReadScrub.Prepare();
             List<string> rows;
             if (ud != null)
             {
@@ -590,17 +650,26 @@ namespace PadForge.Services.Automation
             var bare = r.Bare();
             string what = string.Join(" ", bare);
             if (!Allows(session, AutomationLevel.Read)) { Refuse(session, r, AutomationAskKind.Subscribe, what); return; }
+            AfterTheLevelCheck?.Invoke();
             if (bare.Count == 1 && (bare[0] is "devices" or "profile" or "engine"))
             {
+                bool followed;
                 lock (_sync)
                 {
                     if (!_owned.TryGetValue(session, out var owned)) return;
-                    if (bare[0] == "devices") owned.Devices = true;
-                    else if (bare[0] == "profile") owned.Profile = true;
-                    else owned.Engine = true;
-                    PublishWatchLocked();
+                    // The level again, under the lock a drop below Read
+                    // clears what is followed in (OnLevel).
+                    followed = Allows(session, AutomationLevel.Read);
+                    if (followed)
+                    {
+                        if (bare[0] == "devices") owned.Devices = true;
+                        else if (bare[0] == "profile") owned.Profile = true;
+                        else owned.Engine = true;
+                        PublishWatchLocked();
+                    }
                 }
-                Done(session, r, AutomationAskKind.Subscribe, what);
+                if (followed) Done(session, r, AutomationAskKind.Subscribe, what);
+                else Refuse(session, r, AutomationAskKind.Subscribe, what);
                 return;
             }
             if (bare.Count == 0) { Fail(session, r, AutomationAskKind.Subscribe, what, "bad-argument"); return; }
@@ -652,6 +721,13 @@ namespace PadForge.Services.Automation
             lock (_sync)
             {
                 if (!_owned.TryGetValue(session, out var owned)) return;
+                // The level again, under the lock a drop below Read clears
+                // what is followed in (OnLevel).
+                if (!Allows(session, AutomationLevel.Read))
+                {
+                    Refuse(session, r, AutomationAskKind.Subscribe, what);
+                    return;
+                }
                 owned.Subscriptions.RemoveAll(e => e.Device == device && e.What == made.What);
                 if (owned.Subscriptions.Count >= MostSubscriptions)
                 {
@@ -720,6 +796,7 @@ namespace PadForge.Services.Automation
         {
             string key = r.Get("key");
             if (!Allows(session, AutomationLevel.SendInputs, pluginToo: true)) { Refuse(session, r, AutomationAskKind.Declare, key); return; }
+            AfterTheLevelCheck?.Invoke();
             if (!ProgramDeviceDeclaration.IsKey(key))
             {
                 Fail(session, r, AutomationAskKind.Declare, key, "bad-argument", "key is 1 to 64 letters, digits, _ . or -");
@@ -737,6 +814,17 @@ namespace PadForge.Services.Automation
             if (code != null)
             {
                 Fail(session, r, AutomationAskKind.Declare, key, code);
+                return;
+            }
+            // The level again, after the device stands: a drop that came
+            // between the check above and the device being made took the
+            // session's devices offline before this one was among them, and
+            // it goes now. The level is set before the drop's work starts
+            // (AutomationHost.Apply), so this read sees it.
+            if (!Allows(session, AutomationLevel.SendInputs, pluginToo: true))
+            {
+                Devices.Gone(session, entry.Id);
+                Refuse(session, r, AutomationAskKind.Declare, key);
                 return;
             }
             Done(session, r, AutomationAskKind.Declare, name, "ok id=" + entry.Id);
@@ -766,7 +854,20 @@ namespace PadForge.Services.Automation
             var change = new ProgramDeviceChange();
             string bad = ReadChange(r, change);
             if (bad != null) { Fail(session, r, AutomationAskKind.Set, id, "bad-argument", bad); return; }
+            AfterTheLevelCheck?.Invoke();
             entry.Device.Apply(change);
+            // The level again, after the change: a drop that took the device
+            // offline between the check above and the change leaves it at
+            // rest, never with this line's controls pressed.
+            var owner = entry.Owner;
+            if (!Allows(session, AutomationLevel.SendInputs, pluginToo: true) || owner != session)
+            {
+                // A session of the same program that declared the device
+                // since then drives it now, and its state is its own.
+                if (owner == null || owner == session) entry.Device.Rest();
+                Refuse(session, r, AutomationAskKind.Set, id);
+                return;
+            }
             Done(session, r, AutomationAskKind.Set, id, quiet: true);
         }
 
@@ -887,6 +988,7 @@ namespace PadForge.Services.Automation
         {
             string id = FirstBare(r);
             if (!Allows(session, AutomationLevel.SendInputs)) { Refuse(session, r, AutomationAskKind.Own, id); return; }
+            AfterTheLevelCheck?.Invoke();
             var (ud, entry) = FindDevice(id);
             Guid device = ud?.InstanceGuid ?? entry?.Guid ?? Guid.Empty;
             if (device == Guid.Empty) { Fail(session, r, AutomationAskKind.Own, id, "unknown-device"); return; }
@@ -906,28 +1008,43 @@ namespace PadForge.Services.Automation
                 wanted.Add(((device, kind, index), v));
             }
             if (wanted.Count == 0) { Fail(session, r, AutomationAskKind.Own, id, "bad-argument", "own names at least one control"); return; }
+            string busy = null;
             lock (_sync)
             {
                 if (!_owned.TryGetValue(session, out var owned)) return;
-                foreach (var (key, _) in wanted)
+                // The level again, under the lock the level's drop clears the
+                // holds in (OnLevel): a line that passed the check above
+                // before a drop is refused here, never held after it.
+                if (Allows(session, AutomationLevel.SendInputs))
                 {
-                    if (_holds.TryGetValue(key, out var held) && held.Owner != session)
+                    foreach (var (key, _) in wanted)
                     {
-                        string control = key.Item2 + key.Item3.ToString(System.Globalization.CultureInfo.InvariantCulture);
-                        string line = AutomationLine.Error("busy", "another program holds " + control);
-                        session.Answer(r.Tag, line);
-                        Record(session, new AutomationAsk(AutomationAskKind.Own, id), line, false);
-                        return;
+                        if (_holds.TryGetValue(key, out var held) && held.Owner != session)
+                        {
+                            busy = key.Item2 + key.Item3.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                            break;
+                        }
+                    }
+                    if (busy == null)
+                    {
+                        foreach (var (key, value) in wanted)
+                        {
+                            if (!_holds.ContainsKey(key)) owned.Holds++;
+                            _holds[key] = (session, value);
+                        }
+                        PublishHoldsLocked();
                     }
                 }
-                foreach (var (key, value) in wanted)
-                {
-                    if (!_holds.ContainsKey(key)) owned.Holds++;
-                    _holds[key] = (session, value);
-                }
-                PublishHoldsLocked();
+                else busy = string.Empty;
             }
-            Done(session, r, AutomationAskKind.Own, id);
+            if (busy == null) Done(session, r, AutomationAskKind.Own, id);
+            else if (busy.Length == 0) Refuse(session, r, AutomationAskKind.Own, id);
+            else
+            {
+                string line = AutomationLine.Error("busy", "another program holds " + busy);
+                session.Answer(r.Tag, line);
+                Record(session, new AutomationAsk(AutomationAskKind.Own, id), line, false);
+            }
         }
 
         /// <summary><c>rel &lt;id&gt; b3 a0</c>, <c>rel &lt;id&gt; all</c> or
@@ -1042,14 +1159,33 @@ namespace PadForge.Services.Automation
             }
             string what = pairs.Count > 0 ? pairs[0].Item1 : string.Empty;
             if (!Allows(session, AutomationLevel.SendInputs)) { Refuse(session, r, AutomationAskKind.Value, what); return; }
+            AfterTheLevelCheck?.Invoke();
             if (pairs.Count == 0) { Fail(session, r, AutomationAskKind.Value, what, "bad-argument", "var takes name=number"); return; }
-            foreach (var (name, value) in pairs)
+            string full = null;
+            bool allowed;
+            lock (_sync)
             {
-                if (!ScriptValues.Set(name, value, session.Number))
+                // The level again, under the lock the level's drop lets go
+                // of every value in (OnLevel): a line that passed the check
+                // above before a drop sets nothing after it. A session that
+                // ended sets nothing either, since its end lets go of what
+                // it set once.
+                allowed = _owned.ContainsKey(session) && Allows(session, AutomationLevel.SendInputs);
+                if (allowed)
                 {
-                    Fail(session, r, AutomationAskKind.Value, name, "too-many", "PadForge keeps up to 256 value names");
-                    return;
+                    foreach (var (name, value) in pairs)
+                    {
+                        if (ScriptValues.Set(name, value, session.Number)) continue;
+                        full = name;
+                        break;
+                    }
                 }
+            }
+            if (!allowed) { Refuse(session, r, AutomationAskKind.Value, what); return; }
+            if (full != null)
+            {
+                Fail(session, r, AutomationAskKind.Value, full, "too-many", "PadForge keeps up to 256 value names");
+                return;
             }
             Done(session, r, AutomationAskKind.Value, what);
         }
@@ -1188,6 +1324,7 @@ namespace PadForge.Services.Automation
                 _holds.Clear();
                 ControlHolds.Publish(null);
             }
+            Devices.Dispose();
         }
     }
 }

@@ -318,6 +318,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Alukho uhlelo oluxhunyiwe.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Kuxhunyiwe: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Uhlelo olungaziwa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, kusayinwe ngu-{1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, akusayinwe</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Kwenziwe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Akwenziwanga</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Akuvunyelwe kuleli zinga</value></data>
@@ -343,6 +345,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Uhlelo lukhuluma inguqulo i-PadForge engayazi</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>I-PadForge ayizange inikeze lowo khiye we-plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>I-PadForge ayizange ilwamukele uxhumano lwalolu hlelo</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Kubuzwe futhi ngokushesha kakhulu</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Akusekho lokhu kuze kube i-PadForge iqala futhi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Shintshela kuphrofayela ethi {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kuphrofayela ezenzakalelayo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuthi iyiphi iphrofayela esebenzayo</value></data>
@@ -379,6 +383,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setha inani elithi {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Qalisa ithuluzi elithi {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, izikhathi ezingu-{1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, okokugcina kwezingu-{1} ezifanayo</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Imibhalo ye-AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

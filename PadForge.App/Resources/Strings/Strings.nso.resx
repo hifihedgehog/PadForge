@@ -1412,6 +1412,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ga go lenaneo leo le kgokagantšwego.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A kgokagantšwe: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Lenaneo leo le sa tsebjego</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, e saennwe ke {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ga e a saennwa</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Go dirilwe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ga se gwa dirwa</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ga go dumelelwe legatong le</value></data>
@@ -1437,6 +1439,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Lenaneo le bolela phetolelo yeo PadForge e sa e tsebego</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ga se ya fa senotlelo seo sa plagini</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ga se ya amogela kgokagano ya lenaneo le</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Go kgopetšwe gape ka pela kudu</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ga go sa na tše dingwe tša mohuta wo go fihla PadForge e thoma gape</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetogela go profaele {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela go profaele ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botšiša gore ke profaele efe yeo e šomago</value></data>
@@ -1473,6 +1477,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Bea boleng {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Šomiša sedirišwa sa lenaneo {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makga a {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya mafelelo go tše {1} tše di swanago</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dumelela</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>O se dumelele</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Go tšwa go {0}</value></data>

@@ -147,6 +147,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Akukho nkqubo iqhagamshelweyo.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Eziqhagamshelweyo: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Inkqubo engaziwayo</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ityikitywe ngu-{1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ayityikitywanga</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Kwenziwe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Akwenziwanga</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Akuvumelekanga kweli nqanaba</value></data>
@@ -172,6 +174,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Inkqubo ithetha inguqulelo i-PadForge engayaziyo</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>I-PadForge ayisinikanga eso sitshixo se-plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>I-PadForge ayilwamkelanga uqhagamshelo lwale nkqubo</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Kucelwe kwakhona kungekudala kakhulu</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Akusekho zinye zezi de i-PadForge iqale kwakhona</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Tshintshela kwiprofayile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kwiprofayile engagqibekanga</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuba yeyiphi iprofayile esebenzayo</value></data>
@@ -208,6 +212,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Seta ixabiso {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Qhuba ithuluzi {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, amaxesha: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, eyokugqibela kwezifanayo: {1}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Qhagamshela</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Yala</value></data>
 

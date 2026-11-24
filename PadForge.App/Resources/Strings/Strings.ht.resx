@@ -468,6 +468,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Okenn pwogram pa konekte.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konekte: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Pwogram enkoni</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, siyen pa {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, pa siyen</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Fèt</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Pa fèt</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Pa pèmèt nan nivo sa a</value></data>
@@ -493,6 +495,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pwogram lan pale yon vèsyon PadForge pa konnen</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge pa t bay kle plugin sa a</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge pa t aksepte koneksyon pwogram sa a</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Li mande ankò twò vit</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Pa gen plis nan sa yo jiskaske PadForge demare ankò</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chanje pou pwofil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Retounen nan pwofil pa defo a</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mande ki pwofil ki aktif</value></data>
@@ -529,6 +533,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Mete valè {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Itilize zouti {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fwa</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, dènye nan {1} ki sanble</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Script AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

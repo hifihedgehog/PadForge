@@ -192,6 +192,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kò sí ìṣàfilọ́lẹ̀ tí ó sopọ̀.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Ti sopọ̀: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ àìmọ̀</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, tí {1} fọwọ́ sí</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, kò ní ìfọwọ́sí</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ó ti ṣe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Kò ṣe é</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Kò gbà á láàyè ní ìpele yìí</value></data>
@@ -217,6 +219,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ náà ń lo ẹ̀yà tí PadForge kò mọ̀</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge kò fún ohun ìfikún náà ní kọ́kọ́rọ́ yẹn</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge kò gba ìsopọ̀ ìṣàfilọ́lẹ̀ yìí</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A tún béèrè ní kíákíá jù</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Kò sí èyí mọ́ títí PadForge yóò fi tún bẹ̀rẹ̀</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Yí padà sí profaili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Padà sí profaili àìyípadà</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Béèrè profaili tí ń ṣiṣẹ́</value></data>
@@ -253,6 +257,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ṣètò iye {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Lo irinṣẹ́ {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ìgbà {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, èyí tí ó kẹ́yìn nínú {1} tí ó jọ ọ́</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Sopọ̀</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Ti sopọ̀</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kọ̀ ọ́</value></data>

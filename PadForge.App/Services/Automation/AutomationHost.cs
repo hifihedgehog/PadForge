@@ -124,6 +124,12 @@ namespace PadForge.Services.Automation
             _pipe = new AutomationPipe(Sessions.ServeAsync, automationPipeName);
             _pipe.StateChanged += OnControlPipeEnded;
             _retry = new Timer(_ => RetryControlPipe(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            // A copy of this exe started with switches is the control pipe's
+            // most frequent client. Its signer is read now, on a worker, so
+            // the first line it sends waits on no check of a large file.
+            string self = Environment.ProcessPath;
+            if (!string.IsNullOrEmpty(self))
+                _ = System.Threading.Tasks.Task.Run(() => AuthenticodeSigner.Of(self));
         }
 
         /// <summary>Whether Automation is on: the user's switch, which no
@@ -163,6 +169,10 @@ namespace PadForge.Services.Automation
         /// <summary>The Automation pipe itself, for its name and the token
         /// seam tests use.</summary>
         internal AutomationPipe AutomationPipe => _pipe;
+
+        /// <summary>The control pipe itself, for the token seam tests
+        /// use.</summary>
+        internal ExternalControlService ControlService => _control;
 
         /// <summary>The programs on the Automation pipe and what they
         /// own.</summary>
@@ -437,7 +447,11 @@ namespace PadForge.Services.Automation
             ExternalControlService.Answer answer;
             try
             {
-                answer = Commands.Answer(request.Line, request.Stopping);
+                // A client the token checks refused runs nothing, and the
+                // line is written into Activity as refused.
+                answer = request.Refusal != null
+                    ? new ExternalControlService.Answer(ExternalControlService.Refused)
+                    : Commands.Answer(request.Line, request.Stopping);
             }
             catch (OperationCanceledException) when (request.Stopping.IsCancellationRequested)
             {

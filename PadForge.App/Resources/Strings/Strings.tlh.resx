@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>nIqHom rarlu'be'.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>rarpu': {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>nIqHom Sovlu'be'</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} tlhI'pu'</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tlhI'lu'be'</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>rInpu'</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>rInbe'</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>patlhvamDaq chaw'lu'be'</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>PadForge Sovbe'bogh nIqHom mI' lo' nIqHom</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>jan chelwI' ngoqvetlh nobbe'pu' PadForge</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>nIqHomvam rar lajQo' PadForge</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>tlhoy tugh tlhobqa'pu'</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge taghqa'pa', latlh chabal Seghvam ta'be'</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>tu'qom {0} yIchu'</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>motlh tu'qomDaq yIchegh</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>chu'lu'bogh tu'qom yIyu'</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>mI' {0} yIcher</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>SommI' {0} yIlo'</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1}logh</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, {1} rurbogh chabalmey Qav</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ghItlhmey (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

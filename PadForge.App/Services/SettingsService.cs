@@ -448,6 +448,11 @@ namespace PadForge.Services
                     SettingsManager.UserSettings.Items.RemoveAll(IsEmptyLegacyOrphan);
                 }
 
+                // A program's device nobody assigned leaves with its program
+                // (#597, ProgramDevices). A row of one an earlier run saved
+                // goes at the load, so none piles up in the file.
+                DropUnassignedProgramDevices();
+
                 // Phase 2A — load persisted SlotMappingSets when present;
                 // fall back to one-time legacy migration only for slots
                 // where the XML had no MappingSet (or an empty one). Once
@@ -865,6 +870,31 @@ namespace PadForge.Services
         /// #395). Internal so the round-trip tests can pin both halves.</summary>
         internal static bool IsEmptyLegacyOrphan(UserSetting us)
             => us == null || (us.MapTo < 0 && us.GetPadSetting() == null);
+
+        /// <summary>Drops the rows of program devices (#597) that no
+        /// mapping row names and that no program drives now. Such a row is
+        /// what a program left behind: the user never assigned it, so it
+        /// holds nothing of theirs. Internal so the round-trip tests pin
+        /// it.</summary>
+        internal static int DropUnassignedProgramDevices()
+        {
+            var assigned = new HashSet<Guid>();
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                foreach (var us in SettingsManager.UserSettings.Items)
+                    if (us != null) assigned.Add(us.InstanceGuid);
+            }
+            int dropped;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                dropped = SettingsManager.UserDevices.Items.RemoveAll(ud => ud != null && ud.Device == null
+                    && ud.DevicePath != null && ud.DevicePath.StartsWith("program://", StringComparison.Ordinal)
+                    && !assigned.Contains(ud.InstanceGuid));
+            }
+            if (dropped > 0)
+                PadForge.Engine.SdlDiagLog.WriteLine($"CFG dropped {dropped} unassigned program device record(s) at load");
+            return dropped;
+        }
 
         private static MappingSet BuildOneSlotFromLegacy(int slot)
         {

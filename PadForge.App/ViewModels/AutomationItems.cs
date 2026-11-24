@@ -28,12 +28,12 @@ namespace PadForge.ViewModels
             Id = pending.Id;
             Expires = pending.Expires;
             var request = pending.Request;
-            Title = request.Title ?? string.Empty;
+            Title = ShownText.Clean(request.Title ?? string.Empty);
             From = FromLine(request.Who);
             var detail = new List<string>();
             if (request.Detail != null)
                 foreach (string line in request.Detail)
-                    if (!string.IsNullOrWhiteSpace(line)) detail.Add(line);
+                    if (!string.IsNullOrWhiteSpace(line)) detail.Add(ShownText.Clean(line));
             Detail = detail;
             CardDetail = detail.Count <= CardDetailLines ? detail : detail.GetRange(0, CardDetailLines);
             int rest = detail.Count - CardDetail.Count;
@@ -54,8 +54,9 @@ namespace PadForge.ViewModels
         /// <summary>The change in a few words.</summary>
         public string Title { get; }
 
-        /// <summary>Who asks: the program's image name as Windows gives it,
-        /// and the name the program gave itself where it gave one.</summary>
+        /// <summary>Who asks: the program's image as Windows gives it, by
+        /// its full path and its signer, and the name the program gave
+        /// itself where it gave one.</summary>
         public string From { get; }
 
         /// <summary>Every line that says what would change.</summary>
@@ -78,13 +79,15 @@ namespace PadForge.ViewModels
 
         /// <summary>The line that says who asks. A name the program gave
         /// itself is its own claim, so it is shown as one, beside the image
-        /// name Windows gives. A name PadForge took from the image is no
-        /// claim, and the image name alone says it.</summary>
+        /// Windows gives. A name PadForge took from the image is no claim,
+        /// and the image alone says it. The image is its full path, since a
+        /// program can copy itself to any file name, and its signer when
+        /// Windows trusts its signature.</summary>
         internal static string FromLine(AutomationProgram who)
         {
             var s = Strings.Instance;
-            string image = who?.ImageName;
-            string name = who?.Name;
+            string image = ImageLine(who);
+            string name = ShownText.Clean(who?.Name);
             if (string.IsNullOrEmpty(image))
                 return string.IsNullOrEmpty(name)
                     ? s.Automation_Request_FromUnknown
@@ -94,13 +97,33 @@ namespace PadForge.ViewModels
             return string.Format(CultureInfo.CurrentCulture, s.Automation_Request_From_Format, image);
         }
 
+        /// <summary>A program's image as the user is shown it: its full
+        /// path, or its file name where Windows gave no path, with who
+        /// signed it, or that nobody did. Null when Windows named
+        /// neither.</summary>
+        internal static string ImageLine(AutomationProgram who)
+        {
+            string image = ShownText.Clean(!string.IsNullOrEmpty(who?.ImagePath) ? who.ImagePath : who?.ImageName);
+            if (string.IsNullOrEmpty(image)) return null;
+            var s = Strings.Instance;
+            string signer = ShownText.Clean(who.Signer);
+            return string.IsNullOrEmpty(signer)
+                ? string.Format(CultureInfo.CurrentCulture, s.Automation_Program_NotSigned_Format, image)
+                : string.Format(CultureInfo.CurrentCulture, s.Automation_Program_Signed_Format, image, signer);
+        }
+
         /// <summary>Whether the program's name is its own word: a name other
         /// than the one PadForge makes from the image name.</summary>
         internal static bool IsOwnClaim(AutomationProgram who)
         {
             if (who == null || string.IsNullOrEmpty(who.Name)) return false;
             if (string.IsNullOrEmpty(who.ImageName)) return true;
-            return !string.Equals(who.Name, PadForge.Common.Input.RunningProcessList.ShortName(who.ImageName), StringComparison.Ordinal);
+            // The name PadForge makes from the image, made as the hello
+            // makes it (AutomationSession.Hello).
+            string made = ProgramDeviceDeclaration.Clean(PadForge.Common.Input.RunningProcessList.ShortName(who.ImageName),
+                ProgramDeviceDeclaration.LongestName);
+            return !string.Equals(ShownText.Clean(who.Name), made, StringComparison.Ordinal)
+                && !string.Equals(who.Name, PadForge.Common.Input.RunningProcessList.ShortName(who.ImageName), StringComparison.Ordinal);
         }
 
         /// <summary>What a screen reader says for the item in a list.</summary>
@@ -135,6 +158,13 @@ namespace PadForge.ViewModels
         /// <summary>The program that made it.</summary>
         public string Program { get; private set; }
 
+        /// <summary>The program's image by its full path and its signer,
+        /// under the row, or null when Windows named no image.</summary>
+        public string ProgramImage { get; private set; }
+
+        /// <summary>Whether <see cref="ProgramImage"/> has words.</summary>
+        public bool HasProgramImage => !string.IsNullOrEmpty(ProgramImage);
+
         /// <summary>What it asked, in plain words.</summary>
         public string Asked { get; private set; }
 
@@ -160,13 +190,18 @@ namespace PadForge.ViewModels
             var s = Strings.Instance;
             Time = Entry.Time.ToLocalTime().ToString("T", CultureInfo.CurrentUICulture);
             var who = Entry.Program;
-            Program = !string.IsNullOrEmpty(who?.Name) ? who.Name
-                : !string.IsNullOrEmpty(who?.ImageName) ? who.ImageName
+            string name = ShownText.Clean(who?.Name);
+            string imageName = ShownText.Clean(who?.ImageName);
+            Program = !string.IsNullOrEmpty(name) ? name
+                : !string.IsNullOrEmpty(imageName) ? imageName
                 : s.Automation_Program_Unknown;
+            ProgramImage = AutomationRequestItem.ImageLine(who);
             Asked = Entry.Asked.Text;
             Result = Entry.Succeeded ? s.Automation_Result_Done : RefusalWords(Entry.Result);
             OnPropertyChanged(nameof(Time));
             OnPropertyChanged(nameof(Program));
+            OnPropertyChanged(nameof(ProgramImage));
+            OnPropertyChanged(nameof(HasProgramImage));
             OnPropertyChanged(nameof(Asked));
             OnPropertyChanged(nameof(Result));
         }
@@ -204,6 +239,8 @@ namespace PadForge.ViewModels
                 ["unsupported-protocol"] = s => s.Automation_Result_UnsupportedProtocol,
                 ["denied"] = s => s.Automation_Result_Denied,
                 ["refused"] = s => s.Automation_Result_Refused,
+                ["too-soon"] = s => s.Automation_Result_TooSoon,
+                ["limit-reached"] = s => s.Automation_Result_LimitReached,
             };
 
         /// <summary>A refusal in the interface's words: the phrase of its
@@ -229,6 +266,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>What a screen reader says for the row in a list.</summary>
-        public override string ToString() => Time + ", " + Program + ", " + Asked + ", " + Result;
+        public override string ToString() => Time + ", " + Program + (HasProgramImage ? " (" + ProgramImage + ")" : string.Empty)
+            + ", " + Asked + ", " + Result;
     }
 }

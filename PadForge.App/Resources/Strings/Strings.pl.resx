@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Żaden program nie jest połączony.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Połączone: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Nieznany program</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, podpisany przez: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, bez podpisu</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Zrobione</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nie zrobiono</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Niedozwolone na tym poziomie</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program używa wersji, której PadForge nie zna</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nie dał tego klucza wtyczki</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nie przyjął połączenia tego programu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ponowne żądanie zbyt szybko</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Więcej takich żądań nie będzie, dopóki PadForge nie uruchomi się ponownie</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Przełącz na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Wróć do profilu domyślnego</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Zapytaj, który profil jest aktywny</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ustaw wartość {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Uruchom narzędzie {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, razy: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ostatnie z {1} podobnych</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skrypty AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

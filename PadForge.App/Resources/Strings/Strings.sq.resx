@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Asnjë program nuk është i lidhur.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Të lidhur: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program i panjohur</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nënshkruar nga {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, i panënshkruar</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>U krye</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nuk u krye</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Nuk lejohet në këtë nivel</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programi flet një version që PadForge nuk e njeh</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nuk e dha atë çelës shtojce</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nuk e pranoi lidhjen e këtij programi</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>U kërkua sërish shumë shpejt</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nuk lejohen më të tilla derisa PadForge të niset sërish</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ndërro te profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kthehu te profili i parazgjedhur</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pyet cili profil është aktiv</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Cakto vlerën {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ekzekuto mjetin {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} herë</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, e fundit nga {1} të tilla</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skripte AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

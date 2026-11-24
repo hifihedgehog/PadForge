@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ไม่มีโปรแกรมที่เชื่อมต่ออยู่</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>เชื่อมต่ออยู่: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>โปรแกรมที่ไม่ทราบชื่อ</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0} ลงนามโดย {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0} ไม่ได้ลงนาม</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>เสร็จแล้ว</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>ไม่ได้ทำ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ไม่อนุญาตในระดับนี้</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>โปรแกรมใช้เวอร์ชันที่ PadForge ไม่รู้จัก</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ไม่ได้ให้คีย์ปลั๊กอินนั้น</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ไม่รับการเชื่อมต่อของโปรแกรมนี้</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ขอซ้ำเร็วเกินไป</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ไม่มีเพิ่มอีกจนกว่า PadForge จะเริ่มใหม่</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>สลับไปที่โปรไฟล์ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>กลับไปที่โปรไฟล์เริ่มต้น</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ถามว่าโปรไฟล์ใดทำงานอยู่</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ตั้งค่า {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>เรียกใช้เครื่องมือ {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0} {1} ครั้ง</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0} ครั้งสุดท้ายจากคำขอลักษณะเดียวกัน {1} ครั้ง</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>สคริปต์ AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

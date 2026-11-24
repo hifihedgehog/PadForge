@@ -577,7 +577,7 @@
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Send Inputs</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Change Settings</value></data>
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programs can switch profiles and release them, start and stop the engine, turn virtual controllers on and off, show and hide the window, close PadForge, save a diagnostics snapshot and ask what is running.</value></data>
-  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Everything at Commands, and programs can see devices, virtual controllers, mappings, profiles and settings, follow the inputs of every device as they happen, keyboards and mice included, and show you a place in PadForge.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Everything at Commands, and programs can see devices, virtual controllers, mappings, profiles and settings, follow the inputs of every device as they happen, and show you a place in PadForge. A program at Read sees every key pressed on every device, keys typed into windows that run as administrator included.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Everything at Read, and programs can add devices of their own and drive them, hold a control of any device and hand named values to macro triggers.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Everything at Send Inputs, and programs can change what you can change on the pages.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistants</value></data>
@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>No program is connected.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connected: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Unknown program</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signed by {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, not signed</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Done</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Not done</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Not allowed at this level</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>The program speaks a version PadForge does not know</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge did not give that plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge did not take this program’s connection</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Asked again too soon</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No more of these until PadForge starts again</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Switch to the profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Return to the default profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ask which profile is active</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Set the value {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Run the tool {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} times</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, the last of {1} like it</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Scripts (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

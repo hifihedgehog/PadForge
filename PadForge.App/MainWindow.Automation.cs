@@ -127,9 +127,8 @@ namespace PadForge
                     var names = new List<string>();
                     foreach (var client in clients)
                     {
-                        string name = !string.IsNullOrEmpty(client.Name) ? client.Name
-                            : !string.IsNullOrEmpty(client.ImageName) ? client.ImageName
-                            : s.Automation_Program_Unknown;
+                        string name = ShownText.Clean(!string.IsNullOrEmpty(client.Name) ? client.Name : client.ImageName);
+                        if (string.IsNullOrEmpty(name)) name = s.Automation_Program_Unknown;
                         if (!names.Contains(name)) names.Add(name);
                     }
                     return string.Format(s.Automation_Status_Connected_Format, string.Join(", ", names));
@@ -156,14 +155,19 @@ namespace PadForge
         //  What a command does, each through the interface's own way
         // ─────────────────────────────────────────────
 
-        /// <summary>Shows the window and brings it to the front: the tray
-        /// icon's Show, for a second start of PadForge and for the show
-        /// command. A window that was only behind another comes forward
-        /// too.</summary>
+        private readonly CallerShow _callerShow = new CallerShow();
+
+        /// <summary>Shows the window and brings it to the front for a second
+        /// start of PadForge, the show message and the show command. A window
+        /// that was only behind another comes forward too. A show within two
+        /// seconds of the last is ignored, the front is taken with the right
+        /// the caller lent, and where none was lent the taskbar button
+        /// flashes (CallerShow).</summary>
         internal void ShowForACaller()
         {
-            RestoreFromTray();
-            ForceToForeground(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+            if (!_callerShow.Take()) return;
+            RestoreFromTray(forceForward: false);
+            CallerShow.ComeForward(new System.Windows.Interop.WindowInteropHelper(this).Handle);
         }
 
         /// <summary>Sends the window to the tray and puts the tray icon up,
@@ -332,7 +336,8 @@ namespace PadForge
                 return true;
             }
 
-            public string SaveSnapshot() => System.IO.Path.GetFileName(DiagnosticsLogControl.SaveSnapshot());
+            public string SaveSnapshot(bool scrubbed)
+                => System.IO.Path.GetFileName(DiagnosticsLogControl.SaveSnapshot(scrubbed ? AutomationReadScrub.FileScrub() : null));
 
             public AutomationState ReadState()
             {

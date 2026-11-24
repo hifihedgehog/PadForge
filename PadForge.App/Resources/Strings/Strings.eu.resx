@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ez dago programarik konektatuta.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektatuta: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa ezezaguna</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1}-k sinatua</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, sinatu gabe</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Eginda</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ez da egin</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Maila honetan ez dago baimenduta</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programak PadForge-k ezagutzen ez duen bertsio bat darabil</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge-k ez dio plugin-gako hori eman</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-k ez du programa honen konexioa onartu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Berriro eskatu da goizegi</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ez da gehiago egingo PadForge berriro abiarazi arte</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Aldatu {0} profilera</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Itzuli profil lehenetsira</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Galdetu zein profil dagoen aktibo</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ezarri {0} balioa</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Exekutatu {0} tresna</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} aldiz</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, horrelako {1}ren azkena</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 script-ak (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

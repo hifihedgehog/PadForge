@@ -863,6 +863,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻOku ʻikai ha polokalama kuo fakafehokotaki.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Fakafehokotaki: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalama taʻeʻiloa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, fakamoʻoni ʻe {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ʻikai fakamoʻoni</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mei he {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mei he {1}, ʻa ia ʻoku ui ia ko “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mei ha polokalama ʻoku ui ia ko “{0}”</value></data>

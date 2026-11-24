@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Alnad curu iannannen.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Iannannen: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Curu ú-sinnen</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ennais o {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, alnad ennais</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Carnen</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ú-carnen</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ú-davannen vi pâd hen</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>I curu paetha lam ú-sinnen na PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ú-annant ledil goiannas hen</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ú-nabant iannad curu hen</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Mabedannen ad othovor rong</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Alnad am naden PadForge iesta ad</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gwisto na banu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dammeno na banu senu</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mabedo men panu echuidannen</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sesto i noth {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Iesto i davn {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} lû</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, i medui o {1} sui hen</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Teithais AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

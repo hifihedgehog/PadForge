@@ -530,30 +530,46 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheRecord_KeepsTheLast500Calls_InTheOrderTheyCame()
+        public void TheRecord_HoldsAtMost500_AndFiftyAProgram_AndANewcomersReadPushesNoneOut()
         {
             Assert.Equal(500, AutomationActivity.Capacity);
+            Assert.Equal(50, AutomationActivity.PerProgram);
             var activity = new AutomationActivity();
             int changes = 0;
             activity.Changed += (_, _) => changes++;
             var start = new DateTimeOffset(2026, 11, 23, 15, 0, 0, TimeSpan.Zero);
-            for (int i = 0; i < 620; i++)
-                activity.Add(new AutomationActivityEntry(start.AddSeconds(i), AutomationProgram.Unknown,
-                    new AutomationAsk(AutomationAskKind.ControllerOn, i.ToString()), "ok " + i, true));
+            AutomationProgram Program(int p) => new AutomationProgram("p" + p, 1000 + p, "p" + p + ".exe", @"C:\Tools\p" + p + ".exe");
+            // Twelve programs read sixty devices each, one after another.
+            for (int p = 0; p < 12; p++)
+                for (int i = 0; i < 60; i++)
+                    activity.Add(new AutomationActivityEntry(start.AddSeconds(p * 60 + i), Program(p),
+                        new AutomationAsk(AutomationAskKind.Read, p + "." + i), "ok", true));
 
-            Assert.Equal(500, activity.Count);
-            Assert.Equal(620, changes);
             var kept = activity.Snapshot();
             Assert.Equal(500, kept.Count);
-            // The oldest 120 gave way, and the rest are oldest first.
-            Assert.Equal(Enumerable.Range(120, 500).Select(i => "ok " + i), kept.Select(e => e.Result));
-            Assert.Equal(start.AddSeconds(120), kept[0].Time);
-            Assert.Equal(start.AddSeconds(619), kept[499].Time);
+            for (int p = 0; p < 10; p++)
+            {
+                // Each of the first ten keeps its newest fifty, oldest first.
+                var mine = kept.Where(e => e.Program.Name == "p" + p).Select(e => e.Asked.Argument).ToList();
+                Assert.Equal(Enumerable.Range(10, 50).Select(i => p + "." + i), mine);
+            }
+            // The record was full of the others' entries: the last two
+            // programs' reads pushed none of them out.
+            Assert.DoesNotContain(kept, e => e.Program.Name is "p10" or "p11");
+
+            // Something done always goes in, and the program that holds
+            // the most gives up its oldest read.
+            activity.Add(new AutomationActivityEntry(start, Program(11), new AutomationAsk(AutomationAskKind.ControllerOn, "1"), "ok 1 on", true));
+            kept = activity.Snapshot();
+            Assert.Equal(500, kept.Count);
+            Assert.Equal("ok 1 on", kept[^1].Result);
+            Assert.Equal(49, kept.Count(e => e.Program.Name == "p0"));
 
             // A snapshot is the caller's own: a later call does not change it.
-            activity.Add(new AutomationActivityEntry(start, AutomationProgram.Unknown, new AutomationAsk(AutomationAskKind.Exit), "ok", true));
-            Assert.Equal("ok 120", kept[0].Result);
-            Assert.Equal("ok 121", activity.Snapshot()[0].Result);
+            var before = activity.Snapshot();
+            activity.Add(new AutomationActivityEntry(start, Program(11), new AutomationAsk(AutomationAskKind.Exit), "ok", true));
+            Assert.Equal(500, before.Count);
+            Assert.Equal(AutomationAskKind.ControllerOn, before[^1].Asked.Kind);
 
             activity.Add(null);
             Assert.Equal(500, activity.Count);
@@ -561,7 +577,46 @@ namespace PadForge.Tests
             activity.Clear();
             Assert.Equal(0, activity.Count);
             Assert.Empty(activity.Snapshot());
-            Assert.Equal(622, changes);
+        }
+
+        [Fact]
+        public void APrograms_OwnFloodPushesOutItsReadsFirst_AndNeverItsChanges()
+        {
+            var activity = new AutomationActivity();
+            var start = new DateTimeOffset(2026, 11, 23, 15, 0, 0, TimeSpan.Zero);
+            var flood = new AutomationProgram("flood", 7, "flood.exe", @"C:\Tools\flood.exe");
+            var quiet = new AutomationProgram("quiet", 8, "quiet.exe", @"C:\Tools\quiet.exe");
+            activity.Add(new AutomationActivityEntry(start, quiet, new AutomationAsk(AutomationAskKind.Read, "x"), "ok", true));
+            activity.Add(new AutomationActivityEntry(start, flood, new AutomationAsk(AutomationAskKind.ActivateProfile, "Racing"), "ok Racing", true));
+            for (int i = 0; i < 4000; i++)
+                activity.Add(new AutomationActivityEntry(start.AddMilliseconds(i), flood,
+                    new AutomationAsk(AutomationAskKind.Read, "dev" + i), "ok", true));
+            var kept = activity.Snapshot();
+            // The flood holds fifty, its change among them, and the quiet
+            // program's entry stands.
+            Assert.Equal(50, kept.Count(e => e.Program == flood));
+            Assert.Contains(kept, e => e.Program == flood && e.Asked.Kind == AutomationAskKind.ActivateProfile);
+            Assert.Contains(kept, e => e.Program == quiet);
+        }
+
+        [Fact]
+        public void RefusedLines_OfOneKind_AreOneEntryWithACount_WhateverTheyNamed()
+        {
+            var activity = new AutomationActivity();
+            var start = new DateTimeOffset(2026, 11, 23, 15, 0, 0, TimeSpan.Zero);
+            var who = new AutomationProgram("spam", 9, "spam.exe", @"C:\Tools\spam.exe");
+            for (int i = 0; i < 4000; i++)
+                activity.Add(new AutomationActivityEntry(start.AddMilliseconds(i), who,
+                    new AutomationAsk(AutomationAskKind.Read, i % 2 == 0 ? "a" : "b"), "err not-allowed the Automation level does not allow this", false));
+            var entry = Assert.Single(activity.Snapshot());
+            Assert.Equal(4000, entry.Asked.Count);
+            Assert.True(entry.Asked.Mixed);
+            Assert.Equal("b", entry.Asked.Argument);
+            Assert.Equal(start.AddMilliseconds(3999), entry.Time);
+            Assert.Contains("4000", entry.Asked.Text);
+            // A refusal of another code stands apart.
+            activity.Add(new AutomationActivityEntry(start, who, new AutomationAsk(AutomationAskKind.Read, "a"), "err unknown-device no device has that ID", false));
+            Assert.Equal(2, activity.Count);
         }
 
         [Fact]
@@ -578,7 +633,9 @@ namespace PadForge.Tests
                     activity.Snapshot();
                 }
             })));
-            Assert.Equal(500, activity.Count);
+            // The same ask from the same program is one entry with its count.
+            var one = Assert.Single(activity.Snapshot());
+            Assert.Equal(1600, one.Asked.Count);
         }
 
         [Fact]

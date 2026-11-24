@@ -21,7 +21,9 @@ namespace PadForge.Common.Input
         /// <summary>The longest name.</summary>
         internal const int LongestName = 32;
 
-        /// <summary>How many names one PadForge run keeps.</summary>
+        /// <summary>How many names PadForge keeps at once. A name a program
+        /// set is kept until the last session that set it ends, and then
+        /// its place is free again.</summary>
         internal const int MostNames = 256;
 
         private readonly struct Held
@@ -36,13 +38,27 @@ namespace PadForge.Common.Input
             public readonly int Owner;
         }
 
+        // Writes take this lock, so a name, the sessions that set it and
+        // AnySet change as one. The macro pass reads Values without it.
+        private static readonly object Sync = new object();
         private static readonly ConcurrentDictionary<string, Held> Values = new(StringComparer.OrdinalIgnoreCase);
-        private static readonly ConcurrentDictionary<string, string> Known = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, HashSet<int>> Known = new(StringComparer.OrdinalIgnoreCase);
+        private static volatile bool _anySet;
 
-        /// <summary>Raised when a name is set for the first time this run,
-        /// on the thread that set it. The expression editor offers it from
+        /// <summary>Raised when a name is set while no session holds it, on
+        /// the thread that set it. The expression editor offers it from
         /// then on.</summary>
         internal static event Action<string> NameAdded;
+
+        /// <summary>Raised when the last session that set a name ended, on
+        /// the thread that ended it. The expression editor offers it no
+        /// more.</summary>
+        internal static event Action<string> NameRemoved;
+
+        /// <summary>Whether a program has a value set now. Keyboard and
+        /// mouse output to windows with rights waits while one does
+        /// (ProgramInputGate).</summary>
+        internal static bool AnySet => _anySet;
 
         /// <summary>Whether a name can be used: a letter, then letters,
         /// digits, <c>_</c>, <c>.</c> or <c>-</c>, up to 32. It never holds
@@ -62,42 +78,82 @@ namespace PadForge.Common.Input
             => !string.IsNullOrEmpty(name) && Values.TryGetValue(name, out var held) ? held.Value : 0f;
 
         /// <summary>Sets a value for program <paramref name="owner"/>. False
-        /// for a name that cannot be used, or a new name past
-        /// <see cref="MostNames"/>.</summary>
+        /// for a name that cannot be used, or a new name while
+        /// <see cref="MostNames"/> are held.</summary>
         internal static bool Set(string name, float value, int owner)
         {
             if (!IsName(name) || !float.IsFinite(value)) return false;
             bool added = false;
-            if (!Known.ContainsKey(name))
+            lock (Sync)
             {
-                if (Known.Count >= MostNames) return false;
-                added = Known.TryAdd(name, name);
+                if (!Known.TryGetValue(name, out var setters))
+                {
+                    if (Known.Count >= MostNames) return false;
+                    Known[name] = setters = new HashSet<int>();
+                    added = true;
+                }
+                setters.Add(owner);
+                Values[name] = new Held(value, owner);
+                _anySet = true;
             }
-            Values[name] = new Held(value, owner);
             if (added) NameAdded?.Invoke(name);
             return true;
         }
 
-        /// <summary>Lets go of every value program <paramref name="owner"/>
-        /// set last. They read 0 again.</summary>
+        /// <summary>Program <paramref name="owner"/> ended: every value it
+        /// set last reads 0 again, and every name no session that is still
+        /// open has set goes, freeing its place.</summary>
         internal static void ReleaseOwner(int owner)
         {
-            foreach (var pair in Values)
-                if (pair.Value.Owner == owner)
-                    ((ICollection<KeyValuePair<string, Held>>)Values).Remove(pair);
+            List<string> gone = null;
+            lock (Sync)
+            {
+                foreach (var pair in Values)
+                    if (pair.Value.Owner == owner)
+                        ((ICollection<KeyValuePair<string, Held>>)Values).Remove(pair);
+                foreach (var pair in Known)
+                {
+                    if (!pair.Value.Remove(owner) || pair.Value.Count > 0) continue;
+                    (gone ??= new List<string>()).Add(pair.Key);
+                }
+                if (gone != null)
+                    foreach (string name in gone)
+                    {
+                        Known.Remove(name);
+                        Values.TryRemove(name, out _);
+                    }
+                _anySet = !Values.IsEmpty;
+            }
+            if (gone != null && NameRemoved is { } removed)
+                foreach (string name in gone) removed(name);
         }
 
-        /// <summary>Lets go of every value.</summary>
-        internal static void ReleaseAll() => Values.Clear();
+        /// <summary>Lets go of every value, as a level below Send Inputs
+        /// does. The names stay with the sessions that set them.</summary>
+        internal static void ReleaseAll()
+        {
+            lock (Sync)
+            {
+                Values.Clear();
+                _anySet = false;
+            }
+        }
 
-        /// <summary>The names set this run, in no order.</summary>
-        internal static IReadOnlyList<string> Names() => new List<string>(Known.Values);
+        /// <summary>The names held now, in no order.</summary>
+        internal static IReadOnlyList<string> Names()
+        {
+            lock (Sync) return new List<string>(Known.Keys);
+        }
 
         /// <summary>Test seam: nothing set and no name known.</summary>
         internal static void ResetForTest()
         {
-            Values.Clear();
-            Known.Clear();
+            lock (Sync)
+            {
+                Values.Clear();
+                Known.Clear();
+                _anySet = false;
+            }
         }
     }
 }

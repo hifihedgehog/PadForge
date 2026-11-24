@@ -50,9 +50,11 @@ namespace PadForge.Services
 
         /// <summary>The one way this service moves the cursor. The test host
         /// moves none (InputHookManager.DesktopInputOffLimits) and is
-        /// answered a refused move.</summary>
+        /// answered a refused move. While a program drives PadForge and the
+        /// window in front runs with rights, the cursor stays where it is
+        /// (ProgramInputGate).</summary>
         private static bool SetCursorPos(int X, int Y)
-            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && SetCursorPosNative(X, Y);
+            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !PadForge.Common.Input.ProgramInputGate.KeysBlocked && SetCursorPosNative(X, Y);
 
         [DllImport("user32.dll")]
         private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);

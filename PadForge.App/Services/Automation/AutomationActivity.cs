@@ -16,7 +16,14 @@ namespace PadForge.Services.Automation
     /// <param name="ProcessId">The process's ID, or 0.</param>
     /// <param name="ImageName">The file name of the program's image, such as
     /// powershell.exe, with no folder. Null when Windows would not say.</param>
-    internal sealed record AutomationProgram(string Name, int ProcessId, string ImageName)
+    /// <param name="ImagePath">The image's full path, which the user is
+    /// shown: a file name alone says nothing of where a program runs from,
+    /// and a program can copy itself to any name. Null when Windows would
+    /// not say.</param>
+    /// <param name="Signer">Who signed the image, when Windows trusts its
+    /// signature (<see cref="AuthenticodeSigner"/>), or null.</param>
+    internal sealed record AutomationProgram(string Name, int ProcessId, string ImageName,
+        string ImagePath = null, string Signer = null)
     {
         /// <summary>A program nothing is known of.</summary>
         internal static readonly AutomationProgram Unknown = new AutomationProgram(null, 0, null);
@@ -27,19 +34,29 @@ namespace PadForge.Services.Automation
         internal static AutomationProgram FromProcessId(int processId)
         {
             if (processId <= 0) return Unknown;
-            string image = null;
+            string image = null, path = null;
             try
             {
-                string path = PadForge.Common.Input.ProcessImage.PathOf(unchecked((uint)processId));
+                path = PadForge.Common.Input.ProcessImage.PathOf(unchecked((uint)processId));
                 if (!string.IsNullOrEmpty(path)) image = Path.GetFileName(path);
+                else path = null;
             }
             catch (ArgumentException)
             {
                 // A path Windows gave that is no path. The ID still shows.
+                path = null;
             }
             return new AutomationProgram(
-                image == null ? null : PadForge.Common.Input.RunningProcessList.ShortName(image), processId, image);
+                image == null ? null : PadForge.Common.Input.RunningProcessList.ShortName(image), processId, image,
+                path, AuthenticodeSigner.Of(path));
         }
+
+        /// <summary>What Activity counts a program's entries by: its image's
+        /// path, which a program cannot change by calling itself something
+        /// else, and its process where Windows gave no path.</summary>
+        internal string Key => !string.IsNullOrEmpty(ImagePath) ? ImagePath.ToUpperInvariant()
+            : !string.IsNullOrEmpty(ImageName) ? ImageName.ToUpperInvariant() + "|" + ProcessId
+            : "|" + ProcessId + "|" + Name;
     }
 
     /// <summary>What a call can ask for, one for each sentence Activity
@@ -92,9 +109,12 @@ namespace PadForge.Services.Automation
     /// <param name="Kind">The ask.</param>
     /// <param name="Argument">The profile, the controller's number or the
     /// line itself, for the kinds that name one.</param>
-    /// <param name="Count">How many times in a row the program asked it, as
-    /// a stream of lines on the Automation pipe is one entry.</param>
-    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1)
+    /// <param name="Count">How many times the program asked it, as a stream
+    /// of lines on the Automation pipe and refused lines of one kind are one
+    /// entry.</param>
+    /// <param name="Mixed">Whether the asks counted named different things,
+    /// of which <paramref name="Argument"/> is the last.</param>
+    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1, bool Mixed = false)
     {
         /// <summary>The longest stretch of a program's own text a sentence
         /// carries.</summary>
@@ -103,7 +123,9 @@ namespace PadForge.Services.Automation
         /// <summary>The ask in plain words, with its count when it came more
         /// than once.</summary>
         public string Text
-            => Count > 1 ? string.Format(Strings.Instance.Automation_Asked_Repeated_Format, Once, Count) : Once;
+            => Count <= 1 ? Once
+                : Mixed ? string.Format(Strings.Instance.Automation_Asked_RepeatedLast_Format, Once, Count)
+                : string.Format(Strings.Instance.Automation_Asked_Repeated_Format, Once, Count);
 
         /// <summary>The ask once, in plain words.</summary>
         private string Once
@@ -111,7 +133,9 @@ namespace PadForge.Services.Automation
             get
             {
                 var s = Strings.Instance;
-                string argument = Argument ?? string.Empty;
+                // A program's own text, with no character that could make it
+                // read as something else.
+                string argument = ShownText.Clean(Argument ?? string.Empty);
                 // The one-character ellipsis the interface's strings use.
                 if (argument.Length > LongestArgument) argument = argument.Substring(0, LongestArgument) + "…";
                 return Kind switch
@@ -164,22 +188,57 @@ namespace PadForge.Services.Automation
     /// response's fixed words.</param>
     /// <param name="Succeeded">Whether the answer was a yes.</param>
     internal sealed record AutomationActivityEntry(
-        DateTimeOffset Time, AutomationProgram Program, AutomationAsk Asked, string Result, bool Succeeded);
+        DateTimeOffset Time, AutomationProgram Program, AutomationAsk Asked, string Result, bool Succeeded)
+    {
+        /// <summary>Whether the entry records a question the user was asked
+        /// and how it ended. The part that asks sets it.</summary>
+        public bool HoldsApproval { get; init; }
+
+        /// <summary>Whether the entry records something done: a change, an
+        /// input sent or held, or a question the user answered. No other
+        /// program's lines push one out of Activity.</summary>
+        public bool Keeps => HoldsApproval || (Succeeded && !AutomationActivity.OnlyReads(Asked.Kind));
+    }
 
     /// <summary>
-    /// The record of what outside programs asked of PadForge (#597): the last
-    /// <see cref="Capacity"/> calls, oldest first. Kept in memory for the
-    /// session and never written to disk. Any thread may add to it and read
-    /// it.
+    /// The record of what outside programs asked of PadForge (#597), oldest
+    /// first. Kept in memory for the session and never written to disk. Any
+    /// thread may add to it and read it.
+    ///
+    /// <para>One program cannot push the record of what it or another
+    /// program did out of it:</para>
+    /// <list type="bullet">
+    /// <item>A refused line merges with the program's last refused line of
+    /// the same kind and answer into one entry with a count, whatever it
+    /// named. A successful ask merges with the same ask the program made
+    /// before, unless it is a tool call or a question the user answered,
+    /// which are each their own.</item>
+    /// <item>A program holds at most <see cref="PerProgram"/> entries. Past
+    /// that its own oldest entry that records nothing done goes, and only
+    /// when it has none of those its own oldest entry.</item>
+    /// <item>The record holds <see cref="Capacity"/> entries. Past that the
+    /// program adding gives up its own oldest entry that records nothing
+    /// done. A line of its that records nothing done is left out when it has
+    /// no such entry to give up, so it pushes out no other program's. An
+    /// entry that records something done always goes in, and then the
+    /// oldest entry that records nothing done of the program that holds the
+    /// most gives way, or, where every entry records something done, that
+    /// program's oldest.</item>
+    /// </list>
+    /// <para>A program is told apart by its image's path
+    /// (<see cref="AutomationProgram.Key"/>), which it cannot change by
+    /// calling itself something else.</para>
     /// </summary>
     internal sealed class AutomationActivity
     {
-        /// <summary>How many calls are kept. An older one gives way to a
-        /// newer.</summary>
+        /// <summary>How many calls are kept.</summary>
         internal const int Capacity = 500;
 
+        /// <summary>How many calls of one program are kept.</summary>
+        internal const int PerProgram = 50;
+
         private readonly object _sync = new object();
-        private readonly Queue<AutomationActivityEntry> _entries = new Queue<AutomationActivityEntry>(Capacity);
+        private readonly List<AutomationActivityEntry> _entries = new List<AutomationActivityEntry>(Capacity);
 
         /// <summary>Raised after a call is added and after
         /// <see cref="Clear"/>, on the thread that did it. A listener that
@@ -192,17 +251,133 @@ namespace PadForge.Services.Automation
             get { lock (_sync) return _entries.Count; }
         }
 
-        /// <summary>Adds a call, and drops the oldest when the record is
-        /// full.</summary>
+        /// <summary>The asks that only read and change nothing.</summary>
+        internal static bool OnlyReads(AutomationAskKind kind) => kind is AutomationAskKind.Unknown
+            or AutomationAskKind.QueryProfile or AutomationAskKind.Version or AutomationAskKind.State
+            or AutomationAskKind.Connected or AutomationAskKind.Disconnected or AutomationAskKind.Devices
+            or AutomationAskKind.Caps or AutomationAskKind.Read or AutomationAskKind.Outputs
+            or AutomationAskKind.Subscribe or AutomationAskKind.Unsubscribe;
+
+        /// <summary>Adds a call by the rules above.</summary>
         public void Add(AutomationActivityEntry entry)
         {
             if (entry == null) return;
-            lock (_sync)
+            bool changed;
+            lock (_sync) changed = AddLocked(entry);
+            if (changed) Changed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private bool AddLocked(AutomationActivityEntry entry)
+        {
+            string key = KeyOf(entry);
+            int same = MergeTarget(entry, key);
+            if (same >= 0)
             {
-                while (_entries.Count >= Capacity) _entries.Dequeue();
-                _entries.Enqueue(entry);
+                var old = _entries[same];
+                _entries.RemoveAt(same);
+                bool mixed = old.Asked.Mixed || !string.Equals(old.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal);
+                entry = entry with { Asked = entry.Asked with { Count = old.Asked.Count + entry.Asked.Count, Mixed = mixed } };
             }
-            Changed?.Invoke(this, EventArgs.Empty);
+            else if (_entries.Count >= Capacity && !entry.Keeps && OldestOf(key, keepers: false) < 0)
+            {
+                // The record is full of other programs' entries and of this
+                // program's that record something done. A line that records
+                // nothing done pushes none of them out.
+                return false;
+            }
+            _entries.Add(entry);
+
+            if (CountOf(key) > PerProgram)
+            {
+                int oldest = OldestOf(key, keepers: false);
+                if (oldest < 0) oldest = OldestOf(key, keepers: true);
+                if (oldest >= 0) _entries.RemoveAt(oldest);
+            }
+            while (_entries.Count > Capacity)
+            {
+                int oldest = OldestOf(key, keepers: false);
+                if (oldest < 0 || ReferenceEquals(_entries[oldest], entry))
+                {
+                    string largest = LargestHolder();
+                    oldest = OldestOf(largest, keepers: false);
+                    if (oldest < 0) oldest = OldestOf(largest, keepers: true);
+                }
+                if (oldest < 0) break;
+                _entries.RemoveAt(oldest);
+            }
+            return true;
+        }
+
+        private static string KeyOf(AutomationActivityEntry entry) => (entry.Program ?? AutomationProgram.Unknown).Key;
+
+        /// <summary>The newest entry of the program that the entry merges
+        /// with, or -1.</summary>
+        private int MergeTarget(AutomationActivityEntry entry, string key)
+        {
+            if (entry.HoldsApproval) return -1;
+            if (entry.Succeeded && entry.Asked.Kind == AutomationAskKind.Call) return -1;
+            for (int i = _entries.Count - 1; i >= 0; i--)
+            {
+                var e = _entries[i];
+                if (e.HoldsApproval || e.Succeeded != entry.Succeeded || e.Asked.Kind != entry.Asked.Kind) continue;
+                if (!string.Equals(KeyOf(e), key, StringComparison.Ordinal) || !Equals(e.Program, entry.Program)) continue;
+                if (entry.Succeeded)
+                {
+                    if (string.Equals(e.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal)
+                        && string.Equals(e.Result, entry.Result, StringComparison.Ordinal))
+                        return i;
+                }
+                else if (string.Equals(ResultCode(e.Result), ResultCode(entry.Result), StringComparison.Ordinal))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>An answer's error code: <c>error</c> or <c>err</c> and
+        /// the word after it.</summary>
+        private static string ResultCode(string result)
+        {
+            if (string.IsNullOrEmpty(result)) return string.Empty;
+            string[] words = result.Split(' ', 3, StringSplitOptions.RemoveEmptyEntries);
+            return words.Length >= 2 ? words[0] + " " + words[1] : result;
+        }
+
+        private int CountOf(string key)
+        {
+            int n = 0;
+            foreach (var e in _entries) if (string.Equals(KeyOf(e), key, StringComparison.Ordinal)) n++;
+            return n;
+        }
+
+        /// <summary>The program's oldest entry that records nothing done, or
+        /// with <paramref name="keepers"/> its oldest of any kind. -1 when it
+        /// has none.</summary>
+        private int OldestOf(string key, bool keepers)
+        {
+            for (int i = 0; i < _entries.Count; i++)
+            {
+                var e = _entries[i];
+                if (!keepers && e.Keeps) continue;
+                if (string.Equals(KeyOf(e), key, StringComparison.Ordinal)) return i;
+            }
+            return -1;
+        }
+
+        private string LargestHolder()
+        {
+            var counts = new Dictionary<string, int>(StringComparer.Ordinal);
+            string largest = null;
+            int most = 0;
+            foreach (var e in _entries)
+            {
+                string key = KeyOf(e);
+                counts.TryGetValue(key, out int n);
+                counts[key] = ++n;
+                if (n > most) { most = n; largest = key; }
+            }
+            return largest;
         }
 
         /// <summary>Empties the record.</summary>

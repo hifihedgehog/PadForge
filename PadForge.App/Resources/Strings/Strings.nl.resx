@@ -387,6 +387,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Er is geen programma verbonden.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Verbonden: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Onbekend programma</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ondertekend door {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, niet ondertekend</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Uitgevoerd</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Niet uitgevoerd</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Niet toegestaan op dit niveau</value></data>
@@ -412,6 +414,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Het programma spreekt een versie die PadForge niet kent</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gaf die pluginsleutel niet</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nam de verbinding van dit programma niet aan</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Te snel opnieuw gevraagd</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Geen nieuwe tot PadForge opnieuw start</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Overschakelen naar het profiel {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Terugkeren naar het standaardprofiel</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vragen welk profiel actief is</value></data>
@@ -448,6 +452,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>De waarde {0} instellen</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Het hulpmiddel {0} uitvoeren</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} keer</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, de laatste van {1} zulke verzoeken</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-scripts (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

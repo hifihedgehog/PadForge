@@ -1457,6 +1457,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Mayong programang nakakonektar.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonektar: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Dai aram na programa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, pinirmahan ni {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, mayong pirma</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Tapos na</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Dai nagibo</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Dai tinutugotan sa level na ini</value></data>
@@ -1477,6 +1479,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>An programa naggagamit nin bersyon na dai aram kan PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Dai itinao kan PadForge an plugin key na iyan</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Dai inako kan PadForge an koneksyon kaining programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Naghagad giraray nin sobrang aga</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Mayo nang arog kaini sagkod na magpoon giraray an PadForge</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tugotan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Dai tugotan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Hale sa {0}</value></data>

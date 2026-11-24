@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Не е поврзана ниту една програма.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Поврзани: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Непозната програма</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, потпишано од {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, непотпишано</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Готово</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Не е направено</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Не е дозволено на ова ниво</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програмата зборува верзија што PadForge не ја знае</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не му го даде тој клуч на приклучокот</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не ја прифати врската на оваа програма</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Повторно побарано премногу рано</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Нема повеќе такви додека PadForge не се стартува повторно</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Префрли на профилот {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Врати на стандардниот профил</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Праша кој профил е активен</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Постави ја вредноста {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Изврши ја алатката {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} пати</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, последното од {1} такви</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скрипти за AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

@@ -14,6 +14,12 @@ namespace PadForge.Services.Automation
         /// <summary>Nobody answered in the time given. A change that waited
         /// for the answer is not made.</summary>
         TimedOut,
+
+        /// <summary>The question was never put: its program has
+        /// <see cref="AutomationApprovals.MostPerProgram"/> waiting already,
+        /// or <see cref="AutomationApprovals.MostInAll"/> wait in all. A
+        /// change that waited for the answer is not made.</summary>
+        TooMany,
     }
 
     /// <summary>What the user is asked: who wants it, what it is in a few
@@ -48,6 +54,12 @@ namespace PadForge.Services.Automation
     {
         /// <summary>How long a question waits.</summary>
         internal static readonly TimeSpan DefaultWait = TimeSpan.FromMinutes(2);
+
+        /// <summary>How many questions one program may have waiting, and
+        /// how many wait at most in all. A program that asks in a loop
+        /// cannot bury the user in cards, nor keep another program's
+        /// question from being asked.</summary>
+        internal const int MostPerProgram = 3, MostInAll = 10;
 
         private sealed class Waiting
         {
@@ -95,7 +107,11 @@ namespace PadForge.Services.Automation
         /// <summary>
         /// Puts a question and completes when the user answers it or its time
         /// runs out. Canceling <paramref name="cancel"/> takes the question
-        /// away and ends the task as canceled.
+        /// away and ends the task as canceled. A question past the limits
+        /// (<see cref="MostPerProgram"/>, <see cref="MostInAll"/>) is never
+        /// put and ends at once as <see cref="ApprovalAnswer.TooMany"/>. A
+        /// program is told apart by its image's path
+        /// (<see cref="AutomationProgram.Key"/>).
         /// </summary>
         public Task<ApprovalAnswer> AskAsync(ApprovalRequest request, CancellationToken cancel = default)
         {
@@ -111,6 +127,15 @@ namespace PadForge.Services.Automation
             };
             lock (_sync)
             {
+                string key = (request.Who ?? AutomationProgram.Unknown).Key;
+                int ofProgram = 0;
+                foreach (var w in _waiting)
+                    if (string.Equals((w.Pending.Request.Who ?? AutomationProgram.Unknown).Key, key, StringComparison.Ordinal)) ofProgram++;
+                if (_waiting.Count >= MostInAll || ofProgram >= MostPerProgram)
+                {
+                    waiting.Clock.Dispose();
+                    return Task.FromResult(ApprovalAnswer.TooMany);
+                }
                 var asked = _now();
                 waiting.Pending = new PendingApproval(++_lastId, request, asked, asked + _wait);
                 _waiting.Add(waiting);

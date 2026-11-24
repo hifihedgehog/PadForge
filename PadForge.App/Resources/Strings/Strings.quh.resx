@@ -1727,6 +1727,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Mana ni mayqin programa tinkisqachu.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tinkisqa: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Mana riqsisqa programa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} firmasqan</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, mana firmasqa</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ruwasqa</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Mana ruwasqa</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Kay nivelpi mana atikunchu</value></data>
@@ -1752,6 +1754,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programaqa PadForge mana riqsisqan versiónta rimachkan</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge mana chay plugin llavita qurqanchu</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge mana kay programap tinkiyninta chaskirqanchu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ancha utqayta wakmanta mañakurqan</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Manaña kaykunaqa kanqachu PadForge wakmanta qallarinankama</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} perfilman t'ikray</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ñawpaq kaq perfilman kutiy</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mayqin perfil llamk'achkasqanta tapuy</value></data>
@@ -1788,6 +1792,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Valorta churay: {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Herramientata llamk'achiy: {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kutikuna: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, kaykunamanta qhipa kaq: {1}</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} nisqamanta</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} nisqamanta, “{0}” sutichakuq</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>“{0}” sutichakuq programamanta</value></data>

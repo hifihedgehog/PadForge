@@ -861,6 +861,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Program biara nni nkitahodi mu.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wɔaka abom: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program a wonnim</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} na ɔde ne nsa ahyɛ ase</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, wɔmfaa nsa nhyɛɛ ase</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Wɔayɛ</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wɔnyɛe</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Wɔmma kwan wɔ level yi so</value></data>
@@ -886,6 +888,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program no ka version bi a PadForge nnim</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge mmaa plugin key no</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge annye program yi nkitahodi</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Wɔsan bisaa ntɛm dodo</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Eyi bi bio nni hɔ kosi sɛ PadForge bɛsan afi ase</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sesa kɔ profile {0} so</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>San kɔ profile a edi kan no so</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bisa profile a ɛreyɛ adwuma</value></data>
@@ -922,6 +926,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Hyehyɛ bo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yɛ adwinnade {0} adwuma</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mpɛn {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, nea etwa to wɔ {1} a ɛte saa mu</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ma Kwan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Mma Kwan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Efi {0}</value></data>

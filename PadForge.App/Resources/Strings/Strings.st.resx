@@ -117,6 +117,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ha ho lenaneo le hokahantsweng.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A hokahantswe: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Lenaneo le sa tsejweng</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, le saennwe ke {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ha le a saenwa</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ho entswe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ha ho a etswa</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ha ho a dumellwa boemong bona</value></data>
@@ -142,6 +144,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Lenaneo le bua mofuta oo PadForge e sa o tsebeng</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ha e a fana ka senotlolo seo sa plagini</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ha e a amohela kgokahano ya lenaneo lena</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ho kopilwe hape kapele haholo</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ha ho sa na tse ding tsa mofuta ona ho fihlela PadForge e qala hape</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetohela profaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kgutlela profaeleng ya kamehla</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa hore na ke profaele efe e sebetsang</value></data>
@@ -178,6 +182,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Beha boleng {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Sebedisa sesebediswa {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makgetlo a {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya ho qetela ho tse {1} tse tshwanang</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Hokela</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E hoketswe</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hana</value></data>

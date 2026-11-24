@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nid oes rhaglen wedi cysylltu.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wedi cysylltu: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Rhaglen anhysbys</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, wedi'i llofnodi gan {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, heb ei llofnodi</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Wedi'i wneud</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Heb ei wneud</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ni chaniateir ar y lefel hon</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mae'r rhaglen yn siarad fersiwn nad yw PadForge yn ei hadnabod</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Ni roddodd PadForge yr allwedd ategyn honno</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Ni dderbyniodd PadForge gysylltiad y rhaglen hon</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Gofynnwyd eto'n rhy fuan</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Dim rhagor o'r rhain nes i PadForge gychwyn eto</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Newid i'r proffil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dychwelyd i'r proffil rhagosodedig</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Holi pa broffil sy'n weithredol</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gosod y gwerth {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Rhedeg yr offeryn {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, nifer y troeon: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, yr olaf o {1} tebyg iddo</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Sgriptiau AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

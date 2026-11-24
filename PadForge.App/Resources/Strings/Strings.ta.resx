@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>எந்த நிரலும் இணைக்கப்படவில்லை.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>இணைந்தவை: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>அறியப்படாத நிரல்</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, கையொப்பமிட்டவர் {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, கையொப்பமிடப்படவில்லை</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>முடிந்தது</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>செய்யப்படவில்லை</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>இந்த நிலையில் அனுமதி இல்லை</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>நிரல் PadForge-க்குத் தெரியாத பதிப்பில் பேசுகிறது</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge அந்தச் செருகுநிரல் விசையைத் தரவில்லை</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge இந்த நிரலின் இணைப்பை ஏற்கவில்லை</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>மிக விரைவில் மீண்டும் கேட்கப்பட்டது</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge மீண்டும் தொடங்கும் வரை இவை இனி இல்லை</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>சுயவிவரத்தை மாற்று: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>இயல்புநிலை சுயவிவரத்துக்குத் திரும்பு</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>எந்தச் சுயவிவரம் செயலில் உள்ளது என்று கேள்</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>மதிப்பை அமை: {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>கருவியை இயக்கு: {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} முறை</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, இது போன்ற {1} இல் கடைசி</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ஸ்கிரிப்ட்கள் (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

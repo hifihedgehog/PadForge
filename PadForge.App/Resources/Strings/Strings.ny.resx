@@ -1601,6 +1601,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pulogalamuyo imagwiritsa ntchito mtundu womwe PadForge sikudziwa</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge sinapereke kiyi ya pulaginiyo</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge sinalandire kulumikizana kwa pulogalamuyi</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Yafunsanso mofulumira kwambiri</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Palibenso zina mwa izi mpaka PadForge iyambenso</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sinthani kupita ku mbiri {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bwererani ku mbiri yokhazikika</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Funsani mbiri yomwe ikugwira ntchito</value></data>
@@ -1637,6 +1639,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Khazikitsani mtengo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yendetsani chida {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, nthawi {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, womaliza mwa {1} otere</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Lolani</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Musalole</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ndi zina {0}</value></data>

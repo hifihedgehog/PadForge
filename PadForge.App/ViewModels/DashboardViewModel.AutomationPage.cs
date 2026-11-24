@@ -261,27 +261,30 @@ namespace PadForge.ViewModels
             }
         });
 
-        /// <summary>Brings the list in step with the record. The record only
-        /// adds at its end, drops from its start and empties, so the new
-        /// calls go on top and the dropped ones come off the bottom.</summary>
+        /// <summary>Brings the list in step with the record, newest first.
+        /// The record adds at its end, and an entry can leave from anywhere
+        /// in it: a merged one moves to the end with its new count, and one
+        /// a program gave up goes (AutomationActivity). An item stays while
+        /// its entry does, so a row on screen is not drawn again.</summary>
         private void ShowAutomationActivity()
         {
             Interlocked.Exchange(ref _automationActivityQueued, 0);
             var record = _automationHost?.Activity.Snapshot() ?? Array.Empty<AutomationActivityEntry>();
-            int newest = -1;
-            if (AutomationActivity.Count > 0)
+            var items = new Dictionary<AutomationActivityEntry, AutomationActivityItem>(ReferenceEqualityComparer.Instance);
+            foreach (var item in AutomationActivity) items[item.Entry] = item;
+            var wanted = new List<AutomationActivityItem>(record.Count);
+            for (int i = record.Count - 1; i >= 0; i--)
+                wanted.Add(items.TryGetValue(record[i], out var item) ? item : new AutomationActivityItem(record[i], UndoAutomationEntry));
+            var keep = new HashSet<AutomationActivityItem>(wanted);
+            for (int i = AutomationActivity.Count - 1; i >= 0; i--)
+                if (!keep.Contains(AutomationActivity[i])) AutomationActivity.RemoveAt(i);
+            for (int i = 0; i < wanted.Count; i++)
             {
-                var shown = AutomationActivity[0].Entry;
-                for (int i = record.Count - 1; i >= 0; i--)
-                    if (ReferenceEquals(record[i], shown)) { newest = i; break; }
-                if (newest < 0) AutomationActivity.Clear();
+                if (i < AutomationActivity.Count && ReferenceEquals(AutomationActivity[i], wanted[i])) continue;
+                int at = AutomationActivity.IndexOf(wanted[i]);
+                if (at >= 0) AutomationActivity.Move(at, i);
+                else AutomationActivity.Insert(i, wanted[i]);
             }
-            for (int i = newest + 1; i < record.Count; i++)
-                AutomationActivity.Insert(0, new AutomationActivityItem(record[i], UndoAutomationEntry));
-            var kept = new HashSet<AutomationActivityEntry>(ReferenceEqualityComparer.Instance);
-            foreach (var entry in record) kept.Add(entry);
-            while (AutomationActivity.Count > 0 && !kept.Contains(AutomationActivity[^1].Entry))
-                AutomationActivity.RemoveAt(AutomationActivity.Count - 1);
             RefreshAutomationUndo();
             OnPropertyChanged(nameof(HasAutomationActivity));
         }

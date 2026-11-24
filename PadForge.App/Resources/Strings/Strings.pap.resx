@@ -392,6 +392,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ningun programa no ta konektá.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektá: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa deskonosí</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, firmá pa {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, no firmá</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Hasí</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>No hasí</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>No ta permití na e nivel aki</value></data>
@@ -417,6 +419,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>E programa ta papia un vershon ku PadForge no konosé</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge no a duna e yabi di plugin ei</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge no a aseptá e konekshon di e programa aki</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A pidi atrobe muchu lihé</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No mas di esakinan te ora PadForge kuminsá di nobo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kambia na e perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bolbe na e perfil standard</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Puntra ki perfil ta aktivo</value></data>
@@ -453,6 +457,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Pone e balor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kore e hèrmèntè {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} biaha</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, e último di {1} parecido</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa teklanan G di Logitech</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
   <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>

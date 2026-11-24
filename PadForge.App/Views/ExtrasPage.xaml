@@ -2741,10 +2741,10 @@
                                             </ItemsControl>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                                            <Button Style="{StaticResource ExtraButton}" Command="{Binding DenyCommand}"
+                                            <Button Style="{StaticResource ExtraButton}" Command="{Binding DenyCommand}" common:OwnOutputGuard.Refuses="True"
                                                     AutomationProperties.AutomationId="{Binding DenyId}"
                                                     Content="{Binding Automation_Request_Deny, Source={x:Static strings:Strings.Instance}}"/>
-                                            <Button Style="{StaticResource ExtraButton}" Command="{Binding AllowCommand}" Margin="10,0,0,0"
+                                            <Button Style="{StaticResource ExtraButton}" Command="{Binding AllowCommand}" Margin="10,0,0,0" common:OwnOutputGuard.Refuses="True"
                                                     AutomationProperties.AutomationId="{Binding AllowId}"
                                                     Content="{Binding Automation_Request_Allow, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
@@ -2797,6 +2797,16 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <!-- The program's image by its full path and its
+                                             signer, under the row, so a program that copied
+                                             itself to a known name is told apart. -->
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ProgramImage}" FontSize="12"
+                                                   TextWrapping="Wrap" Margin="0,0,12,6" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Visibility="{Binding HasProgramImage, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <TextBlock Text="{Binding Time}" FontSize="13" VerticalAlignment="Center" Typography.NumeralAlignment="Tabular"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding Program}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"

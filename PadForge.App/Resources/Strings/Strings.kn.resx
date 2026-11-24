@@ -669,6 +669,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ಯಾವುದೇ ಪ್ರೋಗ್ರಾಂ ಸಂಪರ್ಕದಲ್ಲಿಲ್ಲ.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>ಸಂಪರ್ಕದಲ್ಲಿವೆ: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>ಅಜ್ಞಾತ ಪ್ರೋಗ್ರಾಂ</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ಸಹಿ ಮಾಡಿದವರು {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ಸಹಿ ಇಲ್ಲ</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ಮುಗಿದಿದೆ</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>ಮಾಡಲಾಗಿಲ್ಲ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ಈ ಹಂತದಲ್ಲಿ ಅನುಮತಿ ಇಲ್ಲ</value></data>
@@ -694,6 +696,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ಪ್ರೋಗ್ರಾಂ PadForge ಗೆ ತಿಳಿಯದ ಆವೃತ್ತಿಯಲ್ಲಿ ಮಾತನಾಡುತ್ತದೆ</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ಆ ಪ್ಲಗಿನ್ ಕೀಲಿಯನ್ನು ನೀಡಲಿಲ್ಲ</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ಈ ಪ್ರೋಗ್ರಾಂನ ಸಂಪರ್ಕವನ್ನು ಸ್ವೀಕರಿಸಲಿಲ್ಲ</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ತುಂಬಾ ಬೇಗ ಮತ್ತೆ ಕೇಳಲಾಯಿತು</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge ಮತ್ತೆ ಪ್ರಾರಂಭವಾಗುವವರೆಗೆ ಇವು ಇನ್ನು ಇಲ್ಲ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ {0} ಗೆ ಬದಲಿಸಿ</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ಡೀಫಾಲ್ಟ್ ಪ್ರೊಫೈಲ್‌ಗೆ ಮರಳಿ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ಯಾವ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿದೆ ಎಂದು ಕೇಳಿ</value></data>
@@ -730,6 +734,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ಮೌಲ್ಯ {0} ಅನ್ನು ಹೊಂದಿಸಿ</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ಟೂಲ್ {0} ಅನ್ನು ಚಲಾಯಿಸಿ</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ಬಾರಿ</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ಇಂತಹ {1} ರಲ್ಲಿ ಕೊನೆಯದು</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

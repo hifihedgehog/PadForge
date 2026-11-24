@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ükski programm pole ühendatud.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Ühendatud: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Tundmatu programm</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, allkirjastaja {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, allkirjastamata</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Tehtud</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tegemata</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Sel tasemel pole lubatud</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programm räägib versiooni, mida PadForge ei tunne</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ei andnud seda pistikprogrammi võtit</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ei võtnud selle programmi ühendust vastu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Küsiti liiga vara uuesti</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Rohkem neid ei tehta, kuni PadForge uuesti käivitub</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaheta profiilile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Naase vaikeprofiilile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Küsi, milline profiil on aktiivne</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sea väärtus {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Käivita tööriist {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} korda</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, viimane {1} sellisest</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skriptid (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

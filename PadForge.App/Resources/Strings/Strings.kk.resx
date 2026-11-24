@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ешбір бағдарлама қосылмаған.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Қосылғандар: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Белгісіз бағдарлама</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, қол қойған: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, қол қойылмаған</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Орындалды</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Орындалмады</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Бұл деңгейде рұқсат етілмеген</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Бағдарлама PadForge танымайтын нұсқада сөйлейді</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge бұл плагин кілтін бермеді</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge бұл бағдарламаның қосылымын қабылдамады</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Тым ерте қайта сұралды</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge қайта іске қосылғанға дейін мұндай сұрау болмайды</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профиліне ауысу</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Әдепкі профильге оралу</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Қай профиль белсенді екенін сұрау</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} мәнін орнату</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} құралын іске қосу</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} рет</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, осындай {1} сұраудың соңғысы</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 скрипттері (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

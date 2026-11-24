@@ -915,6 +915,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pulogulaamu ekozesa nkyusa PadForge gy'etamanyi</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge teyawa kisumuluzo kya plugin ekyo</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge teyakkiriza kuyunga kwa pulogulaamu eno</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Kisabiddwa nate mangu nnyo</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tewali birala bya kika kino okutuusa PadForge lw'eneeddamu okutandika</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kyusa ogende ku pulofayiro {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ddayo ku pulofayiro ey'olubeerera</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buuza pulofayiro ekola</value></data>
@@ -951,6 +953,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Teekawo omuwendo {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ddukanya ekikozesebwa {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, emirundi {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ekisembayo ku {1} ebifaanana bwe bityo</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Kkiriza</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tokkiriza</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>n'endala {0}</value></data>

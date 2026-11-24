@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Niciun program nu este conectat.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Conectate: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program necunoscut</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, semnat de {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, nesemnat</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Efectuat</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Neefectuat</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Nepermis la acest nivel</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programul folosește o versiune pe care PadForge nu o cunoaște</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nu a dat cheia pentru plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nu a acceptat conexiunea acestui program</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Solicitat din nou prea devreme</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nu se mai fac astfel de lucruri până la repornirea PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Trecere la profilul {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Revenire la profilul implicit</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Întrebare despre profilul activ</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setare valoare {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Rulare instrument {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, repetări: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ultima dintre solicitările asemănătoare: {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Scripturi AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

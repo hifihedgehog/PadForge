@@ -7957,7 +7957,10 @@ namespace PadForge
 
         private bool _isRestoring;
 
-        private void RestoreFromTray()
+        /// <param name="forceForward">Whether a full-screen window is pushed
+        /// over the others, as the tray's own Show does. A caller's show
+        /// takes the front only with the right it lent (CallerShow).</param>
+        private void RestoreFromTray(bool forceForward = true)
         {
             // Reentrancy only. This used to bail on visibility as well, but a
             // window minimized to the TASKBAR is still visible by the toolkit's
@@ -7980,7 +7983,7 @@ namespace PadForge
                 // (#439) The icon stays up with Always Show in System Tray on, so
                 // Exit in its menu is one click away without closing the window.
                 _notifyIcon.Visible = _viewModel.Settings.AlwaysShowTrayIcon;
-                if (_isFullScreen)
+                if (_isFullScreen && forceForward)
                     ForceToForeground(new System.Windows.Interop.WindowInteropHelper(this).Handle);
 
                 // Re-apply theme so TitleBar ButtonsForeground updates (stale when

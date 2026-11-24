@@ -53,6 +53,23 @@ namespace PadForge.Services.Automation
         internal const string NotAllowed = "error not-allowed";
         internal const string NotAvailable = "error not-available";
         internal const string UnknownSlot = "error unknown-slot";
+        internal const string TooSoon = "error too-soon";
+        internal const string LimitReached = "error limit-reached";
+
+        /// <summary>How often a program may have a snapshot written, and a
+        /// recording started, and how many of each one run of PadForge
+        /// takes from programs. Each writes a file beside the exe, which a
+        /// loop would otherwise fill the disk with. The Settings buttons and
+        /// a starting copy's own switches are not counted.</summary>
+        internal const int SnapshotEveryMs = 60000, RecordStartEveryMs = 10000, MostFromProgramsPerRun = 20;
+
+        private readonly object _limits = new object();
+        private long _lastSnapshotMs = long.MinValue / 2, _lastRecordStartMs = long.MinValue / 2;
+        private int _snapshots, _recordStarts;
+
+        /// <summary>The clock the limits run on. A test sets its
+        /// own.</summary>
+        internal Func<long> NowMs { get; set; } = () => Environment.TickCount64;
 
         /// <summary>The level every line of the command set needs.</summary>
         internal const AutomationLevel Needs = AutomationLevel.Commands;
@@ -99,7 +116,7 @@ namespace PadForge.Services.Automation
             var command = Read(line);
             if (command.Error != null) return new ExternalControlService.Answer(command.Error);
             if (!_host.Allows(Needs)) return new ExternalControlService.Answer(NotAllowed);
-            return Run(command, stopping);
+            return Run(command, stopping, fromProgram: true);
         }
 
         /// <summary>
@@ -114,7 +131,7 @@ namespace PadForge.Services.Automation
             if (command.Error != null) return command.Error;
             try
             {
-                var answer = Run(command, CancellationToken.None);
+                var answer = Run(command, CancellationToken.None, fromProgram: false);
                 answer.AfterWritten?.Invoke();
                 return answer.Line;
             }
@@ -217,16 +234,20 @@ namespace PadForge.Services.Automation
 
         private static string OnOff(bool on) => on ? "on" : "off";
 
-        private ExternalControlService.Answer Run(Command command, CancellationToken stopping)
+        private ExternalControlService.Answer Run(Command command, CancellationToken stopping, bool fromProgram)
         {
             switch (command.Kind)
             {
+                // A profile's name is what the user typed, and an answer
+                // that carries one is scrubbed as every read is.
                 case AutomationAskKind.ActivateProfile:
-                    return OnUi(() => _target.ActivateProfile(command.Argument), stopping);
+                    AutomationReadScrub.Prepare();
+                    return OnUi(() => ScrubbedName(_target.ActivateProfile(command.Argument), last: false), stopping);
                 case AutomationAskKind.DeactivateProfile:
                     return OnUi(_target.DeactivateProfile, stopping);
                 case AutomationAskKind.QueryProfile:
-                    return OnUi(_target.QueryProfile, stopping);
+                    AutomationReadScrub.Prepare();
+                    return OnUi(() => ScrubbedName(_target.QueryProfile(), last: true), stopping);
 
                 case AutomationAskKind.ShowWindow:
                     return OnUi(() => { _target.ShowWindow(); return Ok; }, stopping);
@@ -261,10 +282,41 @@ namespace PadForge.Services.Automation
                         : UnknownSlot, stopping);
 
                 case AutomationAskKind.Snapshot:
-                    return OnUi(() => Ok + " " + _target.SaveSnapshot(), stopping);
+                {
+                    // A program can read the file beside the exe, so what is
+                    // written for it is scrubbed, as everything it reads is.
+                    if (!fromProgram) return OnUi(() => Ok + " " + _target.SaveSnapshot(scrubbed: false), stopping);
+                    string refused = Take(ref _lastSnapshotMs, ref _snapshots, SnapshotEveryMs);
+                    if (refused != null) return new ExternalControlService.Answer(refused);
+                    return OnUi(() => Ok + " " + _target.SaveSnapshot(scrubbed: true), stopping);
+                }
 
                 case AutomationAskKind.RecordStart:
-                    return OnUi(() => Recorder(_host.RecordStart), stopping);
+                {
+                    if (!fromProgram) return OnUi(() => Recorder(_host.RecordStart), stopping);
+                    return OnUi(() =>
+                    {
+                        // A start while a recording runs makes no file: the
+                        // recorder answers it busy, and it counts for
+                        // nothing. Only a start that made a recording starts
+                        // the clock and is counted.
+                        if (_host.Recording?.Invoke() != true)
+                        {
+                            string refused = Limit(_lastRecordStartMs, _recordStarts, RecordStartEveryMs);
+                            if (refused != null) return refused;
+                        }
+                        string line = Recorder(_host.RecordStart);
+                        if (line.StartsWith(Ok, StringComparison.Ordinal))
+                        {
+                            lock (_limits)
+                            {
+                                _lastRecordStartMs = NowMs();
+                                _recordStarts++;
+                            }
+                        }
+                        return line;
+                    }, stopping);
+                }
                 case AutomationAskKind.RecordStop:
                     return OnUi(() => Recorder(_host.RecordStop), stopping);
                 case AutomationAskKind.RecordMark:
@@ -278,6 +330,7 @@ namespace PadForge.Services.Automation
                     return new ExternalControlService.Answer(VersionLine());
 
                 case AutomationAskKind.State:
+                    AutomationReadScrub.Prepare();
                     return OnUi(() => Ok + " " + StateJson(_target.ReadState()), stopping);
 
                 default:
@@ -287,6 +340,53 @@ namespace PadForge.Services.Automation
 
         private ExternalControlService.Answer OnUi(Func<string> work, CancellationToken stopping)
             => new ExternalControlService.Answer(_ui.Invoke(work, stopping));
+
+        /// <summary>A program's snapshot against its limits: null when it
+        /// may go ahead, which starts its clock and counts it, or the
+        /// refusal.</summary>
+        private string Take(ref long last, ref int taken, int everyMs)
+        {
+            long now = NowMs();
+            lock (_limits)
+            {
+                if (taken >= MostFromProgramsPerRun) return LimitReached;
+                if (now - last < everyMs) return TooSoon;
+                last = now;
+                taken++;
+                return null;
+            }
+        }
+
+        /// <summary>The limits' answer alone, taking nothing: null, or the
+        /// refusal.</summary>
+        private string Limit(long last, int taken, int everyMs)
+        {
+            long now = NowMs();
+            lock (_limits)
+            {
+                if (taken >= MostFromProgramsPerRun) return LimitReached;
+                return now - last < everyMs ? TooSoon : null;
+            }
+        }
+
+        /// <summary>An <c>ok</c> answer with the profile's name in it
+        /// scrubbed: the rest of the line, or with <paramref name="last"/>
+        /// the rest but its last word, the pin state. Any other answer as it
+        /// is.</summary>
+        internal static string ScrubbedName(string answer, bool last)
+        {
+            if (answer == null || !answer.StartsWith(Ok + " ", StringComparison.Ordinal)) return answer;
+            string rest = answer.Substring(Ok.Length + 1);
+            string tail = string.Empty;
+            if (last)
+            {
+                int space = rest.LastIndexOf(' ');
+                if (space < 0) return answer;
+                tail = rest.Substring(space);
+                rest = rest.Substring(0, space);
+            }
+            return Ok + " " + AutomationReadScrub.Text(rest) + tail;
+        }
 
         /// <summary>The problem recorder, which the host is handed when the
         /// build has one. With none the answer is
@@ -333,7 +433,7 @@ namespace PadForge.Services.Automation
                 json.WriteString("engine", Word(state.Engine));
 
                 json.WriteStartObject("profile");
-                json.WriteString("name", state.ProfileName);
+                json.WriteString("name", AutomationReadScrub.Text(state.ProfileName));
                 json.WriteString("id", state.ProfileId);
                 json.WriteBoolean("pinned", state.ProfilePinned);
                 json.WriteEndObject();
@@ -352,7 +452,7 @@ namespace PadForge.Services.Automation
                 {
                     json.WriteStartObject();
                     json.WriteNumber("slot", controller.Slot);
-                    json.WriteString("name", controller.Name);
+                    json.WriteString("name", AutomationReadScrub.Text(controller.Name));
                     json.WriteString("type", Word(controller.Type));
                     json.WriteBoolean("on", controller.On);
                     json.WriteNumber("devices", controller.Devices);

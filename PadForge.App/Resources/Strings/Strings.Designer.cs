@@ -843,6 +843,8 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Status_NoPrograms => Get("Automation_Status_NoPrograms");
     public string Automation_Status_Connected_Format => Get("Automation_Status_Connected_Format");
     public string Automation_Program_Unknown => Get("Automation_Program_Unknown");
+    public string Automation_Program_Signed_Format => Get("Automation_Program_Signed_Format");
+    public string Automation_Program_NotSigned_Format => Get("Automation_Program_NotSigned_Format");
     public string Automation_Result_Done => Get("Automation_Result_Done");
     public string Automation_Result_NotDone => Get("Automation_Result_NotDone");
     public string Automation_Result_NotAllowed => Get("Automation_Result_NotAllowed");
@@ -868,6 +870,8 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Result_UnsupportedProtocol => Get("Automation_Result_UnsupportedProtocol");
     public string Automation_Result_Denied => Get("Automation_Result_Denied");
     public string Automation_Result_Refused => Get("Automation_Result_Refused");
+    public string Automation_Result_TooSoon => Get("Automation_Result_TooSoon");
+    public string Automation_Result_LimitReached => Get("Automation_Result_LimitReached");
     public string Automation_Asked_Activate_Format => Get("Automation_Asked_Activate_Format");
     public string Automation_Asked_Deactivate => Get("Automation_Asked_Deactivate");
     public string Automation_Asked_Query => Get("Automation_Asked_Query");
@@ -904,6 +908,7 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Asked_Value_Format => Get("Automation_Asked_Value_Format");
     public string Automation_Asked_Call_Format => Get("Automation_Asked_Call_Format");
     public string Automation_Asked_Repeated_Format => Get("Automation_Asked_Repeated_Format");
+    public string Automation_Asked_RepeatedLast_Format => Get("Automation_Asked_RepeatedLast_Format");
     public string Automation_Library_AutoHotkey => Get("Automation_Library_AutoHotkey");
     public string Automation_Library_AutoHotkey_Filter => Get("Automation_Library_AutoHotkey_Filter");
     public string Automation_Library_Python => Get("Automation_Library_Python");

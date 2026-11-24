@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>කිසිදු වැඩසටහනක් සම්බන්ධ වී නැත.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>සම්බන්ධිත: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>නොදන්නා වැඩසටහන</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} විසින් අත්සන් කර ඇත</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, අත්සන් කර නැත</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>සිදු කළා</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>සිදු කළේ නැත</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>මෙම මට්ටමේදී ඉඩ නොදේ</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>PadForge නොදන්නා අනුවාදයක් වැඩසටහන භාවිත කරයි</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge එම ප්ලගින යතුර ලබා දුන්නේ නැත</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge මෙම වැඩසටහනේ සම්බන්ධතාවය පිළිගත්තේ නැත</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ඉතා ඉක්මනින් නැවත ඉල්ලන ලදී</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge නැවත ආරම්භ වන තුරු මේවා තවත් නැත</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} පැතිකඩට මාරු වන්න</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>පෙරනිමි පැතිකඩට ආපසු යන්න</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>සක්‍රිය පැතිකඩ කුමක්දැයි විමසන්න</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} අගය සකසන්න</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} මෙවලම ධාවනය කරන්න</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, වාර {1}ක්</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, එවැනි {1} න් අවසාන එක</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ස්ක්‍රිප්ට් (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

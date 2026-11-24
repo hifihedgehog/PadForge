@@ -240,6 +240,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>I no gat program i konekt.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>I konekt: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program we i no gat nem</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} i saenem</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, i no gat saen</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>I finis</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>I no mekem</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>I no letem long level ia</value></data>
@@ -265,6 +267,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program i toktok wan vesen we PadForge i no save</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge i no givim ki blong plagin ia</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge i no tekem konek blong program ia</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>I askem bakegen kwiktaem tumas</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>I no moa blong kaen ia kasem we PadForge i stat bakegen</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Jenis i go long profael {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gobak long profael we i stanap fastaem</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Askem wanem profael i stap wok</value></data>
@@ -301,6 +305,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setem value {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ronem tul {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, namba blong taem: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, laswan blong {1} olsem</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>I no faenem wan analog kiboad we PadForge i save ridim.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Statem Razer Synapse blong ridim {0}.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>I no faenem wan pot blong Bliss-Box.</value></data>

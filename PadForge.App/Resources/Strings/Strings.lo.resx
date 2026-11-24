@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ບໍ່ມີໂປຣແກຣມໃດເຊື່ອມຕໍ່ຢູ່.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>ໂປຣແກຣມທີ່ບໍ່ຮູ້ຈັກ</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ລົງລາຍເຊັນໂດຍ {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ບໍ່ໄດ້ລົງລາຍເຊັນ</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ສຳເລັດ</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>ບໍ່ສຳເລັດ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ບໍ່ອະນຸຍາດໃນລະດັບນີ້</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ໂປຣແກຣມໃຊ້ເວີຊັນທີ່ PadForge ບໍ່ຮູ້ຈັກ</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ໃຫ້ກະແຈປລັກອິນນັ້ນ</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ບໍ່ຮັບການເຊື່ອມຕໍ່ຂອງໂປຣແກຣມນີ້</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ຂໍອີກໄວເກີນໄປ</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ບໍ່ມີອີກຈົນກວ່າ PadForge ຈະເລີ່ມໃໝ່</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ປ່ຽນໄປໂປຣໄຟລ໌ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ກັບໄປໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ຖາມວ່າໂປຣໄຟລ໌ໃດເປີດໃຊ້ຢູ່</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ຕັ້ງຄ່າ {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ໃຊ້ເຄື່ອງມື {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ຄັ້ງ</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ອັນສຸດທ້າຍຈາກ {1} ອັນທີ່ຄ້າຍກັນ</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>ສະຄຣິບ AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

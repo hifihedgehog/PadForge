@@ -669,6 +669,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Cap programa està connectat.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connectats: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa desconegut</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signat per {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, sense signar</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Fet</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>No fet</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>No permès en aquest nivell</value></data>
@@ -694,6 +696,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>El programa parla una versió que PadForge no coneix</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge no ha donat aquesta clau de complement</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge no ha acceptat la connexió d'aquest programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>S'ha tornat a demanar massa aviat</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No se'n faran més fins que PadForge s'iniciï de nou</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Canvia al perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Torna al perfil per defecte</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pregunta quin perfil és actiu</value></data>
@@ -730,6 +734,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Defineix el valor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Executa l'eina {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} cops</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, l'últim de {1} com aquest</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Scripts d'AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

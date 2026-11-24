@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ഒരു പ്രോഗ്രാമും കണക്റ്റ് ചെയ്തിട്ടില്ല.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തത്: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>അറിയാത്ത പ്രോഗ്രാം</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ഒപ്പിട്ടത്: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ഒപ്പിട്ടിട്ടില്ല</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ചെയ്തു</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>ചെയ്തില്ല</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ഈ ലെവലിൽ അനുവദനീയമല്ല</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>പ്രോഗ്രാം PadForge-ന് അറിയാത്ത ഒരു പതിപ്പാണ് സംസാരിക്കുന്നത്</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ആ പ്ലഗിൻ കീ നൽകിയില്ല</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ഈ പ്രോഗ്രാമിന്റെ കണക്ഷൻ സ്വീകരിച്ചില്ല</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>വളരെ വേഗം വീണ്ടും ആവശ്യപ്പെട്ടു</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge വീണ്ടും ആരംഭിക്കുന്നതുവരെ ഇവ ഇനി ഇല്ല</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>പ്രൊഫൈൽ {0} ലേക്ക് മാറുക</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>സ്ഥിരസ്ഥിതി പ്രൊഫൈലിലേക്ക് മടങ്ങുക</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ഏത് പ്രൊഫൈലാണ് സജീവമെന്ന് ചോദിക്കുക</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>മൂല്യം {0} സജ്ജമാക്കുക</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ടൂൾ {0} പ്രവർത്തിപ്പിക്കുക</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} തവണ</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ഇതുപോലുള്ള {1} എണ്ണത്തിൽ അവസാനത്തേത്</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 സ്ക്രിപ്റ്റുകൾ (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

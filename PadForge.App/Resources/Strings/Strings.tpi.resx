@@ -249,6 +249,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>I no gat program i konek.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>I konek: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program i no gat nem</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} i sainim</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, i no gat sain</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Pinis</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>I no mekim</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>I no orait long dispela lewel</value></data>
@@ -274,6 +276,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program i toktok long wanpela vesen PadForge i no save long en</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge i no givim dispela ki bilong plagin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge i no kisim konek bilong dispela program</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>I askim gen kwik tumas</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>I no gat moa long dispela kain inap PadForge i stat gen</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Senis i go long profail {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Go bek long namba wan profail</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Askim wanem profail i wok</value></data>
@@ -310,6 +314,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setim namba {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ranim tul {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, namba bilong taim: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, las wan long {1} kain olsem</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>nogat kontrola</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Kain {0}</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Dispela PC tasol</value></data>

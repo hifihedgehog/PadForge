@@ -387,6 +387,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>没有程序已连接。</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>已连接：{0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>未知程序</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}，签名者：{1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}，未签名</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>已完成</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>未完成</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>此级别不允许</value></data>
@@ -412,6 +414,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>程序使用的版本 PadForge 不认识</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge 没有给出该插件密钥</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge 没有接受此程序的连接</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>再次请求得太快</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>在 PadForge 再次启动之前不能再做这类操作</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>切换到配置文件 {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>返回默认配置文件</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>询问哪个配置文件处于活动状态</value></data>
@@ -448,6 +452,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>设置值 {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>运行工具 {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}，共 {1} 次</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}，同类共 {1} 次中的最后一次</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 脚本 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

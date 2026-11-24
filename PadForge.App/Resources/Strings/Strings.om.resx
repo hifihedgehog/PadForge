@@ -2212,6 +2212,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Sagantaan wal qunname hin jiru.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wal qunnamaa: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Sagantaa hin beekamne</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, mallattoo {1} qaba</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, mallattoo hin qabu</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Raawwatameera</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Hin raawwatamne</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Sadarkaa kanatti hin hayyamamu</value></data>
@@ -2237,6 +2239,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Sagantaan veershinii PadForge hin beekne fayyadama</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge furtuu pilaagii sana hin kennine</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge wal qunnamtii sagantaa kanaa hin fudhanne</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Dafee irra deebi'ee gaafate</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Hanga PadForge irra deebi'ee jalqabutti kana caalaa hin jiru</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gara piroofaayilii {0} jijjiiri</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gara piroofaayilii durtii deebi'i</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Piroofaayiliin kam akka hojii irra jiru gaafadhu</value></data>
@@ -2273,6 +2277,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gatii {0} kaa'i</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Meeshaa hojii {0} hojjechiisi</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, al {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, isa dhumaa kan {1} akkasii</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Hayyami</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Hin hayyamin</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} irraa</value></data>

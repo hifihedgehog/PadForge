@@ -1213,6 +1213,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻAʻohe polokalamu i hoʻopili ʻia.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Hoʻopili ʻia: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalamu ʻike ʻole ʻia</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, kākau inoa ʻia e {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ʻaʻole i kākau inoa ʻia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ua pau</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>ʻAʻole i hana ʻia</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ʻAʻole ʻae ʻia ma kēia pae</value></data>
@@ -1238,6 +1240,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ʻŌlelo ka polokalamu i kekahi mana ʻike ʻole ʻia e PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>ʻAʻole i hāʻawi ʻo PadForge i kēlā kī plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>ʻAʻole i ʻae ʻo PadForge i ka hoʻopili ʻana o kēia polokalamu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ua noi hou ʻia ma mua o ka manawa</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ʻAʻohe hou o kēia ʻano a hoʻomaka hou ʻo PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hoʻololi i ka profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoʻi i ka profile paʻamau</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nīnau i ka profile e hana nei</value></data>
@@ -1274,6 +1278,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Hoʻonoho i ka waiwai {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Holo i ka mea hana {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} manawa</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ka hope o nā noi like he {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ʻAe</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Mai ʻae</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai {0}</value></data>

@@ -127,6 +127,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Awan ti programa a nakakonekta.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonekta: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Di am-ammo a programa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, pinirmaan ti {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, saan a napirmaan</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Naaramid</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Saan a naaramid</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Saan a maipalubos iti daytoy a level</value></data>
@@ -152,6 +154,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ti programa ket agus-usar iti bersion a saan nga ammo ti PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Saan nga inted ti PadForge dayta a plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Saan nga inawat ti PadForge ti koneksion daytoy a programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Nagdawat manen a nasapa unay</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Awanen ti kastoy agingga nga agrugi manen ti PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Umakar iti profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Agsubli iti default a profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Damagen no ania a profile ti aktibo</value></data>
@@ -188,6 +192,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ikeddeng ti value {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Patarayen ti tool {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} a daras</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ti maudi iti {1} a kasta</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ilaksid</value></data>
 
   <!-- ═══ Settings ═══ -->

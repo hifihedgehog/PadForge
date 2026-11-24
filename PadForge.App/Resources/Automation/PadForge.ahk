@@ -69,7 +69,7 @@ class PadForge {
         ; close.
         this.Closed := true
         this.Handle := 0
-        this.Handle := this._Open(pipe, token != "")
+        this.Handle := this._Open(pipe)
         this.Closed := false
         OnMessage(this.WakeMessage, this.WakeFn)
         kind := token != "" ? "kind=plugin token=" PadForge.Quote(token) : "kind=script"
@@ -81,18 +81,22 @@ class PadForge {
         SetTimer(this.BeatFn, Max(50, lease // 3))
     }
 
-    _Open(pipe, plugin := false) {
+    ; The pipe is opened at the identification level (SECURITY_SQOS_PRESENT
+    ; with SECURITY_IDENTIFICATION), so a server that is not PadForge cannot
+    ; act as this script's user, and nothing is sent until its owner is
+    ; PadForge's: Administrators or the system, which a program without
+    ; administrator rights cannot give a pipe it made under PadForge's name.
+    ; A pipe of another name, which a test serves, is taken from this
+    ; script's own user too.
+    _Open(pipe) {
         path := "\\.\pipe\" pipe
         start := A_TickCount
-        ; A plugin lets the server identify it and no more:
-        ; SECURITY_SQOS_PRESENT and SECURITY_IDENTIFICATION.
-        flags := plugin ? 0x00110000 : 0
         loop {
-            h := DllCall("CreateFile", "Str", path, "UInt", 0xC0000000, "UInt", 0, "Ptr", 0, "UInt", 3, "UInt", flags, "Ptr", 0, "Ptr")
+            h := DllCall("CreateFile", "Str", path, "UInt", 0xC0000000, "UInt", 0, "Ptr", 0, "UInt", 3, "UInt", 0x00110000, "Ptr", 0, "Ptr")
             if (h != -1) {
-                if (plugin && !PadForge._ServedByPadForge(h, pipe)) {
+                if !PadForge._ServedByPadForge(h, pipe) {
                     DllCall("CloseHandle", "Ptr", h)
-                    throw Error("The pipe " pipe " is not PadForge's, so the plugin's key was not sent.")
+                    throw Error("Another program holds the pipe " pipe ". It is not PadForge, so nothing was sent to it.")
                 }
                 return h
             }
@@ -104,7 +108,7 @@ class PadForge {
             if (err = 2) {                                  ; ERROR_FILE_NOT_FOUND
                 if (pipe != PadForge.DefaultPipe)
                     throw Error("Nothing serves the pipe " pipe ".")
-                if DllCall("FindWindowEx", "Ptr", -3, "Ptr", 0, "Ptr", 0, "Str", "PadForge.Instance", "Ptr")
+                if PadForge.Runs()
                     throw Error("PadForge is running, but Automation is off. Turn it on in Extras, Automation.")
                 throw Error("PadForge is not running.")
             }
@@ -112,41 +116,93 @@ class PadForge {
         }
     }
 
-    ; Whether the pipe's owner is Administrators or SYSTEM, as a pipe PadForge
-    ; made is: a program without administrator rights cannot make one so
-    ; owned. A pipe of another name than PadForge's own, which only a test
-    ; gives, may also be owned by this program's own user.
-    static _ServedByPadForge(handle, pipe) {
-        owner := 0, descriptor := 0
-        ; SE_KERNEL_OBJECT, OWNER_SECURITY_INFORMATION.
-        if DllCall("advapi32\GetSecurityInfo", "Ptr", handle, "Int", 6, "UInt", 1, "Ptr*", &owner, "Ptr", 0, "Ptr", 0, "Ptr", 0, "Ptr*", &descriptor, "UInt")
-            return false
-        sid := PadForge._SidText(owner)
-        DllCall("LocalFree", "Ptr", descriptor)
-        if (sid = "S-1-5-32-544" || sid = "S-1-5-18")
-            return true
-        return pipe != PadForge.DefaultPipe && sid != "" && sid = PadForge._OwnSid()
+    ; Whether PadForge runs: its window PadForge.Instance stands, made by a
+    ; process with administrator rights, which a program that made one
+    ; without them does not have.
+    static Runs() {
+        after := 0
+        loop 64 {
+            after := DllCall("FindWindowEx", "Ptr", -3, "Ptr", after, "Ptr", 0, "Str", "PadForge.Instance", "Ptr")
+            if !after
+                return false
+            pid := 0
+            DllCall("GetWindowThreadProcessId", "Ptr", after, "UInt*", &pid)
+            if (PadForge.Integrity(pid) >= 0x3000)
+                return true
+        }
+        return false
     }
 
-    static _SidText(sid) {
-        text := 0
-        if !DllCall("advapi32\ConvertSidToStringSidW", "Ptr", sid, "Ptr*", &text)
+    ; A process's integrity level's RID, or -1.
+    static Integrity(pid) {
+        process := DllCall("OpenProcess", "UInt", 0x1000, "Int", 0, "UInt", pid, "Ptr")
+        if !process
+            return -1
+        level := -1
+        token := 0
+        if DllCall("advapi32\OpenProcessToken", "Ptr", process, "UInt", 8, "Ptr*", &token) {
+            size := 0
+            DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 25, "Ptr", 0, "UInt", 0, "UInt*", &size)
+            if size {
+                buf := Buffer(size, 0)
+                if DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 25, "Ptr", buf, "UInt", size, "UInt*", &size) {
+                    sid := NumGet(buf, 0, "Ptr")
+                    count := NumGet(DllCall("advapi32\GetSidSubAuthorityCount", "Ptr", sid, "Ptr"), 0, "UChar")
+                    level := NumGet(DllCall("advapi32\GetSidSubAuthority", "Ptr", sid, "UInt", count - 1, "Ptr"), 0, "UInt")
+                }
+            }
+            DllCall("CloseHandle", "Ptr", token)
+        }
+        DllCall("CloseHandle", "Ptr", process)
+        return level
+    }
+
+    ; Whether PadForge serves the pipe: its owner is Administrators or the
+    ; system. A pipe of another name than PadForge's own, which only a test
+    ; serves, is also taken from this script's own user. Windows reads a
+    ; pipe's name without regard to case, and so does != here.
+    static _ServedByPadForge(h, pipe) {
+        owner := PadForge.PipeOwner(h)
+        if (owner = "S-1-5-32-544" || owner = "S-1-5-18")
+            return true
+        return pipe != PadForge.DefaultPipe && owner != "" && owner = PadForge.OwnUser()
+    }
+
+    ; The SID of a pipe's owner as text, or "".
+    static PipeOwner(h) {
+        owner := 0, sd := 0
+        if DllCall("advapi32\GetSecurityInfo", "Ptr", h, "Int", 6, "UInt", 1, "Ptr*", &owner, "Ptr", 0, "Ptr", 0, "Ptr", 0, "Ptr*", &sd, "UInt")
             return ""
-        s := StrGet(text, "UTF-16")
-        DllCall("LocalFree", "Ptr", text)
+        text := PadForge.SidText(owner)
+        DllCall("LocalFree", "Ptr", sd)
+        return text
+    }
+
+    static SidText(sid) {
+        p := 0
+        if !sid || !DllCall("advapi32\ConvertSidToStringSidW", "Ptr", sid, "Ptr*", &p)
+            return ""
+        s := StrGet(p, "UTF-16")
+        DllCall("LocalFree", "Ptr", p)
         return s
     }
 
-    static _OwnSid() {
+    ; The SID of the user this script runs as, or "".
+    static OwnUser() {
         token := 0
         if !DllCall("advapi32\OpenProcessToken", "Ptr", DllCall("GetCurrentProcess", "Ptr"), "UInt", 8, "Ptr*", &token)
             return ""
         size := 0
         DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 1, "Ptr", 0, "UInt", 0, "UInt*", &size)
-        info := Buffer(size, 0)
-        ok := DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 1, "Ptr", info, "UInt", size, "UInt*", &size)
+        if !size {
+            DllCall("CloseHandle", "Ptr", token)
+            return ""
+        }
+        buf := Buffer(size, 0)
+        ok := DllCall("advapi32\GetTokenInformation", "Ptr", token, "Int", 1, "Ptr", buf, "UInt", size, "UInt*", &size)
         DllCall("CloseHandle", "Ptr", token)
-        return ok ? PadForge._SidText(NumGet(info, 0, "Ptr")) : ""
+        ; TOKEN_USER opens with the pointer to the user's SID.
+        return ok ? PadForge.SidText(NumGet(buf, 0, "Ptr")) : ""
     }
 
     ; ── Words on the line ──

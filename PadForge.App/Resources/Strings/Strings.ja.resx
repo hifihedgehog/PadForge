@@ -387,6 +387,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>接続中のプログラムはありません。</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>接続中: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>不明なプログラム</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}、署名者: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}、署名なし</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>完了</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>未実行</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>このレベルでは許可されていません</value></data>
@@ -412,6 +414,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>プログラムが PadForge の認識しないバージョンで通信しています</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge はそのプラグインキーを発行しませんでした</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge はこのプログラムの接続を受け付けませんでした</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>間隔が短すぎる再リクエスト</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge を再起動するまで、これ以上は作成できません</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>プロファイル {0} に切り替える</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>既定のプロファイルに戻す</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>有効なプロファイルを問い合わせる</value></data>
@@ -448,6 +452,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>値 {0} を設定する</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ツール {0} を実行する</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}、{1} 回</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}、同様のリクエスト {1} 件のうち最後</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 スクリプト (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

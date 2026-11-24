@@ -85,12 +85,19 @@ namespace PadForge.Services
         /// <summary>One line a program sent.</summary>
         public readonly struct Request
         {
-            public Request(string line, int clientProcessId, CancellationToken stopping)
+            public Request(string line, int clientProcessId, CancellationToken stopping, string refusal = null)
             {
                 Line = line;
                 ClientProcessId = clientProcessId;
                 Stopping = stopping;
+                Refusal = refusal;
             }
+
+            /// <summary>Why the client is not taken, in a word, or null when
+            /// it is: the token checks the Automation pipe makes
+            /// (AutomationClientIdentity.Judge). A refused line is answered
+            /// <c>error refused</c> and runs nothing.</summary>
+            public string Refusal { get; }
 
             /// <summary>The line, trimmed.</summary>
             public string Line { get; }
@@ -175,7 +182,34 @@ namespace PadForge.Services
         private static Func<Request, Answer> Wrap(Func<string, string> executor)
         {
             if (executor == null) throw new ArgumentNullException(nameof(executor));
-            return request => new Answer(executor(request.Line));
+            return request => new Answer(request.Refusal != null ? Refused : executor(request.Line));
+        }
+
+        /// <summary>The answer to a client the token checks refused.</summary>
+        internal const string Refused = "error refused";
+
+        /// <summary>Reads the client's token. A test stands its own facts
+        /// here for the cases a test bench cannot make: another session, low
+        /// integrity, an app container.</summary>
+        internal Func<NamedPipeServerStream, PadForge.Services.Automation.AutomationClientToken?> ReadToken { get; set; }
+            = PadForge.Services.Automation.AutomationClientIdentity.Read;
+
+        /// <summary>Whom the server takes, read at the start.</summary>
+        internal (string Desktop, string Server, int Session) Desktop { get; private set; }
+
+        /// <summary>Whether a connected client is taken: null when it is, or
+        /// the reason in a word. The same checks the Automation pipe makes,
+        /// after the first read, which is when Windows lets a server
+        /// impersonate its client: the desktop's user or PadForge's, in
+        /// PadForge's own Windows session, at medium integrity or above, and
+        /// no app container.</summary>
+        internal string Judge(NamedPipeServerStream connected)
+        {
+            var desktop = Desktop;
+            PadForge.Services.Automation.AutomationClientToken? token;
+            try { token = connected == null ? null : ReadToken(connected); }
+            catch { token = null; }
+            return PadForge.Services.Automation.AutomationClientIdentity.Judge(token, desktop.Desktop, desktop.Server, desktop.Session);
         }
 
         /// <summary>True while the accept loop is running.</summary>
@@ -199,6 +233,7 @@ namespace PadForge.Services
             if (OffLimitsForTest && ServesTheAppsOwnPipe) return PipeState.Stopped;
             if (_cts != null) return _state; // Already started.
 
+            Desktop = PadForge.Services.Automation.AutomationClientIdentity.ThisDesktop();
             NamedPipeServerStream first;
             try
             {
@@ -334,8 +369,10 @@ namespace PadForge.Services
             // pipe closes, which reads as a hung launcher rather than
             // a rejected command. Live-verified on this defect: an
             // earlier guard skipped the write and a bare newline hung.
+            // Who the client is, from its token, now that a read is done.
+            string refusal = Judge(server);
             Answer answer;
-            try { answer = _executor(new Request(line, ClientProcessId(server), token)); }
+            try { answer = _executor(new Request(line, ClientProcessId(server), token, refusal)); }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
             catch { answer = new Answer("error internal"); }
             using (var writing = CancellationTokenSource.CreateLinkedTokenSource(token))
@@ -397,6 +434,7 @@ namespace PadForge.Services
             if (!serverIsAdministrator && server != null)
                 security.AddAccessRule(new PipeAccessRule(server,
                     PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance, AccessControlType.Allow));
+            NameOwner(security, server, serverIsAdministrator);
             return security;
         }
 
@@ -417,6 +455,36 @@ namespace PadForge.Services
             bool administrator = new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
             return BuildSecurity(desktopUser, server, administrator);
         }
+
+        /// <summary>
+        /// The owner a pipe of PadForge is made with, named in its security
+        /// descriptor and never left to the token's default: the system when
+        /// PadForge runs as the system, Administrators when it runs with
+        /// administrator rights. Windows would give an elevated process's
+        /// pipe Administrators anyway unless a policy names the creator
+        /// instead. A client takes only a pipe with one of these two owners
+        /// (PipeOwner), and no process without rights can set either. A
+        /// server without rights, a test's, names none and its pipe is its
+        /// user's.
+        /// </summary>
+        internal static void NameOwner(PipeSecurity security, SecurityIdentifier server, bool serverIsAdministrator)
+        {
+            var seam = OwnerSeam;
+            if (seam != null)
+            {
+                security.SetOwner(seam());
+                return;
+            }
+            var system = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null);
+            if (server != null && server == system) security.SetOwner(system);
+            else if (serverIsAdministrator)
+                security.SetOwner(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
+        }
+
+        /// <summary>Test seam: the owner a server names, so a test without
+        /// rights can read back the owner a pipe its server code made
+        /// carries. Null in the app.</summary>
+        internal static Func<SecurityIdentifier> OwnerSeam;
 
         private static NamedPipeServerStream CreateServer(string pipeName, bool firstOfItsName)
         {

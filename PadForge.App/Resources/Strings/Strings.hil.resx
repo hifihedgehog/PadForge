@@ -177,6 +177,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Wala sing programa nga naka-connect.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Naka-connect: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Wala makilala nga programa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, pirmado sang {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, wala pirmado</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Nahimo</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wala nahimo</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Indi ginatugot sa sini nga lebel</value></data>
@@ -202,6 +204,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ang programa nagagamit sang bersyon nga wala nakilala sang PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Wala ginhatag sang PadForge ina nga plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Wala ginbaton sang PadForge ang koneksyon sini nga programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Naghangyo liwat sing sobra kadali</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Wala na sing dugang sini tubtob magsugod liwat ang PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bayluhan sa profile nga {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Balik sa default nga profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pamangkuton kon diin nga profile ang aktibo</value></data>
@@ -238,6 +242,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ibutang ang balor nga {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Padalaganon ang tool nga {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ka beses</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ang katapusan sa {1} nga pareho sini</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Konektado</value></data>
 
   <!-- ═══ Settings ═══ -->

@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Intet program er tilsluttet.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tilsluttet: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ukendt program</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, underskrevet af {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ikke underskrevet</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Udført</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ikke udført</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ikke tilladt på dette niveau</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programmet taler en version, PadForge ikke kender</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gav ikke den plugin-nøgle</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tog ikke imod dette programs forbindelse</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Spurgt igen for hurtigt</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ikke flere af disse, før PadForge starter igen</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skift til profilen {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vend tilbage til standardprofilen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spørg, hvilken profil der er aktiv</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sæt værdien {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kør værktøjet {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} gange</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, den sidste af {1} som den</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-scripts (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

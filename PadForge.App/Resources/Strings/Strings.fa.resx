@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>هیچ برنامه‌ای وصل نیست.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>متصل: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>برنامه ناشناس</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}، امضاشده توسط {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}، بدون امضا</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>انجام شد</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>انجام نشد</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>در این سطح مجاز نیست</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>برنامه نسخه‌ای را به کار می‌برد که PadForge نمی‌شناسد</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge آن کلید پلاگین را نداد</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge اتصال این برنامه را نپذیرفت</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>خیلی زود دوباره درخواست شد</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>تا اجرای دوباره PadForge بیشتر از این ممکن نیست</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>رفتن به پروفایل {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>بازگشت به پروفایل پیش‌فرض</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسیدن اینکه کدام پروفایل فعال است</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>تنظیم مقدار {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>اجرای ابزار {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}، {1} بار</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}، آخرین مورد از {1} درخواست مشابه</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>اسکریپت‌های AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

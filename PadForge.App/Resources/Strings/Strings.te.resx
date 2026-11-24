@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ఏ ప్రోగ్రామ్ కనెక్ట్ కాలేదు.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>కనెక్ట్ అయినవి: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>తెలియని ప్రోగ్రామ్</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, సంతకం చేసినది {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, సంతకం లేదు</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>పూర్తయింది</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>చేయలేదు</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ఈ స్థాయిలో అనుమతి లేదు</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ప్రోగ్రామ్ PadForge కు తెలియని వెర్షన్‌లో మాట్లాడుతోంది</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ఆ ప్లగిన్ కీని ఇవ్వలేదు</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ఈ ప్రోగ్రామ్ కనెక్షన్‌ను స్వీకరించలేదు</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>చాలా త్వరగా మళ్లీ అడిగారు</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge మళ్లీ ప్రారంభమయ్యే వరకు ఇవి ఇక లేవు</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ప్రొఫైల్ {0} కు మారు</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>డిఫాల్ట్ ప్రొఫైల్‌కు తిరిగి వెళ్లు</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ఏ ప్రొఫైల్ ఆన్‌లో ఉందో అడుగు</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>విలువ {0} ను సెట్ చేయి</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>సాధనం {0} ను నడుపు</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} సార్లు</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, అలాంటి {1} లో చివరిది</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 స్క్రిప్టులు (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

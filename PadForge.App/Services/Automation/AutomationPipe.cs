@@ -75,6 +75,11 @@ namespace PadForge.Services.Automation
         /// <summary>Whom the server takes, read at the start.</summary>
         internal (string Desktop, string Server, int Session) Desktop { get; private set; }
 
+        /// <summary>The process at the other end of a connection. A test
+        /// stands in processes of its own, since every connection a test
+        /// makes comes from its one process.</summary>
+        internal Func<NamedPipeServerStream, AutomationClientProcess> ProcessOf { get; set; } = AutomationClientProcess.Of;
+
         /// <summary>
         /// Whether the client of a connection is taken: null when it is, or
         /// the reason in a word. Windows lets a server impersonate its client
@@ -204,7 +209,9 @@ namespace PadForge.Services.Automation
         /// own once their last line is written.</summary>
         private bool Take(NamedPipeServerStream connected)
         {
-            var process = AutomationClientProcess.Of(connected);
+            AutomationClientProcess process;
+            try { process = ProcessOf(connected) ?? AutomationClientProcess.None; }
+            catch { process = AutomationClientProcess.None; }
             _ = Task.Run(async () =>
             {
                 try { await _serve(connected, process, CancellationToken.None).ConfigureAwait(false); }

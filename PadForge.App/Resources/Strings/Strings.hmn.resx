@@ -1673,6 +1673,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tsis muaj program twg txuas.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Txuas lawm: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program tsis paub npe</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, kos npe los ntawm {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tsis tau kos npe</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ua tiav lawm</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tsis tau ua</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Theem no tsis pub ua</value></data>
@@ -1698,6 +1700,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Qhov program siv ib version uas PadForge tsis paub</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge tsis tau muab tus yuam sij plugin ntawd</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tsis txais qhov program no txoj kev txuas</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Thov dua sai dhau</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tsis muaj ntxiv lawm txog thaum PadForge pib dua</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hloov mus rau profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rov qab mus rau profile neej ntawd</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nug saib profile twg siv</value></data>
@@ -1734,6 +1738,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Teeb tus nqi {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Khiav tool {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} zaug</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, qhov kawg ntawm {1} qhov zoo li nws</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tso cai</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tsis tso cai</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Los ntawm {0}</value></data>

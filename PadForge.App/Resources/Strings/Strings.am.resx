@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ምንም ፕሮግራም አልተገናኘም።</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>የተገናኙ፦ {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>ያልታወቀ ፕሮግራም</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}፣ በ{1} የተፈረመ</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}፣ ያልተፈረመ</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ተከናውኗል</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>አልተከናወነም</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>በዚህ ደረጃ አይፈቀድም</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ፕሮግራሙ PadForge የማያውቀውን ስሪት ይጠቀማል</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ያንን የተሰኪ ቁልፍ አልሰጠም</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge የዚህን ፕሮግራም ግንኙነት አልተቀበለም</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>በጣም ቶሎ እንደገና ተጠይቋል</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge እንደገና እስኪጀምር ድረስ ከእነዚህ ተጨማሪ የለም</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ወደ መገለጫው {0} ቀይር</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ወደ ነባሪው መገለጫ ተመለስ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>የትኛው መገለጫ ንቁ እንደሆነ ጠይቅ</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>እሴቱን {0} አዘጋጅ</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>መገልገያውን {0} አሂድ</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}፣ {1} ጊዜ</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}፣ ከ{1} ተመሳሳዮች የመጨረሻው</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>የAutoHotkey v2 ስክሪፕቶች (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

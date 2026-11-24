@@ -129,6 +129,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ọ dịghị mmemme jikọrọ.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Ejikọrọ: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Mmemme amaghị ama</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nke {1} bịanyere aka</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, a bịanyeghị aka</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Emechara</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Emeghị ya</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Anaghị ekwe ya n'ọkwa a</value></data>
@@ -154,6 +156,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mmemme ahụ na-asụ ụdị PadForge amaghị</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge enyeghị igodo plugin ahụ</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge anabataghị njikọ mmemme a</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A jụrụ ọzọ ngwa ngwa karịa</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ọ dịghị ọzọ n'ụdị a ruo mgbe PadForge malitere ọzọ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gbanwee gaa na profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Laghachi na profile ndabara</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Jụọ profile na-arụ ọrụ</value></data>
@@ -190,6 +194,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tọọ uru {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Gbaa ngwa {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ugboro {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, nke ikpeazụ n'ime {1} dị otu a</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Jikọọ</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Enweghị ngwaọrụ</value></data>
 

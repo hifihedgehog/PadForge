@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Noben program ni povezan.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Povezano: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Neznan program</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, podpisal {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ni podpisan</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Opravljeno</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ni opravljeno</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Na tej ravni ni dovoljeno</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program govori različico, ki je PadForge ne pozna</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ni dal tega ključa vtičnika</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ni sprejel povezave tega programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ponovno zahtevano prehitro</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Teh ne bo več, dokler se PadForge ne zažene znova</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Preklopi na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrni se na privzeti profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vprašaj, kateri profil je dejaven</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastavi vrednost {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Zaženi orodje {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, krat: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, zadnja izmed {1} podobnih</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skripte AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

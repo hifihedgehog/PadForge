@@ -2355,6 +2355,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tsy misy programa mifandray.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Mifandray: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa tsy fantatra</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nosoniavin'ny {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tsy misy sonia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Vita</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tsy vita</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tsy azo atao amin'ity ambaratonga ity</value></data>
@@ -2380,6 +2382,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mampiasa version tsy fantatry ny PadForge ilay programa</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Tsy nomen'ny PadForge io lakile plugin io</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Tsy noraisin'ny PadForge ny fifandraisan'ity programa ity</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Nangataka indray haingana loatra</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tsy hisy intsony izany raha tsy manomboka indray ny PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Mifindrà amin'ny profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Miverena amin'ny profil par défaut</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Anontanio hoe iza ny profil mavitrika</value></data>
@@ -2416,6 +2420,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Apetraho ny sanda {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ampandehano ny tool {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fotoana</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ny farany amin'ny {1} mitovy aminy</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Avelao</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Aza avela</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Avy amin'ny {0}</value></data>

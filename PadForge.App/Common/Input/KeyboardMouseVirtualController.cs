@@ -683,9 +683,11 @@ namespace PadForge.Common.Input
         private static extern bool SetCursorPosNative(int x, int y);
 
         /// <summary>The one way this controller moves the cursor. The test
-        /// host moves none and is answered a refused move.</summary>
+        /// host moves none and is answered a refused move. While a program
+        /// drives PadForge and the window in front runs with rights, the
+        /// cursor stays where it is (ProgramInputGate).</summary>
         private static bool SetCursorPos(int x, int y)
-            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && SetCursorPosNative(x, y);
+            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !ProgramInputGate.KeysBlocked && SetCursorPosNative(x, y);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct POINT

@@ -272,6 +272,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Walay programa nga nakakonektar.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonektar: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Wala mailhi nga programa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, gipirmahan sa {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, walay pirma</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Nahuman</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wala nahuman</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Dili gitugot niini nga lebel</value></data>
@@ -297,6 +299,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Naggamit ang programa og bersyon nga wala mailhi sa PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Wala gihatag sa PadForge kana nga plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Wala gidawat sa PadForge ang koneksyon niini nga programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Nangayo pag-usab sa dili pa panahon</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Wala nay dugang niini hangtod magsugod pag-usab ang PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibalhin sa profile nga {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ibalik sa default nga profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pangutan-a kung unsang profile ang aktibo</value></data>
@@ -333,6 +337,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>I-set ang value nga {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Padagana ang tool nga {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ka beses</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ang katapusan sa {1} nga sama niini</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Mga script sa AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

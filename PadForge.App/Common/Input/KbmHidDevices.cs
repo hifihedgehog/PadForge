@@ -367,39 +367,95 @@ namespace PadForge.Common.Input
         {
             while (!_stop)
             {
-                _wake.WaitOne(250);
+                // A key held while a program drives PadForge is checked
+                // against the window in front often, so it is let go before
+                // Windows repeats it into a window with rights.
+                _wake.WaitOne(SentAny && ProgramInputGate.InForce ? GateCheckMs : 250);
                 while (!_stop && _queue.TryDequeue(out var f))
                 {
-                    // The hooks learn each press and release before the report
-                    // that carries it can reach them.
-                    NoteChanges(f);
-                    try
-                    {
-                        if (f.Consumer)
-                        {
-                            var usages = new ushort[f.Entries.Length];
-                            for (int i = 0; i < usages.Length; i++) usages[i] = UsageOf(f.Entries[i].Key);
-                            _sink.SubmitConsumer(usages);
-                        }
-                        else
-                        {
-                            byte modifiers = 0;
-                            var keys = new List<HMKey>(f.Entries.Length);
-                            foreach (var e in f.Entries)
-                            {
-                                ushort u = UsageOf(e.Key);
-                                if (u >= 0xE0 && u <= 0xE7) modifiers |= (byte)(1 << (u - 0xE0));
-                                else keys.Add((HMKey)u);
-                            }
-                            _sink.SubmitKeyboard((HMKeyModifiers)modifiers, keys.ToArray());
-                        }
-                    }
-                    catch (ObjectDisposedException) { return; }
-                    catch (Exception ex)
-                    {
-                        PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID keyboard {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
-                    }
+                    if (f.Consumer) _wantConsumer = f;
+                    else _wantKeyboard = f;
+                    Send(ProgramInputGate.KeysBlocked ? Nothing(f.Consumer) : f);
                 }
+                if (!_stop) Reconcile();
+            }
+        }
+
+        /// <summary>How often a held key is checked against the window in
+        /// front while a program drives PadForge, in milliseconds. Windows
+        /// starts repeating a held key after 250 at the shortest.</summary>
+        internal const int GateCheckMs = 50;
+
+        // Sender-thread state: the last whole state of each kind the slot
+        // asked for, which the device takes again once the gate opens.
+        private Frame _wantKeyboard, _wantConsumer;
+
+        private bool SentAny
+        {
+            get { lock (_sent) return _sent.Count > 0; }
+        }
+
+        private static Frame Nothing(bool consumer) => new Frame { Consumer = consumer, Entries = Array.Empty<Entry>() };
+
+        /// <summary>Sender thread: while the gate holds keys back the device
+        /// holds none, and once it opens the device holds what the slot asks
+        /// for again.</summary>
+        private void Reconcile()
+        {
+            bool blocked = ProgramInputGate.KeysBlocked;
+            Send(blocked ? Nothing(false) : _wantKeyboard ?? Nothing(false));
+            Send(blocked ? Nothing(true) : _wantConsumer ?? Nothing(true));
+        }
+
+        /// <summary>Sender thread: one report, when it differs from what
+        /// the device holds of its kind.</summary>
+        private void Send(Frame f)
+        {
+            if (Holds(f)) return;
+            // The hooks learn each press and release before the report
+            // that carries it can reach them.
+            NoteChanges(f);
+            try
+            {
+                if (f.Consumer)
+                {
+                    var usages = new ushort[f.Entries.Length];
+                    for (int i = 0; i < usages.Length; i++) usages[i] = UsageOf(f.Entries[i].Key);
+                    _sink.SubmitConsumer(usages);
+                }
+                else
+                {
+                    byte modifiers = 0;
+                    var keys = new List<HMKey>(f.Entries.Length);
+                    foreach (var e in f.Entries)
+                    {
+                        ushort u = UsageOf(e.Key);
+                        if (u >= 0xE0 && u <= 0xE7) modifiers |= (byte)(1 << (u - 0xE0));
+                        else keys.Add((HMKey)u);
+                    }
+                    _sink.SubmitKeyboard((HMKeyModifiers)modifiers, keys.ToArray());
+                }
+            }
+            catch (ObjectDisposedException) { _stop = true; }
+            catch (Exception ex)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID keyboard {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        /// <summary>Whether the device holds exactly the usages of
+        /// <paramref name="f"/> for its kind already.</summary>
+        private bool Holds(Frame f)
+        {
+            lock (_sent)
+            {
+                int held = 0;
+                foreach (var kv in _sent)
+                    if ((PageOf(kv.Key) == 0x0C) == f.Consumer) held++;
+                if (held != f.Entries.Length) return false;
+                foreach (var e in f.Entries)
+                    if (!_sent.ContainsKey(e.Key)) return false;
+                return true;
             }
         }
 
@@ -572,45 +628,78 @@ namespace PadForge.Common.Input
         {
             while (!_stop)
             {
-                _wake.WaitOne(250);
+                // A button held while a program drives PadForge is checked
+                // against the windows often, so it is let go before it can
+                // drag into a window with rights.
+                _wake.WaitOne(_sentButtons != 0 && ProgramInputGate.InForce ? KbmHidKeyboard.GateCheckMs : 250);
                 // Cleared before the drain, so a change that lands while it runs
                 // signals again rather than waiting out the timeout.
                 Volatile.Write(ref _armed, 0);
                 while (!_stop)
                 {
                     bool haveButtons = _buttonStates.TryDequeue(out byte buttons);
-                    if (!haveButtons) buttons = _sentButtons;
+                    if (haveButtons) _wantButtons = buttons;
                     int dx = Interlocked.Exchange(ref _dx, 0);
                     int dy = Interlocked.Exchange(ref _dy, 0);
                     int wheel = Interlocked.Exchange(ref _wheel, 0);
                     int pan = Interlocked.Exchange(ref _pan, 0);
                     if (!haveButtons && dx == 0 && dy == 0 && wheel == 0 && pan == 0) break;
-
-                    lock (_buttonLock)
-                    {
-                        byte changed = (byte)(buttons ^ _sentButtons);
-                        for (int bit = 0; bit < KbmDeviceCaps.WindowsMouseButtons; bit++)
-                            if ((changed & (1 << bit)) != 0)
-                                OwnHidOutput.NoteButton(HookIdOfBit[bit], (buttons & (1 << bit)) != 0);
-                        _sentButtons = buttons;
-                    }
-                    try
-                    {
-                        _sink.SubmitMouse(new HMMouseState
-                        {
-                            Buttons = (HMMouseButtons)buttons,
-                            X = dx,
-                            Y = dy,
-                            Wheel = wheel,
-                            Pan = pan,
-                        });
-                    }
-                    catch (ObjectDisposedException) { return; }
-                    catch (Exception ex)
-                    {
-                        PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID mouse {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
-                    }
+                    Submit(dx, dy, wheel, pan);
                 }
+                // The buttons follow the gate even when nothing moved: let go
+                // while it holds them back, pressed again as the slot asks
+                // once it opens.
+                if (!_stop && Effective(out _, out _) != _sentButtons) Submit(0, 0, 0, 0);
+            }
+        }
+
+        // Sender-thread state: the buttons the slot asks for, which the
+        // device presses again once the gate opens.
+        private byte _wantButtons;
+
+        /// <summary>Sender thread: the buttons the device is to hold now. A
+        /// press waits, and a held button is let go, while the gate holds
+        /// buttons back.</summary>
+        private byte Effective(out bool keysBlocked, out bool buttonsBlocked)
+        {
+            keysBlocked = ProgramInputGate.KeysBlocked;
+            buttonsBlocked = keysBlocked || ProgramInputGate.ButtonsBlocked;
+            return buttonsBlocked ? (byte)0 : _wantButtons;
+        }
+
+        /// <summary>Sender thread: one report with the buttons the gate
+        /// lets the device hold, the movement it lets through while the
+        /// window in front runs at medium integrity or below, and the wheel
+        /// turns it lets through while buttons go too.</summary>
+        private void Submit(int dx, int dy, int wheel, int pan)
+        {
+            byte buttons = Effective(out bool keysBlocked, out bool buttonsBlocked);
+            if (keysBlocked) dx = dy = 0;
+            if (buttonsBlocked) wheel = pan = 0;
+            if (buttons == _sentButtons && dx == 0 && dy == 0 && wheel == 0 && pan == 0) return;
+            lock (_buttonLock)
+            {
+                byte changed = (byte)(buttons ^ _sentButtons);
+                for (int bit = 0; bit < KbmDeviceCaps.WindowsMouseButtons; bit++)
+                    if ((changed & (1 << bit)) != 0)
+                        OwnHidOutput.NoteButton(HookIdOfBit[bit], (buttons & (1 << bit)) != 0);
+                _sentButtons = buttons;
+            }
+            try
+            {
+                _sink.SubmitMouse(new HMMouseState
+                {
+                    Buttons = (HMMouseButtons)buttons,
+                    X = dx,
+                    Y = dy,
+                    Wheel = wheel,
+                    Pan = pan,
+                });
+            }
+            catch (ObjectDisposedException) { _stop = true; }
+            catch (Exception ex)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID mouse {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
             }
         }
 

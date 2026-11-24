@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>কোনো প্রোগ্রাম সংযুক্ত নেই।</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>সংযুক্ত: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>অজানা প্রোগ্রাম</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, স্বাক্ষরকারী {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, স্বাক্ষরহীন</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>সম্পন্ন</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>করা হয়নি</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>এই স্তরে অনুমোদিত নয়</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>প্রোগ্রামটি এমন সংস্করণে কথা বলে, যা PadForge চেনে না</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge সেই প্লাগইন কী দেয়নি</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge এই প্রোগ্রামের সংযোগ নেয়নি</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>খুব তাড়াতাড়ি আবার চাওয়া হয়েছে</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge আবার চালু না হওয়া পর্যন্ত এর আর নেই</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} প্রোফাইলে যান</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ডিফল্ট প্রোফাইলে ফিরুন</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>কোন প্রোফাইল সক্রিয় তা জিজ্ঞেস করুন</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} মানটি ঠিক করুন</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} টুলটি চালান</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} বার</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, এমন {1}টির শেষটি</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 স্ক্রিপ্ট (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

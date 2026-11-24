@@ -39,7 +39,8 @@ namespace PadForge.Tests
         public EngineChange SetEngine(bool on) { Note("engine " + (on ? "on" : "off")); return EngineAnswer; }
         public void SetAllControllers(bool on) => Note("controllers " + (on ? "on" : "off"));
         public bool SetController(int number, bool on) { Note("slot " + number + (on ? " on" : " off")); return Controllers.Contains(number); }
-        public string SaveSnapshot() { Note("snapshot"); return SnapshotName; }
+        public bool? SnapshotScrubbed;
+        public string SaveSnapshot(bool scrubbed) { Note("snapshot"); SnapshotScrubbed = scrubbed; return SnapshotName; }
         public AutomationState ReadState() { Note("state"); return State; }
     }
 
@@ -256,7 +257,10 @@ namespace PadForge.Tests
             setup.Host.RecordMark = text => AutomationRecordAnswer.Done(string.Empty);
             Assert.Equal("ok", setup.Line("record mark"));
 
-            // The recorder's refusals come back as its error words.
+            // The recorder's refusals come back as its error words. A
+            // program's starts are one in ten seconds, so the clock moves on.
+            long clock = Environment.TickCount64;
+            setup.Host.Commands.NowMs = () => clock += AutomationCommands.RecordStartEveryMs;
             setup.Host.RecordStart = () => AutomationRecordAnswer.Busy;
             setup.Host.RecordStop = () => AutomationRecordAnswer.NotAvailable;
             setup.Host.RecordMark = text => AutomationRecordAnswer.NotAvailable;

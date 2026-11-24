@@ -286,7 +286,7 @@ namespace PadForge.Tests
             {
                 string kit = Path.Combine(lib, PluginKit.FolderName);
                 string code = "import sys; sys.path.insert(0, sys.argv[1]); import padforge; "
-                    + "p = padforge._Pipe(sys.argv[2], 5, plugin=True); "
+                    + "p = padforge._Pipe(sys.argv[2], 5); "
                     + "print('own=%d padforge=%d' % (padforge._served_by_padforge(p.handle, sys.argv[2]), padforge._served_by_padforge(p.handle, 'PadForge.Automation')))";
                 var (exit, output) = RunTool(AutomationLibraryTests.Interpreter("python"), "-I -c \"" + code + "\" \"" + kit + "\" " + rig.PipeName);
                 Assert.True(exit == 0, output);
@@ -306,9 +306,8 @@ namespace PadForge.Tests
                 string script = Path.Combine(kit, "owner.ps1");
                 File.WriteAllText(script,
                     "Import-Module (Join-Path $PSScriptRoot 'PadForge.psm1')\n"
-                    + "$c = New-Object PadForgeAutomation.Connection($args[0], 5000, $true)\n"
-                    + "$m = $c.GetType().GetMethod('ServedByPadForge', [Reflection.BindingFlags]'NonPublic,Instance')\n"
-                    + "'own={0} padforge={1}' -f [int]$m.Invoke($c, @($args[0])), [int]$m.Invoke($c, @('PadForge.Automation'))\n"
+                    + "$c = New-Object PadForgeAutomation.Connection($args[0], 5000)\n"
+                    + "'own={0} padforge={1}' -f [int]$c.ServerIsPadForge($args[0]), [int]$c.ServerIsPadForge('PadForge.Automation')\n"
                     + "$c.Dispose()\n");
                 var (exit, output) = RunTool(AutomationLibraryTests.Interpreter("powershell"),
                     "-NoProfile -ExecutionPolicy Bypass -File \"" + script + "\" " + rig.PipeName);

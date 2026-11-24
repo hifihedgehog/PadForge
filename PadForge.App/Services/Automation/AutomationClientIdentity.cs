@@ -172,18 +172,19 @@ namespace PadForge.Services.Automation
     /// The process at the other end of a connection, held open for as long
     /// as the connection lasts, so a process ID Windows hands to a new
     /// program after this one exits is never shown as the program that
-    /// connected (GameModSender's pattern). The ID and the image name are
-    /// for the user's eyes and decide nothing.
+    /// connected (GameModSender's pattern). The ID, the image's path and its
+    /// signer are for the user's eyes and decide nothing.
     /// </summary>
     internal sealed class AutomationClientProcess : IDisposable
     {
         private readonly SafeProcessHandle _handle;
         private int _disposed;
 
-        private AutomationClientProcess(int id, string imageName, SafeProcessHandle handle)
+        private AutomationClientProcess(int id, string imagePath, SafeProcessHandle handle)
         {
             Id = id;
-            ImageName = imageName;
+            ImagePath = imagePath;
+            ImageName = NameOf(imagePath);
             _handle = handle;
         }
 
@@ -193,8 +194,42 @@ namespace PadForge.Services.Automation
         /// <summary>The image's file name with no folder, or null.</summary>
         public string ImageName { get; }
 
+        /// <summary>The image's full path, or null.</summary>
+        public string ImagePath { get; }
+
+        private string _signer;
+        private int _signerRead;
+
+        /// <summary>Who signed the image, read once for the connection when
+        /// it is first shown, or null for a file with no signature Windows
+        /// trusts.</summary>
+        public string Signer
+        {
+            get
+            {
+                if (Volatile.Read(ref _signerRead) == 0)
+                {
+                    _signer = AuthenticodeSigner.Of(ImagePath);
+                    Volatile.Write(ref _signerRead, 1);
+                }
+                return _signer;
+            }
+        }
+
         /// <summary>A client nothing is known of.</summary>
         internal static AutomationClientProcess None => new AutomationClientProcess(0, null, null);
+
+        /// <summary>A client as a test stands one in, with no process held:
+        /// what Windows would say of its image.</summary>
+        internal static AutomationClientProcess ForTest(int id, string imagePath)
+            => new AutomationClientProcess(id, imagePath, null);
+
+        private static string NameOf(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return null;
+            try { return Path.GetFileName(path); }
+            catch (ArgumentException) { return null; }
+        }
 
         /// <summary>Opens the pipe's client process to hold it.</summary>
         internal static AutomationClientProcess Of(NamedPipeServerStream server)
@@ -220,7 +255,7 @@ namespace PadForge.Services.Automation
                 handle?.Dispose();
                 return new AutomationClientProcess(pid, null, null);
             }
-            return new AutomationClientProcess(pid, ReadName(handle), handle);
+            return new AutomationClientProcess(pid, ReadPath(handle), handle);
         }
 
         /// <summary>Whether a window belongs to this process: a script's
@@ -251,13 +286,12 @@ namespace PadForge.Services.Automation
             _handle?.Dispose();
         }
 
-        private static string ReadName(SafeProcessHandle process)
+        private static string ReadPath(SafeProcessHandle process)
         {
             var text = new StringBuilder(1024);
             int length = text.Capacity;
-            if (!QueryFullProcessImageName(process, 0, text, ref length)) return null;
-            try { return Path.GetFileName(text.ToString(0, length)); }
-            catch (ArgumentException) { return null; }
+            if (!QueryFullProcessImageName(process, 0, text, ref length) || length <= 0) return null;
+            return text.ToString(0, length);
         }
 
         private const int Synchronize = 0x00100000;

@@ -341,6 +341,90 @@ namespace PadForge.Tests
             Assert.Equal(1, sink.Disposes);
         }
 
+        /// <summary>While a program drives PadForge and the window in front
+        /// runs with rights (#597), the virtual keyboard holds no key: a key
+        /// held goes up, a new one waits, and once the window in front runs
+        /// at medium integrity again the keyboard holds what the slot asks
+        /// for.</summary>
+        [Fact]
+        public void Keyboard_HoldsNothing_WhileTheGateHoldsKeysBack_AndTakesTheKeysAgainAfter()
+        {
+            OwnHidOutput.ResetForTests();
+            var sink = new FakeSink();
+            bool above = false;
+            ProgramInputGate.InForceSeam = () => true;
+            ProgramInputGate.ForegroundSeam = () => (IntPtr)(above ? 2 : 1);
+            ProgramInputGate.ProcessOfSeam = w => (uint)w;
+            ProgramInputGate.IntegritySeam = pid => pid == 2 ? 0x3000 : 0x2000;
+            ProgramInputGate.ForgetForTest();
+            var kb = new KbmHidKeyboard(sink, KbmDeviceCaps.For(Profile("corsair-k55-rgb-pro-xt")), "k55", 0,
+                KbmHidKeyMap.Nominal);
+            try
+            {
+                Press(kb, 0x41);                 // A, to a window at medium
+                Assert.Equal("K 00:04", sink.WaitFor(1)[0]);
+                above = true;                    // an administrator's console comes in front
+                Assert.Equal("K 00:", sink.WaitFor(2)[1]);
+                Press(kb, 0x41, 0x42);           // B waits
+                Thread.Sleep(200);
+                Assert.Equal(2, sink.Log.Length);
+                above = false;
+                Assert.Equal("K 00:04,05", sink.WaitFor(3)[2]);
+            }
+            finally
+            {
+                kb.Dispose();
+                ProgramInputGate.InForceSeam = null;
+                ProgramInputGate.ForegroundSeam = null;
+                ProgramInputGate.ProcessOfSeam = null;
+                ProgramInputGate.IntegritySeam = null;
+                ProgramInputGate.ForgetForTest();
+                OwnHidOutput.ResetForTests();
+            }
+        }
+
+        /// <summary>The virtual mouse lets go of its buttons and drops its
+        /// motion and wheel while the gate holds them back, and presses the
+        /// buttons the slot asks for again after.</summary>
+        [Fact]
+        public void Mouse_LetsGo_AndMovesNot_WhileTheGateHoldsBack()
+        {
+            OwnHidOutput.ResetForTests();
+            var sink = new FakeSink();
+            bool above = false;
+            ProgramInputGate.InForceSeam = () => true;
+            ProgramInputGate.ForegroundSeam = () => (IntPtr)(above ? 2 : 1);
+            ProgramInputGate.PointerWindowSeam = () => (IntPtr)1;
+            ProgramInputGate.ProcessOfSeam = w => (uint)w;
+            ProgramInputGate.IntegritySeam = pid => pid == 2 ? 0x3000 : 0x2000;
+            ProgramInputGate.ForgetForTest();
+            var mouse = new KbmHidMouse(sink, KbmDeviceCaps.For(Profile("logitech-g502-hero")), "g502", 0);
+            try
+            {
+                mouse.SetButtons(0b1);
+                Assert.Equal("M 1 0 0 0 0", sink.WaitFor(1)[0]);
+                above = true;
+                Assert.Equal("M 0 0 0 0 0", sink.WaitFor(2)[1]);
+                mouse.AddMotion(10, 10);
+                mouse.AddWheel(1);
+                Thread.Sleep(200);
+                Assert.Equal(2, sink.Log.Length);
+                above = false;
+                Assert.Equal("M 1 0 0 0 0", sink.WaitFor(3)[2]);
+            }
+            finally
+            {
+                mouse.Dispose();
+                ProgramInputGate.InForceSeam = null;
+                ProgramInputGate.ForegroundSeam = null;
+                ProgramInputGate.PointerWindowSeam = null;
+                ProgramInputGate.ProcessOfSeam = null;
+                ProgramInputGate.IntegritySeam = null;
+                ProgramInputGate.ForgetForTest();
+                OwnHidOutput.ResetForTests();
+            }
+        }
+
         /// <summary>Two rows on one usage (generic and left Shift) press it
         /// once and let go of it once, after the second lets go.</summary>
         [Fact]

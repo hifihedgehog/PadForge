@@ -47,14 +47,20 @@ namespace PadForge.Common
         /// snapshot ends with it and diagnostics.log carries it too
         /// (#541): HidHide's list, the XInput interfaces Windows lists and
         /// each virtual controller's node
-        /// (<see cref="HidHideController.DescribeSnapshotState"/>).</para></summary>
-        internal static string SaveSnapshot()
+        /// (<see cref="HidHideController.DescribeSnapshotState"/>).</para>
+        ///
+        /// <para>A snapshot a program asked for (#597) passes its whole text
+        /// through <paramref name="scrub"/> before it is written, since the
+        /// file lands where that program can read it.</para></summary>
+        internal static string SaveSnapshot(Func<string, string> scrub = null)
         {
             foreach (string line in SnapshotStateLines())
                 Engine.SdlDiagLog.WriteLine(line);
             string path = Path.Combine(Folder,
                 $"diag-snapshot-{DateTime.Now:yyyyMMdd-HHmmss}.log");
-            File.WriteAllText(path, Engine.SdlDiagLog.Snapshot() + Environment.NewLine);
+            string text = Engine.SdlDiagLog.Snapshot();
+            if (scrub != null) text = scrub(text);
+            File.WriteAllText(path, text + Environment.NewLine);
             return path;
         }
 

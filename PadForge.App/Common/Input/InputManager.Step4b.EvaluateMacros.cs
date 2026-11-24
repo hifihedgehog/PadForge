@@ -7656,8 +7656,76 @@ namespace PadForge.Common.Input
         /// <paramref name="inputs"/> in one SendInput call.</summary>
         private static void SendQueued(INPUT[] inputs, int count)
         {
+            // While a program drives PadForge, output for a window that runs
+            // with rights keeps its releases alone (ProgramInputGate).
+            if (ProgramInputGate.InForce) count = KeepWhatTheGateAllows(inputs, count);
+            if (count == 0) return;
             SentForTest?.Invoke(Decode(inputs, (uint)count));
             SendInput((uint)count, inputs, Marshal.SizeOf<INPUT>());
+        }
+
+        private const uint MouseDownsAndWheels = MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_MIDDLEDOWN
+            | MOUSEEVENTF_XDOWN | MOUSEEVENTF_WHEEL | MOUSEEVENTF_HWHEEL;
+
+        /// <summary>
+        /// Takes out of the first <paramref name="count"/> events what the
+        /// gate holds back, in place, and gives how many are left. A key that
+        /// goes down and a move wait while the window in front runs above
+        /// medium integrity. A button that goes down and a wheel turn wait
+        /// while that window or the one under the pointer does. A key or a
+        /// button that goes up always goes out, so nothing stays held. A
+        /// mouse event that carries both keeps only its releases.
+        /// </summary>
+        private static int KeepWhatTheGateAllows(INPUT[] inputs, int count)
+        {
+            bool keys = ProgramInputGate.KeysBlocked;
+            bool buttons = keys || ProgramInputGate.ButtonsBlocked;
+            if (!keys && !buttons) return count;
+            int kept = 0;
+            for (int i = 0; i < count; i++)
+            {
+                var e = inputs[i];
+                if (e.type == INPUT_KEYBOARD)
+                {
+                    if (keys && (e.u.ki.dwFlags & KEYEVENTF_KEYUP) == 0) continue;
+                }
+                else
+                {
+                    uint flags = e.u.mi.dwFlags;
+                    if (keys && (flags & MOUSEEVENTF_MOVE) != 0)
+                    {
+                        flags &= ~MOUSEEVENTF_MOVE;
+                        e.u.mi.dx = 0;
+                        e.u.mi.dy = 0;
+                    }
+                    if (buttons && (flags & MouseDownsAndWheels) != 0)
+                    {
+                        // A wheel's turn rides in the data and goes with
+                        // it.
+                        if ((flags & (MOUSEEVENTF_WHEEL | MOUSEEVENTF_HWHEEL)) != 0) e.u.mi.mouseData = 0;
+                        flags &= ~MouseDownsAndWheels;
+                    }
+                    if (flags == 0) continue;
+                    e.u.mi.dwFlags = flags;
+                }
+                inputs[kept++] = e;
+            }
+            return kept;
+        }
+
+        /// <summary>Test seam: the gate's work on a list of events, built
+        /// the way the output queue builds them. True in each place for a
+        /// key, false for a mouse event.</summary>
+        internal static InjectedEvent[] GateForTest(params InjectedEvent[] events)
+        {
+            var inputs = new INPUT[events.Length];
+            for (int i = 0; i < events.Length; i++)
+            {
+                var e = events[i];
+                inputs[i] = e.Keyboard ? KeyOutput(e.Vk, e.Scan, e.Flags) : MouseOutput(e.Dx, e.Dy, e.Data, e.Flags);
+            }
+            int kept = KeepWhatTheGateAllows(inputs, inputs.Length);
+            return Decode(inputs, (uint)kept);
         }
 
         /// <summary>One event as <see cref="SendQueued"/> sent it, for the

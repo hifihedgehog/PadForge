@@ -196,6 +196,7 @@ namespace PadForge.Tests
         private const string AutomationPipeFile = Services + "Automation/AutomationPipe.cs";
         private const string RunningCopyFile = Services + "RunningCopy.cs";
         private const string InstanceSignalFile = Services + "InstanceSignal.cs";
+        private const string InstanceLockFile = Services + "InstanceLock.cs";
         private const string ClientRunFile = Services + "ClientRun.cs";
         private const string StartWithRightsFile = Services + "StartWithRights.cs";
         private const string PluginLauncherFile = Services + "Plugins/PluginLauncher.cs";
@@ -414,8 +415,8 @@ namespace PadForge.Tests
             new object[] { Hooks, "private static IntPtr SetWindowsHookExW(int idHook, LowLevelHookProc lpfn, IntPtr hMod, uint dwThreadId)", "OffLimitsForTest ? IntPtr.Zero : SetWindowsHookExNative(idHook, lpfn, hMod, dwThreadId);" },
             new object[] { Hooks, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "OffLimitsForTest ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
             new object[] { Macros, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
-            new object[] { Kbm, "private static bool SetCursorPos(int x, int y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && SetCursorPosNative(x, y);" },
-            new object[] { Cursor, "private static bool SetCursorPos(int X, int Y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && SetCursorPosNative(X, Y);" },
+            new object[] { Kbm, "private static bool SetCursorPos(int x, int y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !ProgramInputGate.KeysBlocked && SetCursorPosNative(x, y);" },
+            new object[] { Cursor, "private static bool SetCursorPos(int X, int Y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !PadForge.Common.Input.ProgramInputGate.KeysBlocked && SetCursorPosNative(X, Y);" },
 
             // The logon task.
             new object[] { Startup, "private static void DeleteLegacyRunEntry()", "if (OffLimitsForTest) return;" },
@@ -509,7 +510,10 @@ namespace PadForge.Tests
 
             // A PadForge that runs on this PC, as a second copy of the exe
             // meets it, and the windows that copy looks for (#597).
-            new object[] { RunningCopyFile, "private static IntPtr Find(string windowName)", "OffLimitsForTest ? IntPtr.Zero : FindWindowExW(HWND_MESSAGE, IntPtr.Zero, null, windowName);" },
+            new object[] { RunningCopyFile, "private static IntPtr Find(string windowName)", "OffLimitsForTest ? IntPtr.Zero : FindChecked(windowName);" },
+            new object[] { RunningCopyFile, "internal static IntPtr FindChecked(string windowName)", "if (OffLimitsForTest && IsTheAppsOwn(windowName)) return IntPtr.Zero;" },
+            new object[] { InstanceLockFile, "internal static InstanceLock Take(out bool heldElsewhere, string namespaceName = NamespaceName, string lockName = LockName)", "if (RunningCopy.OffLimitsForTest && IsTheAppsOwn(namespaceName))" },
+            new object[] { InstanceLockFile, "internal static bool IsHeld(string namespaceName = NamespaceName, string lockName = LockName)", "if (RunningCopy.OffLimitsForTest && IsTheAppsOwn(namespaceName)) return false;" },
             new object[] { RunningCopyFile, "internal static bool Exists()", "if (OffLimitsForTest) return false;" },
             new object[] { RunningCopyFile, "internal static Settled WaitUntilSettled(int startingMs = 15000, int lockOnlyMs = 2000)", "if (OffLimitsForTest) return Settled.Gone;" },
             new object[] { RunningCopyFile, "internal static bool Show(int waitMs = 10000)", "if (OffLimitsForTest) return false;" },

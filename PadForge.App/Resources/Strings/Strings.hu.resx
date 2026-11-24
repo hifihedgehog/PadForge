@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Egy program sincs csatlakozva.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Csatlakozva: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ismeretlen program</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, aláírója: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, aláíratlan</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Kész</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nem történt meg</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ezen a szinten nem engedélyezett</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>A program olyan verziót használ, amelyet a PadForge nem ismer</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>A PadForge nem adta meg azt a bővítménykulcsot</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>A PadForge nem fogadta el ennek a programnak a csatlakozását</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Túl hamar kérte újra</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>A PadForge újraindulásáig több ilyen nem lehet</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Váltás erre a profilra: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Visszatérés az alapértelmezett profilra</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>A mostani profil lekérdezése</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>A(z) {0} érték beállítása</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>A(z) {0} eszköz futtatása</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ismétlések száma: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, az utolsó az ilyen {1} kérés közül</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 szkriptek (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

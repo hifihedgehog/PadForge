@@ -124,6 +124,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>E leai se polokalame ua fesoʻotaʻi.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Fesoʻotaʻi: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalame e le iloa</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, sainia e {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, e le o sainia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ua uma</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>E leʻi faia</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>E le faʻatagaina i lenei tulaga</value></data>
@@ -1390,6 +1392,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>O loʻo faʻaaogā e le polokalame se lomiga e le iloa e PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>E leʻi tuʻuina atu e PadForge lena ki plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>E leʻi taliaina e PadForge le fesoʻotaʻiga a lenei polokalame</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Toe fesili vave tele</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ua le toe faia nei mea seʻia toe amata PadForge</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Faʻataga</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Aua le Faʻatagaina</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai {0}</value></data>

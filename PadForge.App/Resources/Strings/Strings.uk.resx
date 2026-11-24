@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Жодна програма не підключена.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Підключено: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Невідома програма</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, підписано: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, не підписано</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Виконано</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Не виконано</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Не дозволено на цьому рівні</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програма говорить версією, якої PadForge не знає</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не видав цей ключ плагіна</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не прийняв підключення цієї програми</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Повторний запит надто швидко</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Більше таких запитів не буде, доки PadForge не запуститься знову</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Перемкнутися на профіль {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Повернутися до типового профілю</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Запитати, який профіль активний</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задати значення {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Запустити інструмент {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, разів: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, останній із {1} таких</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скрипти AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

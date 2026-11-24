@@ -209,21 +209,17 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>A name from a program, made safe for the settings file
-        /// and the interface: control characters and Unicode format
-        /// characters out (DisplayText.StripFormatCharacters), trimmed, and
-        /// cut at <paramref name="longest"/>.</summary>
+        /// and the interface: control and format characters out
+        /// (<see cref="ShownText"/>), trimmed, and cut at
+        /// <paramref name="longest"/>. A cut never splits a surrogate
+        /// pair.</summary>
         internal static string Clean(string text, int longest)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
-            text = DisplayText.StripFormatCharacters(PadForge.Engine.Common.XmlSafeText.Clean(text));
-            var sb = new StringBuilder(Math.Min(text.Length, longest));
-            foreach (char c in text)
-            {
-                if (char.IsControl(c)) continue;
-                sb.Append(c);
-                if (sb.Length >= longest) break;
-            }
-            return sb.ToString().Trim();
+            text = ShownText.Clean(PadForge.Engine.Common.XmlSafeText.Clean(text));
+            if (text.Length > longest)
+                text = text.Substring(0, char.IsHighSurrogate(text[longest - 1]) ? longest - 1 : longest);
+            return text.Trim();
         }
 
         /// <summary>Whether a key can be used: 1 to 64 letters, digits,
@@ -257,14 +253,25 @@ namespace PadForge.Services.Automation
     /// devices at once and takes them offline after
     /// <see cref="OfflineAfterMs"/>, unless a program declares the same key
     /// again before then: a program that connects and drops in a loop keeps
-    /// one device, and the device list and HidHide are not churned. The
-    /// device's row then stays on the Devices page like any disconnected
-    /// device's.
+    /// one device, and the device list and HidHide are not churned. A device
+    /// the user assigned to a virtual controller keeps its row on the Devices
+    /// page like any disconnected device's. One nobody assigned goes once it
+    /// is offline, row and all, so a program that declares and removes
+    /// devices in a loop leaves nothing behind in PadForge.xml.
+    ///
+    /// <para>Limits: <see cref="MostPerSession"/> devices a session and
+    /// <see cref="MostInAll"/> online at once, and in one run of PadForge
+    /// <see cref="MostMadePerProgram"/> devices for one program's name and
+    /// <see cref="MostMadeInAll"/> in all. A device declared again by the
+    /// same program under the same key is the same device and counts
+    /// once.</para>
     /// </summary>
     internal sealed class ProgramDevices
     {
         internal const int MostPerSession = 8;
         internal const int MostInAll = 32;
+        internal const int MostMadePerProgram = 64;
+        internal const int MostMadeInAll = 256;
 
         /// <summary>How long a device of a session that ended stays online
         /// at rest, waiting for its program to come back.</summary>
@@ -292,7 +299,64 @@ namespace PadForge.Services.Automation
         private readonly Func<long> _nowMs;
         private IAutomationEngine _engine;
 
+        // Every device made this run, and how many of them each program's
+        // name made, for the run's limits.
+        private readonly HashSet<Guid> _made = new();
+        private readonly Dictionary<(string Kind, string Program), int> _madeBy = new();
+
+        // How many devices this registry told the input gate are online, and
+        // whether its host went.
+        private int _livePublished;
+        private bool _disposed;
+
         public ProgramDevices(Func<long> nowMs) => _nowMs = nowMs;
+
+        /// <summary>Whether the user assigned a device to a virtual
+        /// controller: a row of the device's mappings stands. A test gives
+        /// its own.</summary>
+        internal Func<Guid, bool> IsAssigned { get; set; } = AssignedToAController;
+
+        /// <summary>Takes away the row of a device nobody assigned, once it
+        /// went offline, where the Devices page and PadForge.xml read it. A
+        /// test gives its own.</summary>
+        internal Action<Guid> ForgetRow { get; set; } = guid => PadForge.Common.Input.SettingsManager.RemoveDevice(guid);
+
+        private static bool AssignedToAController(Guid guid)
+        {
+            var settings = PadForge.Common.Input.SettingsManager.UserSettings;
+            if (settings == null) return false;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us != null && us.InstanceGuid == guid) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Under the lock: tells the input gate how many devices
+        /// are online now (ProgramInputGate).</summary>
+        private void PublishLiveLocked()
+        {
+            // A registry whose host went counts for nothing, whatever its
+            // sessions' ends still do to it.
+            if (_disposed) return;
+            int live = CountLive();
+            PadForge.Common.Input.ProgramInputGate.ProgramDevicesChanged(live - _livePublished);
+            _livePublished = live;
+        }
+
+        /// <summary>How many devices this run made, for tests.</summary>
+        internal int Made
+        {
+            get { lock (_sync) return _made.Count; }
+        }
+
+        /// <summary>How many entries the registry holds, online or not, for
+        /// tests.</summary>
+        internal int Held
+        {
+            get { lock (_sync) return _entries.Count; }
+        }
 
         /// <summary>How many devices sessions own or wait for now.</summary>
         internal int Live
@@ -361,6 +425,13 @@ namespace PadForge.Services.Automation
                 else
                 {
                     if (CountOwned(session) >= MostPerSession || CountLive() >= MostInAll) return "too-many";
+                    if (!_made.Contains(guid))
+                    {
+                        _madeBy.TryGetValue((kind, program), out int byProgram);
+                        if (byProgram >= MostMadePerProgram || _made.Count >= MostMadeInAll) return "too-many";
+                        _made.Add(guid);
+                        _madeBy[(kind, program)] = byProgram + 1;
+                    }
                     string id = AutomationDevices.IdOf(guid);
                     var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, program, key),
                         "program://" + id, name, shape);
@@ -373,6 +444,7 @@ namespace PadForge.Services.Automation
                 engine = _engine;
                 register = engine != null;
                 if (register) entry.Registered = true;
+                PublishLiveLocked();
             }
             // Outside the lock: a new shape reloads the device's row, which
             // takes the device list's lock.
@@ -468,6 +540,7 @@ namespace PadForge.Services.Automation
                     if (now) (offline ??= new List<Entry>()).Add(e);
                     else e.OfflineAtMs = _nowMs() + OfflineAfterMs;
                 }
+                PublishLiveLocked();
             }
             if (offline != null) TakeOffline(offline);
         }
@@ -498,8 +571,51 @@ namespace PadForge.Services.Automation
                         unregister.Add(e.Device);
                     }
                 }
+                PublishLiveLocked();
             }
             if (engine != null) foreach (var d in unregister) engine.Unregister(d);
+
+            // A device nobody assigned goes, row and all, unless its program
+            // declared it again in the meantime.
+            List<Guid> forget = null;
+            foreach (var e in entries)
+            {
+                bool assigned;
+                try { assigned = IsAssigned?.Invoke(e.Guid) ?? true; }
+                catch { assigned = true; }
+                if (assigned) continue;
+                lock (_sync)
+                {
+                    if (e.Owner != null || e.OfflineAtMs != 0 || e.Registered) continue;
+                    if (!_entries.TryGetValue(e.Guid, out var held) || !ReferenceEquals(held, e)) continue;
+                    _entries.Remove(e.Guid);
+                }
+                (forget ??= new List<Guid>()).Add(e.Guid);
+            }
+            if (forget == null) return;
+            foreach (var guid in forget)
+            {
+                try { ForgetRow?.Invoke(guid); }
+                catch { /* the entry is gone either way, and the row goes at the next start */ }
+            }
+            Forgotten?.Invoke();
+        }
+
+        /// <summary>Raised after rows of devices nobody assigned were taken
+        /// away, on the thread that took them, so the Devices page reads its
+        /// list again.</summary>
+        internal event Action Forgotten;
+
+        /// <summary>The registry goes with its host: the input gate no
+        /// longer counts its devices.</summary>
+        internal void Dispose()
+        {
+            lock (_sync)
+            {
+                PadForge.Common.Input.ProgramInputGate.ProgramDevicesChanged(-_livePublished);
+                _livePublished = 0;
+                _disposed = true;
+            }
         }
 
         /// <summary>Takes offline the devices whose wait ran out. Called by

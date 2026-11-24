@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>မည်သည့်ပရိုဂရမ်မျှ ချိတ်ဆက်မထားပါ။</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>ချိတ်ဆက်ထားသည်: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>အမည်မသိ ပရိုဂရမ်</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}၊ {1} က လက်မှတ်ထိုးထားသည်</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}၊ လက်မှတ်မထိုးထားပါ</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ပြီးပါပြီ</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>မလုပ်ခဲ့ပါ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ဤအဆင့်တွင် ခွင့်မပြုပါ</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ပရိုဂရမ်သည် PadForge မသိသော ဗားရှင်းကို သုံးသည်</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge သည် ထိုပလပ်အင်ကီးကို မပေးခဲ့ပါ</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge သည် ဤပရိုဂရမ်၏ ချိတ်ဆက်မှုကို လက်မခံခဲ့ပါ</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>စောလွန်းစွာ ထပ်မေးခဲ့သည်</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge ပြန်မစမချင်း ဤအမျိုးအစား ထပ်မရနိုင်ပါ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ပရိုဖိုင် {0} သို့ ပြောင်းရန်</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>မူလ ပရိုဖိုင်သို့ ပြန်သွားရန်</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>မည်သည့်ပရိုဖိုင် အသက်ဝင်နေသည်ကို မေးရန်</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>တန်ဖိုး {0} ကို သတ်မှတ်ရန်</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ကိရိယာ {0} ကို လည်ပတ်ရန်</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}၊ အကြိမ်ရေ: {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}၊ ထိုကဲ့သို့ {1} ခုအနက် နောက်ဆုံး</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 စခရစ်များ (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

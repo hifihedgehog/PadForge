@@ -25,6 +25,14 @@ namespace PadForge.Services
             _automationHost = host;
             if (host == null) return;
             host.EngineState = ReadEngineState;
+            // A program's device nobody assigned leaves the Devices page with
+            // its row, through the walk every device change takes.
+            host.Sessions.Devices.Forgotten += () =>
+            {
+                var manager = _inputManager;
+                if (manager != null) OnDevicesUpdated(manager, EventArgs.Empty);
+                else _dispatcher.BeginInvoke(new Action(SyncDevicesList));
+            };
             AttachAutomationToEngine();
         }
 

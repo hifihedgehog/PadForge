@@ -1398,6 +1398,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa oiporu peteĩ versión PadForge ndoikuaáiva</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nome'ẽi upe plugin llave</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nomoneĩri ko programa joaju</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ojejerure jey pya'eterei</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ndaipóri hetave kóicha PadForge oñepyrũ jey peve</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Emoambue perfil {0} peve</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ejevy perfil ypykuépe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eporandu mba'e perfilpa oĩ hína</value></data>
@@ -1434,6 +1436,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Emoĩ valor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Emboguata tembiporu {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} jey</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ipaha {1} ojoguáva apytégui</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emoneĩ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ani emoneĩ</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ha {0} hetave</value></data>

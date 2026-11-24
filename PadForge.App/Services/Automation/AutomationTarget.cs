@@ -127,8 +127,11 @@ namespace PadForge.Services.Automation
         bool SetController(int number, bool on);
 
         /// <summary>Saves a diagnostics snapshot, as Save Snapshot does, and
-        /// gives the file's name without its folder.</summary>
-        string SaveSnapshot();
+        /// gives the file's name without its folder. With
+        /// <paramref name="scrubbed"/> every line goes through the
+        /// scrubber first, as the problem recorder's do: the snapshot a
+        /// program asks for lands where that program can read it.</summary>
+        string SaveSnapshot(bool scrubbed);
 
         /// <summary>Reads what the state line says, from the engine and the
         /// settings and never from what a hidden window stopped

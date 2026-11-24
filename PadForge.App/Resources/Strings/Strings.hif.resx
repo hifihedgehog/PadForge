@@ -1233,6 +1233,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Koi program connect nai hai.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connect hai: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Anjaan program</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} ke sign karaa</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, sign nai karaa</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Hoe gais</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nai bhais</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ii level pe allow nai hai</value></data>
@@ -1258,6 +1260,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program aisan version bole hai jon PadForge nai jaane</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge uu plugin key nai dis</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ii program ke connection nai lis</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Bahut jaldi phir se maangis</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge phir se chalu hoe tak aur nai</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Profile {0} pe jaao</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Default profile pe lauto</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Poocho kon profile chalu hai</value></data>
@@ -1294,6 +1298,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Value {0} set karo</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Tool {0} chalaao</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} baar</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, aisan {1} me se aakhri</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Allow karo</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Allow mat karo</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} se</value></data>

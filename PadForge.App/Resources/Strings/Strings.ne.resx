@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>कुनै प्रोग्राम जडान भएको छैन।</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>जडान भएका: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>अज्ञात प्रोग्राम</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} द्वारा हस्ताक्षरित</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, हस्ताक्षर नगरिएको</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>भयो</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>भएन</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>यो स्तरमा अनुमति छैन</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>प्रोग्रामले PadForge लाई थाहा नभएको संस्करण प्रयोग गर्छ</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ले त्यो प्लगइन कुञ्जी दिएको थिएन</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ले यो प्रोग्रामको जडान स्वीकार गरेन</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>धेरै चाँडै फेरि सोधियो</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge फेरि सुरु नभएसम्म यस्ता थप हुँदैनन्</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>प्रोफाइल {0} मा जानुहोस्</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>पूर्वनिर्धारित प्रोफाइलमा फर्कनुहोस्</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>कुन प्रोफाइल सक्रिय छ भनेर सोध्नुहोस्</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>मान {0} सेट गर्नुहोस्</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>टुल {0} चलाउनुहोस्</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} पटक</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, यस्ता {1} मध्ये अन्तिम</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 स्क्रिप्टहरू (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

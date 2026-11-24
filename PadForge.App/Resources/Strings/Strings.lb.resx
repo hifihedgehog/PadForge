@@ -669,6 +669,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kee Programm ass verbonnen.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Verbonnen: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Onbekannte Programm</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signéiert vun {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, net signéiert</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Gemaach</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Net gemaach</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Op dësem Niveau net erlaabt</value></data>
@@ -694,6 +696,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>De Programm schwätzt eng Versioun, déi PadForge net kennt</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge huet dëse Plugin-Schlëssel net ausgestallt</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge huet d'Verbindung vun dësem Programm net ugeholl</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ze séier nach eng Kéier gefrot</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Keng weider, bis PadForge nei start</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Op de Profil {0} wiesselen</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Op de Standardprofil zréckgoen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Froen, wéi e Profil aktiv ass</value></data>
@@ -730,6 +734,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>De Wäert {0} setzen</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>D'Tool {0} ausféieren</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} Mol</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, déi lescht vun {1} ähnlechen Ufroen</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Scripten (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

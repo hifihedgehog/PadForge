@@ -33,7 +33,11 @@ namespace PadForge
         public static System.Globalization.CultureInfo StartupUICulture { get; private set; }
             = Thread.CurrentThread.CurrentUICulture;
 
-        private Mutex _singleInstanceMutex;
+        // The single-instance lock: a mutex in the private namespace only a
+        // copy with administrator rights can make or open (InstanceLock), or
+        // the session's plain one where this copy runs without them, which
+        // Program.Main never lets the app do.
+        private IDisposable _singleInstanceMutex;
 
         /// <summary>Timestamp of the last dispatcher error shown. Used to rate-limit popups.</summary>
         private readonly Stopwatch _lastErrorTime = new Stopwatch();
@@ -211,6 +215,22 @@ namespace PadForge
         /// single-instance lock.</summary>
         internal static Services.InstanceSignal InstanceSignal { get; private set; }
 
+        /// <summary>Takes the single-instance lock. With administrator
+        /// rights, which the app has (Program.Main), it is the private
+        /// namespace's, which no program without rights can take first. A
+        /// copy without them, which only a developer's run can be, takes the
+        /// session's plain mutex as before.</summary>
+        private static IDisposable TakeSingleInstanceLock(out bool newInstance)
+        {
+            var held = Services.InstanceLock.Take(out bool heldElsewhere);
+            if (held != null)
+            {
+                newInstance = !heldElsewhere;
+                return held;
+            }
+            return new Mutex(true, Services.RunningCopy.InstanceMutexName, out newInstance);
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             // Make the process's first known-folder lookup here, on the UI
@@ -273,7 +293,7 @@ namespace PadForge
                 return;
             }
 
-            _singleInstanceMutex = new Mutex(true, Services.RunningCopy.InstanceMutexName, out bool isNewInstance);
+            _singleInstanceMutex = TakeSingleInstanceLock(out bool isNewInstance);
             if (!isNewInstance)
             {
                 // Another copy holds the lock. A second start hands its

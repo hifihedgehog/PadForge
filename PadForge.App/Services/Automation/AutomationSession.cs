@@ -109,7 +109,8 @@ namespace PadForge.Services.Automation
 
         /// <summary>The program as Activity shows it.</summary>
         public AutomationProgram Program => new AutomationProgram(
-            string.IsNullOrEmpty(ClaimedName) ? null : ClaimedName, Process.Id, Process.ImageName);
+            string.IsNullOrEmpty(ClaimedName) ? null : ClaimedName, Process.Id, Process.ImageName,
+            Process.ImagePath, Process.Signer);
 
         public CancellationToken Stopping => _cts.Token;
 
@@ -323,7 +324,8 @@ namespace PadForge.Services.Automation
             string name = ProgramDeviceDeclaration.Clean(request.Get("name"), ProgramDeviceDeclaration.LongestName);
             string given = name;
             if (name.Length == 0 && Process.ImageName != null)
-                name = PadForge.Common.Input.RunningProcessList.ShortName(Process.ImageName);
+                name = ProgramDeviceDeclaration.Clean(PadForge.Common.Input.RunningProcessList.ShortName(Process.ImageName),
+                    ProgramDeviceDeclaration.LongestName);
             ClaimedName = name;
             IdentityName = name;
 
@@ -348,6 +350,16 @@ namespace PadForge.Services.Automation
                 }
                 Outbox.Process = Process;
                 Outbox.WakeWindow = window;
+            }
+
+            // A script and an assistant speak while Automation is on. With
+            // Plugins on alone, the pipe serves plugins and nothing else, so
+            // no program takes a plugin's place.
+            if (kind is "script" or "mcp" && !_hub.Host.IsOn)
+            {
+                Answer(request.Tag, AutomationLine.Error("not-allowed", "Automation is off, and the pipe serves plugins alone"));
+                CloseAfterWritten();
+                return;
             }
 
             switch (kind)

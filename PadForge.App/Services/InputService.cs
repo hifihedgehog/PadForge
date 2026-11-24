@@ -11409,10 +11409,24 @@ namespace PadForge.Services
         /// Called on the background thread when the device list changes.
         /// Marshals to the UI thread to sync DevicesViewModel.
         /// </summary>
+        // One walk of the device list waits on the interface's thread at a
+        // time. Changes that land while it waits are its own, since it reads
+        // the list as it runs, so a source that comes and goes in a loop (a
+        // program that declares and removes devices, #597) queues one walk
+        // and never thousands. The sender is the latest one's.
+        private int _devicesWalkQueued;
+        private object _devicesWalkSender;
+
         private void OnDevicesUpdated(object sender, EventArgs e)
         {
+            System.Threading.Volatile.Write(ref _devicesWalkSender, sender);
+            if (System.Threading.Interlocked.Exchange(ref _devicesWalkQueued, 1) != 0) return;
             _dispatcher.BeginInvoke(new Action(() =>
             {
+                // Cleared before the walk, so a change during it queues the
+                // next one.
+                System.Threading.Volatile.Write(ref _devicesWalkQueued, 0);
+                sender = System.Threading.Volatile.Read(ref _devicesWalkSender);
                 if (!ReferenceEquals(sender, _inputManager)) return;
                 // A device that came or went may carry outputs (#494), and
                 // may be one a direct backend finds by its own collection,

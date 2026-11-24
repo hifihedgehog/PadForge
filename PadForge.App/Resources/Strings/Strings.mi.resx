@@ -184,6 +184,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kāore he hōtaka kua hono.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Kua hono: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Hōtaka kāore e mōhiotia</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, i hainatia e {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, kāore i hainatia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Kua oti</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Kāore i oti</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Kāore e whakaaetia i tēnei taumata</value></data>
@@ -209,6 +211,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ka kōrero te hōtaka i tētahi putanga kāore a PadForge e mōhio</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Kāore a PadForge i hoatu i taua kī monomai</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Kāore a PadForge i whakaae ki te hononga o tēnei hōtaka</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>I tono anō wawe rawa</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Kāore he atu o ēnei kia tīmata anō rā a PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Huri ki te kōtaha {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoki ki te kōtaha taunoa</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pātai ko tēhea kōtaha e hohe ana</value></data>
@@ -245,6 +249,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tautuhia te uara {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Whakahaerehia te utauta {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, e {1} ngā wā</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, te whakamutunga o ngā mea e {1} pērā</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Tūhono</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Kua tūhono</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Whakakāhore</value></data>

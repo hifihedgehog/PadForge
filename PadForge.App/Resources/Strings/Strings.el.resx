@@ -688,6 +688,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Κανένα πρόγραμμα δεν είναι συνδεδεμένο.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Συνδεδεμένα: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Άγνωστο πρόγραμμα</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, υπογεγραμμένο από {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, μη υπογεγραμμένο</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ολοκληρώθηκε</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Δεν ολοκληρώθηκε</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Δεν επιτρέπεται σε αυτό το επίπεδο</value></data>
@@ -713,6 +715,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Το πρόγραμμα μιλά μια έκδοση που το PadForge δεν γνωρίζει</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Το PadForge δεν έδωσε αυτό το κλειδί προσθέτου</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Το PadForge δεν δέχτηκε τη σύνδεση αυτού του προγράμματος</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ζητήθηκε ξανά πολύ νωρίς</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Όχι άλλα τέτοια μέχρι να ξεκινήσει ξανά το PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Αλλαγή στο προφίλ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Επιστροφή στο προεπιλεγμένο προφίλ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ερώτηση για το ενεργό προφίλ</value></data>
@@ -749,6 +753,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ορισμός της τιμής {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Εκτέλεση του εργαλείου {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} φορές</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, το τελευταίο από {1} παρόμοια αιτήματα</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Σενάρια AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

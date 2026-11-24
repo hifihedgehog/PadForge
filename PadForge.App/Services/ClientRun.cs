@@ -38,6 +38,8 @@ namespace PadForge.Services
         internal const string AutomationOffText =
             "Automation is off in PadForge. Turn it on under Extras, Automation.";
         internal const string NoAnswerText = "PadForge did not answer.";
+        internal const string NotPadForgeText =
+            "Another program holds the pipe PadForge.Control. It is not PadForge, so nothing was sent to it.";
 
         /// <summary>The run's ways out to the machine, each a test's to
         /// replace.</summary>
@@ -189,6 +191,7 @@ namespace PadForge.Services
             if (line == "show") seams.LendForeground();
 
             string reply = seams.Exchange(line);
+            if (reply == ControlPipeClient.NotPadForge) return NotPadForge(line, seams);
             if (reply == null && !seams.PipeStands())
             {
                 // No pipe: Automation is off, or the copy is not serving yet,
@@ -200,6 +203,7 @@ namespace PadForge.Services
                         return NotRunning;
                     case RunningCopy.Settled.Ready:
                         reply = seams.Exchange(line);
+                        if (reply == ControlPipeClient.NotPadForge) return NotPadForge(line, seams);
                         break;
                 }
             }
@@ -244,6 +248,21 @@ namespace PadForge.Services
             seams.SayError(reply);
             return reply.StartsWith(NotAllowedReply, StringComparison.Ordinal) ? NotAllowed : AnsweredAnError;
         }
+
+        /// <summary>The pipe's server is not PadForge: it is treated as no
+        /// PadForge, and the caller hears that another program holds the
+        /// name. Showing the window needs no pipe and still goes to the
+        /// running copy, which is found by its own checked window.</summary>
+        private static int NotPadForge(string line, Seams seams)
+        {
+            if (line == "show" && seams.ShowWindow())
+            {
+                seams.Say("ok");
+                return Done;
+            }
+            seams.SayError(NotPadForgeText);
+            return NotRunning;
+        }
     }
 
     /// <summary>The client end of <c>PadForge.Control</c>: one line out, one
@@ -278,12 +297,21 @@ namespace PadForge.Services
         /// hangs.</summary>
         internal const int AnswerMs = 60000;
 
+        /// <summary>What <see cref="Exchange(string)"/> gives for a pipe
+        /// whose server is not PadForge: nothing was sent to it. No answer
+        /// of a pipe can be this, since a line holds no NUL.</summary>
+        internal const string NotPadForge = "\0not-padforge";
+
         internal static string Exchange(string line) => Exchange(ExternalControlService.PipeName, line, 5000);
 
         /// <summary>Sends <paramref name="line"/> and returns the answer, or
         /// null when the pipe is not there, is not taken in time, does not
         /// answer in <paramref name="answerMs"/> or closes without a
-        /// word.</summary>
+        /// word, or <see cref="NotPadForge"/> when its server is another
+        /// program (PipeOwner). The pipe is opened at the identification
+        /// level, so a server that is not PadForge cannot act as the caller.
+        /// A pipe of another name than PadForge's own, which a test serves,
+        /// is taken from the caller's own user too (PipeOwner.IsServer).</summary>
         internal static string Exchange(string pipeName, string line, int connectMs, int answerMs = AnswerMs)
         {
             // The test host connects to no pipe under the app's own name.
@@ -292,8 +320,12 @@ namespace PadForge.Services
             try
             {
                 // Asynchronous, so the write and the reads can be given up.
-                using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+                using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous,
+                    System.Security.Principal.TokenImpersonationLevel.Identification);
                 client.Connect(connectMs);
+                // Nothing goes to a server that is not PadForge.
+                if (!PipeOwner.IsServer(client.SafePipeHandle, IsTheAppsOwn(pipeName)))
+                    return NotPadForge;
                 using var deadline = new CancellationTokenSource(answerMs);
                 byte[] request = Encoding.UTF8.GetBytes(line + "\n");
                 client.WriteAsync(request, 0, request.Length, deadline.Token).GetAwaiter().GetResult();

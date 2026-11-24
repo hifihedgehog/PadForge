@@ -812,6 +812,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Esor program a riri.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A riri: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program ese silles</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, a sain ren {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ese sain</value></data>
   <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Eu value non ewe tingor ese pwúng</value></data>
   <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Esor ena profile</value></data>
   <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Esor ena virtual controller</value></data>
@@ -831,6 +833,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ewe program a kapas non eu version PadForge ese silei</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ese ngeni ena plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ese etiwa ewe riri an ei program</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A tingor sefál mi fókkun mwittir</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Esor pwal ekkeei tori PadForge epwe poputá sefál</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Siwil ngeni ewe profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Liwin ngeni ewe profile default</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eis ifa ewe profile mi angang</value></data>
@@ -867,6 +871,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Akkota ewe value {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Angangééni ewe tool {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fán</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ewe sópwólóón seni {1} mi ina usun</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Script (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python Script (*.py)|*.py</value></data>
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell Module (*.psm1)|*.psm1</value></data>

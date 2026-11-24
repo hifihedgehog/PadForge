@@ -200,6 +200,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nta porogaramu ihujwe.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Zihujwe: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Porogaramu itazwi</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, yasinywe na {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, idasinywe</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Byakozwe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ntibyakozwe</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ntibyemewe kuri uru rwego</value></data>
@@ -225,6 +227,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Porogaramu ikoresha verisiyo PadForge itazi</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ntiyatanze urwo rufunguzo rwa plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ntiyakiriye ihuza ry'iyi porogaramu</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Byongeye gusabwa vuba cyane</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nta bindi nk'ibi kugeza PadForge yongeye gutangira</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hindurira kuri profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Subira kuri profili isanzwe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Baza profili ikora</value></data>
@@ -2105,6 +2109,7 @@
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins zikora: {0}. Ibikoresho zongeyeho: {1}.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Ibikoresho byo gukora plugin, n'inyandiko y'ibyabaye ya plugin uhisemo</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, inshuro {1}</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ubwa nyuma muri {1} nk'ubwo</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emera</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ntubyemere</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Biturutse kuri {0}</value></data>

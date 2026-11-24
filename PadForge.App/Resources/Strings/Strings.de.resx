@@ -387,6 +387,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kein Programm ist verbunden.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Verbunden: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Unbekanntes Programm</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signiert von {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, nicht signiert</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Erledigt</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nicht erledigt</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Auf dieser Stufe nicht erlaubt</value></data>
@@ -412,6 +414,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Das Programm spricht eine Version, die PadForge nicht kennt</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge hat diesen Plugin-Schlüssel nicht vergeben</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge hat die Verbindung dieses Programms nicht angenommen</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Zu früh erneut angefragt</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Keine weiteren davon, bis PadForge neu startet</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Zum Profil {0} wechseln</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Zum Standardprofil zurückkehren</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Fragen, welches Profil aktiv ist</value></data>
@@ -448,6 +452,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Den Wert {0} setzen</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Das Tool {0} ausführen</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} Mal</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, der letzte von {1} gleichartigen</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey-v2-Skripte (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

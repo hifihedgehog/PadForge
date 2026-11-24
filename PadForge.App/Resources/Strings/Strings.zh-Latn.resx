@@ -675,6 +675,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Wèi liánjiē rènhé chéngxù.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Yǐ liánjiē: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Wèizhī chéngxù</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, qiānmíng zhě: {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, wèi qiānmíng</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Yǐ wánchéng</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wèi wánchéng</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Cǐ jíbié bù yǔnxǔ</value></data>
@@ -700,6 +702,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Chéngxù shǐyòng de bǎnběn PadForge bù rènshí</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge wèi fāfàng gāi chājiàn mìyào</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge wèi jiēshòu cǐ chéngxù de liánjiē</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Zàicì qǐngqiú guò kuài</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge chóngxīn qǐdòng qián bù zài zhíxíng cǐ lèi qǐngqiú</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Qiēhuàn dào pèizhì wénjiàn {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fǎnhuí mòrèn pèizhì wénjiàn</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Xúnwèn dāngqián huódòng de pèizhì wénjiàn</value></data>
@@ -736,6 +740,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Shèzhì zhí {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yùnxíng gōngjù {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} cì</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, tóng lèi {1} xiàng zhōng de zuìhòu yí xiàng</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 jiǎoběn (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>

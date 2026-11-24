@@ -18,6 +18,16 @@ namespace PadForge.Services
     /// <para>This class is the second copy's side and uses no window toolkit:
     /// it runs before WPF loads. The running copy's side is
     /// <see cref="InstanceSignal"/>.</para>
+    ///
+    /// <para>Any program of the user's can make a message-only window of the
+    /// same name, so a window counts as the running copy's only when its
+    /// process runs at high integrity or above, which no program without
+    /// administrator rights can. Show is posted, and the right to the
+    /// foreground lent, to that window alone. The single-instance lock
+    /// stands in a namespace only a copy with rights can open
+    /// (<see cref="InstanceLock"/>), so a copy without them finds the running
+    /// copy by that checked window, and its pipes by their owner
+    /// (PipeOwner).</para>
     /// </summary>
     internal static class RunningCopy
     {
@@ -36,8 +46,9 @@ namespace PadForge.Services
         /// its window, as a click on its tray icon does.</summary>
         internal const string ShowMessageName = "PadForge.Show";
 
-        /// <summary>The single-instance lock's name, in the session's own
-        /// namespace: one PadForge per signed-in session.</summary>
+        /// <summary>The single-instance lock's name in the session's plain
+        /// namespace, which a copy without rights takes in a developer's
+        /// run. The app's own lock is <see cref="InstanceLock"/>'s.</summary>
         internal const string InstanceMutexName = "PadForge_SingleInstance";
 
         /// <summary>Set by the test assembly for the life of its process
@@ -102,10 +113,49 @@ namespace PadForge.Services
         /// <summary>The running copy's message-only window of that name, or
         /// zero.</summary>
         private static IntPtr Find(string windowName)
-            => OffLimitsForTest ? IntPtr.Zero : FindWindowExW(HWND_MESSAGE, IntPtr.Zero, null, windowName);
+            => OffLimitsForTest ? IntPtr.Zero : FindChecked(windowName);
 
-        /// <summary>Whether a PadForge runs in this session: its signal window
-        /// stands, or a copy that is still starting holds the lock.</summary>
+        /// <summary>Test seam: a process's integrity level. Null in the
+        /// app.</summary>
+        internal static Func<uint, int?> IntegritySeam;
+
+        /// <summary>The first message-only window of the name whose process
+        /// runs at high integrity or above, or zero. A window of that name a
+        /// program without rights made is passed over. The fence keeps the
+        /// test host from the app's own names, and a test looks up names of
+        /// its own.</summary>
+        internal static IntPtr FindChecked(string windowName)
+        {
+            if (OffLimitsForTest && IsTheAppsOwn(windowName)) return IntPtr.Zero;
+            IntPtr after = IntPtr.Zero;
+            // A bounded walk: a program cannot make the search run on by
+            // making windows of the name without end.
+            for (int i = 0; i < 64; i++)
+            {
+                after = FindWindowExW(HWND_MESSAGE, after, null, windowName);
+                if (after == IntPtr.Zero) return IntPtr.Zero;
+                GetWindowThreadProcessId(after, out uint pid);
+                if (RunsWithRights(pid)) return after;
+            }
+            return IntPtr.Zero;
+        }
+
+        /// <summary>Whether a process runs at high integrity or above.</summary>
+        internal static bool RunsWithRights(uint pid)
+        {
+            if (pid == 0) return false;
+            var seam = IntegritySeam;
+            int? integrity = seam != null ? seam(pid) : PadForge.Common.ProcessIntegrity.Of(pid);
+            return integrity is { } rid && rid >= PadForge.Common.ProcessIntegrity.High;
+        }
+
+        private static bool IsTheAppsOwn(string windowName)
+            => string.Equals(windowName, SignalWindowName, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(windowName, ReadyWindowName, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Whether a PadForge runs in this session: its checked
+        /// signal window stands, or, for a copy with rights, a copy that is
+        /// still starting holds the lock.</summary>
         internal static bool Exists()
         {
             if (OffLimitsForTest) return false;
@@ -116,22 +166,10 @@ namespace PadForge.Services
         /// closing.</summary>
         internal static bool IsReady() => Find(ReadyWindowName) != IntPtr.Zero;
 
-        private static bool LockIsHeld()
-        {
-            try
-            {
-                if (Mutex.TryOpenExisting(InstanceMutexName, out Mutex held))
-                {
-                    held.Dispose();
-                    return true;
-                }
-                return false;
-            }
-            // The lock is the running copy's, made with its rights. Being
-            // refused it still says it is there.
-            catch (UnauthorizedAccessException) { return true; }
-            catch { return false; }
-        }
+        /// <summary>Whether a copy holds the lock. Only a copy with rights
+        /// can open the lock's namespace to know, and one without is told
+        /// no: it waits on nothing a program without rights could make.</summary>
+        private static bool LockIsHeld() => InstanceLock.IsHeld();
 
         /// <summary>The running copy's process ID, or 0 while it has no signal
         /// window yet.</summary>
@@ -147,9 +185,9 @@ namespace PadForge.Services
         /// Waits while the running copy is neither ready nor gone: it is still
         /// starting, or it is closing. A copy that shows its signal window is
         /// given <paramref name="startingMs"/>. One that holds the lock and
-        /// shows no window is a copy in the first moment of its start, or one
-        /// from before the windows existed, and is given
-        /// <paramref name="lockOnlyMs"/>.
+        /// shows no window is a copy in the first moment of its start, and is
+        /// given <paramref name="lockOnlyMs"/>. Only a copy with rights can
+        /// see the lock.
         /// </summary>
         internal static Settled WaitUntilSettled(int startingMs = 15000, int lockOnlyMs = 2000)
         {

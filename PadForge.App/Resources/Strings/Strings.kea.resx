@@ -358,6 +358,8 @@
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nenhun programa ka sta konektadu.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektadu: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa diskonxidu</value></data>
+  <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, asinadu pa {1}</value></data>
+  <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ka asinadu</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Feitu</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ka feitu</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ka permitidu na es nível</value></data>
@@ -383,6 +385,8 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa ta papia un vérson ki PadForge ka kunxi</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ka da es xavi di plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ka aseta konekson di es programa</value></data>
+  <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Pididu otu bês sedu dimás</value></data>
+  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ka ten más di es ti PadForge inisia otu bês</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Troka pa perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Volta pa Perfil Padron</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pergunta kal perfil ki sta ativu</value></data>
@@ -419,6 +423,7 @@
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Difini valor {0}</value></data>
   <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Roda feramenta {0}</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} bês</value></data>
+  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, último di {1} sima el</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Komandu web</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativa servidor di komandu web</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Só es PC</value></data>

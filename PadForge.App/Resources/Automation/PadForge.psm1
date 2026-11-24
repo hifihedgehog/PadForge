@@ -36,8 +36,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using Microsoft.Win32.SafeHandles;
 
 namespace PadForgeAutomation
 {
@@ -77,6 +79,73 @@ namespace PadForgeAutomation
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr FindWindowExW(IntPtr parent, IntPtr after, string className, string windowName);
 
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr OpenProcess(uint access, bool inherit, uint processId);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool OpenProcessToken(IntPtr process, uint access, out IntPtr token);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool GetTokenInformation(IntPtr token, int infoClass, IntPtr info, int length, out int returned);
+
+        [DllImport("advapi32.dll")]
+        private static extern IntPtr GetSidSubAuthorityCount(IntPtr sid);
+
+        [DllImport("advapi32.dll")]
+        private static extern IntPtr GetSidSubAuthority(IntPtr sid, uint index);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool CloseHandle(IntPtr handle);
+
+        // A process's integrity level's RID, or -1.
+        private static int Integrity(uint pid)
+        {
+            IntPtr process = OpenProcess(0x1000, false, pid);
+            if (process == IntPtr.Zero) return -1;
+            try
+            {
+                IntPtr token;
+                if (!OpenProcessToken(process, 8, out token)) return -1;
+                try
+                {
+                    int size;
+                    GetTokenInformation(token, 25, IntPtr.Zero, 0, out size);
+                    if (size <= 0) return -1;
+                    IntPtr buffer = Marshal.AllocHGlobal(size);
+                    try
+                    {
+                        if (!GetTokenInformation(token, 25, buffer, size, out size)) return -1;
+                        IntPtr sid = Marshal.ReadIntPtr(buffer);
+                        int count = Marshal.ReadByte(GetSidSubAuthorityCount(sid));
+                        return Marshal.ReadInt32(GetSidSubAuthority(sid, (uint)(count - 1)));
+                    }
+                    finally { Marshal.FreeHGlobal(buffer); }
+                }
+                finally { CloseHandle(token); }
+            }
+            finally { CloseHandle(process); }
+        }
+
+        // Whether PadForge runs: its window PadForge.Instance stands, made
+        // by a process with administrator rights, which a program that made
+        // one without them does not have.
+        private static bool PadForgeRuns()
+        {
+            IntPtr after = IntPtr.Zero;
+            for (int i = 0; i < 64; i++)
+            {
+                after = FindWindowExW(new IntPtr(-3), after, null, "PadForge.Instance");
+                if (after == IntPtr.Zero) return false;
+                uint pid;
+                GetWindowThreadProcessId(after, out pid);
+                if (Integrity(pid) >= 0x3000) return true;
+            }
+            return false;
+        }
+
         // 0 the pipe stands, 1 nothing serves it, 2 PadForge runs with
         // Automation off.
         public static int Probe(string name, bool isTheAppsOwn)
@@ -84,51 +153,54 @@ namespace PadForgeAutomation
             if (WaitNamedPipeW(@"\\.\pipe\" + name, 1)) return 0;
             int error = Marshal.GetLastWin32Error();
             if (error != 2) return 0;
-            if (isTheAppsOwn && FindWindowExW(new IntPtr(-3), IntPtr.Zero, null, "PadForge.Instance") != IntPtr.Zero) return 2;
+            if (isTheAppsOwn && PadForgeRuns()) return 2;
             return 1;
         }
 
-        public Connection(string name, int timeoutMs) : this(name, timeoutMs, false) { }
-
-        // A plugin's connection lets the server identify it and no more, and
-        // is made only to a pipe PadForge made: one owned by Administrators
-        // or SYSTEM, which a program without administrator rights cannot
-        // make. A pipe of another name, which only a test gives, may also be
-        // owned by this program's own user.
-        public Connection(string name, int timeoutMs, bool plugin)
-        {
-            _pipe = plugin
-                ? new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous, System.Security.Principal.TokenImpersonationLevel.Identification)
-                : new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous);
-            _pipe.Connect(timeoutMs);
-            if (plugin && !ServedByPadForge(name))
-            {
-                _pipe.Dispose();
-                throw new InvalidOperationException("The pipe " + name + " is not PadForge's, so the plugin's key was not sent.");
-            }
-            BeginRead();
-        }
-
-        private bool ServedByPadForge(string name)
-        {
-            IntPtr owner, descriptor;
-            if (GetSecurityInfo(_pipe.SafePipeHandle, 6, 1, out owner, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, out descriptor) != 0) return false;
-            try
-            {
-                var sid = new System.Security.Principal.SecurityIdentifier(owner);
-                if (sid.IsWellKnown(System.Security.Principal.WellKnownSidType.BuiltinAdministratorsSid)
-                    || sid.IsWellKnown(System.Security.Principal.WellKnownSidType.LocalSystemSid)) return true;
-                return name != "PadForge.Automation" && sid == System.Security.Principal.WindowsIdentity.GetCurrent().User;
-            }
-            finally { LocalFree(descriptor); }
-        }
-
         [DllImport("advapi32.dll")]
-        private static extern uint GetSecurityInfo(SafeHandle handle, int objectType, int what, out IntPtr owner,
-            IntPtr group, IntPtr dacl, IntPtr sacl, out IntPtr descriptor);
+        private static extern int GetSecurityInfo(SafePipeHandle handle, int objectType, uint securityInfo,
+            out IntPtr owner, IntPtr group, IntPtr dacl, IntPtr sacl, out IntPtr securityDescriptor);
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr LocalFree(IntPtr memory);
+
+        // Opened at the identification level, so a server that is not
+        // PadForge cannot act as this script's user. Nothing is read or
+        // written before the owner is checked.
+        public Connection(string name, int timeoutMs)
+        {
+            _pipe = new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous,
+                TokenImpersonationLevel.Identification);
+            _pipe.Connect(timeoutMs);
+        }
+
+        // The SID of the pipe's owner, or null.
+        public string Owner()
+        {
+            IntPtr owner, descriptor;
+            if (GetSecurityInfo(_pipe.SafePipeHandle, 6, 1, out owner, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, out descriptor) != 0)
+                return null;
+            try { return owner == IntPtr.Zero ? null : new SecurityIdentifier(owner).Value; }
+            finally { LocalFree(descriptor); }
+        }
+
+        // A PadForge pipe is owned by Administrators or the system, which a
+        // program without administrator rights cannot give a pipe it made
+        // under PadForge's name. A pipe of another name, which a test
+        // serves, is taken from this script's own user too. Windows reads a
+        // pipe's name without regard to case, so PadForge's own is told
+        // apart the same way.
+        public bool ServerIsPadForge(string name)
+        {
+            string owner = Owner();
+            if (owner == "S-1-5-32-544" || owner == "S-1-5-18") return true;
+            bool isTheAppsOwn = string.Equals(name, "PadForge.Automation", StringComparison.OrdinalIgnoreCase);
+            if (isTheAppsOwn || owner == null) return false;
+            using (WindowsIdentity me = WindowsIdentity.GetCurrent())
+                return me.User != null && owner == me.User.Value;
+        }
+
+        public void Start() { BeginRead(); }
 
         public bool IsClosed { get { return _closed; } }
 
@@ -347,7 +419,12 @@ function Connect-PadForge {
         if ($Pipe -eq $script:DefaultPipe) { throw 'PadForge is not running.' }
         throw "Nothing serves the pipe $Pipe."
     }
-    $handle = New-Object PadForgeAutomation.Connection($Pipe, ($TimeoutSeconds * 1000), [bool]$Token)
+    $handle = New-Object PadForgeAutomation.Connection($Pipe, ($TimeoutSeconds * 1000))
+    if (-not $handle.ServerIsPadForge($Pipe)) {
+        $handle.Dispose()
+        throw "Another program holds the pipe $Pipe. It is not PadForge, so nothing was sent to it."
+    }
+    $handle.Start()
     $script:Connection = [pscustomobject]@{ Handle = $handle; Lease = $Lease; Session = 0; Version = '' }
     $script:Callbacks = @{}
     $script:Subscribed = @{}

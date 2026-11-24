@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>വിൻഡോ ചെറുതാക്കുമ്പോൾ PadForge-നെ ടാസ്ക്ബാറിനു പകരം അറിയിപ്പ് ഏരിയയിൽ നിലനിർത്തുക.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ആരംഭിക്കുമ്പോൾ വിൻഡോ മറച്ചുവെക്കുക. അത് സാധാരണ പോലെ പ്രവർത്തിക്കുകയും മാപ്പ് ചെയ്യുകയും ചെയ്യും.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows-ൽ സൈൻ ഇൻ ചെയ്യുമ്പോൾ PadForge സ്വയമേവ ആരംഭിക്കുക.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge പ്രവർത്തിക്കുന്നത് {0}-ൽ നിന്നാണ്.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ഇതിന് PadForge സ്വന്തം ഫോൾഡറിൽ വേണം. അതിന്റെ ഫോൾഡറിൽ മറ്റ് ഫയലുകളുമുണ്ട്, അതിനാൽ മറ്റ് പ്രോഗ്രാമുകൾ അത് മാറ്റുന്നത് PadForge-ന് തടയാനാവില്ല.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge സ്വന്തം ഫോൾഡറിലേക്ക് മാറ്റുക</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge-ഉം അതിന്റെ ക്രമീകരണങ്ങളും Program Files-ലേക്ക് പകർത്തുന്നു, അതിന്റെ ടാസ്ക്കുകൾ അവിടേക്ക് ചൂണ്ടുന്നു, അവിടെ നിന്ന് ആരംഭിക്കുന്നു. ഇവിടെയുള്ള പകർപ്പ് അതേപടി തുടരും.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge മാറിയില്ല: {0}-ൽ PadForge-ന്റേതല്ലാത്ത ഫയലുകളുണ്ട്.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge മാറിയില്ല: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>മറ്റ് ഫയലുകളുള്ള ഒരു ഫോൾഡറിൽ നിന്ന് PadForge പ്രവർത്തിപ്പിച്ചതിനാൽ ലോഗിൻ ചെയ്യുമ്പോൾ ആരംഭിക്കുക ഓഫാക്കി.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>എപ്പോഴും സിസ്റ്റം ട്രേയിൽ കാണിക്കുക</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>വിൻഡോ തുറന്നിരിക്കുമ്പോൾ ട്രേ ഐക്കൺ ദൃശ്യമാക്കുക, അങ്ങനെ അതിന്റെ മെനുവിലെ പുറത്തുകടക്കുക എപ്പോഴും ഒരു ക്ലിക്ക് അകലെയാകും.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ</value></data>

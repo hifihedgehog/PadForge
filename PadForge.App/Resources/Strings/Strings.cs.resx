@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Při minimalizaci okna zůstane PadForge v oznamovací oblasti místo na hlavním panelu.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Při spuštění programu PadForge zůstane okno skryté. Program běží a mapuje jako obvykle.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Spustí PadForge automaticky po přihlášení do Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge běží z {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>K tomu musí být PadForge ve vlastní složce. Jeho složka obsahuje jiné soubory, takže PadForge nemůže zabránit jiným programům, aby ji měnily.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Přesunout PadForge do vlastní složky</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Zkopíruje PadForge a jeho nastavení do složky Program Files, nasměruje tam jeho úlohy a spustí ho odtud. Kopie zde zůstane beze změny.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se nepřesunul: {0} obsahuje soubory, které nepatří programu PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se nepřesunul: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Spouštění při přihlášení bylo vypnuto, protože spouštělo PadForge ze složky, která obsahuje jiné soubory.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vždy zobrazovat v oznamovací oblasti</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v oznamovací oblasti zůstane viditelná, i když je okno otevřené, takže příkaz Ukončit v její nabídce je vždy na jedno kliknutí.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizace</value></data>

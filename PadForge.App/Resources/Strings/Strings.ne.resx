@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>सञ्झ्याल मिनिमाइज गर्दा PadForge लाई टास्कबारको सट्टा सूचना क्षेत्रमा राख्नुहोस्।</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge सुरु हुँदा सञ्झ्याल लुकाइराख्नुहोस्। यो सधैँझैँ चल्छ र म्याप गर्छ।</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>तपाईं Windows मा साइन इन गर्दा PadForge आफैँ सुरु गर्नुहोस्।</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} बाट चल्छ।</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>यसका लागि PadForge आफ्नै फोल्डरमा हुनुपर्छ। यसको फोल्डरमा अन्य फाइलहरू छन्, त्यसैले PadForge ले अन्य प्रोग्रामहरूलाई यसलाई बदल्नबाट रोक्न सक्दैन।</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge लाई आफ्नै फोल्डरमा सार्नुहोस्</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge र यसका सेटिङहरू Program Files मा कपी गर्छ, यसका टास्कहरूलाई त्यहाँ देखाउँछ, र त्यहीँबाट सुरु गर्छ। यहाँको प्रति जस्ताको तस्तै रहन्छ।</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge सरेन: {0} मा PadForge का नभएका फाइलहरू छन्।</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge सरेन: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>“लगइनमा सुरु गर्नुहोस्” बन्द गरियो, किनभने यसले अन्य फाइलहरू भएको फोल्डरबाट PadForge चलाउँथ्यो।</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>सधैँ प्रणाली ट्रेमा देखाउनुहोस्</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>सञ्झ्याल खुला हुँदा पनि ट्रे आइकन देखिने राख्नुहोस्, ताकि यसको मेनुको बाहिर निस्कनुहोस् सधैँ एक क्लिकमै होस्।</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>अद्यावधिकहरू</value></data>

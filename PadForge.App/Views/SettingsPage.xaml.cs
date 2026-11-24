@@ -274,7 +274,7 @@ namespace PadForge.Views
             try
             {
                 string path = PadForge.Common.DiagnosticsLogControl.SaveSnapshot();
-                PadForge.Common.ShellLaunch.Start("explorer.exe", $"/select,\"{path}\"");
+                PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{path}\"");
             }
             catch
             {
@@ -293,13 +293,16 @@ namespace PadForge.Views
 
         private void SaveLastMinute_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(true);
 
+        private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
+            => PadForge.Services.ExeFolderState.Instance.RequestMove();
+
         private void OpenDiagFolder_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 System.IO.Directory.CreateDirectory(PadForge.Common.DiagnosticsLogControl.Folder);
-                PadForge.Common.ShellLaunch.Start("explorer.exe",
-                    PadForge.Common.DiagnosticsLogControl.Folder);
+                PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer,
+                    "\"" + PadForge.Common.DiagnosticsLogControl.Folder.TrimEnd('\\') + "\"");
             }
             catch
             {

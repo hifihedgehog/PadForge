@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Qorwagh DamachmoHDI', vep yoSDaq PadForge yIpol, Qu' naQDaq yIpolQo'.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>taghDI' PadForge, Qorwagh yISo'taH. motlh Qap 'ej nel.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows DangaQHa'moHDI', PadForge yItagh.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>{0} Daq Qap PadForge.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>PadForge neH ngaSbogh 'a'baqa' ngaSwI' poQ Dochvam. latlh 'a'baqa'mey ngaS 'a'baqa' ngaSwI'Daj, vaj latlh nIqHommey 'oH choH 'e' botlaHbe' PadForge.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>'a'baqa' ngaSwI' tlhInDaq PadForge yIngeH</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Program Files Daq PadForge DuHmeyDaj je velqa' chenmoH, Qu'meyDaj Daqvetlh ghaS, ghIq Daqvetlhvo' 'oH tagh. naDev velqa' choHbe'.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>vIHbe' PadForge: PadForge Doch 'oHbe'bogh 'a'baqa'mey ngaS {0}.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>vIHbe' PadForge: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh chu'Ha'lu'pu', latlh 'a'baqa'mey ngaSbogh 'a'baqa' ngaSwI'vo' PadForge taghmo'.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>reH vep yoSDaq yI'ang</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>poStaHvIS Qorwagh, vep yoSDaq PadForge mIllogh yI'angtaH. vaj reH wa' rISDaq HIDjolevDaj 'elHa' tu'lu'.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>De' chu'mey</value></data>

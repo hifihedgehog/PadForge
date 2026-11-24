@@ -414,6 +414,13 @@
   <data name="Settings_HideDevices" xml:space="preserve"><value>Haitim ol masin long ol gem</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Windo</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Kirapim PadForge otomatik taim yu sain i go insait long Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge i ran long {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dispela i nidim PadForge long folda bilong em yet. Folda bilong en i holim ol narapela fail, olsem na PadForge i no inap pasim ol narapela program long senisim.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Muvim PadForge i go long folda bilong em yet</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>I kopim PadForge na ol seting bilong en i go long Program Files, i soim ol wok bilong en i go long hap, na i statim long hap. Kopi i stap hia i stap olsem.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge i no muv: {0} i holim ol fail i no bilong PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge i no muv: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start at Login i of nau, long wanem em i ranim PadForge long folda i holim ol narapela fail.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ol apdeit</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Em i sekim taim PadForge i kirap na long olgeta 12 aua bihain long en.</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Sekim nau</value></data>

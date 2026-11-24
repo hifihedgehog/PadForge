@@ -2603,7 +2603,7 @@ namespace PadForge.Services
                 throw new System.ComponentModel.Win32Exception(5, "The test host starts no process: netsh.exe");
             var psi = new ProcessStartInfo
             {
-                FileName = "netsh.exe",
+                FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "netsh.exe"),
                 Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,

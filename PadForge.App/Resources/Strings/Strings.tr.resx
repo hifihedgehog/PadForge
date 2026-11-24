@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Pencereyi simge durumuna küçülttüğünüzde PadForge görev çubuğu yerine bildirim alanında durur.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge başladığında pencere gizli kalır. Program her zamanki gibi çalışır ve eşleme yapar.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows'ta oturum açtığınızda PadForge'u otomatik olarak başlatır.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge şuradan çalışıyor: {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Bunun için PadForge'un kendi klasöründe olması gerekir. Klasörü başka dosyalar içeriyor, bu yüzden PadForge diğer programların onu değiştirmesini engelleyemez.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge'u kendi klasörüne taşı</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge'u ve ayarlarını Program Files'a kopyalar, görevlerini oraya yönlendirir ve oradan başlatır. Buradaki kopya olduğu gibi kalır.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} klasöründe PadForge'a ait olmayan dosyalar var.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge taşınmadı: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge'u başka dosyalar içeren bir klasörden çalıştırıyordu.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sistem tepsisinde her zaman göster</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pencere açıkken de tepsi simgesi görünür kalır. Böylece menüsündeki Çıkış her zaman bir tık uzakta olur.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Güncellemeler</value></data>

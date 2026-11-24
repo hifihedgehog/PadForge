@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>يبقي PadForge في منطقة الإعلام عند تصغير النافذة، بدلا من شريط المهام.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>يبقي النافذة مخفية عند بدء PadForge. يعمل البرنامج وينفذ التعيينات كالمعتاد.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>تشغيل PadForge تلقائيا عند تسجيل دخولك إلى Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>يعمل PadForge من {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>هذا يتطلب أن يكون PadForge في مجلد خاص به. مجلده الحالي يحوي ملفات أخرى، لذا لا يستطيع PadForge منع البرامج الأخرى من تغييره.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>نقل PadForge إلى مجلد خاص به</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>ينسخ PadForge وإعداداته إلى Program Files، ويوجّه مهامه إلى هناك، ويشغّله من هناك. تبقى النسخة الحالية كما هي.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>لم ينتقل PadForge: المجلد {0} يحوي ملفات ليست من PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>لم ينتقل PadForge: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>أُوقف «التشغيل عند تسجيل الدخول» لأنه كان يشغّل PadForge من مجلد يحوي ملفات أخرى.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>الإظهار دائما في علبة النظام</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>يبقي أيقونة علبة النظام ظاهرة والنافذة مفتوحة، فيكون «خروج» في قائمتها على بعد نقرة واحدة دائما.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>التحديثات</value></data>

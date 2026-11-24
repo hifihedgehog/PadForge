@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>উইন্ডো মিনিমাইজ করলে PadForge-কে টাস্কবারের বদলে নোটিফিকেশন এরিয়ায় রাখে।</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge চালু হওয়ার সময় উইন্ডোটি লুকিয়ে রাখে। এটি যথারীতি চলে ও ম্যাপ করে।</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>আপনি Windows-এ সাইন ইন করলে PadForge স্বয়ংক্রিয়ভাবে চালু করে।</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge চলছে {0} থেকে।</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>এর জন্য PadForge-কে নিজস্ব একটি ফোল্ডারে থাকতে হবে। এর ফোল্ডারে অন্য ফাইলও আছে, তাই অন্য প্রোগ্রামকে এটি বদলানো থেকে PadForge ঠেকাতে পারে না।</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-কে নিজস্ব ফোল্ডারে সরান</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge ও তার সেটিংস Program Files-এ কপি করে, তার টাস্কগুলো সেখানে নির্দেশ করে এবং সেখান থেকে চালু করে। এখানকার কপিটি যেমন আছে তেমনই থাকে।</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge সরেনি: {0}-এ PadForge-এর নয় এমন ফাইল আছে।</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge সরেনি: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>লগইনের সময় চালু করুন বন্ধ করা হয়েছে, কারণ এটি PadForge-কে অন্য ফাইলে ভরা একটি ফোল্ডার থেকে চালাচ্ছিল।</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>সব সময় সিস্টেম ট্রেতে দেখান</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>উইন্ডো খোলা থাকলেও ট্রে আইকনটি দৃশ্যমান রাখে, যাতে এর মেনুর “প্রস্থান” সব সময় এক ক্লিক দূরে থাকে।</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>আপডেট</value></data>

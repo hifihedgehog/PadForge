@@ -714,6 +714,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Kenbe PadForge nan zòn notifikasyon an lè ou minimize fenèt la, olye nan ba travay la.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Kenbe fenèt la kache lè PadForge demare. Li mache epi li asiyen tankou abitid.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Demare PadForge otomatikman lè ou konekte nan Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ap mache apati {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Sa a bezwen PadForge nan yon dosye pa li. Dosye li a gen lòt fichye ladan l, kidonk PadForge pa ka anpeche lòt pwogram chanje l.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Deplase PadForge nan pwòp dosye li</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopye PadForge ak paramèt li yo nan Program Files, dirije travay li yo la, epi demare l la. Kopi ki isit la rete jan li ye a.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge pa t deplase: {0} gen fichye ki pa pou PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge pa t deplase: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Demare lè ou konekte te dezaktive, paske li te lanse PadForge apati yon dosye ki gen lòt fichye.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Toujou montre nan zòn notifikasyon an</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Kenbe ikòn zòn notifikasyon an vizib pandan fenèt la louvri, konsa Sòti nan meni li toujou a yon klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mizajou</value></data>

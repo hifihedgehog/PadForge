@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Ko pomanjšate okno, PadForge ostane v območju za obvestila namesto v opravilni vrstici.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Ob zagonu programa PadForge naj okno ostane skrito. Program se izvaja in preslikuje kot običajno.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Samodejno zaženi PadForge, ko se vpišete v Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge se izvaja iz {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>To zahteva, da je PadForge v svoji mapi. V njegovi mapi so druge datoteke, zato PadForge ne more preprečiti, da bi jo spreminjali drugi programi.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Premakni PadForge v lastno mapo</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopira PadForge in njegove nastavitve v Program Files, tja usmeri njegova opravila in ga od tam zažene. Kopija tu ostane nespremenjena.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se ni premaknil: {0} vsebuje datoteke, ki niso del programa PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se ni premaknil: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Zagon ob vpisu je bil izklopljen, ker je zaganjal PadForge iz mape, v kateri so druge datoteke.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vedno pokaži v območju za obvestila</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v območju za obvestila ostane vidna tudi, ko je okno odprto, tako da je ukaz „Izhod“ v njenem meniju vedno oddaljen le en klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Posodobitve</value></data>

@@ -36,9 +36,19 @@ namespace PadForge.Services
         /// TEMP is the same place the driver installers stage their payloads,
         /// and it is re-creatable: delete it and the next launch unpacks it
         /// again from the copy inside the exe.</para></summary>
-        private static readonly string DefaultRoot = Path.Combine(
-            Path.GetTempPath(), "PadForge", "voice-models");
-        private static string Root = DefaultRoot;
+        /// <para>It lives in the protected folder's Work folder (#597): the
+        /// model is parsed by native code in the process with rights, and in
+        /// the temp folder any program of the user could replace it with one
+        /// built to break that parser. The test host keeps the temp
+        /// folder.</para></summary>
+        private static string DefaultRoot => PadForge.Services.ProtectedWork.Folder("VoiceModels")
+            ?? (PadForge.Common.ProtectedFolder.OffLimitsForTest ? Path.Combine(Path.GetTempPath(), "PadForge", "voice-models") : null);
+        private static string _root;
+        private static string Root
+        {
+            get => _root ??= DefaultRoot;
+            set => _root = value;
+        }
 
         private static Vosk.Model _model;
         // 0 absent, 1 unpacking, 2 ready, 3 failed and retried after a delay,
@@ -233,6 +243,13 @@ namespace PadForge.Services
             lock (_lock)
             {
                 if (_state != 0) return;
+                // No protected folder to unpack into: voice macros stay on
+                // SAPI, as when the model cannot be used (#597).
+                if (Root == null)
+                {
+                    LatchUnusable("the protected folder for the voice model could not be made");
+                    return;
+                }
                 string dir = Path.Combine(Root, ModelName);
                 if (File.Exists(Path.Combine(dir, "am", "final.mdl"))
                     || File.Exists(Path.Combine(dir, "final.mdl"))

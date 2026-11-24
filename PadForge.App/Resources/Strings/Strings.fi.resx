@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Pidä PadForge ilmaisinalueella tehtäväpalkin sijaan, kun pienennät ikkunan.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Pidä ikkuna piilossa, kun PadForge käynnistyy. Ohjelma toimii ja tekee määritykset tavalliseen tapaan.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Käynnistä PadForge automaattisesti, kun kirjaudut Windowsiin.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge suoritetaan sijainnista {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tämä vaatii, että PadForge on omassa kansiossaan. Sen kansiossa on muita tiedostoja, joten PadForge ei voi estää muita ohjelmia muuttamasta sitä.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Siirrä PadForge omaan kansioonsa</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopioi PadForge-sovelluksen ja sen asetukset Program Files -kansioon, osoittaa sen tehtävät sinne ja käynnistää sen sieltä. Tähän jäävä kopio säilyy ennallaan.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ei siirtynyt: {0} sisältää tiedostoja, jotka eivät kuulu PadForge-sovellukselle.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ei siirtynyt: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Käynnistä kirjauduttaessa kytkettiin pois, koska se käynnisti PadForge-sovelluksen kansiosta, jossa on muita tiedostoja.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Näytä aina ilmaisinalueella</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pidä ilmaisinalueen kuvake näkyvissä myös ikkunan ollessa auki, jotta sen valikon Lopeta-komento on aina yhden napsautuksen päässä.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Päivitykset</value></data>

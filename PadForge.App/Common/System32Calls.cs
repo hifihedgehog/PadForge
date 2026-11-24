@@ -1,0 +1,629 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace PadForge.Common
+{
+    /// <summary>
+    /// Windows calls made through the System32 copies of kernel32.dll and
+    /// advapi32.dll, loaded by full path, before a start with rights may trust
+    /// the folder its native libraries were unpacked into (#597).
+    ///
+    /// <para>The runtime looks for every library a <c>DllImport</c> names in
+    /// the folders the host lists before it asks Windows (nativelibrary.cpp,
+    /// LoadNativeLibraryBySearch and LoadFromNativeDllSearchDirectories), and
+    /// the single-file host lists the folder it unpacks into. That folder is
+    /// in the user's temp folder unless DOTNET_BUNDLE_EXTRACT_BASE_DIR names
+    /// another, and the host reuses what it finds there (extractor.cpp,
+    /// verify_recover_extraction checks only that each file exists). Measured
+    /// on this PC: a kernel32.dll or advapi32.dll put there is loaded by the
+    /// first <c>DllImport</c> of that name, the runtime's own included. So
+    /// until <see cref="PadForge.Services.ProtectedStart"/> has decided, the
+    /// process makes no <c>DllImport</c> call. Each call here goes through a
+    /// function pointer taken from a module loaded by its full path, which
+    /// the runtime loads as given (NativeLibrary.Load), and System32's path
+    /// comes from the page Windows maps into every process at 0x7FFE0000
+    /// (KUSER_SHARED_DATA.NtSystemRoot, offset 0x30), which no environment
+    /// variable can change.</para>
+    ///
+    /// <para>No member throws, since building an exception's message reads
+    /// the user's language through a <c>DllImport</c>. A call whose module
+    /// or export is missing answers as a failed Windows call does.</para>
+    /// </summary>
+    internal static unsafe class System32Calls
+    {
+        private const int SystemRootOffset = 0x30;
+        private const int SystemRootLength = 260;
+        private const long SharedUserData = 0x7FFE0000;
+
+        /// <summary>Windows' folder, such as <c>C:\WINDOWS</c>, from the page
+        /// the kernel maps into every process. Empty when it cannot be
+        /// read.</summary>
+        internal static readonly string WindowsFolder = ReadSystemRoot();
+
+        /// <summary>System32 with its trailing separator.</summary>
+        internal static readonly string System32 = WindowsFolder.Length == 0 ? string.Empty : WindowsFolder + @"\System32\";
+
+        private static readonly IntPtr Kernel32 = Load("kernel32.dll");
+        private static readonly IntPtr Advapi32 = Load("advapi32.dll");
+
+        private static string ReadSystemRoot()
+        {
+            char* root = (char*)(SharedUserData + SystemRootOffset);
+            int length = 0;
+            while (length < SystemRootLength && root[length] != '\0') length++;
+            // A drive, a colon and a separator at least.
+            if (length < 3 || root[1] != ':' || root[2] != '\\') return string.Empty;
+            return new string(root, 0, length).TrimEnd('\\');
+        }
+
+        private static IntPtr Load(string name)
+            => System32.Length != 0 && NativeLibrary.TryLoad(System32 + name, out IntPtr module) ? module : IntPtr.Zero;
+
+        private static IntPtr Find(IntPtr module, string export)
+            => module != IntPtr.Zero && NativeLibrary.TryGetExport(module, export, out IntPtr address) ? address : IntPtr.Zero;
+
+        // Each pointer is taken once. Zero when the export is missing.
+        private static readonly IntPtr pGetEnvironmentVariableW = Find(Kernel32, "GetEnvironmentVariableW");
+        private static readonly IntPtr pSetEnvironmentVariableW = Find(Kernel32, "SetEnvironmentVariableW");
+        private static readonly IntPtr pSetDefaultDllDirectories = Find(Kernel32, "SetDefaultDllDirectories");
+        private static readonly IntPtr pGetModuleFileNameW = Find(Kernel32, "GetModuleFileNameW");
+        private static readonly IntPtr pGetCommandLineW = Find(Kernel32, "GetCommandLineW");
+        private static readonly IntPtr pGetEnvironmentStringsW = Find(Kernel32, "GetEnvironmentStringsW");
+        private static readonly IntPtr pFreeEnvironmentStringsW = Find(Kernel32, "FreeEnvironmentStringsW");
+        private static readonly IntPtr pGetStartupInfoW = Find(Kernel32, "GetStartupInfoW");
+        private static readonly IntPtr pCreateProcessW = Find(Kernel32, "CreateProcessW");
+        private static readonly IntPtr pWaitForMultipleObjects = Find(Kernel32, "WaitForMultipleObjects");
+        private static readonly IntPtr pGetExitCodeProcess = Find(Kernel32, "GetExitCodeProcess");
+        private static readonly IntPtr pCloseHandle = Find(Kernel32, "CloseHandle");
+        private static readonly IntPtr pCreateEventW = Find(Kernel32, "CreateEventW");
+        private static readonly IntPtr pSetEvent = Find(Kernel32, "SetEvent");
+        private static readonly IntPtr pSetHandleInformation = Find(Kernel32, "SetHandleInformation");
+        private static readonly IntPtr pAttachConsole = Find(Kernel32, "AttachConsole");
+        private static readonly IntPtr pCreateDirectoryW = Find(Kernel32, "CreateDirectoryW");
+        private static readonly IntPtr pGetFileAttributesW = Find(Kernel32, "GetFileAttributesW");
+        private static readonly IntPtr pMoveFileExW = Find(Kernel32, "MoveFileExW");
+        private static readonly IntPtr pCreateFileW = Find(Kernel32, "CreateFileW");
+        private static readonly IntPtr pGetFileInformationByHandle = Find(Kernel32, "GetFileInformationByHandle");
+        private static readonly IntPtr pGetFullPathNameW = Find(Kernel32, "GetFullPathNameW");
+        private static readonly IntPtr pCompareStringOrdinal = Find(Kernel32, "CompareStringOrdinal");
+        private static readonly IntPtr pGetCurrentProcessId = Find(Kernel32, "GetCurrentProcessId");
+        private static readonly IntPtr pGetTickCount64 = Find(Kernel32, "GetTickCount64");
+        private static readonly IntPtr pLocalFree = Find(Kernel32, "LocalFree");
+        private static readonly IntPtr pExitProcess = Find(Kernel32, "ExitProcess");
+        private static readonly IntPtr pCreateJobObjectW = Find(Kernel32, "CreateJobObjectW");
+        private static readonly IntPtr pSetInformationJobObject = Find(Kernel32, "SetInformationJobObject");
+        private static readonly IntPtr pAssignProcessToJobObject = Find(Kernel32, "AssignProcessToJobObject");
+        private static readonly IntPtr pResumeThread = Find(Kernel32, "ResumeThread");
+        private static readonly IntPtr pTerminateProcess = Find(Kernel32, "TerminateProcess");
+        private static readonly IntPtr pOpenProcessToken = Find(Advapi32, "OpenProcessToken");
+        private static readonly IntPtr pGetTokenInformation = Find(Advapi32, "GetTokenInformation");
+        private static readonly IntPtr pGetSecurityInfo = Find(Advapi32, "GetSecurityInfo");
+        private static readonly IntPtr pGetSecurityDescriptorLength = Find(Advapi32, "GetSecurityDescriptorLength");
+        private static readonly IntPtr pConvertStringSdToSd = Find(Advapi32, "ConvertStringSecurityDescriptorToSecurityDescriptorW");
+        private static readonly IntPtr pRegGetValueW = Find(Advapi32, "RegGetValueW");
+
+        internal static readonly IntPtr InvalidHandle = new IntPtr(-1);
+        internal static readonly IntPtr CurrentProcess = new IntPtr(-1);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SecurityAttributes
+        {
+            public int Length;
+            public IntPtr Descriptor;
+            public int Inherit;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct StartupInfo
+        {
+            public int cb;
+            public IntPtr lpReserved;
+            public IntPtr lpDesktop;
+            public IntPtr lpTitle;
+            public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags;
+            public short wShowWindow;
+            public short cbReserved2;
+            public IntPtr lpReserved2;
+            public IntPtr hStdInput, hStdOutput, hStdError;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct ProcessInformation
+        {
+            public IntPtr hProcess;
+            public IntPtr hThread;
+            public int dwProcessId;
+            public int dwThreadId;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct FileInformation
+        {
+            public uint Attributes;
+            public uint CreationTimeLow, CreationTimeHigh, LastAccessTimeLow, LastAccessTimeHigh, LastWriteTimeLow, LastWriteTimeHigh;
+            public uint VolumeSerialNumber, FileSizeHigh, FileSizeLow, NumberOfLinks, FileIndexHigh, FileIndexLow;
+        }
+
+        /// <summary>Whether every call this class makes could be found. A
+        /// process where they could not cannot check its folders and does
+        /// not trust them.</summary>
+        internal static bool Ready =>
+            pGetEnvironmentVariableW != IntPtr.Zero && pSetEnvironmentVariableW != IntPtr.Zero
+            && pSetDefaultDllDirectories != IntPtr.Zero && pGetModuleFileNameW != IntPtr.Zero
+            && pGetCommandLineW != IntPtr.Zero && pGetEnvironmentStringsW != IntPtr.Zero
+            && pFreeEnvironmentStringsW != IntPtr.Zero && pGetStartupInfoW != IntPtr.Zero
+            && pCreateProcessW != IntPtr.Zero && pWaitForMultipleObjects != IntPtr.Zero
+            && pGetExitCodeProcess != IntPtr.Zero && pCloseHandle != IntPtr.Zero
+            && pCreateEventW != IntPtr.Zero && pSetEvent != IntPtr.Zero && pSetHandleInformation != IntPtr.Zero
+            && pAttachConsole != IntPtr.Zero && pCreateDirectoryW != IntPtr.Zero
+            && pGetFileAttributesW != IntPtr.Zero && pMoveFileExW != IntPtr.Zero && pCreateFileW != IntPtr.Zero
+            && pGetFileInformationByHandle != IntPtr.Zero && pGetFullPathNameW != IntPtr.Zero
+            && pCompareStringOrdinal != IntPtr.Zero && pGetCurrentProcessId != IntPtr.Zero
+            && pGetTickCount64 != IntPtr.Zero && pLocalFree != IntPtr.Zero && pExitProcess != IntPtr.Zero
+            && pCreateJobObjectW != IntPtr.Zero && pSetInformationJobObject != IntPtr.Zero
+            && pAssignProcessToJobObject != IntPtr.Zero && pResumeThread != IntPtr.Zero && pTerminateProcess != IntPtr.Zero
+            && pOpenProcessToken != IntPtr.Zero
+            && pGetTokenInformation != IntPtr.Zero && pGetSecurityInfo != IntPtr.Zero
+            && pGetSecurityDescriptorLength != IntPtr.Zero && pConvertStringSdToSd != IntPtr.Zero
+            && pRegGetValueW != IntPtr.Zero;
+
+        // ── Process and environment ──
+
+        /// <summary>The variable's value, null when it is not set.</summary>
+        internal static string GetVariable(string name)
+        {
+            if (pGetEnvironmentVariableW == IntPtr.Zero) return null;
+            var call = (delegate* unmanaged<char*, char*, uint, uint>)pGetEnvironmentVariableW;
+            fixed (char* n = name)
+            {
+                uint needed = call(n, null, 0);
+                if (needed == 0) return null;
+                char[] buffer = new char[needed];
+                fixed (char* b = buffer)
+                {
+                    // A value that grew between the two calls is not read.
+                    uint got = call(n, b, needed);
+                    return got >= needed ? null : new string(b, 0, (int)got);
+                }
+            }
+        }
+
+        /// <summary>Sets a variable of this process, or removes it with
+        /// null.</summary>
+        internal static bool SetVariable(string name, string value)
+        {
+            if (pSetEnvironmentVariableW == IntPtr.Zero) return false;
+            var call = (delegate* unmanaged<char*, char*, int>)pSetEnvironmentVariableW;
+            fixed (char* n = name)
+            fixed (char* v = value)
+                return call(n, value == null ? null : v) != 0;
+        }
+
+        /// <summary>LOAD_LIBRARY_SEARCH_DEFAULT_DIRS: a library named without a
+        /// folder is looked for in the exe's folder, System32 and folders
+        /// added with AddDllDirectory, never in the working folder or
+        /// PATH.</summary>
+        internal const uint SearchDefaultDirs = 0x00001000;
+
+        internal static bool SetDefaultDllDirectories(uint flags)
+            => pSetDefaultDllDirectories != IntPtr.Zero && ((delegate* unmanaged<uint, int>)pSetDefaultDllDirectories)(flags) != 0;
+
+        /// <summary>This exe's full path, or null.</summary>
+        internal static string OwnExe()
+        {
+            if (pGetModuleFileNameW == IntPtr.Zero) return null;
+            var call = (delegate* unmanaged<IntPtr, char*, uint, uint>)pGetModuleFileNameW;
+            for (uint size = 260; size <= 32768; size *= 2)
+            {
+                char[] buffer = new char[size];
+                fixed (char* b = buffer)
+                {
+                    uint got = call(IntPtr.Zero, b, size);
+                    if (got == 0) return null;
+                    if (got < size) return new string(b, 0, (int)got);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>The command line as this process was given it.</summary>
+        internal static string CommandLine()
+            => pGetCommandLineW == IntPtr.Zero ? null : new string(((delegate* unmanaged<char*>)pGetCommandLineW)());
+
+        /// <summary>This process's variables as <c>name=value</c> lines, in
+        /// the order Windows keeps them. Null when they cannot be read.</summary>
+        internal static string[] Variables()
+        {
+            if (pGetEnvironmentStringsW == IntPtr.Zero || pFreeEnvironmentStringsW == IntPtr.Zero) return null;
+            char* block = ((delegate* unmanaged<char*>)pGetEnvironmentStringsW)();
+            if (block == null) return null;
+            try
+            {
+                int count = 0;
+                for (char* p = block; *p != '\0'; p += Length(p) + 1) count++;
+                var lines = new string[count];
+                int i = 0;
+                for (char* p = block; *p != '\0'; p += Length(p) + 1) lines[i++] = new string(p);
+                return lines;
+            }
+            finally
+            {
+                ((delegate* unmanaged<char*, int>)pFreeEnvironmentStringsW)(block);
+            }
+        }
+
+        private static int Length(char* text)
+        {
+            int n = 0;
+            while (text[n] != '\0') n++;
+            return n;
+        }
+
+        internal static void GetStartupInfo(out StartupInfo info)
+        {
+            info = default;
+            info.cb = sizeof(StartupInfo);
+            if (pGetStartupInfoW == IntPtr.Zero) return;
+            fixed (StartupInfo* p = &info) ((delegate* unmanaged<StartupInfo*, void>)pGetStartupInfoW)(p);
+        }
+
+        internal const uint CreateUnicodeEnvironment = 0x00000400;
+        internal const uint CreateSuspended = 0x00000004;
+
+        /// <summary>Starts <paramref name="exe"/> suspended, with the command
+        /// line and variables given, in <paramref name="folder"/>, handing on
+        /// every handle this process may hand on. False when Windows
+        /// refused.</summary>
+        internal static bool CreateProcess(string exe, string commandLine, string environmentBlock, string folder,
+            ref StartupInfo startup, out ProcessInformation process)
+        {
+            process = default;
+            if (pCreateProcessW == IntPtr.Zero) return false;
+            var call = (delegate* unmanaged<char*, char*, void*, void*, int, uint, void*, char*, StartupInfo*, ProcessInformation*, int>)pCreateProcessW;
+            // CreateProcessW may write to the command line, so it gets a copy
+            // of its own (Microsoft, CreateProcessW).
+            char[] line = new char[commandLine.Length + 1];
+            commandLine.CopyTo(0, line, 0, commandLine.Length);
+            fixed (char* e = exe)
+            fixed (char* l = line)
+            fixed (char* env = environmentBlock)
+            fixed (char* f = folder)
+            fixed (StartupInfo* s = &startup)
+            fixed (ProcessInformation* pi = &process)
+                return call(e, l, null, null, 1, CreateUnicodeEnvironment | CreateSuspended, env, f, s, pi) != 0;
+        }
+
+        internal static bool Resume(IntPtr thread)
+            => pResumeThread != IntPtr.Zero && ((delegate* unmanaged<IntPtr, uint>)pResumeThread)(thread) != uint.MaxValue;
+
+        internal static void Terminate(IntPtr process, uint code)
+        {
+            if (pTerminateProcess != IntPtr.Zero) ((delegate* unmanaged<IntPtr, uint, int>)pTerminateProcess)(process, code);
+        }
+
+        // ── Jobs: the layout DsxStandIn's job object uses, Microsoft's
+        // JOBOBJECT_EXTENDED_LIMIT_INFORMATION ──
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct JobLimits
+        {
+            public long PerProcessUserTimeLimit;
+            public long PerJobUserTimeLimit;
+            public uint LimitFlags;
+            public UIntPtr MinimumWorkingSetSize;
+            public UIntPtr MaximumWorkingSetSize;
+            public uint ActiveProcessLimit;
+            public UIntPtr Affinity;
+            public uint PriorityClass;
+            public uint SchedulingClass;
+            public ulong ReadOperationCount, WriteOperationCount, OtherOperationCount;
+            public ulong ReadTransferCount, WriteTransferCount, OtherTransferCount;
+            public UIntPtr ProcessMemoryLimit;
+            public UIntPtr JobMemoryLimit;
+            public UIntPtr PeakProcessMemoryUsed;
+            public UIntPtr PeakJobMemoryUsed;
+        }
+
+        private const int JobObjectExtendedLimitInformation = 9;
+        private const uint JobObjectLimitKillOnJobClose = 0x2000;
+
+        /// <summary>A job whose processes end when its last handle closes, or
+        /// zero.</summary>
+        internal static IntPtr NewKillOnCloseJob()
+        {
+            if (pCreateJobObjectW == IntPtr.Zero) return IntPtr.Zero;
+            IntPtr job = ((delegate* unmanaged<void*, char*, IntPtr>)pCreateJobObjectW)(null, null);
+            if (job == IntPtr.Zero) return IntPtr.Zero;
+            if (SetKillOnClose(job, true)) return job;
+            Close(job);
+            return IntPtr.Zero;
+        }
+
+        /// <summary>Turns a job's end-with-its-last-handle on or off.</summary>
+        internal static bool SetKillOnClose(IntPtr job, bool on)
+        {
+            if (pSetInformationJobObject == IntPtr.Zero) return false;
+            var limits = new JobLimits { LimitFlags = on ? JobObjectLimitKillOnJobClose : 0 };
+            return ((delegate* unmanaged<IntPtr, int, JobLimits*, uint, int>)pSetInformationJobObject)(
+                job, JobObjectExtendedLimitInformation, &limits, (uint)sizeof(JobLimits)) != 0;
+        }
+
+        internal static bool AssignToJob(IntPtr job, IntPtr process)
+            => pAssignProcessToJobObject != IntPtr.Zero
+               && ((delegate* unmanaged<IntPtr, IntPtr, int>)pAssignProcessToJobObject)(job, process) != 0;
+
+        internal const uint WaitObject0 = 0;
+        internal const uint Infinite = 0xFFFFFFFF;
+
+        /// <summary>Waits for the first of two handles. Its index, or a value
+        /// past 1 when the wait failed.</summary>
+        internal static uint WaitForFirst(IntPtr first, IntPtr second)
+        {
+            if (pWaitForMultipleObjects == IntPtr.Zero) return uint.MaxValue;
+            IntPtr* handles = stackalloc IntPtr[2];
+            handles[0] = first;
+            handles[1] = second;
+            return ((delegate* unmanaged<uint, IntPtr*, int, uint, uint>)pWaitForMultipleObjects)(2, handles, 0, Infinite);
+        }
+
+        internal static bool GetExitCode(IntPtr process, out uint code)
+        {
+            code = 0;
+            if (pGetExitCodeProcess == IntPtr.Zero) return false;
+            fixed (uint* c = &code) return ((delegate* unmanaged<IntPtr, uint*, int>)pGetExitCodeProcess)(process, c) != 0;
+        }
+
+        internal static void Close(IntPtr handle)
+        {
+            if (handle != IntPtr.Zero && handle != InvalidHandle && pCloseHandle != IntPtr.Zero)
+                ((delegate* unmanaged<IntPtr, int>)pCloseHandle)(handle);
+        }
+
+        /// <summary>A new event no other process can open by name, set by
+        /// hand. Its handle is handed on to a child when
+        /// <paramref name="inheritable"/>.</summary>
+        internal static IntPtr NewEvent(bool inheritable)
+        {
+            if (pCreateEventW == IntPtr.Zero) return IntPtr.Zero;
+            var sa = new SecurityAttributes { Length = sizeof(SecurityAttributes), Inherit = inheritable ? 1 : 0 };
+            return ((delegate* unmanaged<SecurityAttributes*, int, int, char*, IntPtr>)pCreateEventW)(&sa, 1, 0, null);
+        }
+
+        internal static bool SetEvent(IntPtr handle)
+            => pSetEvent != IntPtr.Zero && ((delegate* unmanaged<IntPtr, int>)pSetEvent)(handle) != 0;
+
+        private const uint HandleFlagInherit = 1;
+
+        /// <summary>Keeps a handle from being handed on to this process's
+        /// children.</summary>
+        internal static bool StopHandingOn(IntPtr handle)
+            => pSetHandleInformation != IntPtr.Zero
+               && ((delegate* unmanaged<IntPtr, uint, uint, int>)pSetHandleInformation)(handle, HandleFlagInherit, 0) != 0;
+
+        private const uint AttachParentProcess = 0xFFFFFFFF;
+
+        /// <summary>Attaches to the console of the process that started this
+        /// one, if it has one, so a child that attaches to its own parent's
+        /// console reaches the same.</summary>
+        internal static bool AttachToParentConsole()
+            => pAttachConsole != IntPtr.Zero && ((delegate* unmanaged<uint, int>)pAttachConsole)(AttachParentProcess) != 0;
+
+        /// <summary>Ends this process at once with <paramref name="code"/>.
+        /// None of the runtime's own steps at exit runs, since they can make a
+        /// <c>DllImport</c> call. Returns only when ExitProcess could not be
+        /// found.</summary>
+        internal static void ExitNow(int code)
+        {
+            if (pExitProcess != IntPtr.Zero) ((delegate* unmanaged<uint, void>)pExitProcess)(unchecked((uint)code));
+        }
+
+        internal static uint ProcessId()
+            => pGetCurrentProcessId == IntPtr.Zero ? 0 : ((delegate* unmanaged<uint>)pGetCurrentProcessId)();
+
+        internal static ulong TickCount()
+            => pGetTickCount64 == IntPtr.Zero ? 0 : ((delegate* unmanaged<ulong>)pGetTickCount64)();
+
+        // ── Rights ──
+
+        private const uint TokenQuery = 0x0008;
+        private const uint TokenRead = 0x00020008;
+        private const int TokenElevation = 20;
+
+        /// <summary>Whether this process runs with administrator rights or as
+        /// SYSTEM: its token is elevated, as Environment.IsPrivilegedProcess
+        /// reads it (Environment.Windows.cs, IsPrivilegedProcessCore), or its
+        /// user is SYSTEM. False when the token cannot be read.</summary>
+        internal static bool IsPrivileged()
+        {
+            if (pOpenProcessToken == IntPtr.Zero || pGetTokenInformation == IntPtr.Zero) return false;
+            IntPtr token = IntPtr.Zero;
+            if (((delegate* unmanaged<IntPtr, uint, IntPtr*, int>)pOpenProcessToken)(CurrentProcess, TokenRead | TokenQuery, &token) == 0)
+                return false;
+            try
+            {
+                var query = (delegate* unmanaged<IntPtr, int, void*, uint, uint*, int>)pGetTokenInformation;
+                uint elevated = 0, returned = 0;
+                if (query(token, TokenElevation, &elevated, sizeof(uint), &returned) != 0 && elevated != 0) return true;
+                // SYSTEM, as a give-back task runs, counts whatever its token
+                // says of elevation: its SID is S-1-5-18.
+                const int TokenUser = 1;
+                byte* user = stackalloc byte[256];
+                if (query(token, TokenUser, user, 256, &returned) == 0) return false;
+                byte* sid = *(byte**)user;
+                return sid != null && sid[0] == 1 && sid[1] == 1 && sid[2] == 0 && sid[3] == 0 && sid[4] == 0 && sid[5] == 0
+                       && sid[6] == 0 && sid[7] == 5 && sid[8] == 18 && sid[9] == 0 && sid[10] == 0 && sid[11] == 0;
+            }
+            finally
+            {
+                Close(token);
+            }
+        }
+
+        // ── Files and folders ──
+
+        internal const uint InvalidAttributes = 0xFFFFFFFF;
+        internal const uint AttributeDirectory = 0x10;
+        internal const uint AttributeReparsePoint = 0x400;
+
+        internal static uint Attributes(string path)
+        {
+            if (pGetFileAttributesW == IntPtr.Zero) return InvalidAttributes;
+            fixed (char* p = path) return ((delegate* unmanaged<char*, uint>)pGetFileAttributesW)(p);
+        }
+
+        /// <summary>Creates a folder with the access list
+        /// <paramref name="sddl"/> states, in one step, so there is no moment
+        /// in which it stands with another. False when it could not be
+        /// made, as when the name is taken.</summary>
+        internal static bool CreateFolder(string path, string sddl)
+        {
+            if (pCreateDirectoryW == IntPtr.Zero || pConvertStringSdToSd == IntPtr.Zero || pLocalFree == IntPtr.Zero) return false;
+            IntPtr descriptor = IntPtr.Zero;
+            const uint SddlRevision1 = 1;
+            fixed (char* s = sddl)
+            {
+                if (((delegate* unmanaged<char*, uint, IntPtr*, uint*, int>)pConvertStringSdToSd)(s, SddlRevision1, &descriptor, null) == 0)
+                    return false;
+            }
+            try
+            {
+                var sa = new SecurityAttributes { Length = sizeof(SecurityAttributes), Descriptor = descriptor, Inherit = 0 };
+                fixed (char* p = path) return ((delegate* unmanaged<char*, SecurityAttributes*, int>)pCreateDirectoryW)(p, &sa) != 0;
+            }
+            finally
+            {
+                ((delegate* unmanaged<IntPtr, IntPtr>)pLocalFree)(descriptor);
+            }
+        }
+
+        /// <summary>Renames a file or folder, a link as the link itself.</summary>
+        internal static bool Rename(string from, string to)
+        {
+            if (pMoveFileExW == IntPtr.Zero) return false;
+            fixed (char* f = from)
+            fixed (char* t = to)
+                return ((delegate* unmanaged<char*, char*, uint, int>)pMoveFileExW)(f, t, 0) != 0;
+        }
+
+        private const uint ReadControl = 0x00020000;
+        private const uint ShareAll = 0x7;
+        private const uint OpenExisting = 3;
+        private const uint FlagBackupSemantics = 0x02000000;
+        private const uint FlagOpenReparsePoint = 0x00200000;
+        private const int SeFileObject = 1;
+        internal const uint OwnerInformation = 0x1;
+        internal const uint DaclInformation = 0x4;
+
+        /// <summary>
+        /// The security descriptor of a folder in its binary form, read from
+        /// the folder itself: a link is opened as the link, not what it points
+        /// at. <paramref name="attributes"/> are the same object's, so what
+        /// was judged and what was read are one. Null when it cannot be
+        /// opened or read.
+        /// </summary>
+        internal static byte[] ReadDescriptor(string path, out uint attributes) => ReadDescriptor(path, true, out attributes);
+
+        /// <summary>The same, with a link followed to what it points at when
+        /// <paramref name="asLink"/> is false.</summary>
+        internal static byte[] ReadDescriptor(string path, bool asLink, out uint attributes)
+        {
+            attributes = InvalidAttributes;
+            if (pCreateFileW == IntPtr.Zero || pGetFileInformationByHandle == IntPtr.Zero || pGetSecurityInfo == IntPtr.Zero
+                || pGetSecurityDescriptorLength == IntPtr.Zero || pLocalFree == IntPtr.Zero) return null;
+            IntPtr handle;
+            fixed (char* p = path)
+                handle = ((delegate* unmanaged<char*, uint, uint, void*, uint, uint, IntPtr, IntPtr>)pCreateFileW)(
+                    p, ReadControl, ShareAll, null, OpenExisting, FlagBackupSemantics | (asLink ? FlagOpenReparsePoint : 0), IntPtr.Zero);
+            if (handle == InvalidHandle || handle == IntPtr.Zero) return null;
+            try
+            {
+                FileInformation info;
+                if (((delegate* unmanaged<IntPtr, FileInformation*, int>)pGetFileInformationByHandle)(handle, &info) == 0) return null;
+                attributes = info.Attributes;
+                IntPtr owner, group, dacl, sacl, descriptor = IntPtr.Zero;
+                uint error = ((delegate* unmanaged<IntPtr, int, uint, IntPtr*, IntPtr*, IntPtr*, IntPtr*, IntPtr*, uint>)pGetSecurityInfo)(
+                    handle, SeFileObject, OwnerInformation | DaclInformation, &owner, &group, &dacl, &sacl, &descriptor);
+                if (error != 0 || descriptor == IntPtr.Zero) return null;
+                try
+                {
+                    uint length = ((delegate* unmanaged<IntPtr, uint>)pGetSecurityDescriptorLength)(descriptor);
+                    if (length == 0) return null;
+                    byte[] bytes = new byte[length];
+                    Marshal.Copy(descriptor, bytes, 0, (int)length);
+                    return bytes;
+                }
+                finally
+                {
+                    ((delegate* unmanaged<IntPtr, IntPtr>)pLocalFree)(descriptor);
+                }
+            }
+            finally
+            {
+                Close(handle);
+            }
+        }
+
+        /// <summary>The full form of a path, as Windows makes it. Null when it
+        /// cannot.</summary>
+        internal static string FullPath(string path)
+        {
+            if (pGetFullPathNameW == IntPtr.Zero || string.IsNullOrEmpty(path)) return null;
+            var call = (delegate* unmanaged<char*, uint, char*, char**, uint>)pGetFullPathNameW;
+            fixed (char* p = path)
+            {
+                uint needed = call(p, 0, null, null);
+                if (needed == 0) return null;
+                char[] buffer = new char[needed];
+                fixed (char* b = buffer)
+                {
+                    uint got = call(p, needed, b, null);
+                    return got == 0 || got >= needed ? null : new string(b, 0, (int)got);
+                }
+            }
+        }
+
+        /// <summary>Whether two strings are the same, upper and lower case
+        /// alike, as the file system compares names (Microsoft,
+        /// CompareStringOrdinal).</summary>
+        internal static bool SameName(string a, string b)
+        {
+            if (a == null || b == null) return false;
+            if (pCompareStringOrdinal == IntPtr.Zero) return string.Equals(a, b, StringComparison.Ordinal);
+            const int Equal = 2;
+            fixed (char* x = a)
+            fixed (char* y = b)
+                return ((delegate* unmanaged<char*, int, char*, int, int, int>)pCompareStringOrdinal)(x, a.Length, y, b.Length, 1) == Equal;
+        }
+
+        // ── Registry ──
+
+        private static readonly IntPtr LocalMachine = new IntPtr(unchecked((int)0x80000002));
+        private const uint RrfRtRegSz = 0x00000002;
+        private const uint RrfRtRegExpandSz = 0x00000004;
+        private const uint RrfNoExpand = 0x10000000;
+
+        /// <summary>A text value under HKEY_LOCAL_MACHINE as it is written,
+        /// with no variable expanded. Null when it is not there.</summary>
+        internal static string MachineText(string key, string value)
+        {
+            if (pRegGetValueW == IntPtr.Zero) return null;
+            var call = (delegate* unmanaged<IntPtr, char*, char*, uint, uint*, void*, uint*, int>)pRegGetValueW;
+            uint flags = RrfRtRegSz | RrfRtRegExpandSz | RrfNoExpand;
+            fixed (char* k = key)
+            fixed (char* v = value)
+            {
+                uint bytes = 0;
+                if (call(LocalMachine, k, v, flags, null, null, &bytes) != 0 || bytes < 2) return null;
+                char[] buffer = new char[bytes / 2 + 1];
+                fixed (char* b = buffer)
+                {
+                    uint size = (uint)(buffer.Length * 2);
+                    if (call(LocalMachine, k, v, flags, null, b, &size) != 0) return null;
+                    int length = 0;
+                    while (length < buffer.Length && b[length] != '\0') length++;
+                    return new string(b, 0, length);
+                }
+            }
+        }
+    }
+}

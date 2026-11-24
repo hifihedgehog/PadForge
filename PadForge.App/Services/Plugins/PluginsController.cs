@@ -300,7 +300,7 @@ namespace PadForge.Services.Plugins
             try { full = System.IO.Path.GetFullPath(path); }
             catch { return null; }
             string sha = PluginFile.Sha256(full);
-            return sha == null ? null : new PluginApproval(full, PluginFile.Signer(full), sha);
+            return sha == null ? null : new PluginApproval(full, AuthenticodeSigner.Of(full), sha);
         }
 
         public bool Has(string path) => Manager.Has(path);

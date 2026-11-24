@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Behåll PadForge i meddelandefältet när du minimerar fönstret, i stället för i aktivitetsfältet.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Håll fönstret dolt när PadForge startar. Programmet körs och mappar som vanligt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Starta PadForge automatiskt när du loggar in i Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge körs från {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Detta kräver att PadForge ligger i en egen mapp. Dess mapp innehåller andra filer, så PadForge kan inte hindra andra program från att ändra den.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Flytta PadForge till en egen mapp</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopierar PadForge och dess inställningar till Program Files, pekar dess uppgifter dit och startar det därifrån. Kopian här ligger kvar som den är.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge flyttades inte: {0} innehåller filer som inte hör till PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge flyttades inte: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Starta vid inloggning har stängts av, eftersom det körde PadForge från en mapp som innehåller andra filer.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Visa alltid i systemfältet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Håll ikonen i systemfältet synlig medan fönstret är öppet, så att Avsluta i dess meny alltid är ett klick bort.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Uppdateringar</value></data>

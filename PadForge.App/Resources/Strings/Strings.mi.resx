@@ -362,6 +362,13 @@
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Kei te mau te kōtaha “{0}” i te āhua o tōna kēmu. Ka hoki mai tō kaupapa ina hohe tētahi atu kōtaha.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Matapihi</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ka tīmata aunoa a PadForge ina takiuru koe ki Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Ka rere a PadForge mai i {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Me noho a PadForge ki tōna ake kōpaki. Kei tōna kōpaki ētahi atu kōnae, nō reira kāore e taea e PadForge te ārai i ētahi atu hōtaka kia kaua e huri i a ia.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Nekehia a PadForge ki tōna ake kōpaki</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ka tārua i a PadForge me ōna tautuhinga ki Program Files, ka tohu i ōna mahi ki reira, ā, ka tīmata i a ia i reira. Ka noho tonu te tārua i konei kia pērā tonu.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kei {0} ētahi kōnae ehara nō PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Kāore a PadForge i neke: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Kua whakawetongia te Tīmata i te takiuru, nā te mea i whakarewaina e ia a PadForge mai i tētahi kōpaki kei reira ētahi atu kōnae.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Whakahōunga</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Tāuta aunoa i ngā whakahōunga</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Tirohia ināianei</value></data>

@@ -935,6 +935,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ನೀವು ವಿಂಡೋವನ್ನು ಮಿನಿಮೈಸ್ ಮಾಡಿದಾಗ PadForge ಅನ್ನು ಟಾಸ್ಕ್‌ಬಾರ್‌ನಲ್ಲಿ ಅಲ್ಲ, ಅಧಿಸೂಚನಾ ಪ್ರದೇಶದಲ್ಲಿ ಇರಿಸಿ.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ಪ್ರಾರಂಭವಾದಾಗ ವಿಂಡೋ ಮರೆಯಾಗಿರಲಿ. ಅದು ಎಂದಿನಂತೆ ಚಲಿಸುತ್ತದೆ ಮತ್ತು ಮ್ಯಾಪ್ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ನೀವು Windows ಗೆ ಸೈನ್ ಇನ್ ಆದಾಗ PadForge ತಾನಾಗಿ ಪ್ರಾರಂಭವಾಗಲಿ.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} ನಿಂದ ಚಲಿಸುತ್ತಿದೆ.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ಇದಕ್ಕೆ PadForge ತನ್ನದೇ ಫೋಲ್ಡರ್‌ನಲ್ಲಿರಬೇಕು. ಇದರ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಬೇರೆ ಫೈಲ್‌ಗಳಿವೆ, ಆದ್ದರಿಂದ ಇತರ ಪ್ರೋಗ್ರಾಂಗಳು ಅದನ್ನು ಬದಲಿಸುವುದನ್ನು PadForge ತಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ಅನ್ನು ಅದರದೇ ಫೋಲ್ಡರ್‌ಗೆ ಸರಿಸಿ</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge ಮತ್ತು ಅದರ ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ನು Program Files ಗೆ ನಕಲಿಸುತ್ತದೆ, ಅದರ ಕಾರ್ಯಗಳನ್ನು ಅಲ್ಲಿಗೆ ತೋರಿಸುತ್ತದೆ ಮತ್ತು ಅಲ್ಲಿಂದ ಪ್ರಾರಂಭಿಸುತ್ತದೆ. ಇಲ್ಲಿರುವ ಪ್ರತಿ ಹಾಗೆಯೇ ಉಳಿಯುತ್ತದೆ.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ಸರಿಯಲಿಲ್ಲ: {0} ನಲ್ಲಿ PadForge ಗೆ ಸೇರದ ಫೈಲ್‌ಗಳಿವೆ.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ಸರಿಯಲಿಲ್ಲ: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ಲಾಗಿನ್ ಆದಾಗ ಪ್ರಾರಂಭಿಸಿ ಅನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ, ಏಕೆಂದರೆ ಅದು ಬೇರೆ ಫೈಲ್‌ಗಳಿರುವ ಫೋಲ್ಡರ್‌ನಿಂದ PadForge ಅನ್ನು ಚಲಾಯಿಸುತ್ತಿತ್ತು.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ಯಾವಾಗಲೂ ಸಿಸ್ಟಮ್ ಟ್ರೇನಲ್ಲಿ ತೋರಿಸಿ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ವಿಂಡೋ ತೆರೆದಿರುವಾಗ ಟ್ರೇ ಐಕಾನ್ ಗೋಚರಿಸಲಿ, ಇದರಿಂದ ಅದರ ಮೆನುವಿನಲ್ಲಿರುವ ನಿರ್ಗಮಿಸು ಯಾವಾಗಲೂ ಒಂದು ಕ್ಲಿಕ್ ದೂರದಲ್ಲಿರುತ್ತದೆ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ನವೀಕರಣಗಳು</value></data>

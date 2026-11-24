@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Minimizējot logu, PadForge paliek paziņojumu apgabalā, nevis uzdevumjoslā.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Kad PadForge startē, logs paliek paslēpts. Programma darbojas un piesaista ievadi kā parasti.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automātiski startēt PadForge, kad pierakstāties sistēmā Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge darbojas no {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tam nepieciešams, lai PadForge atrastos savā mapē. Tās mapē ir citi faili, tāpēc PadForge nevar neļaut citām programmām to mainīt.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Pārvietot PadForge uz savu mapi</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopē PadForge un tā iestatījumus uz Program Files, novirza tā uzdevumus uz turieni un startē to no turienes. Šeit esošā kopija paliek nemainīta.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge netika pārvietots: mapē {0} ir faili, kas nav PadForge faili.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge netika pārvietots: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Startēšana pēc pierakstīšanās tika izslēgta, jo tā palaida PadForge no mapes, kurā ir citi faili.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vienmēr rādīt paziņojumu apgabalā</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Paziņojumu apgabala ikona paliek redzama arī tad, kad logs ir atvērts, tāpēc tās izvēlnes vienums „Iziet” vienmēr ir viena klikšķa attālumā.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atjauninājumi</value></data>

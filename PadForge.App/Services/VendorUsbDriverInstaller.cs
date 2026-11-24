@@ -640,13 +640,18 @@ namespace PadForge.Services
             return string.Join("\r\n", lines) + "\r\n";
         }
 
-        /// <summary>Where a package is staged: its own folder under the temp
-        /// directory, named for the ID.</summary>
+        /// <summary>Where a package is staged: its own folder under the
+        /// protected folder's Work folder, named for the ID (#597). The package
+        /// is signed and stocked with PadForge's rights, and in the temp folder,
+        /// where it was, any program of the user could change the INF between
+        /// its write and its signing. The test host keeps the temp
+        /// folder.</summary>
         internal static string StagingDirectory(string bindId)
         {
             var name = new StringBuilder();
             foreach (char c in bindId) name.Append(char.IsLetterOrDigit(c) ? c : '_');
-            return Path.Combine(Path.GetTempPath(), "PadForge", "VendorUsb", name.ToString());
+            return Path.Combine(PadForge.Services.ProtectedWork.FolderInTheApp("VendorUsb", Path.Combine(Path.GetTempPath(), "PadForge", "VendorUsb")),
+                name.ToString());
         }
 
         /// <summary>Binds WinUSB to the nodes the plan's ID names, and says

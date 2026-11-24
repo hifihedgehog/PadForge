@@ -935,6 +935,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge bleift beim Minimiséieren am Infoberäich amplaz an der Taskleescht.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>D'Fënster bleift verstoppt, wann PadForge start. Et leeft a schafft wéi gewinnt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge automatesch starten, wann Dir Iech bei Windows umellt.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge leeft vun {0} aus.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dat brauch PadForge an engem eegenen Dossier. Säin Dossier enthält aner Dateien, dofir kann PadForge aner Programmer net dovun ofhalen, en z'änneren.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge an en eegenen Dossier réckelen</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopéiert PadForge a seng Astellungen an den Dossier Program Files, riicht seng Aufgaben dohinner a start et vun do aus. D'Kopie hei bleift, wéi se ass.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: {0} enthält Dateien, déi net zu PadForge gehéieren.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>„Beim Umellen starten“ gouf ausgeschalt, well et PadForge aus engem Dossier gestart huet, deen aner Dateien enthält.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Ëmmer am Infoberäich weisen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>D'Symbol am Infoberäich bleift siichtbar, och wann d'Fënster op ass, sou datt säi Menü ëmmer just ee Klick ewech ass.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualiséierungen</value></data>

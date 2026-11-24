@@ -261,8 +261,31 @@ namespace PadForge.Common
 
         private const string HidHideResourceName = "HidHide_1.5.230_x64.exe";
 
-        private static string HidHideTempRoot
-            => Path.Combine(Path.GetTempPath(), "PadForge_HidHide");
+        /// <summary>
+        /// A staging folder of one install's own, under the protected
+        /// folder's Work folder (#597), for an installer, the package it
+        /// unpacks or downloads, and a script PadForge writes and runs with
+        /// rights. Before #597 these were in the user's temp folder, where
+        /// any program of the user could swap a file between PadForge's check
+        /// and the installer's read, or put a library beside an installer,
+        /// which Windows loads from the installer's own folder first. The
+        /// test host has no protected folder and keeps the temp folder, where
+        /// it starts and installs nothing. Anywhere else a folder that cannot
+        /// be made is an error, never the temp folder.
+        /// </summary>
+        internal static string StagingFolder(string purpose)
+        {
+            string folder = PadForge.Services.ProtectedWork.NewFolder(purpose);
+            if (folder != null) return folder;
+            if (OffLimitsForTest) return Path.Combine(Path.GetTempPath(), "PadForge_" + purpose, Guid.NewGuid().ToString("N"));
+            throw new IOException("The protected folder for " + purpose + " could not be made.");
+        }
+
+        /// <summary>A tool of Windows' own by its full path in System32.
+        /// Started by name alone, Windows would look for it in PadForge's own
+        /// folder and the working folder first.</summary>
+        internal static string System32Tool(string name)
+            => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), name);
 
         /// <summary>
         /// A staging folder of this attempt's own.
@@ -273,11 +296,11 @@ namespace PadForge.Common
         /// deleted the package from under it. Each attempt now gets its own
         /// folder and deletes that folder alone when it ends. A folder left
         /// by an attempt that timed out is never cleared from here, because
-        /// nothing here can know that its installer has finished. It is a
-        /// few megabytes in the temp folder, which Windows clears.</para>
+        /// nothing here can know that its installer has finished. A start of
+        /// the app removes such folders once they are a day old
+        /// (ProtectedWork.RemoveOld).</para>
         /// </summary>
-        private static string NewHidHideStagingDir()
-            => Path.Combine(HidHideTempRoot, Guid.NewGuid().ToString("N"));
+        private static string NewHidHideStagingDir() => StagingFolder("HidHide");
 
         /// <summary>
         /// Installs HidHide, and announces PadForge to its driver while the
@@ -412,7 +435,12 @@ namespace PadForge.Common
                 Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vJoy");
             var oemInfs = FindExtendedOemInfs();
 
-            string scriptPath = Path.Combine(Path.GetTempPath(), "PadForge_vjoy_uninstall.cmd");
+            string scriptFolder = StagingFolder("vJoy");
+            string scriptPath = Path.Combine(scriptFolder, "PadForge_vjoy_uninstall.cmd");
+            // Each tool by its full path: cmd.exe looks in its working folder
+            // first for a name alone.
+            string pnputil = System32Tool("pnputil.exe"), sc = System32Tool("sc.exe"), reg = System32Tool("reg.exe"),
+                timeout = System32Tool("timeout.exe"), powershell = Path.Combine(System32Tool("WindowsPowerShell"), "v1.0", "powershell.exe");
             using (var sw = new StreamWriter(scriptPath))
             {
                 sw.WriteLine("@echo off");
@@ -421,34 +449,32 @@ namespace PadForge.Common
                 // unload from the kernel. If we stop/delete the service while
                 // devices are still attached, it gets stuck in STOP_PENDING.
                 for (int i = 0; i <= 15; i++)
-                    sw.WriteLine($"pnputil /remove-device \"ROOT\\HIDCLASS\\{i:D4}\" /subtree >nul 2>&1");
-                sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
+                    sw.WriteLine($"\"{pnputil}\" /remove-device \"ROOT\\HIDCLASS\\{i:D4}\" /subtree >nul 2>&1");
+                sw.WriteLine($"\"{timeout}\" /t 2 /nobreak >nul 2>&1");
 
                 // Now stop and delete the service (driver should be unloaded).
-                sw.WriteLine("sc stop vjoy >nul 2>&1");
-                sw.WriteLine("timeout /t 2 /nobreak >nul 2>&1");
-                sw.WriteLine("sc delete vjoy >nul 2>&1");
+                sw.WriteLine($"\"{sc}\" stop vjoy >nul 2>&1");
+                sw.WriteLine($"\"{timeout}\" /t 2 /nobreak >nul 2>&1");
+                sw.WriteLine($"\"{sc}\" delete vjoy >nul 2>&1");
                 // Fallback: if sc delete failed (e.g. STOP_PENDING), remove the
                 // service registry keys from ALL ControlSets so it doesn't resurrect on reboot.
-                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\vjoy\" /f >nul 2>&1");
-                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet001\\Services\\vjoy\" /f >nul 2>&1");
-                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet002\\Services\\vjoy\" /f >nul 2>&1");
-                sw.WriteLine("reg delete \"HKLM\\SYSTEM\\ControlSet003\\Services\\vjoy\" /f >nul 2>&1");
+                foreach (string set in new[] { "CurrentControlSet", "ControlSet001", "ControlSet002", "ControlSet003" })
+                    sw.WriteLine($"\"{reg}\" delete \"HKLM\\SYSTEM\\{set}\\Services\\vjoy\" /f >nul 2>&1");
 
                 // Remove driver from driver store.
                 foreach (var inf in oemInfs)
-                    sw.WriteLine($"pnputil /delete-driver {inf} /uninstall /force >nul 2>&1");
+                    sw.WriteLine($"\"{pnputil}\" /delete-driver {inf} /uninstall /force >nul 2>&1");
 
                 // Delete the install directory and stale driver binary.
                 sw.WriteLine($"rmdir /s /q \"{vjoyDir}\" >nul 2>&1");
-                sw.WriteLine("del /f \"%SystemRoot%\\System32\\drivers\\vjoy.sys\" >nul 2>&1");
+                sw.WriteLine($"del /f \"{Path.Combine(System32Tool("drivers"), "vjoy.sys")}\" >nul 2>&1");
 
                 // Remove legacy Inno Setup uninstall registry entries (if present).
-                sw.WriteLine("powershell -NoProfile -Command \"Get-ChildItem 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall','HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall' -EA SilentlyContinue | Where-Object { (Get-ItemProperty $_.PSPath -EA SilentlyContinue).DisplayName -like '*vJoy*' } | Remove-Item -Recurse -Force -EA SilentlyContinue\" >nul 2>&1");
+                sw.WriteLine("\"" + powershell + "\" -NoProfile -Command \"Get-ChildItem 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall','HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall' -EA SilentlyContinue | Where-Object { (Get-ItemProperty $_.PSPath -EA SilentlyContinue).DisplayName -like '*vJoy*' } | Remove-Item -Recurse -Force -EA SilentlyContinue\" >nul 2>&1");
             }
 
-            RunElevated("cmd.exe", $"/c \"{scriptPath}\"", out _);
-            try { File.Delete(scriptPath); } catch { }
+            RunElevated(System32Tool("cmd.exe"), $"/d /c \"\"{scriptPath}\"\"", out _);
+            try { DeleteFolder(scriptFolder); } catch { }
 
             CleanExtendedRegistryArtifacts();
         }
@@ -534,7 +560,7 @@ namespace PadForge.Common
             {
                 var psi = new ProcessStartInfo
                 {
-                    FileName = "pnputil.exe",
+                    FileName = System32Tool("pnputil.exe"),
                     Arguments = "/enum-drivers",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -759,7 +785,7 @@ namespace PadForge.Common
         public static void InstallMidiRuntime()
         {
             bool installerMayStillRun = false;
-            string staging = Path.Combine(Path.GetTempPath(), "PadForge_MidiRuntime", Guid.NewGuid().ToString("N"));
+            string staging = StagingFolder("MidiRuntime");
             try
             {
                 Directory.CreateDirectory(staging);
@@ -941,7 +967,7 @@ namespace PadForge.Common
         {
             var psi = new ProcessStartInfo
             {
-                FileName = "msiexec.exe",
+                FileName = System32Tool("msiexec.exe"),
                 Arguments = $"/x {productCode} /qn /norestart MSIRESTARTMANAGERCONTROL=Disable REBOOT=ReallySuppress",
                 UseShellExecute = false,
                 CreateNoWindow = true
@@ -1286,8 +1312,15 @@ namespace PadForge.Common
         private const string SteamCmdZipUrl =
             "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip";
 
+        /// <summary>steamcmd's folder, kept between runs since steamcmd updates
+        /// itself there. It runs with PadForge's rights, so it lives under the
+        /// protected folder (#597): from the temp folder, a library put beside
+        /// it by any program of the user would run with those rights. The test
+        /// host keeps the temp folder, where it starts nothing.</summary>
         private static string GetSteamVrTempDir()
-            => Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd");
+            => PadForge.Services.ProtectedWork.Folder("SteamCmd")
+               ?? (OffLimitsForTest ? Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd")
+                   : throw new IOException("The protected folder for steamcmd could not be made."));
 
         /// <summary>Test seam for <see cref="InstallSteamVRAsync"/>: throw
         /// after the argument guards, before any network or process work.
@@ -1893,7 +1926,7 @@ namespace PadForge.Common
         /// canceled from its own window, or outlived the wait.</exception>
         private static void RunMsiElevated(string arguments, bool absentIsSuccess)
         {
-            int? exitCode = RunElevated("msiexec.exe", arguments, out bool untracked);
+            int? exitCode = RunElevated(System32Tool("msiexec.exe"), arguments, out bool untracked);
             if (exitCode == null) throw InstallerFailedException.NoExitCode(untracked);
             if (!IsMsiSuccess(exitCode.Value, absentIsSuccess))
                 throw new InstallerFailedException(exitCode.Value);
@@ -1971,7 +2004,7 @@ namespace PadForge.Common
         /// </summary>
         public static void InstallStrike7Library(string target, string librarySha256)
         {
-            string staging = Path.Combine(Path.GetTempPath(), "PadForge_Strike7", Guid.NewGuid().ToString("N"));
+            string staging = StagingFolder("Strike7");
             try
             {
                 Directory.CreateDirectory(staging);
@@ -2017,7 +2050,7 @@ namespace PadForge.Common
         public static void InstallVc2008Runtime()
         {
             bool installerMayStillRun = false;
-            string staging = Path.Combine(Path.GetTempPath(), "PadForge_Vc2008", Guid.NewGuid().ToString("N"));
+            string staging = StagingFolder("Vc2008");
             try
             {
                 Directory.CreateDirectory(staging);

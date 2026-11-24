@@ -620,7 +620,7 @@ namespace PadForge.Common
 
         private static void WithStagedTools(Action<NefconRunner, string> work, bool needsDriverPackage)
         {
-            string staging = Path.Combine(Path.GetTempPath(), "PadForge_HidHide", Guid.NewGuid().ToString("N"));
+            string staging = DriverInstaller.StagingFolder("HidHide");
             bool toolMayStillRun = false;
             try
             {

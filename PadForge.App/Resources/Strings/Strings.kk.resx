@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Терезені кішірейткенде PadForge тапсырмалар тақтасында емес, хабарландыру аймағында тұрады.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge іске қосылғанда терезе жасырын тұрады. Бағдарлама әдеттегідей жұмыс істеп, тағайындауларды орындайды.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows жүйесіне кіргенде PadForge автоматты түрде іске қосылады.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge мына жерден жұмыс істейді: {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Бұл үшін PadForge өз қалтасында тұруы керек. Оның қалтасында басқа файлдар бар, сондықтан PadForge басқа бағдарламалардың оны өзгертуіне жол бермей алмайды.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ты өз қалтасына жылжыту</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge-ты және оның параметрлерін Program Files қалтасына көшіреді, оның тапсырмаларын сол жерге бағыттайды және оны сол жерден іске қосады. Мұндағы көшірме өзгеріссіз қалады.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge жылжымады: {0} қалтасында PadForge-қа жатпайтын файлдар бар.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge жылжымады: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, себебі ол PadForge-ты басқа файлдар бар қалтадан іске қосатын.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Хабарландыру аймағында әрқашан көрсету</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Терезе ашық тұрғанда да хабарландыру аймағындағы белгіше көрінеді, сондықтан оның мәзіріндегі «Шығу» әрқашан бір басу қашықтықта болады.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Жаңартулар</value></data>

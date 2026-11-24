@@ -1334,11 +1334,16 @@ namespace PadForge.Tests
         public void ExtrasRows_FollowTheEyeAndTheGame()
         {
             var page = Xml("PadForge.App", "Views", "ExtrasPage.xaml");
-            var removes = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding RemoveId}").ToList();
+            var all = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding RemoveId}").ToList();
             var resets = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}").ToList();
-            // The Screen Overlay card's head and the crosshair card's.
+            // The Screen Overlay card's head and the crosshair card's. The
+            // third Remove is a plugin's row on the Plugins page (#597),
+            // which has no Reset All beside it.
+            var removes = all.Where(r => r.Parent.Elements().Any(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}")).ToList();
             Assert.Equal(2, removes.Count);
             Assert.Equal(2, resets.Count);
+            var row = Assert.Single(all.Except(removes));
+            Assert.Contains(row.Parent.Elements(), e => At(e, "AutomationProperties.AutomationId") == "{Binding ApproveId}");
             foreach (var remove in removes)
             {
                 var resetAll = Assert.Single(resets, r => r.Parent == remove.Parent);

@@ -88,9 +88,11 @@ public class WindowSettingsTests
         string settings = Read("PadForge.App/Services/SettingsService.cs");
         string window = Read("PadForge.App/MainWindow.xaml.cs");
         string view = Read("PadForge.App/Views/SettingsPage.xaml");
+        // Both are internal: the assistants' undo takes and puts back the app
+        // settings through them (#597).
         Assert.Contains("vm.CloseToTray = appSettings.CloseToTray;", Between(settings,
-            "private void LoadAppSettings(", "private AppSettingsData BuildAppSettings("));
-        Assert.Contains("CloseToTray = vm.CloseToTray,", settings[(settings.IndexOf("private AppSettingsData BuildAppSettings(", StringComparison.Ordinal))..]);
+            "internal void LoadAppSettings(", "internal AppSettingsData BuildAppSettings("));
+        Assert.Contains("CloseToTray = vm.CloseToTray,", settings[(settings.IndexOf("internal AppSettingsData BuildAppSettings(", StringComparison.Ordinal))..]);
         Assert.Contains("LoadAppSettings(new AppSettingsData", Between(settings,
             "public void ResetToDefaults()", "public void Reload()"));
         Assert.Contains("nameof(SettingsViewModel.CloseToTray)", Between(window,
@@ -98,8 +100,8 @@ public class WindowSettingsTests
         Assert.Contains("IsChecked=\"{Binding CloseToTray}\"", view);
         Assert.Contains("Settings_CloseToTrayTip", view);
         Assert.Contains("vm.AlwaysShowTrayIcon = appSettings.AlwaysShowTrayIcon;", Between(settings,
-            "private void LoadAppSettings(", "private AppSettingsData BuildAppSettings("));
-        Assert.Contains("AlwaysShowTrayIcon = vm.AlwaysShowTrayIcon,", settings[(settings.IndexOf("private AppSettingsData BuildAppSettings(", StringComparison.Ordinal))..]);
+            "internal void LoadAppSettings(", "internal AppSettingsData BuildAppSettings("));
+        Assert.Contains("AlwaysShowTrayIcon = vm.AlwaysShowTrayIcon,", settings[(settings.IndexOf("internal AppSettingsData BuildAppSettings(", StringComparison.Ordinal))..]);
         Assert.Contains("nameof(SettingsViewModel.AlwaysShowTrayIcon)", Between(window,
             "_viewModel.Settings.PropertyChanged +=", "_viewModel.Dashboard.PropertyChanged +="));
         Assert.Contains("IsChecked=\"{Binding AlwaysShowTrayIcon}\"", view);

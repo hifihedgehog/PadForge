@@ -29,20 +29,32 @@ namespace PadForge.Services
         /// never by the app: no copy of the exe is started.</summary>
         internal static bool OffLimitsForTest;
 
+        /// <summary>How long a <c>--wait</c> start gives the app to show its
+        /// signal window once the copy with rights handed over to it.</summary>
+        internal const int AppWindowWaitMs = 30000;
+
         /// <summary>
         /// Starts this exe again with rights and the same switches, and
         /// returns this process's exit code. With <c>--wait</c> it stays until
-        /// that copy exits and returns its code.
+        /// the app exits and returns its code.
+        ///
+        /// <para>The copy Windows starts unpacks into the user's temp folder,
+        /// so it starts PadForge once more from the protected folder and
+        /// leaves with <see cref="ProtectedStart.HandedOver"/> as soon as that
+        /// one is the app (<see cref="ProtectedStart"/>). A <c>--wait</c> then
+        /// waits on the app itself. The copy works in the exe's own folder,
+        /// never in the caller's, which the caller chose.</para>
         /// </summary>
         internal static int Run(IReadOnlyList<string> args)
         {
             if (OffLimitsForTest) return NotStarted;
             bool wait = CommandLineSwitches.Parse(args).Wait;
-            var start = new ProcessStartInfo(Environment.ProcessPath)
+            string exe = Environment.ProcessPath;
+            var start = new ProcessStartInfo(exe)
             {
                 UseShellExecute = true,
                 Verb = "runas",
-                WorkingDirectory = Environment.CurrentDirectory,
+                WorkingDirectory = System.IO.Path.GetDirectoryName(exe),
             };
             foreach (string a in CommandLineSwitches.WithoutWait(args)) start.ArgumentList.Add(a);
             try
@@ -51,7 +63,10 @@ namespace PadForge.Services
                 if (app == null) return NotStarted;
                 if (!wait) return 0;
                 app.WaitForExit();
-                return app.ExitCode;
+                if (app.ExitCode != ProtectedStart.HandedOver) return app.ExitCode;
+                var watch = RunningCopy.Watch(AppWindowWaitMs);
+                int? code = watch?.Invoke();
+                return code ?? NotStarted;
             }
             catch
             {

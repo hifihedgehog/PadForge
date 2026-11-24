@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Keep PadForge in the notification area when you minimize the window, instead of on the taskbar.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Keep the window hidden when PadForge starts. It runs and maps as usual.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatically when you sign in to Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge runs from {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>This needs PadForge in a folder of its own. Its folder holds other files, so PadForge cannot keep other programs from changing it.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Move PadForge to Its Own Folder</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copies PadForge and its settings to Program Files, points its tasks there, and starts it from there. The copy here stays as it is.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge did not move: {0} holds files that are not PadForge’s.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge did not move: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start at Login was turned off, since it ran PadForge from a folder that holds other files.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Always Show in System Tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Keep the tray icon visible while the window is open, so Exit in its menu is always one click away.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

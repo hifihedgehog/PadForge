@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ເກັບ PadForge ໄວ້ໃນພື້ນທີ່ແຈ້ງເຕືອນເມື່ອທ່ານຫຍໍ້ໜ້າຕ່າງ, ແທນທີ່ຈະຢູ່ໃນແຖບໜ້າວຽກ.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>ເຊື່ອງໜ້າຕ່າງໄວ້ເມື່ອ PadForge ເລີ່ມ. ມັນຍັງເຮັດວຽກ ແລະ ແມັບຕາມປົກກະຕິ.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ເລີ່ມ PadForge ອັດຕະໂນມັດເມື່ອທ່ານເຂົ້າສູ່ລະບົບ Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ເຮັດວຽກຈາກ {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ສິ່ງນີ້ຕ້ອງການໃຫ້ PadForge ຢູ່ໃນໂຟນເດີຂອງມັນເອງ. ໂຟນເດີຂອງມັນມີໄຟລ໌ອື່ນ, ສະນັ້ນ PadForge ຈຶ່ງບໍ່ສາມາດກັນບໍ່ໃຫ້ໂປຣແກຣມອື່ນປ່ຽນມັນໄດ້.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>ຍ້າຍ PadForge ໄປໂຟນເດີຂອງມັນເອງ</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>ສຳເນົາ PadForge ແລະ ການຕັ້ງຄ່າຂອງມັນໄປ Program Files, ຊີ້ໜ້າວຽກຂອງມັນໄປທີ່ນັ້ນ, ແລະ ເລີ່ມມັນຈາກທີ່ນັ້ນ. ສຳເນົາຢູ່ນີ້ຍັງຄືເກົ່າ.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: {0} ມີໄຟລ໌ທີ່ບໍ່ແມ່ນຂອງ PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະມັນເຮັດວຽກ PadForge ຈາກໂຟນເດີທີ່ມີໄຟລ໌ອື່ນ.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ສະແດງໃນຖາດລະບົບສະເໝີ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ສະແດງໄອຄອນໃນຖາດໄວ້ໃນຂະນະທີ່ໜ້າຕ່າງເປີດຢູ່, ເພື່ອໃຫ້ ອອກ ໃນເມນູຂອງມັນຢູ່ຫ່າງພຽງຄລິກດຽວສະເໝີ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ອັບເດດ</value></data>

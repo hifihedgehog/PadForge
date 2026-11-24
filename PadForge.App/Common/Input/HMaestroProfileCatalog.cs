@@ -274,8 +274,12 @@ namespace PadForge.Common.Input
             var problems = new Dictionary<string, UserProfileProblem>(StringComparer.Ordinal);
             if (ctx == null || userJsons == null || userJsons.Count == 0) return problems;
 
+            // A folder of its own under the protected folder's Work folder
+            // (#597): HIDMaestro reads every profile in it, and in the temp
+            // folder any program of the user could add one. The test host
+            // keeps the temp folder.
             string dir = System.IO.Path.Combine(
-                System.IO.Path.GetTempPath(),
+                PadForge.Services.ProtectedWork.FolderInTheApp("HIDMaestroProfiles", System.IO.Path.GetTempPath()),
                 $"padforge-userprofiles-{Guid.NewGuid():N}");
             try
             {

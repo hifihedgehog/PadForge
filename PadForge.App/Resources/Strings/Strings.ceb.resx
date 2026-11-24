@@ -488,6 +488,13 @@
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>I-minimize ngadto sa system tray</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Isira ngadto sa system tray</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Sugdi ang PadForge awtomatiko inig sign in nimo sa Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Nagdagan ang PadForge gikan sa {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kinahanglan niini ang PadForge sa kaugalingon niini nga folder. Adunay laing mga file ang folder niini, busa dili mapugngan sa PadForge ang ubang mga programa sa pag-usab niini.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Ibalhin ang PadForge sa kaugalingon niini nga folder</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopyahon ang PadForge ug ang mga setting niini ngadto sa Program Files, itudlo didto ang mga task niini, ug sugdan kini gikan didto. Ang kopya dinhi magpabilin sama sa kaniadto.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: ang {0} adunay mga file nga dili iya sa PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Gi-off ang Sugdi inig login, kay gipadagan niini ang PadForge gikan sa folder nga adunay laing mga file.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Awtomatikong susiha ang mga update</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Mosusi inig sugod sa PadForge ug matag 12 ka oras pagkahuman niana.</value></data>

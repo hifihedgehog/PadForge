@@ -1090,7 +1090,10 @@ namespace PadForge.Tests
             Assert.Contains("PadPageView.DeleteRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);", window);
             Assert.Contains("HomePageView.DeleteSlotRequested += (s, slotIndex) => DeleteSlotDeferred(slotIndex);", window);
             Assert.Matches(@"private void OnSidebarDeleteSlot\(object sender, RoutedEventArgs e\)\s*\{[^}]*DeleteSlotDeferred\(slotIndex\);", window);
-            Assert.Matches(@"private void DeleteSlotDeferred\(int slotIndex\)\s*\{\s*Dispatcher\.BeginInvoke\(new Action\(\(\) =>\s*\{[^}]*if \(_viewModel\.SelectedPadIndex == slotIndex\)\s*SelectNavItemByTag\(""Home""\);", window);
+            // The deferred delete runs the delete itself, which an
+            // assistant's remove_controller calls at once (#597).
+            Assert.Matches(@"private void DeleteSlotDeferred\(int slotIndex\)\s*\{\s*Dispatcher\.BeginInvoke\(new Action\(\(\) => DeleteSlotNow\(slotIndex\)\)\);", window);
+            Assert.Matches(@"private void DeleteSlotNow\(int slotIndex\)\s*\{[^}]*if \(_viewModel\.SelectedPadIndex == slotIndex\)\s*SelectNavItemByTag\(""Home""\);", window);
         }
 
         /// <summary>Sticks and Triggers as its board draws it. The section

@@ -71,13 +71,17 @@ namespace PadForge.Engine.Common.ForceDimension
                 if (string.IsNullOrWhiteSpace(root)) return;
                 try
                 {
-                    root = Path.GetFullPath(Environment.ExpandEnvironmentVariables(root.Trim().Trim('"')));
+                    root = Path.GetFullPath(MachineEnvironment.Expand(root.Trim().Trim('"')));
                     if (Directory.Exists(root) && seen.Add(root)) roots.Add(root);
                 }
                 catch (Exception) { }
             }
 
-            Add(Environment.GetEnvironmentVariable("FDSDK"));
+            // The machine's FDSDK, which the SDK's installer sets, never the
+            // process's (#597): the process's comes from the user's part of the
+            // registry, which the user's programs can write, and would choose
+            // the library PadForge loads with its rights.
+            Add(MachineEnvironment.Get("FDSDK"));
             foreach (string folder in UninstallLocations()) Add(folder);
 
             // FalconJoyForce's README names the folder without the space

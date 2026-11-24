@@ -54,6 +54,7 @@ namespace PadForge.Tests
             string main = FenceSource.Body(RepoText("PadForge.App", "Program.cs"), "public static void Main(string[] args)");
             string[] order =
             {
+                "ProtectedStart.Run();",
                 "if (GiveBackRun.IsRun(args))",
                 "if (ClientRun.TryRun(args, out int clientExit))",
                 "if (!Environment.IsPrivilegedProcess)",
@@ -90,6 +91,13 @@ namespace PadForge.Tests
             Assert.Contains("foreach (string a in CommandLineSwitches.WithoutWait(args)) start.ArgumentList.Add(a);", run, StringComparison.Ordinal);
             Assert.True(run.IndexOf("if (!wait) return 0;", StringComparison.Ordinal)
                 < run.IndexOf("app.WaitForExit();", StringComparison.Ordinal));
+            // The copy works in the exe's folder, never the caller's.
+            Assert.Contains("WorkingDirectory = System.IO.Path.GetDirectoryName(exe),", run, StringComparison.Ordinal);
+            Assert.DoesNotContain("Environment.CurrentDirectory", run, StringComparison.Ordinal);
+            // The copy Windows starts hands over to one from the protected
+            // folder, and a wait goes on with the app itself.
+            Assert.True(run.IndexOf("if (app.ExitCode != ProtectedStart.HandedOver) return app.ExitCode;", StringComparison.Ordinal)
+                < run.IndexOf("RunningCopy.Watch(AppWindowWaitMs)", StringComparison.Ordinal));
             // The test host starts nothing.
             Assert.Equal(StartWithRights.NotStarted, StartWithRights.Run(new[] { "--profile", "Racing" }));
         }

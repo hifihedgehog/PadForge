@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Po zminimalizowaniu okna PadForge pozostaje w obszarze powiadomień zamiast na pasku zadań.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Okno pozostaje ukryte po uruchomieniu programu PadForge. Program działa i mapuje jak zwykle.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Uruchamiaj PadForge automatycznie po zalogowaniu się do systemu Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge działa z folderu {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Wymaga to umieszczenia programu PadForge we własnym folderze. Jego folder zawiera inne pliki, więc PadForge nie może chronić go przed zmianami przez inne programy.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Przenieś PadForge do własnego folderu</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopiuje program PadForge i jego ustawienia do folderu Program Files, kieruje tam jego zadania i uruchamia go stamtąd. Kopia tutaj pozostaje bez zmian.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge nie został przeniesiony: folder {0} zawiera pliki, które nie należą do programu PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge nie został przeniesiony: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Uruchamianie przy logowaniu zostało wyłączone, ponieważ uruchamiało program PadForge z folderu, który zawiera inne pliki.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Zawsze pokazuj w zasobniku systemowym</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona w zasobniku pozostaje widoczna, gdy okno jest otwarte, więc polecenie Zakończ w jej menu jest zawsze pod ręką.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizacje</value></data>

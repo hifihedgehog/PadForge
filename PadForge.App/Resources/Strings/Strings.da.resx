@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Hold PadForge i meddelelsesområdet i stedet for på proceslinjen, når du minimerer vinduet.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Hold vinduet skjult, når PadForge starter. Programmet kører og tildeler som normalt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatisk, når du logger på Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge kører fra {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dette kræver, at PadForge ligger i en mappe for sig selv. Dens mappe indeholder andre filer, så PadForge kan ikke holde andre programmer fra at ændre den.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Flyt PadForge til sin egen mappe</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopierer PadForge og dets indstillinger til Program Files, peger dets opgaver dertil og starter det derfra. Kopien her bliver, som den er.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: {0} indeholder filer, der ikke hører til PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start ved logon blev slået fra, fordi det kørte PadForge fra en mappe med andre filer.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vis altid i meddelelsesområdet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hold ikonet i meddelelsesområdet synligt, mens vinduet er åbent, så Afslut i dets menu altid kun er ét klik væk.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdateringer</value></data>

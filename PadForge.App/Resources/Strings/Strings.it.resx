@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mantieni PadForge nell’area di notifica quando riduci a icona la finestra, invece che nella barra delle applicazioni.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantieni la finestra nascosta all’avvio di PadForge. Continua a funzionare e mappare come sempre.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Avvia PadForge automaticamente quando accedi a Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge viene eseguito da {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Serve PadForge in una cartella tutta sua. La sua cartella contiene altri file, quindi PadForge non può impedire ad altri programmi di modificarla.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Sposta PadForge nella sua cartella</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia PadForge e le sue impostazioni in Program Files, vi punta le sue attività e lo avvia da lì. La copia qui resta com'è.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge non è stato spostato: {0} contiene file che non sono di PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge non è stato spostato: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Avvia all'accesso è stato disattivato, perché avviava PadForge da una cartella che contiene altri file.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostra sempre nell'area di notifica</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantiene visibile l'icona nell'area di notifica mentre la finestra è aperta, così Esci nel suo menu è sempre a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aggiornamenti</value></data>

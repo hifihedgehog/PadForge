@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ඔබ කවුළුව අවම කළ විට, PadForge කාර්ය තීරුව වෙනුවට දැනුම්දීම් ප්‍රදේශයේ තබා ගන්න.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ආරම්භ වන විට කවුළුව සඟවා තබන්න. එය සුපුරුදු පරිදි ධාවනය වී සිතියම්ගත කරයි.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ඔබ Windows වෙත පුරනය වූ විට PadForge ස්වයංක්‍රීයව ආරම්භ කරන්න.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ධාවනය වන්නේ {0} සිටය.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>මේ සඳහා PadForge එයටම වෙන් වූ ෆෝල්ඩරයක තිබිය යුතුය. එහි ෆෝල්ඩරයේ වෙනත් ගොනු ඇති බැවින්, වෙනත් වැඩසටහන් එය වෙනස් කිරීම PadForge හට වැළැක්විය නොහැක.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge එයටම වෙන් වූ ෆෝල්ඩරයකට ගෙන යන්න</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge සහ එහි සැකසීම් Program Files වෙත පිටපත් කර, එහි කාර්යයන් එතැනට යොමු කර, එතැනින් ආරම්භ කරයි. මෙහි ඇති පිටපත එලෙසම පවතී.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ගෙන ගියේ නැත: {0} හි PadForge ට අයත් නොවන ගොනු ඇත.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ගෙන ගියේ නැත: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>“පුරනය වන විට ආරම්භ කරන්න” අක්‍රිය කරන ලදී, මන්ද එය වෙනත් ගොනු ඇති ෆෝල්ඩරයකින් PadForge ධාවනය කළ බැවිනි.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>සැමවිටම පද්ධති තැටියේ පෙන්වන්න</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>කවුළුව විවෘතව ඇති අතරතුර තැටි නිරූපකය දෘශ්‍යමානව තබා ගන්න, එවිට එහි මෙනුවේ පිටවන්න සැමවිටම එක් ක්ලික් කිරීමකින් ළඟා විය හැක.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>යාවත්කාලීන</value></data>

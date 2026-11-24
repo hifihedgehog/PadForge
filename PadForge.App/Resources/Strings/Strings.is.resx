@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Halda PadForge á tilkynningasvæðinu þegar þú lágmarkar gluggann, í stað verkstikunnar.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Halda glugganum földum þegar PadForge ræsist. Forritið keyrir og varpar eins og venjulega.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ræsa PadForge sjálfkrafa þegar þú skráir þig inn í Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge keyrir úr {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Þetta krefst þess að PadForge sé í sinni eigin möppu. Mappa þess geymir aðrar skrár, svo PadForge getur ekki varnað öðrum forritum að breyta henni.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Færa PadForge í eigin möppu</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Afritar PadForge og stillingar þess í Program Files, beinir verkum þess þangað og ræsir það þaðan. Afritið hér helst óbreytt.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge var ekki fært: {0} geymir skrár sem tilheyra ekki PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge var ekki fært: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, því það ræsti PadForge úr möppu sem geymir aðrar skrár.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sýna alltaf í kerfisbakka</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Halda tákninu í kerfisbakkanum sýnilegu á meðan glugginn er opinn, svo „Hætta“ í valmynd þess sé alltaf aðeins einum smelli frá.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Uppfærslur</value></data>

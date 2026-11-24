@@ -59,8 +59,8 @@ namespace PadForge.Services.Automation
         [Description("Its value: a number, true or false, or the text of the picked choice. set_setting takes the same kind.")]
         public JsonElement? Value { get; set; }
 
-        [Description("number, switch or choice.")]
-        public AssistantSettingKind Kind { get; set; }
+        [Description("number, switch or choice. None for a setting PadForge has no value of for a program, such as a button, a gallery or a folder's path: show takes the user to it.")]
+        public AssistantSettingKind? Kind { get; set; }
 
         [Description("The least a number takes.")]
         public double? Minimum { get; set; }

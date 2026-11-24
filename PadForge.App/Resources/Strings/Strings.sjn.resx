@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Heb PadForge vi tast ir níthal i henneth, ú vi rib carthas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Heb i henneth toblannen ir PadForge iesta. Nor a sesta sui senu.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Iesto PadForge ir minnal Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge cuia o {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Hen baura PadForge vi colch în er. Colch în gar parlas egel, a PadForge ú-pol boda curu egel gwista hon.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Menno PadForge na colch în er</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Lamma PadForge a cilith în na Program Files, menna carthas în na ha, a iesta hon o ha. I lammad sí dartha sui ha.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ú-glennant: {0} gar parlas ú-garnen o PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ú-glennant: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Iesto ir minnad lorthannen, an iestant PadForge o colch i gar parlas egel.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Tano anuir vi dast</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Heb aerem i dast athgen lo i henneth edrannen, sí Uthwen vi narth în ferui anuir.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cŷl</value></data>

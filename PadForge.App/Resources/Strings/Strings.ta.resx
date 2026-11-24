@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>சாளரத்தைச் சிறிதாக்கும்போது PadForge-ஐப் பணிப்பட்டியில் அல்லாமல் அறிவிப்புப் பகுதியில் வைத்திருக்கும்.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge தொடங்கும்போது சாளரத்தை மறைத்து வைத்திருக்கும். அது வழக்கம்போல் இயங்கி மேப் செய்யும்.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>நீங்கள் Windows-இல் உள்நுழையும்போது PadForge-ஐத் தானாகத் தொடங்கும்.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} இலிருந்து இயங்குகிறது.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>இதற்கு PadForge தனக்கென ஒரு கோப்புறையில் இருக்க வேண்டும். அதன் கோப்புறையில் பிற கோப்புகள் உள்ளன, எனவே பிற நிரல்கள் அதை மாற்றாமல் PadForge-ஆல் தடுக்க முடியாது.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ஐ அதன் சொந்தக் கோப்புறைக்கு நகர்த்து</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge-ஐயும் அதன் அமைப்புகளையும் Program Files-க்கு நகலெடுத்து, அதன் பணிகளை அங்கே சுட்டி, அங்கிருந்து தொடங்கும். இங்குள்ள நகல் அப்படியே இருக்கும்.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge நகரவில்லை: {0}-இல் PadForge-உடையவை அல்லாத கோப்புகள் உள்ளன.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge நகரவில்லை: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>PadForge-ஐப் பிற கோப்புகள் உள்ள கோப்புறையிலிருந்து இயக்கியதால் உள்நுழையும்போது தொடங்கு அணைக்கப்பட்டது.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>சிஸ்டம் டிரேயில் எப்போதும் காட்டு</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>சாளரம் திறந்திருக்கும்போதும் டிரே ஐகானைக் காட்டும், எனவே அதன் மெனுவில் உள்ள வெளியேறு எப்போதும் ஒரே கிளிக்கில் கிடைக்கும்.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>புதுப்பிப்புகள்</value></data>

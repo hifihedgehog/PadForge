@@ -103,18 +103,26 @@ namespace PadForge.Engine.Common.Logitech
         /// itself there. Reading both costs one key open and covers a machine
         /// that has only the other.</para>
         /// </summary>
+        ///
+        /// <para>Only the machine's own registration is read, under
+        /// HKEY_LOCAL_MACHINE (#597). HKEY_CLASSES_ROOT lays the user's
+        /// classes over it, and the user's programs can write those, so a
+        /// registration there would choose the library PadForge loads with
+        /// its rights. The SDK's installer runs with rights and registers
+        /// under the machine.</para>
         private static IEnumerable<string> RegistryCandidates()
         {
             foreach (string subKey in new[]
                      {
-                         @"Wow6432Node\CLSID\" + ClassId + @"\" + ServerBinary,
-                         @"CLSID\" + ClassId + @"\" + ServerBinary,
+                         @"SOFTWARE\Classes\Wow6432Node\CLSID\" + ClassId + @"\" + ServerBinary,
+                         @"SOFTWARE\Wow6432Node\Classes\CLSID\" + ClassId + @"\" + ServerBinary,
+                         @"SOFTWARE\Classes\CLSID\" + ClassId + @"\" + ServerBinary,
                      })
             {
                 string value = null;
                 try
                 {
-                    using var key = Registry.ClassesRoot.OpenSubKey(subKey);
+                    using var key = Registry.LocalMachine.OpenSubKey(subKey);
                     value = key?.GetValue(string.Empty) as string;
                 }
                 catch (Exception)

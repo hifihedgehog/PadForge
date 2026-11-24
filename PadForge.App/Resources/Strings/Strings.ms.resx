@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Pastikan PadForge dalam kawasan pemberitahuan apabila anda mengecilkan tetingkap, dan bukan pada bar tugas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Pastikan tetingkap tersembunyi apabila PadForge bermula. Ia berjalan dan memetakan seperti biasa.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Mulakan PadForge secara automatik apabila anda log masuk ke Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge berjalan dari {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ini memerlukan PadForge dalam folder sendiri. Foldernya mengandungi fail lain, jadi PadForge tidak dapat menghalang program lain daripada mengubahnya.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Pindahkan PadForge ke Folder Sendiri</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Menyalin PadForge dan tetapannya ke Program Files, mengarahkan tugasnya ke sana, dan memulakannya dari sana. Salinan di sini kekal seperti sedia ada.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge tidak berpindah: {0} mengandungi fail yang bukan milik PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge tidak berpindah: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana ia menjalankan PadForge dari folder yang mengandungi fail lain.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sentiasa Tunjuk dalam Dulang Sistem</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pastikan ikon dulang kelihatan semasa tetingkap dibuka, supaya Keluar dalam menunya sentiasa satu klik sahaja.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Kemas Kini</value></data>

@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Після згортання вікна PadForge залишається в області сповіщень, а не на панелі завдань.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Вікно залишається прихованим, коли PadForge запускається. Програма працює і виконує прив'язки як зазвичай.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Автоматично запускати PadForge, коли ви входите у Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge запущено з {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Для цього PadForge має бути у власній папці. У його папці є інші файли, тому PadForge не може захистити себе від змін іншими програмами.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Перенести PadForge до власної папки</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копіює PadForge і його налаштування до Program Files, спрямовує туди його завдання та запускає звідти. Копія тут залишається як є.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge не перенісся: у {0} є файли, що не належать PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge не перенісся: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Запуск під час входу в систему вимкнено, бо він запускав PadForge з папки, де є інші файли.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Завжди показувати в системному треї</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Піктограма в треї залишається видимою, поки вікно відкрите, тож до пункту «Вихід» у її меню завжди одне клацання.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Оновлення</value></data>

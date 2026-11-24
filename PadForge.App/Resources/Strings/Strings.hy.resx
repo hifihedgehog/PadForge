@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Պահեք PadForge-ը ծանուցումների տարածքում պատուհանը ծալելիս՝ առաջադրանքների գոտու փոխարեն։</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Պահեք պատուհանը թաքցված PadForge-ը մեկնարկելիս։ Այն աշխատում և կապակցում է սովորականի պես։</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ը մեկնարկում է ինքնաշխատ, երբ մուտք եք գործում Windows։</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge-ը աշխատում է այստեղից՝ {0}։</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Սա պահանջում է, որ PadForge-ը լինի իր սեփական թղթապանակում։ Նրա թղթապանակում այլ ֆայլեր կան, ուստի PadForge-ը չի կարող այլ ծրագրերին թույլ չտալ փոխել այն։</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Տեղափոխել PadForge-ը իր սեփական թղթապանակ</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Պատճենում է PadForge-ը և նրա կարգավորումները Program Files, այնտեղ է ուղղում նրա առաջադրանքները և մեկնարկում այնտեղից։ Այստեղի օրինակը մնում է անփոփոխ։</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0} թղթապանակում կան ֆայլեր, որոնք PadForge-ինը չեն։</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ» անջատվեց, քանի որ այն PadForge-ը աշխատեցնում էր այլ ֆայլեր պարունակող թղթապանակից։</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցույց տալ համակարգային սկուտեղում</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Սկուտեղի պատկերակը տեսանելի է պատուհանը բաց ժամանակ, որպեսզի ընտրացանկի Ելքը միշտ մեկ սեղմումի հեռավորության վրա լինի։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>

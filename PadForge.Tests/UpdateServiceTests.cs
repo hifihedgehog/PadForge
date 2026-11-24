@@ -962,7 +962,9 @@ public class UpdateServiceTests
         Assert.True(UpdateService.TryAcquireUpdateLease(exe, out var first));
         try
         {
-            Assert.True(UpdateService.IsUpdateInProgress(exe));
+            // The test host may run without rights, so its lease's owner is
+            // not one a launch counts. Every owner is counted here.
+            Assert.True(UpdateService.IsUpdateInProgress(exe, _ => true));
             // A second helper for the same exe, from any session, is refused.
             Assert.False(UpdateService.TryAcquireUpdateLease(exe, out var second));
             Assert.Null(second);
@@ -971,9 +973,86 @@ public class UpdateServiceTests
         {
             first.Dispose();
         }
-        Assert.False(UpdateService.IsUpdateInProgress(exe));
+        Assert.False(UpdateService.IsUpdateInProgress(exe, _ => true));
         Assert.True(UpdateService.TryAcquireUpdateLease(exe, out var again));
         again.Dispose();
+    }
+
+    /// <summary>Updates are staged in the protected folder (#597). The test
+    /// host has none and keeps the old place, in which it writes
+    /// nothing.</summary>
+    [Fact]
+    public void Updates_AreStagedInTheProtectedFolder()
+    {
+        string service = AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "UpdateService.cs");
+        Assert.Contains("internal static string StagingRoot => ProtectedFolder.Updates is { Length: > 0 } updates ? updates : LegacyStagingRoot;",
+            service, StringComparison.Ordinal);
+        Assert.Equal(UpdateService.LegacyStagingRoot, UpdateService.StagingRoot);
+        Assert.EndsWith(@"\PadForge_Update", UpdateService.LegacyStagingRoot, StringComparison.Ordinal);
+    }
+
+    /// <summary>What an older version staged in the user's temp folder is
+    /// removed, never started, unless this copy runs from inside it.</summary>
+    [Fact]
+    public void TheOldStagingFolder_IsRemoved_UnlessThisCopyRunsFromIt()
+    {
+        string own = OwnFolder("Legacy");
+        string legacy = Path.Combine(own, "PadForge_Update");
+        string staging = Path.Combine(own, "Protected", "Update");
+        Directory.CreateDirectory(Path.Combine(legacy, "0123456789abcdef", "r5000"));
+        File.WriteAllText(Path.Combine(legacy, "0123456789abcdef", "r5000", "PadForge.exe"), "planted");
+
+        // The helper an older version started runs from inside it.
+        Assert.True(UpdateService.CleanLegacyStaging(Path.Combine(legacy, "0123456789abcdef", "r5000", "PadForge.exe"), staging, legacy));
+        Assert.True(Directory.Exists(legacy));
+        // The same folder as the staging folder is left as it is.
+        Assert.True(UpdateService.CleanLegacyStaging(NoSuchInstall,legacy, legacy));
+        Assert.True(Directory.Exists(legacy));
+
+        Assert.True(UpdateService.CleanLegacyStaging(NoSuchInstall,staging, legacy));
+        Assert.False(Directory.Exists(legacy));
+        Assert.True(UpdateService.CleanLegacyStaging(NoSuchInstall,staging, legacy));
+    }
+
+    /// <summary>The lease lets Administrators and SYSTEM do anything with it
+    /// and every signed-in account read its owner, and no more (#597).</summary>
+    [Fact]
+    public void TheLeasesList_LetsOthersReadItsOwnerAndNothingElse()
+    {
+        var rules = UpdateService.LeaseSecurity().GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier))
+            .Cast<System.Security.AccessControl.MutexAccessRule>()
+            .Select(r => (((System.Security.Principal.SecurityIdentifier)r.IdentityReference).Value, r.MutexRights, r.AccessControlType))
+            .OrderBy(r => r.Value, StringComparer.Ordinal)
+            .ToArray();
+        Assert.Equal(new[]
+        {
+            ("S-1-5-11", System.Security.AccessControl.MutexRights.ReadPermissions, System.Security.AccessControl.AccessControlType.Allow),
+            ("S-1-5-18", System.Security.AccessControl.MutexRights.FullControl, System.Security.AccessControl.AccessControlType.Allow),
+            ("S-1-5-32-544", System.Security.AccessControl.MutexRights.FullControl, System.Security.AccessControl.AccessControlType.Allow),
+        }, rules);
+        Assert.True(UpdateService.LeaseSecurity().AreAccessRulesProtected);
+    }
+
+    /// <summary>Any account can make a mutex of the lease's name. Only one
+    /// owned by Administrators or SYSTEM, which only a process with rights
+    /// can make, keeps PadForge's launches away (#597).</summary>
+    [Fact]
+    public void ANameAnyAccountCanMake_IsALeaseOnlyWhenAnAdministratorOwnsIt()
+    {
+        Assert.True(UpdateService.IsTrustedLeaseOwner("S-1-5-32-544"));
+        Assert.True(UpdateService.IsTrustedLeaseOwner("S-1-5-18"));
+        Assert.False(UpdateService.IsTrustedLeaseOwner("S-1-5-21-1-2-3-1001"));
+        Assert.False(UpdateService.IsTrustedLeaseOwner("S-1-5-11"));
+        Assert.False(UpdateService.IsTrustedLeaseOwner(null));
+
+        string exe = Path.Combine(OwnFolder("Squat"), "PadForge.exe");
+        using var squat = new Mutex(false, UpdateService.LeaseName(exe));
+        string owner = ((System.Security.Principal.SecurityIdentifier)squat.GetAccessControl()
+            .GetOwner(typeof(System.Security.Principal.SecurityIdentifier))).Value;
+        Assert.Equal(UpdateService.IsTrustedLeaseOwner(owner), UpdateService.IsUpdateInProgress(exe));
+        string seen = null;
+        Assert.False(UpdateService.IsUpdateInProgress(exe, sid => { seen = sid; return false; }));
+        Assert.Equal(owner, seen);
     }
 
     /// <summary>The check pairs a release's tag with its file only while a
@@ -1014,14 +1093,14 @@ public class UpdateServiceTests
     public void ALeaseOnTheInstalledExeKeepsItsLaunchesAway()
     {
         string exe = Path.Combine(OwnFolder("Lease"), "PadForge.exe");
-        Assert.False(UpdateService.IsUpdateInProgress(exe));
+        Assert.False(UpdateService.IsUpdateInProgress(exe, _ => true));
         using (new Mutex(false, UpdateService.LeaseName(exe)))
         {
-            Assert.True(UpdateService.IsUpdateInProgress(exe));
-            Assert.True(UpdateService.IsUpdateInProgress(exe.ToUpperInvariant()));
-            Assert.False(UpdateService.IsUpdateInProgress(Path.Combine(Path.GetDirectoryName(exe), "Other.exe")));
+            Assert.True(UpdateService.IsUpdateInProgress(exe, _ => true));
+            Assert.True(UpdateService.IsUpdateInProgress(exe.ToUpperInvariant(), _ => true));
+            Assert.False(UpdateService.IsUpdateInProgress(Path.Combine(Path.GetDirectoryName(exe), "Other.exe"), _ => true));
         }
-        Assert.False(UpdateService.IsUpdateInProgress(exe));
+        Assert.False(UpdateService.IsUpdateInProgress(exe, _ => true));
         Assert.StartsWith(@"Global\", UpdateService.LeaseName(exe), StringComparison.Ordinal);
     }
 
@@ -1224,8 +1303,10 @@ public class UpdateServiceTests
         string settings = Read("PadForge.App/Services/SettingsService.cs");
         string window = Read("PadForge.App/MainWindow.xaml.cs");
         string view = Read("PadForge.App/Views/SettingsPage.xaml");
-        string load = Between(settings, "private void LoadAppSettings(", "private AppSettingsData BuildAppSettings(");
-        string save = settings[settings.IndexOf("private AppSettingsData BuildAppSettings(", StringComparison.Ordinal)..];
+        // Both are internal: the assistants' undo takes and puts back the app
+        // settings through them (#597).
+        string load = Between(settings, "internal void LoadAppSettings(", "internal AppSettingsData BuildAppSettings(");
+        string save = settings[settings.IndexOf("internal AppSettingsData BuildAppSettings(", StringComparison.Ordinal)..];
         string dirty = Between(window, "_viewModel.Settings.PropertyChanged +=", "_viewModel.Dashboard.PropertyChanged +=");
         foreach (string name in new[] { "CheckForUpdatesAutomatically", "InstallUpdatesAutomatically", "IncludePreReleaseUpdates" })
         {

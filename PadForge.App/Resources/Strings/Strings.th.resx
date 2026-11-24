@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>เก็บ PadForge ไว้ในพื้นที่แจ้งเตือนเมื่อคุณย่อหน้าต่าง แทนที่จะอยู่บนแถบงาน</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>ซ่อนหน้าต่างไว้เมื่อ PadForge เริ่มทำงาน โปรแกรมจะทำงานและแมปตามปกติ</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>เริ่ม PadForge โดยอัตโนมัติเมื่อคุณลงชื่อเข้าใช้ Windows</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ทำงานจาก {0}</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ต้องวาง PadForge ไว้ในโฟลเดอร์ของตัวเอง โฟลเดอร์ปัจจุบันมีไฟล์อื่นอยู่ PadForge จึงป้องกันไม่ให้โปรแกรมอื่นแก้ไขโฟลเดอร์นั้นไม่ได้</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>ย้าย PadForge ไปยังโฟลเดอร์ของตัวเอง</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>คัดลอก PadForge และการตั้งค่าไปที่ Program Files ชี้งานตามกำหนดของ PadForge ไปที่นั่น และเริ่มทำงานจากที่นั่น สำเนาที่อยู่ตรงนี้จะคงไว้ตามเดิม</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ไม่ได้ย้าย: {0} มีไฟล์ที่ไม่ใช่ของ PadForge</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ไม่ได้ย้าย: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ปิดเริ่มเมื่อลงชื่อเข้าใช้แล้ว เพราะมันเรียก PadForge จากโฟลเดอร์ที่มีไฟล์อื่นอยู่</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>แสดงในถาดระบบเสมอ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>แสดงไอคอนในถาดระบบไว้ขณะที่หน้าต่างเปิดอยู่ เพื่อให้เข้าถึง “ออก” ในเมนูของไอคอนได้ในคลิกเดียวเสมอ</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>การอัปเดต</value></data>

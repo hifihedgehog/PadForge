@@ -18,7 +18,7 @@ namespace PadForge.Tests
     /// Search's index has an ID of its own that does not change with the
     /// language, every setting is found by it, settings are found by the
     /// words on their rows, one setting of each kind on each page reads and
-    /// writes through its control and back, a value out of range is refused
+    /// writes through its control and back (AutomationAssistantCatalogKindsTests), a value out of range is refused
     /// with the range, the settings of the Automation and Plugins pages are
     /// the user's alone, and show opens the place without activating the
     /// window.
@@ -26,10 +26,6 @@ namespace PadForge.Tests
     [Collection("WpfApplicationSingleton")]
     public class AutomationAssistantCatalogTests
     {
-        private readonly ITestOutputHelper _output;
-
-        public AutomationAssistantCatalogTests(ITestOutputHelper output) => _output = output;
-
         [Fact]
         public void EveryEntryOfTheIndex_HasAnIdOfItsOwn_ThatNoWordsShownGoInto()
         {
@@ -49,7 +45,7 @@ namespace PadForge.Tests
             Assert.Equal(("pad/Pad_X", 3, 1, "abcd2345"), (b, c, i, d));
         }
 
-        private sealed class Pages
+        internal sealed class Pages
         {
             public MainViewModel Vm;
             public PadPage Pad;
@@ -70,7 +66,7 @@ namespace PadForge.Tests
             };
         }
 
-        private static void WithPages(Action<Pages> body)
+        internal static void WithPages(Action<Pages> body)
         {
             PageRenderDumpPages.WithApp((app, dispatcher) =>
             {
@@ -139,89 +135,6 @@ namespace PadForge.Tests
                 Assert.Contains(p.Catalog.Find("polling rate", 10), s => s.Id.StartsWith("settings/", StringComparison.Ordinal));
                 Assert.Throws<AssistantRefusal>(() => p.Catalog.Get("settings/No_Such_Key"));
             });
-        }
-
-        [Fact]
-        public void OneSettingOfEachKind_OnEachPage_ReadsAndWritesThroughItsControl_AndBack()
-        {
-            WithPages(p =>
-            {
-                var all = p.Catalog.All();
-                var done = new List<string>();
-                foreach (SearchPage page in Enum.GetValues(typeof(SearchPage)))
-                {
-                    foreach (AssistantSettingKind kind in Enum.GetValues(typeof(AssistantSettingKind)))
-                    {
-                        var candidates = all.Where(s => s.Id.StartsWith(SearchIds.PageWord(page) + "/", StringComparison.Ordinal)
-                                                       && s.Kind == kind && s.Value != null
-                                                       && !s.Id.Contains("/Automation/") && !s.Id.Contains("/Plugins/")).ToList();
-                        if (candidates.Count == 0)
-                        {
-                            _output.WriteLine(page + " shows no " + kind + " with a value here");
-                            continue;
-                        }
-                        bool round = false;
-                        foreach (var setting in candidates)
-                        {
-                            if (RoundTrips(p.Catalog, setting))
-                            {
-                                done.Add(page + " " + kind + ": " + setting.Id);
-                                round = true;
-                                break;
-                            }
-                        }
-                        Assert.True(round, "no " + kind + " on the " + page + " page round-tripped of " + candidates.Count);
-                    }
-                }
-                foreach (string line in done) _output.WriteLine(line);
-                Assert.Contains(done, d => d.StartsWith("Pad Number", StringComparison.Ordinal));
-                Assert.Contains(done, d => d.StartsWith("Settings Switch", StringComparison.Ordinal));
-                Assert.Contains(done, d => d.Contains(" Choice: ", StringComparison.Ordinal));
-            });
-        }
-
-        private bool RoundTrips(AssistantCatalog catalog, AssistantSetting setting)
-        {
-            JsonElement before = setting.Value.Value;
-            JsonElement next;
-            switch (setting.Kind)
-            {
-                case AssistantSettingKind.Number:
-                {
-                    double v = before.GetDouble();
-                    double min = setting.Minimum ?? v - 1, max = setting.Maximum ?? v + 1;
-                    double to = v + 1 <= max ? v + 1 : v - 1;
-                    if (to < min) return false;
-                    next = JsonSerializer.SerializeToElement(to);
-                    break;
-                }
-                case AssistantSettingKind.Switch:
-                    next = JsonSerializer.SerializeToElement(!before.GetBoolean());
-                    break;
-                default:
-                    var other = setting.Choices?.FirstOrDefault(c => c != before.GetString());
-                    if (other == null) return false;
-                    next = JsonSerializer.SerializeToElement(other);
-                    break;
-            }
-            try
-            {
-                var after = catalog.Set(setting.Id, next);
-                bool changed = setting.Kind switch
-                {
-                    AssistantSettingKind.Number => after.Value != null && Math.Abs(after.Value.Value.GetDouble() - next.GetDouble()) < 0.0001,
-                    AssistantSettingKind.Switch => after.Value != null && after.Value.Value.GetBoolean() == next.GetBoolean(),
-                    _ => after.Value != null && after.Value.Value.GetString() == next.GetString(),
-                };
-                catalog.Set(setting.Id, before);
-                var back = catalog.Get(setting.Id);
-                return changed && back.Value != null && back.Value.Value.GetRawText() == before.GetRawText();
-            }
-            catch (AssistantRefusal refusal)
-            {
-                _output.WriteLine(setting.Id + " refused: " + refusal.Code + " " + refusal.Words);
-                return false;
-            }
         }
 
         [Fact]

@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>最小化窗口时将 PadForge 留在通知区域，而不是任务栏。</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge 启动时保持窗口隐藏。它照常运行并进行映射。</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>登录 Windows 时自动启动 PadForge。</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge 从 {0} 运行。</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>这需要 PadForge 位于它自己的文件夹中。它所在的文件夹里还有其他文件，因此 PadForge 无法阻止其他程序更改它。</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>把 PadForge 移到专属文件夹</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>把 PadForge 及其设置复制到 Program Files，把它的任务指向那里，并从那里启动。这里的副本保持不变。</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge 没有移动：{0} 中有不属于 PadForge 的文件。</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge 没有移动：{0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>登录时启动已关闭，因为它会从一个存有其他文件的文件夹运行 PadForge。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>始终显示在系统托盘</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>窗口打开时也保持显示系统托盘图标，随时可以在其菜单中选择“退出”。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>更新</value></data>

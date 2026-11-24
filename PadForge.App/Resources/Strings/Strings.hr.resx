@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Pri minimiziranju prozora PadForge ostaje u području obavijesti umjesto na programskoj traci.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Prozor ostaje skriven pri pokretanju programa PadForge. Program radi i mapira kao i obično.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automatski pokreni PadForge kada se prijavite u Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge radi iz mape {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Za ovo je potreban PadForge u vlastitoj mapi. Njegova mapa sadrži druge datoteke, pa PadForge ne može spriječiti druge programe da je mijenjaju.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Premjesti PadForge u vlastitu mapu</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopira PadForge i njegove postavke u Program Files, usmjerava njegove zadatke tamo i pokreće ga odande. Kopija ovdje ostaje kakva jest.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se nije premjestio: {0} sadrži datoteke koje nisu od programa PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se nije premjestio: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Pokreni pri prijavi isključeno je jer je pokretalo PadForge iz mape koja sadrži druge datoteke.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Uvijek prikaži u području obavijesti</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona u području obavijesti ostaje vidljiva dok je prozor otvoren pa je Izlaz u njezinu izborniku uvijek udaljen samo jedan klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ažuriranja</value></data>

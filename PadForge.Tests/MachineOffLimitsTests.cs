@@ -478,8 +478,12 @@ namespace PadForge.Tests
             string delete = OffLimitsSource.Member(source, "internal static void DeleteFolder(string path)");
             OffLimitsSource.BeginsWith(delete, "if (OffLimitsForTest && !IsInTempFolder(path))");
             Assert.True(InMember(source, delete, Assert.Single(OffLimitsSource.Calls(source, "Directory.Delete("))));
-            Assert.Equal("File.Delete(scriptPath)", source.Substring(Assert.Single(OffLimitsSource.Calls(source, "File.Delete(")), 23));
-            Assert.Contains("string scriptPath = Path.Combine(Path.GetTempPath(), \"PadForge_vjoy_uninstall.cmd\");", source);
+            // The vJoy script is written to a staging folder of its own under
+            // the protected folder (#597), and goes with that folder.
+            Assert.Empty(OffLimitsSource.Calls(source, "File.Delete("));
+            Assert.Contains("string scriptFolder = StagingFolder(\"vJoy\");", source);
+            Assert.Contains("try { DeleteFolder(scriptFolder); } catch { }", source);
+            Assert.DoesNotContain("Path.Combine(Path.GetTempPath(), \"PadForge_vjoy_uninstall.cmd\")", source);
 
             EveryFlag_IsSetInTheTestHost();
             Assert.True(DriverInstaller.IsInTempFolder(Path.Combine(Path.GetTempPath(), "PadForge_MidiRuntime", "x")));

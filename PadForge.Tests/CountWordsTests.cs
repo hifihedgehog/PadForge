@@ -78,6 +78,7 @@ namespace PadForge.Tests
             ["ControllerDatabase_BuiltInUpdated_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount, and {3} and {4} stand before no noun",
             ["Main_DevicesDisconnected_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
             ["Main_DevicesConnected_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
+            ["ExeFolder_TargetTaken_Format"] = "{0} is a folder's path, and holds is the verb",
         };
 
         /// <summary>Every English string that puts a count before a plural

@@ -1,6 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Xml.Linq;
 using Microsoft.Win32;
+using PadForge.Services;
 
 namespace PadForge.Common
 {
@@ -18,7 +21,17 @@ namespace PadForge.Common
     /// <para>schtasks output is locale-dependent, so this helper drives it by
     /// exit code only (0 = task exists / created / deleted; non-zero = not
     /// found or error). Same lesson as HM #17 / PadForge #69 — never grep
-    /// the human-readable text on a localized Windows install.</para>
+    /// the human-readable text on a localized Windows install. The one text
+    /// it reads is the task's definition (/XML), which is not
+    /// translated.</para>
+    ///
+    /// <para>The task runs PadForge with rights at every logon, so it may only
+    /// run an exe in a folder of PadForge's own that no other account can
+    /// change (#597, <see cref="ExeFolder"/>). Turning the setting on from a
+    /// shared folder is refused, and a start with rights removes a task that
+    /// runs an exe from one. schtasks is started by its full path in
+    /// System32: started by name alone, Windows would look for it in
+    /// PadForge's own folder first.</para>
     /// </summary>
     public static class StartupHelper
     {
@@ -55,12 +68,68 @@ namespace PadForge.Common
         /// prompt at every logon now, and left around it confuses future
         /// IsStartupEnabled() probes.
         /// </summary>
-        public static void SetStartupEnabled(bool enabled)
+        public static bool SetStartupEnabled(bool enabled)
         {
             DeleteLegacyRunEntry();
 
-            if (enabled) CreateScheduledTask();
-            else DeleteScheduledTask();
+            if (!enabled)
+            {
+                DeleteScheduledTask();
+                return true;
+            }
+            string exe = Environment.ProcessPath;
+            if (!ExeFolder.MayHoldTasks(exe))
+            {
+                DeleteScheduledTask();
+                return false;
+            }
+            return CreateScheduledTask(exe);
+        }
+
+        /// <summary>
+        /// A start with rights: a logon task whose exe sits in a folder other
+        /// accounts may change is fixed or removed. An own folder is
+        /// protected first (<see cref="ExeFolder.Check"/>), and the task
+        /// stays. A shared one keeps no task. True when the task was
+        /// removed.
+        /// </summary>
+        internal static bool AuditTask()
+        {
+            if (OffLimitsForTest || !ScheduledTaskExists()) return false;
+            string exe = TaskExe(RunSchtasksOutput($"/Query /TN \"{TaskName}\" /XML"));
+            if (exe != null && ExeFolder.Check(exe) == ExeFolder.Standing.Own) return false;
+            DeleteScheduledTask();
+            return !ScheduledTaskExists();
+        }
+
+        /// <summary>Points the logon task at another exe, as the move does.
+        /// No task is made where none was.</summary>
+        internal static bool RepointTask(string exe)
+        {
+            if (!ScheduledTaskExists()) return true;
+            return ExeFolder.MayHoldTasks(exe) && CreateScheduledTask(exe);
+        }
+
+        /// <summary>The program a task's definition runs: its first Exec
+        /// action's Command, without quotes. Null when there is none.</summary>
+        internal static string TaskExe(string definition)
+        {
+            if (string.IsNullOrWhiteSpace(definition)) return null;
+            try
+            {
+                int start = definition.IndexOf('<');
+                var doc = XDocument.Parse(start > 0 ? definition.Substring(start) : definition);
+                foreach (var element in doc.Descendants())
+                {
+                    if (element.Name.LocalName != "Command") continue;
+                    string command = element.Value.Trim().Trim('"');
+                    return command.Length == 0 ? null : Environment.ExpandEnvironmentVariables(command);
+                }
+            }
+            catch
+            {
+            }
+            return null;
         }
 
         /// <summary>
@@ -73,8 +142,8 @@ namespace PadForge.Common
         {
             try
             {
-                if (LegacyRunEntryExists() && !ScheduledTaskExists())
-                    CreateScheduledTask();
+                if (LegacyRunEntryExists() && !ScheduledTaskExists() && ExeFolder.MayHoldTasks(Environment.ProcessPath))
+                    CreateScheduledTask(Environment.ProcessPath);
                 DeleteLegacyRunEntry();
             }
             catch
@@ -109,10 +178,9 @@ namespace PadForge.Common
             return RunSchtasks($"/Query /TN \"{TaskName}\"") == 0;
         }
 
-        private static void CreateScheduledTask()
+        private static bool CreateScheduledTask(string exePath)
         {
-            string exePath = Process.GetCurrentProcess().MainModule?.FileName;
-            if (string.IsNullOrEmpty(exePath)) return;
+            if (string.IsNullOrEmpty(exePath)) return false;
 
             // /SC ONLOGON: trigger whenever a user logs on. /RL HIGHEST: run
             // with the highest privileges the principal is granted (gives
@@ -129,12 +197,41 @@ namespace PadForge.Common
             // quotes Windows passes to CreateProcess at trigger time.
             string taskRun = $"\\\"{exePath}\\\"";
             string args = $"/Create /TN \"{TaskName}\" /TR \"{taskRun}\" /SC ONLOGON /RL HIGHEST /F";
-            RunSchtasks(args);
+            return RunSchtasks(args) == 0;
         }
 
         private static void DeleteScheduledTask()
         {
             RunSchtasks($"/Delete /TN \"{TaskName}\" /F");
+        }
+
+        /// <summary>schtasks by its full path in System32.</summary>
+        internal static string SchtasksPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "schtasks.exe");
+
+        /// <summary>What schtasks printed, or null when it failed.</summary>
+        private static string RunSchtasksOutput(string arguments)
+        {
+            if (OffLimitsForTest) return null;
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = SchtasksPath,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+                using var p = Process.Start(psi);
+                if (p == null) return null;
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+                return p.ExitCode == 0 ? output : null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static int RunSchtasks(string arguments)
@@ -144,7 +241,7 @@ namespace PadForge.Common
             {
                 var psi = new ProcessStartInfo
                 {
-                    FileName = "schtasks.exe",
+                    FileName = SchtasksPath,
                     Arguments = arguments,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,

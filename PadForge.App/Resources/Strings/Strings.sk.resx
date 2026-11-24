@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Pri minimalizácii okna ponechá PadForge v oblasti oznámení namiesto panela úloh.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Pri spustení programu PadForge ponechá okno skryté. Program beží a mapuje ako zvyčajne.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automaticky spustí PadForge, keď sa prihlásite do systému Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge beží z {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Vyžaduje to program PadForge vo vlastnom priečinku. Jeho priečinok obsahuje iné súbory, takže PadForge nemôže zabrániť iným programom, aby ho menili.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Presunúť PadForge do vlastného priečinka</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Skopíruje PadForge a jeho nastavenia do Program Files, nasmeruje tam jeho úlohy a spustí ho odtiaľ. Kópia tu zostane nezmenená.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge sa nepresunul: {0} obsahuje súbory, ktoré nepatria programu PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge sa nepresunul: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Spúšťanie po prihlásení bolo vypnuté, pretože spúšťalo PadForge z priečinka, ktorý obsahuje iné súbory.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vždy zobrazovať v oblasti oznámení</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v oblasti oznámení zostane viditeľná aj pri otvorenom okne, takže Ukončiť v jej ponuke je vždy na jedno kliknutie.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizácie</value></data>

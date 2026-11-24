@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Păstrează PadForge în zona de notificare când minimizați fereastra, în loc de bara de activități.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Păstrează fereastra ascunsă când pornește PadForge. Programul rulează și mapează ca de obicei.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Pornește PadForge automat când vă conectați la Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge rulează din {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Acest lucru cere ca PadForge să fie într-un folder propriu. Folderul lui conține alte fișiere, deci PadForge nu poate împiedica alte programe să îl modifice.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Mutare PadForge în folderul propriu</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copiază PadForge și setările lui în Program Files, îi îndreaptă sarcinile acolo și îl pornește de acolo. Copia de aici rămâne neschimbată.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge nu s-a mutat: {0} conține fișiere care nu sunt ale PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge nu s-a mutat: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Pornirea la conectare a fost dezactivată, deoarece rula PadForge dintr-un folder care conține alte fișiere.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Afișare permanentă în zona de notificare</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Păstrează pictograma vizibilă în zona de notificare cât timp fereastra este deschisă, astfel încât Ieșire din meniul ei să fie mereu la un clic distanță.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualizări</value></data>

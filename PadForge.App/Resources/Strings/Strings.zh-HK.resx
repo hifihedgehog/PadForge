@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>最小化視窗時，把 PadForge 保留在通知區域，而不是工作列上。</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge 啟動時保持視窗隱藏。程式會照常執行和對應。</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>登入 Windows 時自動啟動 PadForge。</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge 從 {0} 執行。</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>這需要把 PadForge 放在專屬資料夾內。它目前所在的資料夾還有其他檔案，因此 PadForge 無法阻止其他程式更改它。</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>把 PadForge 移到專屬資料夾</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>把 PadForge 及其設定複製到 Program Files，將它的工作指向該處，並從該處啟動。這裡的副本會保持原樣。</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge 沒有移動：{0} 內有不屬於 PadForge 的檔案。</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge 沒有移動：{0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>「登入時啟動」已關閉，因為它從有其他檔案的資料夾執行 PadForge。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>一律在系統匣顯示</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>視窗開啟時亦保持顯示系統匣圖示，讓你隨時可以在其選單中按「結束」。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>更新</value></data>

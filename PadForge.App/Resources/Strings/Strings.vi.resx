@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Giữ PadForge trong vùng thông báo khi bạn thu nhỏ cửa sổ, thay vì trên thanh tác vụ.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Giữ cửa sổ ẩn khi PadForge khởi động. Chương trình vẫn chạy và ánh xạ như thường.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tự động khởi động PadForge khi bạn đăng nhập Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge chạy từ {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Việc này cần PadForge nằm trong thư mục riêng. Thư mục của nó đang chứa các tệp khác, nên PadForge không thể ngăn các chương trình khác thay đổi nó.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Chuyển PadForge vào thư mục riêng</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Sao chép PadForge và thiết lập của nó vào Program Files, trỏ các tác vụ của nó đến đó và khởi động nó từ đó. Bản sao ở đây vẫn giữ nguyên.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0} đang chứa các tệp không phải của PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì nó chạy PadForge từ một thư mục chứa các tệp khác.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Luôn hiện trong khay hệ thống</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Giữ biểu tượng khay luôn hiển thị khi cửa sổ đang mở, để lệnh Thoát trong menu của nó luôn chỉ cách một cú nhấp.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cập nhật</value></data>

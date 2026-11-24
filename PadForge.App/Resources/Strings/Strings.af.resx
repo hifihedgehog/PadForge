@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Hou PadForge in die kennisgewingarea wanneer jy die venster minimeer, in plaas van op die taakbalk.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Hou die venster versteek wanneer PadForge begin. Dit loop en wys toe soos gewoonlik.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Begin PadForge outomaties wanneer jy by Windows aanmeld.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge loop vanaf {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dit vereis dat PadForge in 'n eie vouer is. Sy vouer bevat ander lêers, so PadForge kan nie keer dat ander programme dit verander nie.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Skuif PadForge na sy eie vouer</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopieer PadForge en sy instellings na Program Files, rig sy take daarheen en begin dit van daar af. Die kopie hier bly soos dit is.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: {0} bevat lêers wat nie PadForge s'n is nie.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat dit PadForge vanaf 'n vouer laat loop het wat ander lêers bevat.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Wys altyd in stelselbalk</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hou die balkikoon sigbaar terwyl die venster oop is, sodat Verlaat in sy kieslys altyd een klik weg is.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdaterings</value></data>

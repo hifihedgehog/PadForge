@@ -368,6 +368,13 @@
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Umwirondoro “{0}” urimo kwerekana isura y'umukino wawo. Insanganyamatsiko yawe igaruka iyo undi mwirondoro ukora.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Idirishya</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tangiza PadForge mu buryo bwikora iyo winjiye muri Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ikora iturutse muri {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ibi bisaba ko PadForge iba mu bubiko bwayo bwonyine. Ububiko bwayo burimo izindi dosiye, bityo PadForge ntishobora kubuza izindi porogaramu kubuhindura.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Imurira PadForge mu bubiko bwayo</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Yigana PadForge n'igenamiterere ryayo muri Program Files, yerekeza imirimo yayo aho, kandi iyitangiriza aho. Kopi iri hano ntihinduka.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ntiyimutse: {0} irimo dosiye zitari iza PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ntiyimutse: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Gutangira iyo winjiye byazimijwe, kuko byatangizaga PadForge iturutse mu bubiko burimo izindi dosiye.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ivugurura</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Shakisha ivugurura mu buryo bwikora</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Shyiramo ivugurura mu buryo bwikora</value></data>

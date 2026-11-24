@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Када минимизујете прозор, PadForge остаје у области за обавештења уместо на траци задатака.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Прозор остаје сакривен када се PadForge покрене. Програм ради и мапира као и обично.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се аутоматски покреће када се пријавите у Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ради из {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ово захтева да PadForge буде у сопственој фасцикли. Његова фасцикла садржи друге датотеке, па PadForge не може да спречи друге програме да је мењају.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Премести PadForge у сопствену фасциклу</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копира PadForge и његова подешавања у Program Files, усмерава његове задатке тамо и покреће га одатле. Копија овде остаје као што је.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge се није преместио: {0} садржи датотеке које нису од програма PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge се није преместио: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Покретање при пријављивању је искључено, јер је покретало PadForge из фасцикле која садржи друге датотеке.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Увек прикажи у системској палети</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Икона у системској палети остаје видљива док је прозор отворен, па је „Изађи“ у њеном менију увек на један клик.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ажурирања</value></data>

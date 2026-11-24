@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Το PadForge παραμένει στην περιοχή ειδοποιήσεων όταν ελαχιστοποιείτε το παράθυρο, αντί για τη γραμμή εργασιών.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Το παράθυρο μένει κρυφό όταν ξεκινά το PadForge. Το πρόγραμμα εκτελείται και αντιστοιχίζει κανονικά.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Αυτόματη εκκίνηση του PadForge όταν συνδέεστε στα Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Το PadForge εκτελείται από {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Αυτό απαιτεί το PadForge σε δικό του φάκελο. Ο φάκελός του περιέχει άλλα αρχεία, επομένως το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να τον αλλάξουν.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Μεταφορά του PadForge στον δικό του φάκελο</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Αντιγράφει το PadForge και τις ρυθμίσεις του στο Program Files, κατευθύνει εκεί τις εργασίες του και το ξεκινά από εκεί. Το αντίγραφο εδώ παραμένει ως έχει.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: ο φάκελος {0} περιέχει αρχεία που δεν ανήκουν στο PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Η Εκκίνηση κατά τη σύνδεση απενεργοποιήθηκε, επειδή εκτελούσε το PadForge από φάκελο που περιέχει άλλα αρχεία.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Εμφάνιση πάντα στην περιοχή ειδοποιήσεων</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Το εικονίδιο της περιοχής ειδοποιήσεων παραμένει ορατό όσο το παράθυρο είναι ανοιχτό, ώστε η «Έξοδος» στο μενού του να απέχει πάντα ένα κλικ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ενημερώσεις</value></data>

@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>విండోను మినిమైజ్ చేసినప్పుడు PadForgeను టాస్క్‌బార్‌లో కాకుండా నోటిఫికేషన్ ప్రాంతంలో ఉంచండి.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ప్రారంభమైనప్పుడు విండోను దాచి ఉంచండి. ఇది యథావిధిగా నడుస్తుంది, మ్యాప్ చేస్తుంది.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>మీరు Windowsలోకి సైన్ ఇన్ అయినప్పుడు PadForgeను ఆటోమేటిక్‌గా ప్రారంభించండి.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} నుండి నడుస్తోంది.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>దీనికి PadForge కు సొంత ఫోల్డర్ కావాలి. దాని ఫోల్డర్‌లో ఇతర ఫైళ్లు ఉన్నాయి, కాబట్టి ఇతర ప్రోగ్రామ్లు దాన్ని మార్చకుండా PadForge ఆపలేదు.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ను సొంత ఫోల్డర్‌కు తరలించు</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge ను, దాని సెట్టింగులను Program Files కు కాపీ చేసి, దాని టాస్క్‌లను అక్కడికి మళ్లించి, అక్కడి నుండి ప్రారంభిస్తుంది. ఇక్కడి కాపీ అలాగే ఉంటుంది.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge తరలించలేదు: {0} లో PadForge కానివి ఫైళ్లు ఉన్నాయి.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge తరలించలేదు: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>లాగిన్ వద్ద ప్రారంభించు ఆఫ్ చేయబడింది, ఎందుకంటే అది PadForge ను ఇతర ఫైళ్లు ఉన్న ఫోల్డర్ నుండి నడిపింది.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ఎల్లప్పుడూ సిస్టమ్ ట్రేలో చూపించు</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>విండో తెరిచి ఉన్నప్పుడు ట్రే ఐకాన్ కనిపించేలా ఉంచండి, తద్వారా దాని మెనూలోని నిష్క్రమించు ఎప్పుడూ ఒక క్లిక్ దూరంలో ఉంటుంది.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>అప్డేట్లు</value></data>

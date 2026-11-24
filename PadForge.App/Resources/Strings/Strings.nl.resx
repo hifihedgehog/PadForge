@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Houd PadForge in het systeemvak wanneer je het venster minimaliseert, in plaats van op de taakbalk.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Houd het venster verborgen wanneer PadForge start. Het draait en wijst toe zoals altijd.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatisch wanneer je je aanmeldt bij Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge draait vanuit {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Hiervoor moet PadForge in een eigen map staan. De huidige map bevat andere bestanden, dus PadForge kan niet voorkomen dat andere programma's de map wijzigen.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge naar een eigen map verplaatsen</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopieert PadForge en de instellingen naar Program Files, wijst de taken van PadForge daarheen en start het van daaruit. De kopie hier blijft ongewijzigd.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge is niet verplaatst: {0} bevat bestanden die niet van PadForge zijn.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge is niet verplaatst: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Starten bij aanmelding is uitgezet, omdat het PadForge vanuit een map met andere bestanden startte.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Altijd in systeemvak tonen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Houdt het pictogram in het systeemvak zichtbaar terwijl het venster open is, zodat Afsluiten in het menu altijd één klik verwijderd is.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

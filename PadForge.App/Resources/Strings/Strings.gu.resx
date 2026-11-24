@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>વિન્ડો મિનિમાઇઝ કરો ત્યારે PadForge ને ટાસ્કબાર પર નહીં, સૂચના ક્ષેત્રમાં રાખો.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge શરૂ થાય ત્યારે વિન્ડો છુપાયેલી રાખો. તે હંમેશની જેમ ચાલે છે અને મેપ કરે છે.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows માં સાઇન ઇન કરો ત્યારે PadForge આપોઆપ શરૂ કરો.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} માંથી ચાલે છે.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>આ માટે PadForge ને પોતાના ફોલ્ડરમાં રાખવું જરૂરી છે. તેના ફોલ્ડરમાં બીજી ફાઇલો છે, તેથી PadForge બીજા પ્રોગ્રામને તેમાં ફેરફાર કરતા રોકી શકતું નથી.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ને તેના પોતાના ફોલ્ડરમાં ખસેડો</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge અને તેના સેટિંગ્સને Program Files માં કૉપિ કરે છે, તેના ટાસ્ક ત્યાં બતાવે છે અને ત્યાંથી શરૂ કરે છે. અહીંની નકલ જેમ છે તેમ રહે છે.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0} માં PadForge ની ન હોય તેવી ફાઇલો છે.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કરાયું, કારણ કે તે PadForge ને બીજી ફાઇલો ધરાવતા ફોલ્ડરમાંથી ચલાવતું હતું.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>હંમેશા સિસ્ટમ ટ્રેમાં બતાવો</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>વિન્ડો ખુલ્લી હોય ત્યારે પણ ટ્રે આઇકન દેખાતું રાખો, જેથી તેના મેનૂમાં Exit હંમેશા એક ક્લિક દૂર હોય.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>અપડેટ</value></data>

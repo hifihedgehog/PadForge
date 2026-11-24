@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>При минимизиране на прозореца PadForge остава в областта за уведомяване вместо в лентата на задачите.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Прозорецът остава скрит при стартиране на PadForge. Програмата работи и съпоставя както обикновено.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се стартира автоматично, когато влезете в Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge се изпълнява от {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Това изисква PadForge да е в отделна папка. Папката му съдържа други файлове, затова PadForge не може да попречи на други програми да я променят.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Премести PadForge в отделна папка</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копира PadForge и настройките му в Program Files, насочва задачите му натам и го стартира оттам. Копието тук остава непроменено.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge не се премести: {0} съдържа файлове, които не са на PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge не се премести: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>„Стартиране при влизане“ беше изключено, защото стартираше PadForge от папка, която съдържа други файлове.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Винаги показвай в областта за уведомяване</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Иконата в областта за уведомяване остава видима, докато прозорецът е отворен, така че „Изход“ в менюто ѝ е винаги на едно щракване разстояние.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Актуализации</value></data>

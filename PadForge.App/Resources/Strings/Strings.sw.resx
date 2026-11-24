@@ -935,6 +935,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Weka PadForge kwenye eneo la arifa unapopunguza dirisha, badala ya upau wa kazi.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Weka dirisha limefichwa PadForge inapoanza. Inaendesha na kupanga ramani kama kawaida.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Anzisha PadForge kiotomatiki unapoingia kwenye Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge inaendesha kutoka {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Hii inahitaji PadForge kwenye folda yake yenyewe. Folda yake ina faili nyingine, kwa hiyo PadForge haiwezi kuzuia programu nyingine kuibadilisha.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Hamisha PadForge hadi Folda Yake Yenyewe</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Hunakili PadForge na mipangilio yake kwenye Program Files, huelekeza kazi zake huko, na kuianzisha kutoka huko. Nakala iliyo hapa inabaki kama ilivyo.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge haikuhamia: {0} ina faili ambazo si za PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge haikuhamia: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa iliendesha PadForge kutoka folda yenye faili nyingine.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Onyesha kila wakati kwenye trei ya mfumo</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Weka ikoni ya trei ionekane dirisha likiwa wazi, ili Toka kwenye menyu yake iwe umbali wa kubofya mara moja.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Masasisho</value></data>

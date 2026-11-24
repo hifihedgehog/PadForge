@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>រក្សា PadForge នៅក្នុងតំបន់ជូនដំណឹង ពេលអ្នកបង្រួមបង្អួច ជំនួសឲ្យនៅលើរបារភារកិច្ច។</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>រក្សាបង្អួចឲ្យលាក់ពេល PadForge ចាប់ផ្ដើម។ វាដំណើរការ និងម៉ាបដូចធម្មតា។</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ចាប់ផ្ដើម PadForge ដោយស្វ័យប្រវត្តិ ពេលអ្នកចូល Windows។</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ដំណើរការពី {0}។</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>មុខងារនេះត្រូវការ PadForge នៅក្នុងថតផ្ទាល់ខ្លួនរបស់វា។ ថតរបស់វាមានឯកសារផ្សេងទៀត ដូច្នេះ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរវាបានទេ។</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>ផ្លាស់ PadForge ទៅថតផ្ទាល់ខ្លួនរបស់វា</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>ចម្លង PadForge និងការកំណត់របស់វាទៅ Program Files ចង្អុលកិច្ចការរបស់វាទៅទីនោះ ហើយចាប់ផ្ដើមវាពីទីនោះ។ ច្បាប់ចម្លងនៅទីនេះនៅដដែល។</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ {0} មានឯកសារដែលមិនមែនជារបស់ PadForge។</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«ចាប់ផ្ដើមពេលចូលគណនី» ត្រូវបានបិទ ព្រោះវាបានដំណើរការ PadForge ពីថតដែលមានឯកសារផ្សេងទៀត។</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>បង្ហាញក្នុងថាសប្រព័ន្ធជានិច្ច</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>រក្សារូបតំណាងថាសឲ្យមើលឃើញ ពេលបង្អួចបើក ដូច្នេះ «ចាកចេញ» ក្នុងម៉ឺនុយរបស់វាតែងតែនៅចម្ងាយមួយចុច។</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>បច្ចុប្បន្នភាព</value></data>

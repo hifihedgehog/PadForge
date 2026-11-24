@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>창을 최소화할 때 작업 표시줄 대신 알림 영역에 PadForge를 두세요.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge가 시작할 때 창을 숨긴 채로 두세요. 평소처럼 실행되고 매핑합니다.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows에 로그인할 때 PadForge를 자동으로 시작합니다.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge는 {0}에서 실행됩니다.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>이 기능에는 PadForge 전용 폴더가 필요합니다. 현재 폴더에 다른 파일이 있어 PadForge가 다른 프로그램의 변경을 막을 수 없습니다.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge를 전용 폴더로 이동</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge와 설정을 Program Files로 복사하고, PadForge의 작업이 그곳을 가리키게 한 뒤, 그곳에서 시작합니다. 여기 있는 사본은 그대로 남습니다.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}에 PadForge의 것이 아닌 파일이 있습니다.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>PadForge를 다른 파일이 있는 폴더에서 실행했기 때문에 로그인 시 자동 시작이 꺼졌습니다.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>항상 시스템 트레이에 표시</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>창이 열려 있는 동안에도 시스템 트레이 아이콘을 표시하여 언제든지 해당 메뉴에서 종료를 선택할 수 있습니다.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>업데이트</value></data>

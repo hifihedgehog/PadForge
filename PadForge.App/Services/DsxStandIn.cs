@@ -28,8 +28,14 @@ namespace PadForge.Services
     {
         internal const string ResourceName = "PadForge.DsxStandIn.exe";
 
-        internal static string Folder => Path.Combine(Path.GetTempPath(), "PadForge_DSX");
-        internal static string ExePath => Path.Combine(Folder, "DSX.exe");
+        /// <summary>The protected folder's DSX folder (#597), where only
+        /// Administrators and SYSTEM can write. The stand-in runs with
+        /// PadForge's rights, and Windows loads a library or a .config from a
+        /// program's own folder first, so the user's temp folder, where it was
+        /// before, let any program of the user put code in it. Null in the
+        /// test host, which has no protected folder.</summary>
+        internal static string Folder => ProtectedWork.Folder("DSX");
+        internal static string ExePath => Folder is { } folder ? Path.Combine(folder, "DSX.exe") : null;
 
         private static readonly object s_lock = new();
         private static Process s_process;
@@ -63,17 +69,25 @@ namespace PadForge.Services
                         if (!s_process.HasExited) return;
                         ReleaseLocked();
                     }
-                    string path = Extract(ExePath);
+                    string exe = ExePath;
+                    string path = exe == null ? null : Extract(exe);
                     if (path == null) return;
                     var psi = new ProcessStartInfo(path, Arguments(Environment.ProcessId))
                     {
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        WorkingDirectory = Folder,
+                        WorkingDirectory = Path.GetDirectoryName(path),
                     };
-                    // ShellLaunch is the fenced Process.Start: the test host
+                    Process process;
+                    // The file is held open against writes and deletion from
+                    // its check through the start, and checked again under
+                    // that hold. ShellLaunch is the fenced start: the test host
                     // starts nothing.
-                    var process = ShellLaunch.Start(psi);
+                    using (var pin = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        if (!SameAsEmbedded(pin)) return;
+                        process = ShellLaunch.StartOwnHelper(psi);
+                    }
                     if (process == null) return;
                     s_process = process;
                     s_job = CreateKillOnCloseJob();
@@ -126,6 +140,17 @@ namespace PadForge.Services
             using var copy = new MemoryStream((int)stream.Length);
             stream.CopyTo(copy);
             return copy.ToArray();
+        }
+
+        /// <summary>Whether an open file holds the embedded program's
+        /// bytes.</summary>
+        internal static bool SameAsEmbedded(Stream file)
+        {
+            var bytes = ReadEmbedded();
+            if (bytes == null || file.Length != bytes.Length) return false;
+            using var copy = new MemoryStream(bytes.Length);
+            file.CopyTo(copy);
+            return copy.GetBuffer().AsSpan(0, (int)copy.Length).SequenceEqual(bytes);
         }
 
         /// <summary>Writes the embedded program to <paramref name="path"/>

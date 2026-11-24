@@ -32,7 +32,12 @@ namespace PadForge.Engine.Common.Logitech
         private const string ServerBinary = "ServerBinary";
 
         /// <summary>Every path a class's registration names that exists, the
-        /// 64-bit registration first.</summary>
+        /// 64-bit registration first. Only the machine's registrations, under
+        /// HKEY_LOCAL_MACHINE (#597): HKEY_CLASSES_ROOT lays the user's
+        /// classes over them, and the user's programs can write those, so a
+        /// registration there would choose the library PadForge loads with
+        /// its rights. A value's variables are filled in from the machine's
+        /// own environment for the same reason.</summary>
         public static IReadOnlyList<string> Registered(string classId)
         {
             var list = new List<string>();
@@ -40,10 +45,8 @@ namespace PadForge.Engine.Common.Logitech
             foreach (var (hive, subKey) in new[]
                      {
                          (Registry.LocalMachine, @"SOFTWARE\Classes\CLSID\" + classId + @"\" + ServerBinary),
-                         (Registry.ClassesRoot, @"CLSID\" + classId + @"\" + ServerBinary),
                          (Registry.LocalMachine, @"SOFTWARE\Classes\Wow6432Node\CLSID\" + classId + @"\" + ServerBinary),
                          (Registry.LocalMachine, @"SOFTWARE\Wow6432Node\Classes\CLSID\" + classId + @"\" + ServerBinary),
-                         (Registry.ClassesRoot, @"Wow6432Node\CLSID\" + classId + @"\" + ServerBinary),
                      })
             {
                 string value = null;
@@ -58,7 +61,7 @@ namespace PadForge.Engine.Common.Logitech
                     // as one with nothing in it.
                 }
                 if (string.IsNullOrWhiteSpace(value)) continue;
-                string path = Environment.ExpandEnvironmentVariables(value.Trim().Trim('"'));
+                string path = MachineEnvironment.Expand(value.Trim().Trim('"'));
                 if (File.Exists(path) && seen.Add(path)) list.Add(path);
             }
             return list;

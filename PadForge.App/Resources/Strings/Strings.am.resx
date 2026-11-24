@@ -940,6 +940,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>መስኮቱን ሲያሳንሱ PadForge በተግባር አሞሌው ላይ ሳይሆን በማሳወቂያ ቦታው ውስጥ ይቆያል።</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ሲጀምር መስኮቱ ተደብቆ ይቆያል። እንደተለመደው ይሠራል እና ያዛምዳል።</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ወደ Windows ሲገቡ PadForge በራስ-ሰር ይጀምራል።</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge የሚሄደው ከ{0} ነው።</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ይህ PadForge በራሱ አቃፊ ውስጥ እንዲሆን ይፈልጋል። አቃፊው ሌሎች ፋይሎችን ስለያዘ PadForge ሌሎች ፕሮግራሞች እንዳይቀይሩት መከላከል አይችልም።</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ወደ ራሱ አቃፊ አዛውር</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge እና ቅንብሮቹን ወደ Program Files ይቀዳል፣ ተግባሮቹን ወደዚያ ይጠቁማል እና ከዚያ ያስጀምረዋል። እዚህ ያለው ቅጂ እንዳለ ይቆያል።</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0} የPadForge ያልሆኑ ፋይሎችን ይዟል።</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ሌሎች ፋይሎችን ከያዘ አቃፊ ያስጀምር ነበር።</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ሁልጊዜ በስርዓት መሣቢያ ውስጥ አሳይ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>መስኮቱ ክፍት ሆኖ ሳለ የመሣቢያው አዶ እንዲታይ ያደርጋል፣ ስለዚህ በምናሌው ውስጥ ያለው «ውጣ» ሁልጊዜ አንድ ጠቅታ ብቻ ይርቃል።</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ዝማኔዎች</value></data>

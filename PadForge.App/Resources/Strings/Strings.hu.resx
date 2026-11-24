@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Az ablak kis méretre állításakor a PadForge a tálca helyett az értesítési területen marad.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>A PadForge indulásakor az ablak rejtve marad. A program a szokott módon fut és végzi a hozzárendeléseket.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>A PadForge automatikus indítása a Windowsba való bejelentkezéskor.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>A PadForge innen fut: {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ehhez a PadForge-nak saját mappára van szüksége. A mappája más fájlokat is tartalmaz, ezért a PadForge nem tudja megakadályozni, hogy más programok módosítsák.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>A PadForge áthelyezése saját mappába</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Átmásolja a PadForge-ot és a beállításait a Program Files mappába, ide irányítja a feladatait, és onnan indítja el. Az itteni másolat változatlan marad.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>A PadForge nem költözött át: a(z) {0} olyan fájlokat tartalmaz, amelyek nem a PadForge-hoz tartoznak.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>A PadForge nem költözött át: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge-ot egy más fájlokat tartalmazó mappából indította.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Megjelenítés mindig a rendszertálcán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>A tálcaikon akkor is látható marad, amikor az ablak nyitva van, így a menüjében a Kilépés mindig egy kattintásnyira van.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Frissítések</value></data>

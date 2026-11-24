@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mantenha o PadForge na área de notificação ao minimizar a janela, em vez de na barra de tarefas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantenha a janela oculta quando o PadForge iniciar. Ele continua em execução e mapeando como sempre.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicie o PadForge automaticamente quando você entrar no Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>O PadForge é executado de {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Isto exige o PadForge em uma pasta só dele. A pasta atual contém outros arquivos, então o PadForge não consegue impedir que outros programas a alterem.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Mover o PadForge para Sua Própria Pasta</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia o PadForge e suas configurações para Program Files, aponta as tarefas dele para lá e o inicia de lá. A cópia daqui permanece como está.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>O PadForge não foi movido: {0} contém arquivos que não são do PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>O PadForge não foi movido: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Iniciar com o Windows foi desativado, pois executava o PadForge de uma pasta que contém outros arquivos.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sempre Mostrar na Bandeja do Sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantém o ícone da bandeja do sistema visível enquanto a janela está aberta, então Sair no menu dele está sempre a um clique.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>

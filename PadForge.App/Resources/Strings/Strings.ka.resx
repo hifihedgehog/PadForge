@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge-ის შეტყობინებების არეში დატოვება ფანჯრის ჩაკეცვისას, ამოცანათა ზოლის ნაცვლად.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>ფანჯრის დამალვა PadForge-ის გაშვებისას. ის ჩვეულებრივ მუშაობს და მიბმებს ამუშავებს.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ის ავტომატური გაშვება Windows-ში შესვლისას.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge გაშვებულია აქედან: {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ამას PadForge-ის საკუთარი საქაღალდე სჭირდება. მისი საქაღალდე სხვა ფაილებსაც შეიცავს, ამიტომ PadForge ვერ დაიცავს მას სხვა პროგრამების მიერ ცვლილებისგან.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ის საკუთარ საქაღალდეში გადატანა</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>აკოპირებს PadForge-სა და მის პარამეტრებს Program Files-ში, იქით მიუთითებს მის ამოცანებს და იქიდან უშვებს. აქაური ასლი უცვლელი რჩება.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge არ გადავიდა: {0} შეიცავს ფაილებს, რომლებიც PadForge-ის არ არის.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge არ გადავიდა: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>სისტემაში შესვლისას გაშვება გამოირთო, რადგან PadForge-ს ისეთი საქაღალდიდან უშვებდა, რომელიც სხვა ფაილებსაც შეიცავს.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ყოველთვის ჩვენება სისტემურ უჯრაში</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ხატულის სისტემურ უჯრაში ხილულად დატოვება ფანჯრის გახსნილობისას, რომ „გასვლა“ მის მენიუში ყოველთვის ერთი დაწკაპუნებით იყოს.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>განახლებები</value></data>

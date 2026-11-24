@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ウィンドウを最小化したとき、タスクバーではなく通知領域に PadForge を置いておきます。</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge の起動時にウィンドウを非表示のままにします。動作とマッピングはいつもどおり続きます。</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows にサインインしたときに PadForge を自動で起動します。</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge は {0} から実行されています。</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>これには PadForge 専用のフォルダーが必要です。現在のフォルダーには他のファイルがあるため、PadForge は他のプログラムによる変更を防げません。</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge を専用フォルダーに移動</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge とその設定を Program Files にコピーし、タスクの参照先をそこに変更して、そこから起動します。ここにあるコピーはそのまま残ります。</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0} に PadForge 以外のファイルがあります。</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>他のファイルがあるフォルダーから PadForge を実行していたため、ログイン時に起動する設定をオフにしました。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>常にシステムトレイに表示する</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ウィンドウを開いている間もシステムトレイのアイコンを表示し、いつでもそのメニューから「終了」を選択できるようにします。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>アップデート</value></data>

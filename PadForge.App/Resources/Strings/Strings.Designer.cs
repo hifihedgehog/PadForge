@@ -1251,6 +1251,13 @@ public class Strings : INotifyPropertyChanged
     public string Settings_MinimizeToTrayTip => Get("Settings_MinimizeToTrayTip");
     public string Settings_StartMinimizedTip => Get("Settings_StartMinimizedTip");
     public string Settings_StartAtLoginTip => Get("Settings_StartAtLoginTip");
+    public string ExeFolder_RunsFrom_Format => Get("ExeFolder_RunsFrom_Format");
+    public string ExeFolder_NeedsOwnFolder => Get("ExeFolder_NeedsOwnFolder");
+    public string ExeFolder_Move => Get("ExeFolder_Move");
+    public string ExeFolder_MoveTip => Get("ExeFolder_MoveTip");
+    public string ExeFolder_TargetTaken_Format => Get("ExeFolder_TargetTaken_Format");
+    public string ExeFolder_MoveFailed_Format => Get("ExeFolder_MoveFailed_Format");
+    public string ExeFolder_StartAtLoginTurnedOff => Get("ExeFolder_StartAtLoginTurnedOff");
     public string Settings_AlwaysShowTrayIcon => Get("Settings_AlwaysShowTrayIcon");
     public string Settings_AlwaysShowTrayIconTip => Get("Settings_AlwaysShowTrayIconTip");
     public string Settings_Updates => Get("Settings_Updates");

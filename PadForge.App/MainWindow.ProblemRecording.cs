@@ -170,7 +170,7 @@ namespace PadForge
             _selectFinishedRecording = false;
             try
             {
-                PadForge.Common.ShellLaunch.Start("explorer.exe", $"/select,\"{path}\"");
+                PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{path}\"");
             }
             catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException or IOException)
             {

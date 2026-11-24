@@ -2,14 +2,15 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace PadForge.Services.Plugins
 {
     /// <summary>
     /// What PadForge reads of a plugin's file (#597): its SHA-256, its
-    /// Authenticode signer, and how Windows runs it.
+    /// Authenticode signer (Automation.AuthenticodeSigner, the one reader of
+    /// a program's signer the request card and Activity use too), and how
+    /// Windows runs it.
     /// </summary>
     internal static class PluginFile
     {
@@ -51,30 +52,6 @@ namespace PadForge.Services.Plugins
         {
             using var held = OpenHeld(path, out string sha);
             return sha;
-        }
-
-        /// <summary>The name of the file's Authenticode signer when its
-        /// signature holds by the check Windows runs before it trusts a
-        /// download (DriverInstaller's), or null.</summary>
-        internal static string Signer(string path)
-        {
-            try
-            {
-                if (PadForge.Common.DriverInstaller.VerifyAuthenticode(path) != 0) return null;
-                // CreateFromSignedFile is still the only managed API that
-                // reads the signer out of a signed file (DriverInstaller and
-                // Ds3DriverInstaller use it the same way).
-#pragma warning disable SYSLIB0057
-                using var signed = X509Certificate2.CreateFromSignedFile(path);
-#pragma warning restore SYSLIB0057
-                using var cert = new X509Certificate2(signed);
-                string name = cert.GetNameInfo(X509NameType.SimpleName, false);
-                return string.IsNullOrWhiteSpace(name) ? null : name;
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         /// <summary>

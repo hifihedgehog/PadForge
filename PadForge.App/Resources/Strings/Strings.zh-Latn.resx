@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Zuìxiǎohuà chuāngkǒu shí jiāng PadForge liú zài tōngzhī qūyù, ér bú shì rènwùlán.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge qǐdòng shí bǎochí chuāngkǒu yǐncáng. Tā zhàocháng yùnxíng bìng jìnxíng yìngshè.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Dēnglù Windows shí zìdòng qǐdòng PadForge.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge cóng {0} yùnxíng.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Cǐ gōngnéng xūyào jiāng PadForge fàng zài dúlì de wénjiànjiā zhōng. Qí wénjiànjiā zhōng hái yǒu qítā wénjiàn, yīncǐ PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi tā.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Jiāng PadForge yídòng dào dúlì wénjiànjiā</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Jiāng PadForge jí qí shèzhì fùzhì dào Program Files, jiāng qí rènwù zhǐxiàng nàlǐ, bìng cóng nàlǐ qǐdòng. Cǐchù de fùběn bǎochí bùbiàn.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0} zhōng yǒu bù shǔyú PadForge de wénjiàn.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi tā cóng hán yǒu qítā wénjiàn de wénjiànjiā yùnxíng PadForge.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shǐzhōng xiǎnshì zài xìtǒng tuōpán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Chuāngkǒu dǎkāi shí yě bǎochí xiǎnshì xìtǒng tuōpán túbiāo, suíshí kěyǐ zài qí càidān zhōng xuǎnzé “Tuìchū”.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Gēngxīn</value></data>

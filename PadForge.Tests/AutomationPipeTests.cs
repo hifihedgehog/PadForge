@@ -63,11 +63,24 @@ namespace PadForge.Tests
 
         public void Send(string line) => SendRaw(Encoding.UTF8.GetBytes(line + "\n"));
 
+        /// <summary>Test seam: runs once a write has returned, where a
+        /// sender's thread can lose its time slice. Null otherwise.</summary>
+        public Action AfterWrite;
+
+        /// <summary>Writes the bytes. A pipe's write has gone to the pipe
+        /// when it returns, and nothing follows it: a Flush would only read
+        /// the stream's state again, which the reader thread sets to broken
+        /// the moment PadForge answers a line with a close, so a sender whose
+        /// thread ran late was failed for a line that had been sent.</summary>
         public void SendRaw(byte[] bytes)
         {
             _pipe.Write(bytes, 0, bytes.Length);
-            _pipe.Flush();
+            AfterWrite?.Invoke();
         }
+
+        /// <summary>The reader's end, for the test of the sender
+        /// itself.</summary>
+        public Task Reader => _reader;
 
         /// <summary>The next line that is not an event, or null.</summary>
         public string Next(int ms = 5000)
@@ -638,6 +651,25 @@ namespace PadForge.Tests
             Assert.Equal(0, rig.Host.Sessions.Count);
         }
 
+        /// <summary>A line PadForge answers and then closes on is sent and its
+        /// answer read, however late the sender's thread runs after its
+        /// write: here it waits until the reader has seen the close. The
+        /// reader marks the stream broken on some of those closes and not
+        /// others, so twenty connections are made.</summary>
+        [Fact]
+        public void ALineAnsweredWithAClose_IsSent_HoweverLateTheSendersThreadRuns()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            for (int i = 0; i < 20; i++)
+            {
+                using var client = rig.Connect();
+                client.AfterWrite = () => Assert.True(client.Reader.Wait(5000), "PadForge did not close the connection");
+                client.Send("hello name=x protocol=2");
+                Assert.StartsWith("err unsupported-protocol ", client.Next());
+                Assert.True(client.ClosedWithin(3000));
+            }
+        }
+
         [Fact]
         public void AWindowHandle_IsTakenOnlyFromItsOwnProcess()
         {
@@ -1042,7 +1074,12 @@ namespace PadForge.Tests
             Assert.False(entry.Device.PeekState().Buttons[0]);
             Assert.Equal(32768, entry.Device.PeekState().Axis[0]);
             Assert.True(ud.IsOnline);
+            // Going offline marks the row offline first and then puts its
+            // mapped outputs at rest (InputManager.NeutralizeMappedOutputsFor),
+            // so the engine stops writing them before they are cleared. The
+            // test waits on the outputs themselves.
             await AutomationPipeRig.Until(() => !ud.IsOnline);
+            await AutomationPipeRig.Until(() => setting.OutputState.Buttons == 0);
             Assert.Equal(0, setting.OutputState.Buttons);
             // The row stays, as any disconnected device's does.
             Assert.NotNull(SettingsManager.FindDeviceByInstanceGuid(entry.Guid));

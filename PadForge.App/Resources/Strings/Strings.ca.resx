@@ -935,6 +935,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Manté PadForge a l'àrea de notificació quan minimitzes la finestra, en lloc de a la barra de tasques.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Manté la finestra amagada quan s'inicia PadForge. S'executa i assigna com sempre.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia PadForge automàticament quan inicies la sessió a Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge s'executa des de {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Això requereix PadForge en una carpeta pròpia. La seva carpeta conté altres fitxers, així que PadForge no pot evitar que altres programes la canviïn.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Mou PadForge a la seva pròpia carpeta</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia PadForge i la seva configuració a Program Files, hi dirigeix les seves tasques i l'inicia des d'allà. La còpia d'aquí es queda tal com és.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no s'ha mogut: {0} conté fitxers que no són de PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no s'ha mogut: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>S'ha desactivat Executa en iniciar la sessió, perquè executava PadForge des d'una carpeta que conté altres fitxers.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostra sempre a la safata del sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Manté la icona de la safata visible mentre la finestra està oberta, de manera que l'opció Surt del seu menú sempre és a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualitzacions</value></data>

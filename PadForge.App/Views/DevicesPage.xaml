@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:services="clr-namespace:PadForge.Services"
              xmlns:local="clr-namespace:PadForge.Views"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
@@ -2401,6 +2402,36 @@
                                         <TextBlock Text="{Binding SelectedDevice.TouchpadInputStatus}" Style="{StaticResource DeviceSmall}" TextWrapping="Wrap" Margin="0,0,0,8"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Visibility="{Binding SelectedDevice.ShowTouchpadCaptureStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <!-- A touchpad's give-back runs PadForge as SYSTEM
+                                             at boot, which it may only do from a folder
+                                             of PadForge's own (#597). While the folder
+                                             holds other files the row says so and offers
+                                             the move. -->
+                                        <StackPanel Margin="0,0,0,8">
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding SelectedDevice.IsTouchpadRow}" Value="True"/>
+                                                                <Condition Binding="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <TextBlock Text="{Binding ExeFolder_NeedsOwnFolder, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceSmall}"
+                                                       TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <Button Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                    ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
+                                                    IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
+                                                    Click="MoveToOwnFolder_Click" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+                                            <TextBlock Text="{Binding MoveError, Source={x:Static services:ExeFolderState.Instance}}" Style="{StaticResource DeviceSmall}"
+                                                       TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Visibility="{Binding HasMoveError, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </StackPanel>
                                     </StackPanel>
 
                                     <!-- Power (#162, wireless controllers only).

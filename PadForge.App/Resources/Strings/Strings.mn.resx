@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Цонхыг багасгахад PadForge-ийг ажлын мөрөнд биш, мэдэгдлийн хэсэгт байлгана.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge эхлэхэд цонхыг нуусан хэвээр байлгана. Програм ердийнхөөрөө ажиллаж, оноолтоо хийнэ.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows-д нэвтрэхэд PadForge-ийг автоматаар эхлүүлнэ.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge дараах байршлаас ажиллаж байна: {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Үүнд PadForge тусдаа хавтсанд байх шаардлагатай. Түүний хавтсанд өөр файлууд байгаа тул PadForge бусад програмыг түүнийг өөрчлөхөөс сэргийлж чадахгүй.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ийг тусдаа хавтас руу зөөх</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge болон түүний тохиргоог Program Files руу хуулж, даалгавруудыг нь тийш чиглүүлээд, тэндээс эхлүүлнэ. Энд байгаа хуулбар хэвээр үлдэнэ.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0} хавтсанд PadForge-ийнх биш файлууд байна.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоо PadForge-ийг өөр файлууд агуулсан хавтаснаас ажиллуулж байсан тул унтраагдсан.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Мэдэгдлийн хэсэгт үргэлж харуулах</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Цонх нээлттэй үед мэдэгдлийн хэсгийн дүрс тэмдгийг харагдуулна. Ингэснээр түүний цэсний “Гарах” үргэлж нэг товшилтын зайд байна.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Шинэчлэлт</value></data>

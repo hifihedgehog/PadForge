@@ -181,7 +181,13 @@ namespace PadForge.Tests
                             {
                                 if (File.Exists(_file))
                                 {
-                                    string text = File.ReadAllText(_file, Encoding.UTF8);
+                                    // Shared for writing, so the script's
+                                    // own handle on the file is never
+                                    // refused while this reads.
+                                    string text;
+                                    using (var stream = new FileStream(_file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                                    using (var reader = new StreamReader(stream, Encoding.UTF8))
+                                        text = reader.ReadToEnd();
                                     int end = text.LastIndexOf('\n');
                                     if (end >= read)
                                     {
@@ -453,9 +459,14 @@ namespace PadForge.Tests
             #SingleInstance Off
             #NoTrayIcon
             #Include {{library}}
-            global out := A_Args[1]
+            ; One handle on the output, open for the run and shared, so the
+            ; test reading it never makes a write fail. FileAppend opens the
+            ; file for itself each time and is refused while another
+            ; process reads it. Setting Pos writes the buffer through.
+            global out := FileOpen(A_Args[1], "a", "UTF-8")
             Log(text) {
-                FileAppend(text "`n", out, "UTF-8")
+                out.Write(text "`n")
+                out.Pos := out.Pos
             }
             OnError(Failed)
             Failed(e, mode) {

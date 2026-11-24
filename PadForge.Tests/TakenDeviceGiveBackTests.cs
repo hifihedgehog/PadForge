@@ -939,6 +939,17 @@ namespace PadForge.Tests
         private const string Touchpad = @"HID\GXTP5100&Col02\4&c834cd3&0&0001";
         private const string System32 = @"C:\Windows\System32";
 
+        /// <summary>The definitions go to a folder of this class's own, and the
+        /// test exe may be run by a task: the test host has no protected folder,
+        /// and its folder is not PadForge's own (#597).</summary>
+        private readonly string _definitions = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForgeTests", "definitions-" + Guid.NewGuid().ToString("N"));
+
+        public GiveBackTaskTests()
+        {
+            GiveBackTask.DefinitionFolderSeam = () => _definitions;
+            GiveBackTask.MayRunExeSeam = _ => true;
+        }
+
         public void Dispose()
         {
             // What a test registered holds a pipe of this process until its task
@@ -951,6 +962,10 @@ namespace PadForge.Tests
             GiveBackTask.ExePathSeam = null;
             GiveBackTask.ExeSizeSeam = null;
             GiveBackTask.ExtractBaseSeam = null;
+            GiveBackTask.DefinitionFolderSeam = null;
+            GiveBackTask.MayRunExeSeam = null;
+            GiveBackTask.OutputSeam = null;
+            try { System.IO.Directory.Delete(_definitions, true); } catch { }
         }
 
         /// <summary>The action, whole: the wait, the question whether the task

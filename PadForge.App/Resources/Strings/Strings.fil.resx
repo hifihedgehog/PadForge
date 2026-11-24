@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Panatilihin ang PadForge sa notification area kapag minimize mo ang window, sa halip na sa taskbar.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Panatilihing nakatago ang window kapag nagsimula ang PadForge. Tumatakbo at nagma-map ito gaya ng dati.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Awtomatikong simulan ang PadForge kapag nag-sign in ka sa Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Tumatakbo ang PadForge mula sa {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kailangan nito na nasa sarili nitong folder ang PadForge. May iba pang file ang folder nito, kaya hindi mapipigilan ng PadForge ang ibang program na baguhin ito.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Ilipat ang PadForge sa Sarili Nitong Folder</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kinokopya ang PadForge at ang mga setting nito sa Program Files, itinuturo roon ang mga task nito, at sinisimulan ito mula roon. Nananatili ang kopya rito.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: may mga file ang {0} na hindi sa PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>In-off ang Magsimula sa pag-login, dahil pinatatakbo nito ang PadForge mula sa folder na may iba pang file.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Laging ipakita sa system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Panatilihing nakikita ang tray icon habang bukas ang window, kaya isang click lang ang layo ng Lumabas sa menu nito.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>

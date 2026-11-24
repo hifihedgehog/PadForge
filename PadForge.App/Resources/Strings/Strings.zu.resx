@@ -523,6 +523,13 @@
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Nciphisa uye kuthreyi yesistimu</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Vala uye kuthreyi yesistimu</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Qala i-PadForge ngokuzenzakalelayo uma ungena ku-Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>I-PadForge isebenza isuka ku-{0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Lokhu kudinga i-PadForge efolda yayo. Ifolda yayo inamanye amafayela, ngakho i-PadForge ayikwazi ukuvimbela ezinye izinhlelo ukuthi ziyishintshe.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Hambisa i-PadForge efolda yayo</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ikopisha i-PadForge nezilungiselelo zayo ku-Program Files, ikhombise imisebenzi yayo lapho, futhi iyiqale isuka lapho. Ikhophi elapha ihlala injalo.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: {0} inamafayela angewona awe-PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba bekuqala i-PadForge efolda enamanye amafayela.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Izibuyekezo</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Hlola izibuyekezo ngokuzenzakalelayo</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Faka izibuyekezo ngokuzenzakalelayo</value></data>

@@ -919,6 +919,18 @@ namespace PadForge.Tests
             Assert.DoesNotContain(rig.Host.Activity.Snapshot(), e => e.Asked.Kind == AutomationAskKind.Connected);
         }
 
+        /// <summary>The copy an assistant starts names the program that
+        /// started it from one question about its own process: the test
+        /// host was started by the test runner, dotnet.exe.</summary>
+        [Fact]
+        public void TheProgramThatStartedThisCopy_IsNamedFromThisProcessAlone()
+        {
+            string parent = AssistantMirror.ParentImage();
+            Assert.NotNull(parent);
+            Assert.Contains(parent, new[] { "dotnet.exe", "vstest.console.exe" }, StringComparer.OrdinalIgnoreCase);
+            Assert.DoesNotContain("CreateToolhelp32Snapshot", ExtrasPageTests.RepoText("PadForge.App", "Services", "Automation", "Assistant", "AssistantMirror.cs"));
+        }
+
         [Fact]
         public async Task TheOwnerCheck_TakesAPipeMadeWithRights_AndNoOther()
         {

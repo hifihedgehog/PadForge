@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:PadForge.Controls"
              xmlns:reset="clr-namespace:PadForge.Controls"
              xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:services="clr-namespace:PadForge.Services"
              xmlns:viewControls="clr-namespace:PadForge.Views.Controls"
              PreviewKeyDown="Page_PreviewKeyDown">
 
@@ -460,6 +461,32 @@
                                                                   SettingLabel="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_StartAtLogin_135"/>
                                     </controls:SettingRow>
+                                </controls:SettingItem>
+                                <!-- Where PadForge runs from, and the move to a folder of
+                                     its own while its folder holds other files, which no
+                                     task with rights may run it from (#597,
+                                     Services/ExeFolderState.cs). -->
+                                <controls:SettingItem>
+                                    <StackPanel Margin="20,6,20,10">
+                                    <TextBlock Text="{Binding RunsFromText, Source={x:Static services:ExeFolderState.Instance}}"
+                                               FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               Visibility="{Binding RunsFromText, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource StringToVisibility}}"/>
+                                    <TextBlock Text="{Binding ExeFolder_StartAtLoginTurnedOff, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="13" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding StartAtLoginTurnedOff, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <StackPanel Margin="0,6,0,0"
+                                                Visibility="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding ExeFolder_NeedsOwnFolder, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <Button Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}"
+                                                ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
+                                                IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
+                                                Click="MoveToOwnFolder_Click" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+                                        <TextBlock Text="{Binding MoveError, Source={x:Static services:ExeFolderState.Instance}}" common:LiveText.Polite="True"
+                                                   FontSize="13" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Visibility="{Binding HasMoveError, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                    </StackPanel>
                                 </controls:SettingItem>
                             </StackPanel>
                         </Border>

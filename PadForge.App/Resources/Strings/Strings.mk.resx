@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge останува во областа за известувања кога ќе го минимизирате прозорецот, наместо на лентата со задачи.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Прозорецот останува скриен кога ќе се стартува PadForge. Програмата работи и мапира како и обично.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се стартува автоматски кога ќе се најавите на Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge работи од {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>За ова му треба PadForge во сопствена папка. Неговата папка содржи други датотеки, па PadForge не може да спречи други програми да ја менуваат.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Премести го PadForge во сопствена папка</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Го копира PadForge и неговите поставки во Program Files, ги насочува неговите задачи таму и го стартува оттаму. Копијата овде останува каква што е.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge не се премести: {0} содржи датотеки што не се на PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge не се премести: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Стартувај при најавување е исклучено, бидејќи го стартуваше PadForge од папка што содржи други датотеки.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Секогаш прикажувај во областа за известувања</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Иконата во областа за известувања останува видлива додека прозорецот е отворен, па „Излез“ во нејзиното мени е секогаш на еден клик.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ажурирања</value></data>

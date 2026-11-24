@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Behalten Sie PadForge im Infobereich, wenn Sie das Fenster minimieren, statt in der Taskleiste.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Halten Sie das Fenster beim Start von PadForge ausgeblendet. Es läuft und mappt wie gewohnt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Starten Sie PadForge automatisch, wenn Sie sich bei Windows anmelden.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge läuft aus {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dafür braucht PadForge einen eigenen Ordner. Sein Ordner enthält andere Dateien, deshalb kann PadForge nicht verhindern, dass andere Programme ihn ändern.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge in einen eigenen Ordner verschieben</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopiert PadForge und seine Einstellungen nach Program Files, richtet seine Aufgaben dorthin aus und startet es von dort. Die Kopie hier bleibt unverändert.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge wurde nicht verschoben: {0} enthält Dateien, die nicht zu PadForge gehören.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge wurde nicht verschoben: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Bei Anmeldung starten wurde ausgeschaltet, weil es PadForge aus einem Ordner gestartet hat, der andere Dateien enthält.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Immer im Infobereich anzeigen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Zeigt das Symbol im Infobereich auch bei geöffnetem Fenster, sodass Beenden in seinem Menü jederzeit erreichbar ist.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

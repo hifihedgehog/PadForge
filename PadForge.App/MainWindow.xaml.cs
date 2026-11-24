@@ -55,6 +55,38 @@ namespace PadForge
         /// Device dialog's AddUserProfile call). Reachable via
         /// Application.Current.MainWindow cast.</summary>
         public SettingsService SettingsService => _settingsService;
+
+        /// <summary>
+        /// Move PadForge to Its Own Folder (#597): the settings are saved and
+        /// copied with the exe into %ProgramFiles%\PadForge, the logon task and
+        /// the give-back tasks are pointed at the copy, and this copy closes as
+        /// Exit does, after which the copy starts (App.StartMovedCopy). The exe
+        /// here stays as it was.
+        /// </summary>
+        private void OnMoveToOwnFolder(object sender, EventArgs e)
+        {
+            var state = Services.ExeFolderState.Instance;
+            state.Moving(true);
+            try
+            {
+                _settingsService.Save();
+                var result = Services.ExeFolder.CopyTo(Services.ExeFolder.OwnFolderPath(), Environment.ProcessPath,
+                    _settingsService.SettingsFilePath);
+                if (result.NewExe == null)
+                {
+                    state.MoveFailed(result);
+                    return;
+                }
+                Common.StartupHelper.RepointTask(result.NewExe);
+                Services.GiveBackTask.Repoint(result.NewExe, line => PadForge.Engine.SdlDiagLog.WriteLine("GIVEBACK " + line));
+                App.StartWhenClosed = result.NewExe;
+                ExitFromTray();
+            }
+            finally
+            {
+                state.Moving(false);
+            }
+        }
         private RecorderService _recorderService;
         private DeviceService _deviceService;
         private Popup _typeBar;
@@ -541,6 +573,15 @@ namespace PadForge
             PadForge.Common.Themes.ThemeManager.ListEdited += (_, _) => _settingsService.MarkDirty();
             // A Steam profile's game look follows the active profile (#591).
             PadForge.Common.Themes.GameLooks.Start(Dispatcher);
+            Services.ExeFolderState.Instance.MoveRequested += OnMoveToOwnFolder;
+            // A logon task this start removed, for running PadForge from a
+            // shared folder, turns the switch off (#597).
+            Services.ExeFolderState.Instance.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(Services.ExeFolderState.StartAtLoginTurnedOff)
+                    && Services.ExeFolderState.Instance.StartAtLoginTurnedOff)
+                    _viewModel.Settings.StartAtLogin = false;
+            };
             _viewModel.Settings.NewProfileRequested += OnNewProfile;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
@@ -556,8 +597,12 @@ namespace PadForge
             // Persist Settings VM changes (theme, polling, checkboxes) and handle login toggle.
             _viewModel.Settings.PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin))
-                    Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
+                // A logon task may only run PadForge from a folder of its own
+                // (#597): from a shared one the switch goes back off, and the
+                // row says why.
+                if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin)
+                    && !Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin))
+                    _viewModel.Settings.StartAtLogin = false;
 
                 if (e.PropertyName == nameof(SettingsViewModel.DiagnosticsLoggingEnabled))
                     Common.DiagnosticsLogControl.Apply(_viewModel.Settings.DiagnosticsLoggingEnabled);

@@ -39,6 +39,41 @@ namespace PadForge
         // Program.Main never lets the app do.
         private IDisposable _singleInstanceMutex;
 
+        /// <summary>The copy Move PadForge to Its Own Folder made, started once
+        /// this one has closed (#597). Null otherwise.</summary>
+        internal static string StartWhenClosed;
+
+        /// <summary>Starts the moved copy as this one's last act: its signal
+        /// window and its lock go first, so the new copy is the app and not a
+        /// second start, and this exe's entry leaves HidHide's list, which the
+        /// new copy puts its own on as every start does.</summary>
+        private void StartMovedCopy(object sender, ExitEventArgs e)
+        {
+            string exe = StartWhenClosed;
+            if (string.IsNullOrEmpty(exe)) return;
+            try
+            {
+                string self = PadForge.Common.HidHideController.CurrentProcessNativeImagePath();
+                if (!string.IsNullOrEmpty(self)) PadForge.Common.HidHideController.RemoveWhitelistEntries(new[] { self });
+            }
+            catch { }
+            try { InstanceSignal?.Dispose(); } catch { }
+            // The plain mutex is let go before its handle closes. The private
+            // namespace's lock lets go of its own (InstanceLock.Dispose).
+            try { (_singleInstanceMutex as Mutex)?.ReleaseMutex(); } catch { }
+            try { _singleInstanceMutex?.Dispose(); } catch { }
+            _singleInstanceMutex = null;
+            try
+            {
+                PadForge.Common.ShellLaunch.StartOwnHelper(new ProcessStartInfo(exe)
+                {
+                    UseShellExecute = false,
+                    WorkingDirectory = Path.GetDirectoryName(exe),
+                });
+            }
+            catch { }
+        }
+
         /// <summary>Timestamp of the last dispatcher error shown. Used to rate-limit popups.</summary>
         private readonly Stopwatch _lastErrorTime = new Stopwatch();
 
@@ -294,6 +329,7 @@ namespace PadForge
             }
 
             _singleInstanceMutex = TakeSingleInstanceLock(out bool isNewInstance);
+            Exit += StartMovedCopy;
             if (!isNewInstance)
             {
                 // Another copy holds the lock. A second start hands its
@@ -311,6 +347,11 @@ namespace PadForge
             // the window is kept until there is a window to show (#597).
             InstanceSignal = new Services.InstanceSignal();
             InstanceSignal.Open();
+            // This copy is the app now, so a start with rights that restarted
+            // it from the protected folder leaves (#597). An update's helper,
+            // a copy that lost the race and one that only hands over to an
+            // update leave above, and their start waits for their exit code.
+            Services.ProtectedStart.HandOver();
 
             StartupArgs = e.Args ?? Array.Empty<string>();
             StartupRequest = PadForge.Common.CommandLineSwitches.Parse(StartupArgs);
@@ -356,44 +397,29 @@ namespace PadForge
             // unsafe under loader lock and hangs if invoked when other
             // threads are already active.  The OS loader will call it
             // normally when SDL3 later resolves the DLL via the
-            // extended search path.
+            // extended search path. SetDefaultDllDirectories, which
+            // Program.Main calls first, searches a folder set this way
+            // (Microsoft, LOAD_LIBRARY_SEARCH_USER_DIRS).
+            //
+            // The folder is the one this process's own libraries were
+            // unpacked into, and nothing else (#597): the protected folder
+            // for a start with rights (Services/ProtectedStart.cs). The
+            // fallback that took the newest folder in the user's temp folder
+            // with an xinput1_4.dll in it is gone, since any program of the
+            // user can make one.
             try
             {
-                string extractionDir = null;
-                try
-                {
-                    foreach (System.Diagnostics.ProcessModule mod in System.Diagnostics.Process.GetCurrentProcess().Modules)
-                    {
-                        string p = null;
-                        try { p = mod?.FileName; } catch { continue; }
-                        if (!string.IsNullOrEmpty(p) && p.IndexOf(@"\.net\", StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            extractionDir = Path.GetDirectoryName(p);
-                            if (!string.IsNullOrEmpty(extractionDir)) break;
-                        }
-                    }
-                }
-                catch { /* module enumeration failed — scan as fallback */ }
-
-                if (string.IsNullOrEmpty(extractionDir))
-                {
-                    try
-                    {
-                        var netRoot = Path.Combine(Path.GetTempPath(), ".net", "PadForge");
-                        if (Directory.Exists(netRoot))
-                        {
-                            extractionDir = Directory.EnumerateDirectories(netRoot)
-                                .Where(d => { try { return File.Exists(Path.Combine(d, "xinput1_4.dll")); } catch { return false; } })
-                                .OrderByDescending(d => { try { return Directory.GetLastWriteTimeUtc(d); } catch { return DateTime.MinValue; } })
-                                .FirstOrDefault();
-                        }
-                    }
-                    catch { /* scan failed — no filter this run */ }
-                }
-
+                string extractionDir = Services.UnpackFolder.Current();
                 if (!string.IsNullOrEmpty(extractionDir))
                 {
                     NativeMethods.SetDllDirectory(extractionDir);
+                    // The protected folder's other builds and set-aside
+                    // folders go, off the start's path.
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        Services.UnpackFolder.CleanUp(extractionDir);
+                        Services.ProtectedWork.RemoveOld(TimeSpan.FromDays(1));
+                    });
                 }
             }
             catch { /* outer catch — never allow this to take down startup */ }
@@ -510,6 +536,10 @@ namespace PadForge
             // nothing when no legacy entry exists. Runs before the UI shows
             // the Settings toggle so the toggle's bound state always reflects
             // the migrated reality.
+            // The exe's folder is judged, and protected when it is PadForge's
+            // own, before anything trusts it, and the tasks that run PadForge
+            // are looked at (#597, Services/ExeFolder.cs).
+            Services.ExeFolderState.Instance.Start(Environment.ProcessPath);
             PadForge.Common.StartupHelper.MigrateLegacyEntryIfNeeded();
 
             // Apply system theme (follows OS light/dark setting), then pin

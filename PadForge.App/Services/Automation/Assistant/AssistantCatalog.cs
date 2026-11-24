@@ -191,11 +191,15 @@ namespace PadForge.Services.Automation
             };
         }
 
-        private static AssistantSettingKind KindOf(SearchEntry entry) => entry.Value?.Kind switch
+        /// <summary>The kind of the value the index reads for the entry, or
+        /// none when it reads none: a row of buttons, a gallery, a folder's
+        /// path. Set refuses those.</summary>
+        private static AssistantSettingKind? KindOf(SearchEntry entry) => entry.Value?.Kind switch
         {
+            SearchValueKind.Number => AssistantSettingKind.Number,
             SearchValueKind.Switch => AssistantSettingKind.Switch,
             SearchValueKind.Choice => AssistantSettingKind.Choice,
-            _ => AssistantSettingKind.Number,
+            _ => null,
         };
 
         private AssistantSetting Describe(SearchService.Shown shown)
@@ -230,7 +234,7 @@ namespace PadForge.Services.Automation
                 case AssistantSettingKind.Switch:
                     if (ReadRaw(shown) is bool on) setting.Value = JsonSerializer.SerializeToElement(on);
                     break;
-                default:
+                case AssistantSettingKind.Choice:
                 {
                     var combo = row == null ? null : SearchLocator.LogicalDescendants(row).OfType<ComboBox>().FirstOrDefault();
                     if (combo != null) setting.Choices = Choices(combo);
@@ -391,7 +395,7 @@ namespace PadForge.Services.Automation
                 {
                     case AssistantSettingKind.Number: WriteNumber(entry, row, data, value); break;
                     case AssistantSettingKind.Switch: WriteSwitch(entry, row, data, value); break;
-                    default: WriteChoice(entry, row, value); break;
+                    case AssistantSettingKind.Choice: WriteChoice(entry, row, value); break;
                 }
             }
             finally

@@ -686,9 +686,9 @@ namespace PadForge.Services
         {
             string url = ReleaseNotesUrl(_offer);
             if (url == null) return;
-            // Through the update code's one process start, which the test host
-            // refuses.
-            try { UpdateService.StartProcess(new ProcessStartInfo(url) { UseShellExecute = true }); }
+            // Through the desktop shell, so the browser runs with the user's
+            // rights and never PadForge's (#597). The test host opens nothing.
+            try { PadForge.Common.ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true }); }
             catch { /* no browser registered */ }
         }
 

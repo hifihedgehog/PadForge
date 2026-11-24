@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ونڈو چھوٹی کرنے پر PadForge کو ٹاسک بار کے بجائے اطلاعاتی علاقے میں رکھیں۔</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge شروع ہونے پر ونڈو چھپی رکھیں۔ یہ معمول کے مطابق چلتا اور میپ کرتا ہے۔</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows میں سائن ان کرنے پر PadForge خودکار طور پر شروع کریں۔</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} سے چل رہا ہے۔</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>اس کے لیے PadForge کا اپنا الگ فولڈر ضروری ہے۔ اس کے فولڈر میں دوسری فائلیں ہیں، اس لیے PadForge دوسرے پروگراموں کو اسے بدلنے سے روک نہیں سکتا۔</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge کو اس کے اپنے فولڈر میں منتقل کریں</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge اور اس کی ترتیبات کو Program Files میں کاپی کرتا ہے، اس کے ٹاسکس کو وہیں کی طرف کرتا ہے اور اسے وہیں سے شروع کرتا ہے۔ یہاں والی کاپی جیسی ہے ویسی رہتی ہے۔</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge منتقل نہیں ہوا: {0} میں ایسی فائلیں ہیں جو PadForge کی نہیں۔</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge منتقل نہیں ہوا: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>لاگ ان پر شروع کریں بند کر دیا گیا، کیونکہ وہ PadForge کو ایسے فولڈر سے چلاتا تھا جس میں دوسری فائلیں ہیں۔</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ہمیشہ سسٹم ٹرے میں دکھائیں</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ونڈو کھلی ہونے پر بھی ٹرے آئیکن نظر آتا رہے، تاکہ اس کے مینو میں "باہر نکلیں" ہمیشہ ایک کلک کی دوری پر ہو۔</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>اپ ڈیٹس</value></data>

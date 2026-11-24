@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Hold PadForge i systemstatusfeltet når du minimerer vinduet, i stedet for på oppgavelinjen.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Hold vinduet skjult når PadForge starter. Programmet kjører og tilordner som vanlig.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatisk når du logger på Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge kjører fra {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dette krever at PadForge ligger i sin egen mappe. Mappen inneholder andre filer, så PadForge kan ikke hindre andre programmer i å endre den.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Flytt PadForge til sin egen mappe</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopierer PadForge og innstillingene til Program Files, peker oppgavene dit og starter det derfra. Kopien her blir som den er.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ble ikke flyttet: {0} inneholder filer som ikke hører til PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ble ikke flyttet: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start ved pålogging ble slått av, siden det kjørte PadForge fra en mappe som inneholder andre filer.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vis alltid i systemstatusfeltet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hold ikonet i systemstatusfeltet synlig mens vinduet er åpent, slik at Avslutt i menyen alltid er ett klikk unna.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Oppdateringer</value></data>

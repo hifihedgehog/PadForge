@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Cadwch PadForge yn yr ardal hysbysu pan fyddwch yn lleihau'r ffenestr, yn hytrach nag ar y bar tasgau.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Cadwch y ffenestr yn guddiedig pan fydd PadForge yn cychwyn. Mae'n rhedeg ac yn mapio fel arfer.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Cychwyn PadForge yn awtomatig pan fyddwch yn mewngofnodi i Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg o {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Mae angen PadForge mewn ffolder ei hun ar gyfer hyn. Mae ei ffolder yn cynnwys ffeiliau eraill, felly ni all PadForge atal rhaglenni eraill rhag ei newid.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Symud PadForge i'w Ffolder ei Hun</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Yn copïo PadForge a'i osodiadau i Program Files, yn pwyntio ei dasgau yno, ac yn ei gychwyn oddi yno. Mae'r copi yma'n aros fel y mae.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Ni symudodd PadForge: mae {0} yn cynnwys ffeiliau nad ydynt yn eiddo PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Ni symudodd PadForge: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan ei fod yn rhedeg PadForge o ffolder sy'n cynnwys ffeiliau eraill.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dangos yn yr Hambwrdd System Bob Amser</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Cadwch eicon yr hambwrdd yn weladwy tra bydd y ffenestr ar agor, fel bod Gadael yn ei ddewislen bob amser un clic i ffwrdd.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Diweddariadau</value></data>

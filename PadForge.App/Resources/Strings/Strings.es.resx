@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mantén PadForge en el área de notificación al minimizar la ventana, en lugar de en la barra de tareas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantén la ventana oculta al iniciar PadForge. Sigue funcionando y asignando como siempre.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia PadForge automáticamente al iniciar sesión en Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge se ejecuta desde {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Esto necesita PadForge en una carpeta propia. Su carpeta contiene otros archivos, así que PadForge no puede impedir que otros programas la modifiquen.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Mover PadForge a su propia carpeta</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia PadForge y su configuración a Program Files, apunta sus tareas allí y lo inicia desde allí. La copia de aquí queda como está.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no se movió: {0} contiene archivos que no son de PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no se movió: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ejecutar al iniciar sesión se desactivó, porque ejecutaba PadForge desde una carpeta que contiene otros archivos.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostrar siempre en la bandeja del sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantiene visible el icono de la bandeja del sistema mientras la ventana está abierta, así que Salir en su menú siempre está a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualizaciones</value></data>

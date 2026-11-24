@@ -160,8 +160,11 @@ namespace PadForge.Tests
 
             Assert.Empty(OffLimitsSource.Calls(controller, "Process.Start("));
             Assert.Empty(OffLimitsSource.Calls(controller, "new Process("));
+            // The release notes open through the desktop shell, with the
+            // user's rights (#597), which the test host's shell fence refuses.
             string notes = OffLimitsSource.Member(controller, "private void OpenReleaseNotes()");
-            Assert.True(InMember(controller, notes, Assert.Single(OffLimitsSource.Calls(controller, "UpdateService.StartProcess("))));
+            Assert.True(InMember(controller, notes, Assert.Single(OffLimitsSource.Calls(controller, "PadForge.Common.ShellLaunch.Start("))));
+            Assert.Empty(OffLimitsSource.Calls(controller, "UpdateService.StartProcess("));
 
             string stop = OffLimitsSource.Member(service, "private static void StopHelper(Process helper)");
             Assert.True(InMember(service, stop, Assert.Single(OffLimitsSource.Calls(service, ".Kill("))));
@@ -251,7 +254,8 @@ namespace PadForge.Tests
             var lines = Lines(lease);
             Assert.Equal("lease = null;", lines[0]);
             Assert.Equal("if (OffLimitsForTest && !IsInTestScratch(targetExe)) return false;", lines[1]);
-            Assert.True(InMember(service, lease, Assert.Single(OffLimitsSource.Calls(service, "new Mutex("))));
+            Assert.True(InMember(service, lease, Assert.Single(OffLimitsSource.Calls(service, "MutexAcl.Create("))));
+            Assert.Empty(OffLimitsSource.Calls(service, "new Mutex("));
             Assert.Empty(OffLimitsSource.Calls(controller, "new Mutex("));
         }
 

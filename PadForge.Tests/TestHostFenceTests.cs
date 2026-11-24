@@ -217,6 +217,9 @@ namespace PadForge.Tests
         private const string KeyboardLayout = "PadForge.App/Common/ConfigImport/DirectInputKeys.cs";
         private const string SlotIdentity = "PadForge.Engine/Common/XInputSlotIdentity.cs";
         private const string Magnifier = "PadForge.App/Common/Crosshairs/MagnifierNative.cs";
+        private const string ProtectedFolderFile = "PadForge.App/Common/ProtectedFolder.cs";
+        private const string ProtectedCalls = "PadForge.App/Common/System32Calls.cs";
+        private const string ExeFolderFile = Services + "ExeFolder.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -263,6 +266,8 @@ namespace PadForge.Tests
             (KeyboardLayout, "DirectInputKeys"),
             (SlotIdentity, "XInputSlotIdentity"),
             (Magnifier, "MagnifierNative"),
+            (ProtectedFolderFile, "ProtectedFolder"),
+            (ExeFolderFile, "ExeFolder"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -317,6 +322,8 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.ConfigImport.DirectInputKeys.OffLimitsForTest);
             Assert.True(PadForge.Engine.XInputSlotIdentity.OffLimitsForTest);
             Assert.True(PadForge.Common.Crosshairs.MagnifierNative.OffLimitsForTest);
+            Assert.True(ProtectedFolder.OffLimitsForTest);
+            Assert.True(ExeFolder.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -393,8 +400,9 @@ namespace PadForge.Tests
             new object[] { Magnifier, "internal static bool SetFullScreen(float zoom, int x, int y)", "if (OffLimitsForTest) return FullScreenSeam?.Invoke(zoom, x, y) ?? false;" },
 
             // The shell and the clipboard.
-            new object[] { Shell, "internal static Process Start(ProcessStartInfo psi)", "OffLimitsForTest ? null : Process.Start(psi);" },
-            new object[] { Shell, "internal static Process Start(string fileName, string arguments)", "OffLimitsForTest ? null : Process.Start(fileName, arguments);" },
+            new object[] { Shell, "internal static Process Start(ProcessStartInfo psi)", "if (OffLimitsForTest && UserShellSeam == null) return null;" },
+            new object[] { Shell, "internal static bool AsTheUser(ProcessStartInfo psi, out string why)", "if (OffLimitsForTest && UserShellSeam == null)" },
+            new object[] { Shell, "internal static Process StartOwnHelper(ProcessStartInfo psi)", "OffLimitsForTest ? null : Process.Start(psi);" },
             new object[] { Shell, "internal static void SetClipboardText(string text)", "if (OffLimitsForTest) return;" },
 
             // The radio and what is paired to it.
@@ -656,9 +664,12 @@ namespace PadForge.Tests
             Assert.Equal(Map(
                 ("PadForge.App/Common/DriverInstaller.cs", 1),
                 ("PadForge.App/Common/HidHideArm64Installer.cs", 1),
-                (Shell, 2),
-                (Startup, 1),
-                (GiveBack, 1),
+                // The shell's one is PadForge's own helper (#597): a program a
+                // person or a setting names starts through the desktop shell.
+                (Shell, 1),
+                // schtasks, and schtasks read for a task's definition (#597).
+                (Startup, 2),
+                (GiveBack, 2),
                 (Ds3Driver, 1),
                 (StartWithRightsFile, 1),
                 (Services + "UpdateService.cs", 1),
@@ -669,16 +680,27 @@ namespace PadForge.Tests
 
             // The four that start a tool do it inside the member that asks.
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Startup), "private static int RunSchtasks(string arguments)"), StringComparison.Ordinal);
+            Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Startup), "private static string RunSchtasksOutput(string arguments)"), StringComparison.Ordinal);
+            Assert.StartsWith("if (OffLimitsForTest) return null;", FenceSource.FirstStatement(OffLimitsSource.Read(Startup), "private static string RunSchtasksOutput(string arguments)"), StringComparison.Ordinal);
+            Assert.StartsWith("if (OutputSeam != null) return OutputSeam(arguments);", FenceSource.FirstStatement(OffLimitsSource.Read(GiveBack), "private static string Output(string arguments)"), StringComparison.Ordinal);
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Ds3Driver), "private static (int Code, string Output) RunTool(string exe, string args, string workingDir, int timeoutMs = 120000)"), StringComparison.Ordinal);
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(WebTls), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Services + "WebControllerServer.cs"), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
             // And the restart with rights (#597).
             Assert.Contains("Process.Start(start)", FenceSource.Body(OffLimitsSource.Read(StartWithRightsFile), "internal static int Run(IReadOnlyList<string> args)"), StringComparison.Ordinal);
 
-            // A plugin is the one program started through CreateProcess, in
-            // the member that asks its fence first (#597): the import and
-            // its one call.
-            Assert.Equal(Map((PluginLauncherFile, 2)), FenceSource.Census(@"\bCreateProcess(W|A|AsUser\w*|WithToken\w*|WithLogon\w*)?\("));
+            // Two things start through CreateProcess (#597). A plugin, in the
+            // member that asks its fence first: the import and its one call.
+            // And PadForge itself, restarted by a start with rights from its
+            // protected folder: System32Calls' one wrapper of the call and
+            // the restart's one use of it, which Main's first call reaches
+            // only in a process with rights, and the test host never runs.
+            Assert.Equal(Map((PluginLauncherFile, 2), ("PadForge.App/Common/System32Calls.cs", 1), (Services + "ProtectedStart.cs", 1)),
+                FenceSource.Census(@"\bCreateProcess(W|A|AsUser\w*|WithToken\w*|WithLogon\w*)?\("));
+            string protectedStart = OffLimitsSource.Read(Services + "ProtectedStart.cs");
+            Assert.Contains("System32Calls.CreateProcess(exe, commandLine, block, folder, ref startup, out var child)",
+                FenceSource.Body(protectedStart, "private static int Restart(string natives)"), StringComparison.Ordinal);
+            Assert.Contains("if (!System32Calls.IsPrivileged()) return;", FenceSource.Body(protectedStart, "internal static void Run()"), StringComparison.Ordinal);
             Assert.Contains("CreateProcessW(command.Program, line,",
                 FenceSource.Body(OffLimitsSource.Read(PluginLauncherFile), "public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)"), StringComparison.Ordinal);
         }
@@ -726,7 +748,7 @@ namespace PadForge.Tests
                 FenceSource.Census(@"NamedPipeServerStreamAcl\.Create\(|" + Creates("NamedPipeServerStream")));
             string task = OffLimitsSource.Read(Services + "GiveBackTask.cs");
             Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
-                FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log)"), StringComparison.Ordinal);
+                FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log, bool holdPipe, bool pipeHeld)"), StringComparison.Ordinal);
             Assert.Single(OffLimitsSource.Calls(task, "HoldPipe(name)"));
             // The plugin kit's example plugin connects too. PadForge only
             // carries it as a file the user saves, and never compiles it
@@ -881,7 +903,11 @@ namespace PadForge.Tests
                 (ForceDimension, 1),
                 (MysticLight, 2),
                 (Icue, 2),
-                ("PadForge.Engine/Common/OpenXr/OpenXrSession.cs", 1)),
+                ("PadForge.Engine/Common/OpenXr/OpenXrSession.cs", 1),
+                // kernel32.dll and advapi32.dll by System32's full path, for the
+                // calls a start with rights makes before it trusts the folder
+                // its libraries were unpacked into (#597).
+                (ProtectedCalls, 1)),
                 FenceSource.Census(@"NativeLibrary\.(Try)?Load\(|\bLoadLibrary(Ex)?[AW]?\(", callsOnly: true));
 
         /// <summary>What can carry a request off this PC is made in the
@@ -965,11 +991,16 @@ namespace PadForge.Tests
         [Fact]
         public void TheShell_StartsNothing()
         {
-            FenceSource.AsksFirst(Shell, "internal static Process Start(ProcessStartInfo psi)", "OffLimitsForTest ? null : Process.Start(psi);");
-            FenceSource.AsksFirst(Shell, "internal static Process Start(string fileName, string arguments)", "OffLimitsForTest ? null : Process.Start(fileName, arguments);");
+            FenceSource.AsksFirst(Shell, "internal static Process Start(ProcessStartInfo psi)", "if (OffLimitsForTest && UserShellSeam == null) return null;");
+            FenceSource.AsksFirst(Shell, "internal static bool AsTheUser(ProcessStartInfo psi, out string why)", "if (OffLimitsForTest && UserShellSeam == null)");
+            FenceSource.AsksFirst(Shell, "internal static Process StartOwnHelper(ProcessStartInfo psi)", "OffLimitsForTest ? null : Process.Start(psi);");
+            Assert.Null(ShellLaunch.UserShellSeam);
             const string nothing = "padforge-no-such-program-4f2a9c.exe";
             Assert.Null(ShellLaunch.Start(new ProcessStartInfo(nothing) { UseShellExecute = false }));
             Assert.Null(ShellLaunch.Start(nothing, "--none"));
+            Assert.Null(ShellLaunch.StartOwnHelper(new ProcessStartInfo(nothing) { UseShellExecute = false }));
+            Assert.False(ShellLaunch.AsTheUser(new ProcessStartInfo(nothing), out string why));
+            Assert.Equal("the test host starts nothing", why);
         }
 
         /// <summary>A tablet capture opens no collection and restarts none.

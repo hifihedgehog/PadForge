@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mantendu PadForge jakinarazpen-arean leihoa minimizatzean, ataza-barran egon beharrean.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantendu leihoa ezkutatuta PadForge abiaraztean. Ohi bezala exekutatzen eta esleitzen du.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Abiarazi PadForge automatikoki Windows-en saioa hastean.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge hemendik exekutatzen da: {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Honek PadForge bere karpeta propio batean egotea behar du. Bere karpetak beste fitxategi batzuk ditu, beraz PadForge-k ezin die beste programei hura aldatzea eragotzi.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Eraman PadForge bere karpetara</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge eta bere ezarpenak Program Files karpetara kopiatzen ditu, bere zereginak hara bideratzen ditu eta handik abiarazten du. Hemengo kopiak berdin jarraitzen du.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ez da mugitu: {0} karpetak PadForge-renak ez diren fitxategiak ditu.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ez da mugitu: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Saioa hastean abiarazteko aukera desaktibatu da, PadForge beste fitxategi batzuk dituen karpeta batetik exekutatzen zuelako.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Erakutsi beti jakinarazpen-arean</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantendu jakinarazpen-areako ikonoa ikusgai leihoa irekita dagoen bitartean, haren menuko Irten aukera beti klik batera egon dadin.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Eguneratzeak</value></data>

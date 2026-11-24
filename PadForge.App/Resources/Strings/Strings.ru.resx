@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>При сворачивании окна PadForge остается в области уведомлений, а не на панели задач.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>При запуске PadForge окно остается скрытым. Программа работает и выполняет назначения как обычно.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Запускать PadForge автоматически при входе в Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge запускается из {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Для этого PadForge должен находиться в собственной папке. В его папке лежат другие файлы, поэтому PadForge не может защитить ее от изменений другими программами.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Перенести PadForge в собственную папку</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копирует PadForge и его настройки в Program Files, направляет туда его задачи и запускает его оттуда. Копия здесь остается как есть.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge не перенесен: в {0} лежат файлы, не относящиеся к PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge не перенесен: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Запуск при входе в систему выключен, так как он запускал PadForge из папки, где лежат другие файлы.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Всегда показывать в системном трее</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Значок в трее остается на виду, пока окно открыто, так что до пункта «Выход» в его меню всегда один щелчок.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Обновления</value></data>

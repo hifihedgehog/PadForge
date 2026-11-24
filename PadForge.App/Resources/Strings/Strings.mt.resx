@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Żomm PadForge fiż-żona tan-notifiki meta timinimizza t-tieqa, minflok fuq it-taskbar.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Żomm it-tieqa moħbija meta PadForge jibda. Jaħdem u jagħmel il-mappjar bħas-soltu.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ibda PadForge awtomatikament meta tidħol f'Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge jaħdem minn {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dan jeħtieġ lil PadForge f'folder tiegħu stess. Il-folder tiegħu fih fajls oħra, għalhekk PadForge ma jistax iżomm programmi oħra milli jbiddluh.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Ċaqlaq PadForge f'folder tiegħu stess</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Jikkopja PadForge u s-settings tiegħu f'Program Files, iwassal it-tasks tiegħu hemm, u jibdih minn hemm. Il-kopja hawn tibqa' kif inhi.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: {0} fih fajls li mhumiex ta' PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ibda mal-login ġie mitfi, għax kien iħaddem PadForge minn folder li fih fajls oħra.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dejjem uri fis-system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Żomm l-ikona tat-tray viżibbli waqt li t-tieqa tkun miftuħa, biex Oħroġ fil-menu tagħha jkun dejjem klikk wieħed 'il bogħod.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aġġornamenti</value></data>

@@ -671,57 +671,41 @@ namespace PadForge.Services.Automation
         //  The program that started this copy
         // ─────────────────────────────────────────────
 
-        private const uint TH32CS_SNAPPROCESS = 0x2;
+        // ProcessBasicInformation, as .NET's Process.ParentProcessId asks it
+        // (Process.Win32.cs). One question about this process, never a walk
+        // of every process's record.
+        private const int ProcessBasicInformation = 0;
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        private struct PROCESSENTRY32W
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PROCESS_BASIC_INFORMATION
         {
-            public uint dwSize;
-            public uint cntUsage;
-            public uint th32ProcessID;
-            public IntPtr th32DefaultHeapID;
-            public uint th32ModuleID;
-            public uint cntThreads;
-            public uint th32ParentProcessID;
-            public int pcPriClassBase;
-            public uint dwFlags;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)] public string szExeFile;
+            public uint ExitStatus;
+            public IntPtr PebBaseAddress;
+            public UIntPtr AffinityMask;
+            public int BasePriority;
+            public UIntPtr UniqueProcessId;
+            public UIntPtr InheritedFromUniqueProcessId;
         }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr CreateToolhelp32Snapshot(uint flags, uint processId);
+        [DllImport("ntdll.dll")]
+        private static extern int NtQueryInformationProcess(IntPtr process, int informationClass, ref PROCESS_BASIC_INFORMATION information,
+            int length, out int returnLength);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern bool Process32FirstW(IntPtr snapshot, ref PROCESSENTRY32W entry);
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentProcess();
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern bool Process32NextW(IntPtr snapshot, ref PROCESSENTRY32W entry);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool CloseHandle(IntPtr handle);
-
-        /// <summary>The image name of the process that started this one, as
-        /// Windows' process list names it, or null. A claim, shown as
-        /// one.</summary>
+        /// <summary>The image name of the process that started this one, or
+        /// null when it is gone or answers no limited query. A claim, shown
+        /// as one.</summary>
         internal static string ParentImage()
         {
-            IntPtr snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-            if (snapshot == IntPtr.Zero || snapshot == new IntPtr(-1)) return null;
-            try
-            {
-                var entries = new Dictionary<uint, (uint Parent, string Exe)>();
-                var entry = new PROCESSENTRY32W { dwSize = (uint)Marshal.SizeOf<PROCESSENTRY32W>() };
-                if (!Process32FirstW(snapshot, ref entry)) return null;
-                do entries[entry.th32ProcessID] = (entry.th32ParentProcessID, entry.szExeFile);
-                while (Process32NextW(snapshot, ref entry));
-                uint self = (uint)Environment.ProcessId;
-                if (!entries.TryGetValue(self, out var mine)) return null;
-                return entries.TryGetValue(mine.Parent, out var parent) ? parent.Exe : null;
-            }
-            finally
-            {
-                CloseHandle(snapshot);
-            }
+            var info = new PROCESS_BASIC_INFORMATION();
+            if (NtQueryInformationProcess(GetCurrentProcess(), ProcessBasicInformation, ref info,
+                    Marshal.SizeOf<PROCESS_BASIC_INFORMATION>(), out _) != 0)
+                return null;
+            uint parent = unchecked((uint)info.InheritedFromUniqueProcessId.ToUInt64());
+            string path = PadForge.Common.Input.ProcessImage.PathOf(parent);
+            return string.IsNullOrEmpty(path) ? null : System.IO.Path.GetFileName(path);
         }
     }
 }

@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mantém o PadForge na área de notificação quando minimiza a janela, em vez de na barra de tarefas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantém a janela oculta quando o PadForge inicia. Continua a funcionar e a mapear como habitualmente.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia o PadForge automaticamente quando inicia sessão no Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>O PadForge é executado a partir de {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Isto exige o PadForge numa pasta só sua. A pasta atual tem outros ficheiros, por isso o PadForge não consegue impedir que outros programas a alterem.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Mover o PadForge para uma pasta própria</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia o PadForge e as suas definições para Program Files, aponta as suas tarefas para lá e inicia-o a partir de lá. A cópia atual fica como está.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>O PadForge não se moveu: {0} contém ficheiros que não são do PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>O PadForge não se moveu: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Iniciar com o Windows foi desativado, porque executava o PadForge a partir de uma pasta com outros ficheiros.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostrar sempre na área de notificação</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantém o ícone da área de notificação visível enquanto a janela está aberta, para que a opção Sair do respetivo menu esteja sempre à distância de um clique.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>

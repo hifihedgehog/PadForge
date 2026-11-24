@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Menaruh PadForge di area pemberitahuan saat Anda memperkecil jendela, bukan di bilah tugas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Jendela tetap tersembunyi saat PadForge dimulai. PadForge berjalan dan memetakan seperti biasa.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Mulai PadForge secara otomatis saat Anda masuk ke Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge berjalan dari {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ini memerlukan PadForge di folder tersendiri. Foldernya berisi file lain, sehingga PadForge tidak dapat mencegah program lain mengubahnya.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Pindahkan PadForge ke folder tersendiri</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Menyalin PadForge dan pengaturannya ke Program Files, mengarahkan tugasnya ke sana, dan memulainya dari sana. Salinan di sini tetap seperti semula.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge tidak dipindahkan: {0} berisi file yang bukan milik PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge tidak dipindahkan: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Mulai saat masuk dinonaktifkan, karena menjalankan PadForge dari folder yang berisi file lain.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Selalu tampilkan di baki sistem</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikon baki tetap terlihat selama jendela terbuka, sehingga Keluar di menunya selalu hanya sejauh satu klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Pembaruan</value></data>

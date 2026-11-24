@@ -992,6 +992,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>وقتی پنجره را کوچک می‌کنید، PadForge به‌جای نوار وظیفه در ناحیه اعلان می‌ماند.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>هنگام شروع PadForge پنجره پنهان می‌ماند. برنامه مثل همیشه اجرا می‌شود و نگاشت می‌کند.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>وقتی وارد Windows می‌شوید، PadForge به‌طور خودکار اجرا می‌شود.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge از {0} اجرا می‌شود.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>این کار به پوشه‌ای مخصوص PadForge نیاز دارد. پوشه فعلی فایل‌های دیگری هم دارد، پس PadForge نمی‌تواند جلوی تغییر آن توسط برنامه‌های دیگر را بگیرد.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>انتقال PadForge به پوشه مخصوص خودش</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge و تنظیماتش را به Program Files کپی می‌کند، وظایفش را به آنجا هدایت می‌کند و از همان‌جا اجرایش می‌کند. نسخه فعلی به همان صورت می‌ماند.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge منتقل نشد: {0} فایل‌هایی دارد که مال PadForge نیستند.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge منتقل نشد: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«اجرا هنگام ورود به سیستم» خاموش شد، چون PadForge را از پوشه‌ای که فایل‌های دیگر هم دارد اجرا می‌کرد.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>نمایش همیشگی در ناحیه اعلان</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>وقتی پنجره باز است هم نماد ناحیه اعلان نمایان می‌ماند تا «خروج» در منوی آن همیشه با یک کلیک در دسترس باشد.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>به‌روزرسانی‌ها</value></data>

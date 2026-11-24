@@ -935,6 +935,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Sumažinus langą, „PadForge“ lieka pranešimų srityje, o ne užduočių juostoje.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Paleidus „PadForge“, langas lieka paslėptas. Programa veikia ir priskiria įvestis kaip įprastai.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automatiškai paleisti „PadForge“, kai prisijungiate prie „Windows“.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>„PadForge“ veikia iš {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tam reikia, kad „PadForge“ būtų savo aplanke. Jos aplanke yra kitų failų, todėl „PadForge“ negali neleisti kitoms programoms jo keisti.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Perkelti „PadForge“ į savo aplanką</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Nukopijuoja „PadForge“ ir jos nustatymus į Program Files, nukreipia jos užduotis ten ir paleidžia ją iš ten. Čia esanti kopija lieka nepakeista.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>„PadForge“ neperkelta: {0} yra failų, kurie nėra „PadForge“.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>„PadForge“ neperkelta: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Paleidimas prisijungus išjungtas, nes jis paleido „PadForge“ iš aplanko, kuriame yra kitų failų.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Visada rodyti pranešimų srityje</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pranešimų srities piktograma rodoma ir tada, kai langas atidarytas, todėl jos meniu komanda „Išeiti“ visada pasiekiama vienu spustelėjimu.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Naujinimai</value></data>

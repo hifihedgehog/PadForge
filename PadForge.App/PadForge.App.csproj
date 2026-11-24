@@ -68,6 +68,19 @@
          exe model and the "copy only PadForge.exe" deploy. -->
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <!-- A start with rights must not run code a program without them chose
+         (#597). DOTNET_STARTUP_HOOKS comes from the user's environment, which
+         the user's programs can write, and a startup hook is an assembly the
+         runtime loads before Main. Nothing in PadForge uses one. -->
+    <StartupHookSupport>false</StartupHookSupport>
+    <!-- EventSource's start, which runs before Main, makes a DllImport call
+         into advapi32.dll, and the runtime looks for that library first in the
+         folder the host unpacked into. Measured with a single-file probe: an
+         advapi32.dll put in that folder was loaded before Main with
+         EventSource on, and was not with it off. Services/ProtectedStart.cs
+         relies on no such call before it has checked that folder. PadForge
+         defines and listens to no EventSource. -->
+    <EventSourceSupport>false</EventSourceSupport>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 

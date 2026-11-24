@@ -583,6 +583,13 @@
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimisá na área di notifikashon</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Sera na área di notifikashon</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Kuminsá PadForge outomátikamente ora bo drenta Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ta kore for di {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Esaki ta nesesitá PadForge den su mes mapa. Su mapa tin otro archivo, p'esei PadForge no por stroba otro programa di kambi'é.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Move PadForge na su mes mapa</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ta kopia PadForge i su konfigurashon na Program Files, ta pone su tareanan apunta einan, i ta kuminsá e for di einan. E kopia aki ta keda manera e ta.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no a move: {0} tin archivo ku no ta di PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no a move: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>A paga Start at Login, pasobra e tabata kore PadForge for di un mapa ku tin otro archivo.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mustra semper den área di notifikashon</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualisashon</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Buska aktualisashon outomátikamente</value></data>

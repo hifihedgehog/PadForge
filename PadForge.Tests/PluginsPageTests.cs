@@ -333,10 +333,13 @@ namespace PadForge.Tests
                 string.Format(s.Plugins_Confirm_Signer_Format, "Contoso Ltd"),
                 string.Format(s.Plugins_Confirm_Sha_Format, "AB12")), detail);
             Assert.Contains(s.Plugins_Confirm_Unsigned, ExtrasPage.ApprovalDetail(new PluginApproval(@"C:\p.exe", null, "CD")));
-            // Signed by Microsoft, the signer is read from the file.
+            // The approval reads the signer through the one reader the request
+            // card and Activity use, which finds a catalog's signer too:
+            // notepad.exe is signed by a Windows catalog.
             string notepad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "notepad.exe");
-            string signer = PluginFile.Signer(notepad);
-            if (signer != null) Assert.Contains("Microsoft", signer);
+            Assert.Equal("Microsoft Windows", AuthenticodeSigner.Of(notepad));
+            string controller = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginsController.cs");
+            Assert.Contains("new PluginApproval(full, AuthenticodeSigner.Of(full), sha)", controller);
             // The add's confirmation is PadForge's own, with Cancel first.
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
             Assert.Contains("ConfirmDialog.Show(owner, s.Plugins_Confirm_Title, s.Plugins_Confirm_Message, s.Plugins_Confirm_Add,", code);

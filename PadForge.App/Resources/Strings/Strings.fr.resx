@@ -659,6 +659,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Gardez PadForge dans la zone de notification quand vous réduisez la fenêtre, plutôt que dans la barre des tâches.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Gardez la fenêtre masquée au démarrage de PadForge. Il continue de fonctionner et d’affecter.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Lancez PadForge automatiquement quand vous vous connectez à Windows.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge s'exécute depuis {0}.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Cela demande que PadForge soit dans son propre dossier. Son dossier contient d'autres fichiers, PadForge ne peut donc pas empêcher d'autres programmes de le modifier.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>Déplacer PadForge dans son propre dossier</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copie PadForge et ses paramètres dans Program Files, y pointe ses tâches et le démarre depuis cet emplacement. La copie actuelle reste telle quelle.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ne s'est pas déplacé : {0} contient des fichiers qui ne sont pas ceux de PadForge.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ne s'est pas déplacé : {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Démarrer à l'ouverture de session a été désactivé, car il lançait PadForge depuis un dossier qui contient d'autres fichiers.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Toujours afficher dans la zone de notification</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Garde l'icône de la zone de notification visible pendant que la fenêtre est ouverte, pour que Quitter dans son menu soit toujours à un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mises à jour</value></data>

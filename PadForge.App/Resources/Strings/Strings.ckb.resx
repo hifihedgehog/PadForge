@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge لە ناوچەی ئاگادارکردنەوەدا بهێڵەوە کاتێک پەنجەرەکە بچووک دەکەیتەوە، نەک لە شریتی ئەرک.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>پەنجەرەکە شاراوە بهێڵەوە کاتێک PadForge دەست پێدەکات. وەک هەمیشە کاردەکات و دەبەستێتەوە.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge خۆکارانە دەست پێبکە کاتێک دەچیتە ناو Windows ەوە.</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge لە {0} ەوە کار دەکات.</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ئەمە پێویستی بە PadForge لە بوخچەیەکی تایبەت بە خۆیدا هەیە. بوخچەکەی فایلی تری تێدایە، بۆیە PadForge ناتوانێت ڕێگە لە بەرنامەکانی تر بگرێت کە بیگۆڕن.</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>گواستنەوەی PadForge بۆ بوخچەی خۆی</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge و ڕێکخستنەکانی لەبەر دەگرێتەوە بۆ Program Files، ئەرکەکانی ئاراستەی ئەوێ دەکات و لەوێوە دەستی پێدەکات. کۆپییەکەی ئێرە وەک خۆی دەمێنێتەوە.</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge نەگوازرایەوە: {0} فایلی تێدایە کە هی PadForge نین.</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge نەگوازرایەوە: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«دەستپێکردن لە کاتی چوونەژوورەوە» کوژێنرایەوە، چونکە PadForge ی لە بوخچەیەکەوە کار پێدەکرد کە فایلی تری تێدایە.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>هەمیشە لە سینی سیستەمدا پیشان بدە</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ئایکۆنی سینی سیستەم دیار بهێڵەوە کاتێک پەنجەرەکە کراوەیە، بۆ ئەوەی «دەرچوون» لە مێنیوەکەیدا هەمیشە یەک کلیک دوور بێت.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>نوێکارییەکان</value></data>

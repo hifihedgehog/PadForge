@@ -809,6 +809,9 @@ namespace PadForge.Views
 
         // ── Opt-in driver switch (hifihedgehog/SDL#33 Part 15) ──
 
+        private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
+            => PadForge.Services.ExeFolderState.Instance.RequestMove();
+
         private void DriverBind_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverBind();
 

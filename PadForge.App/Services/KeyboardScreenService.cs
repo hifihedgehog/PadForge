@@ -185,9 +185,13 @@ namespace PadForge.Services
         internal const int PictureRetryMs = 5000;
 
         /// <summary>The S.T.R.I.K.E. 7 library PadForge downloads: Mad Catz's
-        /// SDK, kept under the temp folder beside the voice models.</summary>
+        /// SDK, kept in the protected folder's Work folder (#597). PadForge
+        /// loads it with its rights, and in the temp folder, where it was, any
+        /// program of the user could replace it between its hash check and the
+        /// load.</summary>
         internal static string DownloadedStrike7Library
-            => Path.Combine(Path.GetTempPath(), "PadForge", "strike7", PadForge.Engine.Common.MadCatz.Strike7Library.LibraryName);
+            => Path.Combine(PadForge.Services.ProtectedWork.FolderInTheApp("Strike7", Path.Combine(Path.GetTempPath(), "PadForge", "strike7")),
+                PadForge.Engine.Common.MadCatz.Strike7Library.LibraryName);
 
         /// <summary>The SHA-256 of API/x64/Strike7API.dll in strike7_api 1.1.</summary>
         internal const string Strike7LibrarySha256 = "86808D4FCE73E05D06CE01A1269D8FD711F45B8A31A6BE0AF648DCF8F1E9194C";

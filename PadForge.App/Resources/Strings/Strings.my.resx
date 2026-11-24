@@ -941,6 +941,13 @@
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ဝင်းဒိုးကို အသေးချုံ့သည့်အခါ PadForge ကို တက်စ်ဘားပေါ်တွင် မဟုတ်ဘဲ အသိပေးချက်နေရာတွင် ထားပါ။</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge စတင်သည့်အခါ ဝင်းဒိုးကို ဝှက်ထားပါ။ ၎င်းသည် ပုံမှန်အတိုင်း လည်ပတ်ပြီး မက်ပ်လုပ်သည်။</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows သို့ ဝင်ရောက်သည့်အခါ PadForge ကို အလိုအလျောက် စတင်ပါ။</value></data>
+  <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge သည် {0} မှ လည်ပတ်သည်။</value></data>
+  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ဤအရာအတွက် PadForge ကို ၎င်း၏ ကိုယ်ပိုင် ဖိုင်တွဲတွင် ထားရန် လိုသည်။ ၎င်း၏ ဖိုင်တွဲတွင် အခြားဖိုင်များ ရှိသဖြင့် PadForge သည် အခြားပရိုဂရမ်များက ၎င်းကို ပြောင်းလဲခြင်းမှ မတားနိုင်ပါ။</value></data>
+  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ကို ၎င်း၏ ကိုယ်ပိုင် ဖိုင်တွဲသို့ ရွှေ့ရန်</value></data>
+  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge နှင့် ၎င်း၏ ဆက်တင်များကို Program Files သို့ ကူးယူပြီး ၎င်း၏ လုပ်ငန်းများကို ထိုနေရာသို့ ညွှန်ကာ ထိုနေရာမှ စတင်သည်။ ဤနေရာရှိ မိတ္တူသည် ယခင်အတိုင်း ကျန်သည်။</value></data>
+  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0} တွင် PadForge ၏ မဟုတ်သော ဖိုင်များ ရှိသည်။</value></data>
+  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0}</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>“ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်၊ အဘယ်ကြောင့်ဆိုသော် ၎င်းသည် အခြားဖိုင်များ ရှိသော ဖိုင်တွဲမှ PadForge ကို လည်ပတ်ခဲ့သောကြောင့် ဖြစ်သည်။</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>စနစ်ထရေးတွင် အမြဲပြရန်</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ဝင်းဒိုး ဖွင့်ထားစဉ် ထရေးအိုင်ကွန်ကို မြင်ရအောင် ထားပါ။ သို့မှသာ ၎င်း၏မီနူးရှိ ထွက်ရန် ကို တစ်ချက်နှိပ်ရုံဖြင့် အမြဲ ရောက်နိုင်မည်။</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>အပ်ဒိတ်များ</value></data>

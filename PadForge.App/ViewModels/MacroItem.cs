@@ -7074,7 +7074,13 @@ namespace PadForge.ViewModels
         /// telemetry in its own units (issue #531): km/h, RPM, a gear
         /// number, percent. Only variables offer it. Appended: the clipboard
         /// writes this enum as a number.</summary>
-        GameTelemetry
+        GameTelemetry,
+
+        /// <summary>A Custom Expression variable that reads a value a
+        /// program set over the Automation pipe by name (#597,
+        /// ScriptValues). Only variables offer it. Appended for the same
+        /// reason.</summary>
+        ScriptValue
     }
 
     public enum MacroRepeatMode
@@ -8022,6 +8028,19 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _scriptValue = string.Empty;
+        /// <summary>The name of the value read when Source is ScriptValue
+        /// (#597): what a program's <c>var name=value</c> line sets.</summary>
+        public string ScriptValue
+        {
+            get => _scriptValue;
+            set
+            {
+                if (!SetProperty(ref _scriptValue, (value ?? string.Empty).Trim())) return;
+                OnPropertyChanged(nameof(DisplaySummary));
+            }
+        }
+
         private Common.Input.Telemetry.TelemetryChannel _telemetryChannel = Common.Input.Telemetry.TelemetryChannel.None;
         /// <summary>The telemetry channel read when Source is GameTelemetry
         /// (issue #531).</summary>
@@ -8114,15 +8133,18 @@ namespace PadForge.ViewModels
                 if (_source == MacroTriggerSource.GameTelemetry)
                     return _telemetryChannel != Common.Input.Telemetry.TelemetryChannel.None
                         && (_telemetryChannel != Common.Input.Telemetry.TelemetryChannel.Variable || _telemetryVariable.Length > 0);
+                if (_source == MacroTriggerSource.ScriptValue)
+                    return Common.Input.ScriptValues.IsName(_scriptValue);
                 return _rawButton >= 0 || !string.IsNullOrEmpty(_pov) || _axisTarget != MacroAxisTarget.None;
             }
         }
 
         /// <summary>Compact tagged form used for XML round-tripping.
         /// "in:GUID:btn:N", "in:GUID:pov:idx:cd", "in:GUID:ax:Target",
-        /// "out:Channel", "tel:Channel", "tel:var:Name" (issue #531). Empty
-        /// for unbound. A variable's name never holds ':' or '|', which the
-        /// custom format editor refuses.</summary>
+        /// "out:Channel", "tel:Channel", "tel:var:Name" (issue #531),
+        /// "val:Name" (#597). Empty for unbound. A variable's name never
+        /// holds ':' or '|', which the custom format editor and
+        /// ScriptValues.IsName refuse.</summary>
         public string Spec
         {
             get
@@ -8136,6 +8158,8 @@ namespace PadForge.ViewModels
                         ? $"tel:var:{_telemetryVariable}"
                         : $"tel:{_telemetryChannel}";
                 }
+                if (_source == MacroTriggerSource.ScriptValue)
+                    return IsBound ? $"val:{_scriptValue}" : "";
                 if (_deviceGuid == Guid.Empty) return "";
                 if (_rawButton >= 0) return $"in:{_deviceGuid}:btn:{_rawButton}";
                 if (!string.IsNullOrEmpty(_pov)) return $"in:{_deviceGuid}:pov:{_pov}";
@@ -8152,10 +8176,16 @@ namespace PadForge.ViewModels
                 _outputChannel = MacroOutputChannel.None;
                 _telemetryChannel = Common.Input.Telemetry.TelemetryChannel.None;
                 _telemetryVariable = string.Empty;
+                _scriptValue = string.Empty;
                 if (!string.IsNullOrEmpty(value))
                 {
                     var parts = value.Split(':');
-                    if (parts.Length >= 2 && parts[0] == "out")
+                    if (parts.Length >= 2 && parts[0] == "val")
+                    {
+                        _source = MacroTriggerSource.ScriptValue;
+                        _scriptValue = parts[1];
+                    }
+                    else if (parts.Length >= 2 && parts[0] == "out")
                     {
                         _source = MacroTriggerSource.OutputController;
                         if (Enum.TryParse<MacroOutputChannel>(parts[1], out var ch)) _outputChannel = ch;
@@ -8198,6 +8228,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(TelemetryChannel));
                 OnPropertyChanged(nameof(TelemetryVariable));
                 OnPropertyChanged(nameof(TelemetryOption));
+                OnPropertyChanged(nameof(ScriptValue));
                 OnPropertyChanged(nameof(DisplaySummary));
             }
         }
@@ -8216,6 +8247,8 @@ namespace PadForge.ViewModels
                     return _outputChannel.ToString();
                 if (_source == MacroTriggerSource.GameTelemetry)
                     return TelemetryChannelNames.DisplayName(_telemetryChannel, _telemetryVariable);
+                if (_source == MacroTriggerSource.ScriptValue)
+                    return _scriptValue;
 
                 string devName = ResolveDeviceName();
                 string prefix = string.IsNullOrEmpty(devName) ? "" : devName + " · ";
@@ -8313,6 +8346,7 @@ namespace PadForge.ViewModels
                 OutputChannel = MacroOutputChannel.None;
                 TelemetryChannel = Common.Input.Telemetry.TelemetryChannel.None;
                 TelemetryVariable = string.Empty;
+                ScriptValue = string.Empty;
                 LiveText = "";
                 OnPropertyChanged(nameof(DisplaySummary));
                 OnPropertyChanged(nameof(Spec));

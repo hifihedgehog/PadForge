@@ -140,6 +140,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge amaghị arịrịọ a</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Arịrịọ ahụ tọgbọrọ chakoo</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge zutere nsogbu</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Enweghị ngwaọrụ dị otu a</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Ngwaọrụ ahụ ejikọghị</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Mmemme ọzọ nwe ngwaọrụ ahụ</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Engine ahụ kwụsịrị</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>E ruola oke mmemme, ngwaọrụ ma ọ bụ ihe a na-eso</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Arịrịọ ahụ dị ogologo karịa</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Arịrịọ karịrị akarị kwa sekọnd</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Enweghị ike ịgụ tag nke arịrịọ ahụ</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>E mechighị otu nkwupụta dị na arịrịọ ahụ</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Nkọwa ngwaọrụ ahụ ezighi ezi</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Mmemme ahụ ebughị ụzọ kọwaa onwe ya</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mmemme ahụ na-asụ ụdị PadForge amaghị</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge enyeghị igodo plugin ahụ</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge anabataghị njikọ mmemme a</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gbanwee gaa na profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Laghachi na profile ndabara</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Jụọ profile na-arụ ọrụ</value></data>
@@ -160,6 +174,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Jụọ ụdị PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Jụọ ihe na-agba</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Zipu ahịrị PadForge amaghị: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Jikọọ</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Kwụsị njikọ</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Depụta ngwaọrụ</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Gụọ njikwa nke ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Gụọ ọnọdụ ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Gụọ ihe virtual controller {0} na-ezipu</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Soro {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Kwụsị iso {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tinye ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Tọọ njikwa nke ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Wepụ ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Jide njikwa nke ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Hapụ njikwa nke ngwaọrụ {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tọọ uru {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Gbaa ngwa {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ugboro {1}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Jikọọ</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Enweghị ngwaọrụ</value></data>
 
@@ -1298,6 +1328,7 @@
   <data name="Telemetry_Formats_ColType" xml:space="preserve"><value>Ụdị</value></data>
   <data name="Telemetry_Target_Speed" xml:space="preserve"><value>Ọsọ (km/h)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry egwuregwu</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Uru script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Ọsọ (mph)</value></data>
   <data name="MacroAction_TriggerEffect_Side" xml:space="preserve"><value>Trigger</value></data>
   <data name="MacroAction_TriggerEffect_SideRight" xml:space="preserve"><value>Aka nri (R2)</value></data>
@@ -1611,4 +1642,5 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Mgbe Telemetry egwuregwu gbanyere, ole n'ime lock fọdụrụ na 200 km/h. Na 100%, lock niile dị na ọsọ ọ bụla.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ kwụsịrị njikọ</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ jikọrọ</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Mmemme</value></data>
 </root>

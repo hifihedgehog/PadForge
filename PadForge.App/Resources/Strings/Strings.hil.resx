@@ -188,6 +188,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Wala nakilala sang PadForge ini nga hangyo</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Wala sing sulod ang hangyo</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>May problema nga natabo sa PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Wala sing amo sina nga device</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Wala naka-connect ang device</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Iban nga programa ang tag-iya sang device</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Nag-untat ang engine</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Naabot ang limitasyon sa mga programa, device ukon ginasunod</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Sobra kalawig ang hangyo</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Sobra kadamo nga hangyo kada segundo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Indi mabasa ang tag sang hangyo</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>May kinutlo sa hangyo nga wala gin-sirhan</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Sala ang paglaragway sang device</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Wala anay nagpakilala ang programa</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ang programa nagagamit sang bersyon nga wala nakilala sang PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Wala ginhatag sang PadForge ina nga plugin key</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Wala ginbaton sang PadForge ang koneksyon sini nga programa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bayluhan sa profile nga {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Balik sa default nga profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pamangkuton kon diin nga profile ang aktibo</value></data>
@@ -208,6 +222,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pamangkuton ang bersyon sang PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pamangkuton kon ano ang nagadalagan</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Magpadala sang linya nga wala nakilala sang PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Mag-connect</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Mag-disconnect</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ilista ang mga device</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Basahon ang mga kontrol sang device {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Basahon ang kahimtangan sang device {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Basahon ang ginapadala sang Virtual controller {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sundon ang {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Untaton ang pagsunod sa {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Idugang ang device nga {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ibutang ang mga kontrol sang device {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kuhaon ang device nga {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Uyatan ang mga kontrol sang device {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Buy-an ang mga kontrol sang device {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ibutang ang balor nga {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Padalaganon ang tool nga {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ka beses</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Konektado</value></data>
 
   <!-- ═══ Settings ═══ -->
@@ -1540,6 +1570,7 @@
   <data name="Telemetry_Target_Brake" xml:space="preserve"><value>Preno (0 tubtob 1)</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Manibela (-1 tubtob 1)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry sang dula</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Balor sang script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Tulin (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% sang pinakataas)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Preno (%)</value></data>
@@ -1900,4 +1931,5 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kon naka-on ang Telemetry sang dula, pila ang nabilin sang lock sa 200 km/h. Sa 100% yara ang bug-os nga lock sa tanan nga tulin.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibalo sang nag-disconnect nga device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibalo sang nag-connect nga device</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
 </root>

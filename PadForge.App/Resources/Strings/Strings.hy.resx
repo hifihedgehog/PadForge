@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-ը չի ճանաչում այս հարցումը</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Հարցումը դատարկ էր</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-ը խնդրի հանդիպեց</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Այդպիսի սարք չկա</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Սարքը միացված չէր</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Սարքը պատկանում է մեկ այլ ծրագրի</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Մեխանիզմը կանգնեցված էր</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Ծրագրերի, սարքերի կամ հետևումների սահմանը լրացել է</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Հարցումը չափազանց երկար էր</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Վայրկյանում չափազանց շատ հարցումներ</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Հարցման պիտակը չհաջողվեց կարդալ</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Հարցման մեջ չակերտը փակված չէր</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Սարքի նկարագրությունը սխալ էր</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Ծրագիրը նախ չներկայացավ</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ծրագիրը խոսում է PadForge-ին անծանոթ տարբերակով</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge-ը չտվեց այդ պլագինի բանալին</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-ը չընդունեց այս ծրագրի կապը</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Անցնել {0} պրոֆիլին</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Վերադառնալ լռելյայն պրոֆիլին</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Հարցնել, թե որ պրոֆիլն է ակտիվ</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Հարցնել PadForge-ի տարբերակը</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Հարցնել, թե ինչ է աշխատում</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ուղարկել PadForge-ին անծանոթ տող՝ {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Միանալ</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Անջատվել</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ցուցակագրել սարքերը</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Կարդալ {0} սարքի կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Կարդալ {0} սարքի վիճակը</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Կարդալ, թե ինչ է ուղարկում վիրտուալ կառավարիչ {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Հետևել՝ {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Դադարել հետևել՝ {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ավելացնել սարքը՝ {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Սահմանել {0} սարքի կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Հեռացնել սարքը՝ {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Պահել {0} սարքի կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Բաց թողնել {0} սարքի կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Սահմանել արժեքը՝ {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Գործարկել գործիքը՝ {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} անգամ</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 սկրիպտներ (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python սկրիպտներ (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell մոդուլներ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Թույլատրել</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Չթույլատրել</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Աղբյուր՝ {0}</value></data>
@@ -5328,6 +5364,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Ղեկավարում (-1-ից 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Վարում (ոչ 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Խաղի հեռաչափություն</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Սկրիպտի արժեք</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Արագություն (մղոն/ժ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (առավելագույնի %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Փոխանցում (-1՝ հետընթաց, 0՝ չեզոք)</value></data>
@@ -5479,6 +5516,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>«Աստղային ճանապարհ. Հաջորդ սերունդ» սերիալի կադր՝ «Աստղային ճանապարհ» թեմայի Starfleet-ի պատկերը։ Գտնվել է Memory Alpha-ում։</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Լուսաշերտ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} լուսաշերտ</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Ծրագիր</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Խնդրի գրառում</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Սկսել կամ կանգնեցնել գրառումը</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Նշել գրառումը</value></data>

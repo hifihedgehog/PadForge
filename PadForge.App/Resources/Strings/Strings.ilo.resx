@@ -138,6 +138,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Saan nga ammo ti PadForge daytoy a kiddaw</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Awan ti linaon ti kiddaw</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Adda parikut a nasabat ti PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Awan ti kasta a device</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Saan a nakakonekta ti device</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Sabali a programa ti akinkukua iti device</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Nakasardeng ti engine</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Nadanon ti pagpatinggaan dagiti programa, device wenno sursuroten</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Napaut unay ti kiddaw</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Adu unay a kiddaw iti maysa a segundo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Saan a mabasa ti tag ti kiddaw</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Saan a narikpan ti maysa a quotation iti kiddaw</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Biddut ti deskripsion ti device</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Saan a nagpakaammo nga umuna ti programa</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ti programa ket agus-usar iti bersion a saan nga ammo ti PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Saan nga inted ti PadForge dayta a plugin key</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Saan nga inawat ti PadForge ti koneksion daytoy a programa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Umakar iti profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Agsubli iti default a profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Damagen no ania a profile ti aktibo</value></data>
@@ -158,6 +172,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Damagen ti bersion ti PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Damagen no ania ti agtartaray</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Mangipatulod iti linia a saan nga ammo ti PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Kumonekta</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Agdiskonekta</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ilista dagiti device</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Basaen dagiti kontrol ti device {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Basaen ti kasasaad ti device {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Basaen ti ipatpatulod ti Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Suroten ti {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Isardeng ti panangsurot iti {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Inayon ti device {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ikeddeng dagiti kontrol ti device {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Ikkaten ti device {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Iggaman dagiti kontrol ti device {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Bulosan dagiti kontrol ti device {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ikeddeng ti value {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Patarayen ti tool {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} a daras</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ilaksid</value></data>
 
   <!-- ═══ Settings ═══ -->
@@ -1203,6 +1233,7 @@
   <data name="Telemetry_Target_Brake" xml:space="preserve"><value>Preno (0 agingga iti 1)</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Manibela (-1 agingga iti 1)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry ti game</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Value ti script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Kapardas (mph)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Preno (%)</value></data>
   <data name="Telemetry_Channel_Steering" xml:space="preserve"><value>Manibela (-100 kannigid agingga iti 100 kanawan)</value></data>
@@ -1491,4 +1522,5 @@
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ti button a mangipalubos iti mouse nga agmaneho, iti isu met laeng a device a kas ti travel ti mouse. No awan ti napili, kanayon nga agmaneho ti mouse.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>No nakasindi ti Telemetry ti game, kasano kaadu ti lock a mabati iti 200 km/h. Iti 100%, adda ti intero a lock iti tunggal kapardas.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
 </root>

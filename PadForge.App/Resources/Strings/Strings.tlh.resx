@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>chabalvam Sovbe' PadForge</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>chIm chabal</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Qagh PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>janvetlh tu'lu'be'</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>rarbe'pu' jan</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>jan ghaj latlh nIqHom</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>mevpu' QuQ</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>nIqHommey, janmey ghap ghochmeH chabalmey veH SIchlu'pu'</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>tlhoy tIq chabal</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>wa' lupDaq tlhoy law' chabalmey</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>chabal per laDlu'be'</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>chabalDaq jatlhlu'bogh mu'mey SoQmoHlu'be'</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>muj jan De'</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>wa'DIch lIH'eghbe' nIqHom</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>PadForge Sovbe'bogh nIqHom mI' lo' nIqHom</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>jan chelwI' ngoqvetlh nobbe'pu' PadForge</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>nIqHomvam rar lajQo' PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>tu'qom {0} yIchu'</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>motlh tu'qomDaq yIchegh</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>chu'lu'bogh tu'qom yIyu'</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nIqHom mI' yItlhob</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>QaptaHbogh Dochmey yIyu'</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge Sovbe'bogh tlhegh yIngeH: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>yIrar</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>yIrarHa'</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>janmey tetlh yI'ang</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>jan {0} SeHwI'mey tIlaD</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>jan {0} Dotlh yIlaD</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>SeHjan velqa' {0} ngeHbogh Doch yIlaD</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} yIghoch</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} ghoch yImev</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>jan {0} yIchel</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>jan {0} SeHwI'mey tIcher</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>jan {0} yIteq</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>jan {0} SeHwI'mey tI'uch</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>jan {0} SeHwI'mey tI'uchHa'</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>mI' {0} yIcher</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>SommI' {0} yIlo'</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1}logh</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ghItlhmey (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python ghItlhmey (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell 'ay'mey (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>yIchaw'</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>yIchaw'Qo'</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Hal: {0}</value></data>
@@ -5669,6 +5705,7 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>ret'aq lengbogh chuq juv. juvmeH mIw QaptaHvIS loS lup, chuqDaj HeH Hoch ghoS ret'aq yIvIHmoH. poHvetlhDaq leS Surma'mey.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Quj De'</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch jaw</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>nIqHom</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Quj De'</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>SeDmeH Qujmey ngeHbogh Quj De', Assetto Corsa qawHaq lInlu'bogh je, janmey tenwalDaq Quj De' tlheghDaq 'ang. Do, tI'varmey, Do patlh je latlh 'elmoHghach rur yInel, mIwmey rajmeH yIlo', ghap lo'wI' ghIqtu'Daq yIwaH. 'IjtaHvIS, naDev rutlh RPM Do patlh wovmoHwI'mey Quj laD je.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Quj De' yI'Ij</value></data>
@@ -5794,6 +5831,7 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>lurgh SeH (-1 1 je)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>SeDtaHghach (pagh 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Quj De'</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>ghItlh mI'</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Do (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM ('aqroS vatlhvI')</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Do patlh (-1 DoH, 0 neHmaH)</value></data>

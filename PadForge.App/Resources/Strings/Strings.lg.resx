@@ -891,6 +891,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tetegeera kusaba kuno</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Okusaba kwali kwereere</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yafuna obuzibu</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Tewali kyuma ekyo</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Ekyuma kyali tekiyungiddwa</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Pulogulaamu endala y'efuga ekyuma</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Yingini yali eyimiriziddwa</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Ekkomo ku pulogulaamu, ebyuma oba ebigobererwa lyatuukiddwako</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Okusaba kwali kuwanvu nnyo</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Okusaba kungi nnyo mu sikonda emu</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Akabonero k'okusaba tekasobodde kusomebwa</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Akabonero k'okujuliza mu kusaba tekaggaddwa</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Ennyinyonnyola y'ekyuma yali nkyamu</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Pulogulaamu teyasoose kweyanjula</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pulogulaamu ekozesa nkyusa PadForge gy'etamanyi</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge teyawa kisumuluzo kya plugin ekyo</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge teyakkiriza kuyunga kwa pulogulaamu eno</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kyusa ogende ku pulofayiro {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ddayo ku pulofayiro ey'olubeerera</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buuza pulofayiro ekola</value></data>
@@ -911,6 +925,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Buuza enkyusa ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Buuza ekikola</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sindika olunyiriri PadForge lw'etamanyi: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Yunga</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Salako</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Laga olukalala lw'ebyuma</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Soma ebifuga by'ekyuma {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Soma embeera y'ekyuma {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Soma Ekifuga kya Virtual {0} kye kisindika</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Goberera {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Lekera awo okugoberera {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Yongerako ekyuma {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Teekawo ebifuga by'ekyuma {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Ggyawo ekyuma {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Kwata ebifuga by'ekyuma {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ta ebifuga by'ekyuma {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Teekawo omuwendo {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ddukanya ekikozesebwa {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, emirundi {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Kkiriza</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tokkiriza</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>n'endala {0}</value></data>

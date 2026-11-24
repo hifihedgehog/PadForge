@@ -771,7 +771,8 @@ namespace PadForge.ViewModels
         internal static bool CanResetSetting(string name) => name is
             nameof(Source) or
             nameof(OutputChannel) or
-            nameof(TelemetryChannel);
+            nameof(TelemetryChannel) or
+            nameof(ScriptValue);
 
         private void ResetSetting(string name)
         {
@@ -780,6 +781,12 @@ namespace PadForge.ViewModels
                 case nameof(Source):
                 {
                     Source = MacroTriggerSource.InputDevice;
+                    break;
+                }
+                case nameof(ScriptValue):
+                {
+                    // No name, the value a new script value row starts with (#597).
+                    ScriptValue = string.Empty;
                     break;
                 }
                 case nameof(OutputChannel):

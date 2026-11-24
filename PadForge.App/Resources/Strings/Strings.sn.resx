@@ -1556,6 +1556,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge haizive chikumbiro ichi</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Chikumbiro changa chisina chinhu</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yasangana nedambudziko</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Hapana mudziyo wakadaro</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Mudziyo wanga usina kubatana</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Chimwe chirongwa ndicho chine mudziyo</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Injini yanga yakamiswa</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Muganhu wezvirongwa, midziyo kana zvinoteverwa wasvikwa</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Chikumbiro changa chakareba zvakanyanya</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Zvikumbiro zvakawandisa pasekondi</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Tagi yechikumbiro haina kuverengeka</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Chimwe chinyorwa chiri mumakotesheni muchikumbiro hachina kuvharwa</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Tsananguro yemudziyo yanga isiri iyo</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Chirongwa hachina kutanga chazvizivisa</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Chirongwa chinotaura shanduro isingazivikanwe ne-PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge haina kupa kiyi yeplugin iyoyo</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge haina kugamuchira kubatana kwechirongwa ichi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chinja kuenda kupurofaira {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dzokera kupurofaira yekutanga</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bvunza kuti ndeipi purofaira iri kushanda</value></data>
@@ -1576,6 +1590,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Bvunza shanduro ye-PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Bvunza kuti chii chiri kushanda</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumira mutsara usingazivikanwe ne-PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Batana</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Bvisa kubatana</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Nyora midziyo</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Verenga zvidzoreso zvemudziyo {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Verenga mamiriro emudziyo {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Verenga zvinotumirwa nekontiroura yenhema {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Tevera {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Rega kutevera {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Wedzera mudziyo {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Gadza zvidzoreso zvemudziyo {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Bvisa mudziyo {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Bata zvidzoreso zvemudziyo {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Regedza zvidzoreso zvemudziyo {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gadza kukosha {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Mhanyisa chishandiso {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kanokwana {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Bvumira</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Usabvumira</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kubva ku{0}</value></data>

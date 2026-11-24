@@ -398,6 +398,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge non conosce questa richiesta</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>La richiesta era vuota</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ha avuto un problema</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Dispositivo inesistente</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Il dispositivo non era collegato</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Il dispositivo appartiene a un altro programma</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Il motore era arrestato</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>È stato raggiunto un limite di programmi, dispositivi o ascolti</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>La richiesta era troppo lunga</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Troppe richieste al secondo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Impossibile leggere l'etichetta della richiesta</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Nella richiesta c'erano virgolette non chiuse</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>La descrizione del dispositivo era errata</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Il programma non si è presentato per primo</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Il programma usa una versione che PadForge non conosce</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge non ha dato quella chiave del plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge non ha accettato la connessione di questo programma</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Passa al profilo {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Torna al profilo predefinito</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Chiedi quale profilo è attivo</value></data>
@@ -418,6 +432,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Chiedi la versione di PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Chiedi che cosa è in esecuzione</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Invia una riga che PadForge non riconosce: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Connetti</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Disconnetti</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Elenca i dispositivi</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Leggi i controlli del dispositivo {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Leggi lo stato del dispositivo {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Leggi ciò che invia il controller virtuale {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Segui {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Smetti di seguire {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Aggiungi il dispositivo {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Imposta i controlli del dispositivo {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Rimuovi il dispositivo {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tieni premuti i controlli del dispositivo {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Rilascia i controlli del dispositivo {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Imposta il valore {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Esegui lo strumento {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} volte</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Script AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Script Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduli PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Consenti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Non consentire</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Da {0}</value></data>
@@ -5599,6 +5635,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Misura quanto si sposta l'impugnatura. Portala a ogni limite della sua escursione per i quattro secondi della scansione. Nel frattempo le forze si fermano.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetria di gioco</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat di Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programma</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetria di gioco</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Porta la telemetria inviata dai giochi di guida, e la memoria condivisa di Assetto Corsa, nella riga Telemetria di gioco della pagina Dispositivi. Mappa velocità, pedali e marce come qualsiasi input, usali per attivare macro oppure provali in un'espressione personalizzata. Mentre è in ascolto, anche i LED di regime del volante leggono il gioco da qui.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Ascolta la telemetria di gioco</value></data>
@@ -5724,6 +5761,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Sterzo (da -1 a 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>In guida (diverso da 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria di gioco</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Valore script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velocità (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Giri/min (% del massimo)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Marcia (-1 retromarcia, 0 folle)</value></data>

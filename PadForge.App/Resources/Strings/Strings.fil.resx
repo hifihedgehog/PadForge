@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Hindi alam ng PadForge ang request na ito</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Walang laman ang request</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Nagkaproblema ang PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Walang ganoong device</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Hindi nakakonekta ang device</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Ibang program ang may-ari ng device</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Nakahinto ang engine</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Naabot ang limitasyon sa mga program, device o sinusundan</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Masyadong mahaba ang request</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Masyadong maraming request kada segundo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Hindi mabasa ang tag ng request</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>May panipi sa request na hindi isinara</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Mali ang paglalarawan sa device</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Hindi muna nagpakilala ang program</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Bersyong hindi alam ng PadForge ang gamit ng program</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Hindi ibinigay ng PadForge ang plugin key na iyon</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Hindi tinanggap ng PadForge ang koneksyon ng program na ito</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Lumipat sa profile na {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bumalik sa default na profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Itanong kung aling profile ang aktibo</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Itanong ang bersyon ng PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Itanong kung ano ang tumatakbo</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Magpadala ng linyang hindi alam ng PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Kumonekta</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Magdiskonekta</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ilista ang mga device</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Basahin ang mga kontrol ng device {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Basahin ang estado ng device {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Basahin ang ipinapadala ng Virtual controller {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Subaybayan ang {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Itigil ang pagsubaybay sa {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Idagdag ang device na {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Itakda ang mga kontrol ng device {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Alisin ang device na {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hawakan ang mga kontrol ng device {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Bitawan ang mga kontrol ng device {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Itakda ang value na {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Patakbuhin ang tool na {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} beses</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Mga AutoHotkey v2 Script (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Mga Python Script (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Mga PowerShell Module (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Payagan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Huwag Payagan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mula sa {0}</value></data>
@@ -5163,6 +5199,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Steering (-1 hanggang 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Nagmamaneho (Hindi 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Game Telemetry</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Script Value</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Bilis (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% ng Max)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gear (-1 Reverse, 0 Neutral)</value></data>
@@ -5325,6 +5362,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Isang frame ng Star Trek: The Next Generation: ang larawan ng temang Starfleet ng Star Trek. Nakita sa Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar ng {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Pag-record ng Problema</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Simulan o Ihinto ang Pag-record</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markahan ang Recording</value></data>

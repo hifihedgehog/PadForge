@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge اس درخواست کو نہیں جانتا</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>درخواست خالی تھی</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge میں ایک مسئلہ پیش آیا</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>ایسا کوئی آلہ نہیں</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>آلہ منسلک نہیں تھا</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>آلہ کسی دوسرے پروگرام کی ملکیت ہے</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>انجن رکا ہوا تھا</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>پروگراموں، آلات یا فالو کی حد پوری ہو گئی</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>درخواست بہت لمبی تھی</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>فی سیکنڈ بہت زیادہ درخواستیں</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>درخواست کا ٹیگ پڑھا نہیں جا سکا</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>درخواست میں ایک اقتباس بند نہیں کیا گیا تھا</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>آلے کی تفصیل غلط تھی</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>پروگرام نے پہلے اپنا تعارف نہیں کرایا</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>پروگرام ایسا ورژن بولتا ہے جسے PadForge نہیں جانتا</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge نے وہ پلگ اِن کلید نہیں دی</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge نے اس پروگرام کا کنکشن قبول نہیں کیا</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>پروفائل {0} پر جائیں</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ڈیفالٹ پروفائل پر واپس جائیں</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>پوچھیں کون سا پروفائل فعال ہے</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge کا ورژن پوچھیں</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>پوچھیں کیا چل رہا ہے</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ایسی لائن بھیجیں جسے PadForge نہیں جانتا: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>منسلک ہوں</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>منقطع ہوں</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>آلات کی فہرست دیں</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز پڑھیں</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>آلہ {0} کی حالت پڑھیں</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>پڑھیں کہ ورچوئل کنٹرولر {0} کیا بھیجتا ہے</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} کو فالو کریں</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} کو فالو کرنا بند کریں</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>آلہ {0} شامل کریں</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز مقرر کریں</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>آلہ {0} ہٹائیں</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز تھامے رکھیں</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز چھوڑ دیں</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>قدر {0} مقرر کریں</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ٹول {0} چلائیں</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}، {1} بار</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 اسکرپٹس (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python اسکرپٹس (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell ماڈیولز (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>اجازت دیں</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>اجازت نہ دیں</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} کی طرف سے</value></data>
@@ -5622,6 +5658,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>ناپتا ہے کہ ہینڈل کتنی دور تک جاتا ہے۔ سوئپ چلنے کے چار سیکنڈ کے دوران اسے اپنی رینج کے ہر کنارے تک لے جائیں۔ اس دوران قوتیں رکی رہتی ہیں۔</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>گیم ٹیلی میٹری</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch چیٹ</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>پروگرام</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>گیم ٹیلی میٹری</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ڈرائیونگ گیمز کی بھیجی ہوئی ٹیلی میٹری اور Assetto Corsa کی شیئرڈ میموری کو آلات کے صفحے کی گیم ٹیلی میٹری قطار میں لاتا ہے۔ اس کی رفتار، پیڈل اور گیئر کو کسی بھی ان پٹ کی طرح میپ کریں، ان سے میکرو چلائیں، یا حسب ضرورت ایکسپریشن میں آزمائیں۔ سننے کے دوران اسٹیئرنگ وہیل کے RPM شفٹ LED بھی گیم کو یہیں سے پڑھتے ہیں۔</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>گیم ٹیلی میٹری سنیں</value></data>
@@ -5747,6 +5784,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>اسٹیئرنگ (-1 سے 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ڈرائیونگ (0 نہیں)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>گیم ٹیلی میٹری</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>اسکرپٹ کی قدر</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>رفتار (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (زیادہ سے زیادہ کا %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>گیئر (-1 ریورس، 0 نیوٹرل)</value></data>

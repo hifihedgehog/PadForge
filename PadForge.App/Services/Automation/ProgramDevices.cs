@@ -1,0 +1,557 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using PadForge.Engine;
+
+namespace PadForge.Services.Automation
+{
+    /// <summary>
+    /// The engine as the Automation pipe reaches it (#597), present while the
+    /// engine runs. The input service gives one at the engine's start and
+    /// takes it back at its stop.
+    /// </summary>
+    internal interface IAutomationEngine
+    {
+        /// <summary>Puts a program's device on the device list, or reloads
+        /// it there (InputManager.RegisterProgramDevice).</summary>
+        void Register(ProgramDevice device);
+
+        /// <summary>Takes it offline with its mapped outputs at rest.</summary>
+        void Unregister(ProgramDevice device);
+
+        /// <summary>What virtual controller <paramref name="number"/>, as
+        /// the interface numbers them, sends to the game now, as the rest
+        /// of an <c>ok</c> line. Null when no created controller has that
+        /// number.</summary>
+        string Outputs(int number);
+    }
+
+    /// <summary>
+    /// What a program's <c>declare</c> line describes, read from its JSON.
+    /// </summary>
+    internal static class ProgramDeviceDeclaration
+    {
+        internal const int LongestName = 64;
+        internal const int LongestKey = 64;
+        internal const int MostTouchpads = 4;
+        internal const int MostFingers = 10;
+
+        /// <summary>
+        /// Reads a declaration. The object may hold <c>buttons</c>,
+        /// <c>axes</c> and <c>sliders</c> (names, or objects with
+        /// <c>index</c>, <c>name</c> and <c>rest</c>), <c>hats</c> (names),
+        /// <c>gyro</c>, <c>accel</c> and <c>battery</c> (true or false),
+        /// <c>touchpads</c> (finger counts) and <c>feedback</c> (any of
+        /// <c>rumble</c>, <c>trigrumble</c>, <c>light</c>, <c>player</c>).
+        /// An axis rests at 32768 and a slider at 0 unless it says otherwise.
+        /// Trigger rumble brings rumble with it, as every pad with trigger
+        /// motors has. Null and the reason in words when it cannot be read.
+        /// </summary>
+        internal static ProgramDeviceShape Parse(string json, out string error)
+        {
+            error = null;
+            if (string.IsNullOrWhiteSpace(json)) return new ProgramDeviceShape();
+            try
+            {
+                using var doc = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 8 });
+                var root = doc.RootElement;
+                if (root.ValueKind != JsonValueKind.Object) { error = "the description is not an object"; return null; }
+
+                var buttons = new List<(int, string)>();
+                var axes = new List<ProgramAxis>();
+                var hats = new List<string>();
+                var fingers = new List<int>();
+                bool gyro = false, accel = false, battery = false;
+                bool rumble = false, trig = false, light = false, player = false;
+
+                foreach (var property in root.EnumerateObject())
+                {
+                    switch (property.Name.ToLowerInvariant())
+                    {
+                        case "buttons":
+                            if (!ReadControls(property.Value, CustomInputState.MaxButtons, "Button ", 0, 0, false,
+                                (i, n, _) => buttons.Add((i, n)), out error)) return null;
+                            break;
+                        case "axes":
+                            if (!ReadControls(property.Value, CustomInputState.MaxAxis, "Axis ", 0, 32768, true,
+                                (i, n, r) => axes.Add(new ProgramAxis(i, n, r)), out error)) return null;
+                            break;
+                        case "sliders":
+                            if (!ReadControls(property.Value, CustomInputState.MaxSliders, "Slider ", ProgramAxis.FirstSlider, 0, true,
+                                (i, n, r) => axes.Add(new ProgramAxis(i, n, r)), out error)) return null;
+                            break;
+                        case "hats":
+                            if (!ReadControls(property.Value, CustomInputState.MaxPovs, "Hat ", 0, 0, false,
+                                (i, n, _) => { while (hats.Count <= i) hats.Add("Hat " + hats.Count); hats[i] = n; }, out error)) return null;
+                            break;
+                        case "gyro": if (!ReadBool(property.Value, out gyro)) { error = "gyro is true or false"; return null; } break;
+                        case "accel": if (!ReadBool(property.Value, out accel)) { error = "accel is true or false"; return null; } break;
+                        case "battery": if (!ReadBool(property.Value, out battery)) { error = "battery is true or false"; return null; } break;
+                        case "touchpads":
+                            if (property.Value.ValueKind != JsonValueKind.Array) { error = "touchpads is a list"; return null; }
+                            foreach (var pad in property.Value.EnumerateArray())
+                            {
+                                int count = 2;
+                                if (pad.ValueKind == JsonValueKind.Number && pad.TryGetInt32(out int n)) count = n;
+                                else if (pad.ValueKind == JsonValueKind.Object && pad.TryGetProperty("fingers", out var f) && f.TryGetInt32(out int m)) count = m;
+                                else if (pad.ValueKind != JsonValueKind.Object) { error = "a touchpad is its finger count"; return null; }
+                                if (count < 1 || count > MostFingers) { error = "a touchpad has 1 to 10 fingers"; return null; }
+                                fingers.Add(count);
+                            }
+                            if (fingers.Count > MostTouchpads) { error = "a device has up to 4 touchpads"; return null; }
+                            break;
+                        case "feedback":
+                            if (property.Value.ValueKind == JsonValueKind.Array)
+                            {
+                                foreach (var word in property.Value.EnumerateArray())
+                                {
+                                    switch (word.ValueKind == JsonValueKind.String ? word.GetString()?.ToLowerInvariant() : null)
+                                    {
+                                        case "rumble": rumble = true; break;
+                                        case "trigrumble": trig = true; break;
+                                        case "light": light = true; break;
+                                        case "player": player = true; break;
+                                        default: error = "feedback is rumble, trigrumble, light or player"; return null;
+                                    }
+                                }
+                            }
+                            else if (property.Value.ValueKind == JsonValueKind.Object)
+                            {
+                                foreach (var kind in property.Value.EnumerateObject())
+                                {
+                                    if (!ReadBool(kind.Value, out bool on)) { error = "feedback " + kind.Name + " is true or false"; return null; }
+                                    switch (kind.Name.ToLowerInvariant())
+                                    {
+                                        case "rumble": rumble = on; break;
+                                        case "trigrumble": trig = on; break;
+                                        case "light": light = on; break;
+                                        case "player": player = on; break;
+                                        default: error = "feedback is rumble, trigrumble, light or player"; return null;
+                                    }
+                                }
+                            }
+                            else { error = "feedback is a list"; return null; }
+                            break;
+                        default:
+                            error = "the description has no part " + Clean(property.Name, 32);
+                            return null;
+                    }
+                }
+
+                axes.Sort((a, b) => a.Index.CompareTo(b.Index));
+                buttons.Sort((a, b) => a.Item1.CompareTo(b.Item1));
+                return new ProgramDeviceShape
+                {
+                    Buttons = buttons,
+                    Axes = axes,
+                    Hats = hats,
+                    Gyro = gyro,
+                    Accel = accel,
+                    TouchpadFingers = fingers,
+                    Battery = battery,
+                    Rumble = rumble || trig,
+                    TriggerRumble = trig,
+                    Light = light,
+                    Player = player,
+                };
+            }
+            catch (JsonException)
+            {
+                error = "the description is not JSON";
+                return null;
+            }
+        }
+
+        private static bool ReadBool(JsonElement e, out bool value)
+        {
+            value = e.ValueKind == JsonValueKind.True;
+            return e.ValueKind is JsonValueKind.True or JsonValueKind.False;
+        }
+
+        private static bool ReadControls(JsonElement list, int most, string defaultName, int indexBase, int defaultRest,
+            bool hasRest, Action<int, string, int> add, out string error)
+        {
+            error = null;
+            if (list.ValueKind != JsonValueKind.Array) { error = defaultName.Trim().ToLowerInvariant() + "s is a list"; return false; }
+            var seen = new HashSet<int>();
+            int position = 0;
+            foreach (var item in list.EnumerateArray())
+            {
+                int index = position;
+                string name = null;
+                int rest = defaultRest;
+                if (item.ValueKind == JsonValueKind.String) name = item.GetString();
+                else if (item.ValueKind == JsonValueKind.Object)
+                {
+                    if (item.TryGetProperty("index", out var i))
+                    {
+                        if (!i.TryGetInt32(out index)) { error = "an index is a whole number"; return false; }
+                    }
+                    if (item.TryGetProperty("name", out var n) && n.ValueKind == JsonValueKind.String) name = n.GetString();
+                    if (item.TryGetProperty("rest", out var r))
+                    {
+                        if (!hasRest || !r.TryGetInt32(out rest) || rest < 0 || rest > 65535)
+                        { error = "a rest is 0 to 65535"; return false; }
+                    }
+                }
+                else { error = "a control is a name or an object"; return false; }
+                if (index < 0 || index >= most) { error = defaultName.Trim().ToLowerInvariant() + " index is 0 to " + (most - 1); return false; }
+                if (!seen.Add(index)) { error = defaultName.Trim().ToLowerInvariant() + " " + index + " is named twice"; return false; }
+                name = Clean(name, LongestName);
+                if (name.Length == 0) name = defaultName + index;
+                add(indexBase + index, name, rest);
+                position++;
+            }
+            return true;
+        }
+
+        /// <summary>A name from a program, made safe for the settings file
+        /// and the interface: control characters out, trimmed, and cut at
+        /// <paramref name="longest"/>.</summary>
+        internal static string Clean(string text, int longest)
+        {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+            text = PadForge.Engine.Common.XmlSafeText.Clean(text);
+            var sb = new StringBuilder(Math.Min(text.Length, longest));
+            foreach (char c in text)
+            {
+                if (char.IsControl(c)) continue;
+                sb.Append(c);
+                if (sb.Length >= longest) break;
+            }
+            return sb.ToString().Trim();
+        }
+
+        /// <summary>Whether a key can be used: 1 to 64 letters, digits,
+        /// <c>_</c>, <c>.</c> or <c>-</c>.</summary>
+        internal static bool IsKey(string key)
+        {
+            if (string.IsNullOrEmpty(key) || key.Length > LongestKey) return false;
+            foreach (char c in key)
+                if (!(char.IsAsciiLetterOrDigit(c) || c is '_' or '.' or '-')) return false;
+            return true;
+        }
+
+        /// <summary>The device's instance GUID: from the program's kind, its
+        /// name and the key, so a program that restarts finds its device
+        /// and its mappings again.</summary>
+        internal static Guid InstanceGuid(string kind, string name, string key)
+            => Hash("pfprogram:" + kind + "\n" + name + "\n" + key);
+
+        /// <summary>A product GUID of the device's own, so one program
+        /// device's first connect never adopts another's offline row by
+        /// product (FindOrCreateUserDevice).</summary>
+        internal static Guid ProductGuid(string kind, string name, string key)
+            => Hash("pfprogram-product:" + kind + "\n" + name + "\n" + key);
+
+        private static Guid Hash(string text) => new Guid(MD5.HashData(Encoding.UTF8.GetBytes(text)));
+    }
+
+    /// <summary>
+    /// The devices programs add (#597), for as long as PadForge runs. Each is
+    /// owned by the session that declared it. A session that ends rests its
+    /// devices at once and takes them offline after
+    /// <see cref="OfflineAfterMs"/>, unless a program declares the same key
+    /// again before then: a program that connects and drops in a loop keeps
+    /// one device, and the device list and HidHide are not churned. The
+    /// device's row then stays on the Devices page like any disconnected
+    /// device's.
+    /// </summary>
+    internal sealed class ProgramDevices
+    {
+        internal const int MostPerSession = 8;
+        internal const int MostInAll = 32;
+
+        /// <summary>How long a device of a session that ended stays online
+        /// at rest, waiting for its program to come back.</summary>
+        internal int OfflineAfterMs { get; set; } = 1500;
+
+        internal sealed class Entry
+        {
+            public Guid Guid;
+            public string Id;
+            public string Kind;
+            public string Program;
+            public string Key;
+            public ProgramDevice Device;
+            public volatile AutomationSession Owner;
+            public bool Registered;
+            public long OfflineAtMs;
+        }
+
+        private readonly object _sync = new object();
+        private readonly Dictionary<Guid, Entry> _entries = new();
+        private readonly Func<long> _nowMs;
+        private IAutomationEngine _engine;
+
+        public ProgramDevices(Func<long> nowMs) => _nowMs = nowMs;
+
+        /// <summary>How many devices sessions own or wait for now.</summary>
+        internal int Live
+        {
+            get
+            {
+                lock (_sync)
+                {
+                    int n = 0;
+                    foreach (var e in _entries.Values) if (e.Owner != null || e.OfflineAtMs != 0) n++;
+                    return n;
+                }
+            }
+        }
+
+        internal Entry Find(string id)
+        {
+            lock (_sync)
+            {
+                foreach (var e in _entries.Values) if (e.Id == id) return e;
+                return null;
+            }
+        }
+
+        internal List<Entry> OwnedBy(AutomationSession session)
+        {
+            lock (_sync)
+            {
+                var list = new List<Entry>();
+                foreach (var e in _entries.Values) if (e.Owner == session) list.Add(e);
+                return list;
+            }
+        }
+
+        /// <summary>
+        /// Adds a device or, for a key the program declared before, gives it
+        /// the new shape and keeps the device and its mappings. Returns the
+        /// error code, or null with <paramref name="entry"/> set.
+        /// </summary>
+        internal string Declare(AutomationSession session, string key, string name, ProgramDeviceShape shape,
+            out Entry entry, out bool known)
+        {
+            entry = null;
+            known = false;
+            string kind = session.KindWord;
+            string program = session.IdentityName;
+            Guid guid = ProgramDeviceDeclaration.InstanceGuid(kind, program, key);
+            IAutomationEngine engine;
+            bool register;
+            lock (_sync)
+            {
+                if (_entries.TryGetValue(guid, out var e))
+                {
+                    var owner = e.Owner;
+                    if (owner != null && owner != session) return "busy";
+                    if (owner == null)
+                    {
+                        if (CountOwned(session) >= MostPerSession) return "too-many";
+                        if (e.OfflineAtMs == 0 && CountLive() >= MostInAll) return "too-many";
+                    }
+                    known = true;
+                    e.OfflineAtMs = 0;
+                    e.Owner = session;
+                    entry = e;
+                }
+                else
+                {
+                    if (CountOwned(session) >= MostPerSession || CountLive() >= MostInAll) return "too-many";
+                    string id = AutomationDevices.IdOf(guid);
+                    var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, program, key),
+                        "program://" + id, name, shape);
+                    device.SetAttached(true);
+                    e = new Entry { Guid = guid, Id = id, Kind = kind, Program = program, Key = key, Device = device, Owner = session };
+                    Wire(e);
+                    _entries[guid] = e;
+                    entry = e;
+                }
+                engine = _engine;
+                register = engine != null;
+                if (register) entry.Registered = true;
+            }
+            // Outside the lock: a new shape reloads the device's row, which
+            // takes the device list's lock.
+            if (known)
+            {
+                entry.Device.Reshape(name, shape);
+                entry.Device.SetAttached(true);
+            }
+            if (register) engine.Register(entry.Device);
+            return null;
+        }
+
+        private int CountOwned(AutomationSession session)
+        {
+            int n = 0;
+            foreach (var e in _entries.Values) if (e.Owner == session) n++;
+            return n;
+        }
+
+        private int CountLive()
+        {
+            int n = 0;
+            foreach (var e in _entries.Values) if (e.Owner != null || e.OfflineAtMs != 0) n++;
+            return n;
+        }
+
+        /// <summary>The device's feedback goes to whichever session owns it
+        /// now. Raised on the poll thread or the interface's, and queued
+        /// there without a wait.</summary>
+        private static void Wire(Entry e)
+        {
+            string id = e.Id;
+            e.Device.RumbleRequested += (low, high) =>
+                e.Owner?.Feedback("e rumble " + id + " " + low + " " + high);
+            e.Device.TriggerRumbleRequested += (left, right) =>
+                e.Owner?.Feedback("e trigrumble " + id + " " + left + " " + right);
+            e.Device.LedChanged += (r, g, b) =>
+                e.Owner?.Feedback("e led " + id + " " + Hex(r, g, b));
+            e.Device.PlayerChanged += n =>
+                e.Owner?.Feedback("e player " + id + " " + n);
+        }
+
+        internal static string Hex(byte r, byte g, byte b)
+            => r.ToString("x2", CultureInfo.InvariantCulture) + g.ToString("x2", CultureInfo.InvariantCulture)
+               + b.ToString("x2", CultureInfo.InvariantCulture);
+
+        /// <summary>The feedback a device last took, as the event lines a
+        /// program that declares it again hears first.</summary>
+        internal static List<string> Replay(Entry e)
+        {
+            var lines = new List<string>();
+            var d = e.Device;
+            if (d.LastRumble is { } rumble) lines.Add("e rumble " + e.Id + " " + rumble.Low + " " + rumble.High);
+            if (d.LastTriggerRumble is { } trig) lines.Add("e trigrumble " + e.Id + " " + trig.Left + " " + trig.Right);
+            if (d.LastLed is { } led) lines.Add("e led " + e.Id + " " + Hex(led.R, led.G, led.B));
+            if (d.LastPlayer is { } player) lines.Add("e player " + e.Id + " " + player);
+            return lines;
+        }
+
+        /// <summary>The session's own device by ID, or null.</summary>
+        internal Entry Owned(AutomationSession session, string id, out string error)
+        {
+            var e = Find(id);
+            if (e == null) { error = "unknown-device"; return null; }
+            if (e.Owner != session) { error = "not-owner"; return null; }
+            error = null;
+            return e;
+        }
+
+        /// <summary>Removes a device at its program's word: at rest and
+        /// offline at once.</summary>
+        internal string Gone(AutomationSession session, string id)
+        {
+            var e = Owned(session, id, out string error);
+            if (e == null) return error;
+            TakeOffline(new List<Entry> { e });
+            return null;
+        }
+
+        /// <summary>A session ended. Its devices rest now and go offline
+        /// after the wait, or at once when <paramref name="now"/> is set, as
+        /// for a level that no longer allows them.</summary>
+        internal void SessionEnded(AutomationSession session, bool now)
+        {
+            List<Entry> offline = null;
+            lock (_sync)
+            {
+                foreach (var e in _entries.Values)
+                {
+                    if (e.Owner != session) continue;
+                    e.Device.Rest();
+                    e.Owner = null;
+                    if (now) (offline ??= new List<Entry>()).Add(e);
+                    else e.OfflineAtMs = _nowMs() + OfflineAfterMs;
+                }
+            }
+            if (offline != null) TakeOffline(offline);
+        }
+
+        /// <summary>A session stopped answering: its devices rest, and stay
+        /// online for it to drive again.</summary>
+        internal void Rest(AutomationSession session)
+        {
+            foreach (var e in OwnedBy(session)) e.Device.Rest();
+        }
+
+        private void TakeOffline(List<Entry> entries)
+        {
+            IAutomationEngine engine;
+            var unregister = new List<ProgramDevice>();
+            lock (_sync)
+            {
+                engine = _engine;
+                foreach (var e in entries)
+                {
+                    e.Device.Rest();
+                    e.Device.SetAttached(false);
+                    e.Owner = null;
+                    e.OfflineAtMs = 0;
+                    if (e.Registered)
+                    {
+                        e.Registered = false;
+                        unregister.Add(e.Device);
+                    }
+                }
+            }
+            if (engine != null) foreach (var d in unregister) engine.Unregister(d);
+        }
+
+        /// <summary>Takes offline the devices whose wait ran out. Called by
+        /// the sessions' clock.</summary>
+        internal void Tick()
+        {
+            List<Entry> due = null;
+            long now = _nowMs();
+            lock (_sync)
+            {
+                foreach (var e in _entries.Values)
+                    if (e.Owner == null && e.OfflineAtMs != 0 && now >= e.OfflineAtMs) (due ??= new List<Entry>()).Add(e);
+            }
+            if (due != null) TakeOffline(due);
+        }
+
+        /// <summary>The engine started: every device a program drives, or
+        /// waits to come back to, goes on the list.</summary>
+        internal void Attach(IAutomationEngine engine)
+        {
+            var register = new List<ProgramDevice>();
+            lock (_sync)
+            {
+                _engine = engine;
+                foreach (var e in _entries.Values)
+                {
+                    if (e.Owner == null && e.OfflineAtMs == 0) continue;
+                    e.Registered = true;
+                    // The engine that stopped disposed the device with its
+                    // list. It is the program's still.
+                    e.Device.SetAttached(true);
+                    register.Add(e.Device);
+                }
+            }
+            foreach (var d in register) engine.Register(d);
+        }
+
+        /// <summary>The engine stopped, and its device list with it.</summary>
+        internal void Detach()
+        {
+            lock (_sync)
+            {
+                _engine = null;
+                foreach (var e in _entries.Values) e.Registered = false;
+            }
+        }
+
+        internal IAutomationEngine Engine
+        {
+            get { lock (_sync) return _engine; }
+        }
+
+        /// <summary>Every entry, for the device list while the engine is
+        /// stopped.</summary>
+        internal List<Entry> All()
+        {
+            lock (_sync) return new List<Entry>(_entries.Values);
+        }
+    }
+}

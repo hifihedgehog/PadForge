@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-ը չի ճանչնար այս խնդրանքը</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Խնդրանքը պարապ էր</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-ը խնդրի հանդիպեցաւ</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Այդպիսի սարք չկայ</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Սարքը միացած չէր</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Ուրիշ ծրագիր մը կը տիրէ սարքին</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Շարժիչը կեցած էր</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Ծրագիրներու, սարքերու կամ հետեւումներու սահմանը լրացաւ</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Խնդրանքը չափազանց երկար էր</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Երկվայրկեանին չափազանց շատ խնդրանքներ</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Խնդրանքին պիտակը կարելի չեղաւ կարդալ</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Խնդրանքին մէկ չակերտը գոցուած չէր</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Սարքին նկարագրութիւնը սխալ էր</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Ծրագիրը նախ չներկայացուց ինքզինք</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ծրագիրը կը գործածէ տարբերակ մը, որ PadForge-ը չի ճանչնար</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge-ը այդ փլակինի բանալին չէր տուած</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-ը չընդունեց այս ծրագիրին միացումը</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Անցնիլ {0} փրոֆիլին</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Վերադառնալ լռելեայն փրոֆիլին</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Հարցնել, թէ որ փրոֆիլը գործօն է</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Հարցնել PadForge-ի տարբերակը</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Հարցնել, թէ ինչ կ՚աշխատի</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ղրկել տող մը, որ PadForge-ը չի ճանչնար: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Միանալ</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Անջատուիլ</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ցուցակագրել սարքերը</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Կարդալ {0} սարքին կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Կարդալ {0} սարքին վիճակը</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Կարդալ, թէ ինչ կը ղրկէ վիրթուալ կառավարիչ {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Հետեւիլ՝ {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Դադրիլ հետեւելէ՝ {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Աւելցնել սարքը՝ {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Կարգաւորել {0} սարքին կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Հեռացնել սարքը՝ {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Պահել {0} սարքին կառավարման տարրերը</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ազատել սարքին կառավարման տարրերը՝ {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Սահմանել արժէքը՝ {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Գործարկել գործիքը՝ {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} անգամ</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 սքրիփթներ (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python սքրիփթներ (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell մոդուլներ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Թոյլատրել</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Չթոյլատրել</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Ծրագիր՝ {0}</value></data>
@@ -5321,6 +5357,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Ղեկ (-1-էն 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Վարում (ոչ 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Խաղի հեռաչափութիւն</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Սքրիփթի արժէք</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Արագութիւն (մղոն/ժ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (առաւելագոյնի %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Փոխանցում (-1 ետընթաց, 0 չէզոք)</value></data>
@@ -5471,6 +5508,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation-էն կադր մը՝ Star Trek-ի Starfleet ոճին պատկերը։ Գտնուած է Memory Alpha-ի մէջ։</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Լուսաշերտ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} լուսաշերտ</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Ծրագիր</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Խնդրի արձանագրում</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Սկսիլ կամ կեցնել արձանագրումը</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Նշել արձանագրումը</value></data>

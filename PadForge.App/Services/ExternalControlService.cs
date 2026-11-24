@@ -403,7 +403,7 @@ namespace PadForge.Services
         /// <summary>The access list for this process as it runs now: the
         /// desktop's user from the shell's own process, as the lighting state
         /// reads it, and this process's user where there is no shell.</summary>
-        private static PipeSecurity BuildSecurity()
+        internal static PipeSecurity BuildSecurity()
         {
             using var identity = WindowsIdentity.GetCurrent();
             SecurityIdentifier server = identity.User;

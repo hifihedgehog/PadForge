@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ei tunne tätä pyyntöä</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Pyyntö oli tyhjä</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge kohtasi ongelman</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Laitetta ei ole</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Laite ei ollut yhdistetty</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Toinen ohjelma omistaa laitteen</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Moottori oli pysäytetty</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Ohjelmien, laitteiden tai seurantojen raja täyttyi</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Pyyntö oli liian pitkä</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Liian monta pyyntöä sekunnissa</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Pyynnön tunnistetta ei voitu lukea</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Pyynnön lainausmerkki jäi sulkematta</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Laitteen kuvaus oli virheellinen</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Ohjelma ei esitellyt itseään ensin</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ohjelma puhuu versiota, jota PadForge ei tunne</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ei antanut tuota laajennusavainta</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ei hyväksynyt tämän ohjelman yhteyttä</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaihda profiiliin {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Palaa oletusprofiiliin</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Kysy, mikä profiili on käytössä</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Kysy PadForge-sovelluksen versiota</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Kysy, mikä on käynnissä</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Lähetä rivi, jota PadForge ei tunne: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Yhdistä</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Katkaise yhteys</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Listaa laitteet</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Lue laitteen {0} ohjauselementit</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Lue laitteen {0} tila</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Lue, mitä virtuaaliohjain {0} lähettää</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Seuraa: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Lopeta seuraaminen: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Lisää laite {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Aseta laitteen {0} ohjauselementit</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Poista laite {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Pidä laitteen {0} ohjauselementtejä</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Vapauta laitteen {0} ohjauselementit</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Aseta arvo {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Suorita työkalu {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kertaa</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 -skriptit (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python-skriptit (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-moduulit (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Salli</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Älä salli</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Lähde: {0}</value></data>
@@ -5622,6 +5658,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mittaa, kuinka pitkälle kahva liikkuu. Siirrä se ulottuman jokaiseen reunaan neljän sekunnin ajan, jonka mittaus kestää. Voimat lepäävät sillä välin.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Pelitelemetria</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-chat</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Ohjelma</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Pelitelemetria</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Tuo ajopelien lähettämän telemetrian ja Assetto Corsa -pelin jaetun muistin Laitteet-sivun Pelitelemetria-riville. Määritä sen nopeus, polkimet ja vaihteet kuten mitä tahansa syötettä, käynnistä niillä makroja tai testaa niitä Mukautetussa lausekkeessa. Kun kuuntelu on päällä, rattien kierrosluvun vaihtovalot lukevat pelin tiedot myös täältä.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Kuuntele Pelitelemetriaa</value></data>
@@ -5747,6 +5784,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Ohjaus (-1 – 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Ajossa (ei 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Pelitelemetria</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Skriptiarvo</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Nopeus (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Kierrosluku (% maksimista)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Vaihde (-1 peruutus, 0 vapaa)</value></data>

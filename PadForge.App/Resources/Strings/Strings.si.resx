@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge මෙම ඉල්ලීම නොදනී</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>ඉල්ලීම හිස් විය</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge හට ගැටලුවක් ඇති විය</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>එවැනි උපාංගයක් නැත</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>උපාංගය සම්බන්ධ වී නොතිබුණි</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>උපාංගය වෙනත් වැඩසටහනකට අයත්ය</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>එන්ජිම නවතා තිබුණි</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>වැඩසටහන්, උපාංග හෝ අනුගමන සඳහා සීමාවකට ළඟා විය</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>ඉල්ලීම දිග වැඩි විය</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>තත්පරයකට ඉල්ලීම් වැඩි ගණනක්</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>ඉල්ලීමේ ටැගය කියවිය නොහැකි විය</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>ඉල්ලීමේ උද්ධෘතයක් වසා නොතිබුණි</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>උපාංගයේ විස්තරය වැරදි විය</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>වැඩසටහන පළමුව තමන්ව හඳුන්වා දුන්නේ නැත</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>PadForge නොදන්නා අනුවාදයක් වැඩසටහන භාවිත කරයි</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge එම ප්ලගින යතුර ලබා දුන්නේ නැත</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge මෙම වැඩසටහනේ සම්බන්ධතාවය පිළිගත්තේ නැත</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} පැතිකඩට මාරු වන්න</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>පෙරනිමි පැතිකඩට ආපසු යන්න</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>සක්‍රිය පැතිකඩ කුමක්දැයි විමසන්න</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge හි අනුවාදය විමසන්න</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ධාවනය වන්නේ කුමක්දැයි විමසන්න</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge නොදන්නා පේළියක් යවන්න: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>සම්බන්ධ වන්න</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>විසන්ධි වන්න</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>උපාංග ලැයිස්තුගත කරන්න</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>උපාංගය {0} හි පාලන කියවන්න</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>උපාංගය {0} හි තත්ත්වය කියවන්න</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>අතථ්‍ය පාලකය {0} යවන දේ කියවන්න</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} අනුගමනය කරන්න</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} අනුගමනය කිරීම නවත්වන්න</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>{0} උපාංගය එක් කරන්න</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>උපාංගය {0} හි පාලන සකසන්න</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>උපාංගය {0} ඉවත් කරන්න</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>උපාංගය {0} හි පාලන අල්ලා තබා ගන්න</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>උපාංගය {0} හි පාලන මුදා හරින්න</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} අගය සකසන්න</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} මෙවලම ධාවනය කරන්න</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, වාර {1}ක්</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ස්ක්‍රිප්ට් (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python ස්ක්‍රිප්ට් (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell මොඩියුල (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ඉඩ දෙන්න</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>ඉඩ නොදෙන්න</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} වෙතින්</value></data>
@@ -5324,6 +5360,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>සුක්කානම් හැසිරවීම (-1 සිට 1 දක්වා)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>රිය පැදවීම (0 නොවේ)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ක්‍රීඩා ටෙලිමෙට්‍රි</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>ස්ක්‍රිප්ට් අගය</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>වේගය (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (උපරිමයේ %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ගියරය (-1 රිවර්ස්, 0 නියුට්‍රල්)</value></data>
@@ -5475,6 +5512,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation හි රාමුවක්: Star Trek තේමාව Starfleet හි පින්තූරය. Memory Alpha හි හමු විය.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ලයිට්බාර්</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ලයිට්බාර්</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>වැඩසටහන</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ගැටලු පටිගත කිරීම</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>පටිගත කිරීම අරඹන්න හෝ නවත්වන්න</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>පටිගත කිරීම සලකුණු කරන්න</value></data>

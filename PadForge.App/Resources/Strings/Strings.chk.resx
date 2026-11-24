@@ -806,6 +806,20 @@
   <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Esor ena virtual controller</value></data>
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ese silei ei tingor</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Esor met non ewe tingor</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Esor ena device</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Ewe device ese riri</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Pwal eu program a néúni ewe device</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Ewe engine a úkútiw</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>A tori ewe limit ren program, device are fiti</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Ewe tingor a fókkun ttam</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>A fókkun chómmóng tingor non eu second</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ese tongeni álleani ewe tag an ewe tingor</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Eu quotation non ewe tingor ese kkúnnú</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Ewe aweweei an ewe device ese pwúng</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Ewe program ese akkomw aiti pwisin itan</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ewe program a kapas non eu version PadForge ese silei</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ese ngeni ena plugin key</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ese etiwa ewe riri an ei program</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Siwil ngeni ewe profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Liwin ngeni ewe profile default</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eis ifa ewe profile mi angang</value></data>
@@ -826,6 +840,25 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eis ren version an PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Eis met a angang</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tinala eu line PadForge ese silei: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Riri</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Mwúchútiw</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lista ekkewe device</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Álleani ekkewe control an device {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Álleani ewe state an device {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Álleani met Virtual Controller {0} a tinala</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Fiti {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Aúkú ne fiti {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Apacha ewe device {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Akkota ekkewe control an device {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Atoui ewe device {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Amwéchú ekkewe control an device {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Likitano ekkewe control an device {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Akkota ewe value {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Angangééni ewe tool {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fán</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Script (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python Script (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell Module (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Seni {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Seni {1}, mi aita pwisin “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Seni eu program mi aita pwisin “{0}”</value></data>

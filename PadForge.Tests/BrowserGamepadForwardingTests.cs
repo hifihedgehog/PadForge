@@ -331,11 +331,11 @@ namespace PadForge.Tests
             int end = step2.IndexOf("// Per-(device, slot) PadSetting", at, StringComparison.Ordinal);
             Assert.True(end > at);
             string block = step2.Substring(at, end - at);
-            Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(web);", block);
-            Assert.Contains("is PadForge.Engine.WebControllerDevice web", block);          // web pads only
+            Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(relayed);", block);
+            Assert.Contains("is PadForge.Engine.IRelayedFeedbackDevice", block);          // web pads and program devices only (#597)
             Assert.Contains("!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)", block); // a peer's output stays
             Assert.Contains("!RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath)", block);   // past its lease too
-            int webBranch = block.IndexOf("if (ud.Device is PadForge.Engine.WebControllerDevice web", StringComparison.Ordinal);
+            int webBranch = block.IndexOf("if (ud.Device is PadForge.Engine.IRelayedFeedbackDevice", StringComparison.Ordinal);
             int stop = block.IndexOf("StopDeviceForces", StringComparison.Ordinal);
             int webReturn = block.IndexOf("return;", webBranch, StringComparison.Ordinal);
             Assert.True(webBranch > 0 && stop > webBranch && webReturn > stop);

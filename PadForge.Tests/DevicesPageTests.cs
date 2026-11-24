@@ -112,6 +112,8 @@ namespace PadForge.Tests
         [InlineData("nfc://x", "Nfc", true, DeviceListGroup.Connected)]
         [InlineData("headtrack://x", "HeadTracker", true, DeviceListGroup.Connected)]
         [InlineData("twitch://x", "TwitchChat", false, DeviceListGroup.NotConnected)]
+        [InlineData("program://abcd2345", "Program", true, DeviceListGroup.Connected)]
+        [InlineData("program://abcd2345", "Program", false, DeviceListGroup.NotConnected)]
         [InlineData("midi://x", "Midi", true, DeviceListGroup.Connected)]
         [InlineData("midi://x", "Midi", false, DeviceListGroup.NotConnected)]
         [InlineData("falcon://x", "NovintFalcon", true, DeviceListGroup.Connected)]
@@ -139,6 +141,7 @@ namespace PadForge.Tests
         [InlineData("peer://pc/1", "Gamepad", false)]
         [InlineData("mic://x", "Microphone", false)]
         [InlineData("twitch://x", "TwitchChat", false)]
+        [InlineData("program://abcd2345", "Program", false)]
         [InlineData("midi://x", "Midi", true)]
         [InlineData("falcon://x", "NovintFalcon", true)]
         [InlineData("analogkb://x", "AnalogKeyboard", true)]
@@ -268,7 +271,7 @@ namespace PadForge.Tests
             ["LogitechGKeys"] = DeviceFilter.Other, ["WebMenus"] = DeviceFilter.Other,
             ["PeripheralLighting"] = DeviceFilter.Other, ["PeripheralHaptics"] = DeviceFilter.Other,
             ["KeyboardScreenKeys"] = DeviceFilter.Other, ["GameTelemetry"] = DeviceFilter.Other,
-            ["TwitchChat"] = DeviceFilter.Other, ["Device"] = DeviceFilter.Other,
+            ["TwitchChat"] = DeviceFilter.Other, ["Program"] = DeviceFilter.Other, ["Device"] = DeviceFilter.Other,
         };
 
         public static IEnumerable<object[]> SegmentCases => Segments.Select(p => new object[] { p.Key, p.Value });

@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge သည် ဤတောင်းဆိုချက်ကို မသိပါ</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>တောင်းဆိုချက် ဗလာဖြစ်နေသည်</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge တွင် ပြဿနာ ဖြစ်သွားသည်</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>ထိုစက်ပစ္စည်း မရှိပါ</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>စက်ပစ္စည်း ချိတ်ဆက်မထားပါ</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>အခြားပရိုဂရမ်တစ်ခုက စက်ပစ္စည်းကို ပိုင်ဆိုင်ထားသည်</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>အင်ဂျင် ရပ်ထားသည်</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>ပရိုဂရမ်၊ စက်ပစ္စည်း သို့မဟုတ် လိုက်ကြည့်မှု ကန့်သတ်ချက်သို့ ရောက်သွားသည်</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>တောင်းဆိုချက် ရှည်လွန်းသည်</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>တစ်စက္ကန့်လျှင် တောင်းဆိုချက် များလွန်းသည်</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>တောင်းဆိုချက်၏ တက်ဂ်ကို ဖတ်၍ မရပါ</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>တောင်းဆိုချက်ထဲရှိ ကိုးကားအမှတ်အသား မပိတ်ထားပါ</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>စက်ပစ္စည်း၏ ဖော်ပြချက် မှားနေသည်</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>ပရိုဂရမ်သည် ၎င်းကိုယ်ကို ဦးစွာ မမိတ်ဆက်ခဲ့ပါ</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ပရိုဂရမ်သည် PadForge မသိသော ဗားရှင်းကို သုံးသည်</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge သည် ထိုပလပ်အင်ကီးကို မပေးခဲ့ပါ</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge သည် ဤပရိုဂရမ်၏ ချိတ်ဆက်မှုကို လက်မခံခဲ့ပါ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ပရိုဖိုင် {0} သို့ ပြောင်းရန်</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>မူလ ပရိုဖိုင်သို့ ပြန်သွားရန်</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>မည်သည့်ပရိုဖိုင် အသက်ဝင်နေသည်ကို မေးရန်</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ၏ ဗားရှင်းကို မေးရန်</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ဘာလည်ပတ်နေသည်ကို မေးရန်</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge မသိသော စာကြောင်းကို ပို့ရန်: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>ချိတ်ဆက်ရန်</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ချိတ်ဆက်မှု ဖြုတ်ရန်</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>စက်ပစ္စည်းများကို စာရင်းပြုစုရန်</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာများကို ဖတ်ရန်</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ အခြေအနေကို ဖတ်ရန်</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ {0} ပို့သည့်အရာကို ဖတ်ရန်</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} ကို လိုက်ကြည့်ရန်</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} ကို လိုက်ကြည့်ခြင်း ရပ်ရန်</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ကို ထည့်ရန်</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာများကို သတ်မှတ်ရန်</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ကို ဖယ်ရှားရန်</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာများကို ဖိထားရန်</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာများကို လွှတ်ရန်</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>တန်ဖိုး {0} ကို သတ်မှတ်ရန်</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ကိရိယာ {0} ကို လည်ပတ်ရန်</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}၊ အကြိမ်ရေ: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 စခရစ်များ (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python စခရစ်များ (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell မော်ဂျူးများ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ခွင့်ပြုရန်</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>ခွင့်မပြုပါ</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} မှ</value></data>
@@ -5358,6 +5394,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>စတီယာရင် (-1 မှ 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>မောင်းနှင်နေခြင်း (0 မဟုတ်)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ဂိမ်း တယ်လီမီထရီ</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>စခရစ် တန်ဖိုး</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>အမြန်နှုန်း (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (အများဆုံး၏ %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ဂီယာ (-1 နောက်ဆုတ်၊ 0 နျူထရယ်)</value></data>
@@ -5508,6 +5545,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation မှ ရုပ်ကွက်တစ်ကွက်: Star Trek သီမ် Starfleet ၏ ပုံ။ Memory Alpha တွင် တွေ့ရှိသည်။</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>အလင်းတန်း</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} အလင်းတန်း</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>ပရိုဂရမ်</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ပြဿနာ မှတ်တမ်းတင်ခြင်း</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်း စတင်ရန် သို့မဟုတ် ရပ်ရန်</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>မှတ်တမ်းတင်ချက်တွင် အမှတ်အသားပြုရန်</value></data>

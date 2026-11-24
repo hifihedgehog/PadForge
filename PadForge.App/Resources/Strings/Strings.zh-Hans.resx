@@ -398,6 +398,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge 不认识这个请求</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>请求是空的</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge 遇到了问题</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>没有这个设备</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>设备未连接</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>设备由另一个程序占用</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>已达到程序、设备或跟踪数量的上限</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>请求太长</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>每秒请求太多</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>无法读取请求的标记</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>请求中有一处引号没有闭合</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>设备的描述不正确</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>程序没有先作自我介绍</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>程序使用的版本 PadForge 不认识</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge 没有给出该插件密钥</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge 没有接受此程序的连接</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>切换到配置文件 {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>返回默认配置文件</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>询问哪个配置文件处于活动状态</value></data>
@@ -418,6 +432,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>询问 PadForge 的版本</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>询问当前运行的内容</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>发送 PadForge 不认识的一行：{0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>连接</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>断开连接</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>列出设备</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>读取设备 {0} 的控件</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>读取设备 {0} 的状态</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>读取虚拟控制器 {0} 发送的内容</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>跟踪 {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>停止跟踪 {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>添加设备 {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>设置设备 {0} 的控件</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>移除设备 {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>占用设备 {0} 的控件</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>释放设备 {0} 的控件</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>设置值 {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>运行工具 {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}，共 {1} 次</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 脚本 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python 脚本 (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell 模块 (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>允许</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>不允许</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>来自 {0}</value></data>
@@ -5577,6 +5613,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>测量握柄的移动范围。在扫描进行的 4 秒内，将其移动到行程的每个边缘。期间各种力会停止。</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>游戏遥测</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch 聊天</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>程序</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>游戏遥测</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>将驾驶类游戏发送的遥测数据以及 Assetto Corsa 的共享内存，放到“设备”页面的“游戏遥测”行上。可像任何输入一样映射其速度、踏板和档位，用它们触发宏，或在自定义表达式中测试。监听期间，方向盘的转速换挡灯也从这里读取游戏数据。</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>监听游戏遥测</value></data>
@@ -5702,6 +5739,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>转向 (-1 到 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>行驶中（非 0）</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>游戏遥测</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>脚本值</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>速度 (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>转速（占最大值的百分比）</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>档位（-1 为倒档，0 为空档）</value></data>

@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge энэ хүсэлтийг мэдэхгүй</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Хүсэлт хоосон байсан</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge асуудалтай тулгарсан</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ийм төхөөрөмж алга</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Төхөөрөмж холбогдоогүй байсан</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Төхөөрөмжийг өөр програм эзэмшиж байна</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Хөдөлгүүр зогссон байсан</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Програм, төхөөрөмж эсвэл дагалтын хязгаарт хүрсэн</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Хүсэлт хэт урт байсан</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Секундэд хэт олон хүсэлт</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Хүсэлтийн шошгыг уншиж чадсангүй</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Хүсэлт дэх хашилт хаагдаагүй байсан</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Төхөөрөмжийн тодорхойлолт буруу байсан</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Програм эхлээд өөрийгөө танилцуулаагүй</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програм PadForge-ийн мэдэхгүй хувилбараар харилцаж байна</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge тэр залгаасын түлхүүрийг олгоогүй</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge энэ програмын холболтыг хүлээн аваагүй</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профайл руу шилжих</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Үндсэн профайл руу буцах</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Аль профайл идэвхтэйг асуух</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ийн хувилбарыг асуух</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Юу ажиллаж байгааг асуух</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ийн мэдэхгүй мөр илгээх: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Холбогдох</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Салгах</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Төхөөрөмжүүдийг жагсаах</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг унших</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>{0} төхөөрөмжийн төлөвийг унших</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>{0} дугаар виртуал контроллерын илгээж буйг унших</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Дагах: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Дагахаа зогсоох: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>{0} төхөөрөмжийг нэмэх</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг тохируулах</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>{0} төхөөрөмжийг хасах</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг барих</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг суллах</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} утгыг тохируулах</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} хэрэгслийг ажиллуулах</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} удаа</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 скриптүүд (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python скриптүүд (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell модулиуд (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Зөвшөөрөх</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Зөвшөөрөхгүй</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Илгээгч: {0}</value></data>
@@ -5349,6 +5385,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Жолоодлого (-1-ээс 1 хүртэл)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Жолоодож байна (0 биш)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Тоглоомын телеметр</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Скриптийн утга</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Хурд (миль/ц)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (дээд утгын %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Араа (-1 ухрах, 0 сул)</value></data>
@@ -5500,6 +5537,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation цувралын кадр: Star Trek загварын Starfleet хувилбарын зураг. Memory Alpha-аас олсон.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Гэрлийн зурвас</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} гэрлийн зурвас</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Програм</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Асуудлын бичлэг</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Бичлэг эхлүүлэх эсвэл зогсоох</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Бичлэгт тэмдэг тавих</value></data>

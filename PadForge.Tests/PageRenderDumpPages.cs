@@ -258,7 +258,7 @@ namespace PadForge.Tests
                 dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.Read;
                 dash.IsAutomationRunning = true;
                 dash.AutomationStatus = string.Format(s.Automation_Status_Connected_Format, "Playnite, powershell");
-                host.Libraries = new DrawnLibraries();
+                host.Libraries = PadForge.Services.Automation.AutomationLibraries.Instance;
                 host.SaveSkill = _ => { };
                 PadForge.Services.Automation.AutomationActivityEntry Call(int minute, string program, PadForge.Services.Automation.AutomationAskKind kind,
                     bool ok, string argument = null)
@@ -328,16 +328,6 @@ namespace PadForge.Tests
                 drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(70)), "automation-card-one.png");
                 foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
             });
-        }
-
-        private sealed class DrawnLibraries : PadForge.Services.Automation.IAutomationLibraries
-        {
-            public System.Collections.Generic.IReadOnlyList<PadForge.Services.Automation.AutomationLibraryKind> Kinds { get; } = new[]
-            {
-                new PadForge.Services.Automation.AutomationLibraryKind("AutoHotkey v2", "PadForge.ahk", "AutoHotkey v2 (*.ahk)|*.ahk"),
-            };
-
-            public void Save(PadForge.Services.Automation.AutomationLibraryKind kind, string path) { }
         }
 
         /// <summary>Get Profiles on each tab, drawn from a window shown off

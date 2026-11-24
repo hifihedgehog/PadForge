@@ -3213,7 +3213,8 @@ namespace PadForge.Common.Input
                         _btBarReleasePending.TryAdd(ud.InstanceGuid, 0);
                     }
                     // Web controller lightbar: a phone drawing a DualShock 4
-                    // or a DualSense renders the same bar the hardware has, so
+                    // or a DualSense renders the same bar the hardware has, and
+                    // a program's device that takes a light (#597) shows it, so
                     // it gets the same lighting engine rather than a still
                     // color. Same shape as the Move lane below it, and for
                     // the same reason: a device whose bar is not written with
@@ -3223,7 +3224,7 @@ namespace PadForge.Common.Input
                     //
                     // The identity refresh uses this dispatcher while it is
                     // live, so it cannot overwrite an overlay or macro color.
-                    if (ud.Device is PadForge.Engine.WebControllerDevice webPad && webPad.HasLightbar)
+                    if (ud.Device is PadForge.Engine.IRelayedFeedbackDevice webPad && webPad.HasLightbar)
                     {
                         if (owners.TryGetValue(ud.InstanceGuid, out int webOwner) && webOwner != _padIndex)
                             continue;

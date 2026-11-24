@@ -1169,6 +1169,7 @@
   <data name="Telemetry_Target_Rpm" xml:space="preserve"><value>RPM</value></data>
   <data name="Telemetry_Target_MaxRpm" xml:space="preserve"><value>Max RPM</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Game telemetry</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Value kan script</value></data>
   <data name="MacroAction_TriggerEffect_Side" xml:space="preserve"><value>Trigger</value></data>
   <data name="MacroAction_TriggerEffect_SideRight" xml:space="preserve"><value>Too (R2)</value></data>
   <data name="MacroAction_TriggerEffect_SideLeft" xml:space="preserve"><value>Wala (L2)</value></data>
@@ -1449,6 +1450,20 @@
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Dai magagamit ngonyan</value></data>
   <data name="Automation_Result_Busy" xml:space="preserve"><value>Okupado an PadForge</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Nagkaproblema an PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Mayong arog kaining device</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Dai nakakonektar an device</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Iba an programang nagmamay-ari kan device</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Nakapondo an engine</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Naabot an limit sa mga programa, device o follow</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Halaba an hagad</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Grabe kadakol na hagad kada segundo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Dai nabasa an tag kan hagad</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>May quotation sa hagad na dai nasarado</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Sala an deskripsyon kan device</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Dai muna nagpakilala an programa</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>An programa naggagamit nin bersyon na dai aram kan PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Dai itinao kan PadForge an plugin key na iyan</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Dai inako kan PadForge an koneksyon kaining programa</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tugotan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Dai tugotan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Hale sa {0}</value></data>
@@ -1471,4 +1486,5 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kun bukas an Game telemetry, gurano kadakol an natatada sa lock sa 200 km/h. Sa 100% bilog an lock sa gabos na speed.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Abiso nin naputol na device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Abiso nin nakonektar na device</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
 </root>

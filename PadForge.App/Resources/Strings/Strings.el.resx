@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Το PadForge δεν γνωρίζει αυτό το αίτημα</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Το αίτημα ήταν κενό</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Το PadForge αντιμετώπισε πρόβλημα</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Δεν υπάρχει τέτοια συσκευή</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Η συσκευή δεν ήταν συνδεδεμένη</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Η συσκευή ανήκει σε άλλο πρόγραμμα</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Η μηχανή ήταν σταματημένη</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Συμπληρώθηκε όριο προγραμμάτων, συσκευών ή παρακολουθήσεων</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Το αίτημα ήταν πολύ μεγάλο</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Πάρα πολλά αιτήματα ανά δευτερόλεπτο</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Η ετικέτα του αιτήματος δεν μπορούσε να διαβαστεί</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Ένα εισαγωγικό στο αίτημα δεν έκλεινε</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Η περιγραφή της συσκευής ήταν λανθασμένη</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Το πρόγραμμα δεν συστήθηκε πρώτα</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Το πρόγραμμα μιλά μια έκδοση που το PadForge δεν γνωρίζει</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Το PadForge δεν έδωσε αυτό το κλειδί προσθέτου</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Το PadForge δεν δέχτηκε τη σύνδεση αυτού του προγράμματος</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Αλλαγή στο προφίλ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Επιστροφή στο προεπιλεγμένο προφίλ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ερώτηση για το ενεργό προφίλ</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Ερώτηση για την έκδοση του PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Ερώτηση για το τι εκτελείται</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Αποστολή γραμμής που το PadForge δεν γνωρίζει: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Σύνδεση</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Αποσύνδεση</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Λίστα των συσκευών</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Ανάγνωση των χειριστηρίων της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Ανάγνωση της κατάστασης της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Ανάγνωση όσων στέλνει το εικονικό χειριστήριο {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Παρακολούθηση: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Διακοπή παρακολούθησης: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Προσθήκη της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ρύθμιση των χειριστηρίων της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Αφαίρεση της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Κράτημα χειριστηρίων της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Αποδέσμευση χειριστηρίων της συσκευής {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ορισμός της τιμής {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Εκτέλεση του εργαλείου {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} φορές</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Σενάρια AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Σενάρια Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Λειτουργικές μονάδες PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Να επιτραπεί</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Να μην επιτραπεί</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Από {0}</value></data>
@@ -5622,6 +5658,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Μετρά πόσο μακριά διανύει η λαβή. Μετακινήστε την σε κάθε άκρο του εύρους κίνησής της για τα τέσσερα δευτερόλεπτα που διαρκεί η σάρωση. Στο μεταξύ οι δυνάμεις σταματούν.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Τηλεμετρία παιχνιδιών</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Συνομιλία Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Πρόγραμμα</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Τηλεμετρία παιχνιδιών</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Εμφανίζει την τηλεμετρία που στέλνουν τα παιχνίδια οδήγησης, καθώς και την κοινόχρηστη μνήμη του Assetto Corsa, στη γραμμή Τηλεμετρία παιχνιδιών της σελίδας Συσκευές. Αντιστοιχίστε την ταχύτητα, τα πεντάλ και τις σχέσεις ταχυτήτων όπως κάθε είσοδο, ενεργοποιήστε μακροεντολές με αυτά ή δοκιμάστε τα σε μια Προσαρμοσμένη έκφραση. Όσο γίνεται ακρόαση, τα LED αλλαγής ταχύτητας (RPM) μιας τιμονιέρας διαβάζουν το παιχνίδι και από εδώ.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Ακρόαση τηλεμετρίας παιχνιδιών</value></data>
@@ -5747,6 +5784,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Τιμόνι (-1 έως 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Οδήγηση (όχι 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Τηλεμετρία παιχνιδιών</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Τιμή σεναρίου</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Ταχύτητα (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% του μέγιστου)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Σχέση ταχυτήτων (-1 όπισθεν, 0 νεκρό)</value></data>

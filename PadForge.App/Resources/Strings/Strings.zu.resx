@@ -329,6 +329,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>I-PadForge ayisazi lesi sicelo</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Isicelo besingenalutho</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>I-PadForge ihlangabezane nenkinga</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ayikho idivayisi enjalo</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Idivayisi ibingaxhunyiwe</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Olunye uhlelo lungumnikazi wedivayisi</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Injini ibimisiwe</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Kufinyelelwe umkhawulo wezinhlelo, amadivayisi noma okulandelwayo</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Isicelo besinde kakhulu</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Izicelo eziningi kakhulu ngomzuzwana</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ithegi yesicelo ayikwazanga ukufundwa</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Isicaphuno esisesicelweni besingavalwanga</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Incazelo yedivayisi ibiyiphutha</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Uhlelo aluzange luziveze kuqala</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Uhlelo lukhuluma inguqulo i-PadForge engayazi</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>I-PadForge ayizange inikeze lowo khiye we-plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>I-PadForge ayizange ilwamukele uxhumano lwalolu hlelo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Shintshela kuphrofayela ethi {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kuphrofayela ezenzakalelayo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuthi iyiphi iphrofayela esebenzayo</value></data>
@@ -349,6 +363,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Buza inguqulo ye-PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Buza ukuthi yini esebenzayo</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Thumela umugqa i-PadForge engawazi: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Xhuma</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Nqamula</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Bala amadivayisi</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Funda izilawuli zedivayisi {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Funda isimo sedivayisi {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Funda lokho okuthunyelwa yisilawuli esibonakalayo {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Landela {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Yeka ukulandela {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Engeza idivayisi {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Setha izilawuli zedivayisi {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Susa idivayisi {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Bamba izilawuli zedivayisi {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Dedela izilawuli zedivayisi {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setha inani elithi {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Qalisa ithuluzi elithi {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, izikhathi ezingu-{1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Imibhalo ye-AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Imibhalo ye-Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Amamojula e-PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Vumela</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ungavumeli</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kusuka ku-{0}</value></data>
@@ -2666,6 +2702,7 @@
   <data name="Telemetry_Target_Clutch" xml:space="preserve"><value>Iklashi (0 kuya ku-1)</value></data>
   <data name="Telemetry_Target_Handbrake" xml:space="preserve"><value>Ibhuleki lesandla (0 kuya ku-1)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>I-telemetry yemidlalo</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Inani lombhalo</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Isivinini (mph)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Ibhuleki (%)</value></data>
   <data name="Telemetry_Channel_Clutch" xml:space="preserve"><value>Iklashi (%)</value></data>
@@ -2985,4 +3022,5 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Qalisa ama-plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ayikho i-plugin esebenzayo.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>I-plugin isebenza ngamalungelo akho, hhayi ngamalungelo e-PadForge.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Uhlelo</value></data>
 </root>

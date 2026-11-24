@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge không biết yêu cầu này</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Yêu cầu trống</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge gặp sự cố</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Không có thiết bị như vậy</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Thiết bị chưa kết nối</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Chương trình khác sở hữu thiết bị</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Bộ máy đã dừng</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Đã chạm giới hạn về chương trình, thiết bị hoặc theo dõi</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Yêu cầu quá dài</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Quá nhiều yêu cầu mỗi giây</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Không đọc được thẻ của yêu cầu</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Một dấu trích dẫn trong yêu cầu chưa được đóng</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Mô tả của thiết bị không đúng</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Chương trình đã không tự giới thiệu trước</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Chương trình dùng một phiên bản mà PadForge không biết</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge đã không cấp khóa plugin đó</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge đã không nhận kết nối của chương trình này</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chuyển sang hồ sơ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Quay về hồ sơ mặc định</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Hỏi hồ sơ nào đang hoạt động</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Hỏi phiên bản của PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Hỏi đang chạy gì</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Gửi một dòng PadForge không biết: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Kết nối</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Ngắt kết nối</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Liệt kê các thiết bị</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Đọc các điều khiển của thiết bị {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Đọc trạng thái của thiết bị {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Đọc những gì Tay cầm ảo {0} gửi</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Theo dõi {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Ngừng theo dõi {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Thêm thiết bị {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Đặt các điều khiển của thiết bị {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Gỡ thiết bị {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Giữ các điều khiển của thiết bị {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Thả các điều khiển của thiết bị {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Đặt giá trị {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Chạy công cụ {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} lần</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Tập lệnh AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Tập lệnh Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Mô-đun PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Cho phép</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Không cho phép</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Từ {0}</value></data>
@@ -5622,6 +5658,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Đo quãng đường tay nắm di chuyển được. Hãy di chuyển nó tới mọi mép của tầm với trong bốn giây quét đang chạy. Các lực nghỉ trong lúc đó.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetry trò chơi</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Chương trình</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetry trò chơi</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Đưa telemetry mà các trò chơi lái xe gửi đi, cùng bộ nhớ dùng chung của Assetto Corsa, vào hàng Telemetry trò chơi trên trang Thiết bị. Ánh xạ tốc độ, bàn đạp và số xe như mọi đầu vào, dùng chúng để kích hoạt macro, hoặc thử chúng trong Biểu thức tùy chỉnh. Khi đang lắng nghe, đèn LED báo sang số theo RPM của vô lăng cũng đọc trò chơi từ đây.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Lắng nghe telemetry trò chơi</value></data>
@@ -5747,6 +5784,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Vô lăng (-1 đến 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Đang lái (khác 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry trò chơi</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Giá trị tập lệnh</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Tốc độ (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% của mức tối đa)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Số xe (-1 số lùi, 0 số mo)</value></data>

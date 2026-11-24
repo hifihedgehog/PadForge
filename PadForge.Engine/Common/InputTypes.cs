@@ -163,6 +163,11 @@ namespace PadForge.Engine
         // is a button at the index it was given.
         public const int TwitchChat = 45;
 
+        // A device a program adds over the Automation pipe (#597): a script,
+        // an assistant or a plugin declares its buttons, axes, sliders, hats,
+        // sensors and touchpads by name, and drives them.
+        public const int Program = 46;
+
         /// <summary>True when a row of this type answers a source whose
         /// DeviceGuid is empty, the "(Any Device)" wildcard that means
         /// whichever controller is assigned to the slot. Controllers,
@@ -186,13 +191,16 @@ namespace PadForge.Engine
         /// the head tracker's reason, so it stays out too (#521). A game's
         /// telemetry names its own axes and gears from index 0, so speed
         /// would read as a stick (#531). The Twitch Chat row's words number
-        /// their buttons from 0, the G-keys' reason (#555).</summary>
+        /// their buttons from 0, the G-keys' reason (#555). A program's
+        /// device numbers its own controls from 0 in whatever shape the
+        /// program declared, and its axes rest where the program says, so it
+        /// stays out for the head tracker's reason (#597).</summary>
         public static bool AnswersAnyDeviceSources(int capType) => capType switch
         {
             HeadTracker or Nfc or Microphone or HandheldButtons or ConsumerControl or Tablet
                 or VrController or LogitechGKeys or AnalogKeyboard or WebMenus
                 or PeripheralLighting or PeripheralHaptics or KeyboardScreenKeys or NovintFalcon
-                or GameTelemetry or TwitchChat => false,
+                or GameTelemetry or TwitchChat or Program => false,
             _ => true,
         };
 

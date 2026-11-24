@@ -2499,6 +2499,10 @@ namespace PadForge.Services
             // Start Remote Link server if enabled (issue #138).
             StartRemoteLinkIfEnabled();
 
+            // The devices programs added over the Automation pipe (#597)
+            // join this engine's device list.
+            AttachAutomationToEngine();
+
             // Show touchpad overlay if enabled.
             if (_mainVm.Dashboard.EnableTouchpadOverlay)
                 ShowTouchpadOverlay();
@@ -2747,6 +2751,9 @@ namespace PadForge.Services
                     _mainVm.Dashboard.ClearFirstRunDevice();
                 });
                 _inputManager.Stop();
+                // The poll thread has ended: the devices programs added leave
+                // with this engine's list (#597), and their followers hear it.
+                DetachAutomationFromEngine();
                 _inputManager.Dispose();
                 _inputManager = null;
                 _inputManagerStatic = null;
@@ -4484,13 +4491,14 @@ namespace PadForge.Services
                     bool sonyLightbar = ud.VendorId == 0x054C
                         && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2
                          || ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0);
-                    // A PS Move sphere (#277) and a browser pad's drawn bar are
+                    // A PS Move sphere (#277), a browser pad's drawn bar and a
+                    // program device's light (#597, IRelayedFeedbackDevice) are
                     // lightbars the Lighting group already shows and edits, so the
                     // card owed them a stage. Kept OUT of sonyLightbar, which
                     // also gates the Audio stage below: neither has a speaker.
                     bool otherLightbar =
                         (ud.VendorId == 0x054C && ud.ProdId == 0x03D5)
-                        || (ud.Device is PadForge.Engine.WebControllerDevice wlb && wlb.HasLightbar);
+                        || (ud.Device is PadForge.Engine.IRelayedFeedbackDevice wlb && wlb.HasLightbar);
                     capLightbar |= sonyLightbar || otherLightbar
                         || PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
                         || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId)
@@ -4593,7 +4601,7 @@ namespace PadForge.Services
                 // A lightbar without the Sony speaker or indicator hardware.
                 bool otherLightbar = ud != null
                     && ((ud.VendorId == 0x054C && ud.ProdId == 0x03D5)
-                     || (ud.Device is PadForge.Engine.WebControllerDevice wlb2 && wlb2.HasLightbar));
+                     || (ud.Device is PadForge.Engine.IRelayedFeedbackDevice wlb2 && wlb2.HasLightbar));
                 bool devAudio = sonyLightbar
                     || (ud != null && (WiiSpeakerService.DeviceHasSpeaker(ud)
                                     || HapticToneService.DeviceHasHaptics(ud)));
@@ -5133,6 +5141,7 @@ namespace PadForge.Services
                                || ud.CapType == InputDeviceType.KeyboardScreenKeys
                                || ud.CapType == InputDeviceType.GameTelemetry
                                || ud.CapType == InputDeviceType.TwitchChat
+                               || ud.CapType == InputDeviceType.Program
                                   ? ud.DeviceObjects : null,
                     analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
                         ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
@@ -5321,10 +5330,11 @@ namespace PadForge.Services
                         // follows the device's Lighting config when one is
                         // set, else the Sony player-color convention. Animated
                         // modes and overrides use the live dispatcher. Without
-                        // one, this lane supplies the stored resting color.
+                        // one, this lane supplies the stored resting color. A
+                        // program's device (#597) takes both the same way.
                         {
                             var wud = FindUserDevice(dev.InstanceGuid);
-                            if (wud?.Device is PadForge.Engine.WebControllerDevice web && wud.IsOnline)
+                            if (wud?.Device is PadForge.Engine.IRelayedFeedbackDevice web && wud.IsOnline)
                             {
                                 int wn = SettingsManager.SlotOrders.GetGlobalSlotNumber(padVm.PadIndex);
                                 if (wn <= 0) wn = padVm.PadIndex + 1;
@@ -6352,6 +6362,7 @@ namespace PadForge.Services
                                || ud.CapType == InputDeviceType.KeyboardScreenKeys
                                || ud.CapType == InputDeviceType.GameTelemetry
                                || ud.CapType == InputDeviceType.TwitchChat
+                               || ud.CapType == InputDeviceType.Program
                                   ? ud.DeviceObjects : null,
                     analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
                         ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
@@ -13637,7 +13648,9 @@ namespace PadForge.Services
                                 // And the Game Telemetry row's axes and gears (#531).
                                 || devType == InputDeviceType.GameTelemetry
                                 // And the chat words, THIS machine's list (#555).
-                                || devType == InputDeviceType.TwitchChat)
+                                || devType == InputDeviceType.TwitchChat
+                                // And the names a program gave its device (#597).
+                                || devType == InputDeviceType.Program)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
@@ -17119,7 +17132,7 @@ namespace PadForge.Services
         /// for its own schemes (DeviceRowViewModel.IsInternalVirtualPath):
         /// web://, peer://, overlay://, midi://, nfc://, mic://,
         /// handheld://, sensor://, headtrack://, openxr://, logigkeys://,
-        /// keyboardscreen://, falcon://, telemetry://, twitch://,
+        /// keyboardscreen://, falcon://, telemetry://, twitch://, program://,
         /// analogkb://, a vendor lighting program's row and lightunit://.
         /// Each writes its own path, so the type stands for the scheme.</summary>
         internal static bool IsOwnSchemeWrapper(ISdlInputDevice device) => device is
@@ -17130,6 +17143,7 @@ namespace PadForge.Services
             or PadForge.Common.Input.Falcon.FalconDevice
             or PadForge.Common.Input.Telemetry.GameTelemetryDevice
             or PadForge.Common.Input.Twitch.TwitchChatDevice
+            or ProgramDevice
             or AnalogKeyboardDevice
             or PadForge.Common.Input.Peripherals.PeripheralOutputRow
             or PadForge.Common.Input.Peripherals.PeripheralUnitRow;
@@ -19424,9 +19438,10 @@ namespace PadForge.Services
             }
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
-            // A telemetry variable is picked from a list (#531). A device
-            // scan here would rebind it to whatever moved.
-            if (_recordingVariable.Source == MacroTriggerSource.GameTelemetry)
+            // A telemetry variable is picked from a list (#531), and a
+            // program's value is named (#597). A device scan here would
+            // rebind either to whatever moved.
+            if (_recordingVariable.Source is MacroTriggerSource.GameTelemetry or MacroTriggerSource.ScriptValue)
             {
                 StopExpressionVariableRecording();
                 return;

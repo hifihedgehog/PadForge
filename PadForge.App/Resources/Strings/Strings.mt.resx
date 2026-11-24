@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ma jafx din it-talba</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>It-talba kienet vojta</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge sab problema</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ebda apparat bħal dan</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>L-apparat ma kienx imqabbad</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Programm ieħor huwa sid l-apparat</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>L-engine kien waqaf</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Intlaħaq limitu ta' programmi, apparati jew segwiment</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>It-talba kienet twila wisq</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Wisq talbiet fis-sekonda</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>It-tag tat-talba ma setax jinqara</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Kwotazzjoni fit-talba ma ngħalqitx</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Id-deskrizzjoni tal-apparat kienet ħażina</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Il-programm ma introduċiex ruħu l-ewwel</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Il-programm jitkellem verżjoni li PadForge ma jafx</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ma taha dik iċ-ċavetta tal-plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ma aċċettax il-konnessjoni ta' dan il-programm</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibdel għall-profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Erġa' lura għall-profil awtomatiku</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Staqsi liema profil huwa attiv</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Staqsi għall-verżjoni ta' PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Staqsi x'qed jaħdem</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ibgħat linja li PadForge ma jafx: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Ikkonnettja</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Skonnettja</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Elenka l-apparati</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Aqra l-kontrolli tal-apparat {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Aqra l-istat tal-apparat {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Aqra dak li jibgħat il-Kontrollur virtwali {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Segwi {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Waqqaf is-segwiment ta' {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Żid l-apparat {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Issettja l-kontrolli tal-apparat {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Neħħi l-apparat {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Żomm kontrolli tal-apparat {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ħalli l-kontrolli tal-apparat {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Issettja l-valur {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Mexxi l-għodda {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, għadd ta' darbiet: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skripts tal-AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Skripts tal-Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduli tal-PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ippermetti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ma tippermettix</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Minn {0}</value></data>
@@ -5299,6 +5335,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Stering (-1 sa 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Qed isuq (mhux 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetrija tal-logħob</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Valur tal-iskript</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Veloċità (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% tal-massimu)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Ger (-1 rivers, 0 newtral)</value></data>
@@ -5448,6 +5485,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Frejm minn Star Trek: The Next Generation: l-istampa tat-tema Starfleet ta' Star Trek. Misjub fuq Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Lightbar {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programm</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Reġistrazzjoni ta' problema</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Ibda jew waqqaf ir-reġistrazzjoni</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Immarka r-reġistrazzjoni</value></data>

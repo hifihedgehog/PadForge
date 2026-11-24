@@ -211,6 +211,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ntizi ubu busabe</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Ubusabe bwari burimo ubusa</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yahuye n'ikibazo</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Nta gikoresho nk'icyo kibaho</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Igikoresho nticyari gihujwe</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Indi porogaramu ni yo ifite igikoresho</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Moteri yari yahagaze</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Hageze ku mupaka wa porogaramu, ibikoresho cyangwa ibikurikiranwa</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Ubusabe bwari burebure cyane</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Ubusabe bwinshi cyane ku isegonda</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ikiranga cy'ubusabe nticyashoboye gusomwa</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Amagambo yasubiwemo mu busabe ntiyafunzwe</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Ibisobanuro by'igikoresho byari bibeshye</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Porogaramu ntiyabanje kwimenyekanisha</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Porogaramu ikoresha verisiyo PadForge itazi</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ntiyatanze urwo rufunguzo rwa plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ntiyakiriye ihuza ry'iyi porogaramu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hindurira kuri profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Subira kuri profili isanzwe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Baza profili ikora</value></data>
@@ -231,6 +245,21 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Baza verisiyo ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Baza ibirimo gukora</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ohereza umurongo PadForge itazi: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Huza</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Hagarika ihuza</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Garagaza ibikoresho</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Soma ibigenzura by'igikoresho {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Soma uko igikoresho {0} kimeze</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Soma ibyo Kontorola y'ikoranabuhanga {0} yohereza</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Kurikirana {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Hagarika gukurikirana {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ongeramo igikoresho {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Shyiraho ibigenzura by'igikoresho {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kuraho igikoresho {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Fata ibigenzura by'igikoresho {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Rekura ibigenzura by'igikoresho {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Shyiraho agaciro {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Koresha igikoresho {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Huza</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Bihujwe</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Nta gikoresho</value></data>
@@ -2067,6 +2096,7 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ntiyashoboye kubika: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Koresha plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nta plugin irimo gukora.</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, inshuro {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emera</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ntubyemere</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Biturutse kuri {0}</value></data>
@@ -2104,4 +2134,5 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Iringaniza imbeba itanga amakuru atangana. Ruhuri ikurikira ukuboko itinzeho hafi iki gihe. 0 bisobanura ko bizimye.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Iherezo ku muvuduko</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Iyo Game Telemetry ifunguye, igice cy'iherezo gisigara ku muvuduko wa 200 km/h. Kuri 100% iherezo ryose riraboneka ku muvuduko uwo ari wo wose.</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Agaciro ka script</value></data>
 </root>

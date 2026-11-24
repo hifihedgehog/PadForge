@@ -128,6 +128,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ha e tsebe kopo ena</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Kopo e ne e se na letho</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge e kopane le bothata</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ha ho sesebediswa se jwalo</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Sesebediswa se ne se sa hokahanngwa</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Lenaneo le leng ke mong wa sesebediswa</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Enjene e ne e emisitswe</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Moedi wa mananeo, disebediswa kapa tse latelwang o fihletswe</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Kopo e ne e le telele haholo</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Dikopo tse ngata haholo ka motsotswana</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Letshwao la kopo le ne le sa balehe</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Ditemana tse qotsitsweng kopong di ne di sa kwalwa</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Tlhaloso ya sesebediswa e ne e fosahetse</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Lenaneo ha le a ka la itsebahatsa pele</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Lenaneo le bua mofuta oo PadForge e sa o tsebeng</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ha e a fana ka senotlolo seo sa plagini</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ha e a amohela kgokahano ya lenaneo lena</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetohela profaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kgutlela profaeleng ya kamehla</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa hore na ke profaele efe e sebetsang</value></data>
@@ -148,6 +162,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Botsa mofuta wa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Botsa hore na ho sebetsa eng</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mola oo PadForge e sa o tsebeng: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Hokahana</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Kgaola kgokahano</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Thathamisa disebediswa</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Bala ditaolo tsa sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Bala boemo ba sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Bala seo Taolo ya Sebele {0} e se romelang</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Latela {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Emisa ho latela {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Kenya sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Beha ditaolo tsa sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tlosa sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tshwara ditaolo tsa sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Tlohela ditaolo tsa sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Beha boleng {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Sebedisa sesebediswa {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makgetlo a {1}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Hokela</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E hoketswe</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hana</value></data>

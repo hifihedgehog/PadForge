@@ -403,6 +403,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge no konosé e petishon aki</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>E petishon tabata bashí</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge a topa ku un problema</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>E aparato no ta eksistí</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>E aparato no tabata konektá</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Otro programa ta doño di e aparato</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>E motor tabata para</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>A yega un límite di programa, aparato òf siguimentu</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>E petishon tabata muchu largu</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Muchu petishon pa sekònde</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>No por a lesa e tag di e petishon</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Un sita den e petishon no a wòrdu será</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>E deskripshon di e aparato tabata robes</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>E programa no a presentá su mes promé</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>E programa ta papia un vershon ku PadForge no konosé</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge no a duna e yabi di plugin ei</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge no a aseptá e konekshon di e programa aki</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kambia na e perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bolbe na e perfil standard</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Puntra ki perfil ta aktivo</value></data>
@@ -423,6 +437,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Puntra pa e vershon di PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Puntra kiko ta kore</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Manda un liña ku PadForge no konosé: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Konektá</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Deskonektá</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lista e aparatonan</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Lesa e kontrolnan di aparato {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Lesa e estado di aparato {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Lesa kiko Kontrol virtual {0} ta manda</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sigui {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Para di sigui {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Agregá e aparato {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Pone e kontrolnan di aparato {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kita e aparato {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tene kontrolnan di aparato {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Laga kontrolnan di aparato {0} bai</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Pone e balor {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kore e hèrmèntè {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} biaha</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa teklanan G di Logitech</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
   <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
@@ -2659,6 +2689,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Direkshon (-1 te 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Ta maneha (no 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria di wega</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Balor di script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velosidat (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% di máksimo)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Marcha (-1 atras, 0 neutral)</value></data>
@@ -3044,6 +3075,7 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ta nivelá un mouse ku ta reportá desigual. E stür ta bai tras di e man mas o ménos asina largu. 0 ta pagá.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Límite na velosidat</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di wega sendí, kuantu di e límite ta keda na 200 km/h. Na 100% henter e límite ta keda na tur velosidat.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kuminsá òf para di graba</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marka e grabashon</value></data>
 </root>

@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-க்கு இந்தக் கோரிக்கை தெரியாது</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>கோரிக்கை காலியாக இருந்தது</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-இல் ஒரு சிக்கல் ஏற்பட்டது</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>அப்படி ஒரு சாதனம் இல்லை</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>சாதனம் இணைக்கப்படவில்லை</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>சாதனம் வேறொரு நிரலுக்குச் சொந்தமானது</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>இன்ஜின் நிறுத்தப்பட்டிருந்தது</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>நிரல்கள், சாதனங்கள் அல்லது பின்தொடர்தல்களின் வரம்பு எட்டப்பட்டது</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>கோரிக்கை மிக நீளமாக இருந்தது</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>ஒரு வினாடிக்கு மிக அதிகக் கோரிக்கைகள்</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>கோரிக்கையின் குறிச்சொல்லைப் படிக்க முடியவில்லை</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>கோரிக்கையில் ஒரு மேற்கோள் மூடப்படவில்லை</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>சாதனத்தின் விளக்கம் தவறாக இருந்தது</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>நிரல் முதலில் தன்னை அறிமுகப்படுத்தவில்லை</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>நிரல் PadForge-க்குத் தெரியாத பதிப்பில் பேசுகிறது</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge அந்தச் செருகுநிரல் விசையைத் தரவில்லை</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge இந்த நிரலின் இணைப்பை ஏற்கவில்லை</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>சுயவிவரத்தை மாற்று: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>இயல்புநிலை சுயவிவரத்துக்குத் திரும்பு</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>எந்தச் சுயவிவரம் செயலில் உள்ளது என்று கேள்</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-இன் பதிப்பைக் கேள்</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>என்ன இயங்குகிறது என்று கேள்</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-க்குத் தெரியாத ஒரு வரியை அனுப்பு: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>இணை</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>துண்டி</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>சாதனங்களைப் பட்டியலிடு</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளைப் படி</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>சாதனம் {0}-இன் நிலையைப் படி</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0} அனுப்புவதைப் படி</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>பின்தொடர்: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>பின்தொடர்வதை நிறுத்து: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>சாதனம் {0}-ஐச் சேர்</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளை அமை</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>சாதனம் {0}-ஐ நீக்கு</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளைப் பிடித்து வை</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளை விடு</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>மதிப்பை அமை: {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>கருவியை இயக்கு: {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} முறை</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ஸ்கிரிப்ட்கள் (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python ஸ்கிரிப்ட்கள் (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell தொகுதிகள் (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>அனுமதி</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>அனுமதிக்காதே</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} இலிருந்து</value></data>
@@ -5622,6 +5658,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>கைப்பிடி எவ்வளவு தூரம் நகர்கிறது என்பதை அளக்கிறது. அளவீடு நடக்கும் நான்கு வினாடிகளுக்கு அதன் எட்டும் தொலைவின் ஒவ்வொரு விளிம்புக்கும் நகர்த்துங்கள். அந்த நேரத்தில் விசைகள் ஓய்வில் இருக்கும்.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரி</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch அரட்டை</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>நிரல்</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரி</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ஓட்டுதல் கேம்கள் அனுப்பும் டெலிமெட்ரியையும் Assetto Corsa-வின் பகிர்ந்த நினைவகத்தையும் சாதனங்கள் பக்கத்தின் கேம் டெலிமெட்ரி வரிசையில் காட்டுகிறது. அதன் வேகம், பெடல்கள், கியர்களை எந்த உள்ளீட்டையும் போல மேப் செய்யலாம், அவற்றால் மேக்ரோக்களை இயக்கலாம் அல்லது தனிப்பயன் கோவையில் சோதிக்கலாம். இது செவிமடுக்கும் போது, வீலின் RPM ஷிஃப்ட் LED-களும் கேமை இங்கிருந்தே படிக்கும்.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரியைச் செவிமடு</value></data>
@@ -5747,6 +5784,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>ஸ்டீயரிங் (-1 முதல் 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ஓட்டுதல் (0 அல்ல)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரி</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>ஸ்கிரிப்ட் மதிப்பு</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>வேகம் (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (அதிகபட்சத்தின் %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>கியர் (-1 ரிவர்ஸ், 0 நியூட்ரல்)</value></data>

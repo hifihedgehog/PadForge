@@ -13838,6 +13838,7 @@
                                                         <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
                                                         <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
                                                         <ComboBoxItem Content="{Binding Macro_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.GameTelemetry}"/>
+                                                        <ComboBoxItem Content="{Binding Macro_ScriptValue, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.ScriptValue}"/>
                                                     </ComboBox>
                                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Source" SettingLabel="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroExpressionVariable_Source_1644" Margin="4,0,8,0"/>
                                                     <!-- Game telemetry channel (#531): speed, RPM, gear, the
@@ -13850,6 +13851,16 @@
                                                               AutomationProperties.Name="{Binding Macro_GameTelemetry, Source={x:Static strings:Strings.Instance}}"
                                                               Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=GameTelemetry}"/>
                                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TelemetryChannel" SettingLabel="{Binding Macro_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=GameTelemetry}" AutomationProperties.AutomationId="Reset_MacroExpressionVariable_TelemetryChannel_1648" Margin="4,0,8,0"/>
+                                                    <!-- A value a program sets by name over the Automation
+                                                         pipe (#597): the names programs set this run, or
+                                                         one typed for a script that has not set it yet. -->
+                                                    <ComboBox ItemsSource="{x:Static vm:ScriptValueNames.Items}"
+                                                              IsEditable="True"
+                                                              Text="{Binding ScriptValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                              MinWidth="220" Margin="0,0,8,0"
+                                                              AutomationProperties.Name="{Binding Macro_ScriptValue, Source={x:Static strings:Strings.Instance}}"
+                                                              Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ScriptValue}"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScriptValue" SettingLabel="{Binding Macro_ScriptValue, Source={x:Static strings:Strings.Instance}}" Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ScriptValue}" AutomationProperties.AutomationId="Reset_MacroExpressionVariable_ScriptValue_1649" Margin="4,0,8,0"/>
                                                     <!-- OutputChannel dropdown. Items are sourced from the
                                                          parent macro's OutputChannelOptions list, which renders
                                                          labels per the slot's VC family (matches the mapping

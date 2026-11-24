@@ -1670,6 +1670,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tsis paub qhov kev thov no</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Qhov kev thov khoob</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge muaj teeb meem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Tsis muaj khoom siv no</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Lub khoom siv tsis tau txuas</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Lwm qhov program yog tus tswv lub khoom siv</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Lub engine nres lawm</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Txog qhov txwv ntawm cov program, cov khoom siv los yog kev ua raws lawm</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Qhov kev thov ntev dhau</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Thov ntau dhau hauv ib vib nas this</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Nyeem tsis tau qhov kev thov lub tag</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Ib lo lus hauv cim hais lus hauv qhov kev thov tsis tau kaw</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Lub khoom siv cov lus piav tsis yog</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Qhov program tsis tau qhia nws tus kheej ua ntej</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Qhov program siv ib version uas PadForge tsis paub</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge tsis tau muab tus yuam sij plugin ntawd</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tsis txais qhov program no txoj kev txuas</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hloov mus rau profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rov qab mus rau profile neej ntawd</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nug saib profile twg siv</value></data>
@@ -1690,6 +1704,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Nug txog PadForge tus version</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Nug saib dab tsi tab tom khiav</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Xa ib kab uas PadForge tsis paub: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Txuas</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Tu txuas</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Teev cov khoom siv</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Nyeem cov tswj ntawm khoom siv {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Nyeem lub xeev ntawm khoom siv {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Nyeem yam uas Virtual Controller {0} xa</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Ua raws {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Tsis ua raws {0} lawm</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ntxiv lub khoom siv {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Teeb cov tswj ntawm khoom siv {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tshem lub khoom siv {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tuav cov tswj ntawm khoom siv {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Tso cov tswj ntawm khoom siv {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Teeb tus nqi {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Khiav tool {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} zaug</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tso cai</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tsis tso cai</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Los ntawm {0}</value></data>

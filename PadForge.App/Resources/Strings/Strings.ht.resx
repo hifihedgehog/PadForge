@@ -479,6 +479,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge pa konnen demann sa a</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Demann lan te vid</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge te jwenn yon pwoblèm</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Aparèy sa a pa egziste</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Aparèy la pa t konekte</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Yon lòt pwogram posede aparèy la</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motè a te kanpe</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Yo rive nan yon limit pwogram, aparèy oswa swivi</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Demann lan te twò long</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Twòp demann pa segonn</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Pa t ka li etikèt demann lan</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Yon sitasyon nan demann lan pa t fèmen</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Deskripsyon aparèy la pa t bon</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Pwogram lan pa t prezante tèt li anvan</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pwogram lan pale yon vèsyon PadForge pa konnen</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge pa t bay kle plugin sa a</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge pa t aksepte koneksyon pwogram sa a</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chanje pou pwofil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Retounen nan pwofil pa defo a</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mande ki pwofil ki aktif</value></data>
@@ -499,6 +513,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Mande vèsyon PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Mande sa k ap mache</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Voye yon liy PadForge pa konnen: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Konekte</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Dekonekte</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Fè lis aparèy yo</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Li kontwòl aparèy {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Li eta aparèy {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Li sa Kontwolè vityèl {0} voye</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Swiv {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Sispann swiv {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ajoute aparèy {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Mete kontwòl aparèy {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Retire aparèy {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Kenbe kontwòl aparèy {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lage kontwòl aparèy {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Mete valè {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Itilize zouti {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fwa</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Script AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Script Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Modil PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Pèmèt</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Pa pèmèt</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Soti nan {0}</value></data>
@@ -4506,6 +4542,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Direksyon (-1 rive 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Ap kondi (pa 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetri jwèt</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Valè script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Vitès (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% maksimòm nan)</value></data>
   <data name="Telemetry_Channel_Throttle" xml:space="preserve"><value>Akseleratè (%)</value></data>
@@ -4840,6 +4877,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Okenn plugin pa ap mache.</value></data>
   <data name="Extras_Plugins_Note" xml:space="preserve"><value>Yon plugin mache ak dwa pa w, pa ak dwa PadForge.</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Pwogram</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Anrejistreman pwoblèm</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kòmanse oswa kanpe anrejistreman</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Make anrejistreman an</value></data>

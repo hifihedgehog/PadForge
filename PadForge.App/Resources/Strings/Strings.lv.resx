@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nepazīst šo pieprasījumu</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Pieprasījums bija tukšs</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge sastapās ar problēmu</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Šādas ierīces nav</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Ierīce nebija pievienota</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Ierīce pieder citai programmai</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Dzinējs bija apturēts</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Sasniegts programmu, ierīču vai sekošanas ierobežojums</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Pieprasījums bija pārāk garš</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Pārāk daudz pieprasījumu sekundē</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Pieprasījuma birku nevarēja nolasīt</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Pieprasījumā pēdiņas netika aizvērtas</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Ierīces apraksts bija nepareizs</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programma vispirms nepastāstīja par sevi</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programma lieto versiju, ko PadForge nepazīst</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nedeva šo spraudņa atslēgu</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nepieņēma šīs programmas savienojumu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Pārslēgties uz profilu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Atgriezties pie noklusējuma profila</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pajautāt, kurš profils ir aktīvs</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pieprasīt PadForge versiju</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pajautāt, kas darbojas</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Nosūtīt rindu, ko PadForge nepazīst: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Pievienoties</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Atvienoties</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Uzskaitīt ierīces</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Nolasīt ierīces {0} vadīklas</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Nolasīt ierīces {0} stāvokli</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Nolasīt, ko sūta virtuālais kontrolleris {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sekot: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Pārtraukt sekošanu: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Pievienot ierīci {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Iestatīt ierīces {0} vadīklas</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Noņemt ierīci {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Turēt ierīces {0} vadīklas</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Atlaist ierīces {0} vadīklas</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Iestatīt vērtību {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Palaist rīku {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, reizes: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skripti (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python skripti (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell moduļi (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Atļaut</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Neatļaut</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>No {0}</value></data>
@@ -5622,6 +5658,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Izmēra, cik tālu rokturis pārvietojas. Pārvietojiet to līdz katrai aptvēruma malai četras sekundes, kamēr notiek mērījums. Spēki šajā laikā ir izslēgti.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Spēļu telemetrija</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch tērzēšana</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programma</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Spēļu telemetrija</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Ievieto telemetriju, ko sūta braukšanas spēles, kā arī Assetto Corsa koplietojamo atmiņu lapas Ierīces rindā Spēļu telemetrija. Piesaistiet tās ātrumu, pedāļus un pārnesumus kā jebkuru ievadi, aktivizējiet ar tiem makrosus vai pārbaudiet tos pielāgotā izteiksmē. Kamēr tā klausās, stūres RPM pārnesumu maiņas LED arī nolasa spēli no šejienes.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Klausīties spēļu telemetriju</value></data>
@@ -5747,6 +5784,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Stūrēšana (no -1 līdz 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Braukšana (nav 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Spēļu telemetrija</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Skripta vērtība</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Ātrums (jūdzes/h)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% no maksimuma)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Pārnesums (-1 atpakaļgaita, 0 neitrāls)</value></data>

@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge មិនស្គាល់សំណើនេះទេ</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>សំណើទទេ</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge បានជួបបញ្ហា</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>គ្មានឧបករណ៍នេះទេ</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>ឧបករណ៍មិនបានភ្ជាប់ទេ</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>កម្មវិធីផ្សេងជាម្ចាស់ឧបករណ៍នេះ</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>ម៉ាស៊ីនបានឈប់</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>បានដល់ដែនកំណត់នៃកម្មវិធី ឧបករណ៍ ឬការតាមដាន</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>សំណើវែងពេក</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>សំណើច្រើនពេកក្នុងមួយវិនាទី</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>មិនអាចអានស្លាករបស់សំណើបានទេ</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>សញ្ញាសម្រង់មួយក្នុងសំណើមិនបានបិទ</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>ការពិពណ៌នារបស់ឧបករណ៍មិនត្រឹមត្រូវ</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>កម្មវិធីមិនបានណែនាំខ្លួនវាជាមុនទេ</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>កម្មវិធីប្រើកំណែដែល PadForge មិនស្គាល់</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge មិនបានផ្ដល់សោកម្មវិធីបន្ថែមនោះទេ</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge មិនបានទទួលការភ្ជាប់របស់កម្មវិធីនេះទេ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ប្ដូរទៅប្រូហ្វាល់ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ត្រឡប់ទៅប្រូហ្វាល់លំនាំដើម</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>សួរថាប្រូហ្វាល់ណាសកម្ម</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>សួររកកំណែរបស់ PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>សួរថាអ្វីកំពុងដំណើរការ</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ផ្ញើបន្ទាត់ដែល PadForge មិនស្គាល់៖ {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>ភ្ជាប់</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ផ្ដាច់</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>រាយឧបករណ៍</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>អានការបញ្ជារបស់ឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>អានស្ថានភាពរបស់ឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>អានអ្វីដែលឧបករណ៍បញ្ជានិម្មិត {0} ផ្ញើ</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>តាមដាន {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>ឈប់តាមដាន {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>បន្ថែមឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>កំណត់ការបញ្ជារបស់ឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>ដកឧបករណ៍ {0} ចេញ</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>សង្កត់ការបញ្ជារបស់ឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>លែងការបញ្ជារបស់ឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>កំណត់តម្លៃ {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ដំណើរការឧបករណ៍ {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0} ចំនួន {1} ដង</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>ស្គ្រីប AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>ស្គ្រីប Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>ម៉ូឌុល PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>អនុញ្ញាត</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>មិនអនុញ្ញាត</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>ពី {0}</value></data>
@@ -5363,6 +5399,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>ចង្កូត (-1 ដល់ 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>កំពុងបើកបរ (មិនមែន 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>តេឡេម៉ែត្រហ្គេម</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>តម្លៃស្គ្រីប</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>ល្បឿន (ម៉ាយ/ម៉ោង)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% នៃអតិបរមា)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>លេខប្រអប់លេខ (-1 ថយក្រោយ, 0 លេខសូន្យ)</value></data>
@@ -5514,6 +5551,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>រូបភាពមួយពី Star Trek: The Next Generation៖ រូបភាពនៃរចនាប័ទ្ម Star Trek «Starfleet»។ រកឃើញនៅលើ Memory Alpha។</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>របារភ្លើង</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>របារភ្លើង {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>កម្មវិធី</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ការថតបញ្ហា</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ចាប់ផ្ដើម ឬបញ្ឈប់ការថត</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ដាក់សញ្ញាលើការថត</value></data>

@@ -2023,6 +2023,7 @@
   <data name="Telemetry_Target_Rpm" xml:space="preserve"><value>RPM</value></data>
   <data name="Telemetry_Target_MaxRpm" xml:space="preserve"><value>RPM faratampony</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Télémétrie lalao</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Sandan'ny script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hafainganana (mph)</value></data>
   <data name="MacroAction_TriggerEffect_Side" xml:space="preserve"><value>Gâchette</value></data>
   <data name="MacroAction_TriggerEffect_SideRight" xml:space="preserve"><value>Ankavanana (R2)</value></data>
@@ -2352,6 +2353,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Tsy fantatry ny PadForge ity fangatahana ity</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Foana ny fangatahana</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Nisy olana tao amin'ny PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Tsy misy fitaovana toy izany</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Tsy nifandray ilay fitaovana</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Programa hafa no tompon'ilay fitaovana</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Najanona ny motera</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Tratra ny fetra amin'ny programa, fitaovana na fanarahana</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Lava loatra ny fangatahana</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Be loatra ny fangatahana isaky ny segondra</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Tsy voavaky ny tag an'ny fangatahana</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Nisy marika fanononana tsy nakatona tao amin'ny fangatahana</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Diso ny famaritana ilay fitaovana</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Tsy nampahafantatra ny tenany aloha ilay programa</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mampiasa version tsy fantatry ny PadForge ilay programa</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Tsy nomen'ny PadForge io lakile plugin io</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Tsy noraisin'ny PadForge ny fifandraisan'ity programa ity</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Mifindrà amin'ny profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Miverena amin'ny profil par défaut</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Anontanio hoe iza ny profil mavitrika</value></data>
@@ -2372,6 +2387,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Anontanio ny version an'ny PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Anontanio izay mandeha</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Alefaso andalana tsy fantatry ny PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Mifandraisa</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Tapaho ny fifandraisana</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Tanisao ny fitaovana</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Vakio ny bokotra sy axe an'ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Vakio ny toetry ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Vakio izay alefan'ny Contrôleur virtoaly {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Araho {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Atsaharo ny fanarahana {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ampio ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Apetraho ny bokotra sy axe an'ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Esory ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tazomy ny bokotra sy axe an'ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Avelao ny bokotra sy axe an'ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Apetraho ny sanda {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ampandehano ny tool {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fotoana</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Avelao</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Aza avela</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Avy amin'ny {0}</value></data>
@@ -2412,4 +2443,5 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Mampitovy ny fihetsiky ny totozy tsy mitovy ny fitaterany. Manaraka ny tanana aorian'io fotoana io eo ho eo ny familiana. 0 dia tsy miasa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock amin'ny hafainganana</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Rehefa mandeha ny Télémétrie lalao, ny ampahany amin'ny lock sisa amin'ny 200 km/h. Amin'ny 100% dia eo foana ny lock manontolo na inona na inona hafainganana.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
 </root>

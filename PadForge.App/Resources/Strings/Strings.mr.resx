@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ला ही विनंती माहीत नाही</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>विनंती रिकामी होती</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ला समस्या आली</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>असे डिव्हाइस नाही</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>डिव्हाइस जोडलेले नव्हते</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>डिव्हाइस दुसऱ्या प्रोग्रामचे आहे</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>इंजिन थांबवलेले होते</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>प्रोग्राम, डिव्हाइसेस किंवा फॉलोची मर्यादा गाठली</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>विनंती खूप मोठी होती</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>प्रति सेकंद खूप विनंत्या</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>विनंतीचा टॅग वाचता आला नाही</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>विनंतीतील अवतरण बंद केलेले नव्हते</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>डिव्हाइसचे वर्णन चुकीचे होते</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>प्रोग्रामने आधी ओळख करून दिली नाही</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>प्रोग्राम PadForge ला माहीत नसलेली आवृत्ती वापरतो</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ने ती प्लगइन की दिली नाही</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ने या प्रोग्रामचे कनेक्शन घेतले नाही</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>प्रोफाइल {0} वर जा</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>डिफॉल्ट प्रोफाइलवर परत जा</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>कोणते प्रोफाइल सक्रिय आहे ते विचारा</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ची आवृत्ती विचारा</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>काय सुरू आहे ते विचारा</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge ला माहीत नसलेली ओळ पाठवा: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>जोडा</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>जोडणी तोडा</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>डिव्हाइसेसची यादी करा</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>डिव्हाइस {0} चे कंट्रोल वाचा</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>डिव्हाइस {0} ची स्थिती वाचा</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर {0} काय पाठवतो ते वाचा</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} फॉलो करा</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} फॉलो करणे थांबवा</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>डिव्हाइस {0} जोडा</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>डिव्हाइस {0} चे कंट्रोल सेट करा</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>डिव्हाइस {0} काढा</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>डिव्हाइस {0} चे कंट्रोल धरून ठेवा</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>डिव्हाइस {0} चे कंट्रोल सोडा</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>मूल्य {0} सेट करा</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>टूल {0} चालवा</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} वेळा</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 स्क्रिप्ट (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python स्क्रिप्ट (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell मॉड्यूल (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>परवानगी द्या</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>परवानगी देऊ नका</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} कडून</value></data>
@@ -5346,6 +5382,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>स्टीअरिंग (-1 ते 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ड्रायव्हिंग (0 नसल्यास)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्री</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>स्क्रिप्ट मूल्य</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>वेग (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (कमालच्या %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>गिअर (-1 रिव्हर्स, 0 न्यूट्रल)</value></data>
@@ -5499,6 +5536,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>स्टार ट्रेक: द नेक्स्ट जनरेशन मधील एक फ्रेम: स्टार ट्रेक थीम Starfleet चे चित्र. Memory Alpha वर सापडले.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} लाइटबार</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>प्रोग्राम</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>समस्या रेकॉर्डिंग</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>रेकॉर्डिंग सुरू किंवा थांबवा</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>रेकॉर्डिंगवर खूण करा</value></data>

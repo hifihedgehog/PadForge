@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tuto žádost nezná</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Žádost byla prázdná</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge narazil na problém</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Takové zařízení neexistuje</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Zařízení nebylo připojeno</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Zařízení vlastní jiný program</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Jádro bylo zastaveno</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Byl dosažen limit programů, zařízení nebo sledování</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Žádost byla příliš dlouhá</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Příliš mnoho žádostí za sekundu</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Značku žádosti nešlo přečíst</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Uvozovky v žádosti nebyly uzavřeny</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Popis zařízení byl chybný</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program se nejdřív nepředstavil</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program mluví verzí, kterou PadForge nezná</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nedal tento klíč pluginu</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nepřijal připojení tohoto programu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Přepnout na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrátit se k výchozímu profilu</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Zjistit, který profil je aktivní</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Zjistit verzi programu PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Zjistit, co běží</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Poslat řádek, který PadForge nezná: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Připojit se</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Odpojit se</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Vypsat zařízení</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Přečíst ovládací prvky zařízení {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Přečíst stav zařízení {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Přečíst, co posílá virtuální ovladač {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sledovat: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Přestat sledovat: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Přidat zařízení {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Nastavit ovládací prvky zařízení {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Odebrat zařízení {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Držet ovládací prvky zařízení {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Pustit ovládací prvky zařízení {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastavit hodnotu {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Spustit nástroj {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, počet: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skripty AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Skripty Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduly PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Povolit</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Nepovolit</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
@@ -5622,6 +5658,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Změří, jak daleko se rukojeť pohybuje. Po čtyři sekundy měření ji přesuňte ke všem okrajům dosahu. Síly se mezitím vypnou.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Herní telemetrie</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch Chat</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Herní telemetrie</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Zpřístupní telemetrii, kterou posílají závodní hry, i sdílenou paměť hry Assetto Corsa na řádku Herní telemetrie na stránce Zařízení. Mapujte její rychlost, pedály a převodové stupně jako libovolný vstup, spouštějte s nimi makra nebo je testujte ve Vlastním výrazu. Dokud naslouchá, čtou z ní hru i kontrolky řazení podle otáček na volantu.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Naslouchat herní telemetrii</value></data>
@@ -5747,6 +5784,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Řízení (-1 až 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Jízda (jiné než 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Herní telemetrie</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Hodnota skriptu</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Rychlost (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Otáčky (% maxima)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Převodový stupeň (-1 zpátečka, 0 neutrál)</value></data>

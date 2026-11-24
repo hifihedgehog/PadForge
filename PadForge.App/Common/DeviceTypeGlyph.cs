@@ -46,6 +46,7 @@ namespace PadForge.Common
             InputDeviceType.NovintFalcon => "\uE7FC",       // Game: the Falcon is a game controller (#521)
             InputDeviceType.GameTelemetry => "\uEC4A",      // SpeedHigh, a speedometer (#531; verified in live segmdl2.ttf)
             InputDeviceType.TwitchChat => "\uE8F2",         // ChatBubbles (#555; verified in live segmdl2.ttf and SegoeIcons.ttf)
+            InputDeviceType.Program => "\uE943",            // Code, a device a program adds (#597, verified in live segmdl2.ttf and SegoeIcons.ttf)
             _ => "\uE7FC"                                // Game
         };
 
@@ -120,6 +121,7 @@ namespace PadForge.Common
             InputDeviceType.NovintFalcon => "NovintFalcon",
             InputDeviceType.GameTelemetry => "GameTelemetry",
             InputDeviceType.TwitchChat => "TwitchChat",
+            InputDeviceType.Program => "Program",
             _ => "Device"
         };
 
@@ -159,6 +161,7 @@ namespace PadForge.Common
                 "NovintFalcon" => s.DeviceType_NovintFalcon,
                 "GameTelemetry" => s.DeviceType_GameTelemetry,
                 "TwitchChat" => s.DeviceType_TwitchChat,
+                "Program" => s.DeviceType_Program,
                 _ => s.DeviceType_Device
             };
         }

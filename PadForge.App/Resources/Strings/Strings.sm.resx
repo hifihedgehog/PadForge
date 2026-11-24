@@ -1363,6 +1363,20 @@
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Faʻagaoioi Plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>E leai se plugin o loʻo galue.</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Na feagai PadForge ma se faʻafitauli</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>E leai se masini faʻapea</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>E leʻi fesoʻotaʻi le masini</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>O se isi polokalame e ana le masini</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Na taofi le enisini</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Na oʻo i se tapulaʻa o polokalame, masini poʻo mulimuli</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Na umi tele le talosaga</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Tele naua talosaga i le sekone</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Na le mafai ona faitau le tag a le talosaga</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Na le tapunia se upu siʻi i le talosaga</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Na sese le faʻamatalaga o le masini</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Na le faʻailoa muamua e le polokalame o ia lava</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>O loʻo faʻaaogā e le polokalame se lomiga e le iloa e PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>E leʻi tuʻuina atu e PadForge lena ki plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>E leʻi taliaina e PadForge le fesoʻotaʻiga a lenei polokalame</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Faʻataga</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Aua le Faʻatagaina</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai {0}</value></data>

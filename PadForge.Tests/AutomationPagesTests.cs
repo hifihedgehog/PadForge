@@ -376,13 +376,41 @@ namespace PadForge.Tests
         public void EveryErrorWord_TheCodeAnswers_HasAPhrase()
         {
             var words = new SortedSet<string>(StringComparer.Ordinal);
+            var pipeCodes = new SortedSet<string>(StringComparer.Ordinal);
             foreach (string file in System.IO.Directory.EnumerateFiles(System.IO.Path.Combine(ExtrasPageTestsRoot(), "PadForge.App"), "*.cs", System.IO.SearchOption.AllDirectories))
-                foreach (Match m in Regex.Matches(System.IO.File.ReadAllText(file), "\"error ([a-z][a-z-]*)"))
+            {
+                string code = System.IO.File.ReadAllText(file);
+                foreach (Match m in Regex.Matches(code, "\"error ([a-z][a-z-]*)"))
                     words.Add(m.Groups[1].Value);
-            // Positive control: the command set's own words are found.
+                // The Automation pipe's codes, in its own folder: err and a
+                // code, the code a refusal or failure is given, and the
+                // request's own error.
+                if (!file.Replace('\\', '/').Contains("/Services/Automation/", StringComparison.Ordinal)) continue;
+                foreach (string pattern in new[]
+                {
+                    @"""err ([a-z][a-z-]*)",
+                    @"Error\(""([a-z][a-z-]*)""",
+                    @"[Ee]rror = ""([a-z][a-z-]*)""",
+                    @"Fail\(session, r, AutomationAskKind\.\w+, [^,]+, ""([a-z][a-z-]*)""",
+                })
+                    foreach (Match m in Regex.Matches(code, pattern))
+                        pipeCodes.Add(m.Groups[1].Value);
+            }
+            // Every code the Automation pipe gives words for in its log.
+            string line = System.IO.File.ReadAllText(System.IO.Path.Combine(ExtrasPageTestsRoot(), "PadForge.App", "Services", "Automation", "AutomationLine.cs"));
+            string table = line.Substring(line.IndexOf("internal static string WordsFor(", StringComparison.Ordinal));
+            table = table.Substring(0, table.IndexOf("};", StringComparison.Ordinal));
+            foreach (Match m in Regex.Matches(table, "\"([a-z][a-z-]*)\" =>"))
+                pipeCodes.Add(m.Groups[1].Value);
+            // Positive controls: the command set's own words and the pipe's
+            // are found.
             foreach (string known in new[] { "not-allowed", "not-available", "busy", "bad-argument", "unknown-profile",
                          "unknown-slot", "unknown-command", "empty", "internal" })
                 Assert.Contains(known, words);
+            foreach (string known in new[] { "refused", "denied", "engine-stopped", "busy", "unknown-device", "not-owner",
+                         "rate-limited", "too-long", "hello-first", "bad-tag" })
+                Assert.Contains(known, pipeCodes);
+            words.UnionWith(pipeCodes);
             var s = Strings.Instance;
             foreach (string word in words)
             {
@@ -398,6 +426,9 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("error", phrase, StringComparison.OrdinalIgnoreCase);
                 // A word with more after it reads the same.
                 Assert.Equal(phrase, AutomationActivityItem.RefusalWords("error " + word + " more"));
+                // The Automation pipe's form, with its words for a log, reads
+                // the same.
+                Assert.Equal(phrase, AutomationActivityItem.RefusalWords("err " + word + " the request failed"));
             }
             Assert.Equal(words.Count, AutomationActivityItem.RefusalPhrases.Values.Select(p => p(s)).Distinct().Count());
             foreach (string other in new[] { "error never-said", "error ", "nonsense", "", null })
@@ -463,18 +494,6 @@ namespace PadForge.Tests
             Assert.Contains("Visibility=\"{Binding CanUndo, Converter={StaticResource BoolToVisibilityConverter}}\"", body);
         }
 
-        private sealed class Libraries : IAutomationLibraries
-        {
-            public IReadOnlyList<AutomationLibraryKind> Kinds { get; } = new[]
-            {
-                new AutomationLibraryKind("AutoHotkey v2", "PadForge.ahk", "AutoHotkey v2 (*.ahk)|*.ahk"),
-                new AutomationLibraryKind("Python", "padforge.py", "Python (*.py)|*.py"),
-                new AutomationLibraryKind("PowerShell", "PadForge.psm1", "PowerShell (*.psm1)|*.psm1"),
-            };
-
-            public void Save(AutomationLibraryKind kind, string path) { }
-        }
-
         /// <summary>Save a Library, Save the Skill and Undo are calls later
         /// parts give the host. Each button is absent until its call is
         /// there, and the More row's hint names only what More holds.</summary>
@@ -489,7 +508,7 @@ namespace PadForge.Tests
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
 
-            var libraries = new Libraries();
+            var libraries = AutomationLibraries.Instance;
             host.Libraries = libraries;
             Assert.True(vm.HasAutomationLibraries);
             Assert.Same(libraries, vm.AutomationLibraries);
@@ -505,7 +524,9 @@ namespace PadForge.Tests
             Assert.False(vm.CanSaveAutomationSkill);
 
             // The dialog's file types are the libraries', in order.
-            Assert.Equal("AutoHotkey v2 (*.ahk)|*.ahk|Python (*.py)|*.py|PowerShell (*.psm1)|*.psm1", ExtrasPage.LibraryFilter(libraries.Kinds));
+            var s = Strings.Instance;
+            Assert.Equal(s.Automation_Library_AutoHotkey_Filter + "|" + s.Automation_Library_Python_Filter + "|" + s.Automation_Library_PowerShell_Filter,
+                ExtrasPage.LibraryFilter(((IAutomationLibraries)libraries).All));
 
             // A view model with no host offers none of them.
             var bare = new DashboardViewModel();
@@ -522,8 +543,8 @@ namespace PadForge.Tests
             Assert.Contains("Click=\"SaveAutomationSkill_Click\"", body);
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
             Assert.Contains("private void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)", code);
-            Assert.Contains("var kind = kinds[Math.Clamp(dialog.FilterIndex, 1, kinds.Count) - 1];", code);
-            Assert.Contains("libraries.Save(kind, dialog.FileName);", code);
+            Assert.Contains("var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];", code);
+            Assert.Contains("libraries.Save(picked.Kind, dialog.FileName);", code);
             Assert.Contains("new Microsoft.Win32.OpenFolderDialog", code);
             Assert.Contains("save(dialog.FolderName);", code);
         }

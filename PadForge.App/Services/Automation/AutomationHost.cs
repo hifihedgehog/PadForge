@@ -47,6 +47,15 @@ namespace PadForge.Services.Automation
     /// <see cref="Changed"/>, <see cref="TurnedOff"/>).</item>
     /// <item>The control pipe, <c>PadForge.Control</c>, and where it stands
     /// (<see cref="ControlPipe"/>, <see cref="IsServing"/>).</item>
+    /// <item>The Automation pipe, <c>PadForge.Automation</c>, its sessions
+    /// and where it stands (<see cref="Sessions"/>,
+    /// <see cref="AutomationPipeState"/>), served while Automation or
+    /// Plugins is on.</item>
+    /// <item>The ways a later part reaches in: the assistant's connection
+    /// (<see cref="McpSession"/>), a plugin's token
+    /// (<see cref="AcceptPluginToken"/>) and a script's tool call
+    /// (<see cref="Call"/>), each empty until that part fills it, and the
+    /// engine while it runs (<see cref="AttachEngine"/>).</item>
     /// <item>The command set that answers the pipe's lines
     /// (<see cref="Commands"/>).</item>
     /// <item>The record of what programs asked (<see cref="Activity"/>).</item>
@@ -73,6 +82,7 @@ namespace PadForge.Services.Automation
         internal static readonly TimeSpan RetryEvery = TimeSpan.FromSeconds(5);
 
         private readonly ExternalControlService _control;
+        private readonly AutomationPipe _pipe;
         private readonly Func<int, AutomationProgram> _programOf;
         private readonly Func<DateTimeOffset> _now;
         private readonly Timer _retry;
@@ -81,6 +91,7 @@ namespace PadForge.Services.Automation
         // thread and the retry timer both make.
         private readonly object _gate = new object();
         private volatile bool _isOn;
+        private volatile bool _pluginsOn;
         private volatile int _level;
         private int _disposed;
 
@@ -96,8 +107,12 @@ namespace PadForge.Services.Automation
         /// <param name="approvalWait">How long a question waits for the
         /// user. Two minutes when none is given. A test gives a short
         /// one.</param>
+        /// <param name="automationPipeName">The Automation pipe's name. The
+        /// app gives none and serves <c>PadForge.Automation</c>. A test gives
+        /// one of its own.</param>
         public AutomationHost(IAutomationTarget target, IAutomationUi ui, string controlPipeName = null,
-            Func<int, AutomationProgram> programOf = null, Func<DateTimeOffset> now = null, TimeSpan? approvalWait = null)
+            Func<int, AutomationProgram> programOf = null, Func<DateTimeOffset> now = null, TimeSpan? approvalWait = null,
+            string automationPipeName = null)
         {
             _programOf = programOf ?? AutomationProgram.FromProcessId;
             _now = now ?? (() => DateTimeOffset.Now);
@@ -105,6 +120,9 @@ namespace PadForge.Services.Automation
             Commands = new AutomationCommands(target, this, ui);
             _control = new ExternalControlService(AnswerControlLine, controlPipeName);
             _control.StateChanged += OnControlPipeEnded;
+            Sessions = new AutomationSessions(this, ui);
+            _pipe = new AutomationPipe(Sessions.ServeAsync, automationPipeName);
+            _pipe.StateChanged += OnControlPipeEnded;
             _retry = new Timer(_ => RetryControlPipe(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
 
@@ -138,6 +156,85 @@ namespace PadForge.Services.Automation
 
         /// <summary>Whether the control pipe answers programs now.</summary>
         public bool IsServing => _control.State == ExternalControlService.PipeState.Serving;
+
+        /// <summary>Where the Automation pipe stands.</summary>
+        public ExternalControlService.PipeState AutomationPipeState => _pipe.State;
+
+        /// <summary>The Automation pipe itself, for its name and the token
+        /// seam tests use.</summary>
+        internal AutomationPipe AutomationPipe => _pipe;
+
+        /// <summary>The programs on the Automation pipe and what they
+        /// own.</summary>
+        internal AutomationSessions Sessions { get; }
+
+        /// <summary>Whether Plugins is on, which serves the Automation pipe
+        /// to plugins while Automation is off.</summary>
+        public bool PluginsOn => _pluginsOn;
+
+        /// <summary>The assistant's connection: a session whose hello says
+        /// <c>kind=mcp</c> is answered and then handed, stream and all, to
+        /// this. Null until the assistant's part sets it, and such a hello
+        /// is answered <c>err not-available</c>. Runs on a worker until the
+        /// stream ends or the token is canceled.</summary>
+        internal Func<AutomationPeer, System.IO.Stream, CancellationToken, System.Threading.Tasks.Task> McpSession { get; set; }
+
+        /// <summary>A plugin's hello carries <c>token=</c>. This takes the
+        /// token and the connection's process ID and gives the plugin's
+        /// approved name, or null to refuse it with <c>err denied</c>. Null
+        /// until the plugins' part sets it, and such a hello is answered
+        /// <c>err not-available</c>.</summary>
+        internal Func<string, int, AutomationPluginGrant> AcceptPluginToken { get; set; }
+
+        /// <summary>A script's <c>call &lt;tool&gt; {json}</c>: runs the
+        /// assistant tool of that name with the tool's own checks and gives
+        /// its result. Null until the assistant's part sets it, and such a
+        /// line is answered <c>err not-available</c>.</summary>
+        internal Func<AutomationCall, CancellationToken, System.Threading.Tasks.Task<AutomationCallResult>> Call { get; set; }
+
+        /// <summary>The engine's state, read on a worker for the programs
+        /// that follow it. Set by the app.</summary>
+        internal Func<AutomationEngineState> EngineState { get; set; }
+
+        /// <summary>The active profile's name, or null for the default, read
+        /// on the interface's thread. Set by the app.</summary>
+        internal Func<string> ProfileName { get; set; }
+
+        /// <summary>The time Activity is stamped with.</summary>
+        internal DateTimeOffset Now() => _now();
+
+        /// <summary>The engine started: the devices programs added go on its
+        /// list, and <c>outputs</c> reads it. Called by the input
+        /// service.</summary>
+        internal void AttachEngine(IAutomationEngine engine)
+        {
+            if (Volatile.Read(ref _disposed) != 0 || engine == null) return;
+            Sessions.AttachEngine(engine);
+        }
+
+        /// <summary>The engine stopped.</summary>
+        internal void DetachEngine()
+        {
+            if (Volatile.Read(ref _disposed) != 0) return;
+            Sessions.DetachEngine();
+        }
+
+        /// <summary>Plugins went on or off. While it is on, the Automation
+        /// pipe serves plugins with Automation off. Called by the plugins'
+        /// part on the interface's thread.</summary>
+        internal void ApplyPlugins(bool on)
+        {
+            if (Volatile.Read(ref _disposed) != 0 || _pluginsOn == on) return;
+            var before = _pipe.State;
+            _pluginsOn = on;
+            lock (_gate)
+            {
+                if (_isOn || on) EnsureServing();
+                else StopServing();
+            }
+            if (!on && !_isOn) Sessions.CloseAll();
+            if (before != _pipe.State) Changed?.Invoke(this, EventArgs.Empty);
+        }
 
         /// <summary>The command set. A copy that starts with switches runs
         /// its own lines through <see cref="AutomationCommands.RunOwn"/>.</summary>
@@ -235,16 +332,20 @@ namespace PadForge.Services.Automation
             bool wasOn = _isOn;
             bool changed = wasOn != on || _level != (int)level;
             var before = _control.State;
+            var beforeLong = _pipe.State;
             // The level first: a line that arrives as the pipe opens is
             // judged by the level that is in force from now on.
             _level = (int)level;
             _isOn = on;
             lock (_gate)
             {
-                if (on) EnsureServing();
+                if (on || _pluginsOn) EnsureServing();
                 else StopServing();
             }
-            if (changed || before != _control.State) Changed?.Invoke(this, EventArgs.Empty);
+            // The sessions hear the new level, and off closes the ones it no
+            // longer serves once that is written.
+            if (changed) Sessions.OnLevel(on, level, _pluginsOn);
+            if (changed || before != _control.State || beforeLong != _pipe.State) Changed?.Invoke(this, EventArgs.Empty);
             if (wasOn && !on) TurnedOff?.Invoke(this, EventArgs.Empty);
         }
 
@@ -252,12 +353,26 @@ namespace PadForge.Services.Automation
         /// held, and sets the timer when another program holds it.</summary>
         private void EnsureServing()
         {
-            if (_control.State == ExternalControlService.PipeState.Serving) return;
-            // A pipe that ended by itself still holds what its start made.
-            _control.Stop();
-            var state = _control.Start();
-            bool tryAgain = state == ExternalControlService.PipeState.NameTaken
-                || state == ExternalControlService.PipeState.Failed;
+            // The control pipe serves while Automation is on, the Automation
+            // pipe while Automation or Plugins is.
+            bool tryAgain = false;
+            if (_isOn)
+            {
+                if (_control.State != ExternalControlService.PipeState.Serving)
+                {
+                    // A pipe that ended by itself still holds what its start made.
+                    _control.Stop();
+                    var state = _control.Start();
+                    tryAgain |= state is ExternalControlService.PipeState.NameTaken or ExternalControlService.PipeState.Failed;
+                }
+            }
+            else _control.Stop();
+            if (_pipe.State != ExternalControlService.PipeState.Serving)
+            {
+                _pipe.Stop();
+                var state = _pipe.Start();
+                tryAgain |= state is ExternalControlService.PipeState.NameTaken or ExternalControlService.PipeState.Failed;
+            }
             _retry.Change(tryAgain ? RetryEvery : Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
 
@@ -266,6 +381,7 @@ namespace PadForge.Services.Automation
         {
             _retry.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             _control.Stop();
+            _pipe.Stop();
         }
 
         /// <summary>
@@ -275,15 +391,17 @@ namespace PadForge.Services.Automation
         /// </summary>
         internal void RetryControlPipe()
         {
-            ExternalControlService.PipeState before, after;
+            ExternalControlService.PipeState before, after, beforeLong, afterLong;
             lock (_gate)
             {
-                if (Volatile.Read(ref _disposed) != 0 || !_isOn) return;
+                if (Volatile.Read(ref _disposed) != 0 || !(_isOn || _pluginsOn)) return;
                 before = _control.State;
+                beforeLong = _pipe.State;
                 EnsureServing();
                 after = _control.State;
+                afterLong = _pipe.State;
             }
-            if (before != after) Changed?.Invoke(this, EventArgs.Empty);
+            if (before != after || beforeLong != afterLong) Changed?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>The pipe stopped serving with nobody having stopped it:
@@ -293,7 +411,7 @@ namespace PadForge.Services.Automation
             if (Volatile.Read(ref _disposed) != 0) return;
             try
             {
-                if (_isOn) _retry.Change(RetryEvery, Timeout.InfiniteTimeSpan);
+                if (_isOn || _pluginsOn) _retry.Change(RetryEvery, Timeout.InfiniteTimeSpan);
             }
             catch (ObjectDisposedException)
             {
@@ -344,7 +462,10 @@ namespace PadForge.Services.Automation
                 _retry.Dispose();
                 _control.StateChanged -= OnControlPipeEnded;
                 _control.Dispose();
+                _pipe.StateChanged -= OnControlPipeEnded;
+                _pipe.Dispose();
             }
+            Sessions.Dispose();
         }
     }
 }

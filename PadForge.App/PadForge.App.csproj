@@ -215,6 +215,10 @@
          at each SDL take. The Controller Database row in Settings, Updates
          keeps only the rows that are new or changed against it. -->
     <EmbeddedResource Include="gamecontrollerdb_baseline.txt" />
+    <!-- The script libraries Save a Library writes (#597). -->
+    <EmbeddedResource Include="Resources\Automation\PadForge.ahk" LogicalName="PadForge.Automation.PadForge.ahk" />
+    <EmbeddedResource Include="Resources\Automation\padforge.py" LogicalName="PadForge.Automation.padforge.py" />
+    <EmbeddedResource Include="Resources\Automation\PadForge.psm1" LogicalName="PadForge.Automation.PadForge.psm1" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="PadForge.ThirdPartyNotices.txt" />
     <!-- The x64 HidHide setup, for x64 machines. Only the x64 build can run
          on one, so only the x64 build carries its 7.7 MB. -->

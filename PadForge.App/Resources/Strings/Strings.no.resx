@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kjenner ikke denne forespørselen</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Forespørselen var tom</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge støtte på et problem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ingen slik enhet</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Enheten var ikke tilkoblet</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Et annet program eier enheten</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motoren var stoppet</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>En grense for programmer, enheter eller oppfølginger ble nådd</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Forespørselen var for lang</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>For mange forespørsler per sekund</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Forespørselens merke kunne ikke leses</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Et sitat i forespørselen var ikke avsluttet</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Beskrivelsen av enheten var feil</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programmet presenterte seg ikke først</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programmet snakker en versjon PadForge ikke kjenner</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ga ikke den utvidelsesnøkkelen</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tok ikke imot dette programmets tilkobling</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bytt til profilen {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gå tilbake til standardprofilen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spør hvilken profil som er aktiv</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Spør etter versjonen av PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Spør hva som kjører</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Send en linje PadForge ikke kjenner: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Koble til</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Koble fra</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>List opp enhetene</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Les kontrollene på enhet {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Les tilstanden til enhet {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Les hva virtuell kontroller {0} sender</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Følg {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Slutt å følge {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Legg til enheten {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Sett kontrollene på enhet {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Fjern enheten {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hold kontroller på enhet {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Slipp kontrollene på enhet {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sett verdien {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kjør verktøyet {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ganger</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-skript (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python-skript (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-moduler (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tillat</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ikke tillat</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Fra {0}</value></data>
@@ -5622,6 +5658,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Måler hvor langt håndtaket beveger seg. Flytt det til alle ytterkanter av rekkevidden i de fire sekundene målingen pågår. Kreftene hviler i mellomtiden.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Spilltelemetri</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-chat</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Spilltelemetri</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Viser telemetrien som racingspill sender, og delt minne fra Assetto Corsa, på raden Spilltelemetri på Enheter-siden. Tilordne fart, pedaler og gir som en hvilken som helst inndata, utløs makroer med dem, eller test dem i et egendefinert uttrykk. Så lenge den lytter, leser også rattets RPM-lys for girskift spillet herfra.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Lytt etter spilltelemetri</value></data>
@@ -5747,6 +5784,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Styring (-1 til 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Kjører (ikke 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Spilltelemetri</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Skriptverdi</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Fart (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% av maks)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gir (-1 revers, 0 nøytral)</value></data>

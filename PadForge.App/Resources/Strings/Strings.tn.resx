@@ -1239,6 +1239,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ga e itse kopo e</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Kopo e ne e se na sepe</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge e kopane le bothata</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ga go na sedirisiwa se se jalo</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Sedirisiwa se ne se sa golagana</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Porogeramo e nngwe ke mong wa sedirisiwa</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Enjine e ne e emisitswe</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Tekanyetso ya diporogeramo, didirisiwa kgotsa tse di salwang morago e fitlheletswe</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Kopo e ne e le telele thata</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Dikopo di le dintsi thata ka motsotswana</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Leswao la kopo ga le a kgona go balwa</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Nopolo mo kopong ga e a tswalwa</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Tlhaloso ya sedirisiwa e ne e phoso</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Porogeramo ga e a ikitsise pele</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Porogeramo e dirisa phetolelo e PadForge e sa e itseng</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ga e a neela senotlolo seo sa plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ga e a amogela kgolagano ya porogeramo e</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetolela kwa porofaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela kwa porofaeleng ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa gore ke porofaele efe e e dirang</value></data>
@@ -1259,6 +1273,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Botsa phetolelo ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Botsa gore ke eng se se dirang</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mola o PadForge e sa o itseng: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Golagana</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Kgaogana</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Bontsha lenaane la didirisiwa</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Bala ditaolo tsa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Bala seemo sa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Bala se Controller ya virtual {0} e se romelang</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sala {0} morago</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Emisa go sala {0} morago</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Oketsa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Baya ditaolo tsa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tlosa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tshwara ditaolo tsa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lesa ditaolo tsa sedirisiwa {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Baya boleng {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Dirisa thulusu {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makgetlo: {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Letla</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Se letle</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Go tswa go {0}</value></data>

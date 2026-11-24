@@ -617,6 +617,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>„PadForge“ šios užklausos nepažįsta</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Užklausa buvo tuščia</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>„PadForge“ susidūrė su problema</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Tokio įrenginio nėra</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Įrenginys nebuvo prisijungęs</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Įrenginys priklauso kitai programai</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Variklis buvo sustabdytas</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Pasiekta programų, įrenginių ar sekimų riba</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Užklausa buvo per ilga</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Per daug užklausų per sekundę</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Užklausos žymos nepavyko perskaityti</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Užklausoje neuždarytos kabutės</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Įrenginio aprašas buvo neteisingas</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programa pirmiausia neprisistatė</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa naudoja versiją, kurios „PadForge“ nepažįsta</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>„PadForge“ neišdavė to įskiepio rakto</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>„PadForge“ nepriėmė šios programos ryšio</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Perjungti į profilį {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Grįžti į numatytąjį profilį</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Paklausti, kuris profilis aktyvus</value></data>
@@ -637,6 +651,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Paklausti „PadForge“ versijos</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Paklausti, kas veikia</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Siųsti eilutę, kurios „PadForge“ nepažįsta: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Prisijungti</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Atsijungti</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Išvardyti įrenginius</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Skaityti įrenginio {0} valdiklius</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Skaityti įrenginio {0} būseną</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Skaityti, ką siunčia virtualus valdiklis {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sekti {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Nustoti sekti {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Pridėti įrenginį {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Nustatyti įrenginio {0} valdiklius</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Pašalinti įrenginį {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Laikyti įrenginio {0} valdiklius</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Paleisti įrenginio {0} valdiklius</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nustatyti reikšmę {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Paleisti įrankį {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kartų: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 scenarijai (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python scenarijai (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell moduliai (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Leisti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Neleisti</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Iš {0}</value></data>
@@ -5359,6 +5395,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Vairo pasukimas (nuo -1 iki 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Vairavimas (ne 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Žaidimų telemetrija</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Scenarijaus reikšmė</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Greitis (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% nuo maks.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Pavara (-1 atbulinė, 0 neutrali)</value></data>
@@ -5514,6 +5551,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Serialo „Žvaigždžių kelias: Naujoji karta“ kadras: Žvaigždžių kelio temos Starfleet paveikslėlis. Rasta „Memory Alpha“.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Šviesos juosta</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} šviesos juosta</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemos įrašymas</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Pradėti arba sustabdyti įrašymą</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Pažymėti įrašą</value></data>

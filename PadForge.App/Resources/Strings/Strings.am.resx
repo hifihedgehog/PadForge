@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ይህንን ጥያቄ አያውቀውም</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>ጥያቄው ባዶ ነበር</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ችግር አጋጥሞታል</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>እንደዚህ ያለ መሣሪያ የለም</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>መሣሪያው አልተገናኘም ነበር</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>መሣሪያው የሌላ ፕሮግራም ነው</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>ሞተሩ ቆሞ ነበር</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>የፕሮግራሞች፣ የመሣሪያዎች ወይም የክትትሎች ገደብ ደርሷል</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>ጥያቄው በጣም ረጅም ነበር</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>በሰከንድ በጣም ብዙ ጥያቄዎች</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>የጥያቄው መለያ ሊነበብ አልቻለም</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>በጥያቄው ውስጥ ያለ ጥቅስ አልተዘጋም</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>የመሣሪያው መግለጫ ትክክል አልነበረም</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>ፕሮግራሙ መጀመሪያ ራሱን አላስተዋወቀም</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ፕሮግራሙ PadForge የማያውቀውን ስሪት ይጠቀማል</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ያንን የተሰኪ ቁልፍ አልሰጠም</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge የዚህን ፕሮግራም ግንኙነት አልተቀበለም</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ወደ መገለጫው {0} ቀይር</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ወደ ነባሪው መገለጫ ተመለስ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>የትኛው መገለጫ ንቁ እንደሆነ ጠይቅ</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>የPadForge ስሪትን ጠይቅ</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ምን እየሄደ እንደሆነ ጠይቅ</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge የማያውቀውን መስመር ላክ፦ {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>ተገናኝ</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ግንኙነት አቋርጥ</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>መሣሪያዎቹን ዘርዝር</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን አንብብ</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>የመሣሪያ {0} ሁኔታን አንብብ</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ {0} የሚልከውን አንብብ</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} ተከታተል</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} መከታተል አቁም</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>መሣሪያውን {0} አክል</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን አዘጋጅ</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>መሣሪያውን {0} አስወግድ</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን ያዝ</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን ልቀቅ</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>እሴቱን {0} አዘጋጅ</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>መገልገያውን {0} አሂድ</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}፣ {1} ጊዜ</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>የAutoHotkey v2 ስክሪፕቶች (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>የPython ስክሪፕቶች (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>የPowerShell ሞጁሎች (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ፍቀድ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>አትፍቀድ</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>ከ{0}</value></data>
@@ -5340,6 +5376,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>መሪ ማዞር (ከ-1 እስከ 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>በማሽከርከር ላይ (0 ያልሆነ)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>የጨዋታ ቴሌሜትሪ</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>የስክሪፕት እሴት</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>ፍጥነት (ማይል/ሰ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (ከከፍተኛው %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ማርሽ (-1 ኋላ፣ 0 ነፃ)</value></data>
@@ -5489,6 +5526,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ከስታር ትሬክ፦ ዘ ኔክስት ጀነሬሽን የተወሰደ ፍሬም፦ የስታር ትሬክ ገጽታ Starfleet ምስል። በMemory Alpha ላይ የተገኘ።</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>የብርሃን አሞሌ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>የ{0} የብርሃን አሞሌ</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>ፕሮግራም</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>የችግር ቀረጻ</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>መቅዳት ጀምር ወይም አቁም</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ቀረጻውን ምልክት አድርግ</value></data>

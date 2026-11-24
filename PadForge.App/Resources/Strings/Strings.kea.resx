@@ -369,6 +369,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ka kunxi es pididu</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Pididu staba bazíu</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge atxa un prubléma</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Dispozitivu ka izisti</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Dispozitivu ka staba konektadu</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Otu programa e dunu di dispozitivu</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motor staba paradu</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Limiti di programas, dispozitivus o sigimentus txiga</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Pididu staba kunpridu dimás</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Pididu dimás pa sigundu</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ka konsigi lé tag di pididu</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Un sitason na pididu ka fitxadu</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Diskrison di dispozitivu staba eradu</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programa ka aprizenta antis</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa ta papia un vérson ki PadForge ka kunxi</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ka da es xavi di plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ka aseta konekson di es programa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Troka pa perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Volta pa Perfil Padron</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pergunta kal perfil ki sta ativu</value></data>
@@ -389,6 +403,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pergunta vérson di PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pergunta kuzé ki sta ta funsiona</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Manda un linha ki PadForge ka kunxi: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Konekta</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Dizkonekta</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lista dispozitivus</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Lé kontrolus di dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Lé stadu di dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Lé kuzé ki Komandu virtual {0} ta manda</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Sigi {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Para di sigi {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Adisiona dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Difini kontrolus di dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Rimove dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Sigura kontrolus di dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Larga kontrolus di dispozitivu {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Difini valor {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Roda feramenta {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} bês</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Komandu web</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativa servidor di komandu web</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Só es PC</value></data>
@@ -3060,6 +3090,7 @@
   <data name="Telemetry_Target_Handbrake" xml:space="preserve"><value>Travon di mon (0 ti 1)</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Volanti (-1 ti 1)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria di jogu</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Valor di script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velosidadi (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% di máximu)</value></data>
   <data name="Telemetry_Channel_Throttle" xml:space="preserve"><value>Aselerador (%)</value></data>
@@ -3379,6 +3410,7 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ku Telemetria di jogu ligadu, kantu di limiti ki ta fika a 200 km/h. A 100% limiti interu sta la na tudu velosidadi.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avizu di dispozitivu dizkonektadu</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avizu di dispozitivu konektadu</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kumesa o para gravason</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marka gravason</value></data>
 </root>

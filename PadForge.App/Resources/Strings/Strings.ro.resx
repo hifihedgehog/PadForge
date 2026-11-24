@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nu cunoaște această solicitare</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Solicitarea era goală</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge a întâmpinat o problemă</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Dispozitiv inexistent</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Dispozitivul nu era conectat</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Alt program deține dispozitivul</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motorul era oprit</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>S-a atins o limită de programe, dispozitive sau urmăriri</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Solicitarea era prea lungă</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Prea multe solicitări pe secundă</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Eticheta solicitării nu a putut fi citită</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>O citare din solicitare nu a fost închisă</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Descrierea dispozitivului era greșită</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programul nu s-a prezentat mai întâi</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programul folosește o versiune pe care PadForge nu o cunoaște</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nu a dat cheia pentru plugin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nu a acceptat conexiunea acestui program</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Trecere la profilul {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Revenire la profilul implicit</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Întrebare despre profilul activ</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Întrebare despre versiunea PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Întrebare despre ce rulează</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Trimitere unei linii necunoscute pentru PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Conectare</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Deconectare</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Listare dispozitive</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Citire controale ale dispozitivului {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Citire stare a dispozitivului {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Citire ce trimite controlerul virtual {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Urmărire {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Oprire urmărire {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Adăugare dispozitiv {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Setare controale ale dispozitivului {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Eliminare dispozitiv {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Ținere controale ale dispozitivului {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Eliberare controale ale dispozitivului {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setare valoare {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Rulare instrument {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, repetări: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Scripturi AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Scripturi Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Module PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Permitere</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Refuzare</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De la {0}</value></data>
@@ -5622,6 +5658,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Măsoară cât de departe se deplasează mânerul. Mutați-l la fiecare margine a cursei sale în cele patru secunde cât rulează măsurarea. Între timp, forțele se opresc.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetrie de joc</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetrie de joc</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Afișează telemetria trimisă de jocurile de curse, precum și memoria partajată din Assetto Corsa, pe rândul Telemetrie de joc din pagina Dispozitive. Mapați viteza, pedalele și treptele ca orice intrare, declanșați macrocomenzi cu ele sau testați-le într-o expresie personalizată. Cât timp ascultă, LED-urile RPM de schimbare a treptei ale unui volan citesc jocul și de aici.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Ascultă telemetria de joc</value></data>
@@ -5747,6 +5784,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Direcție (-1 la 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Condus (diferit de 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetrie de joc</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Valoare script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Viteză (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% din maxim)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Treaptă (-1 marșarier, 0 neutru)</value></data>

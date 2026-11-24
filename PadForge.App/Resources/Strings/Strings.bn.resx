@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge এই অনুরোধ চেনে না</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>অনুরোধটি ফাঁকা ছিল</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-এ একটি সমস্যা হয়েছে</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>এমন কোনো ডিভাইস নেই</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>ডিভাইসটি সংযুক্ত ছিল না</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>ডিভাইসটি অন্য একটি প্রোগ্রামের</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>ইঞ্জিন বন্ধ ছিল</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>প্রোগ্রাম, ডিভাইস বা অনুসরণের একটি সীমা ছাড়িয়েছে</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>অনুরোধটি অতিরিক্ত লম্বা ছিল</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>প্রতি সেকেন্ডে অনেক বেশি অনুরোধ</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>অনুরোধের ট্যাগ পড়া যায়নি</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>অনুরোধের একটি উদ্ধৃতি বন্ধ করা হয়নি</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>ডিভাইসের বিবরণ ভুল ছিল</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>প্রোগ্রামটি আগে নিজের পরিচয় দেয়নি</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>প্রোগ্রামটি এমন সংস্করণে কথা বলে, যা PadForge চেনে না</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge সেই প্লাগইন কী দেয়নি</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge এই প্রোগ্রামের সংযোগ নেয়নি</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} প্রোফাইলে যান</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ডিফল্ট প্রোফাইলে ফিরুন</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>কোন প্রোফাইল সক্রিয় তা জিজ্ঞেস করুন</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-এর সংস্করণ জিজ্ঞেস করুন</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>কী চলছে তা জিজ্ঞেস করুন</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge চেনে না এমন একটি লাইন পাঠান: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>সংযুক্ত হন</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>সংযোগ বিচ্ছিন্ন করুন</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>ডিভাইসের তালিকা দেখুন</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>{0} ডিভাইসের নিয়ন্ত্রণগুলো পড়ুন</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>{0} ডিভাইসের অবস্থা পড়ুন</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার {0} কী পাঠায় তা পড়ুন</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} অনুসরণ করুন</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} অনুসরণ বন্ধ করুন</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>{0} ডিভাইসটি যোগ করুন</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>{0} ডিভাইসের নিয়ন্ত্রণগুলোর মান ঠিক করুন</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>{0} ডিভাইসটি সরান</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>{0} ডিভাইসের নিয়ন্ত্রণ ধরে রাখুন</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>{0} ডিভাইসের নিয়ন্ত্রণ ছেড়ে দিন</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} মানটি ঠিক করুন</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} টুলটি চালান</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} বার</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 স্ক্রিপ্ট (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python স্ক্রিপ্ট (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell মডিউল (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>অনুমতি দিন</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>অনুমতি দেবেন না</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} থেকে</value></data>
@@ -5622,6 +5658,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>হ্যান্ডেল কতদূর যায় তা মাপে। সুইপ চলার চার সেকেন্ড হ্যান্ডেলটি তার পরিসরের প্রতিটি প্রান্তে সরান। এর মধ্যে ফোর্স বন্ধ থাকে।</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>গেম টেলিমেট্রি</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch চ্যাট</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>প্রোগ্রাম</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>গেম টেলিমেট্রি</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ড্রাইভিং গেমগুলো যে টেলিমেট্রি পাঠায় এবং Assetto Corsa-র শেয়ার্ড মেমরি ডিভাইস পেজের গেম টেলিমেট্রি সারিতে দেখায়। এর গতি, পেডাল ও গিয়ার যেকোনো ইনপুটের মতো ম্যাপ করুন, এগুলো দিয়ে ম্যাক্রো চালু করুন, বা কাস্টম এক্সপ্রেশনে পরীক্ষা করুন। এটি শোনার সময় হুইলের RPM শিফট LED-ও এখান থেকে গেম পড়ে।</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>গেম টেলিমেট্রি শুনুন</value></data>
@@ -5747,6 +5784,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>স্টিয়ারিং (-1 থেকে 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ড্রাইভিং (0 নয়)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>গেম টেলিমেট্রি</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>স্ক্রিপ্টের মান</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>গতি (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (সর্বোচ্চের %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>গিয়ার (-1 রিভার্স, 0 নিউট্রাল)</value></data>

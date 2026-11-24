@@ -69,6 +69,13 @@ namespace PadForge
             // the window before this, so a starting copy's --record start
             // finds it at the tail of the engine's start.
             ConnectProblemRecorderToAutomation();
+            // The Automation pipe's programs follow the profile by its name
+            // and reach the engine while it runs (#597).
+            _automation.ProfileName = () => _inputService?.ActiveProfileForState().Name;
+            _inputService?.AttachAutomation(_automation);
+            // The script libraries PadForge carries, which the page's Save a
+            // Library writes.
+            _automation.Libraries = AutomationLibraries.Instance;
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableAutomation)
@@ -97,18 +104,25 @@ namespace PadForge
             if (_automation == null) return;
             var dash = _viewModel.Dashboard;
             dash.IsAutomationRunning = _automation.IsServing;
-            dash.AutomationStatus = AutomationStatusLine(_automation.ControlPipe, _automation.Clients.Snapshot());
+            dash.AutomationStatus = AutomationStatusLine(_automation.ControlPipe, _automation.AutomationPipeState, _automation.Clients.Snapshot());
         }
 
-        /// <summary>The host's line for where its control pipe stands: off,
-        /// on with no program connected, on with the programs connected by
-        /// name, or why programs cannot connect.</summary>
-        internal static string AutomationStatusLine(ExternalControlService.PipeState pipe, IReadOnlyList<AutomationClient> clients)
+        /// <summary>The host's line for where both its pipes stand: off, on
+        /// with no program connected, on with the programs connected by name,
+        /// or why programs cannot connect. While the control pipe serves, an
+        /// Automation pipe whose name another program holds, or that Windows
+        /// refused, is said in place of the programs.</summary>
+        internal static string AutomationStatusLine(ExternalControlService.PipeState control,
+            ExternalControlService.PipeState automation, IReadOnlyList<AutomationClient> clients)
         {
             var s = Strings.Instance;
-            switch (pipe)
+            switch (control)
             {
                 case ExternalControlService.PipeState.Serving:
+                    if (automation == ExternalControlService.PipeState.NameTaken)
+                        return string.Format(s.Automation_Status_NameTaken_Format, AutomationPipe.PipeName);
+                    if (automation == ExternalControlService.PipeState.Failed)
+                        return string.Format(s.Automation_Status_Failed_Format, AutomationPipe.PipeName);
                     if (clients == null || clients.Count == 0) return s.Automation_Status_NoPrograms;
                     var names = new List<string>();
                     foreach (var client in clients)

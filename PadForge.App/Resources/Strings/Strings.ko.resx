@@ -398,6 +398,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge가 이 요청을 알지 못합니다</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>요청이 비어 있었습니다</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge에 문제가 발생했습니다</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>해당 장치 없음</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>장치가 연결되어 있지 않았습니다</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>다른 프로그램이 장치를 소유하고 있습니다</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>엔진이 중지되어 있었습니다</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>프로그램, 장치 또는 추적 수의 한도에 도달했습니다</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>요청이 너무 길었습니다</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>초당 요청이 너무 많습니다</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>요청의 태그를 읽을 수 없었습니다</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>요청의 따옴표가 닫히지 않았습니다</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>장치 설명이 잘못되었습니다</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>프로그램이 먼저 자신을 소개하지 않았습니다</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>프로그램이 PadForge가 알지 못하는 버전을 사용합니다</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge가 해당 플러그인 키를 주지 않았습니다</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge가 이 프로그램의 연결을 받지 않았습니다</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>프로필 전환: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>기본 프로필로 돌아가기</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>활성 프로필 확인</value></data>
@@ -418,6 +432,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge 버전 확인</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>실행 중인 항목 확인</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge가 알지 못하는 줄 전송: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>연결</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>연결 끊기</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>장치 목록 보기</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 읽기</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>장치 {0}의 상태 읽기</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>가상 컨트롤러 {0}의 출력 읽기</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} 추적</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} 추적 중지</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>장치 {0} 추가</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 설정</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>장치 {0} 제거</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 고정</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 놓기</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>값 {0} 설정</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>도구 {0} 실행</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1}회</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 스크립트 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python 스크립트 (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell 모듈 (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>허용</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>허용 안 함</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>발신: {0}</value></data>
@@ -5577,6 +5613,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>핸들이 움직이는 거리를 측정합니다. 측정이 진행되는 4초 동안 핸들을 이동 범위의 모든 끝까지 움직이세요. 그동안 힘은 멈춥니다.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>게임 텔레메트리</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch 채팅</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>프로그램</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>게임 텔레메트리</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>레이싱 게임이 보내는 텔레메트리와 Assetto Corsa의 공유 메모리를 장치 페이지의 게임 텔레메트리 행에 표시합니다. 속도, 페달, 기어를 다른 입력처럼 매핑하고, 이를 이용해 매크로를 실행하거나 사용자 지정 식에서 검사할 수 있습니다. 수신 중에는 휠의 RPM 시프트 LED도 여기서 게임 정보를 읽습니다.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>게임 텔레메트리 수신</value></data>
@@ -5702,6 +5739,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>스티어링 (-1에서 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>주행 (0이 아님)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>게임 텔레메트리</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>스크립트 값</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>속도 (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (최대 대비 %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>기어 (-1 후진, 0 중립)</value></data>

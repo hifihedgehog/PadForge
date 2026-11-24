@@ -10,7 +10,7 @@ namespace PadForge.Engine
     /// Implements <see cref="ISdlInputDevice"/> so it flows through the standard
     /// 6-step input pipeline alongside physical devices.
     /// </summary>
-    public class WebControllerDevice : ISdlInputDevice
+    public class WebControllerDevice : ISdlInputDevice, IRelayedFeedbackDevice
     {
         // Standard gamepad layout: 6 axes, 11 buttons, 1 POV.
         private const int NumGamepadAxes = 6;

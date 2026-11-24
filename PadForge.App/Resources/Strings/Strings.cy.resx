@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Nid yw PadForge yn adnabod y cais hwn</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Roedd y cais yn wag</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>Daeth PadForge ar draws problem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Dim dyfais o'r fath</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Nid oedd y ddyfais wedi cysylltu</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Mae rhaglen arall yn berchen ar y ddyfais</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Roedd yr injan wedi stopio</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Cyrhaeddwyd terfyn ar raglenni, dyfeisiau neu ddilyniadau</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Roedd y cais yn rhy hir</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Gormod o geisiadau yr eiliad</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Nid oedd modd darllen tag y cais</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Nid oedd dyfynnu yn y cais wedi'i gau</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Roedd disgrifiad y ddyfais yn anghywir</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Ni chyflwynodd y rhaglen ei hun yn gyntaf</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mae'r rhaglen yn siarad fersiwn nad yw PadForge yn ei hadnabod</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Ni roddodd PadForge yr allwedd ategyn honno</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Ni dderbyniodd PadForge gysylltiad y rhaglen hon</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Newid i'r proffil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dychwelyd i'r proffil rhagosodedig</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Holi pa broffil sy'n weithredol</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Holi am fersiwn PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Holi beth sy'n rhedeg</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Anfon llinell nad yw PadForge yn ei hadnabod: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Cysylltu</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Datgysylltu</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Rhestru'r dyfeisiau</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Darllen rheolyddion dyfais {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Darllen cyflwr dyfais {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Darllen yr hyn y mae Rheolydd Rhithwir {0} yn ei anfon</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Dilyn {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Rhoi'r gorau i ddilyn {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ychwanegu'r ddyfais {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Gosod rheolyddion dyfais {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tynnu'r ddyfais {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Dal rheolyddion dyfais {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Gollwng rheolyddion dyfais {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gosod y gwerth {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Rhedeg yr offeryn {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, nifer y troeon: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Sgriptiau AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Sgriptiau Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Modiwlau PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Caniatáu</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Peidio â Chaniatáu</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>O {0}</value></data>
@@ -5334,6 +5370,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Llywio (-1 i 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Gyrru (Nid 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetreg Gêm</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Gwerth Sgript</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Cyflymder (mya)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% o'r Uchafswm)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gêr (-1 Bacio, 0 Niwtral)</value></data>
@@ -5482,6 +5519,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Ffrâm o Star Trek: The Next Generation: llun thema Starfleet yn Star Trek. Wedi'i ganfod ar Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Bar golau</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bar golau {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Rhaglen</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Recordio Problem</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Dechrau neu Stopio Recordio</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Nodi'r Recordiad</value></data>

@@ -1577,6 +1577,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge sikudziwa pempholi</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Pempholo linali lopanda kanthu</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge inakumana ndi vuto</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Palibe chipangizo chotere</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Chipangizocho sichinali cholumikizidwa</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Pulogalamu ina ili ndi chipangizocho</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Injini inali itaima</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Malire a mapulogalamu, zipangizo kapena zotsatira afikiridwa</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Pempholo linali lalitali kwambiri</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Mapempho ambiri kwambiri pa sekondi</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Chizindikiro cha pempholo sichinawerengeke</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Mawu ogwidwa mu pempholo sanatsekedwe</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Kufotokozera kwa chipangizocho kunali kolakwika</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Pulogalamuyo sinadzidziwitse yokha poyamba</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pulogalamuyo imagwiritsa ntchito mtundu womwe PadForge sikudziwa</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge sinapereke kiyi ya pulaginiyo</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge sinalandire kulumikizana kwa pulogalamuyi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sinthani kupita ku mbiri {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bwererani ku mbiri yokhazikika</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Funsani mbiri yomwe ikugwira ntchito</value></data>
@@ -1597,6 +1611,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Funsani mtundu wa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Funsani zomwe zikuyenda</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumizani mzere womwe PadForge sikudziwa: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Lumikizani</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Chotsani kulumikizana</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lembani zipangizo</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Werengani zowongolera za chipangizo {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Werengani mmene chipangizo {0} chilili</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Werengani zomwe Kontrola ya pakompyuta {0} imatumiza</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Tsatirani {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Siyani kutsatira {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Onjezani chipangizo {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Khazikitsani zowongolera za chipangizo {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Chotsani chipangizo {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Gwirani zowongolera za chipangizo {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Siyani zowongolera za chipangizo {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Khazikitsani mtengo {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yendetsani chida {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, nthawi {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Lolani</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Musalole</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ndi zina {0}</value></data>
@@ -1634,4 +1664,5 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Imasalaza mbewa yomwe imanena mosagwirizana. Chiwongolero chimatsatira dzanja mochedwa pafupifupi nthawi imeneyi. 0 ndi kuzimitsa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kumapeto pa liwiro</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry ikayatsidwa, gawo la kumapeto lomwe latsala pa 200 km/h. Pa 100% kumapeto konse kulipo pa liwiro lililonse.</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Mtengo wa sikiripiti</value></data>
 </root>

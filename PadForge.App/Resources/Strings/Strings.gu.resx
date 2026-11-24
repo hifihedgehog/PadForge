@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge આ વિનંતી ઓળખતું નથી</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>વિનંતી ખાલી હતી</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ને સમસ્યા આવી</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>એવું કોઈ ઉપકરણ નથી</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>ઉપકરણ કનેક્ટ થયેલું નહોતું</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>ઉપકરણ બીજા પ્રોગ્રામનું છે</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>એન્જિન બંધ હતું</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>પ્રોગ્રામ, ઉપકરણો અથવા અનુસરણની મર્યાદા પૂરી થઈ</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>વિનંતી બહુ લાંબી હતી</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>એક સેકંડમાં બહુ વિનંતીઓ</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>વિનંતીનો ટૅગ વાંચી શકાયો નહીં</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>વિનંતીમાંનું અવતરણ બંધ કરાયું નહોતું</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>ઉપકરણનું વર્ણન ખોટું હતું</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>પ્રોગ્રામે પહેલાં પોતાની ઓળખ આપી નહીં</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>પ્રોગ્રામ એવું સંસ્કરણ બોલે છે જે PadForge ઓળખતું નથી</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge એ તે પ્લગઇન કી આપી નહીં</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge એ આ પ્રોગ્રામનું જોડાણ સ્વીકાર્યું નહીં</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>પ્રોફાઇલ {0} પર બદલો</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ડિફોલ્ટ પ્રોફાઇલ પર પાછા જાઓ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>પૂછો કઈ પ્રોફાઇલ સક્રિય છે</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge નું સંસ્કરણ પૂછો</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>પૂછો શું ચાલી રહ્યું છે</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge ન ઓળખે તેવી લાઇન મોકલો: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>કનેક્ટ કરો</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ડિસ્કનેક્ટ કરો</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>ઉપકરણોની યાદી આપો</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>ઉપકરણ {0} ના કંટ્રોલ વાંચો</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>ઉપકરણ {0} ની સ્થિતિ વાંચો</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર {0} શું મોકલે છે તે વાંચો</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} અનુસરો</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} અનુસરવાનું બંધ કરો</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>ઉપકરણ {0} ઉમેરો</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ઉપકરણ {0} ના કંટ્રોલ સેટ કરો</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>ઉપકરણ {0} દૂર કરો</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>ઉપકરણ {0} ના કંટ્રોલ પકડી રાખો</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ઉપકરણ {0} ના કંટ્રોલ છોડી દો</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>કિંમત {0} સેટ કરો</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ટૂલ {0} ચલાવો</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} વાર</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 સ્ક્રિપ્ટ (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python સ્ક્રિપ્ટ (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell મૉડ્યુલ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>મંજૂરી આપો</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>મંજૂરી ન આપો</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} તરફથી</value></data>
@@ -5358,6 +5394,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>સ્ટિયરિંગ (-1 થી 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ડ્રાઇવિંગ (0 નહીં)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ગેમ ટેલિમેટ્રી</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>સ્ક્રિપ્ટ કિંમત</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>ઝડપ (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (મહત્તમના %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ગિયર (-1 રિવર્સ, 0 ન્યુટ્રલ)</value></data>
@@ -5509,6 +5546,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>સ્ટાર ટ્રેક: ધ નેક્સ્ટ જનરેશનની એક ફ્રેમ: સ્ટાર ટ્રેક થીમ Starfleet નું ચિત્ર. Memory Alpha પર મળી.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>લાઇટબાર</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} લાઇટબાર</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>પ્રોગ્રામ</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>સમસ્યા રેકોર્ડિંગ</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>રેકોર્ડિંગ શરૂ કરો અથવા રોકો</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>રેકોર્ડિંગ પર નિશાન કરો</value></data>

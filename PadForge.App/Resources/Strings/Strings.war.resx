@@ -1668,6 +1668,20 @@
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Diri ini natipig han PadForge: {0}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Waray plugin nga nadalagan.</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>May problema nga naagian an PadForge</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Waray sugad nga device</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Diri nakakonek an device</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Iba nga programa an tag-iya han device</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Naundang an engine</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Naabot an limitasyon han mga programa, device o follow</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Hilaba hin duro an hangyo</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Damo hin duro an hangyo kada segundo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Diri nabasa an tag han hangyo</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>May kinutlo ha hangyo nga waray masirhi</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Sayop an paglaragway han device</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Waray anay magpakilala an programa</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>An programa nagamit hin bersyon nga diri kilala han PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Waray ihatag han PadForge ito nga plugin key</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Waray karawata han PadForge an koneksyon hini nga programa</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tugoti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ayaw Pagtugoti</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Tikang ha {0}</value></data>
@@ -1710,4 +1724,5 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kun bukas an Game Telemetry, kun pira han lock an nabibilin ha 200 km/h. Ha 100% an bug-os nga lock aada ha kada kakusog.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibaro han nadiskonek nga device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibaro han nakakonek nga device</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Value han script</value></data>
 </root>

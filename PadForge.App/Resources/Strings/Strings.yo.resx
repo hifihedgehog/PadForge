@@ -203,6 +203,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kò mọ ìbéèrè yìí</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Ìbéèrè náà ṣófo</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ní ìṣòro kan</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Kò sí irú ẹ̀rọ bẹ́ẹ̀</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Ẹ̀rọ náà kò sopọ̀</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ míràn ló ni ẹ̀rọ náà</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Ẹ́ńjìnnì ti dúró</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Ó ti dé òpin fún àwọn ìṣàfilọ́lẹ̀, àwọn ẹ̀rọ tàbí àwọn ìtẹ̀lé</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Ìbéèrè náà gùn jù</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Ìbéèrè pọ̀ jù ní ìṣẹ́jú àáyá kan</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>A kò lè ka àmì ìbéèrè náà</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>A kò pa àyọlò kan nínú ìbéèrè náà dé</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Àpèjúwe ẹ̀rọ náà kò tọ́</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ náà kò kọ́kọ́ fi ara rẹ̀ hàn</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ náà ń lo ẹ̀yà tí PadForge kò mọ̀</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge kò fún ohun ìfikún náà ní kọ́kọ́rọ́ yẹn</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge kò gba ìsopọ̀ ìṣàfilọ́lẹ̀ yìí</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Yí padà sí profaili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Padà sí profaili àìyípadà</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Béèrè profaili tí ń ṣiṣẹ́</value></data>
@@ -223,6 +237,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Béèrè ẹ̀yà PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Béèrè ohun tí ń ṣiṣẹ́</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Fi ìlà tí PadForge kò mọ̀ ránṣẹ́: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Sopọ̀</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Já ìsopọ̀</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>To àwọn ẹ̀rọ</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Ka àwọn ìdarí ẹ̀rọ {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Ka ipò ẹ̀rọ {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Ka ohun tí Ẹ̀rọ ìdarí àfarawé {0} ń fi ránṣẹ́</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Tẹ̀lé {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Dẹ́kun títẹ̀lé {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Fi ẹ̀rọ {0} kún un</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ṣètò àwọn ìdarí ẹ̀rọ {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Yọ ẹ̀rọ {0} kúrò</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Di àwọn ìdarí ẹ̀rọ {0} mú</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Fi àwọn ìdarí ẹ̀rọ {0} sílẹ̀</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ṣètò iye {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Lo irinṣẹ́ {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ìgbà {1}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Sopọ̀</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Ti sopọ̀</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kọ̀ ọ́</value></data>
@@ -1934,6 +1964,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Ìdarí (-1 dé 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Wíwakọ̀ (Kì í ṣe 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry eré</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Iye ìwé àṣẹ</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Ìyára (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% ti RPM gíga jùlọ)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Bíréèkì (%)</value></data>
@@ -2233,4 +2264,5 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ó ń mú máòsì tí ń ròyìn láìdọ́gba dọ́gba. Kẹ̀kẹ́ ìdarí máa ń tẹ̀lé ọwọ́ lẹ́yìn ní nǹkan bí àkókò yìí. 0 túmọ̀ sí pa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Òpin yíyí ní ìyára</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Nígbà tí Telemetry eré bá tàn, iye òpin yíyí tí ó kù ní 200 km/h. Ní 100%, gbogbo òpin yíyí wà níbẹ̀ ní ìyára èyíkéyìí.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀</value></data>
 </root>

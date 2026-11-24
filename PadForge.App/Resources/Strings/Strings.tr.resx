@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge bu isteği tanımıyor</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>İstek boştu</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge bir sorunla karşılaştı</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Böyle bir cihaz yok</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Cihaz bağlı değildi</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Cihazın sahibi başka bir program</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motor durdurulmuştu</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Program, cihaz veya takip sınırına ulaşıldı</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>İstek çok uzundu</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Saniyede çok fazla istek</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>İsteğin etiketi okunamadı</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>İstekteki bir tırnak kapatılmamıştı</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Cihazın tanımı yanlıştı</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program önce kendini tanıtmadı</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program, PadForge'un tanımadığı bir sürümü konuşuyor</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge o eklenti anahtarını vermedi</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge bu programın bağlantısını kabul etmedi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} profiline geç</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Varsayılan profile dön</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Hangi profilin etkin olduğunu sor</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge'un sürümünü sor</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Nelerin çalıştığını sor</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge'un tanımadığı bir satır gönder: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Bağlan</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Bağlantıyı kes</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Cihazları listele</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Cihazın kontrollerini oku: {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Cihazın durumunu oku: {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>{0} numaralı sanal kontrolcünün gönderdiklerini oku</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Takip et: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Takibi bırak: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Cihazı ekle: {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Cihazın kontrollerini ayarla: {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Cihazı kaldır: {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Cihazın kontrollerini basılı tut: {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Cihazın kontrollerini bırak: {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Değeri ayarla: {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Aracı çalıştır: {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kez</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 betikleri (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python betikleri (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell modülleri (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>İzin ver</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>İzin verme</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Gönderen: {0}</value></data>
@@ -5622,6 +5658,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Tutamağın ne kadar uzağa gittiğini ölçer. Tarama sürdüğü dört saniye boyunca tutamağı erişim alanının her kenarına götürün. Bu sırada kuvvetler durur.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Oyun telemetrisi</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch sohbeti</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Oyun telemetrisi</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Yarış oyunlarının gönderdiği telemetriyi ve Assetto Corsa'nın paylaşılan belleğini Cihazlar sayfasındaki Oyun telemetrisi satırına getirir. Hızı, pedalları ve vitesleri herhangi bir giriş gibi eşleyin, makroları bunlarla tetikleyin ya da Özel ifade içinde sınayın. Dinleme sürerken direksiyonun devir vites LED'leri de oyunu buradan okur.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Oyun telemetrisini dinle</value></data>
@@ -5747,6 +5784,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Direksiyon (-1 ile 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Sürüş (0 değil)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Oyun telemetrisi</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Betik değeri</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hız (mil/sa)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Devir (maks. devrin yüzdesi)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Vites (-1 geri, 0 boş)</value></data>

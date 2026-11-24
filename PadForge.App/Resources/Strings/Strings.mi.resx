@@ -195,6 +195,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Kāore a PadForge e mōhio ki tēnei tono</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Kāore he aha i roto i te tono</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>I tūtaki a PadForge ki tētahi raruraru</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Kāore he pūrere pērā</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Kāore te pūrere i hono</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Nā tētahi atu hōtaka te pūrere</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>I mutu te pūkaha</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Kua tae ki te tepe o ngā hōtaka, ngā pūrere, ngā whai rānei</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>I roa rawa te tono</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>He maha rawa ngā tono i te hēkona</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Kāore i taea te pānui i te tūtohu o te tono</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Kāore i katia tētahi tohu whakahua i te tono</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>I hē te whakaahuatanga o te pūrere</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Kāore te hōtaka i whakamōhio i a ia anō i te tuatahi</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ka kōrero te hōtaka i tētahi putanga kāore a PadForge e mōhio</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>Kāore a PadForge i hoatu i taua kī monomai</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>Kāore a PadForge i whakaae ki te hononga o tēnei hōtaka</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Huri ki te kōtaha {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoki ki te kōtaha taunoa</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pātai ko tēhea kōtaha e hohe ana</value></data>
@@ -215,6 +229,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pātai mō te putanga o PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pātai he aha e rere ana</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tukuna he rārangi kāore a PadForge e mōhio: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Hono</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Momotu</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Whakarārangitia ngā pūrere</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Pānuitia ngā control o te pūrere {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Pānuitia te tūnga o te pūrere {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Pānuitia tā te Controller mariko {0} e tuku ana</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Whāia {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Kāti te whai i {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tāpiritia te pūrere {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Tautuhia ngā control o te pūrere {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tangohia te pūrere {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Puritia ngā control o te pūrere {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Tukuna ngā control o te pūrere {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tautuhia te uara {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Whakahaerehia te utauta {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, e {1} ngā wā</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Tūhono</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Kua tūhono</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Whakakāhore</value></data>
@@ -1858,6 +1888,7 @@
   <data name="Telemetry_Target_Brake" xml:space="preserve"><value>Perei (0 ki te 1)</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Urungi (-1 ki te 1)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry kēmu</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Uara hōtuhi</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Tere (mph)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Perei (%)</value></data>
   <data name="Telemetry_Channel_Steering" xml:space="preserve"><value>Urungi (-100 Mauī ki te 100 Matau)</value></data>
@@ -2250,4 +2281,5 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ka whakamāeneene i tētahi kiore e pūrongo kōtiti ana. Ka whai te wira i te ringa i muri tata i tēnei roa. Ko te 0 he weto.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Mutunga urungi i te tere</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ina kā te Telemetry kēmu, te nui o te mutunga urungi e toe ana i te 200 km/h. I te 100% kei reira te mutunga katoa i ia tere.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Hōtaka</value></data>
 </root>

@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ไม่รู้จักคำขอนี้</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>คำขอว่างเปล่า</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge พบปัญหา</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>ไม่มีอุปกรณ์นี้</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>อุปกรณ์ไม่ได้เชื่อมต่ออยู่</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>โปรแกรมอื่นเป็นเจ้าของอุปกรณ์นี้</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>เอนจินหยุดอยู่</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>ถึงขีดจำกัดของโปรแกรม อุปกรณ์ หรือการติดตามแล้ว</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>คำขอยาวเกินไป</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>คำขอต่อวินาทีมากเกินไป</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>อ่านแท็กของคำขอไม่ได้</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>เครื่องหมายอัญประกาศในคำขอไม่ได้ปิด</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>คำอธิบายของอุปกรณ์ไม่ถูกต้อง</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>โปรแกรมไม่ได้แนะนำตัวก่อน</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>โปรแกรมใช้เวอร์ชันที่ PadForge ไม่รู้จัก</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ไม่ได้ให้คีย์ปลั๊กอินนั้น</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ไม่รับการเชื่อมต่อของโปรแกรมนี้</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>สลับไปที่โปรไฟล์ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>กลับไปที่โปรไฟล์เริ่มต้น</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ถามว่าโปรไฟล์ใดทำงานอยู่</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>ถามเวอร์ชันของ PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ถามว่าอะไรกำลังทำงานอยู่</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ส่งบรรทัดที่ PadForge ไม่รู้จัก: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>เชื่อมต่อ</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ตัดการเชื่อมต่อ</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>แสดงรายการอุปกรณ์</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>อ่านตัวควบคุมของอุปกรณ์ {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>อ่านสถานะของอุปกรณ์ {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>อ่านสิ่งที่คอนโทรลเลอร์เสมือน {0} ส่งออก</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>ติดตาม {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>เลิกติดตาม {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>เพิ่มอุปกรณ์ {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ตั้งค่าตัวควบคุมของอุปกรณ์ {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>นำอุปกรณ์ {0} ออก</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>กดค้างตัวควบคุมของอุปกรณ์ {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ปล่อยตัวควบคุมของอุปกรณ์ {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ตั้งค่า {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>เรียกใช้เครื่องมือ {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0} {1} ครั้ง</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>สคริปต์ AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>สคริปต์ Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>โมดูล PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>อนุญาต</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>ไม่อนุญาต</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>จาก {0}</value></data>
@@ -5622,6 +5658,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>วัดว่าด้ามจับเคลื่อนที่ได้ไกลเพียงใด ขยับให้สุดทุกขอบของระยะเอื้อมตลอดสี่วินาทีที่การวัดทำงาน ระหว่างนั้นแรงทั้งหมดจะหยุดพัก</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>เทเลเมทรีเกม</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>แชต Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>โปรแกรม</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>เทเลเมทรีเกม</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>นำเทเลเมทรีที่เกมแข่งรถส่งมา และหน่วยความจำที่ใช้ร่วมกันของ Assetto Corsa ไปไว้ในแถวเทเลเมทรีเกมของหน้าอุปกรณ์ แมปความเร็ว แป้นเหยียบ และเกียร์ได้เหมือนอินพุตทั่วไป ใช้สั่งแมโคร หรือทดสอบในนิพจน์กำหนดเอง ขณะรับข้อมูลอยู่ ไฟ LED เปลี่ยนเกียร์ตาม RPM ของพวงมาลัยก็อ่านข้อมูลเกมจากที่นี่ด้วย</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>รับเทเลเมทรีเกม</value></data>
@@ -5747,6 +5784,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>พวงมาลัย (-1 ถึง 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>กำลังขับ (ไม่ใช่ 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>เทเลเมทรีเกม</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>ค่าจากสคริปต์</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>ความเร็ว (ไมล์/ชม.)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% ของค่าสูงสุด)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>เกียร์ (-1 ถอยหลัง, 0 เกียร์ว่าง)</value></data>

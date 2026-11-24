@@ -1151,6 +1151,7 @@
   <data name="Telemetry_Formats_ColType" xml:space="preserve"><value>Mohuta</value></data>
   <data name="Telemetry_Target_Speed" xml:space="preserve"><value>Lebelo (km/h)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry ya papadi</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Boleng bja sekripte</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Lebelo (mph)</value></data>
   <data name="MacroAction_TriggerEffect_Side" xml:space="preserve"><value>Trigger</value></data>
   <data name="MacroAction_TriggerEffect_Machine" xml:space="preserve"><value>Motšhene</value></data>
@@ -1409,6 +1410,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ga e tsebe kgopelo ye</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Kgopelo e be e se na selo</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge e kopane le bothata</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ga go sedirišwa se bjalo</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Sedirišwa se be se sa kgokagantšwa</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Lenaneo le lengwe ke lona le nago le sedirišwa</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Enjene e be e emišitšwe</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Moedi wa mananeo, didirišwa goba dilatelo o fihlilwe</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Kgopelo e be e le telele kudu</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Dikgopelo tše dintši kudu ka motsotswana</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Leswao la kgopelo ga se la kgona go balwa</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Setsopolwa ka kgopelong ga se sa tswalelwa</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Tlhalošo ya sedirišwa e be e fošagetše</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Lenaneo ga se la ipontšha pele</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Lenaneo le bolela phetolelo yeo PadForge e sa e tsebego</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ga se ya fa senotlelo seo sa plagini</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ga se ya amogela kgokagano ya lenaneo le</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetogela go profaele {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela go profaele ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botšiša gore ke profaele efe yeo e šomago</value></data>
@@ -1429,6 +1444,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Kgopela phetolelo ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Botšiša seo se šomago</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mothaladi wo PadForge e sa o tsebego: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Kgokagana</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Kgaola kgokagano</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ngwala didirišwa</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Bala ditaolo tša sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Bala maemo a sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Bala seo khontroulara ya virtual {0} e se romelago</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Latela {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Tlogela go latela {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Oketša sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Bea ditaolo tša sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tloša sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Swara ditaolo tša sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Tlogela ditaolo tša sedirišwa {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Bea boleng {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Šomiša sedirišwa sa lenaneo {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makga a {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dumelela</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>O se dumelele</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Go tšwa go {0}</value></data>
@@ -1454,4 +1485,5 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ge o swere</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ge Telemetry ya papadi e butšwe, ke bokae bja lock bjo bo šalago ka 200 km/h. Ka 100% lock ka moka e gona ka lebelo le lengwe le le lengwe.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Lenaneo</value></data>
 </root>

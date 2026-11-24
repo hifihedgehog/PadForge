@@ -865,6 +865,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nnim abisade yi</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Na abisade no yɛ hwee</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge hyiaa ɔhaw bi</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Device a ɛte saa nni hɔ</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Na device no nni nkitahodi mu</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Program foforo na ɔwɔ device no</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Na engine no agyae</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Programs, devices anaa nea wodi akyi dodow aduru ne hye</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Na abisade no ware dodo</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Abisade dodow dodo wɔ second biara mu</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Wɔantumi ankenkan abisade no tag</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Wɔanto nsɛm a ɛwɔ abisade no mu ano</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Na device no nkyerɛmu nyɛ papa</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program no ankyerɛ ne ho kan</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program no ka version bi a PadForge nnim</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge mmaa plugin key no</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge annye program yi nkitahodi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sesa kɔ profile {0} so</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>San kɔ profile a edi kan no so</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bisa profile a ɛreyɛ adwuma</value></data>
@@ -885,6 +899,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Bisa PadForge version</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Bisa nea ɛreyɛ adwuma</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Mane line bi a PadForge nnim: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Ka bom</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Twa nkitahodi mu</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Kyerɛw devices no din</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Kenkan device {0} controls</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Kenkan device {0} tebea</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Kenkan nea Virtual Controller {0} mane</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Di {0} akyi</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Gyae {0} akyi di</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Fa device {0} ka ho</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Hyehyɛ device {0} controls</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Yi device {0} fi hɔ</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Kura device {0} controls mu</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Gyaa device {0} controls mu</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Hyehyɛ bo {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yɛ adwinnade {0} adwuma</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mpɛn {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ma Kwan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Mma Kwan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Efi {0}</value></data>

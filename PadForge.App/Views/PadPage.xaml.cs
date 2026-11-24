@@ -1117,9 +1117,10 @@ namespace PadForge.Views
                             // are DualSense-family only. DS4 has neither.
                             hasIndicatorLeds = isDualSense || isDualSenseEdge;
                         }
-                        else if (ud.Device is PadForge.Engine.WebControllerDevice web)
+                        else if (ud.Device is PadForge.Engine.IRelayedFeedbackDevice web)
                         {
-                            // A phone drawing a DualShock 4 or a DualSense gets
+                            // A phone drawing a DualShock 4 or a DualSense, or a
+                            // program's device that takes a light (#597), gets
                             // the same Lighting group the physical pad gets. The
                             // color already reaches it (ResolveWebLightbar
                             // reads this very config), so without the tab the
@@ -1127,7 +1128,7 @@ namespace PadForge.Views
                             //
                             // Asked of the device rather than derived from a
                             // vendor id, because the web device honestly
-                            // reports its own: see WebControllerDevice.HasLightbar.
+                            // reports its own: see IRelayedFeedbackDevice.HasLightbar.
                             hasLightbar = web.HasLightbar;
                             lightbarIsDs4 = web.LightbarIsDs4;
                             hasIndicatorLeds = web.HasIndicatorLeds;

@@ -1372,6 +1372,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ndoikuaái ko ñemaña</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Ñemaña nandi</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ojuhu peteĩ apañuãi</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ndaipóri upéicha mba'e'oka</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Mba'e'oka noñembojoajúi</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Ambue programa mba'e ko mba'e'oka</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motor opytápe</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Oñehupyty límite programa, mba'e'oka térã ñemoirũ rehegua</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Ñemaña ipukuetereíkuri</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Hetaiterei ñemaña peteĩ segundo-pe</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ndaikatúi oñelee ñemaña etiqueta</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Peteĩ ñe'ẽ jeguerojera ñemaña ryepýpe noñembotýi</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Mba'e'oka ñemombe'u ndoikói</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programa ndoñepresentái raẽ</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa oiporu peteĩ versión PadForge ndoikuaáiva</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nome'ẽi upe plugin llave</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nomoneĩri ko programa joaju</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Emoambue perfil {0} peve</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ejevy perfil ypykuépe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eporandu mba'e perfilpa oĩ hína</value></data>
@@ -1392,6 +1406,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eporandu PadForge versión</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Eporandu mba'épa omba'apo hína</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Emondo peteĩ línea PadForge ndoikuaáiva: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Embojoaju</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Ejei joajúgui</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Ehai mba'e'oka kuéra</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Elee mba'e'oka {0} control kuéra</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Elee mba'e'oka {0} estado</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Elee mba'épa omondo mando virtual {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Emoirũ {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Anivéma emoirũ {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Embojoapy mba'e'oka {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Emoĩ mba'e'oka {0} control kuéra</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Enohẽ mba'e'oka {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Ejoko mba'e'oka {0} control kuéra</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Ejei mba'e'oka {0} control kuéragui</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Emoĩ valor {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Emboguata tembiporu {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} jey</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emoneĩ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ani emoneĩ</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ha {0} hetave</value></data>

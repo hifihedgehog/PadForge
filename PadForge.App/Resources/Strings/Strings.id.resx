@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tidak mengenali permintaan ini</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Permintaannya kosong</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge mengalami masalah</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Perangkat tidak ditemukan</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Perangkat tidak tersambung</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Program lain memiliki perangkat ini</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Mesin sedang berhenti</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Batas jumlah program, perangkat, atau pengikutan tercapai</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Permintaannya terlalu panjang</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Terlalu banyak permintaan per detik</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Tag permintaan tidak dapat dibaca</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Ada tanda kutip dalam permintaan yang tidak ditutup</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Deskripsi perangkat salah</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program tidak memperkenalkan diri lebih dulu</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program memakai versi yang tidak dikenal PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge tidak memberikan kunci plugin itu</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tidak menerima sambungan program ini</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Beralih ke profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kembali ke profil bawaan</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Tanyakan profil mana yang aktif</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Tanyakan versi PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Tanyakan apa yang sedang berjalan</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Kirim baris yang tidak dikenal PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Sambungkan</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Putuskan</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Daftarkan perangkat</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Baca kontrol perangkat {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Baca status perangkat {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Baca yang dikirim Kontroler Virtual {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Ikuti {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Berhenti mengikuti {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tambahkan perangkat {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Atur kontrol perangkat {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Hapus perangkat {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tahan kontrol perangkat {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lepaskan kontrol perangkat {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Atur nilai {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Jalankan alat {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kali</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skrip AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Skrip Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Modul PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Izinkan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Jangan izinkan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Dari {0}</value></data>
@@ -5622,6 +5658,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mengukur sejauh mana gagang bergerak. Gerakkan ke setiap tepi jangkauannya selama empat detik penyapuan berlangsung. Gaya dihentikan selama itu.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetri Game</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Chat Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetri Game</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Menampilkan telemetri yang dikirim game balap, beserta memori bersama Assetto Corsa, di baris Telemetri Game pada halaman Perangkat. Petakan kecepatan, pedal, dan giginya seperti input apa pun, picu makro dengannya, atau ujilah dalam Ekspresi kustom. Selagi mendengarkan, LED perpindahan gigi RPM setir juga membaca game dari sini.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Dengarkan Telemetri Game</value></data>
@@ -5747,6 +5784,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Kemudi (-1 sampai 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Berkendara (bukan 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetri Game</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Nilai skrip</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Kecepatan (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% dari maks)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gigi (-1 mundur, 0 netral)</value></data>

@@ -204,6 +204,15 @@ namespace PadForge.Tests
         internal static void Set() => ExternalControlService.OffLimitsForTest = true;
     }
 
+    /// <summary>The Automation pipe of a PadForge that runs on the PC is
+    /// never served in its place: a test's host serves a name of its own
+    /// (#597).</summary>
+    internal static class AutomationPipeOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.Automation.AutomationPipe.OffLimitsForTest = true;
+    }
+
     /// <summary>A PadForge that runs on the PC is left alone and never
     /// stood in for: no window of it is looked up, nothing is posted to it,
     /// its lock is not opened, its exit is not waited for, and no window is

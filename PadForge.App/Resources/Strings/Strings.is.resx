@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge þekkir ekki þessa beiðni</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Beiðnin var tóm</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge lenti í vandamáli</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ekkert slíkt tæki</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Tækið var ekki tengt</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Annað forrit á tækið</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Vélin var stöðvuð</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Hámarki forrita, tækja eða fylgni var náð</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Beiðnin var of löng</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Of margar beiðnir á sekúndu</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ekki tókst að lesa merki beiðninnar</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Gæsalöppum í beiðninni var ekki lokað</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Lýsing tækisins var röng</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Forritið kynnti sig ekki fyrst</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Forritið talar útgáfu sem PadForge þekkir ekki</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gaf ekki þennan viðbótarlykil</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tók ekki við tengingu þessa forrits</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skipta yfir í sniðið {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fara aftur í sjálfgefna sniðið</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spyrja hvaða snið er virkt</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Spyrja um útgáfu PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Spyrja hvað er í gangi</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Senda línu sem PadForge þekkir ekki: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Tengjast</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Aftengjast</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Telja upp tækin</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Lesa stjórntæki tækisins {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Lesa stöðu tækisins {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Lesa hvað sýndarstýring {0} sendir</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Fylgjast með {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Hætta að fylgjast með {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Bæta við tækinu {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Stilla stjórntæki tækisins {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Fjarlægja tækið {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Halda stjórntækjum tækisins {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Sleppa stjórntækjum tækisins {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Stilla gildið {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Keyra tólið {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} sinnum</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skriftur (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python skriftur (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell einingar (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Leyfa</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ekki leyfa</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Frá {0}</value></data>
@@ -5622,6 +5658,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mælir hve langt handfangið færist. Færðu það að hverri brún seilingarinnar þær fjórar sekúndur sem yfirferðin stendur. Kraftarnir hvíla á meðan.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Leikjafjarmælingar</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-spjall</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Forrit</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Leikjafjarmælingar</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Setur fjarmælingar sem kappakstursleikir senda, og sameiginlegt minni Assetto Corsa, á línuna Leikjafjarmælingar á tækjasíðunni. Varpaðu hraða, pedölum og gírum eins og hverju öðru inntaki, ræstu fjölvi með þeim eða prófaðu þau í sérsniðinni segð. Meðan hlustað er les LED-skiptiljós (RPM) stýris leikinn líka héðan.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Hlusta eftir leikjafjarmælingum</value></data>
@@ -5747,6 +5784,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Stýring (-1 til 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Akstur (ekki 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Leikjafjarmælingar</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Gildi úr skriftu</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hraði (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% af hámarki)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gír (-1 bakkgír, 0 hlutlaus)</value></data>

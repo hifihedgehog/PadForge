@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge не познава тази заявка</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Заявката беше празна</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge се сблъска с проблем</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Няма такова устройство</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Устройството не беше свързано</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Устройството принадлежи на друга програма</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Двигателят беше спрян</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Достигнато е ограничение за програми, устройства или следене</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Заявката беше твърде дълга</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Твърде много заявки за секунда</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Етикетът на заявката не можа да бъде прочетен</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Кавичка в заявката не беше затворена</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Описанието на устройството беше грешно</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Програмата не се представи първо</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програмата говори версия, която PadForge не познава</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не даде този ключ за приставка</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не прие връзката на тази програма</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Превключване към профила {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Връщане към профила по подразбиране</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Запитване кой профил е активен</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Запитване за версията на PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Запитване какво работи</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Изпращане на ред, който PadForge не познава: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Свързване</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Прекъсване на връзката</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Изброяване на устройствата</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Четене на контролите на устройство {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Четене на състоянието на устройство {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Четене на това, което изпраща виртуален контролер {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Следене на {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Спиране на следенето на {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Добавяне на устройството {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Задаване на контролите на устройство {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Премахване на устройството {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Задържане на контроли на устройство {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Освобождаване на контроли на устройство {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задаване на стойността {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Изпълнение на инструмента {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} пъти</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скриптове за AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Скриптове на Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Модули на PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Разреши</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Не разрешавай</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>От {0}</value></data>
@@ -5622,6 +5658,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Измерва докъде стига ръкохватката. Преместете я до всеки край на обхвата ѝ за четирите секунди, докато трае обхождането. През това време силите са изключени.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Игрова телеметрия</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch чат</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Програма</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Игрова телеметрия</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Показва телеметрията, която изпращат състезателните игри, и споделената памет на Assetto Corsa в реда „Игрова телеметрия“ на страницата Устройства. Съпоставяйте скоростта, педалите и предавките като всеки вход, задействайте макроси с тях или ги проверявайте в Персонализиран израз. Докато слуша, LED индикаторите за обороти на воланите също четат играта оттук.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Слушане за игрова телеметрия</value></data>
@@ -5747,6 +5784,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Завиване (-1 до 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Каране (не 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Игрова телеметрия</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Стойност от скрипт</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Скорост (мили/ч)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Обороти (% от макс.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Предавка (-1 задна, 0 неутрална)</value></data>

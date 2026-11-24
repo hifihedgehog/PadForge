@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge не знає цього запиту</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Запит був порожнім</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>У PadForge сталася проблема</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Такого пристрою немає</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Пристрій не був підключений</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Пристрій належить іншій програмі</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Рушій було зупинено</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Досягнуто ліміт програм, пристроїв або стеження</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Запит був задовгий</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Забагато запитів за секунду</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Мітку запиту не вдалося прочитати</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Лапки в запиті не було закрито</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Опис пристрою був хибним</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Програма спершу не представилася</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програма говорить версією, якої PadForge не знає</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не видав цей ключ плагіна</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не прийняв підключення цієї програми</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Перемкнутися на профіль {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Повернутися до типового профілю</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Запитати, який профіль активний</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Запитати версію PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Запитати, що працює</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Надіслати рядок, якого PadForge не знає: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Підключитися</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Відключитися</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Показати список пристроїв</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Прочитати елементи керування пристрою {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Прочитати стан пристрою {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Прочитати, що надсилає віртуальний контролер {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Стежити: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Припинити стежити: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Додати пристрій {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Задати елементи керування пристрою {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Прибрати пристрій {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Утримувати елементи керування пристрою {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Відпустити елементи керування пристрою {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задати значення {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Запустити інструмент {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, разів: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скрипти AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Скрипти Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Модулі PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Дозволити</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Не дозволяти</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Від {0}</value></data>
@@ -5364,6 +5400,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Кермування (від -1 до 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Їзда (не 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Ігрова телеметрія</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Значення скрипта</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Швидкість (миль/год)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Оберти (% від макс.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Передача (-1 задній хід, 0 нейтраль)</value></data>
@@ -5515,6 +5552,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Кадр із «Зоряного шляху: Наступне покоління»: зображення теми «Зоряного шляху» Starfleet. Знайдено на Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Світлова панель</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Світлова панель {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Програма</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Запис проблеми</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Почати або зупинити запис</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Позначити запис</value></data>

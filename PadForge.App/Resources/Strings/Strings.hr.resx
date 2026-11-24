@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ne poznaje ovaj zahtjev</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Zahtjev je bio prazan</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge je naišao na problem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Nema takvog uređaja</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Uređaj nije bio povezan</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Uređaj posjeduje drugi program</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Mehanizam je bio zaustavljen</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Dosegnuto je ograničenje programa, uređaja ili praćenja</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Zahtjev je bio predug</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Previše zahtjeva u sekundi</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Oznaka zahtjeva nije se mogla pročitati</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Navodnik u zahtjevu nije zatvoren</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Opis uređaja bio je pogrešan</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program se nije prvo predstavio</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program govori verziju koju PadForge ne poznaje</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nije dao taj ključ plugina</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nije prihvatio vezu ovog programa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Prebaci na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrati na zadani profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pitaj koji je profil aktivan</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pitaj za verziju programa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pitaj što je pokrenuto</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Pošalji redak koji PadForge ne poznaje: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Poveži</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Prekini vezu</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Navedi uređaje</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Pročitaj kontrole uređaja {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Pročitaj stanje uređaja {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Pročitaj što šalje virtualni kontroler {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Prati {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Prestani pratiti {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Dodaj uređaj {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Postavi kontrole uređaja {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Ukloni uređaj {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Drži kontrole uređaja {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Pusti kontrole uređaja {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Postavi vrijednost {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Pokreni alat {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} puta</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skripte (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python skripte (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell moduli (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dopusti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ne dopusti</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
@@ -5367,6 +5403,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Upravljanje (-1 do 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Vožnja (nije 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetrija igre</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Vrijednost skripte</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Brzina (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% maksimuma)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Stupanj prijenosa (-1 unatrag, 0 neutralni)</value></data>
@@ -5518,6 +5555,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kadar iz serije Zvjezdane staze: Sljedeća generacija: slika teme Starfleet iz Zvjezdanih staza. Pronađeno na Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Svjetlosna traka</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Svjetlosna traka ({0})</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Snimanje problema</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Pokreni ili zaustavi snimanje</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Označi snimku</value></data>

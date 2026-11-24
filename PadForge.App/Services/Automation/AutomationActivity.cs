@@ -66,6 +66,23 @@ namespace PadForge.Services.Automation
         RecordMark,
         Version,
         State,
+
+        // The Automation pipe's verbs (#597).
+        Connected,
+        Disconnected,
+        Devices,
+        Caps,
+        Read,
+        Outputs,
+        Subscribe,
+        Unsubscribe,
+        Declare,
+        Set,
+        Gone,
+        Own,
+        Release,
+        Value,
+        Call,
     }
 
     /// <summary>
@@ -75,14 +92,21 @@ namespace PadForge.Services.Automation
     /// <param name="Kind">The ask.</param>
     /// <param name="Argument">The profile, the controller's number or the
     /// line itself, for the kinds that name one.</param>
-    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null)
+    /// <param name="Count">How many times in a row the program asked it, as
+    /// a stream of lines on the Automation pipe is one entry.</param>
+    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1)
     {
         /// <summary>The longest stretch of a program's own text a sentence
         /// carries.</summary>
         internal const int LongestArgument = 80;
 
-        /// <summary>The ask in plain words.</summary>
+        /// <summary>The ask in plain words, with its count when it came more
+        /// than once.</summary>
         public string Text
+            => Count > 1 ? string.Format(Strings.Instance.Automation_Asked_Repeated_Format, Once, Count) : Once;
+
+        /// <summary>The ask once, in plain words.</summary>
+        private string Once
         {
             get
             {
@@ -111,6 +135,21 @@ namespace PadForge.Services.Automation
                     AutomationAskKind.RecordMark => s.Automation_Asked_RecordMark,
                     AutomationAskKind.Version => s.Automation_Asked_Version,
                     AutomationAskKind.State => s.Automation_Asked_State,
+                    AutomationAskKind.Connected => s.Automation_Asked_Connected,
+                    AutomationAskKind.Disconnected => s.Automation_Asked_Disconnected,
+                    AutomationAskKind.Devices => s.Automation_Asked_Devices,
+                    AutomationAskKind.Caps => string.Format(s.Automation_Asked_Caps_Format, argument),
+                    AutomationAskKind.Read => string.Format(s.Automation_Asked_Read_Format, argument),
+                    AutomationAskKind.Outputs => string.Format(s.Automation_Asked_Outputs_Format, argument),
+                    AutomationAskKind.Subscribe => string.Format(s.Automation_Asked_Subscribe_Format, argument),
+                    AutomationAskKind.Unsubscribe => string.Format(s.Automation_Asked_Unsubscribe_Format, argument),
+                    AutomationAskKind.Declare => string.Format(s.Automation_Asked_Declare_Format, argument),
+                    AutomationAskKind.Set => string.Format(s.Automation_Asked_Set_Format, argument),
+                    AutomationAskKind.Gone => string.Format(s.Automation_Asked_Gone_Format, argument),
+                    AutomationAskKind.Own => string.Format(s.Automation_Asked_Own_Format, argument),
+                    AutomationAskKind.Release => string.Format(s.Automation_Asked_Release_Format, argument),
+                    AutomationAskKind.Value => string.Format(s.Automation_Asked_Value_Format, argument),
+                    AutomationAskKind.Call => string.Format(s.Automation_Asked_Call_Format, argument),
                     _ => string.Format(s.Automation_Asked_Unknown_Format, argument),
                 };
             }

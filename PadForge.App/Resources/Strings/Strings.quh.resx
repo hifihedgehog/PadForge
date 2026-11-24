@@ -1462,6 +1462,7 @@
   <data name="Telemetry_Target_Handbrake" xml:space="preserve"><value>Freno de mano (0-manta 1-kama)</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Volante (-1-manta 1-kama)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Pukllay telemetría</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Script valor</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velocidad (mph)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Cambio (-1 qhipaman, 0 neutro)</value></data>
   <data name="Telemetry_Channel_Throttle" xml:space="preserve"><value>Acelerador (%)</value></data>
@@ -1724,6 +1725,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge mana kay mañakuyta riqsinchu</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Mañakuyqa ch'usaq karqan</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge huk sasachakuywan tuparqan</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Chay dispositivo mana kanchu</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Dispositivoqa mana tinkisqachu karqan</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Huk programa dispositivota hap'in</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motorqa sayachisqa karqan</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Programakunap, dispositivokunap utaq qatiykunap limitenman chayarqan</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Mañakuyqa ancha suni karqan</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Sapa segundopi ancha achka mañakuykuna</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Mañakuypa etiquetanta mana ñawinchayta atikurqanchu</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Mañakuypi huk citaqa mana wisq'asqachu karqan</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Dispositivop willakuynin mana allinchu karqan</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programaqa mana ñawpaqta riqsichikurqanchu</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programaqa PadForge mana riqsisqan versiónta rimachkan</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge mana chay plugin llavita qurqanchu</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge mana kay programap tinkiyninta chaskirqanchu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} perfilman t'ikray</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ñawpaq kaq perfilman kutiy</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mayqin perfil llamk'achkasqanta tapuy</value></data>
@@ -1744,6 +1759,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nisqap versiónninta tapuy</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Ima llamk'achkasqanta tapuy</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge mana riqsisqan siq'ita kachay: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Tinkiy</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>T'aqay</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Dispositivokunata listay</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Dispositivo {0} controlninkunata ñawinchay</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Dispositivo {0} estadonta ñawinchay</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Control virtual {0} ima kachasqanta ñawinchay</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Qatiy: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Qatiyta sayachiy: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Dispositivota yapay: {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Dispositivo {0} controlninkunata churay</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Dispositivota qichuy: {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Dispositivo {0} controlninkunata hap'iy</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Dispositivo {0} controlninkunata kacharipuy</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Valorta churay: {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Herramientata llamk'achiy: {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kutikuna: {1}</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} nisqamanta</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} nisqamanta, “{0}” sutichakuq</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>“{0}” sutichakuq programamanta</value></data>
@@ -1765,4 +1796,5 @@
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Pukllay telemetría hap'isqa kaqtin, 200 km/h nisqapi lockmanta hayk'a puchun. 100% nisqapi tukuy lock tukuy velocidadpi kan.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Dispositivo t'aqakusqa willakuy</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Dispositivo tinkikusqa willakuy</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
 </root>

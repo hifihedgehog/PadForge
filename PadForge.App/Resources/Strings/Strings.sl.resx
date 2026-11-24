@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge te zahteve ne pozna</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Zahteva je bila prazna</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge je naletel na težavo</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ni take naprave</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Naprava ni bila povezana</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Napravo ima drug program</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Mehanizem je bil ustavljen</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Dosežena je omejitev programov, naprav ali spremljanj</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Zahteva je bila predolga</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Preveč zahtev na sekundo</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Oznake zahteve ni bilo mogoče prebrati</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Narekovaj v zahtevi ni bil zaprt</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Opis naprave je bil napačen</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program se ni najprej predstavil</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program govori različico, ki je PadForge ne pozna</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ni dal tega ključa vtičnika</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ni sprejel povezave tega programa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Preklopi na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrni se na privzeti profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vprašaj, kateri profil je dejaven</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Vprašaj za različico programa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Vprašaj, kaj deluje</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Pošlji vrstico, ki je PadForge ne pozna: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Poveži se</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Prekini povezavo</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Naštej naprave</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Preberi krmilne elemente naprave {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Preberi stanje naprave {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Preberi, kaj pošilja navidezni krmilnik {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Spremljaj {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Prenehaj spremljati {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Dodaj napravo {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Nastavi krmilne elemente naprave {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Odstrani napravo {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Drži krmilne elemente naprave {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Spusti krmilne elemente naprave {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastavi vrednost {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Zaženi orodje {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, krat: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skripte AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Skripte Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduli PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dovoli</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ne dovoli</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
@@ -5622,6 +5658,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Izmeri, kako daleč potuje ročaj. Premakni ga do vseh robov dosega v štirih sekundah, kolikor traja pometanje. Sile medtem mirujejo.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Telemetrija iger</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Klepet Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Telemetrija iger</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Telemetrijo, ki jo pošiljajo dirkalne igre, in skupni pomnilnik igre Assetto Corsa prikaže v vrstici Telemetrija iger na strani Naprave. Hitrost, pedale in prestave lahko preslikate kot vsak vhod, z njimi sprožite makre ali jih preizkusite v izrazu po meri. Med poslušanjem lučke za prestavljanje (RPM) na volanu igro berejo tudi od tu.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Poslušaj telemetrijo iger</value></data>
@@ -5747,6 +5784,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Volan (-1 do 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Vožnja (ni 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetrija iger</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Vrednost skripte</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hitrost (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% največjega)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Prestava (-1 vzvratna, 0 prosta)</value></data>

@@ -153,7 +153,13 @@ namespace PadForge.Common.Input
                     if (_oskMasks.Count > 0)
                         newState = OnScreenKeyboardFilter(ud, newState);
 
+                    // A program's holds (#597) go over what mappings read, at
+                    // the same point, and the device's own state stays for
+                    // whoever follows it.
+                    newState = ControlHolds.Apply(ud.InstanceGuid, newState);
+
                     // Atomic reference swap, safe for cross-thread reading.
+                    ud.ReadInputState = rawState;
                     ud.InputState = newState;
                     ud.InputStateSeq++;
                     // A problem recording takes the state as the device
@@ -212,6 +218,16 @@ namespace PadForge.Common.Input
                     InvalidateGyroSimulation(ud.InstanceGuid);
                     RaiseDeviceError($"Error reading state for device {ud.ResolvedName}", ex);
                 }
+            }
+
+            // The programs that follow devices (#597) hear what changed on
+            // this pass. The watcher only queues: it never waits on a
+            // program, and it is null while no program follows anything.
+            var watcher = AutomationPass;
+            if (watcher != null)
+            {
+                try { watcher(_deviceSnapshotBuffer, snapshotCount); }
+                catch (Exception ex) { RaiseEngineError("Automation events", ex); }
             }
 
             // ══════════════════════════════════════════════════════════════
@@ -920,8 +936,9 @@ namespace PadForge.Common.Input
                 // Unassigning a device's last slot sends no zero of its own, so
                 // a rumble in flight at that moment stayed on a forwarded pad's
                 // page, which renews whatever it was last told (#402). Stop it
-                // here, once, the tick the slots run out. Web pads only: their
-                // one writer is RumbleRequested. Xbox impulse pads and vendor
+                // here, once, the tick the slots run out. Web pads and program
+                // devices only (IRelayedFeedbackDevice): their one writer is
+                // the event that passes the rumble on. Xbox impulse pads and vendor
                 // wheels write through their own paths below, which this branch
                 // cannot reach, and a pad a remote peer is driving (#138) keeps
                 // its output, zero local slots or not: the peer's lease while it
@@ -932,15 +949,16 @@ namespace PadForge.Common.Input
                 // decision here and the stop are one step against that write.
                 // The gate is taken for a web pad only: a native device's pending
                 // HID write under its gate must never hold the polling thread.
-                if (ud.Device is PadForge.Engine.WebControllerDevice web && ud.ForceFeedbackState.IsActive)
+                if (ud.Device is PadForge.Engine.IRelayedFeedbackDevice && ud.ForceFeedbackState.IsActive)
                 {
+                    var relayed = ud.Device;
                     lock (ud.OutputSync)
                     {
                         if (ud.ForceFeedbackState.IsActive
-                            && (web.HasRumble || web.HasHaptic)
+                            && (relayed.HasRumble || relayed.HasHaptic)
                             && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
                             && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
-                            ud.ForceFeedbackState.StopDeviceForces(web);
+                            ud.ForceFeedbackState.StopDeviceForces(relayed);
                     }
                 }
                 else if (!isVendorFfb && ud.Device != null && ud.ForceFeedbackState.IsActive

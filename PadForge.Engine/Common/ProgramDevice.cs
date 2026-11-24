@@ -1,0 +1,533 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+
+namespace PadForge.Engine
+{
+    /// <summary>One axis or slider a program declared: where it sits in the
+    /// state, its name and its rest. Indexes 0 to 23 are the axes and 24 to
+    /// 31 the sliders, one numbering for both on the Automation pipe.</summary>
+    public readonly record struct ProgramAxis(int Index, string Name, int Rest)
+    {
+        /// <summary>The first index that names a slider.</summary>
+        public const int FirstSlider = CustomInputState.MaxAxis;
+
+        /// <summary>One past the last slider.</summary>
+        public const int End = CustomInputState.MaxAxis + CustomInputState.MaxSliders;
+
+        public bool IsSlider => Index >= FirstSlider;
+    }
+
+    /// <summary>
+    /// What a program's device has (#597): named buttons, axes, sliders and
+    /// hats, sensors, touchpads, a battery, and the feedback it takes. Up to
+    /// what <see cref="CustomInputState"/> holds. Made once per declaration
+    /// and never changed after it is handed to a device.
+    /// </summary>
+    public sealed class ProgramDeviceShape
+    {
+        /// <summary>The buttons by index, each with its name. Indexes are
+        /// below <see cref="CustomInputState.MaxButtons"/>.</summary>
+        public IReadOnlyList<(int Index, string Name)> Buttons { get; init; } = Array.Empty<(int, string)>();
+
+        /// <summary>The axes and sliders, in index order.</summary>
+        public IReadOnlyList<ProgramAxis> Axes { get; init; } = Array.Empty<ProgramAxis>();
+
+        /// <summary>The hats' names, hat 0 first. At most
+        /// <see cref="CustomInputState.MaxPovs"/>.</summary>
+        public IReadOnlyList<string> Hats { get; init; } = Array.Empty<string>();
+
+        public bool Gyro { get; init; }
+        public bool Accel { get; init; }
+
+        /// <summary>The finger count of each touchpad, pad 0 first.</summary>
+        public IReadOnlyList<int> TouchpadFingers { get; init; } = Array.Empty<int>();
+
+        public bool Battery { get; init; }
+
+        /// <summary>The feedback the device takes, each passed on to the
+        /// program.</summary>
+        public bool Rumble { get; init; }
+        public bool TriggerRumble { get; init; }
+        public bool Light { get; init; }
+        public bool Player { get; init; }
+
+        /// <summary>The rest of axis or slider <paramref name="index"/>:
+        /// what was declared, and 0 for one that was not.</summary>
+        public int RestOf(int index)
+        {
+            foreach (var axis in Axes)
+                if (axis.Index == index) return axis.Rest;
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Several controls of a program's device set as one change (#597), the
+    /// way the Automation pipe's <c>s</c> line names them. Applied in one
+    /// swap, so a stick's two axes never land on different passes. Values
+    /// are already in <see cref="CustomInputState"/>'s ranges.
+    /// </summary>
+    public sealed class ProgramDeviceChange
+    {
+        public readonly List<(int Index, bool Down)> Buttons = new();
+
+        /// <summary>Axes 0 to 23 and sliders 24 to 31.</summary>
+        public readonly List<(int Index, int Value)> Axes = new();
+        public readonly List<(int Index, int Value)> Hats = new();
+        public float[] Gyro;
+        public float[] Accel;
+        public readonly List<(int Pad, int Finger, float X, float Y, bool Down, float Pressure)> Fingers = new();
+        public readonly List<(int Pad, bool Clicked)> Clicks = new();
+        public int? Battery;
+        public bool? Charging;
+
+        public bool IsEmpty => Buttons.Count == 0 && Axes.Count == 0 && Hats.Count == 0 && Gyro == null
+            && Accel == null && Fingers.Count == 0 && Clicks.Count == 0 && Battery == null && Charging == null;
+    }
+
+    /// <summary>
+    /// A device a program adds over the Automation pipe (#597): a script, an
+    /// assistant or a plugin, and later the built-in Test Controller and
+    /// Replay. Its shape is what the program declared, with the names it
+    /// gave, and its state is what the program last set.
+    ///
+    /// <para>State is copy-on-write, as <see cref="WebControllerDevice"/>
+    /// keeps it: each change clones the whole state under a lock, edits the
+    /// copy and publishes it, so the poll thread takes one read with no lock
+    /// and copies it into a pooled buffer.</para>
+    ///
+    /// <para>Feedback goes back to the program. Rumble arrives through
+    /// <see cref="SetRumble"/>, trigger rumble through
+    /// <see cref="SetTriggerRumble"/>, the light and the player number
+    /// through <see cref="IRelayedFeedbackDevice"/>. The last value of each
+    /// is kept, so a program that connects again and declares the same key
+    /// hears where things stand.</para>
+    /// </summary>
+    public sealed class ProgramDevice : ISdlInputDevice, IRelayedFeedbackDevice
+    {
+        /// <summary>The vendor and product IDs every program device reports:
+        /// PadForge's own, apart from any hardware's, so no writer keyed on
+        /// a vendor takes it for a real pad.</summary>
+        public const ushort ProgramVendorId = 0xBEEF;
+        public const ushort ProgramProductId = 0xC0DE;
+
+        private readonly object _stateLock = new object();
+        // Not volatile: it is read with Volatile.Read by reference, which a
+        // volatile field refuses (CS0420), as WebControllerDevice notes.
+        private CustomInputState _state;
+        private ProgramDeviceShape _shape;
+        private string _name;
+        private volatile bool _attached;
+        private PooledInputStatePair _pool;
+
+        // Feedback last passed on, for a program that comes back.
+        private long _rumble = -1, _triggerRumble = -1;
+        private int _led = -1, _player = -1;
+
+        /// <param name="instanceGuid">Stable for the program and the key it
+        /// gave, so mappings survive a restart of either side.</param>
+        /// <param name="productGuid">The device's own, so one device's first
+        /// connect never adopts another's saved row.</param>
+        /// <param name="devicePath">A path of PadForge's own scheme, which
+        /// names no hardware.</param>
+        /// <param name="name">The name the program gave, already
+        /// cleaned.</param>
+        /// <param name="shape">What the device has.</param>
+        public ProgramDevice(Guid instanceGuid, Guid productGuid, string devicePath, string name, ProgramDeviceShape shape)
+        {
+            InstanceGuid = instanceGuid;
+            ProductGuid = productGuid;
+            DevicePath = devicePath ?? string.Empty;
+            SdlInstanceId = SyntheticInstanceId.From(DevicePath);
+            Reshape(name, shape);
+        }
+
+        /// <summary>
+        /// Takes a new name and shape, as a program that declares the same
+        /// key again does. The device object, its identity and its mappings
+        /// stay. Its state starts at the new shape's rest, and
+        /// <see cref="CapabilitiesChanged"/> is raised for the row to read
+        /// the shape again.
+        /// </summary>
+        public void Reshape(string name, ProgramDeviceShape shape)
+        {
+            shape ??= new ProgramDeviceShape();
+            lock (_stateLock)
+            {
+                Volatile.Write(ref _shape, shape);
+                Volatile.Write(ref _name, name ?? string.Empty);
+                Volatile.Write(ref _state, RestState(shape, battery: -1, charging: false));
+            }
+            CapabilitiesChanged?.Invoke();
+        }
+
+        /// <summary>The shape in force.</summary>
+        public ProgramDeviceShape Shape => Volatile.Read(ref _shape);
+
+        /// <summary>Raised after <see cref="Reshape"/>, on the caller's
+        /// thread.</summary>
+        public event Action CapabilitiesChanged;
+
+        private static CustomInputState RestState(ProgramDeviceShape shape, int battery, bool charging)
+        {
+            var s = new CustomInputState();
+            foreach (var axis in shape.Axes)
+            {
+                if (axis.IsSlider) s.Sliders[axis.Index - ProgramAxis.FirstSlider] = axis.Rest;
+                else s.Axis[axis.Index] = axis.Rest;
+            }
+            if (shape.TouchpadFingers.Count > 0)
+            {
+                s.Touchpads = new TouchpadInputState[shape.TouchpadFingers.Count];
+                for (int p = 0; p < s.Touchpads.Length; p++)
+                {
+                    var pad = new TouchpadInputState(shape.TouchpadFingers[p]);
+                    for (int f = 0; f < pad.MaxFingers; f++) pad.FingerContactId[f] = -1;
+                    s.Touchpads[p] = pad;
+                }
+            }
+            s.BatteryPercent = shape.Battery ? battery : -1;
+            s.BatteryCharging = shape.Battery && charging;
+            return s;
+        }
+
+        /// <summary>
+        /// Applies several controls as one change. A control the shape does
+        /// not have is left out, so a program cannot drive what it did not
+        /// declare. Values outside a control's range are brought inside it.
+        /// Called from the program's connection.
+        /// </summary>
+        public void Apply(ProgramDeviceChange change)
+        {
+            if (change == null || change.IsEmpty) return;
+            lock (_stateLock)
+            {
+                var shape = _shape;
+                var s = _state.Clone();
+                foreach (var (index, down) in change.Buttons)
+                    if (HasButton(shape, index)) s.Buttons[index] = down;
+                foreach (var (index, value) in change.Axes)
+                {
+                    if (!HasAxis(shape, index)) continue;
+                    int v = Math.Clamp(value, 0, 65535);
+                    if (index >= ProgramAxis.FirstSlider) s.Sliders[index - ProgramAxis.FirstSlider] = v;
+                    else s.Axis[index] = v;
+                }
+                foreach (var (index, value) in change.Hats)
+                    if (index >= 0 && index < shape.Hats.Count)
+                        s.Povs[index] = value >= 0 && value < 36000 ? value : -1;
+                if (change.Gyro != null && shape.Gyro)
+                    for (int i = 0; i < 3; i++) s.Gyro[i] = Finite(change.Gyro[i]);
+                if (change.Accel != null && shape.Accel)
+                    for (int i = 0; i < 3; i++) s.Accel[i] = Finite(change.Accel[i]);
+                foreach (var (padIndex, finger, x, y, down, pressure) in change.Fingers)
+                {
+                    if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
+                    var pad = s.Touchpads[padIndex];
+                    if (finger < 0 || finger >= pad.MaxFingers) continue;
+                    pad.FingerX[finger] = Math.Clamp(Finite(x), 0f, 1f);
+                    pad.FingerY[finger] = Math.Clamp(Finite(y), 0f, 1f);
+                    pad.FingerPressure[finger] = down ? Math.Clamp(Finite(pressure), 0f, 1f) : 0f;
+                    bool was = pad.FingerDown[finger];
+                    pad.FingerDown[finger] = down;
+                    if (down && !was) pad.FingerContactId[finger] = _nextContact++;
+                    else if (!down && was) pad.FingerContactId[finger] = -1;
+                }
+                foreach (var (padIndex, clicked) in change.Clicks)
+                {
+                    if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
+                    s.Touchpads[padIndex].Clicked = clicked;
+                    // The first pad's click rides button 16 as well, where
+                    // every other touchpad device carries it.
+                    if (padIndex == 0) s.Buttons[16] = clicked;
+                }
+                if (shape.Battery)
+                {
+                    if (change.Battery.HasValue) s.BatteryPercent = Math.Clamp(change.Battery.Value, 0, 100);
+                    if (change.Charging.HasValue) s.BatteryCharging = change.Charging.Value;
+                }
+                Volatile.Write(ref _state, s);
+            }
+        }
+
+        private int _nextContact = 1;
+
+        private static float Finite(float value) => float.IsFinite(value) ? value : 0f;
+
+        private static bool HasButton(ProgramDeviceShape shape, int index)
+        {
+            foreach (var (i, _) in shape.Buttons)
+                if (i == index) return true;
+            return false;
+        }
+
+        private static bool HasAxis(ProgramDeviceShape shape, int index)
+        {
+            foreach (var axis in shape.Axes)
+                if (axis.Index == index) return true;
+            return false;
+        }
+
+        /// <summary>Everything at rest: buttons up, axes and sliders at their
+        /// declared rest, hats centered, motion still and fingers lifted. The
+        /// battery keeps its level. Used when the program leaves or stops
+        /// answering, so nothing it held stays held.</summary>
+        public void Rest()
+        {
+            lock (_stateLock)
+            {
+                var current = _state;
+                Volatile.Write(ref _state, RestState(_shape, current.BatteryPercent, current.BatteryCharging));
+            }
+        }
+
+        /// <summary>Whether the program's connection is live. The row goes
+        /// offline through the input manager, not through this.</summary>
+        public void SetAttached(bool attached) => _attached = attached;
+
+        // ── ISdlInputDevice ──
+
+        public uint SdlInstanceId { get; }
+        public string Name => Volatile.Read(ref _name);
+
+        public int NumAxes
+        {
+            get
+            {
+                int max = -1;
+                foreach (var axis in Shape.Axes) if (!axis.IsSlider && axis.Index > max) max = axis.Index;
+                return max + 1;
+            }
+        }
+
+        public int NumButtons
+        {
+            get
+            {
+                int max = -1;
+                foreach (var (index, _) in Shape.Buttons) if (index > max) max = index;
+                return max + 1;
+            }
+        }
+
+        public int RawButtonCount => NumButtons;
+        public int NumHats => Shape.Hats.Count;
+
+        /// <summary>The declared buttons, in order. Empty when the program
+        /// declared none: the device has no buttons, which is a claim and
+        /// not the absence of one.</summary>
+        public int[] SupportedButtonIndices
+        {
+            get
+            {
+                var buttons = Shape.Buttons;
+                var list = new int[buttons.Count];
+                for (int i = 0; i < list.Length; i++) list[i] = buttons[i].Index;
+                Array.Sort(list);
+                return list;
+            }
+        }
+
+        /// <summary>The declared axes below the sliders, in order. Empty when
+        /// there are none, in the same sense.</summary>
+        public int[] SupportedAxisIndices
+        {
+            get
+            {
+                var list = new List<int>();
+                foreach (var axis in Shape.Axes) if (!axis.IsSlider) list.Add(axis.Index);
+                list.Sort();
+                return list.ToArray();
+            }
+        }
+
+        public IntPtr GamepadHandle => IntPtr.Zero;
+        public bool HasRumble => Shape.Rumble;
+        public bool HasRumbleTriggers => Shape.TriggerRumble;
+        public bool HasHaptic => false;
+        public bool HasGyro => Shape.Gyro;
+        public bool HasAccel => Shape.Accel;
+        public bool HasTouchpad => Shape.TouchpadFingers.Count > 0;
+        public int NumTouchpads => Shape.TouchpadFingers.Count;
+
+        public int[] TouchpadFingerCounts
+        {
+            get
+            {
+                var fingers = Shape.TouchpadFingers;
+                var counts = new int[fingers.Count];
+                for (int i = 0; i < counts.Length; i++) counts[i] = fingers[i];
+                return counts;
+            }
+        }
+
+        public bool? TouchpadPressureSupported => HasTouchpad ? true : null;
+        public bool? TouchpadClickSupported => HasTouchpad ? true : null;
+        public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
+        public IntPtr HapticHandle => IntPtr.Zero;
+        public uint HapticFeatures => 0;
+        public int NumHapticAxes => 0;
+        public bool IsAttached => _attached;
+        public ushort VendorId => ProgramVendorId;
+        public ushort ProductId => ProgramProductId;
+        public Guid InstanceGuid { get; }
+        public Guid ProductGuid { get; }
+        public string DevicePath { get; }
+        public string SerialNumber => string.Empty;
+        public string SdlGuid => string.Empty;
+
+        /// <summary>The state the program last set, copied into a pooled
+        /// buffer. One read of the published state and no lock: every change
+        /// publishes a whole new state.</summary>
+        public CustomInputState GetCurrentState(bool forceRaw = false)
+        {
+            var src = Volatile.Read(ref _state);
+            var dst = _pool.Next();
+            src.CopyInto(dst);
+            return dst;
+        }
+
+        /// <summary>The state as published now, for a reader off the poll
+        /// thread that only reads it.</summary>
+        public CustomInputState PeekState() => Volatile.Read(ref _state);
+
+        /// <summary>Each declared control under the name the program gave:
+        /// the axes, then the sliders, the buttons and the hats.</summary>
+        public DeviceObjectItem[] GetDeviceObjects()
+        {
+            var shape = Shape;
+            var items = new List<DeviceObjectItem>(shape.Axes.Count + shape.Buttons.Count + shape.Hats.Count);
+            foreach (var axis in shape.Axes)
+            {
+                items.Add(axis.IsSlider
+                    ? new DeviceObjectItem
+                    {
+                        InputIndex = axis.Index - ProgramAxis.FirstSlider,
+                        ObjectTypeGuid = ObjectGuid.Slider,
+                        Name = axis.Name,
+                        ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
+                        Offset = axis.Index * 4,
+                    }
+                    : new DeviceObjectItem
+                    {
+                        InputIndex = axis.Index,
+                        // Any axis GUID that is not the slider's: only
+                        // IsSlider is read from it.
+                        ObjectTypeGuid = axis.Index < AxisGuids.Length ? AxisGuids[axis.Index] : ObjectGuid.ZAxis,
+                        Name = axis.Name,
+                        ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
+                        Offset = axis.Index * 4,
+                    });
+            }
+            foreach (var (index, name) in shape.Buttons)
+                items.Add(new DeviceObjectItem
+                {
+                    InputIndex = index,
+                    ObjectTypeGuid = ObjectGuid.Button,
+                    Name = name,
+                    ObjectType = DeviceObjectTypeFlags.PushButton,
+                    Offset = (ProgramAxis.End + index) * 4,
+                });
+            for (int i = 0; i < shape.Hats.Count; i++)
+                items.Add(new DeviceObjectItem
+                {
+                    InputIndex = i,
+                    ObjectTypeGuid = ObjectGuid.PovController,
+                    Name = shape.Hats[i],
+                    ObjectType = DeviceObjectTypeFlags.PointOfViewController,
+                    Offset = (ProgramAxis.End + CustomInputState.MaxButtons + i) * 4,
+                });
+            return items.ToArray();
+        }
+
+        private static readonly Guid[] AxisGuids =
+        {
+            ObjectGuid.XAxis, ObjectGuid.YAxis, ObjectGuid.ZAxis,
+            ObjectGuid.RxAxis, ObjectGuid.RyAxis, ObjectGuid.RzAxis,
+        };
+
+        public int GetInputDeviceType() => InputDeviceType.Program;
+
+        // ── Feedback ──
+
+        /// <summary>The game's rumble, low and high motor. Raised on the
+        /// poll thread when it changes.</summary>
+        public event Action<ushort, ushort> RumbleRequested;
+
+        /// <summary>The trigger motors, left and right.</summary>
+        public event Action<ushort, ushort> TriggerRumbleRequested;
+
+        /// <summary>The light's color.</summary>
+        public event Action<byte, byte, byte> LedChanged;
+
+        /// <summary>The player number, from 1.</summary>
+        public event Action<int> PlayerChanged;
+
+        public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue)
+        {
+            if (!Shape.Rumble) return false;
+            long packed = ((long)low << 16) | high;
+            if (Interlocked.Exchange(ref _rumble, packed) != packed) RumbleRequested?.Invoke(low, high);
+            return true;
+        }
+
+        public bool StopRumble() => SetRumble(0, 0);
+
+        /// <summary>Takes the trigger motors itself: the device has no
+        /// gamepad handle, and the program plays them.</summary>
+        public bool SetTriggerRumble(ushort left, ushort right, uint durationMs = uint.MaxValue)
+        {
+            if (!Shape.TriggerRumble) return false;
+            long packed = ((long)left << 16) | right;
+            if (Interlocked.Exchange(ref _triggerRumble, packed) != packed) TriggerRumbleRequested?.Invoke(left, right);
+            return true;
+        }
+
+        public bool HasLightbar => Shape.Light;
+        public bool LightbarIsDs4 => false;
+        public bool HasIndicatorLeds => false;
+
+        public void SetLed(byte r, byte g, byte b)
+        {
+            if (!Shape.Light) return;
+            int packed = (r << 16) | (g << 8) | b;
+            if (Interlocked.Exchange(ref _led, packed) != packed) LedChanged?.Invoke(r, g, b);
+        }
+
+        public void SetPlayerNumber(int number)
+        {
+            if (!Shape.Player || number <= 0) return;
+            if (Interlocked.Exchange(ref _player, number) != number) PlayerChanged?.Invoke(number);
+        }
+
+        /// <summary>The feedback last passed on, each null until the game
+        /// or PadForge first set it.</summary>
+        public (ushort Low, ushort High)? LastRumble => Unpack(Volatile.Read(ref _rumble));
+        public (ushort Left, ushort Right)? LastTriggerRumble => Unpack(Volatile.Read(ref _triggerRumble));
+        public (byte R, byte G, byte B)? LastLed
+        {
+            get
+            {
+                int led = Volatile.Read(ref _led);
+                return led < 0 ? null : ((byte)(led >> 16), (byte)(led >> 8), (byte)led);
+            }
+        }
+        public int? LastPlayer
+        {
+            get
+            {
+                int player = Volatile.Read(ref _player);
+                return player <= 0 ? null : player;
+            }
+        }
+
+        private static (ushort, ushort)? Unpack(long packed)
+            => packed < 0 ? null : ((ushort)(packed >> 16), (ushort)packed);
+
+        public void Dispose()
+        {
+            _attached = false;
+        }
+    }
+}

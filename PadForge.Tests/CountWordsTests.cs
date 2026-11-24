@@ -56,6 +56,7 @@ namespace PadForge.Tests
         private static readonly Dictionary<string, string> NeverOne = new(StringComparer.Ordinal)
         {
             ["AddController_Full_Format"] = "{0} is the most controllers PadForge runs (InputManager.MaxPads)",
+            ["Automation_Asked_Repeated_Format"] = "{1} is a run of two or more of the same ask (AutomationAsk.Text writes it only past one)",
             ["Settings_PollingRateTooltip_Format"] = "{0} is how often Windows wakes the engine, 64 times a second or more",
             ["Devices_DriverKeepNote_Format"] = "{0} is MainWindow.KeepDriverSeconds",
             ["Devices_DriverKeepNote_Mouse_Format"] = "{0} is MainWindow.KeepDriverSeconds",

@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge bù rènshí cǐ qǐngqiú</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Qǐngqiú wéi kōng</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yùdào wèntí</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Méiyǒu cǐ shèbèi</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Shèbèi wèi liánjiē</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Lìng yí gè chéngxù yōngyǒu gāi shèbèi</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Yǐnqíng yǐ tíngzhǐ</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Yǐ dádào chéngxù, shèbèi huò gēnzōng shùliàng shàngxiàn</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Qǐngqiú guò cháng</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Měi miǎo qǐngqiú guò duō</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Wúfǎ dúqǔ qǐngqiú de biāoqiān</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Qǐngqiú zhōng de yǐnhào wèi bìhé</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Shèbèi miáoshù cuòwù</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Chéngxù wèi xiān jièshào zìjǐ</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Chéngxù shǐyòng de bǎnběn PadForge bù rènshí</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge wèi fāfàng gāi chājiàn mìyào</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge wèi jiēshòu cǐ chéngxù de liánjiē</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Qiēhuàn dào pèizhì wénjiàn {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fǎnhuí mòrèn pèizhì wénjiàn</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Xúnwèn dāngqián huódòng de pèizhì wénjiàn</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Xúnwèn PadForge de bǎnběn</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Xúnwèn zhèngzài yùnxíng de nèiróng</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Fāsòng PadForge bù rènshí de xíng: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Liánjiē</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Duànkāi liánjiē</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lièchū shèbèi</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Dúqǔ shèbèi {0} de kòngjiàn</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Dúqǔ shèbèi {0} de zhuàngtài</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Dúqǔ xūnǐ kòngzhìqì {0} fāsòng de nèiróng</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Gēnzōng {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Tíngzhǐ gēnzōng {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tiānjiā shèbèi {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Shèzhì shèbèi {0} de kòngjiàn</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Yíchú shèbèi {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Bǎochí shèbèi {0} de kòngjiàn</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Shìfàng shèbèi {0} de kòngjiàn</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Shèzhì zhí {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Yùnxíng gōngjù {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} cì</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 jiǎoběn (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python jiǎoběn (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell mókuài (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Yǔnxǔ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Bù yǔnxǔ</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Láizì {0}</value></data>
@@ -5263,6 +5299,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Fāngxiàng (-1 dào 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Xíngshǐ zhōng (fēi 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Yóuxì yáocè</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Jiǎoběn zhí</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Chēsù (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (zhàn zuìgāo zhí de %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Dàngwèi (-1 dàochē, 0 kōngdǎng)</value></data>
@@ -5414,6 +5451,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Xīngjì Míhángjì: Xià Yí Dài de yì zhēn huàmiàn: Xīngjì Míhángjì zhǔtí Starfleet de túpiàn. Zhǎo zì Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Dēngtiáo</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} dēngtiáo</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Chéngxù</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Wèntí lùzhì</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kāishǐ huò tíngzhǐ lùzhì</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Zài lùzhì zhōng zuò biāojì</value></data>

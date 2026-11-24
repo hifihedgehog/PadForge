@@ -617,6 +617,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ಗೆ ಈ ವಿನಂತಿ ತಿಳಿದಿಲ್ಲ</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>ವಿನಂತಿ ಖಾಲಿಯಾಗಿತ್ತು</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ನಲ್ಲಿ ಸಮಸ್ಯೆ ಎದುರಾಯಿತು</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>ಅಂತಹ ಸಾಧನ ಇಲ್ಲ</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>ಸಾಧನ ಸಂಪರ್ಕದಲ್ಲಿರಲಿಲ್ಲ</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>ಸಾಧನವು ಬೇರೊಂದು ಪ್ರೋಗ್ರಾಂಗೆ ಸೇರಿದೆ</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>ಎಂಜಿನ್ ನಿಂತಿತ್ತು</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>ಪ್ರೋಗ್ರಾಂಗಳು, ಸಾಧನಗಳು ಅಥವಾ ಅನುಸರಣೆಗಳ ಮಿತಿ ತಲುಪಿತು</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>ವಿನಂತಿ ತುಂಬಾ ಉದ್ದವಾಗಿತ್ತು</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>ಸೆಕೆಂಡಿಗೆ ತುಂಬಾ ವಿನಂತಿಗಳು</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>ವಿನಂತಿಯ ಟ್ಯಾಗ್ ಅನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>ವಿನಂತಿಯಲ್ಲಿನ ಉದ್ಧರಣವನ್ನು ಮುಚ್ಚಿರಲಿಲ್ಲ</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>ಸಾಧನದ ವಿವರಣೆ ತಪ್ಪಾಗಿತ್ತು</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>ಪ್ರೋಗ್ರಾಂ ಮೊದಲು ತನ್ನನ್ನು ಪರಿಚಯಿಸಿಕೊಳ್ಳಲಿಲ್ಲ</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ಪ್ರೋಗ್ರಾಂ PadForge ಗೆ ತಿಳಿಯದ ಆವೃತ್ತಿಯಲ್ಲಿ ಮಾತನಾಡುತ್ತದೆ</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ಆ ಪ್ಲಗಿನ್ ಕೀಲಿಯನ್ನು ನೀಡಲಿಲ್ಲ</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ಈ ಪ್ರೋಗ್ರಾಂನ ಸಂಪರ್ಕವನ್ನು ಸ್ವೀಕರಿಸಲಿಲ್ಲ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ {0} ಗೆ ಬದಲಿಸಿ</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ಡೀಫಾಲ್ಟ್ ಪ್ರೊಫೈಲ್‌ಗೆ ಮರಳಿ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ಯಾವ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿದೆ ಎಂದು ಕೇಳಿ</value></data>
@@ -637,6 +651,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ನ ಆವೃತ್ತಿ ಕೇಳಿ</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ಏನು ಚಾಲನೆಯಲ್ಲಿದೆ ಎಂದು ಕೇಳಿ</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge ಗೆ ತಿಳಿಯದ ಸಾಲನ್ನು ಕಳುಹಿಸಿ: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>ಸಂಪರ್ಕಿಸಿ</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>ಸಾಧನಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>ಸಾಧನ {0} ನ ನಿಯಂತ್ರಣಗಳನ್ನು ಓದಿ</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>ಸಾಧನ {0} ನ ಸ್ಥಿತಿಯನ್ನು ಓದಿ</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ {0} ಏನು ಕಳುಹಿಸುತ್ತದೆ ಎಂದು ಓದಿ</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} ಅನ್ನು ಅನುಸರಿಸಿ</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} ಅನ್ನು ಅನುಸರಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>ಸಾಧನ {0} ಅನ್ನು ಸೇರಿಸಿ</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ಸಾಧನ {0} ನ ನಿಯಂತ್ರಣಗಳನ್ನು ಹೊಂದಿಸಿ</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>ಸಾಧನ {0} ಅನ್ನು ತೆಗೆದುಹಾಕಿ</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>ಸಾಧನ {0} ನ ನಿಯಂತ್ರಣಗಳನ್ನು ಹಿಡಿದಿಡಿ</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ಸಾಧನ {0} ನ ನಿಯಂತ್ರಣಗಳನ್ನು ಬಿಡಿ</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ಮೌಲ್ಯ {0} ಅನ್ನು ಹೊಂದಿಸಿ</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ಟೂಲ್ {0} ಅನ್ನು ಚಲಾಯಿಸಿ</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ಬಾರಿ</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell ಮಾಡ್ಯೂಲ್‌ಗಳು (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ಅನುಮತಿಸಿ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>ಅನುಮತಿಸಬೇಡಿ</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} ಇಂದ</value></data>
@@ -5329,6 +5365,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ (-1 ರಿಂದ 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ಚಾಲನೆ (0 ಅಲ್ಲ)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>ಸ್ಕ್ರಿಪ್ಟ್ ಮೌಲ್ಯ</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>ವೇಗ (ಮೈಲಿ/ಗಂ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (ಗರಿಷ್ಠದ %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ಗಿಯರ್ (-1 ರಿವರ್ಸ್, 0 ನ್ಯೂಟ್ರಲ್)</value></data>
@@ -5482,6 +5519,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ಸ್ಟಾರ್ ಟ್ರೆಕ್: ದ ನೆಕ್ಸ್ಟ್ ಜನರೇಶನ್‌ನ ಒಂದು ಫ್ರೇಮ್: ಸ್ಟಾರ್ ಟ್ರೆಕ್ ಥೀಮ್ Starfleet ನ ಚಿತ್ರ. Memory Alpha ದಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ಲೈಟ್ ಬಾರ್</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>ಪ್ರೋಗ್ರಾಂ</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>ಸಮಸ್ಯೆ ರೆಕಾರ್ಡಿಂಗ್</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ನಿಲ್ಲಿಸಿ</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್‌ಗೆ ಗುರುತು ಹಾಕಿ</value></data>

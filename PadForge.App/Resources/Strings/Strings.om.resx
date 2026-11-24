@@ -2209,6 +2209,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge gaaffii kana hin beeku</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Gaaffiin duwwaa ture</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge rakkoo keessa gale</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Meeshaan akkasii hin jiru</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Meeshaan wal hin qunnamne ture</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Sagantaan biraa meeshaa sana qabata</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Injiniin dhaabbatee ture</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Daangaan sagantaalee, meeshaalee ykn hordoffii ga'ameera</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Gaaffiin baay'ee dheeraa ture</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Sekondii tokkotti gaaffiin baay'ee heddu</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Mallattoon gaaffii dubbifamuu hin dandeenye</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Waraabbiin gaaffii keessaa hin cufamne</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Ibsi meeshaa dogoggora ture</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Sagantaan dursee of hin beeksifne</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Sagantaan veershinii PadForge hin beekne fayyadama</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge furtuu pilaagii sana hin kennine</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge wal qunnamtii sagantaa kanaa hin fudhanne</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gara piroofaayilii {0} jijjiiri</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gara piroofaayilii durtii deebi'i</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Piroofaayiliin kam akka hojii irra jiru gaafadhu</value></data>
@@ -2229,6 +2243,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Veershinii PadForge gaafadhu</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Maaltu akka hojjechaa jiru gaafadhu</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sarara PadForge hin beekne ergi: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Wal qunnami</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Wal qunnamtii kuti</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Meeshaalee tarreessi</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} dubbisi</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Haala meeshaa {0} dubbisi</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Waan kontirolaan fakkeessaa {0} ergu dubbisi</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} hordofi</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} hordofuu dhaabi</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Meeshaa {0} ida'i</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} qindeessi</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Meeshaa {0} balleessi</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} qabadhu</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} gadi lakkisi</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gatii {0} kaa'i</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Meeshaa hojii {0} hojjechiisi</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, al {1}</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Hayyami</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Hin hayyamin</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} irraa</value></data>
@@ -2265,4 +2295,5 @@
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maawusii wal qixa hin taane gabaasu wal qixxeessa. Geengoon harka gara yeroo kanaan duubaan hordofa. 0 jechuun cufaa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Daangaa saffisa irratti</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry yoo banaa ta'e, daangaan hammam 200 km/h irratti akka hafu. 100% irratti daangaan guutuun saffisa hunda irratti jira.</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Gatii iskiriptii</value></data>
 </root>

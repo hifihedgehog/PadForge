@@ -251,6 +251,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge i no save rikwes ia</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Rikwes i emti</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge i kasem wan problem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>I no gat divaes olsem</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Divaes i no konekt</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Narafala program i onem divaes ia</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Enjin i stop</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>I kasem mak blong ol program, divaes o samting we oli folem</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Rikwes i longfala tumas</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Tumas rikwes long wan sekon</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>I no save ridim tag blong rikwes</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Wan kwot long rikwes i no klos</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Diskripsen blong divaes i no stret</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program i no talem hu hem i fastaem</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program i toktok wan vesen we PadForge i no save</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge i no givim ki blong plagin ia</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge i no tekem konek blong program ia</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Jenis i go long profael {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gobak long profael we i stanap fastaem</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Askem wanem profael i stap wok</value></data>
@@ -271,6 +285,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Askem vesen blong PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Askem wanem i stap wok</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sendem wan laen we PadForge i no save: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Konekt</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Katem konek</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Listem ol divaes</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Ridim ol kontrol blong divaes {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Ridim state blong divaes {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Ridim wanem Virtual kontrola {0} i sendem</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Folem {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Stop blong folem {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Putum divaes {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Setem ol kontrol blong divaes {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tekemaot divaes {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Holem ol kontrol blong divaes {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Livim ol kontrol blong divaes {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setem value {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ronem tul {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, namba blong taem: {1}</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>I no faenem wan analog kiboad we PadForge i save ridim.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Statem Razer Synapse blong ridim {0}.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>I no faenem wan pot blong Bliss-Box.</value></data>
@@ -1963,4 +1993,5 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taem yu holem</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>On/of</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Baten we i letem maos i stia, long sem divaes olsem muvmen blong maos. Sapos yu no jusum wan, maos i stia oltaem.</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Value blong Skript</value></data>
 </root>

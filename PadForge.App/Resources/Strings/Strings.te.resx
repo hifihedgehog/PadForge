@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>ఈ అభ్యర్థన PadForge కు తెలియదు</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>అభ్యర్థన ఖాళీగా ఉంది</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge లో సమస్య ఎదురైంది</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>అలాంటి పరికరం లేదు</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>పరికరం కనెక్ట్ కాలేదు</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>పరికరం మరొక ప్రోగ్రామ్‌ది</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>ఇంజిన్ ఆగి ఉంది</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>ప్రోగ్రామ్లు, పరికరాలు లేదా అనుసరణల పరిమితి చేరుకుంది</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>అభ్యర్థన చాలా పొడవుగా ఉంది</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>సెకనుకు చాలా ఎక్కువ అభ్యర్థనలు</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>అభ్యర్థన ట్యాగ్‌ను చదవలేకపోయింది</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>అభ్యర్థనలోని కోట్ మూసివేయబడలేదు</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>పరికర వివరణ తప్పు</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>ప్రోగ్రామ్ ముందుగా తనను పరిచయం చేసుకోలేదు</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ప్రోగ్రామ్ PadForge కు తెలియని వెర్షన్‌లో మాట్లాడుతోంది</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ఆ ప్లగిన్ కీని ఇవ్వలేదు</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ఈ ప్రోగ్రామ్ కనెక్షన్‌ను స్వీకరించలేదు</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ప్రొఫైల్ {0} కు మారు</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>డిఫాల్ట్ ప్రొఫైల్‌కు తిరిగి వెళ్లు</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ఏ ప్రొఫైల్ ఆన్‌లో ఉందో అడుగు</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge వెర్షన్ అడుగు</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ఏది నడుస్తోందో అడుగు</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge కు తెలియని లైన్ పంపు: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>కనెక్ట్ అవ్వు</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>డిస్కనెక్ట్ అవ్వు</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>పరికరాలను జాబితా చేయి</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>పరికరం {0} నియంత్రణలను చదువు</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>పరికరం {0} స్థితిని చదువు</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} పంపేదాన్ని చదువు</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} ను అనుసరించు</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} ను అనుసరించడం ఆపు</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>పరికరం {0} ను జోడించు</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>పరికరం {0} నియంత్రణలను సెట్ చేయి</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>పరికరం {0} ను తొలగించు</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>పరికరం {0} నియంత్రణలను పట్టి ఉంచు</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>పరికరం {0} నియంత్రణలను వదిలేయి</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>విలువ {0} ను సెట్ చేయి</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>సాధనం {0} ను నడుపు</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} సార్లు</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 స్క్రిప్టులు (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python స్క్రిప్టులు (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell మాడ్యూళ్లు (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>అనుమతించు</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>అనుమతించవద్దు</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} నుండి</value></data>
@@ -5622,6 +5658,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>హ్యాండిల్ ఎంత దూరం కదులుతుందో కొలుస్తుంది. స్వీప్ నడిచే నాలుగు సెకన్ల పాటు దాన్ని దాని పరిధి యొక్క ప్రతి అంచుకు కదిలించండి. ఈలోగా ఫోర్స్‌లు విశ్రాంతిలో ఉంటాయి.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch చాట్</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>ప్రోగ్రామ్</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>డ్రైవింగ్ గేమ్‌లు పంపే టెలిమెట్రీని, అలాగే Assetto Corsa షేర్డ్ మెమరీని, పరికరాల పేజీలోని గేమ్ టెలిమెట్రీ వరుసలో ఉంచుతుంది.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ కోసం వినండి</value></data>
@@ -5747,6 +5784,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>స్టీరింగ్ (-1 నుండి 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>డ్రైవింగ్ (0 కాదు)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>గేమ్ టెలిమెట్రీ</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>స్క్రిప్ట్ విలువ</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>వేగం (మైళ్లు/గం)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (గరిష్ఠంలో %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>గేర్ (-1 రివర్స్, 0 న్యూట్రల్)</value></data>

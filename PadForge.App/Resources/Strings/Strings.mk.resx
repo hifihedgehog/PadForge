@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge не го знае ова барање</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Барањето беше празно</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge наиде на проблем</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Нема таков уред</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Уредот не беше поврзан</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Друга програма е сопственик на уредот</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Моторот беше запрен</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Достигнато е ограничување за програми, уреди или следења</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Барањето беше предолго</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Премногу барања во секунда</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Ознаката на барањето не можеше да се прочита</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Наводник во барањето не беше затворен</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Описот на уредот беше погрешен</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Програмата прво не се претстави</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програмата зборува верзија што PadForge не ја знае</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не му го даде тој клуч на приклучокот</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не ја прифати врската на оваа програма</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Префрли на профилот {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Врати на стандардниот профил</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Праша кој профил е активен</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Праша за верзијата на PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Праша што работи</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Испрати ред што PadForge не го знае: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Поврзи се</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Прекини ја врската</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Наброј ги уредите</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Прочитај ги контролите на уредот {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Прочитај ја состојбата на уредот {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Прочитај што испраќа виртуелниот контролер {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Следи: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Престани да следиш: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Додај го уредот {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Постави ги контролите на уредот {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Отстрани го уредот {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Држи контроли на уредот {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Пушти ги контролите на уредот {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Постави ја вредноста {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Изврши ја алатката {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} пати</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скрипти за AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Скрипти за Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Модули за PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Дозволи</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Не дозволувај</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Од {0}</value></data>
@@ -5622,6 +5658,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Мери колку далеку патува рачката. Поместете ја до секој раб на нејзиниот досег во четирите секунди додека трае мерењето. Силите во меѓувреме мируваат.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Игрина телеметрија</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch чет</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Програма</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Игрина телеметрија</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Ја става телеметријата што ја испраќаат игрите за возење, и споделената меморија на Assetto Corsa, на редот Игрина телеметрија на страницата Уреди. Мапирајте ги брзината, педалите и степените на пренос како секој влез, активирајте макра со нив или тестирајте ги во Прилагоден израз. Додека слуша, и LED-диодите за RPM при менување брзини на воланот ја читаат играта оттука.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Слушај за игрина телеметрија</value></data>
@@ -5747,6 +5784,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Управување (-1 до 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Возење (не 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Игрина телеметрија</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Вредност од скрипта</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Брзина (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% од макс.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Степен на пренос (-1 рикверц, 0 неутрала)</value></data>

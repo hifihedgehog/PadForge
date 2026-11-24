@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>لا يعرف PadForge هذا الطلب</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>كان الطلب فارغا</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>واجه PadForge مشكلة</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>لا يوجد جهاز بهذا الاسم</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>لم يكن الجهاز متصلا</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>برنامج آخر يملك الجهاز</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>كان المحرك متوقفا</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>بلغ حد للبرامج أو الأجهزة أو المتابعات</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>كان الطلب أطول من اللازم</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>طلبات كثيرة جدا في الثانية</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>تعذرت قراءة وسم الطلب</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>لم يُغلق اقتباس في الطلب</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>كان وصف الجهاز خاطئا</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>لم يعرّف البرنامج بنفسه أولا</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>يستخدم البرنامج إصدارا لا يعرفه PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>لم يمنح PadForge مفتاح المكون الإضافي هذا</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>لم يقبل PadForge اتصال هذا البرنامج</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>التبديل إلى ملف التعريف {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>العودة إلى ملف التعريف الافتراضي</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>السؤال عن ملف التعريف النشط</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>السؤال عن إصدار PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>السؤال عما يعمل</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>إرسال سطر لا يعرفه PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>اتصال</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>قطع الاتصال</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>سرد الأجهزة</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>قراءة عناصر التحكم في الجهاز {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>قراءة حالة الجهاز {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>قراءة ما ترسله وحدة التحكم الظاهرية {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>متابعة {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>إيقاف متابعة {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>إضافة الجهاز {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ضبط عناصر التحكم في الجهاز {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>إزالة الجهاز {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>الإمساك بعناصر تحكم في الجهاز {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ترك عناصر التحكم في الجهاز {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ضبط القيمة {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>تشغيل الأداة {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}، عدد المرات: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>نصوص AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>نصوص Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>وحدات PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>السماح</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>عدم السماح</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>من {0}</value></data>
@@ -5378,6 +5414,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>التوجيه (-1 إلى 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>القيادة (غير 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>بيانات قياس الألعاب</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>قيمة النص البرمجي</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>السرعة (ميل/س)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% من الأقصى)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>الترس (-1 رجوع، 0 محايد)</value></data>
@@ -5527,6 +5564,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>لقطة من ستار تريك: الجيل التالي: صورة سمة ستار تريك Starfleet. وُجدت على Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>شريط الإضاءة</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>شريط إضاءة {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>برنامج</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>تسجيل المشكلة</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>بدء التسجيل أو إيقافه</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>وضع علامة في التسجيل</value></data>

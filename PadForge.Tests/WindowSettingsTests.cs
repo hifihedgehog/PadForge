@@ -130,15 +130,23 @@ public class WindowSettingsTests
     {
         string window = Read("PadForge.App/MainWindow.xaml.cs");
         string app = Read("PadForge.App/App.xaml.cs");
+        // The tray's two ways out are named methods, which the window's close,
+        // the tray menu and the automation command set all call (#597).
+        string automation = Read("PadForge.App/MainWindow.Automation.cs");
+        string toTray = Between(automation, "private void HideToTray()", "private void ExitFromTray()");
+        string exitFromTray = Between(automation, "private void ExitFromTray()", "private void ToggleEngine()");
         string close = Between(window, "private async void OnClosing(", "private const string XboxSvgPath");
-        int hide = close.IndexOf("Hide();", StringComparison.Ordinal);
+        int hide = close.IndexOf("HideToTray();", StringComparison.Ordinal);
         int shutdown = close.IndexOf("UnregisterDeviceNotification", StringComparison.Ordinal);
         Assert.True(hide >= 0 && shutdown > hide);
-        Assert.Contains("_settingsService.Save();", close[..hide]);
+        Assert.Contains("_settingsService.Save();", toTray);
+        Assert.Contains("_notifyIcon.Visible = true;", toTray);
+        Assert.Contains("Hide();", toTray);
         Assert.Contains("if (_shutdownStarted) return;", close[..hide]);
         Assert.Contains("!_exitRequested", close[..hide]);
         Assert.Contains("_notifyIcon?.Icon != null", close[..hide]);
-        Assert.Contains("PrepareForExit();", Between(window, "exitItem.Click +=", "menu.Items.Add(exitItem)"));
+        Assert.Contains("ExitFromTray()", Between(window, "exitItem.Click +=", "menu.Items.Add(exitItem)"));
+        Assert.Contains("PrepareForExit();", exitFromTray);
         Assert.Contains("PrepareForExit();", Between(app, "private void ShutdownAfterStartupError()", "protected override void OnSessionEnding("));
         string session = Between(app, "protected override void OnSessionEnding(", "private static bool IsGpuLostException(");
         Assert.Contains("base.OnSessionEnding(e);", session);

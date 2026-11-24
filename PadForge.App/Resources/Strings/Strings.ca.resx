@@ -617,6 +617,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge no coneix aquesta petició</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>La petició era buida</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ha tingut un problema</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>No existeix aquest dispositiu</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>El dispositiu no estava connectat</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Un altre programa és propietari del dispositiu</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>El motor estava aturat</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>S'ha arribat a un límit de programes, dispositius o seguiments</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>La petició era massa llarga</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Massa peticions per segon</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>No s'ha pogut llegir l'etiqueta de la petició</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Una cometa de la petició no estava tancada</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>La descripció del dispositiu era incorrecta</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>El programa no s'ha presentat primer</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>El programa parla una versió que PadForge no coneix</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge no ha donat aquesta clau de complement</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge no ha acceptat la connexió d'aquest programa</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Canvia al perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Torna al perfil per defecte</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pregunta quin perfil és actiu</value></data>
@@ -637,6 +651,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Demana la versió de PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pregunta què s'està executant</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Envia una línia que PadForge no coneix: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Connecta</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Desconnecta</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Llista els dispositius</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Llegeix els controls del dispositiu {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Llegeix l'estat del dispositiu {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Llegeix què envia el comandament virtual {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Segueix {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Deixa de seguir {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Afegeix el dispositiu {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Defineix els controls del dispositiu {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Treu el dispositiu {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Manté controls del dispositiu {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Deixa anar controls del dispositiu {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Defineix el valor {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Executa l'eina {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} cops</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Scripts d'AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Scripts de Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Mòduls de PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Permet</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>No permetis</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De {0}</value></data>
@@ -5373,6 +5409,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Direcció (-1 a 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Conducció (no 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria de joc</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Valor de script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velocitat (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% del màxim)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Marxa (-1 marxa enrere, 0 punt mort)</value></data>
@@ -5526,6 +5563,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Un fotograma de Star Trek: La nova generació: la imatge del tema de Star Trek Starfleet. Trobat a Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Barra de llum</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Barra de llum {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Gravació de problema</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Inicia o atura la gravació</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marca la gravació</value></data>

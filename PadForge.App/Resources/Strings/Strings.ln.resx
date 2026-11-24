@@ -175,6 +175,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge eyebi bosenga oyo te</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Bosenga ezalaki pamba</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ekutani na mokakatano</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Appareil ya boye ezali te</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Appareil ekangamaki te</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Programme mosusu nde ezali nkolo ya appareil</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Moteur etelemaki</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Ndelo ya ba programme, ba appareil to ba suivi ekoki</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Bosenga ezalaki molai mingi</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Ba bosenga mingi koleka na seconde moko</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Tag ya bosenga etangamaki te</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Guillemet moko na bosenga ekangamaki te</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Ndimbola ya appareil ezalaki mabe</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programme emilakisaki liboso te</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programme ezali koloba version oyo PadForge eyebi te</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge epesaki clé wana ya plugin te</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge endimaki connexion ya programme oyo te</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kokende na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kozonga na profil ya liboso</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Kotuna profil nini ezali kosala</value></data>
@@ -195,6 +209,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Kotuna version ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Kotuna nini ezali kotambola</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Kotinda molongo oyo PadForge eyebi te: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Kokangana</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Kokatana</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Kolakisa ba appareil</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Kotanga ba commande ya appareil {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Kotanga état ya appareil {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Kotanga nini Manette virtuelle {0} ezali kotinda</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Kolanda {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Kotika kolanda {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Kobakisa appareil {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Kotia ba commande ya appareil {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kolongola appareil {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Kosimba ba commande ya appareil {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Kotika ba commande ya appareil {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Kotia motuya {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kotambwisa esaleli {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mbala {1}</value></data>
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Window" xml:space="preserve"><value>Lininisa</value></data>
@@ -1774,6 +1804,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Telemetry_Target_Handbrake" xml:space="preserve"><value>Frein à main (0 tii 1)</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Direction (-1 tii 1)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Télémétrie ya masano</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Motuya ya script</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Vitesse (mph)</value></data>
   <data name="Telemetry_Channel_Throttle" xml:space="preserve"><value>Accélérateur (%)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Frein (%)</value></data>
@@ -2160,4 +2191,5 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ebongisaka souris oyo eyebisaka na ndenge ekokani te. Volant elandaka loboko na sima pene na ntango oyo. 0 ezali ezimi.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock na vitesse</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Soki Télémétrie ya masano efungwami, ndambo nini ya lock etikalaka na 200 km/h. Na 100%, lock mobimba ezalaka na vitesse nyonso.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programme</value></data>
 </root>

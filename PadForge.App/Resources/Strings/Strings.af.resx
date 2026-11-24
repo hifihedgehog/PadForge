@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ken nie hierdie versoek nie</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Die versoek was leeg</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge het 'n probleem teëgekom</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Geen sodanige toestel nie</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Die toestel was nie gekoppel nie</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>'n Ander program besit die toestel</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Die enjin was gestop</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>'n Perk op programme, toestelle of volgings is bereik</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Die versoek was te lank</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Te veel versoeke per sekonde</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Die versoek se etiket kon nie gelees word nie</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>'n Aanhaling in die versoek was nie toegemaak nie</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Die toestel se beskrywing was verkeerd</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Die program het nie eers homself voorgestel nie</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Die program praat 'n weergawe wat PadForge nie ken nie</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge het nie daardie inpropprogramsleutel gegee nie</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge het nie hierdie program se verbinding aanvaar nie</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Wissel na die profiel {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Keer terug na die verstekprofiel</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vra watter profiel aktief is</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Vra vir PadForge se weergawe</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Vra wat aktief is</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Stuur 'n lyn wat PadForge nie ken nie: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Koppel</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Ontkoppel</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lys die toestelle</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Lees die kontroles van toestel {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Lees die toestand van toestel {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Lees wat Virtuele Controller {0} stuur</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Volg {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Hou op om {0} te volg</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Voeg die toestel {0} by</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Stel die kontroles van toestel {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Verwyder die toestel {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hou kontroles van toestel {0} vas</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Los kontroles van toestel {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Stel die waarde {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Voer die hulpmiddel {0} uit</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} keer</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-skrifte (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python-skrifte (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-modules (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Laat toe</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Moenie toelaat nie</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Van {0}</value></data>
@@ -5163,6 +5199,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Stuur (-1 tot 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Ry (nie 0 nie)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Speletjietelemetrie</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Skrifwaarde</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Spoed (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% van maks.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Rat (-1 trurat, 0 neutraal)</value></data>
@@ -5322,6 +5359,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>'n Raam uit Star Trek: The Next Generation: die prent van die tema Starfleet van Star Trek. Gevind op Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Ligbalk</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0}-ligbalk</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleemopname</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Begin of stop opname</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Merk die opname</value></data>

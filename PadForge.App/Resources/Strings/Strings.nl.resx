@@ -398,6 +398,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kent dit verzoek niet</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Het verzoek was leeg</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge kreeg een probleem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Dat apparaat bestaat niet</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Het apparaat was niet verbonden</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Een ander programma is eigenaar van het apparaat</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>De engine was gestopt</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Een limiet voor programma's, apparaten of volgopdrachten is bereikt</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Het verzoek was te lang</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Te veel verzoeken per seconde</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>De tag van het verzoek kon niet worden gelezen</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Een aanhaling in het verzoek was niet gesloten</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>De beschrijving van het apparaat was onjuist</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Het programma stelde zich eerst niet voor</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Het programma spreekt een versie die PadForge niet kent</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gaf die pluginsleutel niet</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nam de verbinding van dit programma niet aan</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Overschakelen naar het profiel {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Terugkeren naar het standaardprofiel</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vragen welk profiel actief is</value></data>
@@ -418,6 +432,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Vragen naar de versie van PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Vragen wat er draait</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Een regel sturen die PadForge niet kent: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Verbinden</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Verbinding verbreken</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>De apparaten opsommen</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>De besturingselementen van apparaat {0} lezen</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>De status van apparaat {0} lezen</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Lezen wat Virtuele Controller {0} verstuurt</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} volgen</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Stoppen met het volgen van {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Het apparaat {0} toevoegen</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>De besturingselementen van apparaat {0} instellen</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Het apparaat {0} verwijderen</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Besturingselementen van apparaat {0} vasthouden</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Besturingselementen van apparaat {0} loslaten</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>De waarde {0} instellen</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Het hulpmiddel {0} uitvoeren</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} keer</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-scripts (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python-scripts (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-modules (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Toestaan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Niet toestaan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Van {0}</value></data>
@@ -5597,6 +5633,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Meet hoe ver de handgreep reikt. Beweeg hem naar elke rand van het bereik gedurende de vier seconden dat de meting loopt. De krachten rusten intussen.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Gametelemetrie</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-chat</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programma</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Gametelemetrie</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Zet de telemetrie die racegames verzenden, en het gedeelde geheugen van Assetto Corsa, op de rij Gametelemetrie van de pagina Apparaten. Wijs snelheid, pedalen en versnellingen toe zoals elke invoer, start er macro's mee of test ze in een Aangepaste expressie. Zolang het luistert, lezen de schakel-LED's van een stuur de game ook hiervandaan.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Luisteren naar gametelemetrie</value></data>
@@ -5722,6 +5759,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Sturen (-1 tot 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Rijdt (niet 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Gametelemetrie</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Scriptwaarde</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Snelheid (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% van max.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Versnelling (-1 achteruit, 0 vrij)</value></data>

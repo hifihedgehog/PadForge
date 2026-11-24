@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Mabedad ú-sinnen na PadForge</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>I mabedad lost</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge hirant press</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Carf ú-sinnen</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>I garf ú-iannannen</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Curu egel gar i garf</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>I naur postannen</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Curu, cerf egor aphadad tolant na daeg</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>I mabedad othovor ann</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Othovor mabedad vi lû tithen</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Têw i mabedad ú-hennannen</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Beth vi mabedad ú-holannen</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Teithad i garf dŷr</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>I curu ú-estant im minui</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>I curu paetha lam ú-sinnen na PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ú-annant ledil goiannas hen</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ú-nabant iannad curu hen</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gwisto na banu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dammeno na banu senu</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mabedo men panu echuidannen</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Mabedo noth PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Mabedo men cuia</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Menno lîr ú-sinnen na PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Ianno</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Dannodo</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Tano narth cerf</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Henno sarnath carf {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Henno nast carf {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Henno men menna Maethas Nem {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Aphado {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Posto aphadad {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Goianno i garf {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Sesto sarnath carf {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Haedo i garf {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Mango sarnath carf {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Leithio sarnath carf {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sesto i noth {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Iesto i davn {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} lû</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Teithais AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Teithais Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Sath PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Davo</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ú-davo</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>O {0}</value></data>
@@ -5669,6 +5705,7 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Nedia i haered i lend i mâb. Taltho hon na ilphen lanc i raeth în lo i genediad cui, 4 s. I balt dar ned i lû hen.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Ment telias</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Glavras Twitch</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Curu</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Ment telias</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Panna i ment i mennar telais drogol, a i ment ain Assetto Corsa, na rein Ment telias mi palt carfath. Sesto i lagor, i tellyn a i ranc în sui minnad pân, echuido carthais gu hain, egor tasto hain mi Pan Noth Garnen. Lo lasta, i LEDs RPM rind hennar i telias o sí eithro.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Lasto an ment telias</value></data>
@@ -5794,6 +5831,7 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Pernad rind (-1 na 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Glennad (ú 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Gwethad telias</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Noth teithas</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Lagor (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% o RPM beleg)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Pâd (-1 dammenad, 0 pen pâd)</value></data>

@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tidak mengenali permintaan ini</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Permintaan itu kosong</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge menemui masalah</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Tiada peranti sedemikian</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Peranti itu tidak bersambung</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Program lain memiliki peranti itu</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Enjin telah dihentikan</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Had program, peranti atau pengikutan telah dicapai</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Permintaan itu terlalu panjang</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Terlalu banyak permintaan sesaat</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Teg permintaan itu tidak dapat dibaca</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Satu petikan dalam permintaan itu tidak ditutup</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Perihalan peranti itu salah</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program itu tidak memperkenalkan dirinya dahulu</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program itu menggunakan versi yang tidak dikenali PadForge</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge tidak memberikan kunci pemalam itu</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tidak menerima sambungan program ini</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Tukar ke profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kembali ke profil lalai</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Tanya profil mana yang aktif</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Tanya versi PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Tanya apa yang sedang berjalan</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Hantar baris yang tidak dikenali PadForge: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Sambung</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Putus sambungan</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Senaraikan peranti</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Baca kawalan peranti {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Baca keadaan peranti {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Baca apa yang dihantar Pengawal Maya {0}</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Ikuti {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Berhenti mengikuti {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tambah peranti {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Tetapkan kawalan peranti {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Buang peranti {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tahan kawalan peranti {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lepaskan kawalan peranti {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tetapkan nilai {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Jalankan alat {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kali</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skrip AutoHotkey v2 (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Skrip Python (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Modul PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Benarkan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Jangan Benarkan</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Daripada {0}</value></data>
@@ -5364,6 +5400,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Stereng (-1 hingga 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Memandu (Bukan 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetri Permainan</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Nilai Skrip</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Kelajuan (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% daripada Maks)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gear (-1 Undur, 0 Neutral)</value></data>
@@ -5515,6 +5552,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Sebuah bingkai Star Trek: The Next Generation: gambar tema Star Trek Starfleet. Ditemui di Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Bar cahaya</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Bar cahaya {0}</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Rakaman Masalah</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Mula atau Henti Merakam</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Tandakan Rakaman</value></data>

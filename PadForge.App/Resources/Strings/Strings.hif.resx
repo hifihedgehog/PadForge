@@ -948,6 +948,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Steering (-1 se 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Driving (0 nahi)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Game telemetry</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Script value</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Speed (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (Max ke %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gear (-1 reverse, 0 neutral)</value></data>
@@ -1229,6 +1230,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ii request nai jaane hai</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Request khaali rahaa</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge me koi problem aais</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Aisan koi device nai hai</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Device connect nai rahaa</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Device dusra program ke haath me hai</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Engine ruka rahaa</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Program, device ya follow ke limit pura hoe gais</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Request bahut lamba rahaa</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Ek second me bahut request</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Request ke tag padhe nai sakaa</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Request me ek quotation band nai bhais</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Device ke description galat rahaa</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program pahile apan parichay nai dis</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program aisan version bole hai jon PadForge nai jaane</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge uu plugin key nai dis</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ii program ke connection nai lis</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Profile {0} pe jaao</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Default profile pe lauto</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Poocho kon profile chalu hai</value></data>
@@ -1249,6 +1264,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ke version poocho</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Poocho kya chale hai</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Aisan line bhejo jon PadForge nai jaane: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Connect karo</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Disconnect karo</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Device ke list dikhaao</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Device {0} ke control padho</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Device {0} ke state padho</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Padho Virtual Controller {0} kya bheje hai</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} ke follow karo</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} ke follow karna bandh karo</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Device {0} add karo</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Device {0} ke control set karo</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Device {0} hataao</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Device {0} ke control pakad ke rakho</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Device {0} ke control chhod do</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Value {0} set karo</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Tool {0} chalaao</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} baar</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Allow karo</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Allow mat karo</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} se</value></data>
@@ -1272,4 +1303,5 @@
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Uu button jon mouse ke steer kare deve hai, mouse ke travel wala device pe. Koi nai chuna to mouse hamesa steer kare hai.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game telemetry On rahe pe, 200 km/h pe kitna lock bache hai. 100% pe pura lock har speed pe rahe hai.</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
 </root>

@@ -260,6 +260,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge i no save long dispela askim</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Askim i no gat samting insait</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge i bungim hevi</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>I no gat kain masin olsem</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Masin i no bin konek</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Narapela program i holim masin</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Injin i bin stop</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Mak bilong ol program, masin o ol samting i bihainim i pulap</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Askim i longpela tumas</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Planti tumas askim long wanpela sekon</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>I no inap ritim tag bilong askim</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Wanpela toktok insait long mak bilong toktok i no pas long askim</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Tok bilong masin i no stret</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Program i no bin kolim nem bilong en pastaim</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program i toktok long wanpela vesen PadForge i no save long en</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge i no givim dispela ki bilong plagin</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge i no kisim konek bilong dispela program</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Senis i go long profail {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Go bek long namba wan profail</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Askim wanem profail i wok</value></data>
@@ -280,6 +294,22 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Askim vesen bilong PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Askim wanem samting i ran</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Salim lain PadForge i no save long en: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Konek</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Lusim konek</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Soim lis bilong ol masin</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Ritim ol kontrol bilong masin {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Ritim stet bilong masin {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Ritim wanem virtual kontrola {0} i salim</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Bihainim {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Stop long bihainim {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Putim masin {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Setim ol kontrol bilong masin {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Rausim masin {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Holim ol kontrol bilong masin {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lusim ol kontrol bilong masin {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setim namba {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Ranim tul {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, namba bilong taim: {1}</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>nogat kontrola</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Kain {0}</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Dispela PC tasol</value></data>
@@ -2277,4 +2307,5 @@
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Las hap long spit</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Tok taim masin i no konek moa</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Tok taim masin i konek</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Namba bilong skrip</value></data>
 </root>

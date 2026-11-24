@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ei tunne seda päringut</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Päring oli tühi</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge puutus kokku probleemiga</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Sellist seadet pole</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Seade polnud ühendatud</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Seade kuulub teisele programmile</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Mootor oli peatatud</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Programmide, seadmete või jälgimiste piir sai täis</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Päring oli liiga pikk</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Liiga palju päringuid sekundis</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Päringu silti ei saanud lugeda</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Päringu jutumärk jäi sulgemata</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Seadme kirjeldus oli vale</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programm ei tutvustanud end enne</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programm räägib versiooni, mida PadForge ei tunne</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ei andnud seda pistikprogrammi võtit</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ei võtnud selle programmi ühendust vastu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaheta profiilile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Naase vaikeprofiilile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Küsi, milline profiil on aktiivne</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Küsi programmi PadForge versiooni</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Küsi, mis töötab</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Saada rida, mida PadForge ei tunne: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Ühenda</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Katkesta ühendus</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Loetle seadmed</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Loe seadme {0} juhtelemendid</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Loe seadme {0} olek</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Loe, mida virtuaalne kontroller {0} saadab</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Jälgi: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Lõpeta jälgimine: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Lisa seade {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Sea seadme {0} juhtelemendid</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Eemalda seade {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hoia seadme {0} juhtelemente</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lase lahti seadme {0} juhtelemendid</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sea väärtus {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Käivita tööriist {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} korda</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skriptid (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python skriptid (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell moodulid (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Luba</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ära luba</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Pärit: {0}</value></data>
@@ -5366,6 +5402,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Rool (-1 kuni 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Sõidab (mitte 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Mängu telemeetria</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Skripti väärtus</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Kiirus (mi/h)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Pöörded (% maksimumist)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Käik (-1 tagurdus, 0 vaba käik)</value></data>
@@ -5517,6 +5554,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kaader sarjast Star Trek: Uus põlvkond: sarja Star Trek kujunduse Starfleet pilt. Leitud saidilt Memory Alpha.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Valgusriba</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} valgusriba</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programm</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleemi salvestamine</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Alusta või peata salvestamine</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Märgi salvestis</value></data>

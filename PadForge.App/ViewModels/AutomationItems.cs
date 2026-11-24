@@ -171,11 +171,13 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(Result));
         }
 
-        /// <summary>Every error word the command set and the pipe answer
-        /// with (AutomationCommands, ExternalControlService, the profile
-        /// switch in InputService, ClientRun), each with what happened from
-        /// the user's side. A test walks the code for error words and holds
-        /// each to an entry here.</summary>
+        /// <summary>Every error word the command set and the control pipe
+        /// answer with (AutomationCommands, ExternalControlService, the
+        /// profile switch in InputService, ClientRun) and every code the
+        /// Automation pipe answers with (AutomationLine.WordsFor and the
+        /// sessions), each with what happened from the user's side. A test
+        /// walks the code for error words and holds each to an entry
+        /// here.</summary>
         internal static readonly IReadOnlyDictionary<string, Func<Strings, string>> RefusalPhrases =
             new Dictionary<string, Func<Strings, string>>(StringComparer.Ordinal)
             {
@@ -188,6 +190,20 @@ namespace PadForge.ViewModels
                 ["unknown-command"] = s => s.Automation_Result_UnknownCommand,
                 ["empty"] = s => s.Automation_Result_Empty,
                 ["internal"] = s => s.Automation_Result_Internal,
+                ["unknown-device"] = s => s.Automation_Result_UnknownDevice,
+                ["offline"] = s => s.Automation_Result_Offline,
+                ["not-owner"] = s => s.Automation_Result_NotOwner,
+                ["engine-stopped"] = s => s.Automation_Result_EngineStopped,
+                ["too-many"] = s => s.Automation_Result_TooMany,
+                ["too-long"] = s => s.Automation_Result_TooLong,
+                ["rate-limited"] = s => s.Automation_Result_RateLimited,
+                ["bad-tag"] = s => s.Automation_Result_BadTag,
+                ["bad-quote"] = s => s.Automation_Result_BadQuote,
+                ["bad-declaration"] = s => s.Automation_Result_BadDeclaration,
+                ["hello-first"] = s => s.Automation_Result_HelloFirst,
+                ["unsupported-protocol"] = s => s.Automation_Result_UnsupportedProtocol,
+                ["denied"] = s => s.Automation_Result_Denied,
+                ["refused"] = s => s.Automation_Result_Refused,
             };
 
         /// <summary>A refusal in the interface's words: the phrase of its
@@ -195,11 +211,16 @@ namespace PadForge.ViewModels
         /// own words never show.</summary>
         internal static string RefusalWords(string answer)
         {
-            const string Error = "error ";
+            // The control pipe answers error and a word, the Automation pipe
+            // err, a code and words for a log.
             var s = Strings.Instance;
-            if (answer != null && answer.StartsWith(Error, StringComparison.Ordinal))
+            string prefix = answer == null ? null
+                : answer.StartsWith("error ", StringComparison.Ordinal) ? "error "
+                : answer.StartsWith("err ", StringComparison.Ordinal) ? "err "
+                : null;
+            if (prefix != null)
             {
-                string word = answer.Substring(Error.Length).Trim();
+                string word = answer.Substring(prefix.Length).Trim();
                 int space = word.IndexOf(' ');
                 if (space >= 0) word = word.Substring(0, space);
                 if (RefusalPhrases.TryGetValue(word, out var phrase)) return phrase(s);

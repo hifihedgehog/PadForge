@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge लाई यो अनुरोध थाहा छैन</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>अनुरोध खाली थियो</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge मा समस्या आयो</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>यस्तो यन्त्र छैन</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>यन्त्र जडान भएको थिएन</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>यन्त्र अर्को प्रोग्रामको स्वामित्वमा छ</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>इन्जिन रोकिएको थियो</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>प्रोग्राम, यन्त्र वा पछ्याइको सीमा पुग्यो</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>अनुरोध धेरै लामो थियो</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>प्रति सेकेन्ड धेरै अनुरोधहरू</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>अनुरोधको ट्याग पढ्न सकिएन</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>अनुरोधमा एउटा उद्धरण चिह्न बन्द गरिएको थिएन</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>यन्त्रको विवरण गलत थियो</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>प्रोग्रामले पहिले आफ्नो परिचय दिएन</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>प्रोग्रामले PadForge लाई थाहा नभएको संस्करण प्रयोग गर्छ</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ले त्यो प्लगइन कुञ्जी दिएको थिएन</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ले यो प्रोग्रामको जडान स्वीकार गरेन</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>प्रोफाइल {0} मा जानुहोस्</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>पूर्वनिर्धारित प्रोफाइलमा फर्कनुहोस्</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>कुन प्रोफाइल सक्रिय छ भनेर सोध्नुहोस्</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge को संस्करण सोध्नुहोस्</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>के चलिरहेको छ भनेर सोध्नुहोस्</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge लाई थाहा नभएको लाइन पठाउनुहोस्: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>जडान गर्नुहोस्</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>जडान विच्छेद गर्नुहोस्</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>यन्त्रहरूको सूची लिनुहोस्</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>यन्त्र {0} का नियन्त्रणहरू पढ्नुहोस्</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>यन्त्र {0} को अवस्था पढ्नुहोस्</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर {0} ले के पठाउँछ पढ्नुहोस्</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} पछ्याउनुहोस्</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} पछ्याउन छोड्नुहोस्</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>यन्त्र {0} थप्नुहोस्</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>यन्त्र {0} का नियन्त्रणहरू सेट गर्नुहोस्</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>यन्त्र {0} हटाउनुहोस्</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>यन्त्र {0} का नियन्त्रणहरू समात्नुहोस्</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>यन्त्र {0} का नियन्त्रणहरू छोड्नुहोस्</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>मान {0} सेट गर्नुहोस्</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>टुल {0} चलाउनुहोस्</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} पटक</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 स्क्रिप्टहरू (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python स्क्रिप्टहरू (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell मोड्युलहरू (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>अनुमति दिनुहोस्</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>अनुमति नदिनुहोस्</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} बाट</value></data>
@@ -5622,6 +5658,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>ह्यान्डल कति टाढा जान्छ भनेर नाप्छ। मापन चल्ने चार सेकेन्डसम्म यसलाई पहुँचको हरेक किनारासम्म सार्नुहोस्। त्यस बेला बलहरू रोकिन्छन्।</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्री</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch च्याट</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>प्रोग्राम</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्री</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ड्राइभिङ गेमहरूले पठाउने टेलिमेट्री र Assetto Corsa को साझा मेमोरीलाई यन्त्रहरू पृष्ठको गेम टेलिमेट्री पङ्क्तिमा राख्छ। यसको गति, पेडल र गियरलाई कुनै पनि इनपुटजस्तै म्याप गर्नुहोस्, तिनबाट म्याक्रोहरू सुरु गर्नुहोस्, वा अनुकूल अभिव्यक्तिमा परीक्षण गर्नुहोस्। यसले सुनिरहँदा ह्विलका RPM सिफ्ट LED ले पनि गेमलाई यहीँबाट पढ्छन्।</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्रीका लागि सुन्नुहोस्</value></data>
@@ -5747,6 +5784,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>स्टेयरिङ (-1 देखि 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ड्राइभ गर्दै (0 होइन)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>गेम टेलिमेट्री</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>स्क्रिप्ट मान</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>गति (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (अधिकतमको %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>गियर (-1 रिभर्स, 0 न्युट्रल)</value></data>

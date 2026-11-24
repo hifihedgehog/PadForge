@@ -1969,6 +1969,11 @@ namespace PadForge.Common.Input
             if (v.Source == MacroTriggerSource.GameTelemetry)
                 return Telemetry.GameTelemetryRuntime.Read(v.TelemetryChannel, v.TelemetryVariable);
 
+            // A value a program set by name (#597), 0 until it is set and
+            // after the program is gone.
+            if (v.Source == MacroTriggerSource.ScriptValue)
+                return ScriptValues.Read(v.ScriptValue);
+
             var ud = FindSlotDeviceByInstanceGuid(v.DeviceGuid, slotIndex);
             if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;
 
@@ -2015,6 +2020,9 @@ namespace PadForge.Common.Input
             // The gamepad lane's telemetry read, the same on every lane (#531).
             if (v.Source == MacroTriggerSource.GameTelemetry)
                 return Telemetry.GameTelemetryRuntime.Read(v.TelemetryChannel, v.TelemetryVariable);
+            // A program's value, the same on every lane (#597).
+            if (v.Source == MacroTriggerSource.ScriptValue)
+                return ScriptValues.Read(v.ScriptValue);
 
             var ud = FindSlotDeviceByInstanceGuid(v.DeviceGuid, slotIndex);
             if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;

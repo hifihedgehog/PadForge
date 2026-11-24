@@ -428,8 +428,8 @@ namespace PadForge.Tests
         {
             var s = Strings.Instance;
             var none = Array.Empty<AutomationClient>();
-            Assert.Equal(s.Automation_Status_NoPrograms, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, none));
-            Assert.Equal(s.Common_Stopped, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, none));
+            Assert.Equal(s.Automation_Status_NoPrograms, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving, none));
+            Assert.Equal(s.Common_Stopped, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, ExternalControlService.PipeState.Serving, none));
             // Each connected program once, by the name it gave, then by its
             // image, in the order they connected.
             var at = DateTimeOffset.Now;
@@ -440,10 +440,10 @@ namespace PadForge.Tests
                 new AutomationClient(3, "Playnite", AutomationClientKind.Script, 12, "Playnite.DesktopApp.exe", at),
             };
             Assert.Equal(string.Format(s.Automation_Status_Connected_Format, "Playnite, PadForge.exe"),
-                MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, two));
-            Assert.Equal(s.Common_Stopped, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, two));
-            string taken = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.NameTaken, none);
-            string failed = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Failed, none);
+                MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving, two));
+            Assert.Equal(s.Common_Stopped, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, ExternalControlService.PipeState.Serving, two));
+            string taken = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.NameTaken, ExternalControlService.PipeState.Serving, none);
+            string failed = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Failed, ExternalControlService.PipeState.Serving, none);
             Assert.Contains(ExternalControlService.PipeName, taken, StringComparison.Ordinal);
             Assert.Contains(ExternalControlService.PipeName, failed, StringComparison.Ordinal);
             Assert.NotEqual(taken, failed);

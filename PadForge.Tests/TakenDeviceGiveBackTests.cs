@@ -2025,9 +2025,13 @@ namespace PadForge.Tests
             Assert.True(kept.TouchpadOnlyInPadForge);
 
             string window = AuditDelta20261002Tests.RepoText("PadForge.App", "MainWindow.xaml.cs");
-            int give = window.IndexOf("_inputService.GiveBackTouchpadsNobodyKept(_viewModel.Settings.AutoStartEngine);", StringComparison.Ordinal);
-            int start = window.IndexOf("_inputService.Start();", give, StringComparison.Ordinal);
-            Assert.True(give > 0 && start > give && start - give < 200, $"{give} {start}");
+            // The give-back takes the same decision the engine's start does:
+            // --engine on or off when the command line names it, Start Engine
+            // Automatically otherwise (#597).
+            int decide = window.IndexOf("bool startEngine = App.StartupRequest.Engine ?? _viewModel.Settings.AutoStartEngine;", StringComparison.Ordinal);
+            int give = window.IndexOf("_inputService.GiveBackTouchpadsNobodyKept(startEngine);", Math.Max(decide, 0), StringComparison.Ordinal);
+            int start = give < 0 ? -1 : window.IndexOf("_inputService.Start();", give, StringComparison.Ordinal);
+            Assert.True(decide > 0 && give > decide && start > give && start - give < 600, $"{decide} {give} {start}");
 
             int set = window.IndexOf("private async System.Threading.Tasks.Task<bool> SetTouchpadOnlyInPadForgeAsync", StringComparison.Ordinal);
             int mark = window.IndexOf("ud.TouchpadKeepPending = on;", set, StringComparison.Ordinal);

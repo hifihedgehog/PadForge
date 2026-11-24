@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ამ მოთხოვნას არ იცნობს</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>მოთხოვნა ცარიელი იყო</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-ს პრობლემა შეექმნა</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>ასეთი მოწყობილობა არ არის</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>მოწყობილობა დაკავშირებული არ იყო</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>მოწყობილობა სხვა პროგრამას ეკუთვნის</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>ძრავა გაჩერებული იყო</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>პროგრამების, მოწყობილობების ან თვალყურის დევნების ლიმიტი ამოიწურა</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>მოთხოვნა ძალიან გრძელი იყო</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>წამში ძალიან ბევრი მოთხოვნა</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>მოთხოვნის ტეგი ვერ წაიკითხა</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>მოთხოვნაში ბრჭყალები დახურული არ იყო</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>მოწყობილობის აღწერა არასწორი იყო</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>პროგრამა ჯერ არ გაეცნო</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>პროგრამა ისეთ ვერსიას იყენებს, რომელსაც PadForge არ იცნობს</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge-მა ეს პლაგინის გასაღები არ მისცა</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-მა ამ პროგრამის კავშირი არ მიიღო</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>გადართვა პროფილზე {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>დაბრუნება ნაგულისხმევ პროფილზე</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>კითხვა, რომელი პროფილია აქტიური</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ის ვერსიის მოთხოვნა</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>კითხვა, რა მუშაობს</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ისთვის უცნობი ხაზის გაგზავნა: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>დაკავშირება</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>გათიშვა</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>მოწყობილობების სიის მოთხოვნა</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების წაკითხვა</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>მოწყობილობის {0} მდგომარეობის წაკითხვა</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>იმის წაკითხვა, რასაც ვირტუალური კონტროლერი {0} აგზავნის</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>თვალყურის დევნება: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>თვალყურის დევნის შეწყვეტა: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>მოწყობილობის დამატება: {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების დაყენება</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>მოწყობილობის წაშლა: {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების დაჭერა</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების გაშვება</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>მნიშვნელობის დაყენება: {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ხელსაწყოს გაშვება: {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ჯერ</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 სკრიპტები (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python სკრიპტები (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell მოდულები (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>დაშვება</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>არ დაიშვას</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>გამომგზავნი: {0}</value></data>
@@ -5350,6 +5386,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>საჭე (-1-დან 1-მდე)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>მართვაშია (არა 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>თამაშის ტელემეტრია</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>სკრიპტის მნიშვნელობა</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>სიჩქარე (მილი/სთ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% მაქსიმუმიდან)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>გადაცემა (-1 უკუსვლა, 0 ნეიტრალი)</value></data>
@@ -5500,6 +5537,7 @@
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>კადრი სერიალიდან ვარსკვლავური გზა: შემდეგი თაობა: ვარსკვლავური გზის თემის Starfleet სურათი. ნაპოვნია Memory Alpha-ზე.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>შუქის ზოლი</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} შუქის ზოლი</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>პროგრამა</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ჩაწერის დაწყება ან შეჩერება</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ჩანაწერზე ნიშნულის დასმა</value></data>

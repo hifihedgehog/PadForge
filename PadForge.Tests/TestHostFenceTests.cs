@@ -193,6 +193,7 @@ namespace PadForge.Tests
         private const string SteamClientFile = "PadForge.SteamWorkshop/Api/SteamWorkshopClient.cs";
         private const string WorkshopPanel = "PadForge.App/Views/CommunityConfigsPanel.xaml.cs";
         private const string ControlPipe = Services + "ExternalControlService.cs";
+        private const string AutomationPipeFile = Services + "Automation/AutomationPipe.cs";
         private const string RunningCopyFile = Services + "RunningCopy.cs";
         private const string InstanceSignalFile = Services + "InstanceSignal.cs";
         private const string ClientRunFile = Services + "ClientRun.cs";
@@ -239,6 +240,7 @@ namespace PadForge.Tests
             (Outbound, "OutboundNetworkGate"),
             (SteamHttpFile, "SteamHttp"),
             (ControlPipe, "ExternalControlService"),
+            (AutomationPipeFile, "AutomationPipe"),
             (RunningCopyFile, "RunningCopy"),
             (ClientRunFile, "CallerConsole"),
             (StartWithRightsFile, "StartWithRights"),
@@ -290,6 +292,7 @@ namespace PadForge.Tests
             Assert.True(OutboundNetworkGate.OffLimitsForTest);
             Assert.True(SteamHttp.OffLimitsForTest);
             Assert.True(ExternalControlService.OffLimitsForTest);
+            Assert.True(PadForge.Services.Automation.AutomationPipe.OffLimitsForTest);
             Assert.True(RunningCopy.OffLimitsForTest);
             Assert.True(CallerConsole.OffLimitsForTest);
             Assert.True(StartWithRights.OffLimitsForTest);
@@ -496,6 +499,8 @@ namespace PadForge.Tests
 
             // The pipe a running PadForge serves, and its client end (#597).
             new object[] { ControlPipe, "public PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return PipeState.Stopped;" },
+            // The Automation pipe a running PadForge serves (#597).
+            new object[] { AutomationPipeFile, "public ExternalControlService.PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return ExternalControlService.PipeState.Stopped;" },
             new object[] { ClientRunFile, "internal static bool Stands(string pipeName)", "if (ExternalControlService.OffLimitsForTest && IsTheAppsOwn(pipeName)) return false;" },
             new object[] { ClientRunFile, "internal static string Exchange(string pipeName, string line, int connectMs, int answerMs = AnswerMs)", "if (ExternalControlService.OffLimitsForTest && IsTheAppsOwn(pipeName)) return null;" },
 
@@ -681,24 +686,25 @@ namespace PadForge.Tests
                 FenceSource.Census(@"\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));
         }
 
-        /// <summary>A pipe is served in three places and connected to in two.
+        /// <summary>A pipe is served in four places and connected to in three.
         /// The client run's end, where a second copy of the exe sends a
         /// command to the one that runs, asks the control pipe's fence before
-        /// it looks for the pipe or connects (#597). The control service asks
-        /// its fence as it starts: its first instance is made after that, its
-        /// later ones only by the loop the start began, and the nudge its
-        /// Stop sends only once it has started. A give-back task's pipe stands
-        /// only behind its registration's fence.</summary>
+        /// it looks for the pipe or connects (#597). The control service and
+        /// the Automation pipe ask their fences as they start: the first
+        /// instance is made after that, the later ones only by the loop the
+        /// start began, and the nudge Stop sends only once it has started. A
+        /// give-back task's pipe stands only behind its registration's
+        /// fence.</summary>
         [Fact]
         public void EveryPipe_IsOnTheList()
         {
-            Assert.Equal(Map((ControlPipe, 1), (Services + "GiveBackTask.cs", 1), (Services + "GiveBackRun.cs", 1)),
+            Assert.Equal(Map((ControlPipe, 1), (AutomationPipeFile, 1), (Services + "GiveBackTask.cs", 1), (Services + "GiveBackRun.cs", 1)),
                 FenceSource.Census(@"NamedPipeServerStreamAcl\.Create\(|" + Creates("NamedPipeServerStream")));
             string task = OffLimitsSource.Read(Services + "GiveBackTask.cs");
             Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
                 FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log)"), StringComparison.Ordinal);
             Assert.Single(OffLimitsSource.Calls(task, "HoldPipe(name)"));
-            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1)), FenceSource.Census(Creates("NamedPipeClientStream")));
+            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1)), FenceSource.Census(Creates("NamedPipeClientStream")));
 
             // The client end's one connection is in the member that asks first.
             string client = OffLimitsSource.Read(ClientRunFile);
@@ -722,6 +728,21 @@ namespace PadForge.Tests
             Assert.Equal(2, OffLimitsSource.Calls(FenceSource.Body(service, "private async Task AcceptLoop(NamedPipeServerStream first, CancellationToken token)"), "CreateServer(_pipeName,").Count);
             Assert.Single(OffLimitsSource.Calls(service, "AcceptLoop(first, token)"));
             Assert.Contains("AcceptLoop(first, token)", start, StringComparison.Ordinal);
+
+            // The Automation pipe (#597) keeps the same shape: its first
+            // instance after the fence, the next two in the loop the start
+            // began, and its nudge only once it started.
+            string automation = OffLimitsSource.Read(AutomationPipeFile);
+            Assert.StartsWith("if (_cts == null)", FenceSource.FirstStatement(automation, "public void Stop()"), StringComparison.Ordinal);
+            string automationStop = FenceSource.Body(automation, "public void Stop()");
+            Assert.True(automationStop.IndexOf("return;", StringComparison.Ordinal) < automationStop.IndexOf("new NamedPipeClientStream(", StringComparison.Ordinal));
+            string automationStart = FenceSource.Body(automation, "public ExternalControlService.PipeState Start()");
+            Assert.Equal(3, OffLimitsSource.Calls(automation, "CreateServer(_pipeName,").Count);
+            Assert.Single(OffLimitsSource.Calls(automationStart, "CreateServer(_pipeName,"));
+            FenceSource.AsksBefore(AutomationPipeFile, "public ExternalControlService.PipeState Start()",
+                "if (OffLimitsForTest && ServesTheAppsOwnPipe) return ExternalControlService.PipeState.Stopped;", "CreateServer(_pipeName,");
+            Assert.Equal(2, OffLimitsSource.Calls(FenceSource.Body(automation, "private async Task AcceptLoop(NamedPipeServerStream first, CancellationToken token)"), "CreateServer(_pipeName,").Count);
+            Assert.Contains("AcceptLoop(first, token)", automationStart, StringComparison.Ordinal);
         }
 
         /// <summary>The files that import CreateFile. A new one opens

@@ -208,24 +208,24 @@ namespace PadForge.Views
         private void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationLibraries is not { } libraries) return;
-            var kinds = libraries.Kinds;
-            if (kinds == null || kinds.Count == 0) return;
+            var all = libraries.All;
+            if (all == null || all.Count == 0) return;
             string title = PadForge.Resources.Strings.Strings.Instance.Extras_Automation_SaveLibrary.TrimEnd('…');
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
                 Title = title,
-                Filter = LibraryFilter(kinds),
+                Filter = LibraryFilter(all),
                 FilterIndex = 1,
-                FileName = kinds[0].FileName,
-                DefaultExt = System.IO.Path.GetExtension(kinds[0].FileName),
+                FileName = all[0].FileName,
+                DefaultExt = System.IO.Path.GetExtension(all[0].FileName),
                 AddExtension = true,
                 OverwritePrompt = true,
             };
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
-            var kind = kinds[Math.Clamp(dialog.FilterIndex, 1, kinds.Count) - 1];
+            var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];
             try
             {
-                libraries.Save(kind, dialog.FileName);
+                libraries.Save(picked.Kind, dialog.FileName);
             }
             catch (Exception ex)
             {
@@ -236,8 +236,8 @@ namespace PadForge.Views
 
         /// <summary>The Save dialog's file types, one for each library, in
         /// the order given.</summary>
-        internal static string LibraryFilter(IReadOnlyList<PadForge.Services.Automation.AutomationLibraryKind> kinds)
-            => string.Join("|", System.Linq.Enumerable.Select(kinds, k => k.Filter));
+        internal static string LibraryFilter(IReadOnlyList<PadForge.Services.Automation.AutomationLibrary> libraries)
+            => string.Join("|", System.Linq.Enumerable.Select(libraries, l => l.Filter));
 
         /// <summary>Save the Skill: the folder the user picks gets the skill
         /// an assistant reads from disk.</summary>

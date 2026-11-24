@@ -583,6 +583,12 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroExpressionVariable_ScriptValue_1649",
+    "Owner": "PadForge.ViewModels.MacroExpressionVariable",
+    "Property": "ScriptValue"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroExpressionVariable_OutputChannel_1658",
     "Owner": "PadForge.ViewModels.MacroExpressionVariable",
     "Property": "OutputChannel"

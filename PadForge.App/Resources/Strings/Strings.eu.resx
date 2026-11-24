@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-k ez daki eskaera hau</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Eskaera hutsik zegoen</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-k arazo bat izan du</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ez dago gailu hori</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Gailua ez zegoen konektatuta</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Beste programa batek du gailua</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motorra geldituta zegoen</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Programen, gailuen edo jarraipenen muga bat gainditu da</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Eskaera luzeegia zen</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Eskaera gehiegi segundoko</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Eskaeraren etiketa ezin izan da irakurri</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Eskaerako komatxo bat ez zen itxi</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Gailuaren azalpena okerra zen</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programak ez zuen bere burua aurkeztu lehenik</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programak PadForge-k ezagutzen ez duen bertsio bat darabil</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge-k ez dio plugin-gako hori eman</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-k ez du programa honen konexioa onartu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Aldatu {0} profilera</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Itzuli profil lehenetsira</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Galdetu zein profil dagoen aktibo</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eskatu PadForge-ren bertsioa</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Galdetu zer dabilen</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Bidali PadForge-k ezagutzen ez duen lerro bat: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Konektatu</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Deskonektatu</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Zerrendatu gailuak</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Irakurri {0} gailuaren kontrolak</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Irakurri {0} gailuaren egoera</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Irakurri {0}. kontrolagailu birtualak zer bidaltzen duen</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Jarraitu {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Utzi {0} jarraitzeari</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Gehitu {0} gailua</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ezarri {0} gailuaren kontrolak</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kendu {0} gailua</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Eutsi {0} gailuaren kontrolei</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Askatu {0} gailuaren kontrolak</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ezarri {0} balioa</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Exekutatu {0} tresna</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} aldiz</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 script-ak (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python script-ak (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell moduluak (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Baimendu</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ez baimendu</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Nork: {0}</value></data>
@@ -5360,6 +5396,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Bolantea (-1etik 1era)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Gidatzen (ez 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Jokoaren telemetria</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Script-aren balioa</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Abiadura (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (maximoaren %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Martxa (-1 atzeranzkoa, 0 neutroa)</value></data>
@@ -5511,6 +5548,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation serieko fotograma bat: Star Trek gaiaren irudia, Starfleet. Memory Alpha-n aurkitua.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Argi-barra</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} argi-barra</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Arazoaren grabaketa</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Hasi edo gelditu grabaketa</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markatu grabaketa</value></data>

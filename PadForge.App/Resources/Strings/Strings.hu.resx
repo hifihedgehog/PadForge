@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>A PadForge nem ismeri ezt a kérést</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>A kérés üres volt</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>A PadForge hibába ütközött</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Nincs ilyen eszköz</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Az eszköz nem volt csatlakoztatva</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Az eszköz egy másik programé</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>A motor le volt állítva</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Elérte a programok, eszközök vagy követések korlátját</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>A kérés túl hosszú volt</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Túl sok kérés másodpercenként</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>A kérés címkéje nem volt olvasható</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>A kérésben egy idézet nem volt lezárva</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Az eszköz leírása hibás volt</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>A program nem mutatkozott be előbb</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>A program olyan verziót használ, amelyet a PadForge nem ismer</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>A PadForge nem adta meg azt a bővítménykulcsot</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>A PadForge nem fogadta el ennek a programnak a csatlakozását</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Váltás erre a profilra: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Visszatérés az alapértelmezett profilra</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>A mostani profil lekérdezése</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>A PadForge verziójának lekérdezése</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Annak lekérdezése, mi fut</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Egy, a PadForge által nem ismert sor küldése: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Csatlakozás</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Lecsatlakozás</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Az eszközök listázása</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek olvasása</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>A(z) {0} eszköz állapotának olvasása</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>A(z) {0}. virtuális kontroller küldményeinek olvasása</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Követés: {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>A követés leállítása: {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>A(z) {0} eszköz hozzáadása</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek beállítása</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>A(z) {0} eszköz eltávolítása</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek tartása</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek elengedése</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>A(z) {0} érték beállítása</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>A(z) {0} eszköz futtatása</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ismétlések száma: {1}</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 szkriptek (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python szkriptek (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell modulok (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Engedélyezés</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Elutasítás</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Forrás: {0}</value></data>
@@ -5622,6 +5658,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Megméri, mekkora utat tesz meg a fogantyú. Mozgassa a mozgástartomány minden széléig a mérés négy másodperce alatt. Közben az erők szünetelnek.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Játéktelemetria</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-csevegés</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Játéktelemetria</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Az autóversenyzős játékok által küldött telemetriát és az Assetto Corsa megosztott memóriáját az Eszközök oldal Játéktelemetria sorára teszi. A sebesség, a pedálok és a fokozatok bármely bemenethez hasonlóan hozzárendelhetők, makrókat indíthatnak, vagy kipróbálhatók egyéni kifejezésben. Amíg figyel, a kormány fordulatszám-váltásjelző LED-jei is innen olvassák a játékot.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Játéktelemetria figyelése</value></data>
@@ -5747,6 +5784,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Kormányzás (-1-től 1-ig)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Vezetés (nem 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Játéktelemetria</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Szkriptérték</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Sebesség (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Fordulatszám (a max. %-a)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Fokozat (-1 hátramenet, 0 üresjárat)</value></data>

@@ -398,6 +398,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge はこのリクエストを認識しません</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>リクエストが空でした</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge で問題が発生しました</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>そのようなデバイスはありません</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>デバイスが接続されていませんでした</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>別のプログラムがデバイスを所有しています</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>エンジンが停止していました</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>プログラム、デバイス、または追跡の上限に達しました</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>リクエストが長すぎました</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>1 秒あたりのリクエストが多すぎます</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>リクエストのタグを読み取れませんでした</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>リクエスト内の引用符が閉じられていませんでした</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>デバイスの記述が正しくありませんでした</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>プログラムが先に自己紹介をしていませんでした</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>プログラムが PadForge の認識しないバージョンで通信しています</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge はそのプラグインキーを発行しませんでした</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge はこのプログラムの接続を受け付けませんでした</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>プロファイル {0} に切り替える</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>既定のプロファイルに戻す</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>有効なプロファイルを問い合わせる</value></data>
@@ -418,6 +432,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge のバージョンを問い合わせる</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>実行中の内容を問い合わせる</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge が認識しない行を送る: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>接続</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>切断</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>デバイスを一覧表示する</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>デバイス {0} のコントロールを読み取る</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>デバイス {0} の状態を読み取る</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>仮想コントローラー {0} の送信内容を読み取る</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} を追跡する</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} の追跡をやめる</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>デバイス {0} を追加する</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>デバイス {0} のコントロールを設定する</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>デバイス {0} を削除する</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>デバイス {0} のコントロールを押したままにする</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>デバイス {0} のコントロールを離す</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>値 {0} を設定する</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ツール {0} を実行する</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}、{1} 回</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 スクリプト (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python スクリプト (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell モジュール (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>許可</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>許可しない</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} から</value></data>
@@ -5577,6 +5613,7 @@
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>ハンドルが動く範囲を測定します。スイープが実行される 4 秒間に、ハンドルを可動範囲のすべての端まで動かしてください。その間、力は加わりません。</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>ゲームテレメトリー</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch チャット</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>プログラム</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>ゲームテレメトリー</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>ドライビングゲームが送信するテレメトリーと Assetto Corsa の共有メモリーを、デバイスページの「ゲームテレメトリー」行に反映します。速度、ペダル、ギアを通常の入力と同様にマッピングしたり、マクロのトリガーにしたり、カスタム式で判定したりできます。受信中は、ホイールの RPM シフト LED もここからゲームの値を読み取ります。</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>ゲームテレメトリーを受信する</value></data>
@@ -5702,6 +5739,7 @@
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>ステアリング (-1 から 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>走行中 (0 以外)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ゲームテレメトリー</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>スクリプト値</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>速度 (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (最大に対する %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ギア (-1 リバース、0 ニュートラル)</value></data>

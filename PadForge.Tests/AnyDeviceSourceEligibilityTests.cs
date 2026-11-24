@@ -211,6 +211,7 @@ namespace PadForge.Tests
         [InlineData(InputDeviceType.HandheldButtons, false, false)]
         [InlineData(InputDeviceType.ConsumerControl, false, false)]
         [InlineData(InputDeviceType.Tablet, false, false)]
+        [InlineData(InputDeviceType.Program, false, false)]
         [InlineData(InputDeviceType.Gamepad, true, true)]
         [InlineData(InputDeviceType.Joystick, true, false)]
         [InlineData(InputDeviceType.Supplemental, true, false)]

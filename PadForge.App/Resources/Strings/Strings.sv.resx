@@ -636,6 +636,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge känner inte till den här begäran</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Begäran var tom</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge stötte på ett problem</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Ingen sådan enhet</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Enheten var inte ansluten</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Ett annat program äger enheten</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Motorn var stoppad</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>En gräns för program, enheter eller följda ting nåddes</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Begäran var för lång</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>För många begäranden per sekund</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Begärans etikett kunde inte läsas</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Ett citat i begäran var inte avslutat</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Enhetens beskrivning var fel</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Programmet presenterade sig inte först</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programmet talar en version som PadForge inte känner till</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gav inte den insticksnyckeln</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tog inte emot det här programmets anslutning</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Byt till profilen {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gå tillbaka till standardprofilen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Fråga vilken profil som är aktiv</value></data>
@@ -656,6 +670,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Fråga efter versionen av PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Fråga vad som körs</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Skicka en rad som PadForge inte känner till: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Anslut</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Koppla från</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Lista enheterna</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>Läs kontrollerna på enheten {0}</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Läs tillståndet för enheten {0}</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Läs vad virtuell handkontroll {0} skickar</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>Följ {0}</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>Sluta följa {0}</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Lägg till enheten {0}</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ställ in kontrollerna på enheten {0}</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Ta bort enheten {0}</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Håll fast kontroller på enheten {0}</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Släpp kontroller på enheten {0}</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ställ in värdet {0}</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>Kör verktyget {0}</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} gånger</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-skript (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python-skript (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-moduler (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tillåt</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tillåt inte</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Från {0}</value></data>
@@ -5622,6 +5658,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Mäter hur långt handtaget rör sig. Flytta det till alla kanter av dess omfång under de fyra sekunder som svepet pågår. Krafterna vilar under tiden.</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Spelstatistik</value></data>
   <data name="DeviceType_TwitchChat" xml:space="preserve"><value>Twitch-chatt</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Spelstatistik</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Visar statistiken som racingspel skickar, och delat minne från Assetto Corsa, på raden Spelstatistik på sidan Enheter. Mappa hastighet, pedaler och växlar som vilken indata som helst, starta makron med dem eller testa dem i ett anpassat uttryck. Medan den lyssnar läser även rattens växlingslampor för varvtal spelet härifrån.</value></data>
   <data name="Dashboard_EnableGameTelemetry" xml:space="preserve"><value>Lyssna efter spelstatistik</value></data>
@@ -5747,6 +5784,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Styrning (-1 till 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Körning (inte 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Spelstatistik</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Skriptvärde</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hastighet (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Varvtal (% av max)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Växel (-1 back, 0 friläge)</value></data>

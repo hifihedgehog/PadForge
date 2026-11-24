@@ -617,6 +617,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kennt dës Ufro net</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>D'Ufro war eidel</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ass op e Problem gestouss</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Dësen Apparat gëtt et net</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Den Apparat war net verbonnen</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>En anere Programm besëtzt den Apparat</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>D'Engine war gestoppt</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Eng Limit fir Programmer, Apparater oder Verfollegunge gouf erreecht</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>D'Ufro war ze laang</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Ze vill Ufroen an der Sekonn</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>D'Kennung vun der Ufro konnt net gelies ginn</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>En Zitat an der Ufro gouf net zougemaach</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>D'Beschreiwung vum Apparat war falsch</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>De Programm huet sech net als Éischt virgestallt</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>De Programm schwätzt eng Versioun, déi PadForge net kennt</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge huet dëse Plugin-Schlëssel net ausgestallt</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge huet d'Verbindung vun dësem Programm net ugeholl</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Op de Profil {0} wiesselen</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Op de Standardprofil zréckgoen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Froen, wéi e Profil aktiv ass</value></data>
@@ -637,6 +651,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>No der Versioun vu PadForge froen</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Froen, wat leeft</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Eng Zeil schécken, déi PadForge net kennt: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Verbannen</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Verbindung trennen</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>D'Apparater oplëschten</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>D'Bedienelementer vum Apparat {0} liesen</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>Den Zoustand vum Apparat {0} liesen</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Liesen, wat de virtuelle Controller {0} schéckt</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} verfollegen</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} net méi verfollegen</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Den Apparat {0} derbäisetzen</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>D'Bedienelementer vum Apparat {0} setzen</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Den Apparat {0} ewechhuelen</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Bedienelementer vum Apparat {0} halen</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Bedienelementer vum Apparat {0} lassloossen</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>De Wäert {0} setzen</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>D'Tool {0} ausféieren</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} Mol</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Scripten (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python-Scripten (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-Moduler (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Erlaben</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Net erlaben</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Vun {0}</value></data>
@@ -5329,6 +5365,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Steierung (-1 bis 1)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Fueren (net 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Spill-Telemetrie</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Script-Wäert</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Vitess (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% vum Max)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gang (-1 Réckwärtsgang, 0 Leerlaf)</value></data>
@@ -5475,6 +5512,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Liichtbalken</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>Liichtbalken {0}</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Maussteierung zentréieren</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Programm</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Problemopnam</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Opnam starten oder stoppen</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>D'Opnam markéieren</value></data>

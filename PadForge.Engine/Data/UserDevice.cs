@@ -722,6 +722,16 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public CustomInputState InputState { get; set; }
 
+        /// <summary>The state the device itself reported on the same pass,
+        /// before the On-Screen Keyboard and a program's holds (#597) swapped
+        /// what mappings read. The same object as <see cref="InputState"/>
+        /// when nothing swapped it. Written by Step 2 just before
+        /// <see cref="InputState"/>, from the same pooled buffers, so a
+        /// reader off the poll thread copies it and checks
+        /// <see cref="InputStateSeq"/> around the copy.</summary>
+        [XmlIgnore]
+        public CustomInputState ReadInputState { get; set; }
+
         /// <summary>Monotonic publish counter, incremented by Step 2 each
         /// time <see cref="InputState"/> is republished. Consumers that
         /// dedup "have I folded this state yet" compare THIS, not the

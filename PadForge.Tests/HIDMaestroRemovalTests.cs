@@ -193,7 +193,11 @@ namespace PadForge.Tests
             Assert.True(confirm >= 0 && stopping > confirm && wait > stopping && run > wait,
                 $"confirm {confirm}, stopping {stopping}, wait {wait}, run {run}");
             Assert.DoesNotContain("_inputService.Start", body, StringComparison.Ordinal);
-            Assert.Contains("_engineStopTask = System.Threading.Tasks.Task.Run(() => _inputService.Stop());", main, StringComparison.Ordinal);
+            // Home's button and the automation command set stop the engine
+            // through one method, which keeps the task a removal waits on (#597).
+            string automation = OffLimitsSource.Read("PadForge.App/MainWindow.Automation.cs");
+            Assert.Contains("_engineStopTask = System.Threading.Tasks.Task.Run(() => _inputService.Stop());",
+                FenceSource.Body(automation, "private void StopEngine()"), StringComparison.Ordinal);
         }
 
         /// <summary>The HIDMaestro row of the Drivers card reads the driver

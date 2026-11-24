@@ -2501,6 +2501,8 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.GameTelemetry &&
              // Chat commands are named for their words (!jump, #555).
              ud.CapType != InputDeviceType.TwitchChat &&
+             // A program names every control it declares (#597).
+             ud.CapType != InputDeviceType.Program &&
              // Analog keys are named for their legends (#468).
              ud.CapType != InputDeviceType.AnalogKeyboard &&
              ud.CapType != InputDeviceType.Tablet));

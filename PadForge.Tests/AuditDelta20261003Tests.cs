@@ -1427,7 +1427,12 @@ namespace PadForge.Tests
         {
             string src = AuditDelta20261003EngineTests.RepoText(
                 "PadForge.App/Common/Input/InputManager.Step3.SteeringLockFeedback.cs");
-            Assert.Contains("if (src == null || IsRowModifierSource(src)\n                        || !(IsSteeringKind(src.Kind)", src);
+            // The skip comes first, before a steering kind or Mouse Travel
+            // (#597) is asked about.
+            int skip = src.IndexOf("if (src == null || IsRowModifierSource(src)) continue;", StringComparison.Ordinal);
+            int steering = src.IndexOf("IsSteeringKind(src.Kind)", StringComparison.Ordinal);
+            int travel = src.IndexOf("SourceEvaluator.IsMouseTravel(src)", StringComparison.Ordinal);
+            Assert.True(skip > 0 && steering > skip && travel > skip, $"{skip} {steering} {travel}");
         }
     }
 

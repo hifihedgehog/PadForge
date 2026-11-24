@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>ഈ അഭ്യർത്ഥന PadForge-ന് അറിയില്ല</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>അഭ്യർത്ഥന ശൂന്യമായിരുന്നു</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-ൽ ഒരു പ്രശ്നം ഉണ്ടായി</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>അങ്ങനെയൊരു ഉപകരണം ഇല്ല</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>ഉപകരണം കണക്റ്റ് ചെയ്തിരുന്നില്ല</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>ഉപകരണം മറ്റൊരു പ്രോഗ്രാമിന്റെ കൈവശമാണ്</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>എഞ്ചിൻ നിർത്തിയിരുന്നു</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>പ്രോഗ്രാമുകൾ, ഉപകരണങ്ങൾ അല്ലെങ്കിൽ പിന്തുടരലുകളുടെ പരിധി എത്തി</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>അഭ്യർത്ഥന വളരെ നീണ്ടതായിരുന്നു</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>ഒരു സെക്കൻഡിൽ വളരെയധികം അഭ്യർത്ഥനകൾ</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>അഭ്യർത്ഥനയുടെ ടാഗ് വായിക്കാനായില്ല</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>അഭ്യർത്ഥനയിലെ ഒരു ഉദ്ധരണി അടച്ചിരുന്നില്ല</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>ഉപകരണത്തിന്റെ വിവരണം തെറ്റായിരുന്നു</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>പ്രോഗ്രാം ആദ്യം സ്വയം പരിചയപ്പെടുത്തിയില്ല</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>പ്രോഗ്രാം PadForge-ന് അറിയാത്ത ഒരു പതിപ്പാണ് സംസാരിക്കുന്നത്</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ആ പ്ലഗിൻ കീ നൽകിയില്ല</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ഈ പ്രോഗ്രാമിന്റെ കണക്ഷൻ സ്വീകരിച്ചില്ല</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>പ്രൊഫൈൽ {0} ലേക്ക് മാറുക</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>സ്ഥിരസ്ഥിതി പ്രൊഫൈലിലേക്ക് മടങ്ങുക</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ഏത് പ്രൊഫൈലാണ് സജീവമെന്ന് ചോദിക്കുക</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ന്റെ പതിപ്പ് ചോദിക്കുക</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>എന്താണ് പ്രവർത്തിക്കുന്നതെന്ന് ചോദിക്കുക</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ന് അറിയാത്ത ഒരു വരി അയയ്ക്കുക: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>കണക്റ്റ് ചെയ്യുക</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>ഡിസ്കണക്റ്റ് ചെയ്യുക</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>ഉപകരണങ്ങൾ പട്ടികപ്പെടുത്തുക</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ വായിക്കുക</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ അവസ്ഥ വായിക്കുക</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളർ {0} അയയ്ക്കുന്നത് വായിക്കുക</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} പിന്തുടരുക</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} പിന്തുടരുന്നത് നിർത്തുക</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>ഉപകരണം {0} ചേർക്കുക</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ സജ്ജമാക്കുക</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>ഉപകരണം {0} നീക്കം ചെയ്യുക</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ പിടിച്ചുവയ്ക്കുക</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ വിടുക</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>മൂല്യം {0} സജ്ജമാക്കുക</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>ടൂൾ {0} പ്രവർത്തിപ്പിക്കുക</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} തവണ</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 സ്ക്രിപ്റ്റുകൾ (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python സ്ക്രിപ്റ്റുകൾ (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell മോഡ്യൂളുകൾ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>അനുവദിക്കുക</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>അനുവദിക്കരുത്</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0}-ൽ നിന്ന്</value></data>
@@ -5333,6 +5369,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>സ്റ്റിയറിംഗ് (-1 മുതൽ 1 വരെ)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ഡ്രൈവിംഗ് (0 അല്ലാത്തത്)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ഗെയിം ടെലിമെട്രി</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>സ്ക്രിപ്റ്റ് മൂല്യം</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>വേഗം (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (പരമാവധിയുടെ %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ഗിയർ (-1 റിവേഴ്സ്, 0 ന്യൂട്രൽ)</value></data>
@@ -5484,6 +5521,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>സ്റ്റാർ ട്രെക്ക്: ദ നെക്സ്റ്റ് ജനറേഷനിലെ ഒരു ഫ്രെയിം: സ്റ്റാർ ട്രെക്ക് തീം Starfleet-ന്റെ ചിത്രം. Memory Alpha-യിൽ കണ്ടെത്തി.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>ലൈറ്റ്ബാർ</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} ലൈറ്റ്ബാർ</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>പ്രോഗ്രാം</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>പ്രശ്ന റെക്കോർഡിംഗ്</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിക്കുക അല്ലെങ്കിൽ നിർത്തുക</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>റെക്കോർഡിംഗിൽ അടയാളമിടുക</value></data>

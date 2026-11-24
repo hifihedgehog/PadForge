@@ -623,6 +623,20 @@
   <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge бұл сұрауды танымайды</value></data>
   <data name="Automation_Result_Empty" xml:space="preserve"><value>Сұрау бос болды</value></data>
   <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-та ақау шықты</value></data>
+  <data name="Automation_Result_UnknownDevice" xml:space="preserve"><value>Мұндай құрылғы жоқ</value></data>
+  <data name="Automation_Result_Offline" xml:space="preserve"><value>Құрылғы қосылмаған еді</value></data>
+  <data name="Automation_Result_NotOwner" xml:space="preserve"><value>Құрылғыны басқа бағдарлама иеленеді</value></data>
+  <data name="Automation_Result_EngineStopped" xml:space="preserve"><value>Қозғалтқыш тоқтатылған еді</value></data>
+  <data name="Automation_Result_TooMany" xml:space="preserve"><value>Бағдарламалар, құрылғылар немесе бақылаулар шегіне жетті</value></data>
+  <data name="Automation_Result_TooLong" xml:space="preserve"><value>Сұрау тым ұзын болды</value></data>
+  <data name="Automation_Result_RateLimited" xml:space="preserve"><value>Секундына тым көп сұрау</value></data>
+  <data name="Automation_Result_BadTag" xml:space="preserve"><value>Сұраудың тегін оқу мүмкін болмады</value></data>
+  <data name="Automation_Result_BadQuote" xml:space="preserve"><value>Сұрауда тырнақша жабылмады</value></data>
+  <data name="Automation_Result_BadDeclaration" xml:space="preserve"><value>Құрылғы сипаттамасы қате болды</value></data>
+  <data name="Automation_Result_HelloFirst" xml:space="preserve"><value>Бағдарлама алдымен өзін таныстырмады</value></data>
+  <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Бағдарлама PadForge танымайтын нұсқада сөйлейді</value></data>
+  <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge бұл плагин кілтін бермеді</value></data>
+  <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge бұл бағдарламаның қосылымын қабылдамады</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профиліне ауысу</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Әдепкі профильге оралу</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Қай профиль белсенді екенін сұрау</value></data>
@@ -643,6 +657,28 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge нұсқасын сұрау</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Не жұмыс істеп тұрғанын сұрау</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge танымайтын жолды жіберу: {0}</value></data>
+  <data name="Automation_Asked_Connected" xml:space="preserve"><value>Қосылу</value></data>
+  <data name="Automation_Asked_Disconnected" xml:space="preserve"><value>Ажырату</value></data>
+  <data name="Automation_Asked_Devices" xml:space="preserve"><value>Құрылғыларды тізімдеу</value></data>
+  <data name="Automation_Asked_Caps_Format" xml:space="preserve"><value>{0} құрылғысының басқару элементтерін оқу</value></data>
+  <data name="Automation_Asked_Read_Format" xml:space="preserve"><value>{0} құрылғысының күйін оқу</value></data>
+  <data name="Automation_Asked_Outputs_Format" xml:space="preserve"><value>Виртуалды контроллер {0} не жіберетінін оқу</value></data>
+  <data name="Automation_Asked_Subscribe_Format" xml:space="preserve"><value>{0} қадағалау</value></data>
+  <data name="Automation_Asked_Unsubscribe_Format" xml:space="preserve"><value>{0} қадағалауды тоқтату</value></data>
+  <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>{0} құрылғысын қосу</value></data>
+  <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>{0} құрылғысының басқару элементтерін орнату</value></data>
+  <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>{0} құрылғысын жою</value></data>
+  <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>{0} құрылғысының басқару элементтерін ұстап тұру</value></data>
+  <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>{0} құрылғысының басқару элементтерін жіберу</value></data>
+  <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} мәнін орнату</value></data>
+  <data name="Automation_Asked_Call_Format" xml:space="preserve"><value>{0} құралын іске қосу</value></data>
+  <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} рет</value></data>
+  <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
+  <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 скрипттері (*.ahk)|*.ahk</value></data>
+  <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
+  <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python скрипттері (*.py)|*.py</value></data>
+  <data name="Automation_Library_PowerShell" xml:space="preserve"><value>PowerShell</value></data>
+  <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell модульдері (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Рұқсат ету</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Рұқсат бермеу</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Көзі: {0}</value></data>
@@ -5363,6 +5399,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Telemetry_Target_Steering" xml:space="preserve"><value>Руль (-1-ден 1-ге дейін)</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Жүріп келеді (0 емес)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Ойын телеметриясы</value></data>
+  <data name="Macro_ScriptValue" xml:space="preserve"><value>Скрипт мәні</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Жылдамдық (миля/сағ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (макс. мәннен %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Беріліс (-1 артқа, 0 бейтарап)</value></data>
@@ -5514,6 +5551,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>«Star Trek: The Next Generation» сериалынан кадр: Star Trek тақырыбының Starfleet суреті. Memory Alpha сайтынан табылған.</value></data>
   <data name="Import_LightbarMacro" xml:space="preserve"><value>Жарық жолағы</value></data>
   <data name="Import_LightbarMacro_Format" xml:space="preserve"><value>{0} жарық жолағы</value></data>
+  <data name="DeviceType_Program" xml:space="preserve"><value>Бағдарлама</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Ақау жазбасы</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Жазуды бастау немесе тоқтату</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Жазбаға белгі қою</value></data>

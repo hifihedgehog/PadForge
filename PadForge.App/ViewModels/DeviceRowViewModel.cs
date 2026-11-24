@@ -924,6 +924,9 @@ namespace PadForge.ViewModels
              || devicePath.StartsWith("telemetry://", StringComparison.Ordinal)
              // The Twitch Chat row (#555) is fed by a channel's chat.
              || devicePath.StartsWith("twitch://", StringComparison.Ordinal)
+             // A device a program adds over the Automation pipe (#597) is
+             // fed by that program, with no HID instance behind it.
+             || devicePath.StartsWith("program://", StringComparison.Ordinal)
              // An analog keyboard row (#468) reads the keyboard's vendor
              // collection. Cloaking it would hide the keyboard's analog
              // interface from its own vendor software, which Razer's needs
@@ -1494,7 +1497,7 @@ namespace PadForge.ViewModels
         /// a row has nothing to submit. A device on a linked PC is hardware
         /// and keeps the button: its row carries the remote device's own
         /// vendor id, product id and SDL GUID.</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard" && DeviceTypeKey != "WebMenus" && DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics" && DeviceTypeKey != "KeyboardScreenKeys" && DeviceTypeKey != "NovintFalcon" && DeviceTypeKey != "GameTelemetry" && DeviceTypeKey != "TwitchChat";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard" && DeviceTypeKey != "WebMenus" && DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics" && DeviceTypeKey != "KeyboardScreenKeys" && DeviceTypeKey != "NovintFalcon" && DeviceTypeKey != "GameTelemetry" && DeviceTypeKey != "TwitchChat" && DeviceTypeKey != "Program";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.

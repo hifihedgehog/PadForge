@@ -217,10 +217,11 @@ namespace PadForge.Tests
 
         /// <summary>Windows draws its message box in its own font, never the
         /// interface's, so every question and notice a page or dialog shows is
-        /// PadForge's own ConfirmDialog. Four message boxes stay in App.xaml.cs:
-        /// the update helper's report and the already-running notice open
-        /// before PadForge reads its saved language, and the two crash dialogs
-        /// must open from any thread while PadForge fails.</summary>
+        /// PadForge's own ConfirmDialog. Three message boxes stay in App.xaml.cs:
+        /// the update helper's report opens before PadForge reads its saved
+        /// language, and the two crash dialogs must open from any thread while
+        /// PadForge fails. A second start shows the running window and has no
+        /// notice of its own (#597).</summary>
         [Fact]
         public void OnlyTheStartupAndCrashDialogsAreWindowsMessageBoxes()
         {
@@ -235,12 +236,10 @@ namespace PadForge.Tests
                     if (line.Contains("MessageBox.Show(", StringComparison.Ordinal) && !line.TrimStart().StartsWith("//", StringComparison.Ordinal))
                         calls.Add(rel);
             }
-            Assert.Equal(new[] { "App.xaml.cs", "App.xaml.cs", "App.xaml.cs", "App.xaml.cs" }, calls);
+            Assert.Equal(new[] { "App.xaml.cs", "App.xaml.cs", "App.xaml.cs" }, calls);
 
             string text = File.ReadAllText(Repo("PadForge.App", "App.xaml.cs"));
-            int alreadyRunning = text.IndexOf("MessageBox.Show(Strings.Instance.App_AlreadyRunning,", StringComparison.Ordinal);
-            int savedLanguage = text.IndexOf("PadForge.Common.UiLanguage.Apply();", StringComparison.Ordinal);
-            Assert.True(alreadyRunning > 0 && savedLanguage > alreadyRunning, "the already-running notice opens before the saved language is read");
+            Assert.DoesNotContain("App_AlreadyRunning", text, StringComparison.Ordinal);
 
             foreach (string dialog in new[] { "DreamcastScreenDialog.xaml.cs", "FlydigiScreenDialog.xaml.cs", "KeyboardScreenDialog.xaml.cs" })
                 Assert.Contains("ConfirmDialog.", File.ReadAllText(Repo("PadForge.App", "Views", dialog)));

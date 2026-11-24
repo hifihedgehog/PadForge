@@ -3,6 +3,35 @@ using System.Threading;
 
 namespace PadForge.Services.Automation
 {
+    /// <summary>What the problem recorder did with a <c>record</c> line.</summary>
+    internal enum AutomationRecordOutcome
+    {
+        /// <summary>Done. The answer is <c>ok</c> and the file's name.</summary>
+        Done,
+        /// <summary>The recorder is taken up: a recording runs already, or
+        /// the last file is still being finished.</summary>
+        Busy,
+        /// <summary>The recorder cannot do it now: nothing records to stop or
+        /// mark, its check found a private value it would let through, or the
+        /// file could not be made.</summary>
+        NotAvailable,
+    }
+
+    /// <summary>The problem recorder's answer to a <c>record</c> line, and
+    /// the file it concerns: a name with no folder, or empty.</summary>
+    internal readonly record struct AutomationRecordAnswer(AutomationRecordOutcome Outcome, string File)
+    {
+        /// <summary>Done, for the file named, or for none when
+        /// <paramref name="file"/> is empty.</summary>
+        internal static AutomationRecordAnswer Done(string file) => new(AutomationRecordOutcome.Done, file ?? string.Empty);
+
+        /// <summary>Not done: the recorder is taken up.</summary>
+        internal static AutomationRecordAnswer Busy => new(AutomationRecordOutcome.Busy, string.Empty);
+
+        /// <summary>Not done: the recorder cannot do it now.</summary>
+        internal static AutomationRecordAnswer NotAvailable => new(AutomationRecordOutcome.NotAvailable, string.Empty);
+    }
+
     /// <summary>
     /// Automation's host (#597): the one object that stands between outside
     /// programs and PadForge. It lives as long as the app, is made once the
@@ -125,21 +154,23 @@ namespace PadForge.Services.Automation
         /// <summary>The programs connected over the long-lived pipe.</summary>
         public AutomationClients Clients { get; } = new AutomationClients();
 
-        /// <summary>Starts a problem recording and gives the file's name, or
-        /// nothing when one cannot start now. Null in a build with no
+        /// <summary>Starts a problem recording and gives the name of the file
+        /// it becomes, or why it cannot start now. Null in a build with no
         /// recorder, where <c>record start</c> answers
         /// <c>error not-available</c>. Called on the interface's thread, as
         /// the other three are.</summary>
-        public Func<string> RecordStart { get; set; }
+        public Func<AutomationRecordAnswer> RecordStart { get; set; }
 
-        /// <summary>Stops the recording and gives the file's name, or nothing
-        /// when none runs. Null as <see cref="RecordStart"/> is.</summary>
-        public Func<string> RecordStop { get; set; }
+        /// <summary>Stops the recording and gives its file's name, or why it
+        /// cannot. Null as <see cref="RecordStart"/> is.</summary>
+        public Func<AutomationRecordAnswer> RecordStop { get; set; }
 
         /// <summary>Puts a marker with the text given, which can be empty,
-        /// into the recording and gives the file's name, or nothing when none
-        /// runs. Null as <see cref="RecordStart"/> is.</summary>
-        public Func<string, string> RecordMark { get; set; }
+        /// into what the recorder captures, and gives the recording's file
+        /// name, an empty name for a marker held by Keep the Last 60 Seconds
+        /// alone, or why it cannot. Null as <see cref="RecordStart"/>
+        /// is.</summary>
+        public Func<string, AutomationRecordAnswer> RecordMark { get; set; }
 
         /// <summary>Whether a recording runs now, for the state line. Null
         /// in a build with no recorder, which the state line reads as

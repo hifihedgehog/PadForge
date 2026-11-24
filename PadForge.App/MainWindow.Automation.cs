@@ -65,6 +65,10 @@ namespace PadForge
             // Nothing can release a profile a program held once the pipe is
             // gone, so it is let go, and switching by game goes on.
             _automation.TurnedOff += (s, e) => _inputService?.ReleaseExternalPin();
+            // The record lines reach the problem recorder, which is joined to
+            // the window before this, so a starting copy's --record start
+            // finds it at the tail of the engine's start.
+            ConnectProblemRecorderToAutomation();
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableAutomation)

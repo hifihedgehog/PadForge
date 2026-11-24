@@ -239,23 +239,30 @@ namespace PadForge.Tests
             Assert.Equal("error not-available", setup.Line("record mark lap three"));
 
             var marks = new List<string>();
-            setup.Host.RecordStart = () => "PadForge-recording-20261123-150000.log";
-            setup.Host.RecordStop = () => "PadForge-recording-20261123-150000.log";
-            setup.Host.RecordMark = text => { marks.Add(text); return "PadForge-recording-20261123-150000.log"; };
-            Assert.Equal("ok PadForge-recording-20261123-150000.log", setup.Line("record start"));
-            Assert.Equal("ok PadForge-recording-20261123-150000.log", setup.Line("RECORD Stop"));
-            Assert.Equal("ok PadForge-recording-20261123-150000.log", setup.Line("record mark"));
-            Assert.Equal("ok PadForge-recording-20261123-150000.log", setup.Line("record mark lap three"));
+            const string zip = "PadForge-recording-20261123-150000.zip";
+            setup.Host.RecordStart = () => AutomationRecordAnswer.Done(zip);
+            setup.Host.RecordStop = () => AutomationRecordAnswer.Done(zip);
+            setup.Host.RecordMark = text => { marks.Add(text); return AutomationRecordAnswer.Done(zip); };
+            Assert.Equal("ok " + zip, setup.Line("record start"));
+            Assert.Equal("ok " + zip, setup.Line("RECORD Stop"));
+            Assert.Equal("ok " + zip, setup.Line("record mark"));
+            Assert.Equal("ok " + zip, setup.Line("record mark lap three"));
             Assert.Equal(new[] { "", "lap three" }, marks);
             // The recorder is reached on the interface's thread, as every
             // other command's work is: eight lines so far, eight calls.
             Assert.Equal(8, setup.Ui.Invoked);
 
-            // A recorder that names no file could not do it now.
-            setup.Host.RecordStart = () => null;
-            setup.Host.RecordStop = () => string.Empty;
+            // A marker Keep the Last 60 Seconds holds has no file yet.
+            setup.Host.RecordMark = text => AutomationRecordAnswer.Done(string.Empty);
+            Assert.Equal("ok", setup.Line("record mark"));
+
+            // The recorder's refusals come back as its error words.
+            setup.Host.RecordStart = () => AutomationRecordAnswer.Busy;
+            setup.Host.RecordStop = () => AutomationRecordAnswer.NotAvailable;
+            setup.Host.RecordMark = text => AutomationRecordAnswer.NotAvailable;
             Assert.Equal("error busy", setup.Line("record start"));
-            Assert.Equal("error busy", setup.Line("record stop"));
+            Assert.Equal("error not-available", setup.Line("record stop"));
+            Assert.Equal("error not-available", setup.Line("record mark"));
         }
 
         // ── exit answers first ──

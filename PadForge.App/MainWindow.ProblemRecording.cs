@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using PadForge.Resources.Strings;
 using PadForge.Services;
+using PadForge.Services.Automation;
 
 namespace PadForge
 {
@@ -77,6 +78,59 @@ namespace PadForge
             _selectFinishedRecording = saveLastMinute || wasRecording;
             RefreshProblemRecorder();
         }
+
+        /// <summary>Hands Automation's host the recorder, so the
+        /// <c>record</c> lines and a starting copy's <c>--record</c> reach the
+        /// one the Settings row and the macro use. A start the recorder
+        /// refuses for its check or its file is said on the message line,
+        /// as a macro's is.</summary>
+        private void ConnectProblemRecorderToAutomation()
+            => ConnectRecorder(_automation, ProblemRecorder.Instance,
+                result => _viewModel.SetStatus(ProblemRecordingRefusal(result), persist: true));
+
+        /// <summary>Sets the host's four recorder entries from
+        /// <paramref name="recorder"/>. <paramref name="startRefused"/> is
+        /// told of a start refused for the recorder's check or its file, the
+        /// two refusals the user has to act on.</summary>
+        internal static void ConnectRecorder(AutomationHost host, ProblemRecorder recorder, Action<RecorderResult> startRefused)
+        {
+            host.RecordStart = () =>
+            {
+                var result = recorder.Start();
+                if (!result.Ok && result.Refusal is RecorderRefusal.Privacy or RecorderRefusal.File)
+                    startRefused?.Invoke(result);
+                // Start names the file it writes as the recording runs. The
+                // caller is given the zip that file becomes at the stop.
+                return result.Ok
+                    ? AutomationRecordAnswer.Done(Path.GetFileName(ProblemRecorder.ZipPathOf(result.Path)))
+                    : RecordRefusal(result.Refusal);
+            };
+            host.RecordStop = () =>
+            {
+                var result = recorder.Stop();
+                return result.Ok ? AutomationRecordAnswer.Done(Path.GetFileName(result.Path)) : RecordRefusal(result.Refusal);
+            };
+            host.RecordMark = text =>
+            {
+                if (!recorder.Mark(string.IsNullOrEmpty(text) ? null : text)) return AutomationRecordAnswer.NotAvailable;
+                // A marker with no recording running is held by Keep the
+                // Last 60 Seconds, which has no file yet.
+                var state = recorder.State;
+                return AutomationRecordAnswer.Done(state.Recording && !string.IsNullOrEmpty(state.File)
+                    ? Path.GetFileName(ProblemRecorder.ZipPathOf(state.File))
+                    : string.Empty);
+            };
+            host.Recording = () => recorder.State.Recording;
+        }
+
+        /// <summary>The command set's word for why the recorder did not do
+        /// it: busy while it records already or finishes a file, and not
+        /// available for everything it cannot do now.</summary>
+        internal static AutomationRecordAnswer RecordRefusal(RecorderRefusal refusal) => refusal switch
+        {
+            RecorderRefusal.AlreadyRecording or RecorderRefusal.Busy => AutomationRecordAnswer.Busy,
+            _ => AutomationRecordAnswer.NotAvailable,
+        };
 
         private static string ProblemRecordingRefusal(RecorderResult result) => result.Refusal switch
         {

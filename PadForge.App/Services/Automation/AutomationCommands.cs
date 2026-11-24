@@ -27,7 +27,7 @@ namespace PadForge.Services.Automation
     /// <item><term><c>controllers on</c>, <c>controllers off</c></term><description><c>ok on</c>, <c>ok off</c></description></item>
     /// <item><term><c>slot &lt;1-16&gt; on</c>, <c>off</c></term><description><c>ok &lt;n&gt; on</c>, <c>error unknown-slot</c></description></item>
     /// <item><term><c>snapshot</c></term><description><c>ok &lt;file name&gt;</c></description></item>
-    /// <item><term><c>record start</c>, <c>stop</c>, <c>mark [text]</c></term><description><c>ok &lt;file name&gt;</c>, <c>error not-available</c>, <c>error busy</c></description></item>
+    /// <item><term><c>record start</c>, <c>stop</c>, <c>mark [text]</c></term><description><c>ok &lt;file name&gt;</c>, <c>ok</c> for a marker only Keep the Last 60 Seconds holds, <c>error not-available</c>, <c>error busy</c></description></item>
     /// <item><term><c>version</c></term><description><c>ok &lt;version&gt; r&lt;build&gt; &lt;commit&gt;</c></description></item>
     /// <item><term><c>state</c></term><description><c>ok</c> and one line of JSON</description></item>
     /// </list>
@@ -290,13 +290,22 @@ namespace PadForge.Services.Automation
 
         /// <summary>The problem recorder, which the host is handed when the
         /// build has one. With none the answer is
-        /// <c>error not-available</c>. A recorder that names no file could
-        /// not do it now: it records already, or it does not record.</summary>
-        private static string Recorder(Func<string> call)
+        /// <c>error not-available</c>. Otherwise the recorder's own answer:
+        /// <c>ok</c> with the file's name when it names one, or the error
+        /// word for why it could not.</summary>
+        private static string Recorder(Func<AutomationRecordAnswer> call)
         {
             if (call == null) return NotAvailable;
-            string file = call();
-            return string.IsNullOrEmpty(file) ? Busy : Ok + " " + file;
+            var answer = call();
+            switch (answer.Outcome)
+            {
+                case AutomationRecordOutcome.Done:
+                    return string.IsNullOrEmpty(answer.File) ? Ok : Ok + " " + answer.File;
+                case AutomationRecordOutcome.Busy:
+                    return Busy;
+                default:
+                    return NotAvailable;
+            }
         }
 
         /// <summary><c>ok &lt;version&gt; r&lt;build&gt; &lt;commit&gt;</c>. A build

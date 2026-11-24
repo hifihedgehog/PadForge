@@ -2601,16 +2601,16 @@
             </StackPanel>
 
 
-            <!-- ═══ Automation (#597) ═══
+            <!-- ═══ Automation (#597, #600) ═══
                  The one switch for every outside program: launchers, scripts
                  and assistants. E9F5 is Segoe MDL2 Processing, two gears that
                  turn each other, work one program hands another. Its glyph
                  is no gear of Settings (E713). Under the head and the status:
-                 the level, the block an assistant's settings take, Save a
-                 Library while the build carries the libraries, the questions
-                 that wait for the user while one does, and the record of what
-                 programs asked. Under More: the same block in TOML and Save
-                 the Skill while the build can write it. -->
+                 the level, the questions that wait for the user while one
+                 does, a row for each assistant program on this PC with the
+                 copies for any other under More, the Scripts card, then the
+                 programs allowed and the record of what programs asked, each
+                 while it holds something. -->
             <StackPanel x:Name="AutomationPage" common:Reach.Class="UsersOwn" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
@@ -2674,47 +2674,11 @@
                     </StackPanel>
                 </Border>
 
-                <!-- What an assistant's MCP settings take, shown as it is
-                     copied: this exe as the command, and the switch that
-                     starts it for an assistant. -->
-                <Border x:Name="AutomationAssistantsCard" Style="{StaticResource ExtraCard}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Extras_Automation_Card_Assistants, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,12"/>
-                        <Border Background="{DynamicResource SteelFieldBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                                BorderThickness="1" CornerRadius="6" Padding="14,10">
-                            <TextBlock Text="{Binding AutomationAssistantJson}" Style="{StaticResource ExtraAddress}"
-                                       AutomationProperties.AutomationId="Automation_AssistantJson"/>
-                        </Border>
-                        <DockPanel Margin="0,10,0,0">
-                            <ui:Button DockPanel.Dock="Right" MinHeight="32" Padding="12,0" VerticalAlignment="Center"
-                                       AutomationProperties.AutomationId="Automation_CopyJson" Command="{Binding CopyAutomationJsonCommand}"
-                                       Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Text="{Binding Extras_Automation_AssistantsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
-                                       TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                        </DockPanel>
-                    </StackPanel>
-                </Border>
-
-                <!-- Save a Library: one Save dialog whose file types are the
-                     libraries the build carries. -->
-                <Border x:Name="AutomationScriptsCard" Style="{StaticResource ExtraCard}"
-                        Visibility="{Binding HasAutomationLibraries, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Extras_Automation_Card_Scripts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
-                        <controls:SettingRow MinHeight="44">
-                            <TextBlock Text="{Binding Extras_Automation_Library, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                            <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationLibrary_Click"
-                                    AutomationProperties.AutomationId="Automation_SaveLibrary"
-                                    Content="{Binding Extras_Automation_SaveLibrary, Source={x:Static strings:Strings.Instance}}"/>
-                        </controls:SettingRow>
-                        <TextBlock Text="{Binding Extras_Automation_LibraryHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
-                    </StackPanel>
-                </Border>
-
                 <!-- The questions that wait, while one does: where a keyboard
                      or a screen reader answers what the request card asks.
                      An answer here closes the card's question. Don't Allow
-                     stands first, as on the card. -->
+                     stands first, as on the card. It stands under the level,
+                     the first thing the user is asked to look at. -->
                 <Border x:Name="AutomationWaitingCard" Style="{StaticResource ExtraCard}"
                         Visibility="{Binding HasAutomationRequests, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel>
@@ -2755,25 +2719,191 @@
                     </StackPanel>
                 </Border>
 
-                <!-- What programs asked, newest first: time, program, what,
-                     and what came of it, with Undo on a call that can be
-                     undone. The list grows to 288 and then scrolls inside the
-                     card, so the page keeps its length. Clear empties it. -->
-                <Border x:Name="AutomationActivityCard" Style="{StaticResource ExtraCard}">
+                <!-- Assistants (#600 item 9): a row for each assistant program
+                     on this PC whose maker documents its Windows setup, with
+                     the program's own icon, its state and one button, and a
+                     menu under the dots. The install run as the user checks
+                     them all at once each time the page shows. Under More:
+                     Copy Settings and Copy a Message for any other assistant,
+                     and the web card's slot. -->
+                <Border x:Name="AutomationAssistantsCard" Style="{StaticResource ExtraCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Assistants, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Extras_Automation_NoAssistants, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}" TextWrapping="Wrap" Margin="0,8,0,4"
+                                   Visibility="{Binding ShowsNoAssistants, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBlock Text="{Binding AssistantsCheckFailed}" Style="{StaticResource ExtraSmall}" TextWrapping="Wrap" Margin="0,8,0,4" common:LiveText.Polite="True"
+                                   Visibility="{Binding HasAssistantsCheckFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <ItemsControl x:Name="AssistantRowsList" ItemsSource="{Binding AssistantRows}" IsTabStop="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <!-- A hairline over every row, as the
+                                         board draws one under the title. -->
+                                    <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                                        <Grid Margin="0,10,0,10" MinHeight="44">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!-- The program's own icon, read from its file,
+                                                 or a plain window while it has none. -->
+                                            <Border Width="36" Height="36" CornerRadius="8" VerticalAlignment="Center" Margin="0,0,14,0"
+                                                    Background="{DynamicResource SteelFieldBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                                <Grid>
+                                                    <Image Source="{Binding Icon}" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"
+                                                           AutomationProperties.Name="{Binding Name, TargetNullValue='', FallbackValue=''}"
+                                                           Visibility="{Binding HasIcon, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <controls:GlyphText Text="&#xE8A7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                        Visibility="{Binding HasIcon, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                                </Grid>
+                                            </Border>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,14,0">
+                                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap" common:LiveText.Polite="True"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="2" Style="{StaticResource ExtraButton}" Command="{Binding PressCommand}"
+                                                    IsEnabled="{Binding IsIdle}"
+                                                    AutomationProperties.AutomationId="{Binding ButtonId}"
+                                                    AutomationProperties.HelpText="{Binding Name}"
+                                                    Content="{Binding ButtonWords}"/>
+                                            <!-- The row's menu: Remove while the button says
+                                                 Update, Save the Skill as a ZIP… for a program
+                                                 that takes skills only as an upload, and Open
+                                                 Its Settings File on every row. -->
+                                            <Button Grid.Column="3" Width="40" Height="36" MinHeight="0" Padding="0" Margin="10,0,0,0"
+                                                    VerticalAlignment="Center" Click="AssistantMenu_Click" IsEnabled="{Binding IsIdle}"
+                                                    ToolTip="{Binding MenuName}"
+                                                    AutomationProperties.AutomationId="{Binding MenuId}">
+                                                <Path FlowDirection="LeftToRight" Width="16.2" Height="3.2" Stretch="Uniform"
+                                                      Fill="{DynamicResource TextFillColorSecondaryBrush}"
+                                                      Data="M0,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0 M6.5,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0 M13,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0"/>
+                                                <Button.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveCommand}"
+                                                                  Visibility="{Binding ShowMenuRemove, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        <MenuItem Header="{Binding Extras_Automation_SaveZip, Source={x:Static strings:Strings.Instance}}" Command="{Binding SaveZipCommand}"
+                                                                  Visibility="{Binding TakesUploadOnly, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        <MenuItem Header="{Binding Extras_Automation_OpenSettings, Source={x:Static strings:Strings.Instance}}" Command="{Binding OpenSettingsCommand}"/>
+                                                    </ContextMenu>
+                                                </Button.ContextMenu>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="{Binding Extras_Automation_AssistantsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
+                                   TextWrapping="Wrap" Margin="0,12,0,4"/>
+                        <controls:MoreRow x:Name="AutomationMore" StateKey="Extras.Automation.More"
+                                          AutomationProperties.AutomationId="Extras_More_Automation"
+                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                          Hint="{Binding Extras_More_Automation, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Extras_Automation_OtherAssistants, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Button Style="{StaticResource ExtraButton}" Command="{Binding CopyAutomationJsonCommand}"
+                                            AutomationProperties.AutomationId="Automation_CopySettings"
+                                            Content="{Binding Extras_Automation_CopySettings, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Style="{StaticResource ExtraButton}" Command="{Binding CopyAutomationMessageCommand}" Margin="10,0,0,0"
+                                            AutomationProperties.AutomationId="Automation_CopyMessage"
+                                            Content="{Binding Extras_Automation_CopyMessage, Source={x:Static strings:Strings.Instance}}"/>
+                                </controls:SettingRow>
+                                <TextBlock Text="{Binding Extras_Automation_OtherAssistantsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+                                <TextBlock Text="{Binding AutomationCopyNote}" Style="{StaticResource ExtraRowNote}" common:LiveText.Polite="True"
+                                           AutomationProperties.AutomationId="Automation_CopyNote"
+                                           Visibility="{Binding HasAutomationCopyNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <!-- Reach PadForge From the Web and its card (#600 item 11) go here. -->
+                                <ContentControl x:Name="AssistantsWebHost" Focusable="False"/>
+                            </StackPanel>
+                        </controls:MoreRow>
+                    </StackPanel>
+                </Border>
+
+                <!-- The Scripts card (#600 item 26) goes here. -->
+                <ContentControl x:Name="ScriptsCardHost" Focusable="False"/>
+
+                <!-- Save a Library: one Save dialog whose file types are the
+                     libraries the build carries. -->
+                <Border x:Name="AutomationScriptsCard" Style="{StaticResource ExtraCard}"
+                        Visibility="{Binding HasAutomationLibraries, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Scripts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                        <controls:SettingRow MinHeight="44">
+                            <TextBlock Text="{Binding Extras_Automation_Library, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationLibrary_Click"
+                                    AutomationProperties.AutomationId="Automation_SaveLibrary"
+                                    Content="{Binding Extras_Automation_SaveLibrary, Source={x:Static strings:Strings.Instance}}"/>
+                        </controls:SettingRow>
+                        <TextBlock Text="{Binding Extras_Automation_LibraryHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Allowed Programs (#600 items 5 and 16), while it lists
+                     one: each program the user allowed at Read or above,
+                     with Remove. -->
+                <Border x:Name="AutomationAllowedCard" Style="{StaticResource ExtraCard}"
+                        Visibility="{Binding HasAllowedPrograms, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Allowed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                        <ItemsControl ItemsSource="{Binding AllowedPrograms}" IsTabStop="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                                        <Grid Margin="0,10,0,10" MinHeight="44">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel VerticalAlignment="Center" Margin="0,0,14,0">
+                                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Style="{StaticResource ExtraButton}" Command="{Binding RemoveCommand}"
+                                                    AutomationProperties.AutomationId="{Binding RemoveId}"
+                                                    AutomationProperties.HelpText="{Binding Name}"
+                                                    Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="{Binding Extras_Automation_AllowedHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
+                                   TextWrapping="Wrap" Margin="0,12,0,4"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Activity (#600 item 12), while it holds a call: newest
+                     line first, a run of a program's identical calls that did
+                     nothing as one line that opens into them, Undo on the
+                     newest line of a run of changes. Every call is kept for
+                     the session up to 100,000, and a line says how many went
+                     past that. The list grows to 288 and then scrolls inside
+                     the card, so the page keeps its length. Export… writes
+                     it where the user picks, and Clear empties it. -->
+                <Border x:Name="AutomationActivityCard" Style="{StaticResource ExtraCard}"
+                        Visibility="{Binding HasAutomationActivity, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel>
                         <DockPanel LastChildFill="False" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Extras_Automation_Card_Activity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}"/>
-                            <ui:Button Command="{Binding ClearAutomationActivityCommand}" Style="{StaticResource ResetAllButton}"
-                                       IsEnabled="{Binding HasAutomationActivity}"
+                            <ui:Button DockPanel.Dock="Right" Command="{Binding ClearAutomationActivityCommand}" Style="{StaticResource ResetAllButton}"
                                        Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
                                        AutomationProperties.AutomationId="Automation_ClearActivity"/>
+                            <Button DockPanel.Dock="Right" Style="{StaticResource ExtraButton}" Click="ExportAutomationActivity_Click" Margin="0,0,10,0"
+                                    AutomationProperties.AutomationId="Automation_ExportActivity"
+                                    Content="{Binding Extras_Automation_Export, Source={x:Static strings:Strings.Instance}}"/>
                         </DockPanel>
-                        <TextBlock Text="{Binding Extras_Automation_ActivityEmpty, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
-                                   TextWrapping="Wrap" Margin="0,8,0,4"
-                                   Visibility="{Binding HasAutomationActivity, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                        <TextBlock Text="{Binding AutomationActivityDropped}" Style="{StaticResource ExtraSmall}" TextWrapping="Wrap" Margin="0,8,0,4" common:LiveText.Polite="True"
+                                   AutomationProperties.AutomationId="Automation_ActivityDropped"
+                                   Visibility="{Binding HasAutomationActivityDropped, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <ItemsControl x:Name="AutomationActivityList" ItemsSource="{Binding AutomationActivity}" MaxHeight="288" Margin="0,4,0,0"
-                                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
-                                      Visibility="{Binding HasAutomationActivity, Converter={StaticResource BoolToVisibilityConverter}}">
+                                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel">
                             <ItemsControl.Template>
                                 <ControlTemplate TargetType="ItemsControl">
                                     <ScrollViewer CanContentScroll="True" PanningMode="VerticalOnly" Focusable="True"
@@ -2800,6 +2930,7 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <!-- The program's image by its full path and its
                                              signer, under the row, so a program that copied
@@ -2811,42 +2942,47 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding Program}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                                    Margin="0,0,12,0" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding Asked}" FontSize="13" VerticalAlignment="Center" TextWrapping="Wrap"
-                                                   Margin="0,4,12,4" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <!-- What it asked, and Open after a run's count:
+                                             the run's calls list under the line. -->
+                                        <TextBlock Grid.Column="2" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,4,12,4"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"><Run Text="{Binding Asked, Mode=OneWay}"/><InlineUIContainer BaselineAlignment="Baseline"><TextBlock FontSize="13" Margin="6,0,0,0"
+                                                   Visibility="{Binding IsRun, Converter={StaticResource BoolToVisibilityConverter}}"><Hyperlink Command="{Binding OpenCommand}" Foreground="{DynamicResource EmberHotBrush}" TextDecorations="{x:Null}"><Run Text="{Binding OpenWords, Mode=OneWay}"/></Hyperlink></TextBlock></InlineUIContainer></TextBlock>
                                         <TextBlock Grid.Column="3" Text="{Binding Result}" FontSize="13" VerticalAlignment="Center"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         <Button Grid.Column="4" Style="{StaticResource ExtraButton}" MinHeight="30" Padding="11,0" Margin="12,0,0,0"
                                                 Command="{Binding UndoCommand}"
                                                 Visibility="{Binding CanUndo, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Content="{Binding Extras_Automation_Undo, Source={x:Static strings:Strings.Instance}}"/>
+                                        <!-- An open run: each call by its time, newest
+                                             first, in a list that scrolls past 160. -->
+                                        <ItemsControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding CallTimes}" MaxHeight="160" Margin="0,0,12,8"
+                                                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                                      Visibility="{Binding IsOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <ItemsControl.Template>
+                                                <ControlTemplate TargetType="ItemsControl">
+                                                    <ScrollViewer CanContentScroll="True" PanningMode="VerticalOnly" Focusable="True">
+                                                        <ItemsPresenter/>
+                                                    </ScrollViewer>
+                                                </ControlTemplate>
+                                            </ItemsControl.Template>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" FontSize="12" Typography.NumeralAlignment="Tabular" Margin="0,1,0,1"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
                 </Border>
-
-                <controls:FoldList Gap="0" Margin="0,16,0,0">
-                    <controls:MoreRow x:Name="AutomationMore" Style="{StaticResource MoreCardRow}" StateKey="Extras.Automation.More"
-                                      AutomationProperties.AutomationId="Extras_More_Automation"
-                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
-                                      Hint="{Binding AutomationMoreHint}">
-                        <StackPanel>
-                            <controls:SettingRow MinHeight="44">
-                                <TextBlock Text="{Binding Extras_Automation_TomlLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <Button Style="{StaticResource ExtraButton}" Command="{Binding CopyAutomationTomlCommand}"
-                                        AutomationProperties.AutomationId="Automation_CopyToml"
-                                        Content="{Binding Extras_Automation_CopyToml, Source={x:Static strings:Strings.Instance}}"/>
-                            </controls:SettingRow>
-                            <controls:SettingRow MinHeight="44" Visibility="{Binding CanSaveAutomationSkill, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <TextBlock Text="{Binding Extras_Automation_SkillLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationSkill_Click"
-                                        AutomationProperties.AutomationId="Automation_SaveSkill"
-                                        Content="{Binding Extras_Automation_SaveSkill, Source={x:Static strings:Strings.Instance}}"/>
-                            </controls:SettingRow>
-                        </StackPanel>
-                    </controls:MoreRow>
-                </controls:FoldList>
 
                 <TextBlock Text="{Binding Extras_Automation_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
             </StackPanel>

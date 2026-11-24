@@ -129,6 +129,43 @@
                                               VerticalAlignment="Center" Margin="0,0,8,0"
                                               WindowChrome.IsHitTestVisibleInChrome="True"
                                               AutomationProperties.AutomationId="ProfilePillStatusBar"/>
+                    <!-- The connected mark (#600 item 13): while a program is
+                         connected through Automation, its count, and a globe
+                         while one came from the web. Hover names the programs,
+                         a click opens Automation. It hides on Home and on
+                         Automation's page, where a card names them already.
+                         Its words and its state are set in code-behind
+                         (MainWindow.Automation.cs), for the reason the full
+                         screen button's foreground is. It names other
+                         programs, so it is the user's alone. -->
+                    <Button x:Name="ConnectedMark" Visibility="Collapsed" Height="32" MinHeight="0" Padding="9,0" Margin="0,0,8,0"
+                            VerticalAlignment="Center" Cursor="Hand" Click="ConnectedMark_Click"
+                            common:Reach.Class="UsersOwn"
+                            AutomationProperties.AutomationId="Main_ConnectedMark"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="MarkBorder" CornerRadius="8" BorderThickness="1" Padding="{TemplateBinding Padding}"
+                                        Background="{DynamicResource EmberWellBrush}" BorderBrush="{DynamicResource EmberEdgeBrush}">
+                                    <ContentPresenter VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="MarkBorder" Property="BorderBrush" Value="{DynamicResource EmberHotBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter TargetName="MarkBorder" Property="BorderBrush" Value="{DynamicResource EmberHotBrush}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <StackPanel Orientation="Horizontal">
+                            <controls:GlyphText x:Name="ConnectedMarkGlyph" Text="&#xE839;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                                                VerticalAlignment="Center" Margin="0,0,6,0" Foreground="{DynamicResource EmberTextBrush}"/>
+                            <TextBlock x:Name="ConnectedMarkCount" FontSize="13" VerticalAlignment="Center" Typography.NumeralAlignment="Tabular"
+                                       Foreground="{DynamicResource EmberTextBrush}"/>
+                        </StackPanel>
+                    </Button>
                     <!-- Full screen: the fourth of the window's buttons. It
                          has the size, the place and the icon weight the
                          three beside it are given in the title bar's

@@ -419,8 +419,9 @@ namespace PadForge.Tests
             Assert.Contains("RefreshAutomationText();", view, StringComparison.Ordinal);
         }
 
-        /// <summary>The host's line for where its pipe stands: stopped in
-        /// the word every extra uses, on with no program connected or with
+        /// <summary>The host's line for where its pipe stands: off, saying no
+        /// program can reach PadForge (#600 item 16), on with no program
+        /// connected or with
         /// the programs connected by name, and the two refusals with the
         /// pipe's name in them.</summary>
         [Fact]
@@ -429,7 +430,7 @@ namespace PadForge.Tests
             var s = Strings.Instance;
             var none = Array.Empty<AutomationClient>();
             Assert.Equal(s.Automation_Status_NoPrograms, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving, none));
-            Assert.Equal(s.Common_Stopped, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, ExternalControlService.PipeState.Serving, none));
+            Assert.Equal(s.Automation_Status_Off, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, ExternalControlService.PipeState.Serving, none));
             // Each connected program once, by the name it gave, then by its
             // image, in the order they connected.
             var at = DateTimeOffset.Now;
@@ -439,9 +440,9 @@ namespace PadForge.Tests
                 new AutomationClient(2, null, AutomationClientKind.Assistant, 11, "PadForge.exe", at),
                 new AutomationClient(3, "Playnite", AutomationClientKind.Script, 12, "Playnite.DesktopApp.exe", at),
             };
-            Assert.Equal(string.Format(s.Automation_Status_Connected_Format, "Playnite, PadForge.exe"),
+            Assert.Equal(string.Format(s.Automation_Status_Connected_Format, string.Format(s.Automation_Names_Two_Format, "Playnite", "PadForge.exe")),
                 MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving, two));
-            Assert.Equal(s.Common_Stopped, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, ExternalControlService.PipeState.Serving, two));
+            Assert.Equal(s.Automation_Status_Off, MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Stopped, ExternalControlService.PipeState.Serving, two));
             string taken = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.NameTaken, ExternalControlService.PipeState.Serving, none);
             string failed = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Failed, ExternalControlService.PipeState.Serving, none);
             Assert.Contains(ExternalControlService.PipeName, taken, StringComparison.Ordinal);

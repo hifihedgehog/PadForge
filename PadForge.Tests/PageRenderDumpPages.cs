@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
@@ -310,6 +311,46 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>An icon in a program's place: a square of a color of the
+        /// program's own key, so the rows' icons differ as programs' do.</summary>
+        private static ImageSource StandInIcon(string program)
+        {
+            int hash = 0;
+            foreach (char c in program ?? string.Empty) hash = hash * 31 + c;
+            var color = Color.FromRgb((byte)(80 + (hash & 0x7F)), (byte)(80 + ((hash >> 7) & 0x7F)), (byte)(80 + ((hash >> 14) & 0x7F)));
+            var drawing = new GeometryDrawing(new SolidColorBrush(color), null, new RectangleGeometry(new Rect(0, 0, 24, 24), 5, 5));
+            var image = new DrawingImage(drawing);
+            image.Freeze();
+            return image;
+        }
+
+        /// <summary>A consent store with a fixed list, for the Allowed
+        /// Programs card.</summary>
+        private sealed class DrawnConsent : IAutomationConsent
+        {
+            public readonly List<AllowedProgramView> List = new();
+            public IReadOnlyList<AllowedProgramView> Allowed => List;
+            public event EventHandler Changed { add { } remove { } }
+            public void Remove(string key) { }
+            public void AllowAssistant(string hostKey, string hostName, string program) { }
+            public void ForgetAssistant(string hostKey, string program) { }
+        }
+
+        /// <summary>The title bar's connected mark, read from the main
+        /// window's own markup, so the picture is of what the window
+        /// draws.</summary>
+        private static Button ConnectedMarkFromWindow()
+        {
+            string window = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml");
+            int from = window.IndexOf("<Button x:Name=\"ConnectedMark\"", StringComparison.Ordinal);
+            int to = window.IndexOf("</Button>", from, StringComparison.Ordinal) + "</Button>".Length;
+            string markup = window.Substring(from, to - from)
+                .Replace(" Click=\"ConnectedMark_Click\"", string.Empty)
+                .Replace("<Button x:Name=\"ConnectedMark\"", "<Button xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" "
+                    + "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:common=\"clr-namespace:PadForge.Common;assembly=PadForge\" xmlns:controls=\"clr-namespace:PadForge.Controls;assembly=PadForge\"");
+            return (Button)System.Windows.Markup.XamlReader.Parse(markup);
+        }
+
         /// <summary>The Automation and Plugins extras (#597): the catalog with
         /// its fourth group, the Automation page off, then on with programs
         /// connected, two questions waiting, a record of calls and every
@@ -336,50 +377,106 @@ namespace PadForge.Tests
                 dash.HeadTrackingFreeTrack = false;
                 dash.HeadTrackingOpenXr = false;
                 dash.AttachAutomation(host, drawing.App.Dispatcher);
+                // The assistant programs found, as the check as the user
+                // reports them, each with an icon of its own colors in place
+                // of a program's on the bench (#600 item 9).
+                var checks = new List<PadForge.Services.Install.UserInstall.AssistantCheck>();
+                void Found(string key, string entry, string skill)
+                {
+                    checks.RemoveAll(c => c.Key == key);
+                    checks.Add(new PadForge.Services.Install.UserInstall.AssistantCheck(key, @"C:\Programs\" + key + ".exe", entry, skill, null));
+                }
+                dash.AssistantInstallSeam = request => System.Threading.Tasks.Task.FromResult(new PadForge.Services.Install.InstallRun(0, null,
+                    System.Text.Json.JsonSerializer.Serialize(checks.Select(c => new { key = c.Key, program = c.Program, entry = c.Entry, skill = c.Skill, settings = c.Settings }))));
+                dash.AssistantIconSeam = program => StandInIcon(program);
+                Found("claude-code", "missing", "missing");
+                Found("vscode", "missing", "missing");
                 var page = new ExtrasPage { DataContext = dash };
                 var ground = drawing.Ground(page);
                 drawing.Step("the Extras page is made");
 
                 dash.EngineStateKey = "Running";
                 drawing.Picture(ground, "automation-catalog.png", Board, 1180, () => page.Show(null));
-                drawing.Picture(ground, "automation-off.png", Board, 900, () => page.Show("Automation"));
-
-                // On, serving, with two programs connected and every part a
-                // later build provides.
+                dash.AutomationStatus = s.Automation_Status_Off;
+                drawing.Picture(ground, "automation-off.png", Board, 1100, () => page.Show("Automation"));
+                Found("claude-code", "current", "current");
                 dash.EnableAutomation = true;
-                dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.Read;
                 dash.IsAutomationRunning = true;
-                dash.AutomationStatus = string.Format(s.Automation_Status_Connected_Format, "Playnite, powershell");
+                dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.Read;
+                dash.AutomationStatus = s.Automation_Status_NoPrograms;
+                dash.PressAssistantAsync(dash.AssistantRows.Single(r => r.Key == "claude-code"), AssistantRowButton.Add).Wait();
+                drawing.Picture(ground, "automation-on-idle.png", Board, 1100, () => page.Show("Automation"));
+                // The More of the Assistants card open, with Copy Settings
+                // and Copy a Message, after a copy.
+                var more = (Expander)page.FindName("AutomationMore");
+                dash.AutomationClipboardSeam = _ => { };
+                dash.CopyAutomationMessageCommand.Execute(null);
+                drawing.Picture(ground, "automation-more.png", Board, 1250, () => more.IsExpanded = true);
+                more.IsExpanded = false;
+
+                // On and busy: two programs connected, a question waiting,
+                // the rows in each state, two programs allowed, and a record
+                // with a run of identical reads and a change to undo.
+                Found("claude-desktop", "current", "upload");
+                Found("codex", "current", "older");
+                dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.ChangeSettings;
                 host.Libraries = PadForge.Services.Automation.AutomationLibraries.Instance;
-                host.SaveSkill = _ => { };
+                var claudeCode = host.Clients.Add("claude-code (claude.exe)", PadForge.Services.Automation.AutomationClientKind.Assistant, 5100, "PadForge.exe");
+                var steer = host.Clients.Add("Steer Assist", PadForge.Services.Automation.AutomationClientKind.Script, 5200, "AutoHotkey64.exe");
+                dash.AutomationStatus = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving,
+                    host.Clients.Snapshot());
+                dash.RefreshAssistantRowsAsync().Wait();
+                var consent = new DrawnConsent();
+                consent.List.Add(new AllowedProgramView("steer", "Steer Assist", @"AutoHotkey64.exe running C:\Scripts\steer.ahk",
+                    PadForge.Services.Automation.AutomationLevel.SendInputs, null, true));
+                consent.List.Add(new AllowedProgramView("pedals", "Pedal Curve", @"python.exe running C:\Scripts\pedals.py",
+                    PadForge.Services.Automation.AutomationLevel.SendInputs, now.AddDays(-1), false));
+                dash.AttachConsent(consent);
                 PadForge.Services.Automation.AutomationActivityEntry Call(int minute, string program, PadForge.Services.Automation.AutomationAskKind kind,
-                    bool ok, string argument = null)
-                    => new PadForge.Services.Automation.AutomationActivityEntry(now.AddMinutes(minute - 4),
+                    bool ok, string argument = null, int second = 0)
+                    => new PadForge.Services.Automation.AutomationActivityEntry(now.AddMinutes(minute - 4).AddSeconds(second),
                         new PadForge.Services.Automation.AutomationProgram(program, 4000 + minute, program + ".exe"),
                         new PadForge.Services.Automation.AutomationAsk(kind, argument), ok ? "ok" : "error not-allowed", ok);
-                var undoable = Call(1, "assistant", PadForge.Services.Automation.AutomationAskKind.ControllerOff, true, "2");
-                host.Activity.Add(Call(0, "Playnite", PadForge.Services.Automation.AutomationAskKind.ActivateProfile, true, "Forza Wheel"));
+                var undoable = Call(1, "Claude Code", PadForge.Services.Automation.AutomationAskKind.ControllerOff, true, "2") with { Spell = 3 };
                 host.Activity.Add(undoable);
-                host.Activity.Add(Call(2, "powershell", PadForge.Services.Automation.AutomationAskKind.EngineOff, false));
-                host.Activity.Add(Call(3, "Playnite", PadForge.Services.Automation.AutomationAskKind.State, true));
-                host.Activity.Add(Call(3, "AutoHotkey64", PadForge.Services.Automation.AutomationAskKind.Snapshot, true));
-                host.Activity.Add(Call(4, "Playnite", PadForge.Services.Automation.AutomationAskKind.DeactivateProfile, true));
-                host.CanUndo = e => ReferenceEquals(e, undoable);
+                host.Activity.Add(Call(2, "Steer Assist", PadForge.Services.Automation.AutomationAskKind.Own, true, "D1 LeftX"));
+                host.Activity.Add(Call(3, "Claude Code", PadForge.Services.Automation.AutomationAskKind.Read, true, "D1", 1));
+                host.Activity.Add(Call(3, "Claude Code", PadForge.Services.Automation.AutomationAskKind.Read, true, "D1", 20));
+                host.Activity.Add(Call(3, "Claude Code", PadForge.Services.Automation.AutomationAskKind.Read, true, "D1", 41));
+                host.Activity.Add(Call(4, "powershell", PadForge.Services.Automation.AutomationAskKind.EngineOff, false));
+                host.CanUndo = e => e.Spell == 3;
                 host.Undo = _ => { };
-                drawing.Picture(ground, "automation-on-idle.png", Board, 1700, () => page.Show("Automation"));
+                var telemetry = new PadForge.Services.Automation.AutomationProgram("Telemetry Bridge", 4300, "python.exe", @"C:\Tools\python.exe");
+                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(telemetry, "Allow Telemetry Bridge to work with PadForge at Read?",
+                    new[] { @"python.exe running C:\Tools\telemetry_bridge.py. It asks once." }));
+                drawing.Picture(ground, "automation-busy.png", Board, 2300, () => page.Show("Automation"));
+                dash.AutomationActivity[1].IsOpen = true;
+                drawing.Picture(ground, "automation-busy-run-open.png", Board, 2400);
+                dash.AutomationActivity[1].IsOpen = false;
+                drawing.Picture(ground, "automation-1100.png", Usual, 2600);
+                foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
                 var playnite = new PadForge.Services.Automation.AutomationProgram("Playnite", 4100, "Playnite.DesktopApp.exe");
                 string[] runs = { @"C:\Tools\SimHub\SimHubWPF.exe", "Arguments: --minimized" };
-                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(playnite, "Run a program when the profile Forza Wheel starts", runs));
-                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(
-                    new PadForge.Services.Automation.AutomationProgram("powershell", 4200, "powershell.exe"),
-                    "Import the profile Racing.pfprofile", Array.Empty<string>()));
-                drawing.Picture(ground, "automation-on.png", Board, 2100, () => page.Show("Automation"));
-                var more = (Expander)page.FindName("AutomationMore");
-                drawing.Picture(ground, "automation-more.png", Board, 2250, () => more.IsExpanded = true);
-                drawing.Picture(ground, "automation-1100.png", Usual, 2500);
-                more.IsExpanded = false;
-                drawing.Picture(ground, "automation-change-settings.png", Board, 2100,
-                    () => dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.ChangeSettings);
+                host.Clients.Remove(claudeCode.Id);
+                host.Clients.Remove(steer.Id);
+
+                // The title bar's connected mark, drawn from the window's own
+                // markup: programs on this PC, then one from the web.
+                foreach (var (file, web) in new[] { ("automation-mark.png", false), ("automation-mark-web.png", true) })
+                {
+                    var mark = ConnectedMarkFromWindow();
+                    var clients = new[]
+                    {
+                        new PadForge.Services.Automation.AutomationClient(1, "claude-code (claude.exe)", PadForge.Services.Automation.AutomationClientKind.Assistant, 1, "PadForge.exe", now),
+                        new PadForge.Services.Automation.AutomationClient(2, web ? "claude.ai" : "Steer Assist", PadForge.Services.Automation.AutomationClientKind.Script, 2, "x.exe", now),
+                    };
+                    var state = MainWindow.ConnectedMarkState(clients, c => web && c.Id == 2, "Devices", null);
+                    mark.Visibility = state.Shows ? Visibility.Visible : Visibility.Collapsed;
+                    ((TextBlock)mark.FindName("ConnectedMarkGlyph")).Text = state.Web ? "\uE774" : "\uE839";
+                    ((TextBlock)mark.FindName("ConnectedMarkCount")).Text = state.Count.ToString(System.Globalization.CultureInfo.CurrentCulture);
+                    drawing.Step(file + ": " + state.Words);
+                    drawing.PictureControl(mark, file, 12);
+                }
 
                 drawing.Picture(ground, "plugins-off.png", Board, 700, () => page.Show("Plugins"));
                 drawing.Picture(ground, "plugins-on.png", Board, 700, () => dash.EnablePlugins = true);

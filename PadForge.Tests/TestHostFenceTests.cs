@@ -392,6 +392,12 @@ namespace PadForge.Tests
             new object[] { UserInstallFile, "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)", "if (ToolSeam == null && OffLimitsForTest) return (-1, null);" },
             new object[] { UserInstallFile, "internal static IReadOnlyList<string> Pythons()", "if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();" },
             new object[] { UserInstallFile, "internal static string FindCommand(string name)", "if (FindSeam == null && OffLimitsForTest) return null;" },
+            // The page's installs start no process, and the assistant
+            // programs are looked for in no registry and no Program Files of
+            // the bench.
+            new object[] { UserInstallFile, "internal static async Task<InstallRun> RunAsUserAsync(InstallRequest request)", "if (Launcher == null && OffLimitsForTest) return new InstallRun(Failed, \"The test host starts no install.\", null);" },
+            new object[] { Services + "Install/AssistantPrograms.cs", "internal static string PackageRoot(string family)", "if (PackageRootSeam == null && UserInstall.OffLimitsForTest) return null;" },
+            new object[] { Services + "Install/AssistantPrograms.cs", "private static IReadOnlyList<string> ProgramFiles()", "if (ProgramFilesSeam == null && UserInstall.OffLimitsForTest) return Array.Empty<string>();" },
             // A device opened by a writer that makes its own handle.
             new object[] { Input + "AnalogKeyboardHid.cs", "private static SafeFileHandle CreateOverlapped(string path, uint access, uint share)", "if (DirectDeviceAccess.Refuses(path))" },
             new object[] { Passthrough, "public static IntPtr OpenHidSync(string path)", "if (DirectDeviceAccess.Refuses(path)) return new IntPtr(-1);" },
@@ -867,6 +873,9 @@ namespace PadForge.Tests
                 "PadForge.App/Common/Input/XboxImpulseHidWriter.cs",
                 "PadForge.App/Services/Ds3DriverInstaller.cs",
                 "PadForge.App/Services/Ds3PairingService.cs",
+                // Opens the report an install as the user wrote, to read and
+                // delete that one file, and a folder to read its final path.
+                "PadForge.App/Services/Install/UserInstall.cs",
                 "PadForge.Engine/Common/RawInputListener.cs",
                 "PadForge.Engine/Common/SdlDeviceWrapper.cs",
                 "PadForge.Engine/Common/Tablets/TabletNative.cs",

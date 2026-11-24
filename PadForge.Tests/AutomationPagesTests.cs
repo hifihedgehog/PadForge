@@ -78,7 +78,7 @@ namespace PadForge.Tests
 
         private static AutomationActivityEntry Entry(int minute, string program, AutomationAskKind kind, bool ok, string argument = null)
             => new AutomationActivityEntry(new DateTimeOffset(2026, 11, 23, 14, minute, 0, TimeSpan.Zero),
-                new AutomationProgram(program, 100 + minute, program + ".exe"), new AutomationAsk(kind, argument),
+                new AutomationProgram(program, 100, program + ".exe"), new AutomationAsk(kind, argument),
                 ok ? "ok" : "error not-allowed", ok);
 
         // ── The catalog ────────────────────────────────────────────────
@@ -175,11 +175,12 @@ namespace PadForge.Tests
             Assert.Contains("ItemsSource=\"{Binding AutomationLevelNames}\"", body);
         }
 
-        /// <summary>The block an assistant's settings take names this exe as
-        /// the command with --mcp, as JSON in the issue's form, and the same
-        /// two facts in TOML under the table mcp_servers.padforge. A path
-        /// with a backslash, a quote and a letter outside ASCII comes
-        /// through both whole.</summary>
+        /// <summary>Copy Settings' block for any other assistant names this
+        /// exe with --mcp in the mcpServers form. A path with a backslash, a
+        /// quote and a letter outside ASCII comes through whole. Copy
+        /// Settings and Copy a Message say Copied, or why not when another
+        /// program holds the clipboard, and the message says how to connect,
+        /// what to ask first and, while Automation is off, to turn it on.</summary>
         [Theory]
         [InlineData(@"C:\PadForge\PadForge.exe")]
         [InlineData(@"D:\Tools\Pad ""Forge""\Café\PadForge.exe")]
@@ -198,20 +199,28 @@ namespace PadForge.Tests
             Assert.EndsWith("\", \"args\": [\"--mcp\"] }\n  }\n}", vm.AutomationAssistantJson);
             // A letter outside ASCII stays itself, as a person reads the path.
             Assert.DoesNotContain("\\u00", vm.AutomationAssistantJson);
-
-            var toml = vm.AutomationAssistantToml.Split('\n');
-            Assert.Equal("[mcp_servers.padforge]", toml[0]);
-            var command = Regex.Match(toml[1], "^command = \"((?:[^\"\\\\]|\\\\.)*)\"$");
-            Assert.True(command.Success, toml[1]);
-            Assert.Equal(exe, Regex.Unescape(command.Groups[1].Value));
-            Assert.Equal("args = [\"--mcp\"]", toml[2]);
-            Assert.Equal(3, toml.Length);
-
             // The app's own: the exe that runs.
             Assert.Equal(Environment.ProcessPath, new DashboardViewModel().AutomationExePath);
-            // Copy puts the block on the clipboard, which the test host leaves alone.
+
+            var copied = new List<string>();
+            vm.AutomationClipboardSeam = copied.Add;
+            Assert.False(vm.HasAutomationCopyNote);
             vm.CopyAutomationJsonCommand.Execute(null);
-            vm.CopyAutomationTomlCommand.Execute(null);
+            Assert.Equal(vm.AutomationAssistantJson, copied[^1]);
+            Assert.Equal(Strings.Instance.Extras_Automation_Copied, vm.AutomationCopyNote);
+            vm.EnableAutomation = false;
+            vm.CopyAutomationMessageCommand.Execute(null);
+            Assert.Contains(exe, copied[^1]);
+            Assert.Contains("--mcp", copied[^1]);
+            Assert.EndsWith(Strings.Instance.Extras_Automation_Message_Off, copied[^1]);
+            vm.EnableAutomation = true;
+            Assert.DoesNotContain(Strings.Instance.Extras_Automation_Message_Off, vm.AutomationAssistantMessage);
+            // Another program holds the clipboard: the line says so.
+            vm.AutomationClipboardSeam = _ => throw new System.Runtime.InteropServices.COMException("OpenClipboard failed");
+            vm.CopyAutomationJsonCommand.Execute(null);
+            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_NotCopied_Format, "OpenClipboard failed"), vm.AutomationCopyNote);
+            // The test host's clipboard stays as it was without the seam.
+            new DashboardViewModel().CopyAutomationJsonCommand.Execute(null);
         }
 
         /// <summary>The quoted string escapes what JSON and a TOML basic
@@ -338,10 +347,12 @@ namespace PadForge.Tests
         }
 
         /// <summary>Activity lists the calls newest first, each with its
-        /// time, program, what it asked and what came of it. The oldest go
-        /// as the record drops them, and Clear empties the list.</summary>
+        /// time, program, what it asked and what came of it. A run of one
+        /// program's identical calls that did nothing is one line with its
+        /// count that opens into them, and moves to the top. Each call stays
+        /// on the record. Clear empties both.</summary>
         [Fact]
-        public void Activity_ListsNewestFirst_AndClearEmptiesIt()
+        public void Activity_ListsNewestFirst_FoldsARunOfIdenticalReads_AndClearEmptiesIt()
         {
             using var host = NewHost();
             var vm = Attached(host);
@@ -360,21 +371,43 @@ namespace PadForge.Tests
             Assert.Equal(new DateTimeOffset(2026, 11, 23, 14, 2, 0, TimeSpan.Zero).ToLocalTime().ToString("T", System.Globalization.CultureInfo.CurrentUICulture), engine.Time);
             Assert.Contains(engine.Program, engine.ToString());
 
-            // A full record takes no newcomer's read, and the list follows.
-            for (int i = 0; i < AutomationActivity.Capacity; i++)
-                host.Activity.Add(Entry(4, "script" + i, AutomationAskKind.Version, true));
-            Assert.Equal(AutomationActivity.Capacity, vm.AutomationActivity.Count);
-            Assert.Equal("script" + (AutomationActivity.Capacity - 4), vm.AutomationActivity[0].Program);
-            Assert.Equal("playnite", vm.AutomationActivity[^1].Program);
-            // An ask the program made before merges with it, and moves to
-            // the top with its count.
-            var ahk = vm.AutomationActivity.Single(a => a.Program == "ahk");
-            host.Activity.Add(Entry(3, "ahk", AutomationAskKind.State, true));
-            Assert.Equal(AutomationActivity.Capacity, vm.AutomationActivity.Count);
-            Assert.Equal("ahk", vm.AutomationActivity[0].Program);
-            Assert.Equal(2, vm.AutomationActivity[0].Entry.Asked.Count);
-            Assert.DoesNotContain(ahk, vm.AutomationActivity);
-            Assert.Equal("playnite", vm.AutomationActivity[^1].Program);
+            // Three identical reads after the others: one line with the count,
+            // at the top, that opens into its three calls, newest first.
+            var ahk = vm.AutomationActivity[0];
+            host.Activity.Add(Entry(4, "playnite", AutomationAskKind.Read, true, "d1"));
+            host.Activity.Add(Entry(5, "playnite", AutomationAskKind.Read, true, "d1"));
+            host.Activity.Add(Entry(6, "playnite", AutomationAskKind.Read, true, "d1"));
+            Assert.Equal(4, vm.AutomationActivity.Count);
+            var run = vm.AutomationActivity[0];
+            Assert.True(run.IsRun);
+            Assert.Equal(3, run.Calls.Count);
+            Assert.Equal(string.Format(Strings.Instance.Automation_Asked_Repeated_Format,
+                string.Format(Strings.Instance.Automation_Asked_Read_Format, "d1"), 3), run.Asked);
+            Assert.Empty(run.CallTimes);
+            run.OpenCommand.Execute(null);
+            Assert.True(run.IsOpen);
+            Assert.Equal(Strings.Instance.Common_Close, run.OpenWords);
+            Assert.Equal(3, run.CallTimes.Count);
+            Assert.Equal(new DateTimeOffset(2026, 11, 23, 14, 6, 0, TimeSpan.Zero).ToLocalTime().ToString("T", System.Globalization.CultureInfo.CurrentUICulture), run.CallTimes[0]);
+            // Each call stays on the record.
+            Assert.Equal(6, host.Activity.Count);
+            // Another call of the program ends the run, and the same read
+            // after it starts a new line.
+            host.Activity.Add(Entry(7, "playnite", AutomationAskKind.State, true));
+            host.Activity.Add(Entry(8, "playnite", AutomationAskKind.Read, true, "d1"));
+            Assert.False(vm.AutomationActivity[0].IsRun);
+            Assert.Equal(6, vm.AutomationActivity.Count);
+            // Another program's identical read joins its own run, never this one.
+            host.Activity.Add(Entry(9, "other", AutomationAskKind.Read, false, "d1"));
+            Assert.Equal(7, vm.AutomationActivity.Count);
+            // A refusal that did nothing folds as a read does.
+            host.Activity.Add(Entry(10, "other", AutomationAskKind.Read, false, "d1"));
+            Assert.Equal(7, vm.AutomationActivity.Count);
+            // A change is a line of its own every time.
+            host.Activity.Add(Entry(11, "playnite", AutomationAskKind.ControllerOn, true, "1"));
+            host.Activity.Add(Entry(12, "playnite", AutomationAskKind.ControllerOn, true, "1"));
+            Assert.Equal(9, vm.AutomationActivity.Count);
+            Assert.Contains(ahk, vm.AutomationActivity);
 
             vm.ClearAutomationActivityCommand.Execute(null);
             Assert.Equal(0, host.Activity.Count);
@@ -382,6 +415,61 @@ namespace PadForge.Tests
             Assert.False(vm.HasAutomationActivity);
             host.Activity.Add(Entry(5, "after", AutomationAskKind.ShowWindow, true));
             Assert.Equal(new[] { "after" }, vm.AutomationActivity.Select(a => a.Program));
+        }
+
+        /// <summary>The record keeps 100,000 calls. Past that the oldest go,
+        /// the page lets them go too, and a line says how many went, which
+        /// Clear resets.</summary>
+        [Fact]
+        public void Activity_Keeps100000Calls_AndSaysHowManyWent()
+        {
+            Assert.Equal(100_000, AutomationActivity.Capacity);
+            using var host = NewHost();
+            var vm = Attached(host);
+            host.Activity.Add(Entry(0, "first", AutomationAskKind.ControllerOff, true, "2"));
+            for (int i = 0; i < AutomationActivity.Capacity + 4; i++)
+                host.Activity.Add(Entry(1, "busy", AutomationAskKind.Read, true, "d1"));
+            Assert.Equal(AutomationActivity.Capacity, host.Activity.Count);
+            Assert.Equal(5, host.Activity.Dropped);
+            // The first program's change went with the four oldest reads,
+            // and its line went with it. The reads are one line.
+            var line = Assert.Single(vm.AutomationActivity);
+            Assert.Equal("busy", line.Program);
+            Assert.Equal(AutomationActivity.Capacity, line.Calls.Count);
+            Assert.True(vm.HasAutomationActivityDropped);
+            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_ActivityDropped_Format, 5L, AutomationActivity.Capacity), vm.AutomationActivityDropped);
+            // The text an export writes says it too, and holds every call kept.
+            string text = vm.AutomationActivityText();
+            Assert.StartsWith(string.Format(Strings.Instance.Automation_Export_Head_Format, AutomationActivity.Capacity, 5L), text);
+            Assert.Equal(AutomationActivity.Capacity + 1, text.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).Length);
+            vm.ClearAutomationActivityCommand.Execute(null);
+            Assert.Equal(0, host.Activity.Dropped);
+            Assert.False(vm.HasAutomationActivityDropped);
+            Assert.Null(vm.AutomationActivityText().Split("\r\n", StringSplitOptions.RemoveEmptyEntries).Skip(1).FirstOrDefault());
+        }
+
+        /// <summary>The export's line for a call: its time to the millisecond,
+        /// the program, its image and signer, what it asked and what came of
+        /// it in the interface's words, and the answer as it went, each in
+        /// its own tab-separated field with no tab or line break of the
+        /// program's own inside.</summary>
+        [Fact]
+        public void TheExport_WritesOneTabbedLineACall()
+        {
+            var activity = new AutomationActivity(3);
+            var when = new DateTimeOffset(2026, 11, 23, 14, 5, 6, 789, TimeSpan.Zero);
+            activity.Add(new AutomationActivityEntry(when, new AutomationProgram("pad\tdriver", 1, "pad.exe", @"C:\Tools\pad.exe", "Contoso"),
+                new AutomationAsk(AutomationAskKind.ActivateProfile, "Race\nWheel"), "error not-allowed", false));
+            var lines = activity.ToText().Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+            Assert.Equal(2, lines.Length);
+            var fields = lines[1].Split('\t');
+            Assert.Equal(6, fields.Length);
+            Assert.Equal(when.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture), fields[0]);
+            Assert.Equal("paddriver", fields[1]);
+            Assert.Equal(@"C:\Tools\pad.exe (Contoso)", fields[2]);
+            Assert.Equal(string.Format(Strings.Instance.Automation_Asked_Activate_Format, "RaceWheel"), fields[3]);
+            Assert.Equal(Strings.Instance.Automation_Result_NotAllowed, fields[4]);
+            Assert.Equal("error not-allowed", fields[5]);
         }
 
         /// <summary>Every error word the code answers a program with has a
@@ -487,29 +575,32 @@ namespace PadForge.Tests
             Assert.Equal("worker49", vm.AutomationActivity[0].Program);
         }
 
-        /// <summary>Undo shows on a call only while the record's owner says
-        /// it can be undone, and only once the host has the call that undoes
-        /// it.</summary>
+        /// <summary>Undo shows only while the record's owner says the run
+        /// can be undone, only once the host has the call that undoes it,
+        /// and once for a run of changes: on its newest line, the one step
+        /// that undoes the program's run.</summary>
         [Fact]
-        public void Undo_ShowsOnlyOnACallTheHostCanUndo()
+        public void Undo_ShowsOnceForARunOfChanges_OnlyWhileTheHostCanUndoIt()
         {
             using var host = NewHost();
             var vm = Attached(host);
-            var kept = Entry(1, "assistant", AutomationAskKind.ControllerOff, true, "2");
+            var first = Entry(1, "assistant", AutomationAskKind.ControllerOff, true, "2") with { Spell = 7 };
             var other = Entry(2, "assistant", AutomationAskKind.State, true);
-            host.Activity.Add(kept);
+            var kept = Entry(3, "assistant", AutomationAskKind.ControllerOff, true, "3") with { Spell = 7 };
+            host.Activity.Add(first);
             host.Activity.Add(other);
+            host.Activity.Add(kept);
             Assert.All(vm.AutomationActivity, a => Assert.False(a.CanUndo));
 
             // A rule with no undo call yet offers nothing.
-            host.CanUndo = e => ReferenceEquals(e, kept);
+            host.CanUndo = e => e.Spell == 7;
             Assert.All(vm.AutomationActivity, a => Assert.False(a.CanUndo));
 
             var undone = new List<AutomationActivityEntry>();
             host.Undo = e => { undone.Add(e); host.CanUndo = _ => false; };
             var row = vm.AutomationActivity.Single(a => a.CanUndo);
             Assert.Same(kept, row.Entry);
-            vm.AutomationActivity.Single(a => !a.CanUndo).UndoCommand.Execute(null);
+            vm.AutomationActivity.First(a => !a.CanUndo).UndoCommand.Execute(null);
             Assert.Empty(undone);
             row.UndoCommand.Execute(null);
             Assert.Equal(new[] { kept }, undone);
@@ -521,17 +612,14 @@ namespace PadForge.Tests
             Assert.Contains("Visibility=\"{Binding CanUndo, Converter={StaticResource BoolToVisibilityConverter}}\"", body);
         }
 
-        /// <summary>Save a Library, Save the Skill and Undo are calls later
-        /// parts give the host. Each button is absent until its call is
-        /// there, and the More row's hint names only what More holds.</summary>
+        /// <summary>Save a Library and Undo are calls later parts give the
+        /// host. Each button is absent until its call is there.</summary>
         [Fact]
         public void TheProvidedButtons_ShowOnlyOnceTheHostHasTheirCalls()
         {
             using var host = NewHost();
             var vm = Attached(host);
             Assert.False(vm.HasAutomationLibraries);
-            Assert.False(vm.CanSaveAutomationSkill);
-            Assert.Equal(Strings.Instance.Extras_More_Automation, vm.AutomationMoreHint);
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
 
@@ -541,15 +629,6 @@ namespace PadForge.Tests
             Assert.Same(libraries, vm.AutomationLibraries);
             Assert.Contains(nameof(DashboardViewModel.HasAutomationLibraries), raised);
 
-            string folder = null;
-            host.SaveSkill = f => folder = f;
-            Assert.True(vm.CanSaveAutomationSkill);
-            Assert.Equal(Strings.Instance.Extras_More_Automation_WithSkill, vm.AutomationMoreHint);
-            vm.AutomationSaveSkill(@"C:\Skills");
-            Assert.Equal(@"C:\Skills", folder);
-            host.SaveSkill = null;
-            Assert.False(vm.CanSaveAutomationSkill);
-
             // The dialog's file types are the libraries', in order.
             var s = Strings.Instance;
             Assert.Equal(s.Automation_Library_AutoHotkey_Filter + "|" + s.Automation_Library_Python_Filter + "|" + s.Automation_Library_PowerShell_Filter,
@@ -558,51 +637,69 @@ namespace PadForge.Tests
             // A view model with no host offers none of them.
             var bare = new DashboardViewModel();
             Assert.False(bare.HasAutomationLibraries);
-            Assert.False(bare.CanSaveAutomationSkill);
             Assert.Null(bare.AutomationLibraries);
-            Assert.Null(bare.AutomationSaveSkill);
+            Assert.Null(bare.AutomationActivityText());
 
             string body = PageOf("Automation");
             Assert.Contains("x:Name=\"AutomationScriptsCard\" Style=\"{StaticResource ExtraCard}\"\n                        Visibility=\"{Binding HasAutomationLibraries, Converter={StaticResource BoolToVisibilityConverter}}\"",
                 body.Replace("\r\n", "\n"));
-            Assert.Contains("<controls:SettingRow MinHeight=\"44\" Visibility=\"{Binding CanSaveAutomationSkill, Converter={StaticResource BoolToVisibilityConverter}}\">", body);
             Assert.Contains("Click=\"SaveAutomationLibrary_Click\"", body);
-            Assert.Contains("Click=\"SaveAutomationSkill_Click\"", body);
+            Assert.DoesNotContain("SaveAutomationSkill", body);
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
-            // Both write through --install with the user's own rights
-            // (#600), off the interface's thread.
+            // It writes through --install with the user's own rights (#600),
+            // off the interface's thread.
             Assert.Contains("private async void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)", code);
             Assert.Contains("var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];", code);
             Assert.Contains("await System.Threading.Tasks.Task.Run(() => libraries.Save(picked.Kind, file));", code);
-            Assert.Contains("new Microsoft.Win32.OpenFolderDialog", code);
-            Assert.Contains("await System.Threading.Tasks.Task.Run(() => save(folder));", code);
+            Assert.DoesNotContain("SaveAutomationSkill_Click", code);
         }
 
-        /// <summary>More holds Copy as TOML and Save the Skill, and the
-        /// note follows it. The record's list grows to one height and then
+        /// <summary>The page's order and what shows when (#600 item 16): the
+        /// head, the status, the level, Waiting for You, the Assistants card
+        /// with its More inside it holding Copy Settings, Copy a Message and
+        /// the web card's slot, the Scripts card's slot, then Allowed
+        /// Programs and Activity, each shown only while it holds something,
+        /// and the note last. The record's list grows to one height and then
         /// scrolls inside its card.</summary>
         [Fact]
-        public void ThePage_KeepsTomlAndTheSkillUnderMore_AndTheRecordAtOneHeight()
+        public void ThePage_ShowsItsCardsInOrder_AndHidesTheEmptyOnes()
         {
-            string body = PageOf("Automation");
-            int more = body.IndexOf("<controls:MoreRow x:Name=\"AutomationMore\" Style=\"{StaticResource MoreCardRow}\" StateKey=\"Extras.Automation.More\"", StringComparison.Ordinal);
-            Assert.True(more > 0);
-            int end = body.IndexOf("</controls:MoreRow>", more, StringComparison.Ordinal);
-            string kept = body.Substring(more, end - more), shown = body.Substring(0, more);
-            Assert.Contains("Command=\"{Binding CopyAutomationTomlCommand}\"", kept);
-            Assert.Contains("AutomationProperties.AutomationId=\"Automation_SaveSkill\"", kept);
-            Assert.Contains("Hint=\"{Binding AutomationMoreHint}\"", kept);
-            Assert.DoesNotContain("CopyAutomationTomlCommand", shown);
-            Assert.Contains("Command=\"{Binding CopyAutomationJsonCommand}\"", shown);
-            Assert.Contains("Text=\"{Binding AutomationAssistantJson}\"", shown);
-            Assert.Matches(new Regex("</controls:FoldList>\\s*<TextBlock Text=\"\\{Binding Extras_Automation_Note, Source=\\{x:Static strings:Strings.Instance\\}\\}\" Style=\"\\{StaticResource ExtraNote\\}\"/>\\s*</StackPanel>\\s*$"),
-                Regex.Replace(body.Substring(0, body.LastIndexOf("<!-- ═══ Plugins", StringComparison.Ordinal)), "\\s+$", ""));
+            string body = PageOf("Automation").Replace("\r\n", "\n");
+            int At(string text)
+            {
+                int at = body.IndexOf(text, StringComparison.Ordinal);
+                Assert.True(at > 0, "the page has no " + text);
+                return at;
+            }
+            var order = new[]
+            {
+                At("x:Name=\"AutomationStatusCard\""), At("x:Name=\"AutomationLevelCard\""), At("x:Name=\"AutomationWaitingCard\""),
+                At("x:Name=\"AutomationAssistantsCard\""), At("x:Name=\"AssistantRowsList\""), At("x:Name=\"AutomationMore\""),
+                At("x:Name=\"AssistantsWebHost\""), At("x:Name=\"ScriptsCardHost\""), At("x:Name=\"AutomationAllowedCard\""),
+                At("x:Name=\"AutomationActivityCard\""), At("Text=\"{Binding Extras_Automation_Note"),
+            };
+            Assert.Equal(order.OrderBy(o => o), order);
+            // More sits inside the Assistants card and holds the two copies
+            // and the web card's slot.
+            int more = At("<controls:MoreRow x:Name=\"AutomationMore\"");
+            string kept = body.Substring(more, body.IndexOf("</controls:MoreRow>", more, StringComparison.Ordinal) - more);
+            Assert.DoesNotContain("Style=\"{StaticResource MoreCardRow}\"", kept);
+            Assert.Contains("Command=\"{Binding CopyAutomationJsonCommand}\"", kept);
+            Assert.Contains("Command=\"{Binding CopyAutomationMessageCommand}\"", kept);
+            Assert.Contains("<ContentControl x:Name=\"AssistantsWebHost\" Focusable=\"False\"/>", kept);
+            Assert.Contains("<ContentControl x:Name=\"ScriptsCardHost\" Focusable=\"False\"/>", body);
+            Assert.DoesNotContain("AutomationAssistantJson}", body);
+            // Each card that lists something hides while it lists nothing.
+            foreach (var (card, flag) in new[] { ("AutomationWaitingCard", "HasAutomationRequests"), ("AutomationAllowedCard", "HasAllowedPrograms"),
+                         ("AutomationActivityCard", "HasAutomationActivity") })
+                Assert.Matches(new Regex("x:Name=\"" + card + "\" Style=\"\\{StaticResource ExtraCard\\}\"\\s+Visibility=\"\\{Binding " + flag + ", Converter=\\{StaticResource BoolToVisibilityConverter\\}\\}\""), body);
 
             var list = Regex.Match(body, "<ItemsControl x:Name=\"AutomationActivityList\"[^>]*>", RegexOptions.Singleline).Value;
             Assert.Contains("MaxHeight=\"288\"", list);
             Assert.Contains("ItemsSource=\"{Binding AutomationActivity}\"", list);
             Assert.Contains("VirtualizingPanel.IsVirtualizing=\"True\"", list);
             Assert.Contains("Command=\"{Binding ClearAutomationActivityCommand}\"", body);
+            Assert.Contains("Click=\"ExportAutomationActivity_Click\"", body);
         }
 
         // ── The Plugins page ───────────────────────────────────────────
@@ -681,13 +778,14 @@ namespace PadForge.Tests
             Assert.True(Has(SearchKind.Setting, "Extras_Automation_Level", "Automation"), "no level");
             Assert.True(Has(SearchKind.Setting, "Extras_Plugins_Switch", "Plugins"), "no Plugins switch");
             Assert.True(Has(SearchKind.Action, "Extras_Automation_SaveLibrary", "Automation"), "no Save a Library");
-            Assert.True(Has(SearchKind.Action, "Extras_Automation_CopyToml", "Automation"), "no Copy as TOML");
-            Assert.True(Has(SearchKind.Action, "Extras_Automation_SaveSkill", "Automation"), "no Save the Skill");
+            Assert.True(Has(SearchKind.Action, "Extras_Automation_CopySettings", "Automation"), "no Copy Settings");
+            Assert.True(Has(SearchKind.Action, "Extras_Automation_CopyMessage", "Automation"), "no Copy a Message");
+            Assert.True(Has(SearchKind.Action, "Extras_Automation_Export", "Automation"), "no Export");
             var level = index.Single(e => e.Kind == SearchKind.Setting && e.Label.Key == "Extras_Automation_Level");
             Assert.Equal("AutomationLevelIndex", level.Value?.Path);
             Assert.Equal(SearchValueKind.Choice, level.Value?.Kind);
             Assert.Equal("Automation_Level", level.TargetAutomationId);
-            Assert.True(index.Single(e => e.Kind == SearchKind.Action && e.Label.Key == "Extras_Automation_CopyToml").UnderMore);
+            Assert.True(index.Single(e => e.Kind == SearchKind.Action && e.Label.Key == "Extras_Automation_CopySettings").UnderMore);
         }
 
         /// <summary>The External Control card on the Profiles page opens the

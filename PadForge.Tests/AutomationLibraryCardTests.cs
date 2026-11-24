@@ -1,5 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using PadForge.Services.Install;
+using PadForge.Services.Plugins;
 using System.Windows;
 using PadForge.Services.Automation;
 using PadForge.ViewModels;
@@ -28,8 +34,48 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The run as the user, in this process: the test host
+        /// starts no install of its own (UserInstall.RunAsUserAsync's
+        /// fence), so the page's Save runs the words it would hand
+        /// PadForge.exe here.</summary>
+        private sealed class InProcessLauncher : IPluginLauncher
+        {
+            public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
+            {
+                var words = Regex.Matches(command.CommandLine, "\"([^\"]*)\"|(\\S+)")
+                    .Select(m => m.Groups[1].Success ? m.Groups[1].Value : m.Groups[2].Value).Skip(1).ToList();
+                int i = words.IndexOf("--install");
+                int code = UserInstall.Parse(words, ref i, out var request) == null
+                    ? UserInstall.Run(request, _ => { }, _ => { })
+                    : UserInstall.WrongCommandLine;
+                return new PluginLaunch { Process = new DoneProcess(code) };
+            }
+        }
+
+        private sealed class DoneProcess : IPluginProcess
+        {
+            private readonly int _code;
+            public DoneProcess(int code) => _code = code;
+            public int Id => 4244;
+            public bool Owns(int processId) => processId == Id;
+            public event Action<int> Exited
+            {
+                add => Task.Run(() => value(_code));
+                remove { }
+            }
+            public void Stop() { }
+            public void Dispose() { }
+        }
+
         [Fact]
         public void TheScriptsCard_ShowsOnceTheHostHasTheLibraries_AndSaveWritesTheEmbeddedFile()
+        {
+            UserInstall.Launcher = new InProcessLauncher();
+            try { ShowAndSave(); }
+            finally { UserInstall.Launcher = null; }
+        }
+
+        private static void ShowAndSave()
         {
             PageRenderDumpPages.WithApp((app, dispatcher) =>
             {

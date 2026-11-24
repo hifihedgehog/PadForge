@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services.Automation;
 using PadForge.Engine.Common;
+using PadForge.Services.Install;
 
 namespace PadForge.ViewModels
 {
@@ -132,28 +134,69 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>
-    /// One call a program made, as the Activity card on the Automation page
-    /// lists it (#597): its time, the program, what it asked, what came of
-    /// it, and Undo while the change can be undone.
+    /// One line of the Activity card on the Automation page (#597, #600): a
+    /// call a program made, or a run of one program's identical calls that
+    /// did nothing, which shows once with its count and opens into the
+    /// calls. Its time, the program, what it asked, what came of it, and
+    /// Undo on the newest line of a run of changes the host can undo.
     /// </summary>
     public sealed class AutomationActivityItem : ObservableObject
     {
         private readonly Action<AutomationActivityItem> _undo;
-        private bool _canUndo;
+        private readonly List<AutomationActivityEntry> _calls = new();
+        private bool _canUndo, _isOpen;
+        private int _asks;
 
         internal AutomationActivityItem(AutomationActivityEntry entry, Action<AutomationActivityItem> undo)
         {
-            Entry = entry;
             _undo = undo;
             UndoCommand = new RelayCommand(() => { if (_canUndo) _undo?.Invoke(this); });
+            OpenCommand = new RelayCommand(() => IsOpen = !IsOpen);
+            _calls.Add(entry);
+            _asks = Math.Max(1, entry.Asked.Count);
             RefreshText();
         }
 
-        /// <summary>The call as the record holds it.</summary>
-        internal AutomationActivityEntry Entry { get; }
+        /// <summary>The newest call of the line, as the record holds it. Its
+        /// Undo is the line's.</summary>
+        internal AutomationActivityEntry Entry => _calls[^1];
 
-        /// <summary>When the call came, in the interface language's time of
-        /// day.</summary>
+        /// <summary>The calls of the line, oldest first.</summary>
+        internal IReadOnlyList<AutomationActivityEntry> Calls => _calls;
+
+        /// <summary>Whether a call of the same program joins this line: the
+        /// line did nothing, and the call asks the same, names the same and
+        /// came to the same.</summary>
+        internal bool Joins(AutomationActivityEntry call)
+        {
+            var e = Entry;
+            return !e.Keeps && !call.Keeps && Equals(e.Program, call.Program)
+                && e.Asked.Kind == call.Asked.Kind
+                && string.Equals(e.Asked.Argument, call.Asked.Argument, StringComparison.Ordinal)
+                && string.Equals(e.Asked.Detail, call.Asked.Detail, StringComparison.Ordinal)
+                && e.Succeeded == call.Succeeded && e.ReadsOnly == call.ReadsOnly
+                && string.Equals(e.Result, call.Result, StringComparison.Ordinal);
+        }
+
+        /// <summary>Adds a call that <see cref="Joins"/> the line.</summary>
+        internal void Add(AutomationActivityEntry call)
+        {
+            _calls.Add(call);
+            _asks += Math.Max(1, call.Asked.Count);
+            RefreshText();
+        }
+
+        /// <summary>Lets the oldest call go, as the record did.</summary>
+        internal void DropOldest()
+        {
+            if (_calls.Count == 0) return;
+            _asks -= Math.Max(1, _calls[0].Asked.Count);
+            _calls.RemoveAt(0);
+            if (_calls.Count > 0) RefreshText();
+        }
+
+        /// <summary>When the newest call came, in the interface language's
+        /// time of day.</summary>
         public string Time { get; private set; }
 
         /// <summary>The program that made it.</summary>
@@ -166,7 +209,7 @@ namespace PadForge.ViewModels
         /// <summary>Whether <see cref="ProgramImage"/> has words.</summary>
         public bool HasProgramImage => !string.IsNullOrEmpty(ProgramImage);
 
-        /// <summary>What it asked, in plain words.</summary>
+        /// <summary>What it asked, in plain words, with the run's count.</summary>
         public string Asked { get; private set; }
 
         /// <summary>What came of it, in the interface's words: done, or why
@@ -174,9 +217,50 @@ namespace PadForge.ViewModels
         /// (<see cref="Entry"/>) and never show here.</summary>
         public string Result { get; private set; }
 
+        /// <summary>Whether the line holds more than one call and
+        /// opens.</summary>
+        public bool IsRun => _calls.Count > 1;
+
+        /// <summary>Whether the run is open, its calls listed under it.</summary>
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set
+            {
+                if (!SetProperty(ref _isOpen, value)) return;
+                OnPropertyChanged(nameof(OpenWords));
+                OnPropertyChanged(nameof(CallTimes));
+            }
+        }
+
+        /// <summary>Open, or Close while open.</summary>
+        public string OpenWords => _isOpen ? Strings.Instance.Common_Close : Strings.Instance.Extras_Automation_OpenRun;
+
+        public RelayCommand OpenCommand { get; }
+
+        /// <summary>The run's calls while it is open, newest first, each by
+        /// its time to the second. Empty while closed.</summary>
+        public IReadOnlyList<string> CallTimes
+        {
+            get
+            {
+                if (!_isOpen) return Array.Empty<string>();
+                var times = new string[_calls.Count];
+                for (int i = 0; i < _calls.Count; i++)
+                {
+                    var call = _calls[_calls.Count - 1 - i];
+                    string time = call.Time.ToLocalTime().ToString("T", CultureInfo.CurrentUICulture);
+                    times[i] = call.Asked.Count > 1
+                        ? string.Format(CultureInfo.CurrentCulture, Strings.Instance.Automation_Asked_Repeated_Format, time, call.Asked.Count)
+                        : time;
+                }
+                return times;
+            }
+        }
+
         /// <summary>Whether the change can be undone now. The record's
-        /// owner says so (AutomationHost.CanUndo), and the row shows Undo
-        /// only then.</summary>
+        /// owner says so (AutomationHost.CanUndo), and the newest line of
+        /// the run shows Undo only then.</summary>
         public bool CanUndo
         {
             get => _canUndo;
@@ -189,22 +273,26 @@ namespace PadForge.ViewModels
         internal void RefreshText()
         {
             var s = Strings.Instance;
-            Time = Entry.Time.ToLocalTime().ToString("T", CultureInfo.CurrentUICulture);
-            var who = Entry.Program;
+            var entry = Entry;
+            Time = entry.Time.ToLocalTime().ToString("T", CultureInfo.CurrentUICulture);
+            var who = entry.Program;
             string name = ShownText.Clean(who?.Name);
             string imageName = ShownText.Clean(who?.ImageName);
             Program = !string.IsNullOrEmpty(name) ? name
                 : !string.IsNullOrEmpty(imageName) ? imageName
                 : s.Automation_Program_Unknown;
             ProgramImage = AutomationRequestItem.ImageLine(who);
-            Asked = Entry.Asked.Text;
-            Result = Entry.Succeeded ? s.Automation_Result_Done : RefusalWords(Entry.Result);
+            Asked = _calls.Count == 1 ? entry.Asked.Text : (entry.Asked with { Count = _asks, Mixed = false }).Text;
+            Result = entry.Succeeded ? s.Automation_Result_Done : RefusalWords(entry.Result);
             OnPropertyChanged(nameof(Time));
             OnPropertyChanged(nameof(Program));
             OnPropertyChanged(nameof(ProgramImage));
             OnPropertyChanged(nameof(HasProgramImage));
             OnPropertyChanged(nameof(Asked));
             OnPropertyChanged(nameof(Result));
+            OnPropertyChanged(nameof(IsRun));
+            OnPropertyChanged(nameof(OpenWords));
+            if (_isOpen) OnPropertyChanged(nameof(CallTimes));
         }
 
         /// <summary>Every error word the command set and the control pipe
@@ -284,5 +372,180 @@ namespace PadForge.ViewModels
         /// <summary>What a screen reader says for the row in a list.</summary>
         public override string ToString() => Time + ", " + Program + (HasProgramImage ? " (" + ProgramImage + ")" : string.Empty)
             + ", " + Asked + ", " + Result;
+    }
+
+    /// <summary>What an assistant row's one button does.</summary>
+    public enum AssistantRowButton { Add, Remove, Update, None }
+
+    /// <summary>
+    /// One assistant program on this PC, as the Assistants card on the
+    /// Automation page lists it (#600 item 9): its icon, read from the
+    /// program's own file, its name, its state in a line, its one button and
+    /// its menu. The page fills it from the install run's check
+    /// (UserInstall.CheckAll) and from the programs connected now.
+    /// </summary>
+    public sealed class AssistantRowItem : ObservableObject
+    {
+        private string _line;
+        private AssistantRowButton _button = AssistantRowButton.Add;
+        private bool _busy, _showMenuRemove;
+        private ImageSource _icon;
+
+        internal AssistantRowItem(AssistantHost host, Func<AssistantRowItem, AssistantRowButton, System.Threading.Tasks.Task> press,
+            Action<AssistantRowItem> saveZip, Action<AssistantRowItem> openSettings)
+        {
+            Host = host;
+            PressCommand = new RelayCommand(() => { if (!_busy && _button != AssistantRowButton.None) _ = press(this, _button); });
+            RemoveCommand = new RelayCommand(() => { if (!_busy) _ = press(this, AssistantRowButton.Remove); });
+            SaveZipCommand = new RelayCommand(() => saveZip?.Invoke(this));
+            OpenSettingsCommand = new RelayCommand(() => openSettings?.Invoke(this));
+        }
+
+        /// <summary>The program PadForge adds itself to.</summary>
+        internal AssistantHost Host { get; }
+
+        /// <summary>The program's key: claude-code, codex, ...</summary>
+        public string Key => Host.Key;
+
+        /// <summary>The program's name, its maker's own.</summary>
+        public string Name => Host.Name;
+
+        /// <summary>The program's own file, whose icon the row shows.</summary>
+        internal string Program { get; set; }
+
+        /// <summary>The program's settings file, which Open Its Settings File
+        /// opens, or null.</summary>
+        internal string SettingsFile { get; set; }
+
+        /// <summary>The check's words for PadForge's entry and skill.</summary>
+        internal string Entry { get; set; } = "missing";
+        internal string Skill { get; set; } = "missing";
+
+        /// <summary>The program's icon, or null for the plain glyph.</summary>
+        public ImageSource Icon
+        {
+            get => _icon;
+            internal set { if (SetProperty(ref _icon, value)) OnPropertyChanged(nameof(HasIcon)); }
+        }
+
+        public bool HasIcon => _icon != null;
+
+        /// <summary>The state in words, the reason when the last try
+        /// failed.</summary>
+        public string Line
+        {
+            get => _line;
+            internal set => SetProperty(ref _line, value);
+        }
+
+        /// <summary>What the button does.</summary>
+        public AssistantRowButton Button
+        {
+            get => _button;
+            internal set
+            {
+                if (!SetProperty(ref _button, value)) return;
+                OnPropertyChanged(nameof(ButtonWords));
+                OnPropertyChanged(nameof(HasButton));
+            }
+        }
+
+        public string ButtonWords => _button switch
+        {
+            AssistantRowButton.Remove => Strings.Instance.Common_Remove,
+            AssistantRowButton.Update => Strings.Instance.Extras_Automation_Update,
+            _ => Strings.Instance.Common_Add,
+        };
+
+        public bool HasButton => _button != AssistantRowButton.None;
+
+        /// <summary>Whether an install of the row runs now: the buttons rest
+        /// until it ends.</summary>
+        public bool IsBusy
+        {
+            get => _busy;
+            internal set { if (SetProperty(ref _busy, value)) OnPropertyChanged(nameof(IsIdle)); }
+        }
+
+        public bool IsIdle => !_busy;
+
+        /// <summary>Whether the menu holds Remove: the button says Update, or
+        /// the skill is from a newer PadForge, so Remove is not on the row's
+        /// face.</summary>
+        public bool ShowMenuRemove
+        {
+            get => _showMenuRemove;
+            internal set => SetProperty(ref _showMenuRemove, value);
+        }
+
+        /// <summary>Whether the menu holds Save the Skill as a ZIP…: the
+        /// program takes skills only as an upload.</summary>
+        public bool TakesUploadOnly => Host.SkillsFolder == null;
+
+        /// <summary>The menu button's words for a screen reader and hover.</summary>
+        public string MenuName => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_RowMenu_Format, Name);
+
+        /// <summary>The IDs of the row's controls.</summary>
+        public string ButtonId => "Automation_Assistant_" + Key;
+        public string MenuId => "Automation_AssistantMenu_" + Key;
+
+        public RelayCommand PressCommand { get; }
+        public RelayCommand RemoveCommand { get; }
+        public RelayCommand SaveZipCommand { get; }
+        public RelayCommand OpenSettingsCommand { get; }
+
+        /// <summary>The words above in the language in use now.</summary>
+        internal void RefreshWords()
+        {
+            OnPropertyChanged(nameof(ButtonWords));
+            OnPropertyChanged(nameof(MenuName));
+        }
+
+        /// <summary>What a screen reader says for the row in a list.</summary>
+        public override string ToString() => Name + ". " + Line;
+    }
+
+    /// <summary>One program the user allowed, as the Allowed Programs card
+    /// lists it (#600 items 5 and 16), with Remove.</summary>
+    public sealed class AllowedProgramItem
+    {
+        internal AllowedProgramItem(AllowedProgramView program, Action<string> remove)
+        {
+            Key = program.Key;
+            Name = ShownText.Clean(program.Name ?? string.Empty);
+            var s = Strings.Instance;
+            string level = program.Level switch
+            {
+                AutomationLevel.Read => s.Extras_Automation_Level_Read,
+                AutomationLevel.SendInputs => s.Extras_Automation_Level_SendInputs,
+                AutomationLevel.ChangeSettings => s.Extras_Automation_Level_ChangeSettings,
+                _ => s.Extras_Automation_Level_Commands,
+            };
+            string when = program.ConnectedNow ? s.Automation_Allowed_ConnectedNow
+                : program.LastUsed is { } last ? string.Format(CultureInfo.CurrentCulture, s.Automation_Allowed_LastUsed_Format,
+                    last.ToLocalTime().ToString("g", CultureInfo.CurrentUICulture))
+                : s.Automation_Allowed_NeverUsed;
+            string who = ShownText.Clean(program.Who ?? string.Empty);
+            Line = string.Format(CultureInfo.CurrentCulture, s.Automation_Allowed_Line_Format, who, level, when).Trim();
+            RemoveCommand = new RelayCommand(() => remove?.Invoke(Key));
+        }
+
+        internal string Key { get; }
+
+        /// <summary>The program's name.</summary>
+        public string Name { get; }
+
+        /// <summary>Who it is, its level, and when it last connected.</summary>
+        public string Line { get; }
+
+        public string RemoveId => "Automation_AllowedRemove_" + LiveIdOf(Key);
+
+        public RelayCommand RemoveCommand { get; }
+
+        /// <summary>A key in a form an element's ID can carry.</summary>
+        internal static string LiveIdOf(string key) => PadForge.Services.Catalog.LiveCatalog.ShortId(key ?? string.Empty);
+
+        /// <summary>What a screen reader says for the row in a list.</summary>
+        public override string ToString() => Name + ". " + Line;
     }
 }

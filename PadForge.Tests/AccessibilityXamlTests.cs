@@ -74,6 +74,8 @@ namespace PadForge.Tests
                 "The dialog gives the button a TextBlock of text in code."),
             ("PadForge.App/Views/IconPicker.xaml", XamlA11yAudit.BtnNoTooltip, "Button|ClearButton",
                 "The picker sets the button's text in code (ClearButton.Content = clearLabel)."),
+            ("PadForge.App/MainWindow.xaml", XamlA11yAudit.BtnNoTooltip, "Button|Main_ConnectedMark",
+                "The window sets the mark's hover text and screen-reader name in code, the programs connected (ShowConnectedMark)."),
             ("PadForge.App/Views/PadPage.xaml", XamlA11yAudit.ItemsUnnamed, "DataGrid|MappingDataGrid",
                 "MappingItem.ToString reads each row's target and its source."),
             ("PadForge.App/Controls/CurveEditor.xaml", XamlA11yAudit.MouseOnly, "Canvas|ChartCanvas",

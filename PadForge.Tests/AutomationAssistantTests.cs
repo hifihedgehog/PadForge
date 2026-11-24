@@ -508,7 +508,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AnAssistantsChanges_KeepTheirOwnEntriesAndUndo_AndItsReadsMergeAndGiveWay()
+        public void AnAssistantsChanges_KeepTheirOwnEntriesAndUndo_AndItsReadsStayAsTheyCame()
         {
             var activity = new AutomationActivity();
             var me = new AutomationProgram("me", 1, "me.exe", @"C:\me.exe");
@@ -522,21 +522,15 @@ namespace PadForge.Tests
             activity.Add(Tool("set_setting", "Polling Rate", 2, false));
             Assert.Equal(new[] { 1, 2 }, activity.Snapshot().Select(e => e.Spell));
             Assert.True(activity.Snapshot().All(e => e.Keeps));
-            // Reads of one tool and one detail are one entry with a count.
-            // Reads of another detail are an entry of their own.
+            // Reads stay one entry a call (#600): the page folds a run of
+            // them into one line.
             activity.Add(Tool("get_setting", "Polling Rate", 0, true));
             activity.Add(Tool("get_setting", "Polling Rate", 0, true));
             activity.Add(Tool("get_setting", "Deadzone", 0, true));
             var reads = activity.Snapshot().Where(e => e.Asked.Argument == "get_setting").ToList();
-            Assert.Equal(new[] { 2, 1 }, reads.Select(e => e.Asked.Count));
-            // A read records nothing done, so a flood of the program's own
-            // reads gives way before its changes and their Undo.
+            Assert.Equal(new[] { 1, 1, 1 }, reads.Select(e => e.Asked.Count));
+            // A read records nothing done.
             Assert.False(reads[0].Keeps);
-            for (int i = 0; i < AutomationActivity.PerProgram * 3; i++)
-                activity.Add(Tool("get_setting", "Setting " + i, 0, true));
-            var left = activity.Snapshot();
-            Assert.Equal(AutomationActivity.PerProgram, left.Count);
-            Assert.Equal(new[] { 1, 2 }, left.Where(e => e.Spell != 0).Select(e => e.Spell));
         }
 
         [Fact]

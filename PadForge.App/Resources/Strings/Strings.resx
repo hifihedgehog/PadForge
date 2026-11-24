@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, connect by address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Full Speed, Custom Formats</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Other assistants, assistants on the web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Look around with a head tracker or VR headset while both thumbs stay on the buttons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Map the speed, pedals and gears a driving game sends, like any input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Send controller motion to emulators that read a DSU motion source.</value></data>
@@ -579,21 +578,16 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programs can switch profiles and release them, start and stop the engine, turn virtual controllers on and off, show and hide the window, close PadForge, save a diagnostics snapshot and ask what is running.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Everything at Commands, and programs can see devices, virtual controllers, mappings, profiles and settings, follow the inputs of every device as they happen, and show you a place in PadForge. A program at Read sees every key pressed on every device, keys typed into windows that run as administrator included.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Everything at Read, and programs can add devices of their own and drive them, hold a control of any device and hand named values to macro triggers.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Everything at Send Inputs, and programs can change what you can change on the pages.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Everything at Send Inputs, and programs can change what you can change on the pages. Some changes always ask you first on PadForge’s question card.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistants</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Paste this into an assistant’s MCP settings. The assistant then works with PadForge at the level above.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copy as TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistants That Read TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Add puts PadForge, with its skill, into that assistant. It then works at the level above, and its words show beside what it points at, under its name.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Script Library</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Save a Library…</value></data>
   <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>One file for AutoHotkey v2, Python or PowerShell. A script that loads it reads devices and drives mappings at the level above.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Waiting for You</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activity</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>No program has called yet. Each call is listed here with what came of it.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Undo</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill for Assistants</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Save the Skill…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge could not save it: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>While a program at Read or higher is connected, it sees what is pressed on every device, keyboards included.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
@@ -685,7 +679,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>A game mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Another program holds the pipe name {0}. Close that program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows refused the pipe {0}, so programs cannot connect.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>No program is connected.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>On. No program is connected.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connected: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Unknown program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signed by {1}</value></data>
@@ -6475,4 +6469,52 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is let go before the hold time. A longer press does nothing.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Opens or closes the keyboard when Opens With is pressed three times within the press window.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Opens or closes the keyboard when the press window ends after one press of Opens With. A second press inside the window cancels it.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Off. No program can reach PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} and {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Activity: {0} calls, oldest first. Calls that went before them: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} older calls went. Activity keeps the newest {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Export…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Export Activity</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Text file</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Open</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Update</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>More for {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Save the Skill as a ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Open Its Settings File</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Saved. In {0}, add {1} under {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} has no settings file yet. Add makes one.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge finds no assistant program on this PC whose maker documents a setup on Windows. Copy Settings under More works for any other.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge could not check the assistant programs: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Not added.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Added.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Added. Connected now.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Added. It has not connected since. An assistant that was open sees PadForge after it is closed and opened again.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Added for another PadForge. Update points it at this one.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Added. Its PadForge skill is older than this PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Added, without its PadForge skill.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Added. Its PadForge skill comes from a newer PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>It takes skills only as an upload.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Added assistants reach PadForge once Automation is on.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Adding…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Removing…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Updating…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>It did not finish: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Other Assistants</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>For an assistant not listed above: Copy Settings gives the entry for its MCP settings, and Copy a Message gives a short text for any chat that says how to connect and what to ask first.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Copy Settings</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Copy a Message</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copied.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Not copied: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Connect to PadForge, the controller mapper on my PC. It is a local MCP server that runs over stdio: the command is {0}, with the argument --mcp. As JSON settings: {1} Once connected, call its status tool first, then ask me what I want to set up, for example: “Show me where to map my controller’s triggers.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge’s Automation is off now: turn it on in PadForge under Extras, Automation, first.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Allowed Programs</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>A program that wants Read or more asks once, the first time it connects, and gets the level it asks for, up to the level above. An assistant you add above is allowed by that.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Connected now.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Last used {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Not used yet.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Connected: {0}. Click to open Automation.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>On this PC: {0}. From the web: {1}. Click to open Automation.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Connected from the web: {0}. Click to open Automation.</value></data>
 </root>

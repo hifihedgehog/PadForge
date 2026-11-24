@@ -58,6 +58,11 @@ namespace PadForge.Views
         /// the catalog is.</summary>
         public string CurrentExtra { get; private set; }
 
+        /// <summary>Raised after an extra's page or the catalog shows. The
+        /// window's connected mark hides while Automation's page shows
+        /// (#600 item 13).</summary>
+        public event EventHandler ExtraShown;
+
         /// <summary>Shows the catalog. Coming back from an extra's page, the
         /// keyboard focus goes to that extra's tile, so the next Tab goes on
         /// from where the user left.</summary>
@@ -84,6 +89,8 @@ namespace PadForge.Views
             CurrentExtra = key;
             PageScroll.ScrollToTop();
             FollowDisplays();
+            RefreshAutomationPage();
+            ExtraShown?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
@@ -242,24 +249,52 @@ namespace PadForge.Views
         internal static string LibraryFilter(IReadOnlyList<PadForge.Services.Automation.AutomationLibrary> libraries)
             => string.Join("|", System.Linq.Enumerable.Select(libraries, l => l.Filter));
 
-        /// <summary>Save the Skill: the folder the user picks gets the skill
-        /// an assistant reads from disk.</summary>
-        private async void SaveAutomationSkill_Click(object sender, RoutedEventArgs e)
+        /// <summary>Export Activity…: the record as text, where the user
+        /// picks. Activity leaves memory only this way or inside a problem
+        /// recording (#600 item 12).</summary>
+        private async void ExportAutomationActivity_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationSaveSkill is not { } save) return;
-            string title = PadForge.Resources.Strings.Strings.Instance.Extras_Automation_SaveSkill.TrimEnd('…');
-            var dialog = new Microsoft.Win32.OpenFolderDialog { Title = title };
+            if (DataContext is not ViewModels.DashboardViewModel vm) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            string title = s.Extras_Automation_ExportTitle;
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = title,
+                FileName = "PadForge Activity " + DateTime.Now.ToString("yyyy-MM-dd HHmm", System.Globalization.CultureInfo.InvariantCulture) + ".txt",
+                DefaultExt = ".txt",
+                Filter = s.Extras_Automation_ExportFilter + "|*.txt",
+                AddExtension = true,
+                OverwritePrompt = true,
+            };
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
-            string folder = dialog.FolderName;
+            string file = dialog.FileName;
+            string text = vm.AutomationActivityText() ?? string.Empty;
             try
             {
-                await System.Threading.Tasks.Task.Run(() => save(folder));
+                await System.Threading.Tasks.Task.Run(() => System.IO.File.WriteAllText(file, text, new System.Text.UTF8Encoding(true)));
             }
             catch (Exception ex)
             {
-                ConfirmDialog.Notice(Window.GetWindow(this), title,
-                    string.Format(PadForge.Resources.Strings.Strings.Instance.Extras_Automation_NotSaved_Format, ex.Message));
+                ConfirmDialog.Notice(Window.GetWindow(this), title, string.Format(s.Extras_Automation_NotSaved_Format, ex.Message));
             }
+        }
+
+        /// <summary>The Automation page asks which assistant programs are on
+        /// this PC each time it shows (#600 item 9).</summary>
+        private void RefreshAutomationPage()
+        {
+            if (CurrentExtra == "Automation" && DataContext is ViewModels.DashboardViewModel vm)
+                _ = vm.RefreshAssistantRowsAsync();
+        }
+
+        /// <summary>A row's menu button opens its menu under it.</summary>
+        private void AssistantMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement button || button.ContextMenu is not { } menu) return;
+            menu.PlacementTarget = button;
+            menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            menu.DataContext = button.DataContext;
+            menu.IsOpen = true;
         }
 
         // ── Plugins (#597) ──

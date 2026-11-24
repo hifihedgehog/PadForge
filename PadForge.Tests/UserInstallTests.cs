@@ -416,7 +416,9 @@ namespace PadForge.Tests
             Assert.Equal(0, code);
             Assert.Null(error);
             Assert.Equal(Exe, launcher.Started.Program);
-            Assert.Equal("\"" + Exe + "\" --install skill \"C:\\My Skills\"", launcher.Started.CommandLine);
+            // The run writes what it says into a report in the user's temp
+            // folder, which the page reads back (#600).
+            Assert.StartsWith("\"" + Exe + "\" --install skill \"C:\\My Skills\" --report ", launcher.Started.CommandLine);
 
             launcher.ExitCode = 1;
             (code, error) = await UserInstall.AsUserAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
@@ -444,7 +446,8 @@ namespace PadForge.Tests
             Assert.Equal(UserInstall.Done, code);
             Assert.Null(error);
             Assert.Equal(Exe, runs.Single().Item1);
-            Assert.Equal(new[] { "--install", "autohotkey" }, runs.Single().Item2);
+            Assert.Equal(new[] { "--install", "autohotkey", "--report" }, runs.Single().Item2.Take(3));
+            Assert.Equal(4, runs.Single().Item2.Count);
         }
 
         /// <summary>A folder of the user's named PadForge, with files of its

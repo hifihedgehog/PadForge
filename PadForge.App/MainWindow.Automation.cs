@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using PadForge.Common;
@@ -55,8 +56,18 @@ namespace PadForge
         {
             _automation = new AutomationHost(new AutomationTarget(this), new DispatcherAutomationUi(Dispatcher));
             _automation.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(ShowAutomationState));
-            // The status line names the programs connected.
+            // The status line and the title bar's mark name the programs
+            // connected.
             _automation.Clients.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(ShowAutomationState));
+            // The mark hides on Home and on Automation's page (#600 item 13).
+            _viewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.SelectedNavTag)) ShowConnectedMark();
+            };
+            ExtrasPageView.ExtraShown += (s, e) => ShowConnectedMark();
+            // An assistant row and its menu join the catalog through the one
+            // seam for live rows (#600 items 1 and 9).
+            PadForge.Services.Catalog.LiveCatalog.AddProvider(_viewModel.Dashboard.AssistantCatalogItems);
             // The Automation page's questions, record and the buttons of the
             // parts later builds provide, and the card that asks above other
             // windows from the same list of questions.
@@ -109,13 +120,15 @@ namespace PadForge
             var dash = _viewModel.Dashboard;
             dash.IsAutomationRunning = _automation.IsServing;
             dash.AutomationStatus = AutomationStatusLine(_automation.ControlPipe, _automation.AutomationPipeState, _automation.Clients.Snapshot());
+            ShowConnectedMark();
         }
 
         /// <summary>The host's line for where both its pipes stand: off, on
         /// with no program connected, on with the programs connected by name,
         /// or why programs cannot connect. While the control pipe serves, an
         /// Automation pipe whose name another program holds, or that Windows
-        /// refused, is said in place of the programs.</summary>
+        /// refused, is said in place of the programs. A plugin PadForge
+        /// started is the Plugins page's to name, not this line's.</summary>
         internal static string AutomationStatusLine(ExternalControlService.PipeState control,
             ExternalControlService.PipeState automation, IReadOnlyList<AutomationClient> clients)
         {
@@ -127,23 +140,114 @@ namespace PadForge
                         return string.Format(s.Automation_Status_NameTaken_Format, AutomationPipe.PipeName);
                     if (automation == ExternalControlService.PipeState.Failed)
                         return string.Format(s.Automation_Status_Failed_Format, AutomationPipe.PipeName);
-                    if (clients == null || clients.Count == 0) return s.Automation_Status_NoPrograms;
-                    var names = new List<string>();
-                    foreach (var client in clients)
-                    {
-                        string name = ShownText.Clean(!string.IsNullOrEmpty(client.Name) ? client.Name : client.ImageName);
-                        if (string.IsNullOrEmpty(name)) name = s.Automation_Program_Unknown;
-                        if (!names.Contains(name)) names.Add(name);
-                    }
-                    return string.Format(s.Automation_Status_Connected_Format, string.Join(", ", names));
+                    var names = ConnectedNames(clients, _ => false);
+                    if (names.Count == 0) return s.Automation_Status_NoPrograms;
+                    return string.Format(s.Automation_Status_Connected_Format, JoinNames(names));
                 case ExternalControlService.PipeState.NameTaken:
                     return string.Format(s.Automation_Status_NameTaken_Format, ExternalControlService.PipeName);
                 case ExternalControlService.PipeState.Failed:
                     return string.Format(s.Automation_Status_Failed_Format, ExternalControlService.PipeName);
                 default:
-                    return s.Common_Stopped;
+                    return s.Automation_Status_Off;
             }
         }
+
+        /// <summary>The name a connected program is shown by: an assistant
+        /// program's own name when its client names it
+        /// (AssistantPrograms.KeyOfClient), else the name it gave, else its
+        /// image's.</summary>
+        internal static string ClientName(AutomationClient client)
+        {
+            if (client.Kind == AutomationClientKind.Assistant
+                && Services.Install.AssistantPrograms.KeyOfClient(client.Name) is { } key
+                && Services.Install.AssistantHosts.Find(key) is { } host)
+                return host.Name;
+            string name = ShownText.Clean(!string.IsNullOrEmpty(client.Name) ? client.Name : client.ImageName);
+            return string.IsNullOrEmpty(name) ? Strings.Instance.Automation_Program_Unknown : name;
+        }
+
+        /// <summary>The names of the programs connected, each once, in the
+        /// order they connected: those from the web with
+        /// <paramref name="web"/>, the others without. Plugins are left
+        /// out.</summary>
+        internal static List<string> ConnectedNames(IReadOnlyList<AutomationClient> clients, Func<AutomationClient, bool> fromWeb, bool web = false)
+        {
+            var names = new List<string>();
+            foreach (var client in clients ?? Array.Empty<AutomationClient>())
+            {
+                if (client.Kind == AutomationClientKind.Plugin) continue;
+                if (fromWeb(client) != web) continue;
+                string name = ClientName(client);
+                if (!names.Contains(name)) names.Add(name);
+            }
+            return names;
+        }
+
+        /// <summary>Names as a sentence lists them: A, A and B, A, B and
+        /// C, with the language's own words between.</summary>
+        internal static string JoinNames(IReadOnlyList<string> names)
+        {
+            var s = Strings.Instance;
+            if (names == null || names.Count == 0) return string.Empty;
+            string joined = names[names.Count - 1];
+            if (names.Count >= 2) joined = string.Format(s.Automation_Names_Two_Format, names[names.Count - 2], joined);
+            for (int i = names.Count - 3; i >= 0; i--) joined = string.Format(s.Automation_Names_List_Format, names[i], joined);
+            return joined;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The connected mark (#600 item 13)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Whether a connected program came from the web, through
+        /// the web helper, which sets it. Until then no program is from the
+        /// web.</summary>
+        internal static Func<AutomationClient, bool> ClientIsFromWeb = _ => false;
+
+        /// <summary>What the title bar's mark shows: whether it shows, the
+        /// count, whether the globe shows, and its words for hover and a
+        /// screen reader.</summary>
+        internal readonly record struct MarkState(bool Shows, int Count, bool Web, string Words);
+
+        /// <summary>The mark shows while a program other than a plugin is
+        /// connected, on every page but Home and Automation's, which name the
+        /// programs on a card.</summary>
+        internal static MarkState ConnectedMarkState(IReadOnlyList<AutomationClient> clients, Func<AutomationClient, bool> fromWeb,
+            string navTag, string extra)
+        {
+            var s = Strings.Instance;
+            var local = ConnectedNames(clients, fromWeb);
+            var web = ConnectedNames(clients, fromWeb, web: true);
+            // The count is of programs connected, two copies of one script
+            // two, and the words name each once.
+            int count = (clients ?? Array.Empty<AutomationClient>()).Count(c => c.Kind != AutomationClientKind.Plugin);
+            if (count == 0) return new MarkState(false, 0, false, null);
+            bool named = navTag == "Home" || (navTag == "Extras" && extra == "Automation");
+            string words = web.Count == 0 ? string.Format(s.Main_ConnectedMark_Format, JoinNames(local))
+                : local.Count == 0 ? string.Format(s.Main_ConnectedMark_WebOnly_Format, JoinNames(web))
+                : string.Format(s.Main_ConnectedMark_Web_Format, JoinNames(local), JoinNames(web));
+            return new MarkState(!named, count, web.Count > 0, words);
+        }
+
+        /// <summary>Puts the mark in step with the programs connected and the
+        /// page shown.</summary>
+        private void ShowConnectedMark()
+        {
+            if (_automation == null) return;
+            var state = ConnectedMarkState(_automation.Clients.Snapshot(), ClientIsFromWeb, _viewModel.SelectedNavTag,
+                ExtrasPageView.Visibility == Visibility.Visible ? ExtrasPageView.CurrentExtra : null);
+            ConnectedMark.Visibility = state.Shows ? Visibility.Visible : Visibility.Collapsed;
+            if (state.Count == 0) return;
+            // E839 is the board's mark for programs on this PC, E774 the
+            // globe.
+            ConnectedMarkGlyph.Text = state.Web ? "" : "";
+            ConnectedMarkCount.Text = state.Count.ToString(System.Globalization.CultureInfo.CurrentCulture);
+            ConnectedMark.ToolTip = state.Words;
+            System.Windows.Automation.AutomationProperties.SetName(ConnectedMark, state.Words);
+        }
+
+        /// <summary>The mark's click opens Automation's page.</summary>
+        private void ConnectedMark_Click(object sender, RoutedEventArgs e) => OpenExtra("Automation");
 
         /// <summary>Runs the steps of this copy's own command line that
         /// belong to <paramref name="phase"/>, in the order given. They are

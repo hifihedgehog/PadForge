@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,6 +45,11 @@ namespace PadForge.Services.Install
     /// only looks.</summary>
     internal sealed record InstallRequest(InstallWhat What, string Target, bool Remove = false, bool Check = false)
     {
+        /// <summary>A file the run writes what it said into, for the page
+        /// that started it through the shell, which gets no output back
+        /// (<c>--report &lt;file&gt;</c>). Null for none.</summary>
+        public string Report { get; init; }
+
         /// <summary>The words that ask for it, after the exe.</summary>
         public IReadOnlyList<string> Words()
         {
@@ -51,9 +57,15 @@ namespace PadForge.Services.Install
             if (!string.IsNullOrEmpty(Target)) words.Add(Target);
             if (Remove) words.Add("--remove");
             if (Check) words.Add("--check");
+            if (!string.IsNullOrEmpty(Report)) { words.Add("--report"); words.Add(Report); }
             return words;
         }
     }
+
+    /// <summary>What an install started from the page came to: its exit
+    /// code, why it failed in words, or null, and what the run said, read
+    /// back from its report (null when it said nothing).</summary>
+    internal sealed record InstallRun(int Code, string Error, string Said);
 
     /// <summary>
     /// <c>PadForge.Exe --install &lt;what&gt;</c> (#600): the one way PadForge
@@ -115,6 +127,7 @@ namespace PadForge.Services.Install
         internal const string Usage =
             "--install takes what to install: skill <program or folder>, autohotkey [folder or file],\r\n" +
             "powershell [folder or file], python [folder or file] or assistant <program>, then --remove or --check if wanted.\r\n" +
+            "--install assistant --check with no program checks every program. --report <file> also writes what the run says into the file.\r\n" +
             "The programs: ";
 
         internal static string UsageText => Usage + string.Join(", ", AssistantHosts.All.Select(h => h.Key)) + ".";
@@ -136,7 +149,7 @@ namespace PadForge.Services.Install
                 case "assistant": what = InstallWhat.Assistant; break;
                 default: return UsageText;
             }
-            string target = null;
+            string target = null, report = null;
             bool remove = false, check = false;
             while (i + 1 < args.Count)
             {
@@ -144,10 +157,24 @@ namespace PadForge.Services.Install
                 string lower = next.ToLowerInvariant();
                 if (lower is "--remove" or "/remove" or "-remove") { remove = true; i++; continue; }
                 if (lower is "--check" or "/check" or "-check") { check = true; i++; continue; }
+                if (lower is "--report" or "/report" or "-report")
+                {
+                    if (i + 2 >= args.Count || !Path.IsPathFullyQualified(args[i + 2] ?? string.Empty))
+                        return "--report takes a full path for the file it writes.";
+                    report = args[i + 2];
+                    i += 2;
+                    continue;
+                }
                 if (target == null && !next.StartsWith("-", StringComparison.Ordinal)) { target = next.Trim(); i++; continue; }
                 break;
             }
             if (remove && check) return "--install takes --remove or --check, not both.";
+            if (what == InstallWhat.Assistant && check && string.IsNullOrEmpty(target))
+            {
+                // Every program at once, for the Automation page's rows.
+                request = new InstallRequest(what, null, false, true) { Report = report };
+                return null;
+            }
             if (what is InstallWhat.Skill or InstallWhat.Assistant && string.IsNullOrEmpty(target))
                 return "--install " + Word(what) + " needs a program (" + string.Join(", ", AssistantHosts.All.Select(h => h.Key)) + ")"
                        + (what == InstallWhat.Skill ? " or a folder." : ".");
@@ -155,7 +182,7 @@ namespace PadForge.Services.Install
                 return "PadForge knows no assistant program named " + target + ". " + UsageText;
             if (what == InstallWhat.Skill && AssistantHosts.Find(target) is { } host && host.SkillsFolder == null)
                 return host.Name + " takes skills only as an upload, so there is no folder to install into.";
-            request = new InstallRequest(what, target, remove, check);
+            request = new InstallRequest(what, target, remove, check) { Report = report };
             return null;
         }
 
@@ -171,8 +198,12 @@ namespace PadForge.Services.Install
         {
             if (HasRights() && !ShellHasRights())
             {
-                var started = AsUserAsync(request).GetAwaiter().GetResult();
+                // The run as the user writes what it says into a report,
+                // which this run reads back and says, so a person at a
+                // prompt with rights sees what a prompt without them would.
+                var started = RunAsUserAsync(request).GetAwaiter().GetResult();
                 if (started.Error != null) sayError(started.Error);
+                else if (!string.IsNullOrEmpty(started.Said) && request.Report == null) say(started.Said.TrimEnd());
                 return started.Code;
             }
             return Run(request, say, sayError);
@@ -206,8 +237,23 @@ namespace PadForge.Services.Install
         /// Gives the exit code.</summary>
         internal static int Run(InstallRequest request, Action<string> say, Action<string> sayError)
         {
+            if (string.IsNullOrEmpty(request.Report)) return RunHere(request, say, sayError, out _);
+            var told = new StringBuilder();
+            int code = RunHere(request, t => { told.Append(t).Append("\r\n"); say(t); }, t => { told.Append(t).Append("\r\n"); sayError(t); }, out string report);
+            WriteReport(request.Report, report ?? told.ToString());
+            return code;
+        }
+
+        private static int RunHere(InstallRequest request, Action<string> say, Action<string> sayError, out string report)
+        {
+            report = null;
             try
             {
+                if (request.What == InstallWhat.Assistant && request.Check && string.IsNullOrEmpty(request.Target))
+                {
+                    report = CheckAll(say);
+                    return Done;
+                }
                 if (request.Check)
                 {
                     var state = Check(request);
@@ -412,7 +458,10 @@ namespace PadForge.Services.Install
         {
             var host = AssistantHosts.Find(request.Target);
             string exe = Exe();
-            string command = host.Command == null ? null : FindCommand(host.Command);
+            // The command on the PATH, or the program's own copy where it
+            // keeps one off the PATH, such as the one an editor's extension
+            // carries (AssistantPrograms.CommandOf).
+            string command = host.Command == null ? null : FindCommand(host.Command) ?? AssistantPrograms.CommandOf(host.Key);
             if (command != null)
             {
                 // An entry already there, this PadForge's or another's, is
@@ -494,6 +543,264 @@ namespace PadForge.Services.Install
             return sameExe && mcp ? InstallState.Current : InstallState.Older;
         }
 
+        // ── Every assistant at once ──
+
+        /// <summary>What <c>--install assistant --check</c> with no program
+        /// reports of each: its key, the program's own file when it is on
+        /// this PC (null when not), PadForge's entry in its settings
+        /// (current, older, missing), its skill (current, older, newer,
+        /// missing, or upload when it takes skills only as an upload) and
+        /// its settings file.</summary>
+        internal sealed record AssistantCheck(string Key, string Program, string Entry, string Skill, string Settings);
+
+        /// <summary>Checks every assistant program, says one line for each and
+        /// gives the report the page reads: a JSON array of
+        /// <see cref="AssistantCheck"/>. A program whose check fails is
+        /// reported as not found, so one bad settings file costs one
+        /// row.</summary>
+        internal static string CheckAll(Action<string> say)
+        {
+            var all = new System.Text.Json.Nodes.JsonArray();
+            foreach (var host in AssistantHosts.All)
+            {
+                string program = null, entry = "missing", skill = "missing", settings = null;
+                try
+                {
+                    program = AssistantPrograms.Find(host.Key);
+                    settings = host.SettingsFile?.Invoke();
+                    entry = Word(AssistantState(host));
+                    skill = host.SkillsFolder == null ? "upload" : SkillWord(host);
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException
+                    or ArgumentException or NotSupportedException or System.Security.SecurityException)
+                {
+                    program = null;
+                }
+                say(host.Key + ": " + (program == null ? "not on this PC" : program) + ", entry " + entry + ", skill " + skill + ".");
+                all.Add(new System.Text.Json.Nodes.JsonObject
+                {
+                    ["key"] = host.Key,
+                    ["program"] = program,
+                    ["entry"] = entry,
+                    ["skill"] = skill,
+                    ["settings"] = settings,
+                });
+            }
+            return all.ToJsonString();
+        }
+
+        /// <summary>Reads <see cref="CheckAll"/>'s report back. Entries it
+        /// cannot read are left out, and a report that is no JSON array gives
+        /// an empty list.</summary>
+        internal static IReadOnlyList<AssistantCheck> ReadChecks(string report)
+        {
+            var list = new List<AssistantCheck>();
+            if (string.IsNullOrWhiteSpace(report)) return list;
+            try
+            {
+                if (System.Text.Json.Nodes.JsonNode.Parse(report) is not System.Text.Json.Nodes.JsonArray all) return list;
+                foreach (var node in all)
+                {
+                    if (node is not System.Text.Json.Nodes.JsonObject o) continue;
+                    string Text(string name) => o[name] is System.Text.Json.Nodes.JsonValue v && v.TryGetValue(out string s) ? s : null;
+                    string key = Text("key");
+                    if (AssistantHosts.Find(key) == null) continue;
+                    list.Add(new AssistantCheck(key, Text("program"), Text("entry") ?? "missing", Text("skill") ?? "missing", Text("settings")));
+                }
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                list.Clear();
+            }
+            return list;
+        }
+
+        private static string Word(InstallState state) => state switch
+        {
+            InstallState.Current => "current",
+            InstallState.Older => "older",
+            _ => "missing",
+        };
+
+        /// <summary>The skill in a program's skills folder: missing, current,
+        /// older, or newer when its SKILL.md names a version above this
+        /// PadForge's own.</summary>
+        private static string SkillWord(AssistantHost host)
+        {
+            string folder = SkillFolder(host.Key);
+            var state = Matches(OwnFiles.Matches(folder, SkillFiles()));
+            if (state != InstallState.Older) return Word(state);
+            string installed = SkillVersion(ReadSkill(Path.Combine(folder, "SKILL.md")));
+            string ours = SkillVersion(AssistantSkill.Files.FirstOrDefault(f => f.Path == "SKILL.md")?.Bytes);
+            return Version.TryParse(installed, out var a) && Version.TryParse(ours, out var b) && a > b ? "newer" : "older";
+        }
+
+        private static byte[] ReadSkill(string file)
+        {
+            try { return File.Exists(file) ? File.ReadAllBytes(file) : null; }
+            catch (IOException) { return null; }
+        }
+
+        /// <summary>The version a SKILL.md's front matter names on a line of
+        /// its own, <c>version: 6.1.0</c>, or null.</summary>
+        internal static string SkillVersion(byte[] skill)
+        {
+            if (skill == null) return null;
+            using var reader = new StreamReader(new MemoryStream(skill));
+            if (reader.ReadLine()?.Trim() != "---") return null;
+            for (string line = reader.ReadLine(); line != null && line.Trim() != "---"; line = reader.ReadLine())
+            {
+                string t = line.Trim();
+                if (!t.StartsWith("version:", StringComparison.Ordinal)) continue;
+                string value = t.Substring("version:".Length).Trim().Trim('"', '\'');
+                return value.Length > 0 ? value : null;
+            }
+            return null;
+        }
+
+        // ── The report ──
+
+        /// <summary>The longest report read back, in characters.</summary>
+        internal const int LongestReport = 64 * 1024;
+
+        /// <summary>Writes the report as a new file: a file already at that
+        /// path, a link included, is left alone and nothing is written.</summary>
+        private static void WriteReport(string file, string text)
+        {
+            try
+            {
+                using var stream = new FileStream(file, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+                byte[] bytes = new UTF8Encoding(false).GetBytes(text ?? string.Empty);
+                stream.Write(bytes, 0, bytes.Length);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+            {
+                // A report that cannot be written leaves the exit code to
+                // say how the run went.
+            }
+        }
+
+        /// <summary>Test seam: the folder a page's install writes its report
+        /// into. Null reads the user's temp folder from the desktop shell's
+        /// variables, and this process's own when the shell gives none.</summary>
+        internal static Func<string> ReportFolderSeam;
+
+        private static string NewReportFile()
+        {
+            string folder = ReportFolderSeam?.Invoke();
+            if (folder == null)
+            {
+                var shell = Launcher == null ? ShellEnvironment() : null;
+                string temp = shell?.FirstOrDefault(v => v.StartsWith("TEMP=", StringComparison.OrdinalIgnoreCase))?.Substring(5);
+                folder = !string.IsNullOrEmpty(temp) && Path.IsPathFullyQualified(temp) ? temp : Path.GetTempPath();
+            }
+            // The folder as Windows resolves it now, so a folder moved by a
+            // link after this point is told apart when the report is read
+            // (TakeReport).
+            folder = FinalPathOf(folder, directory: true) ?? folder;
+            return Path.Combine(folder, "PadForge-install-" + Guid.NewGuid().ToString("N") + ".txt");
+        }
+
+        /// <summary>
+        /// Reads a report the run wrote and deletes it. The run had no rights
+        /// and wrote into a folder the user's programs can change, and this
+        /// may run with rights, so the file is opened once, without following
+        /// a link at its own name, and read and deleted through that one
+        /// handle only when Windows' final path of it is the path asked: a
+        /// file reached through a folder redirected since is left alone.
+        /// What it holds is read as text only, capped, and every line is
+        /// cleaned of characters that would make it read as something else.
+        /// Null when there is none.
+        /// </summary>
+        internal static string TakeReport(string file)
+        {
+            if (string.IsNullOrEmpty(file) || !Path.IsPathFullyQualified(file)) return null;
+            using var handle = CreateFileW(file, GenericRead | DeleteAccess, FileShareRead | FileShareDelete, IntPtr.Zero,
+                OpenExisting, FileFlagOpenReparsePoint, IntPtr.Zero);
+            if (handle.IsInvalid) return null;
+            if (!string.Equals(FinalPathOf(handle), Path.GetFullPath(file), StringComparison.OrdinalIgnoreCase)) return null;
+            if (!GetFileInformationByHandle(handle, out var info)) return null;
+            bool link = (info.FileAttributes & (uint)FileAttributes.ReparsePoint) != 0;
+            string text = null;
+            if (!link)
+            {
+                try
+                {
+                    // Read through the handle without handing it over, so the
+                    // same handle deletes the file below.
+                    var bytes = new byte[LongestReport * 4];
+                    int got = 0, n;
+                    while (got < bytes.Length && (n = RandomAccess.Read(handle, bytes.AsSpan(got), got)) > 0) got += n;
+                    text = new UTF8Encoding(false).GetString(bytes, 0, got);
+                    if (text.Length > LongestReport) text = text.Substring(0, LongestReport);
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+                {
+                    text = null;
+                }
+            }
+            // The handle's own file goes, a link itself and never what it
+            // names.
+            var delete = new FileDispositionInfo { DeleteFile = 1 };
+            SetFileInformationByHandle(handle, FileDispositionInfoClass, ref delete, (uint)Marshal.SizeOf<FileDispositionInfo>());
+            if (string.IsNullOrEmpty(text)) return null;
+            var lines = text.Replace("\r\n", "\n").Split('\n').Select(l => PadForge.Engine.Common.ShownText.Clean(l));
+            string clean = string.Join("\r\n", lines).Trim();
+            return clean.Length == 0 ? null : clean;
+        }
+
+        /// <summary>Windows' final path of a file or folder, without the
+        /// \\?\ in front, or null when it cannot be opened.</summary>
+        private static string FinalPathOf(string path, bool directory)
+        {
+            if (string.IsNullOrEmpty(path)) return null;
+            using var handle = CreateFileW(path, 0, FileShareRead | FileShareWrite | FileShareDelete, IntPtr.Zero, OpenExisting,
+                directory ? FileFlagBackupSemantics : 0, IntPtr.Zero);
+            return handle.IsInvalid ? null : FinalPathOf(handle);
+        }
+
+        private static string FinalPathOf(Microsoft.Win32.SafeHandles.SafeFileHandle handle)
+        {
+            var text = new StringBuilder(1024);
+            uint n = GetFinalPathNameByHandleW(handle, text, (uint)text.Capacity, 0);
+            if (n == 0 || n >= text.Capacity) return null;
+            string path = text.ToString();
+            if (path.StartsWith(@"\\?\UNC\", StringComparison.Ordinal)) return @"\\" + path.Substring(8);
+            return path.StartsWith(@"\\?\", StringComparison.Ordinal) ? path.Substring(4) : path;
+        }
+
+        private const uint GenericRead = 0x80000000, DeleteAccess = 0x00010000;
+        private const uint FileShareRead = 1, FileShareWrite = 2, FileShareDelete = 4, OpenExisting = 3;
+        private const uint FileFlagOpenReparsePoint = 0x00200000, FileFlagBackupSemantics = 0x02000000;
+        private const int FileDispositionInfoClass = 4;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FileDispositionInfo { public byte DeleteFile; }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct ByHandleFileInformation
+        {
+            public uint FileAttributes;
+            public System.Runtime.InteropServices.ComTypes.FILETIME CreationTime, LastAccessTime, LastWriteTime;
+            public uint VolumeSerialNumber, FileSizeHigh, FileSizeLow, NumberOfLinks, FileIndexHigh, FileIndexLow;
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern Microsoft.Win32.SafeHandles.SafeFileHandle CreateFileW(string name, uint access, uint share, IntPtr security,
+            uint disposition, uint flags, IntPtr template);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern uint GetFinalPathNameByHandleW(Microsoft.Win32.SafeHandles.SafeFileHandle handle, StringBuilder path, uint length, uint flags);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetFileInformationByHandle(Microsoft.Win32.SafeHandles.SafeFileHandle handle, out ByHandleFileInformation info);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetFileInformationByHandle(Microsoft.Win32.SafeHandles.SafeFileHandle handle, int infoClass,
+            ref FileDispositionInfo info, uint size);
+
         // ── Programs ──
 
         /// <summary>The full path of a command on the PATH, with the
@@ -509,6 +816,7 @@ namespace PadForge.Services.Install
             foreach (string folder in path.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
             {
                 if (!Path.IsPathFullyQualified(folder)) continue;
+                if (IsStandIn(folder)) continue;
                 foreach (string extension in new[] { ".exe", ".cmd", ".bat" })
                 {
                     if (!extensions.Contains(extension, StringComparer.OrdinalIgnoreCase)) continue;
@@ -518,6 +826,14 @@ namespace PadForge.Services.Install
             }
             return null;
         }
+
+        /// <summary>Whether a PATH folder holds a stand-in rather than a
+        /// program: VS Code puts a copilot of its own on the PATH, in a
+        /// folder named copilot-shim, which says the Copilot CLI is not there
+        /// and ends with code 0 (run on this PC on 2026-11-24). A command
+        /// found there is no command.</summary>
+        internal static bool IsStandIn(string folder)
+            => string.Equals(Path.GetFileName((folder ?? string.Empty).TrimEnd('\\', '/')), "copilot-shim", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Runs one of the user's own programs (an assistant's add command or
@@ -602,34 +918,66 @@ namespace PadForge.Services.Install
         /// </summary>
         internal static async Task<(int Code, string Error)> AsUserAsync(InstallRequest request)
         {
-            string exe = Exe();
-            var launcher = Launcher ?? new PluginLauncher();
-            string line = "\"" + exe + "\" " + string.Join(" ", request.Words().Select(Quote));
-            var launch = launcher.Start(new PluginCommand(exe, line, Path.GetDirectoryName(exe)), new Dictionary<string, string>());
-            if (launch.Refusal == PluginRefusal.ShellElevated)
-            {
-                // UAC is off: every program of the user has full rights, the
-                // shell included. The install runs as its own PadForge.exe
-                // with the shell's variables, so the user's PATH finds the
-                // assistants' commands, which PadForge's own allow list of
-                // variables would not.
-                var (code, output) = await Task.Run(() => RunTool(exe, request.Words(), AsUserMs, ShellEnvironment())).ConfigureAwait(false);
-                return (code, code is Done or IsOlder or IsMissing ? null : (string.IsNullOrWhiteSpace(output) ? "The install ended with code " + code + "." : output.Trim()));
-            }
-            if (launch.Process == null)
-                return (Failed, "Windows did not start the install with the user's rights (" + launch.Refusal + (launch.Error != 0 ? ", error " + launch.Error : string.Empty) + ").");
-            using var process = launch.Process;
-            var exited = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
-            process.Exited += c => exited.TrySetResult(c);
-            var done = await Task.WhenAny(exited.Task, Task.Delay(AsUserMs)).ConfigureAwait(false);
-            if (done != exited.Task)
-            {
-                process.Stop();
-                return (Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.");
-            }
-            int exit = exited.Task.Result;
-            return (exit, exit is Done or IsOlder or IsMissing ? null : "The install ended with code " + exit + ".");
+            var run = await RunAsUserAsync(request).ConfigureAwait(false);
+            return (run.Code, run.Error);
         }
+
+        /// <summary>
+        /// <see cref="AsUserAsync"/>, and what the run said. The run writes
+        /// what it says into a report in the user's own temp folder
+        /// (<c>--report</c>), since a start through the shell hands back its
+        /// exit code alone. This reads the report back and deletes it
+        /// (<see cref="TakeReport"/>), so a failed install names its reason
+        /// and a check of every assistant gives its rows.
+        /// </summary>
+        internal static async Task<InstallRun> RunAsUserAsync(InstallRequest request)
+        {
+            if (Launcher == null && OffLimitsForTest) return new InstallRun(Failed, "The test host starts no install.", null);
+            string exe = Exe();
+            string report = string.IsNullOrEmpty(request.Report) ? NewReportFile() : null;
+            if (report != null) request = request with { Report = report };
+            try
+            {
+                var launcher = Launcher ?? new PluginLauncher();
+                string line = "\"" + exe + "\" " + string.Join(" ", request.Words().Select(Quote));
+                var launch = launcher.Start(new PluginCommand(exe, line, Path.GetDirectoryName(exe)), new Dictionary<string, string>());
+                if (launch.Refusal == PluginRefusal.ShellElevated)
+                {
+                    // UAC is off: every program of the user has full rights,
+                    // the shell included. The install runs as its own
+                    // PadForge.exe with the shell's variables, so the user's
+                    // PATH finds the assistants' commands, which PadForge's
+                    // own allow list of variables would not.
+                    var (code, output) = await Task.Run(() => RunTool(exe, request.Words(), AsUserMs, ShellEnvironment())).ConfigureAwait(false);
+                    string said = report != null ? TakeReport(report) : null;
+                    said ??= string.IsNullOrWhiteSpace(output) ? null : PadForge.Engine.Common.ShownText.Clean(output.Trim());
+                    return new InstallRun(code, IsAnswer(code) ? null : said ?? "The install ended with code " + code + ".", said);
+                }
+                if (launch.Process == null)
+                    return new InstallRun(Failed, "Windows did not start the install with the user's rights (" + launch.Refusal
+                        + (launch.Error != 0 ? ", error " + launch.Error : string.Empty) + ").", null);
+                using var process = launch.Process;
+                var exited = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
+                process.Exited += c => exited.TrySetResult(c);
+                var done = await Task.WhenAny(exited.Task, Task.Delay(AsUserMs)).ConfigureAwait(false);
+                if (done != exited.Task)
+                {
+                    process.Stop();
+                    return new InstallRun(Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.", null);
+                }
+                int exit = exited.Task.Result;
+                string told = report != null ? TakeReport(report) : null;
+                return new InstallRun(exit, IsAnswer(exit) ? null : told ?? "The install ended with code " + exit + ".", told);
+            }
+            finally
+            {
+                // A report the run left behind, when this read none.
+                if (report != null) TakeReport(report);
+            }
+        }
+
+        /// <summary>An exit code that is an answer, not a failure.</summary>
+        private static bool IsAnswer(int code) => code is Done or IsOlder or IsMissing;
 
         /// <summary>Test seam: the desktop shell's variables. Null reads them
         /// through the shell's token.</summary>

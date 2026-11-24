@@ -155,6 +155,7 @@ namespace PadForge.Tests
                 "Views/RemoteLinkPairDialog.xaml <DialogWindow>",         // a pairing code
                 "Views/RemoteLinkPasswordDialog.xaml <DialogWindow>",     // an access code
                 "Views/SettingsPage.xaml <TextBlock SettingsFilePath>",   // the settings file's path
+                "MainWindow.xaml <Button ConnectedMark>",                 // the title bar's mark names other programs (#600 item 13)
             };
             var found = new List<string>();
             foreach (string file in ReachMarkup.Files())

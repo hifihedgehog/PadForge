@@ -105,18 +105,21 @@ namespace PadForge.Services.Install
             // mcpServers. Skills only as a ZIP upload (Customize, Skills).
             new AssistantHost
             {
-                Key = "claude-desktop", Name = "Claude",
+                Key = "claude-desktop", Name = "Claude Desktop",
                 SettingsFile = ClaudeDesktopFile, Container = "mcpServers", Entry = exe => Stdio(exe, typed: false),
             },
             // code.claude.com/docs/en/mcp: claude mcp add [options] <name> -- <command> [args...],
-            // user scope in ~/.claude.json. Skills in ~/.claude/skills.
+            // user scope in ~/.claude.json. Skills in ~/.claude/skills. CLAUDE_CONFIG_DIR
+            // moves both: with it set, Claude Code 2.1.331's own add wrote
+            // %CLAUDE_CONFIG_DIR%\.claude.json (run on this PC on 2026-11-24).
             new AssistantHost
             {
                 Key = "claude-code", Name = "Claude Code", Command = "claude",
                 AddWords = exe => new[] { "mcp", "add", "--scope", "user", EntryName, "--", exe, "--mcp" },
                 RemoveWords = new[] { "mcp", "remove", "--scope", "user", EntryName },
-                SettingsFile = () => InProfile(".claude.json"), Container = "mcpServers", Entry = exe => Stdio(exe, typed: true),
-                SkillsFolder = () => InProfile(".claude", "skills"),
+                SettingsFile = () => Variable("CLAUDE_CONFIG_DIR") is { } home ? Path.Combine(home, ".claude.json") : InProfile(".claude.json"),
+                Container = "mcpServers", Entry = exe => Stdio(exe, typed: true),
+                SkillsFolder = () => Variable("CLAUDE_CONFIG_DIR") is { } home ? Path.Combine(home, "skills") : InProfile(".claude", "skills"),
             },
             // learn.chatgpt.com extend/mcp: codex mcp add <server-name> -- <stdio server-command>,
             // ~/.codex/config.toml, which CODEX_HOME moves. Skills in $HOME/.agents/skills.

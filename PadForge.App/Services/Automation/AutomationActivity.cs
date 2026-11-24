@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using PadForge.Resources.Strings;
 using PadForge.Engine.Common;
 
@@ -209,8 +211,9 @@ namespace PadForge.Services.Automation
         public bool HoldsApproval { get; init; }
 
         /// <summary>Whether the entry records something done: a change, an
-        /// input sent or held, or a question the user answered. No other
-        /// program's lines push one out of Activity.</summary>
+        /// input sent or held, or a question the user answered. The page
+        /// folds a run of a program's identical calls into one line only
+        /// while none of them did anything.</summary>
         public bool Keeps => HoldsApproval || Spell != 0 || (Succeeded && !ReadsOnly && !AutomationActivity.OnlyReads(Asked.Kind));
 
         /// <summary>Whether the call only read, for a kind that can do
@@ -224,44 +227,40 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// The record of what outside programs asked of PadForge (#597), oldest
-    /// first. Kept in memory for the session and never written to disk. Any
-    /// thread may add to it and read it.
+    /// The record of what outside programs asked of PadForge (#597, #600),
+    /// oldest first. Every call is kept for the session, up to
+    /// <see cref="Capacity"/>. Past that the oldest go, and
+    /// <see cref="Dropped"/> counts them. Kept in memory and never written
+    /// to disk: it leaves memory only by Export Activity… or as a part of a
+    /// problem recording (<see cref="ToText"/>). Any thread may add to it
+    /// and read it.
     ///
-    /// <para>One program cannot push the record of what it or another
-    /// program did out of it:</para>
-    /// <list type="bullet">
-    /// <item>A refused line merges with the program's last refused line of
-    /// the same kind and answer into one entry with a count, whatever it
-    /// named. A successful ask merges with the same ask the program made
-    /// before, unless it is a tool call or a question the user answered,
-    /// which are each their own.</item>
-    /// <item>A program holds at most <see cref="PerProgram"/> entries. Past
-    /// that its own oldest entry that records nothing done goes, and only
-    /// when it has none of those its own oldest entry.</item>
-    /// <item>The record holds <see cref="Capacity"/> entries. Past that the
-    /// program adding gives up its own oldest entry that records nothing
-    /// done. A line of its that records nothing done is left out when it has
-    /// no such entry to give up, so it pushes out no other program's. An
-    /// entry that records something done always goes in, and then the
-    /// oldest entry that records nothing done of the program that holds the
-    /// most gives way, or, where every entry records something done, that
-    /// program's oldest.</item>
-    /// </list>
-    /// <para>A program is told apart by its image's path
-    /// (<see cref="AutomationProgram.Key"/>), which it cannot change by
-    /// calling itself something else.</para>
+    /// <para>Each call stays as it came. The Automation page shows a run of
+    /// one program's identical calls that did nothing as one line that
+    /// opens into them, so a busy program's reads take one line and every
+    /// call stays on the record (DashboardViewModel.AutomationPage).</para>
     /// </summary>
     internal sealed class AutomationActivity
     {
         /// <summary>How many calls are kept.</summary>
-        internal const int Capacity = 500;
-
-        /// <summary>How many calls of one program are kept.</summary>
-        internal const int PerProgram = 50;
+        internal const int Capacity = 100_000;
 
         private readonly object _sync = new object();
-        private readonly List<AutomationActivityEntry> _entries = new List<AutomationActivityEntry>(Capacity);
+        private readonly int _capacity;
+        private AutomationActivityEntry[] _ring = new AutomationActivityEntry[64];
+        private int _start, _count;
+        private long _added, _dropped;
+        private int _generation;
+
+        /// <summary>Keeps <see cref="Capacity"/> calls.</summary>
+        public AutomationActivity() : this(Capacity) { }
+
+        /// <summary>Keeps <paramref name="capacity"/> calls, for a test that
+        /// passes the limit without making 100,000.</summary>
+        internal AutomationActivity(int capacity)
+        {
+            _capacity = Math.Max(1, capacity);
+        }
 
         /// <summary>Raised after a call is added and after
         /// <see cref="Clear"/>, on the thread that did it. A listener that
@@ -271,7 +270,14 @@ namespace PadForge.Services.Automation
         /// <summary>How many calls are held.</summary>
         public int Count
         {
-            get { lock (_sync) return _entries.Count; }
+            get { lock (_sync) return _count; }
+        }
+
+        /// <summary>How many of the oldest calls went once the record was
+        /// full, since it was last cleared.</summary>
+        public long Dropped
+        {
+            get { lock (_sync) return _dropped; }
         }
 
         /// <summary>The asks that only read and change nothing.</summary>
@@ -281,137 +287,45 @@ namespace PadForge.Services.Automation
             or AutomationAskKind.Caps or AutomationAskKind.Read or AutomationAskKind.Outputs
             or AutomationAskKind.Subscribe or AutomationAskKind.Unsubscribe;
 
-        /// <summary>Adds a call by the rules above.</summary>
+        /// <summary>Keeps a call. Once the record is full the oldest
+        /// goes.</summary>
         public void Add(AutomationActivityEntry entry)
         {
             if (entry == null) return;
-            bool changed;
-            lock (_sync) changed = AddLocked(entry);
-            if (changed) Changed?.Invoke(this, EventArgs.Empty);
-        }
-
-        private bool AddLocked(AutomationActivityEntry entry)
-        {
-            string key = KeyOf(entry);
-            int same = MergeTarget(entry, key);
-            if (same >= 0)
+            lock (_sync)
             {
-                var old = _entries[same];
-                _entries.RemoveAt(same);
-                bool mixed = old.Asked.Mixed || !string.Equals(old.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal)
-                    || !string.Equals(old.Asked.Detail, entry.Asked.Detail, StringComparison.Ordinal);
-                entry = entry with { Asked = entry.Asked with { Count = old.Asked.Count + entry.Asked.Count, Mixed = mixed } };
-            }
-            else if (_entries.Count >= Capacity && !entry.Keeps && OldestOf(key, keepers: false) < 0)
-            {
-                // The record is full of other programs' entries and of this
-                // program's that record something done. A line that records
-                // nothing done pushes none of them out.
-                return false;
-            }
-            _entries.Add(entry);
-
-            if (CountOf(key) > PerProgram)
-            {
-                int oldest = OldestOf(key, keepers: false);
-                if (oldest < 0) oldest = OldestOf(key, keepers: true);
-                if (oldest >= 0) _entries.RemoveAt(oldest);
-            }
-            while (_entries.Count > Capacity)
-            {
-                int oldest = OldestOf(key, keepers: false);
-                if (oldest < 0 || ReferenceEquals(_entries[oldest], entry))
+                if (_count == _capacity)
                 {
-                    string largest = LargestHolder();
-                    oldest = OldestOf(largest, keepers: false);
-                    if (oldest < 0) oldest = OldestOf(largest, keepers: true);
+                    _ring[_start] = null;
+                    _start = (_start + 1) % _ring.Length;
+                    _count--;
+                    _dropped++;
                 }
-                if (oldest < 0) break;
-                _entries.RemoveAt(oldest);
-            }
-            return true;
-        }
-
-        private static string KeyOf(AutomationActivityEntry entry) => (entry.Program ?? AutomationProgram.Unknown).Key;
-
-        /// <summary>The newest entry of the program that the entry merges
-        /// with, or -1.</summary>
-        private int MergeTarget(AutomationActivityEntry entry, string key)
-        {
-            if (entry.HoldsApproval) return -1;
-            if (entry.Succeeded && entry.Asked.Kind == AutomationAskKind.Call) return -1;
-            // A change an assistant made carries its own Undo, which a merge
-            // would lose.
-            if (entry.Spell != 0) return -1;
-            for (int i = _entries.Count - 1; i >= 0; i--)
-            {
-                var e = _entries[i];
-                if (e.HoldsApproval || e.Spell != 0 || e.Succeeded != entry.Succeeded || e.Asked.Kind != entry.Asked.Kind) continue;
-                if (!string.Equals(KeyOf(e), key, StringComparison.Ordinal) || !Equals(e.Program, entry.Program)) continue;
-                if (entry.Succeeded)
+                else if (_count == _ring.Length)
                 {
-                    if (string.Equals(e.Asked.Argument, entry.Asked.Argument, StringComparison.Ordinal)
-                        && string.Equals(e.Asked.Detail, entry.Asked.Detail, StringComparison.Ordinal)
-                        && string.Equals(e.Result, entry.Result, StringComparison.Ordinal))
-                        return i;
+                    var grown = new AutomationActivityEntry[Math.Min(_capacity, _ring.Length * 2)];
+                    for (int i = 0; i < _count; i++) grown[i] = _ring[(_start + i) % _ring.Length];
+                    _ring = grown;
+                    _start = 0;
                 }
-                else if (string.Equals(ResultCode(e.Result), ResultCode(entry.Result), StringComparison.Ordinal))
-                {
-                    return i;
-                }
+                _ring[(_start + _count) % _ring.Length] = entry;
+                _count++;
+                _added++;
             }
-            return -1;
+            Changed?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>An answer's error code: <c>error</c> or <c>err</c> and
-        /// the word after it.</summary>
-        private static string ResultCode(string result)
-        {
-            if (string.IsNullOrEmpty(result)) return string.Empty;
-            string[] words = result.Split(' ', 3, StringSplitOptions.RemoveEmptyEntries);
-            return words.Length >= 2 ? words[0] + " " + words[1] : result;
-        }
-
-        private int CountOf(string key)
-        {
-            int n = 0;
-            foreach (var e in _entries) if (string.Equals(KeyOf(e), key, StringComparison.Ordinal)) n++;
-            return n;
-        }
-
-        /// <summary>The program's oldest entry that records nothing done, or
-        /// with <paramref name="keepers"/> its oldest of any kind. -1 when it
-        /// has none.</summary>
-        private int OldestOf(string key, bool keepers)
-        {
-            for (int i = 0; i < _entries.Count; i++)
-            {
-                var e = _entries[i];
-                if (!keepers && e.Keeps) continue;
-                if (string.Equals(KeyOf(e), key, StringComparison.Ordinal)) return i;
-            }
-            return -1;
-        }
-
-        private string LargestHolder()
-        {
-            var counts = new Dictionary<string, int>(StringComparer.Ordinal);
-            string largest = null;
-            int most = 0;
-            foreach (var e in _entries)
-            {
-                string key = KeyOf(e);
-                counts.TryGetValue(key, out int n);
-                counts[key] = ++n;
-                if (n > most) { most = n; largest = key; }
-            }
-            return largest;
-        }
-
-        /// <summary>Empties the record.</summary>
+        /// <summary>Empties the record and its count of calls that
+        /// went.</summary>
         public void Clear()
         {
-            lock (_sync) _entries.Clear();
+            lock (_sync)
+            {
+                _ring = new AutomationActivityEntry[64];
+                _start = _count = 0;
+                _added = _dropped = 0;
+                _generation++;
+            }
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -419,7 +333,84 @@ namespace PadForge.Services.Automation
         /// caller's own.</summary>
         public IReadOnlyList<AutomationActivityEntry> Snapshot()
         {
-            lock (_sync) return _entries.ToArray();
+            lock (_sync) return CopyLocked(0, _count);
         }
+
+        private AutomationActivityEntry[] CopyLocked(int offset, int n)
+        {
+            var copy = new AutomationActivityEntry[n];
+            for (int i = 0; i < n; i++) copy[i] = _ring[(_start + offset + i) % _ring.Length];
+            return copy;
+        }
+
+        /// <summary>What came since a reader's last look, so a page pays for
+        /// what is new and never walks the whole record.</summary>
+        /// <param name="Generation">Changes when the record is cleared. A
+        /// reader whose generation differs starts again from
+        /// <paramref name="New"/>.</param>
+        /// <param name="Added">The number of the newest call. Calls are
+        /// numbered from 1 in the order they came.</param>
+        /// <param name="FirstKept">The number of the oldest call still held.
+        /// A reader lets go of every call it holds with a lower number.</param>
+        /// <param name="New">The calls after the reader's last, oldest
+        /// first.</param>
+        internal readonly record struct Delta(int Generation, long Added, long FirstKept, IReadOnlyList<AutomationActivityEntry> New);
+
+        /// <summary>The calls numbered after <paramref name="after"/> that
+        /// the record still holds. A reader of another
+        /// <paramref name="generation"/> gets every call held.</summary>
+        internal Delta Since(int generation, long after)
+        {
+            lock (_sync)
+            {
+                long firstKept = _added - _count + 1;
+                if (generation != _generation) after = 0;
+                long from = Math.Max(after + 1, firstKept);
+                int n = (int)Math.Max(0, _added - from + 1);
+                return new Delta(_generation, _added, firstKept, CopyLocked((int)(from - firstKept), n));
+            }
+        }
+
+        /// <summary>
+        /// The record as plain text, oldest first, for Export Activity… and
+        /// the problem recording: a head line with the count of calls and
+        /// how many went, then one tab-separated line a call with its local
+        /// time to the millisecond, the program, its image and signer, what
+        /// it asked and what came of it in the interface's words, and
+        /// PadForge's answer as it was sent.
+        /// </summary>
+        internal string ToText()
+        {
+            IReadOnlyList<AutomationActivityEntry> calls;
+            long dropped;
+            lock (_sync)
+            {
+                calls = CopyLocked(0, _count);
+                dropped = _dropped;
+            }
+            var s = Strings.Instance;
+            var b = new StringBuilder();
+            b.Append(string.Format(CultureInfo.CurrentCulture, s.Automation_Export_Head_Format, calls.Count, dropped)).Append("\r\n");
+            foreach (var e in calls)
+            {
+                var who = e.Program ?? AutomationProgram.Unknown;
+                string name = ShownText.Clean(!string.IsNullOrEmpty(who.Name) ? who.Name : who.ImageName);
+                string image = ShownText.Clean(!string.IsNullOrEmpty(who.ImagePath) ? who.ImagePath : who.ImageName);
+                string signer = ShownText.Clean(who.Signer);
+                string result = e.Succeeded ? s.Automation_Result_Done : PadForge.ViewModels.AutomationActivityItem.RefusalWords(e.Result);
+                b.Append(e.Time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)).Append('\t')
+                 .Append(OneLine(name)).Append('\t')
+                 .Append(OneLine(string.IsNullOrEmpty(signer) || string.IsNullOrEmpty(image) ? image : image + " (" + signer + ")")).Append('\t')
+                 .Append(OneLine(e.Asked.Text)).Append('\t')
+                 .Append(OneLine(result)).Append('\t')
+                 .Append(OneLine(ShownText.Clean(e.Result))).Append("\r\n");
+            }
+            return b.ToString();
+        }
+
+        /// <summary>A field on one line: tabs and line breaks become
+        /// spaces.</summary>
+        private static string OneLine(string text)
+            => string.IsNullOrEmpty(text) ? string.Empty : text.Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
     }
 }

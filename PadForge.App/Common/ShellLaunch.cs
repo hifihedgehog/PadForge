@@ -23,8 +23,10 @@ namespace PadForge.Common
     /// folder's view, whose Application is the shell, and the shell's
     /// ShellExecute starts the program inside explorer.exe, with the signed-in
     /// user's rights. Probed from a process with rights on this PC: the child
-    /// ran at medium integrity. When the shell itself runs with rights (UAC
-    /// off), so does the program, as before. A target that needs rights gets
+    /// ran at medium integrity. The program takes explorer's variables, the
+    /// user's own, and none of PadForge's, whose variables after a start with
+    /// rights are the allow list (RightsVariables). When the shell itself
+    /// runs with rights (UAC off), so does the program, as before. A target that needs rights gets
     /// Windows' own prompt, as it does from Explorer. When there is no desktop
     /// shell, nothing starts and the caller is told why: a program without
     /// rights can end the user's shell, so falling back to a start with

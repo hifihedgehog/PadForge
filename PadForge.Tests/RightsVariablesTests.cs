@@ -115,20 +115,6 @@ namespace PadForge.Tests
             Assert.Contains("System32Calls.CreateProcess(exe, commandLine, block, folder, ref startup, out var child)", start, StringComparison.Ordinal);
         }
 
-        // ── The failed start's copy ──
-
-        [Fact]
-        public void TheFailedStartsCopy_HandsOnNoLoader_AndNoUnpackFolder()
-        {
-            var map = MapOfBlock(StartFailure.CopyBlock(System32Calls.MachineVariables(), OwnWithLoaders()));
-            HoldsNoLoader(map, natives: null);
-            Assert.DoesNotContain(ProtectedStart.HandoverVariable, map.Keys);
-
-            string source = OffLimitsSource.Read("PadForge.App/Services/StartFailure.cs");
-            Assert.Contains("CopyBlock(System32Calls.MachineVariables(), variables), exe.Substring(0, slash + 1));",
-                FenceSource.Body(source, "internal static void Show(Kind kind)"), StringComparison.Ordinal);
-        }
-
         // ── The logon start ──
 
         [Fact]

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using PadForge.Engine;
 using PadForge.Services.Automation;
 using PadForge.Services.Plugins;
+using Microsoft.Win32.SafeHandles;
+using PadForge.Common;
+using PadForge.Services;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -35,15 +38,12 @@ namespace PadForge.Tests
         [Fact]
         public void TheEnvironmentBlock_KeepsTheUsersVariables_AndAddsTheKeyAndThePipe()
         {
-            var user = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var user = new[]
             {
-                ["Path"] = @"C:\Windows;C:\Tools",
-                ["USERPROFILE"] = @"C:\Users\someone",
-                ["PADFORGE_PLUGIN_TOKEN"] = "stale",
-                ["__COMPAT_LAYER"] = "RunAsAdmin",
-                ["zeta"] = "last",
+                @"Path=C:\Windows;C:\Tools", @"USERPROFILE=C:\Users\someone", "PADFORGE_PLUGIN_TOKEN=stale",
+                "__COMPAT_LAYER=RunAsAdmin", "zeta=last",
             };
-            string block = PluginLauncher.EnvironmentBlock(user, new Dictionary<string, string>
+            string block = UserVariables.Block(user, new Dictionary<string, string>
             {
                 [PluginManager.TokenVariable] = "ABC123",
                 [PluginManager.PipeVariable] = "PadForge.Automation",
@@ -61,6 +61,115 @@ namespace PadForge.Tests
             Assert.Equal(names.OrderBy(n => n, StringComparer.OrdinalIgnoreCase), names);
             Assert.Equal("zeta", names[^1]);
         }
+
+        // ── The shell's variables ──
+
+        /// <summary>The variables a plugin starts with are the ones Windows
+        /// builds for the desktop shell's token: the shell user's own Path
+        /// entries are in them, a variable only this process has is not,
+        /// <c>__COMPAT_LAYER</c> stays out, and the variables given replace
+        /// the shell's.</summary>
+        [Fact]
+        public void APluginsVariables_AreTheShellTokens_AndNoneThatOnlyThisProcessHas()
+        {
+            string only = "PADFORGE_TEST_ONLY_HERE_" + Guid.NewGuid().ToString("N");
+            Environment.SetEnvironmentVariable(only, "1");
+            try
+            {
+                // The same-window control: this process has it.
+                Assert.Contains(System32Calls.Variables(), l => l.StartsWith(only + "=", StringComparison.Ordinal));
+
+                using var shell = PluginLauncher.OpenShell();
+                Assert.True(shell != null, "no desktop shell runs where the tests run");
+                string[] lines = PluginLauncher.ShellVariables(shell, out int error);
+                Assert.True(lines != null, "the shell's variables could not be read: error " + error);
+                Assert.Equal(0, error);
+                var shellMap = UserVariablesTests.Map(lines.Where(l => l.Length > 0 && l[0] != '='));
+                Assert.True(shellMap.ContainsKey("USERPROFILE"));
+                Assert.True(shellMap.ContainsKey("SystemRoot"));
+
+                string block = UserVariables.Block(lines, new Dictionary<string, string>
+                {
+                    [PluginManager.TokenVariable] = "KEY",
+                    ["USERNAME"] = "given-wins",
+                });
+                var map = UserVariablesTests.Map(block[..^2].Split('\0'));
+                Assert.DoesNotContain(only, map.Keys);
+                Assert.DoesNotContain(UserVariables.CompatLayer, map.Keys);
+                Assert.Equal("KEY", map[PluginManager.TokenVariable]);
+                Assert.Equal("given-wins", map["USERNAME"]);
+                foreach (var pair in shellMap)
+                {
+                    if (string.Equals(pair.Key, UserVariables.CompatLayer, StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(pair.Key, "USERNAME", StringComparison.OrdinalIgnoreCase)) continue;
+                    Assert.Equal(pair.Value, map[pair.Key]);
+                }
+
+                // Each of the user's own Path entries, as the profile holds
+                // them, is in the shell's Path.
+                foreach (string entry in UserVariablesTests.UsersOwnPathEntries())
+                    Assert.Contains(entry, shellMap["Path"].Split(';'), StringComparer.OrdinalIgnoreCase);
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable(only, null);
+            }
+        }
+
+        /// <summary>When the shell's variables cannot be read, the plugin is
+        /// refused with the Windows error and nothing starts: never a start
+        /// with PadForge's own variables.</summary>
+        [Fact]
+        public void APlugin_IsRefused_WhenTheShellsVariablesCannotBeRead()
+        {
+            Assert.True(File.Exists(ProbeExe), "the helper was not built beside the tests: " + ProbeExe);
+            string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.PluginRefused." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            string report = Path.Combine(dir, "report.txt");
+            int asked = 0;
+            try
+            {
+                var launcher = new PluginLauncher((SafeProcessHandle _, out int error) =>
+                {
+                    asked++;
+                    error = 5;
+                    return null;
+                });
+                var launch = launcher.Start(
+                    new PluginCommand(ProbeExe, PluginFile.Quote(ProbeExe) + " rights", Path.GetDirectoryName(ProbeExe)),
+                    new Dictionary<string, string> { ["PADFORGE_PROBE_REPORT"] = report });
+                Assert.Null(launch.Process);
+                Assert.Equal(1, asked);
+                Assert.Equal(PluginRefusal.Failed, launch.Refusal);
+                Assert.Equal(5, launch.Error);
+                Thread.Sleep(1500);
+                Assert.False(File.Exists(report), "the helper ran");
+                // A refusal the manager tries again, as for a missing shell.
+                string manager = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginManager.cs");
+                Assert.Contains("retry: why is PluginRefusal.NoShell or PluginRefusal.Failed or PluginRefusal.None", manager);
+            }
+            finally
+            {
+                try { Directory.Delete(dir, true); } catch (IOException) { }
+            }
+
+            // The real reader refuses a handle that may not read the token.
+            using var bare = OpenProcess(Synchronize, false, (uint)Environment.ProcessId);
+            Assert.False(bare.IsInvalid);
+            Assert.Null(PluginLauncher.ShellVariables(bare, out int denied));
+            Assert.Equal(5, denied);
+
+            // No variable of PadForge's own process is read for a plugin.
+            string source = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginLauncher.cs");
+            Assert.DoesNotContain("GetEnvironmentVariables", source);
+            Assert.DoesNotContain("System32Calls.Variables()", source);
+            Assert.Contains("if (block == null) return PluginLaunch.Refused(PluginRefusal.Failed, variablesError);", source);
+        }
+
+        private const uint Synchronize = 0x00100000;
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern SafeProcessHandle OpenProcess(uint access, bool inherit, uint processId);
 
         // ── What a file runs as ──
 
@@ -168,14 +277,26 @@ namespace PadForge.Tests
             Directory.CreateDirectory(dir);
             string report = Path.Combine(dir, "report.txt");
             string mine = "mine-" + Guid.NewGuid().ToString("N");
-            Environment.SetEnvironmentVariable("PADFORGE_PROBE_REPORT", report);
+            // Set in this process only: the plugin's variables are the
+            // shell's, so it must not see it. The report's path is given.
             Environment.SetEnvironmentVariable("PADFORGE_PROBE_MINE", mine);
             IPluginProcess process = null;
             try
             {
+                Assert.Equal(mine, Environment.GetEnvironmentVariable("PADFORGE_PROBE_MINE"));
+                string shellPath;
+                using (var shell = PluginLauncher.OpenShell())
+                {
+                    Assert.True(shell != null, "no desktop shell runs where the tests run");
+                    shellPath = UserVariablesTests.Map(PluginLauncher.ShellVariables(shell, out _).Where(l => l.Length > 0 && l[0] != '='))["Path"];
+                }
                 var launch = new PluginLauncher().Start(
                     new PluginCommand(ProbeExe, PluginFile.Quote(ProbeExe) + " rights", Path.GetDirectoryName(ProbeExe)),
-                    new Dictionary<string, string> { [PluginManager.TokenVariable] = "KEY42", [PluginManager.PipeVariable] = "Pipe.For.Test" });
+                    new Dictionary<string, string>
+                    {
+                        [PluginManager.TokenVariable] = "KEY42", [PluginManager.PipeVariable] = "Pipe.For.Test",
+                        ["PADFORGE_PROBE_REPORT"] = report,
+                    });
                 Assert.True(launch.Process != null, "not started: " + launch.Refusal + " " + launch.Error);
                 process = launch.Process;
                 var exited = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -191,7 +312,8 @@ namespace PadForge.Tests
                 Assert.Equal("0", facts["privileged"]);
                 Assert.Equal("KEY42", facts["token"]);
                 Assert.Equal("Pipe.For.Test", facts["pipe"]);
-                Assert.Equal(mine, facts["mine"]);
+                Assert.Equal(string.Empty, facts["mine"]);
+                Assert.Equal(shellPath, facts["path"]);
                 Assert.Equal(Path.GetDirectoryName(ProbeExe).TrimEnd('\\'), facts["folder"].TrimEnd('\\'), ignoreCase: true);
 
                 using (var child = Process.GetProcessById(process.Id))
@@ -207,7 +329,6 @@ namespace PadForge.Tests
             }
             finally
             {
-                Environment.SetEnvironmentVariable("PADFORGE_PROBE_REPORT", null);
                 Environment.SetEnvironmentVariable("PADFORGE_PROBE_MINE", null);
                 process?.Stop();
                 process?.Dispose();

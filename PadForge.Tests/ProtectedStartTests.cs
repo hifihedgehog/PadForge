@@ -205,8 +205,8 @@ namespace PadForge.Tests
         public void TheReadOnlyRights_AreTheReadAndExecuteSet()
         {
             // FILE_GENERIC_READ | FILE_GENERIC_EXECUTE, and GENERIC_READ | GENERIC_EXECUTE.
-            Assert.Equal(0x1200A9, ProtectedFolder.ReadOnlyRights & 0x1FFFFF);
-            Assert.Equal(unchecked((int)0xA0000000), ProtectedFolder.ReadOnlyRights & unchecked((int)0xF0000000));
+            Assert.Equal(0x1200A9, PadForge.Engine.Common.ChangeRule.ReadOnlyRights & 0x1FFFFF);
+            Assert.Equal(unchecked((int)0xA0000000), PadForge.Engine.Common.ChangeRule.ReadOnlyRights & unchecked((int)0xF0000000));
         }
 
         [Fact]
@@ -441,6 +441,8 @@ namespace PadForge.Tests
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "ProtectedFolder.cs"),
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "System32Calls.cs"),
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "RightsVariables.cs"),
+                AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "UserVariables.cs"),
+                AuditDelta20261002Tests.RepoText("PadForge.Engine", "Common", "ChangeRule.cs"),
             })
             {
                 string code = string.Join("\n", file.Split('\n').Where(l => !l.TrimStart().StartsWith("//", StringComparison.Ordinal)));

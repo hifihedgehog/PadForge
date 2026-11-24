@@ -4493,7 +4493,9 @@ namespace PadForge.Tests
 
         /// <summary>Every native call the lane declares, by name. Each one
         /// reads: the parser's own buffers, the device tree, the shell's
-        /// window and token. A call added to the lane shows up here.</summary>
+        /// window and token, whose user the one token reader reads
+        /// (AutomationClientIdentity.ReadUser). A call added to the lane
+        /// shows up here.</summary>
         [Fact]
         public void TheLanesNativeCalls_AreTheOnesNamedHere()
         {
@@ -4505,7 +4507,7 @@ namespace PadForge.Tests
                 "HidP_InitializeReportForID", "HidP_SetUsageValue", "HidP_SetUsageValueArray", "HidP_SetData",
                 "CM_Get_Device_Interface_PropertyW", "CM_Locate_DevNodeW", "CM_Get_Parent", "CM_Get_Device_IDW",
                 "CM_Get_DevNode_PropertyW",
-                "GetShellWindow", "GetWindowThreadProcessId", "OpenProcess", "OpenProcessToken", "GetTokenInformation",
+                "GetShellWindow", "GetWindowThreadProcessId", "OpenProcess", "OpenProcessToken",
                 "CloseHandle",
             };
             Assert.Equal(expected.OrderBy(name => name, StringComparer.Ordinal), declared);

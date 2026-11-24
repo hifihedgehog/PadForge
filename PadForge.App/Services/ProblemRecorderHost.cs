@@ -87,33 +87,117 @@ namespace PadForge.Services
             }
             Input?.CollectPrivateValues(into);
             // Every microphone and speaker Windows lists. A Bluetooth
-            // headset carries the name its owner gave it.
-            foreach (var endpoint in AudioMuteService.EnumerateEndpoints())
-                into.Add((PrivateKind.AudioDevice, endpoint.FriendlyName));
+            // headset carries the name its owner gave it. Kept until Windows
+            // reports a change (AudioMuteService.EndpointNames).
+            foreach (string name in AudioMuteService.EndpointNames())
+                into.Add((PrivateKind.AudioDevice, name));
             foreach (string host in Main?.Settings?.DjiRemoteHosts ?? (IEnumerable<string>)Array.Empty<string>())
                 into.Add((PrivateKind.HostName, host));
+            into.AddRange(Addresses.Current());
+        }
 
-            try
+        /// <summary>
+        /// The addresses of this PC's network adapters, as the scrubber
+        /// searches for them (#597). They are read once and kept until
+        /// Windows reports an address changed (NetworkChange), since a read
+        /// of every adapter took 68 ms at the median and up to 389 ms under a
+        /// load of one busy process per core, on the line handler of every
+        /// Automation read that refreshed the scrubber. A read that failed,
+        /// or a report that could not be subscribed to, keeps nothing, so the
+        /// next call reads again.
+        /// </summary>
+        internal static class Addresses
+        {
+            private static readonly object Sync = new object();
+            private static List<(PrivateKind Kind, string Value)> _kept;
+            private static bool _current;
+            private static bool _watched;
+
+            internal static IReadOnlyList<(PrivateKind Kind, string Value)> Current()
             {
-                foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
+                lock (Sync)
                 {
-                    if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
-                    foreach (var address in adapter.GetIPProperties().UnicastAddresses)
-                    {
-                        var ip = address.Address;
-                        if (System.Net.IPAddress.IsLoopback(ip)) continue;
-                        // An IPv6 address is written without its zone.
-                        string text = ip.ToString();
-                        int zone = text.IndexOf('%');
-                        if (zone > 0) text = text.Substring(0, zone);
-                        into.Add((PrivacyScrubber.IsLocal(ip) ? PrivateKind.LanAddress : PrivateKind.PublicAddress, text));
-                    }
+                    if (_current && _kept != null) return _kept;
+                }
+                bool watched = Watch();
+                lock (Sync)
+                {
+                    // Current from before the read: a change Windows reports
+                    // during it marks the list stale again.
+                    _current = watched;
+                    _kept = null;
+                }
+                var read = Read(out bool ok);
+                lock (Sync)
+                {
+                    if (!ok) _current = false;
+                    else if (_current) _kept = read;
+                }
+                return read;
+            }
+
+            /// <summary>Whether a list is kept now, for tests.</summary>
+            internal static bool Kept
+            {
+                get { lock (Sync) return _current && _kept != null; }
+            }
+
+            /// <summary>What Windows' report does, for tests too.</summary>
+            internal static void Changed()
+            {
+                lock (Sync)
+                {
+                    _current = false;
+                    _kept = null;
                 }
             }
-            catch (NetworkInformationException)
+
+            private static bool Watch()
             {
-                // No adapter list, no addresses to search for. The shape of
-                // an address is still found by the scrubber's patterns.
+                lock (Sync)
+                {
+                    if (_watched) return true;
+                    try
+                    {
+                        NetworkChange.NetworkAddressChanged += (_, _) => Changed();
+                        _watched = true;
+                    }
+                    catch (Exception ex) when (ex is NetworkInformationException or InvalidOperationException or PlatformNotSupportedException)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+
+            private static List<(PrivateKind Kind, string Value)> Read(out bool ok)
+            {
+                var list = new List<(PrivateKind Kind, string Value)>();
+                try
+                {
+                    foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
+                    {
+                        if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+                        foreach (var address in adapter.GetIPProperties().UnicastAddresses)
+                        {
+                            var ip = address.Address;
+                            if (System.Net.IPAddress.IsLoopback(ip)) continue;
+                            // An IPv6 address is written without its zone.
+                            string text = ip.ToString();
+                            int zone = text.IndexOf('%');
+                            if (zone > 0) text = text.Substring(0, zone);
+                            list.Add((PrivacyScrubber.IsLocal(ip) ? PrivateKind.LanAddress : PrivateKind.PublicAddress, text));
+                        }
+                    }
+                    ok = true;
+                }
+                catch (NetworkInformationException)
+                {
+                    // No adapter list, no addresses to search for. The shape
+                    // of an address is still found by the scrubber's patterns.
+                    ok = false;
+                }
+                return list;
             }
         }
 

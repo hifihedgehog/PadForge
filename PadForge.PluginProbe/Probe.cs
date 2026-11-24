@@ -10,9 +10,10 @@ namespace PadForge.PluginProbe
     /// PadForge's.
     /// <c>rights</c> writes, to the file its PADFORGE_PROBE_REPORT variable
     /// names, whether it has administrator rights, the key and pipe name
-    /// PadForge gave it and the probe variable the test set in its own
-    /// environment, then waits a minute, so the test sees it end only when
-    /// its job is closed.
+    /// PadForge gave it, the probe variable the test set in its own
+    /// environment (which a plugin never gets), its Path and its folder,
+    /// then waits a minute, so the test sees it end only when its job is
+    /// closed.
     /// </summary>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     internal static class Probe
@@ -42,6 +43,7 @@ namespace PadForge.PluginProbe
                 .Append("token=").Append(Environment.GetEnvironmentVariable("PADFORGE_PLUGIN_TOKEN")).Append('\n')
                 .Append("pipe=").Append(Environment.GetEnvironmentVariable("PADFORGE_PIPE")).Append('\n')
                 .Append("mine=").Append(Environment.GetEnvironmentVariable("PADFORGE_PROBE_MINE")).Append('\n')
+                .Append("path=").Append(Environment.GetEnvironmentVariable("Path")).Append('\n')
                 .Append("folder=").Append(Environment.CurrentDirectory).Append('\n')
                 .Append("done\n");
             File.WriteAllText(report + ".part", text.ToString());

@@ -341,15 +341,18 @@ namespace PadForge.Tests
             Assert.False(StartFailure.HoldsOnePlace(null));
         }
 
-        /// <summary>The copy unpacks where a start without rights does, is
-        /// handed no handover, and gets the allow list's variables
-        /// alone.</summary>
+        /// <summary>The copy runs as the user without rights, so it gets the
+        /// variables Windows builds for the user, the user's own Path
+        /// included, without the drive lines and a compatibility layer. It
+        /// takes them from the user's profile, not from the start, so it
+        /// unpacks where a start of the user's does and is handed no
+        /// handover (UserVariablesTests holds the real read).</summary>
         [Fact]
-        public void TheCopysVariables_LeaveOutTheProtectedStartsOwn()
+        public void TheCopysVariables_AreTheUsersOwn()
         {
-            string block = StartFailure.CopyBlock(new[] { "Path=C:\\WINDOWS\\system32" },
-                new[] { "=C:=C:\\", "A=1", "dotnet_bundle_extract_base_dir=C:\\x", "PADFORGE_HANDOVER_EVENT=1C", "Path=C:\\mine", "TEMP=C:\\t", "Z=2" });
-            Assert.Equal("Path=C:\\WINDOWS\\system32\0TEMP=C:\\t\0\0", block);
+            string block = StartFailure.CopyBlock(
+                new[] { "=C:=C:\\", "Z=2", "A=1", "Path=C:\\WINDOWS\\system32;C:\\mine", "__COMPAT_LAYER=RunAsAdmin", "TEMP=C:\\t" });
+            Assert.Equal("A=1\0Path=C:\\WINDOWS\\system32;C:\\mine\0TEMP=C:\\t\0Z=2\0\0", block);
         }
 
         /// <summary>Both ways out show the box before the exit. The start with

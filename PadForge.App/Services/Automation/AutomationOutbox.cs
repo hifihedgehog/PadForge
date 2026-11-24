@@ -10,7 +10,9 @@ namespace PadForge.Services.Automation
     /// <summary>The newest value of each axis and slider of one device a
     /// session follows as a stream. While a value waits to be written, a
     /// newer one takes its place and the queue keeps one entry for it.
-    /// Guarded by its outbox's lock.</summary>
+    /// Guarded by its outbox's lock: the writer reads a value and frees its
+    /// slot in one hold of it, so a newer value is written in that batch or
+    /// queued for the next.</summary>
     internal sealed class AxisStreamSlots
     {
         public AxisStreamSlots(string deviceId) => DeviceId = deviceId;
@@ -29,6 +31,12 @@ namespace PadForge.Services.Automation
     /// value while a write is pending. A program that does not read is cut
     /// off once its queue passes <see cref="Cap"/>, and the pass that found
     /// it so goes on at once.
+    ///
+    /// <para>The writer takes everything that waits in one step under the
+    /// lock, by swapping the queue's ring for a spare it holds, and formats
+    /// the batch after the lock is released, so the poll thread never waits
+    /// while text is formatted. An axis item's value is read under the lock
+    /// item by item, as the slot is freed.</para>
     ///
     /// <para>After each batch is written to a program that gave a window in
     /// its hello, the registered message <c>PadForge.Wake</c> is posted to
@@ -59,6 +67,10 @@ namespace PadForge.Services.Automation
         private readonly Action _overflowed;
         private Item[] _ring = new Item[64];
         private int _head, _count;
+
+        /// <summary>The ring the writer swaps in when it takes a batch: the
+        /// one it took before, emptied. Only the writer touches it.</summary>
+        private Item[] _spare = new Item[64];
         private int _signaled;
         private volatile bool _cutOff;
         private readonly SemaphoreSlim _signal = new SemaphoreSlim(0);
@@ -185,9 +197,14 @@ namespace PadForge.Services.Automation
             if (Interlocked.Exchange(ref _signaled, 1) == 0) _signal.Release();
         }
 
+        /// <summary>Test seam: runs on the writer after each item of a batch
+        /// is formatted, outside the lock. Null in production.</summary>
+        internal Action FormattedForTest;
+
         /// <summary>
         /// Writes until <paramref name="stopping"/> is canceled or the pipe
-        /// breaks. Each wake drains everything that waits into one write.
+        /// breaks. Each wake takes everything that waits, formats it outside
+        /// the lock and writes it in one write.
         /// </summary>
         public async Task RunAsync(CancellationToken stopping)
         {
@@ -199,18 +216,31 @@ namespace PadForge.Services.Automation
                 Volatile.Write(ref _signaled, 0);
                 text.Clear();
                 afters.Clear();
+                Item[] taken;
+                int head, count;
                 lock (_sync)
                 {
-                    while (_count > 0)
+                    taken = _ring;
+                    head = _head;
+                    count = _count;
+                    if (count > 0)
                     {
-                        ref Item item = ref _ring[_head];
-                        Format(text, item);
-                        if (item.After != null) afters.Add(item.After);
-                        item = default;
-                        _head = (_head + 1) % _ring.Length;
-                        _count--;
+                        _ring = _spare;
+                        _head = 0;
+                        _count = 0;
                     }
                 }
+                if (count == 0) continue;
+                for (int i = 0; i < count; i++)
+                {
+                    ref Item item = ref taken[(head + i) % taken.Length];
+                    Format(text, item);
+                    if (item.After != null) afters.Add(item.After);
+                    item = default;
+                    FormattedForTest?.Invoke();
+                }
+                // Emptied, the ring taken is the next batch's spare.
+                _spare = taken;
                 if (text.Length > 0)
                 {
                     byte[] bytes = Encoding.UTF8.GetBytes(text.ToString());
@@ -225,9 +255,10 @@ namespace PadForge.Services.Automation
             }
         }
 
-        /// <summary>Under the lock. An axis slot is read and freed here, so
-        /// the value written is the newest.</summary>
-        private static void Format(StringBuilder text, in Item item)
+        /// <summary>Outside the lock. An axis slot is read and freed under
+        /// the lock, so the value written is the newest, and one that comes
+        /// after it is queued again.</summary>
+        private void Format(StringBuilder text, in Item item)
         {
             switch (item.Kind)
             {
@@ -247,9 +278,13 @@ namespace PadForge.Services.Automation
                     break;
                 case Kind.Axis:
                     var slots = item.Slots;
-                    slots.Waiting[item.Index] = false;
-                    text.Append("e a ").Append(slots.DeviceId).Append(' ').Append(item.Index).Append(' ')
-                        .Append(slots.Value[item.Index]).Append('\n');
+                    int value;
+                    lock (_sync)
+                    {
+                        value = slots.Value[item.Index];
+                        slots.Waiting[item.Index] = false;
+                    }
+                    text.Append("e a ").Append(slots.DeviceId).Append(' ').Append(item.Index).Append(' ').Append(value).Append('\n');
                     break;
             }
         }

@@ -39,6 +39,9 @@ namespace PadForge.Common.Input
         /// box should not require an explicit refresh button. Returns
         /// empty on any failure (no audio stack, COM unavailable, etc.).</summary>
         public static EndpointInfo[] EnumerateEndpoints()
+            => TryEnumerate(out EndpointInfo[] endpoints) ? endpoints : Array.Empty<EndpointInfo>();
+
+        private static bool TryEnumerate(out EndpointInfo[] endpoints)
         {
             try
             {
@@ -53,15 +56,126 @@ namespace PadForge.Common.Input
                         list.Add(new EndpointInfo(d.ID, d.FriendlyName, isInput));
                     }
                 }
-                return list
+                endpoints = list
                     .OrderBy(e => e.IsInput ? 0 : 1)  // inputs first
                     .ThenBy(e => e.FriendlyName, StringComparer.OrdinalIgnoreCase)
                     .ToArray();
+                return true;
             }
             catch
             {
-                return Array.Empty<EndpointInfo>();
+                endpoints = Array.Empty<EndpointInfo>();
+                return false;
             }
+        }
+
+        // ── The endpoints' names, kept until Windows reports a change ──
+
+        private static string[] _endpointNames;
+        private static bool _endpointNamesCurrent;
+        private static NameWatch _nameWatch;
+
+        /// <summary>
+        /// The friendly names of every active input and output endpoint, as
+        /// the privacy scrubber searches every read and recording for them
+        /// (#597). They are read once and kept until Windows reports an
+        /// endpoint added, removed, changed in state or changed in a
+        /// property, a rename among them, through the endpoint notification
+        /// AudioBassDetector takes as well (IMMNotificationClient). A read
+        /// is a call into Windows' audio service: it took 371 ms at the
+        /// median and up to 584 ms under a load of one busy process per core,
+        /// on the line handler of every Automation read that refreshed the
+        /// scrubber. A failed read, or a notification that could not be
+        /// registered, keeps nothing, so the next call reads again.
+        /// </summary>
+        public static string[] EndpointNames()
+        {
+            lock (_gate)
+            {
+                if (_endpointNamesCurrent && _endpointNames != null) return _endpointNames;
+            }
+            bool watched = WatchNames();
+            lock (_gate)
+            {
+                // Current from before the read: a change Windows reports
+                // during it marks the names stale again.
+                _endpointNamesCurrent = watched;
+                _endpointNames = null;
+            }
+            if (!TryEnumerate(out EndpointInfo[] endpoints))
+            {
+                lock (_gate) _endpointNamesCurrent = false;
+                return Array.Empty<string>();
+            }
+            var names = new string[endpoints.Length];
+            for (int i = 0; i < endpoints.Length; i++) names[i] = endpoints[i].FriendlyName;
+            lock (_gate)
+            {
+                if (_endpointNamesCurrent) _endpointNames = names;
+            }
+            return names;
+        }
+
+        /// <summary>Registers the notification once. False when Windows
+        /// refused it.</summary>
+        private static bool WatchNames()
+        {
+            lock (_gate)
+            {
+                if (_nameWatch != null) return true;
+            }
+            var watch = new NameWatch();
+            try
+            {
+                if (GetEnumerator().RegisterEndpointNotificationCallback(watch) != 0) return false;
+            }
+            catch
+            {
+                return false;
+            }
+            lock (_gate)
+            {
+                if (_nameWatch == null)
+                {
+                    _nameWatch = watch;
+                    return true;
+                }
+            }
+            // Another caller registered first: one registration stands.
+            try { GetEnumerator().UnregisterEndpointNotificationCallback(watch); } catch { }
+            return true;
+        }
+
+        /// <summary>Marks the kept names stale. Windows calls it on its own
+        /// thread.</summary>
+        private static void NamesChanged()
+        {
+            lock (_gate)
+            {
+                _endpointNamesCurrent = false;
+                _endpointNames = null;
+            }
+        }
+
+        /// <summary>Test seam: what Windows' notification does.</summary>
+        internal static void NamesChangedForTest() => NamesChanged();
+
+        /// <summary>Whether names are kept now, for tests.</summary>
+        internal static bool EndpointNamesKept
+        {
+            get { lock (_gate) return _endpointNamesCurrent && _endpointNames != null; }
+        }
+
+        /// <summary>Every report that can change an endpoint's name or the
+        /// set of active endpoints marks the kept names stale. A new default
+        /// device changes neither.</summary>
+        private sealed class NameWatch : NAudio.CoreAudioApi.Interfaces.IMMNotificationClient
+        {
+            public void OnDeviceStateChanged(string deviceId, DeviceState newState) => NamesChanged();
+            public void OnDeviceAdded(string pwstrDeviceId) => NamesChanged();
+            public void OnDeviceRemoved(string deviceId) => NamesChanged();
+            public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId) { }
+            public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key) => NamesChanged();
         }
 
         /// <summary>The PC's default microphone, Windows' default capture

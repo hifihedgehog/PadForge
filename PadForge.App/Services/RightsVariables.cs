@@ -22,11 +22,13 @@ namespace PadForge.Services
     /// same families change what the runtime loads or runs. A process started
     /// with a copy of PadForge's variables would load such a library with
     /// PadForge's rights. So none of them is handed on: the logon start, the
-    /// protected start's restart, the failed start's copy, the update
-    /// helper, PadForge's own helpers (the DSX stand-in, the moved copy, the
-    /// library host with UAC off) and the Windows tools PadForge runs
-    /// (schtasks, netsh, pnputil, msiexec, the installers) all get the block
-    /// this class builds.</para>
+    /// protected start's restart, the update helper, PadForge's own helpers
+    /// (the DSX stand-in, the moved copy, the library host with UAC off) and
+    /// the Windows tools PadForge runs (schtasks, netsh, pnputil, msiexec,
+    /// the installers) all get the block this class builds. A process
+    /// PadForge starts as the user without rights (a plugin, the library
+    /// host, the failed start's copy) gets the user's own variables instead
+    /// (<see cref="UserVariables"/>).</para>
     ///
     /// <para>This part runs in the protected start, before the process may
     /// trust the folder its libraries were unpacked into, so it reads the

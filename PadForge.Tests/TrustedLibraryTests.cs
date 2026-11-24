@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using PadForge.Engine.Common;
 using Xunit;
-using Entry = PadForge.Engine.Common.TrustedLibrary.Entry;
-using Level = PadForge.Engine.Common.TrustedLibrary.Level;
+using Level = PadForge.Engine.Common.ChangeRule.Level;
 
 namespace PadForge.Tests
 {
@@ -22,6 +22,32 @@ namespace PadForge.Tests
 
         private static readonly FileSystemRights ReadRun = FileSystemRights.ReadAndExecute | FileSystemRights.Synchronize;
 
+        /// <summary>One allow entry, as a test writes it.</summary>
+        private readonly record struct Entry(string Sid, FileSystemRights Rights, bool InheritOnly);
+
+        /// <summary>The self-relative descriptor Windows would give for that
+        /// owner and those allow entries, an inherit-only one inherited by
+        /// files and folders alike.</summary>
+        internal static byte[] Descriptor(string owner, params (string Sid, int Rights, bool InheritOnly)[] entries)
+        {
+            var acl = new RawAcl(GenericAcl.AclRevision, entries.Length);
+            foreach (var (sid, rights, inheritOnly) in entries)
+                acl.InsertAce(acl.Count, new CommonAce(
+                    inheritOnly ? AceFlags.InheritOnly | AceFlags.ObjectInherit | AceFlags.ContainerInherit : AceFlags.None,
+                    AceQualifier.AccessAllowed, rights, new SecurityIdentifier(sid), false, null));
+            var sd = new RawSecurityDescriptor(ControlFlags.DiscretionaryAclPresent | ControlFlags.SelfRelative,
+                owner == null ? null : new SecurityIdentifier(owner), null, null, acl);
+            byte[] bytes = new byte[sd.BinaryLength];
+            sd.GetBinaryForm(bytes, 0);
+            return bytes;
+        }
+
+        /// <summary>The one rule on that descriptor at a vendor's
+        /// level.</summary>
+        private static bool OthersMayChange(string owner, Entry[] entries, Level level)
+            => ChangeRule.Judge(Descriptor(owner, Array.ConvertAll(entries, e => (e.Sid, (int)e.Rights, e.InheritOnly))), level)
+               != ChangeRule.Verdict.Sound;
+
         [Fact]
         public void ProgramFiles_PassesTheRule()
         {
@@ -36,9 +62,9 @@ namespace PadForge.Tests
                 new Entry(Users, ReadRun, false),
                 new Entry(CreatorOwner, FileSystemRights.FullControl, true),
             };
-            Assert.False(TrustedLibrary.OthersMayChange(TrustedInstaller, folder, Level.File));
-            Assert.False(TrustedLibrary.OthersMayChange(Admins, folder, Level.Folder));
-            Assert.False(TrustedLibrary.OthersMayChange(System, folder, Level.Above));
+            Assert.False(OthersMayChange(TrustedInstaller, folder, Level.VendorFile));
+            Assert.False(OthersMayChange(Admins, folder, Level.VendorFolder));
+            Assert.False(OthersMayChange(System, folder, Level.VendorAbove));
         }
 
         [Fact]
@@ -46,16 +72,16 @@ namespace PadForge.Tests
         {
             // C:\SteamVR on this PC: Authenticated Users modify, from C:\.
             var steamVr = new[] { new Entry(Admins, FileSystemRights.FullControl, false), new Entry(AuthUsers, FileSystemRights.Modify, false) };
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, steamVr, Level.Folder));
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, steamVr, Level.File));
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, steamVr, Level.Above));
+            Assert.True(OthersMayChange(Admins, steamVr, Level.VendorFolder));
+            Assert.True(OthersMayChange(Admins, steamVr, Level.VendorFile));
+            Assert.True(OthersMayChange(Admins, steamVr, Level.VendorAbove));
             var readOnly = new[] { new Entry(Users, ReadRun, false) };
-            Assert.True(TrustedLibrary.OthersMayChange("S-1-5-21-1-2-3-1001", readOnly, Level.File));
-            Assert.True(TrustedLibrary.OthersMayChange(null, readOnly, Level.File));
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, new[] { new Entry(Users, FileSystemRights.AppendData, false) }, Level.Folder));
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, new[] { new Entry(Users, FileSystemRights.ChangePermissions, false) }, Level.Above));
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, new[] { new Entry(Users, FileSystemRights.Delete, false) }, Level.Above));
-            Assert.True(TrustedLibrary.OthersMayChange(Admins, new[] { new Entry(Users, (FileSystemRights)0x40000000, false) }, Level.File));
+            Assert.True(OthersMayChange("S-1-5-21-1-2-3-1001", readOnly, Level.VendorFile));
+            Assert.True(OthersMayChange(null, readOnly, Level.VendorFile));
+            Assert.True(OthersMayChange(Admins, new[] { new Entry(Users, FileSystemRights.AppendData, false) }, Level.VendorFolder));
+            Assert.True(OthersMayChange(Admins, new[] { new Entry(Users, FileSystemRights.ChangePermissions, false) }, Level.VendorAbove));
+            Assert.True(OthersMayChange(Admins, new[] { new Entry(Users, FileSystemRights.Delete, false) }, Level.VendorAbove));
+            Assert.True(OthersMayChange(Admins, new[] { new Entry(Users, (FileSystemRights)0x40000000, false) }, Level.VendorFile));
         }
 
         /// <summary>A folder above may let others make new folders, as the
@@ -70,8 +96,8 @@ namespace PadForge.Tests
                 new Entry(AuthUsers, FileSystemRights.Modify, true),
                 new Entry(Users, ReadRun, false),
             };
-            Assert.False(TrustedLibrary.OthersMayChange(System, root, Level.Above));
-            Assert.True(TrustedLibrary.OthersMayChange(System, new[] { new Entry(AuthUsers, FileSystemRights.DeleteSubdirectoriesAndFiles, false) }, Level.Above));
+            Assert.False(OthersMayChange(System, root, Level.VendorAbove));
+            Assert.True(OthersMayChange(System, new[] { new Entry(AuthUsers, FileSystemRights.DeleteSubdirectoriesAndFiles, false) }, Level.VendorAbove));
         }
 
         [Fact]

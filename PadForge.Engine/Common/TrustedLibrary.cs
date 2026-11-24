@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.AccessControl;
-using System.Security.Principal;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 
 namespace PadForge.Engine.Common
 {
@@ -12,7 +12,8 @@ namespace PadForge.Engine.Common
     /// have put in place is loaded: it sits in a folder no other account can
     /// add a file to, and that folder and every folder above it give no
     /// other account the right to delete or rename what they hold or to
-    /// change who may. Its Authenticode signature, embedded or from a
+    /// change who may, by the one rule PadForge's own folders are judged by
+    /// (<see cref="ChangeRule"/>). Its Authenticode signature, embedded or from a
     /// catalog, holds by the check Windows runs before it trusts a download
     /// (<see cref="AuthenticodeSigner"/>), and its signer is the vendor's. The
     /// file is held open with no write or delete sharing from before the
@@ -84,7 +85,7 @@ namespace PadForge.Engine.Common
 
         private static string Check(string full, FileStream hold, IReadOnlyList<string> signers)
         {
-            string why = WhoMayChange(full);
+            string why = WhoMayChange(full, hold.SafeFileHandle);
             if (why != null) return why;
             if (signers == null) return null;
             // The signature, embedded or from a catalog that lists the file,
@@ -108,76 +109,88 @@ namespace PadForge.Engine.Common
 
         // ── Who may change it ──
 
-        /// <summary>The accounts an access list may give a right to change
-        /// with: Administrators, SYSTEM and TrustedInstaller.</summary>
-        private static readonly HashSet<string> Trusted = new(StringComparer.OrdinalIgnoreCase)
-        {
-            "S-1-5-32-544", "S-1-5-18", "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
-        };
-
-        /// <summary>One allow entry of an access list as the rule reads
-        /// it.</summary>
-        public readonly record struct Entry(string Sid, FileSystemRights Rights, bool InheritOnly);
-
-        private const FileSystemRights ChangeWho = FileSystemRights.ChangePermissions | FileSystemRights.TakeOwnership;
-        private const FileSystemRights GenericWrite = (FileSystemRights)0x40000000, GenericAll = (FileSystemRights)0x10000000;
-
         /// <summary>
-        /// Whether another account may change what <paramref name="kind"/>
-        /// names. The library's file: write, append or delete it. Its folder:
-        /// add a file or a folder, delete one, or delete the folder. A folder
-        /// above: delete or rename what it holds, or the folder itself. Any
-        /// of them: change who may, or own it. An entry that applies only to
-        /// what is made inside counts for none of them.
+        /// Why another account may change the library or where it sits, or
+        /// null when none can, by <see cref="ChangeRule"/> on each one's own
+        /// security descriptor: the file's read through the held handle, its
+        /// folder's at <see cref="ChangeRule.Level.VendorFolder"/>, and each
+        /// folder above up to the drive's root at
+        /// <see cref="ChangeRule.Level.VendorAbove"/>. Each folder is opened
+        /// as itself, so a link in the path is seen and refused, and its
+        /// descriptor is read from the handle that was checked.
         /// </summary>
-        public static bool OthersMayChange(string owner, IEnumerable<Entry> entries, Level kind)
+        private static string WhoMayChange(string full, SafeFileHandle file)
         {
-            if (owner == null || !Trusted.Contains(owner)) return true;
-            FileSystemRights risky = ChangeWho | GenericAll | FileSystemRights.Delete | kind switch
+            byte[] own = DescriptorOf(file);
+            if (own == null) return "cannot read who may change " + full;
+            if (ChangeRule.Judge(own, ChangeRule.Level.VendorFile) != ChangeRule.Verdict.Sound) return "others may change " + full;
+            var level = ChangeRule.Level.VendorFolder;
+            for (string folder = Path.GetDirectoryName(full); folder != null; folder = Path.GetDirectoryName(folder))
             {
-                Level.File => FileSystemRights.WriteData | FileSystemRights.AppendData | GenericWrite,
-                Level.Folder => FileSystemRights.WriteData | FileSystemRights.AppendData | FileSystemRights.DeleteSubdirectoriesAndFiles | GenericWrite,
-                _ => FileSystemRights.DeleteSubdirectoriesAndFiles,
-            };
-            foreach (var entry in entries)
-            {
-                if (entry.InheritOnly || Trusted.Contains(entry.Sid)) continue;
-                if ((entry.Rights & risky) != 0) return true;
-            }
-            return false;
-        }
-
-        public enum Level { File, Folder, Above }
-
-        /// <summary>Why another account may change the library or where it
-        /// sits, or null when none can.</summary>
-        private static string WhoMayChange(string full)
-        {
-            var file = new FileInfo(full);
-            if (Changeable(file.GetAccessControl(), Level.File)) return "others may change " + full;
-            var folder = file.Directory;
-            var level = Level.Folder;
-            while (folder != null)
-            {
-                if ((folder.Attributes & FileAttributes.ReparsePoint) != 0) return "a link in the path at " + folder.FullName;
-                if (Changeable(folder.GetAccessControl(), level)) return "others may change " + folder.FullName;
-                folder = folder.Parent;
-                level = Level.Above;
+                using var handle = CreateFileW(folder, ReadControl, ShareAll, IntPtr.Zero, OpenExisting,
+                    FlagBackupSemantics | FlagOpenReparsePoint, IntPtr.Zero);
+                if (handle.IsInvalid || !GetFileInformationByHandle(handle, out var info))
+                    return "cannot read who may change " + folder;
+                if ((info.FileAttributes & (uint)FileAttributes.ReparsePoint) != 0) return "a link in the path at " + folder;
+                byte[] descriptor = DescriptorOf(handle);
+                if (descriptor == null) return "cannot read who may change " + folder;
+                if (ChangeRule.Judge(descriptor, level) != ChangeRule.Verdict.Sound) return "others may change " + folder;
+                level = ChangeRule.Level.VendorAbove;
             }
             return null;
         }
 
-        private static bool Changeable(FileSystemSecurity security, Level level)
+        /// <summary>The owner and access list of what
+        /// <paramref name="handle"/> holds, as the self-relative security
+        /// descriptor GetSecurityInfo gives, or null.</summary>
+        private static byte[] DescriptorOf(SafeFileHandle handle)
         {
-            string owner = (security.GetOwner(typeof(SecurityIdentifier)) as SecurityIdentifier)?.Value;
-            var entries = new List<Entry>();
-            foreach (FileSystemAccessRule rule in security.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+            uint error = GetSecurityInfo(handle, SeFileObject, OwnerSecurityInformation | DaclSecurityInformation,
+                out _, out _, out _, out _, out IntPtr descriptor);
+            if (error != 0 || descriptor == IntPtr.Zero) return null;
+            try
             {
-                if (rule.AccessControlType != AccessControlType.Allow) continue;
-                entries.Add(new Entry(((SecurityIdentifier)rule.IdentityReference).Value, rule.FileSystemRights,
-                    (rule.PropagationFlags & PropagationFlags.InheritOnly) != 0));
+                uint length = GetSecurityDescriptorLength(descriptor);
+                if (length == 0) return null;
+                byte[] bytes = new byte[length];
+                Marshal.Copy(descriptor, bytes, 0, (int)length);
+                return bytes;
             }
-            return OthersMayChange(owner, entries, level);
+            finally
+            {
+                LocalFree(descriptor);
+            }
         }
+
+        private const int SeFileObject = 1;
+        private const uint OwnerSecurityInformation = 0x1, DaclSecurityInformation = 0x4;
+        private const uint ReadControl = 0x00020000, ShareAll = 0x7, OpenExisting = 3;
+        private const uint FlagBackupSemantics = 0x02000000, FlagOpenReparsePoint = 0x00200000;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct ByHandleFileInformation
+        {
+            public uint FileAttributes;
+            public uint CreationTimeLow, CreationTimeHigh, LastAccessTimeLow, LastAccessTimeHigh, LastWriteTimeLow, LastWriteTimeHigh;
+            public uint VolumeSerialNumber, FileSizeHigh, FileSizeLow, NumberOfLinks, FileIndexHigh, FileIndexLow;
+        }
+
+        [DllImport("advapi32.dll", ExactSpelling = true)]
+        private static extern uint GetSecurityInfo(SafeFileHandle handle, int objectType, uint securityInfo,
+            out IntPtr owner, out IntPtr group, out IntPtr dacl, out IntPtr sacl, out IntPtr securityDescriptor);
+
+        [DllImport("advapi32.dll", ExactSpelling = true)]
+        private static extern uint GetSecurityDescriptorLength(IntPtr securityDescriptor);
+
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        private static extern IntPtr LocalFree(IntPtr memory);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = true)]
+        private static extern SafeFileHandle CreateFileW(string path, uint access, uint share, IntPtr security, uint disposition,
+            uint flags, IntPtr template);
+
+        [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetFileInformationByHandle(SafeFileHandle file, out ByHandleFileInformation info);
     }
 }

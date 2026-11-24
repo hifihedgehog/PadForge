@@ -25,8 +25,12 @@ namespace PadForge.Services
     /// right. It picks the language the way the update helper's windows do
     /// (App.OnStartup: the Windows display language through
     /// <see cref="LanguageCatalog.InterfaceCulture"/>) and shows the box
-    /// through System32's user32. Only when that copy cannot be started does
-    /// the start with rights show the English text itself, from constants.
+    /// through System32's user32. The copy gets the variables Windows builds
+    /// for the user it runs as, from that user's profile and the machine's
+    /// (<see cref="UserVariables"/>), as any program of the user does, and
+    /// none of the start's own. Only when those cannot be read or the copy
+    /// cannot be started does the start with rights show the English text
+    /// itself, from constants.
     /// A run as SYSTEM, or in session 0, has no one to show a box to and
     /// shows none: a box there would wait for an answer forever.</para>
     /// </summary>
@@ -75,12 +79,12 @@ namespace PadForge.Services
         {
             if (System32Calls.IsSystem() || System32Calls.SessionId() is 0 or uint.MaxValue) return;
             string exe = System32Calls.OwnExe();
-            string[] variables = System32Calls.Variables();
+            string block = CopyBlock(System32Calls.VariablesOfProcess(System32Calls.CurrentProcess, out _));
             int slash = exe == null ? -1 : exe.LastIndexOf('\\');
-            if (variables != null && slash > 0)
+            if (block != null && slash > 0)
             {
                 IntPtr copy = System32Calls.StartWithoutRights(exe, "\"" + exe + "\" " + Switch + " " + ArgumentOf(kind),
-                    CopyBlock(System32Calls.MachineVariables(), variables), exe.Substring(0, slash + 1));
+                    block, exe.Substring(0, slash + 1));
                 if (copy != IntPtr.Zero)
                 {
                     System32Calls.WaitFor(copy);
@@ -91,16 +95,14 @@ namespace PadForge.Services
             System32Calls.ErrorBox((kind == Kind.NoFolder ? FolderEnglish : RestartEnglish).Replace("{0}", ProtectedFolder.Root, StringComparison.Ordinal), "PadForge");
         }
 
-        /// <summary>The copy's variables: those every start with rights gets
-        /// (<see cref="RightsVariables.Build"/>), the system's from
-        /// <paramref name="machine"/> and the user's and PadForge's from
-        /// <paramref name="own"/>, this process's, but no unpack folder, so
-        /// the copy unpacks where a start without rights does, and no
-        /// handover. The copy runs without rights, and it still gets no
-        /// variable that loads code. The block ends in two null
+        /// <summary>The copy's variables: <paramref name="user"/>, the ones
+        /// Windows builds for the user this process runs as, which the copy
+        /// runs as without rights, through <see cref="UserVariables"/>. So
+        /// the copy unpacks where a start of the user's does, and gets no
+        /// unpack folder and no handover of this start's. Null when
+        /// <paramref name="user"/> is. The block ends in two null
         /// characters.</summary>
-        internal static string CopyBlock(IReadOnlyList<string> machine, IReadOnlyList<string> own)
-            => RightsVariables.ToBlock(RightsVariables.Build(machine, own, natives: null));
+        internal static string CopyBlock(IReadOnlyList<string> user) => UserVariables.Block(user, null);
 
         /// <summary>
         /// The copy without rights (Program.Main, before WPF): the box in the

@@ -110,7 +110,7 @@
   <data name="Common_None" xml:space="preserve"><value>Ոչ մէկ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Min" xml:space="preserve"><value>րոպէ</value></data>
-  <data name="Common_Seconds" xml:space="preserve"><value>վայրկեան</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>երկվայրկեան</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>րոպէ (0 = երբեք)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Չնշանակուած</value></data>
@@ -928,7 +928,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Գործարկման ժամանակ ինքնաբերաբար սկսիլ շարժիչը</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Շարունակել հարցումը, երբ պատուհանը կը կորսնցնէ կիզակէտը</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Հարցման յաճախականութիւն (եթէ փրոֆիլ մը զայն չփոխարինէ)</value></data>
-  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Շարժիչը բոլոր սարքերը կը կարդայ եւ վիրթուալ կառավարիչները կը թարմացնէ վայրկեանին այսքան անգամ, 60-էն մինչեւ 10000։ Աւելի բարձր յաճախականութիւնը մշակիչէն աւելի շատ ժամանակ կը գործածէ։ Այս համակարգիչին վրայ Windows-ը շարժիչը կ՚արթնցնէ առաւելագոյնը վայրկեանին {0} անգամ, ուստի աւելի բարձր յաճախականութեան պարագային շարժիչը ամէն արթնցումի ատեն քանի մը անցում կը կատարէ։ Երբ իր սեփական հարցման յաճախականութիւնը ունեցող փրոֆիլ մը գործօն է, անոր յաճախականութիւնը կը կիրարկուի։ Այս արժէքը կը վերադառնայ, երբ փրոֆիլը դադրի գործօն ըլլալէ։</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Շարժիչը բոլոր սարքերը կը կարդայ եւ վիրթուալ կառավարիչները կը թարմացնէ երկվայրկեանին այսքան անգամ, 60-էն մինչեւ 10000։ Աւելի բարձր յաճախականութիւնը մշակիչէն աւելի շատ ժամանակ կը գործածէ։ Այս համակարգիչին վրայ Windows-ը շարժիչը կ՚արթնցնէ առաւելագոյնը երկվայրկեանին {0} անգամ, ուստի աւելի բարձր յաճախականութեան պարագային շարժիչը ամէն արթնցումի ատեն քանի մը անցում կը կատարէ։ Երբ իր սեփական հարցման յաճախականութիւնը ունեցող փրոֆիլ մը գործօն է, անոր յաճախականութիւնը կը կիրարկուի։ Այս արժէքը կը վերադառնայ, երբ փրոֆիլը դադրի գործօն ըլլալէ։</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Թաքցնել սարքերը խաղերէն</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Գլխաւոր անջատիչ՝ HidHide-ով սարքեր թաքցնելու եւ ցածր մակարդակի մուտքի կարթերու համար։ Անջատուած ըլլալու պարագային ոչ մէկ սարք չի թաքցուիր՝ անկախ իւրաքանչիւր սարքի կարգաւորումներէն։</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Սարքերը թաքցուած պահել գործարկումներու միջեւ</value></data>
@@ -1264,7 +1264,7 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(գրութիւն չկայ)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Գրութիւն</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Տառերու միջեւ յապաղում</value></data>
-  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Մուտքագրուած նշաններու միջեւ միլիվայրկեաններ, մինչեւ 1000։ 0-ն ամբողջ գրութիւնը միանգամէն կը մուտքագրէ։</value></data>
+  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Մուտքագրուած նշաններու միջեւ միլիերկվայրկեաններ, մինչեւ 1000։ 0-ն ամբողջ գրութիւնը միանգամէն կը մուտքագրէ։</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Անգործութեան անջատում</value></data>
   <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 կը նշանակէ երբեք</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Մանրամասներ</value></data>
@@ -1310,7 +1310,7 @@
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU-ն կը ցուցադրէ գործօն փրոֆիլին տեղը փրոֆիլներու ցանկին մէջ։ Լռելեայն փրոֆիլը 0 է։</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU-ն կը ցուցադրէ գործօն փրոֆիլին սեփական պատկերը, կամ անոր անունը, երբ պատկեր չունի։ Իւրաքանչիւր փրոֆիլ իր պատկերը կը պահէ։</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU-ն կը ցուցադրէ օրուան ժամը՝ րոպէն մէկ անգամ վերագրուելով։ Յարմարիչը իւրաքանչիւր պատկեր կը պահէ իր սեփական յիշողութեան մէջ, ուստի PadForge-ը զայն ատկէ աւելի յաճախ չի վերագրեր։</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU-ն կը ցուցադրէ PadForge-ին կառավարիչը գտնելէն ի վեր անցած ժամերն ու րոպէները՝ րոպէն մէկ անգամ վերագրուելով։ Իր փորթէն տասը վայրկեանէն աւելի դուրս մնացած կառավարիչը զերօյէն կը սկսի։ Յարմարիչը իւրաքանչիւր պատկեր կը պահէ իր սեփական յիշողութեան մէջ, ուստի PadForge-ը զայն րոպէն մէկ անգամէն աւելի յաճախ չի վերագրեր։</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU-ն կը ցուցադրէ PadForge-ին կառավարիչը գտնելէն ի վեր անցած ժամերն ու վայրկեանները՝ վայրկեանը մէկ անգամ վերագրուելով։ Իր փորթէն տասը երկվայրկեանէն աւելի դուրս մնացած կառավարիչը զերօյէն կը սկսի։ Յարմարիչը իւրաքանչիւր պատկեր կը պահէ իր սեփական յիշողութեան մէջ, ուստի PadForge-ը զայն վայրկեանը մէկ անգամէն աւելի յաճախ չի վերագրեր։</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU-ն կը ցուցադրէ ձեր ընտրած պատկերը՝ BMP կամ PNG, VMU Animator .lcd նիշք կամ Dreamcast .vms պատկերակ։ Պատկերները կը կտրուին 48×32 սեւ ու ճերմակ փիքսելի։</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Ընտրել պատկեր…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Ընտրել պատկեր {0}-ի համար…</value></data>
@@ -1332,7 +1332,7 @@
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Կադրեր՝ {0}։ Ղրկելը կը տեւէ մօտաւորապէս {1}։</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Կառավարիչը առաւելագոյնը {0} կադր կ'ընդունի, ուստի վերջին {1} կադրը դուրս մնաց։</value></data>
   <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Կառավարիչը առաւելագոյնը {0} կադր կ'ընդունի, ուստի վերջին կադրը դուրս մնաց։</value></data>
-  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Կառավարիչը միացուցէք մալուխով։ Պատկերը հասնելէն մօտ 15 վայրկեան ետք անիկա ինքնիրեն կը վերագործարկուի։</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Կառավարիչը միացուցէք մալուխով։ Պատկերը հասնելէն մօտ 15 երկվայրկեան ետք անիկա ինքնիրեն կը վերագործարկուի։</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Կառավարիչը միացուցէք մալուխով։ Ղրկելու համար PadForge զայն կը փոխէ Xbox ռեժիմի եւ Windows-ի Xbox վարիչէն կը փոխադրէ WinUSB-ի, ապա երկուքն ալ կը վերադարձնէ։</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge կառավարիչը պիտի փոխէ Xbox ռեժիմի, ղրկելու համար պիտի փոխադրէ WinUSB-ի, ապա պիտի վերադարձնէ Windows-ի Xbox վարիչին եւ պիտի փոխէ DInput ռեժիմի։ Նախ անջատեցէք միւս բոլոր Xbox 360 կառավարիչները։ Ղրկե՞լ հիմա։</value></data>
   <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Կը սկսի…</value></data>
@@ -1872,7 +1872,7 @@
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Վերակայել առանցք-կոճակ մեռեալ գօտին</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Վերակայել արթուն պահելը</value></data>
   <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>Ձայնի բուֆերի երկարութիւն</value></data>
-  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>Ընդլայնուած կարգաւորում։ Կը սահմանէ Bluetooth ձայնի բուֆերը, որ այս կառավարիչը կը գործածէ բարձրախօսի ձայնին, հպական արձագանգին եւ խօսափողի ձայնագրութեան համար միասին, ոչ միայն բարձրախօսին։ Աւելի ցած արժէքները կը կրճատեն երեքին ալ ուշացումը եւ Bluetooth-ի ժամանակային տատանումներուն աւելի քիչ տեղ կը ձգեն, ուստի ընդհատումները աւելի հաւանական կը դառնան։ 48-ը լռելեայն արժէքն է, որ յղման իրականացումն ալ կը գործածէ։ Մէկ կազմաձեւի վրայ չափուած՝ բարձրախօսի մօտ 223 ms ուշացում 255-ի պարագային, 110 ms՝ 64-ի, եւ 70 ms՝ 32-ի, իսկ 16-ի պարագային յաճախակի ընդհատումներ կ'երեւին։ 32-էն 64 շուրջ արժէքը գործնական սկզբնակէտ է, բայց ճիշդ արժէքը կախեալ է ձեր յարմարիչէն եւ շրջապատէն։ Փոփոխութենէն քանի մը վայրկեան ետք ուժի մէջ կը մտնէ։</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>Ընդլայնուած կարգաւորում։ Կը սահմանէ Bluetooth ձայնի բուֆերը, որ այս կառավարիչը կը գործածէ բարձրախօսի ձայնին, հպական արձագանգին եւ խօսափողի ձայնագրութեան համար միասին, ոչ միայն բարձրախօսին։ Աւելի ցած արժէքները կը կրճատեն երեքին ալ ուշացումը եւ Bluetooth-ի ժամանակային տատանումներուն աւելի քիչ տեղ կը ձգեն, ուստի ընդհատումները աւելի հաւանական կը դառնան։ 48-ը լռելեայն արժէքն է, որ յղման իրականացումն ալ կը գործածէ։ Մէկ կազմաձեւի վրայ չափուած՝ բարձրախօսի մօտ 223 ms ուշացում 255-ի պարագային, 110 ms՝ 64-ի, եւ 70 ms՝ 32-ի, իսկ 16-ի պարագային յաճախակի ընդհատումներ կ'երեւին։ 32-էն 64 շուրջ արժէքը գործնական սկզբնակէտ է, բայց ճիշդ արժէքը կախեալ է ձեր յարմարիչէն եւ շրջապատէն։ Փոփոխութենէն քանի մը երկվայրկեան ետք ուժի մէջ կը մտնէ։</value></data>
   <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>Վերակայել ձայնի բուֆերի երկարութիւնը</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Վերակայել կառավարիչի արթուն պահումը</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Կը լուծէ այս խցիկի վիրթուալ կառավարիչի ելքին վրայ միաժամանակ սեղմուած զոյգ կոճակները։ Երբ զոյգի երկու կոճակներն ալ սեղմուած են, ընտրուած կանոնը կ'որոշէ, թէ խաղը որ սեղմումը կը տեսնէ։</value></data>
@@ -1939,7 +1939,7 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Կոճակ, որ սեղմած պահած ատեն կուտակիչը վար կ'իջեցնէ</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Վար՝ կոճակ, որ սեղմած պահած ատեն կուտակիչը վար կ'իջեցնէ։</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Արագութիւն</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Անցման արագութիւնը՝ միաւոր վայրկեանի մէջ։ 0.5 = ամբողջ միջակայքը 2 վայրկեանի մէջ։ 2 = ամբողջ միջակայքը 0.5 վայրկեանի մէջ։</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Անցման արագութիւնը՝ միաւոր երկվայրկեանի մէջ։ 0.5 = ամբողջ միջակայքը 2 երկվայրկեանի մէջ։ 2 = ամբողջ միջակայքը 0.5 երկվայրկեանի մէջ։</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Կպչուն</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Նշուած ըլլալու պարագային՝ կուտակիչը ազատումէն ետք կը պահէ իր արժէքը (արագութեան կայունացում)։ Չնշուած ըլլալու պարագային՝ ազատումին պէս կը վերադառնայ նուազագոյնին։</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Նուազագոյն</value></data>
@@ -1948,9 +1948,9 @@
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Կուտակիչի վերին սահմանը։ 1 = ամբողջական դրական։</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Սահուն անցում</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Աճ</value></data>
-  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Ամբողջական շեղումին հասնելու վայրկեանները, մինչ համապատասխան ստեղնը սեղմուած է։ 0 = անմիջապէս։</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Ամբողջական շեղումին հասնելու երկվայրկեանները, մինչ համապատասխան ստեղնը սեղմուած է։ 0 = անմիջապէս։</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Ազատում</value></data>
-  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Ազատումէն ետք կեդրոն վերադառնալու վայրկեանները։ 0 = անմիջապէս։</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Ազատումէն ետք կեդրոն վերադառնալու երկվայրկեանները։ 0 = անմիջապէս։</value></data>
   <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Հակադարձ</value></data>
   <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>Որքան աւելի արագ առանցքը կը վերադառնայ կեդրոն, երբ հակառակ ստեղնը սեղմէք անոր կայունանալէն առաջ։ 1 = առանց արագացման։</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Ինքնակեդրոնացում</value></data>
@@ -2429,7 +2429,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Երկուքն ալ</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Շարժուձեւերու այն ցուցակը, որով շարժիչը կը գնահատէ մատներու ընթացիկ հետագծերը։ «Երկուքն ալ» լռելեայն ընտրանքն է։</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Սպասման ժամանակ</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Շարժուձեւ մը գործարկուելէ ետք՝ այս հպման վահանակին վրայ նոր շարժուձեւերը կ'անտեսուին այսքան միլիվայրկեան։ Կը կանխէ արագ ետ ու առաջ շարժումէն յառաջացող կրկնակի գործարկումները։</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Շարժուձեւ մը գործարկուելէ ետք՝ այս հպման վահանակին վրայ նոր շարժուձեւերը կ'անտեսուին այսքան միլիերկվայրկեան։ Կը կանխէ արագ ետ ու առաջ շարժումէն յառաջացող կրկնակի գործարկումները։</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ներկառուցուած շարժուձեւեր</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Սահեցումներ, հպումներ, ճմլումներ, ձեւեր</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 ուղղութեամբ սահեցումներ (վեր / վար / ձախ / աջ)</value></data>
@@ -2682,19 +2682,19 @@
   <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>Ձախ բռնակի հպում</value></data>
   <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>Աջ բռնակի հպում</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Չափաբերել ժիրոսքոփը</value></data>
-  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Կառավարիչը դրէք հարթ մակերեսի մը վրայ եւ սեղմեցէք «Չափաբերել ժիրոսքոփը»՝ հանգստի վիճակի ցուցմունքը մօտ 1.5 վայրկեան չափելու համար։ Անիկա կը հանուի հում ցուցմունքներէն, որպէսզի ժիրոսքոփի համապատասխանեցումները մուկը / լծակը չսահեցնեն, երբ կառավարիչը անշարժ է։</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Կառավարիչը դրէք հարթ մակերեսի մը վրայ եւ սեղմեցէք «Չափաբերել ժիրոսքոփը»՝ հանգստի վիճակի ցուցմունքը մօտ 1.5 երկվայրկեան չափելու համար։ Անիկա կը հանուի հում ցուցմունքներէն, որպէսզի ժիրոսքոփի համապատասխանեցումները մուկը / լծակը չսահեցնեն, երբ կառավարիչը անշարժ է։</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Վերջին չափաբերում՝ {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Երբեք չափաբերուած չէ</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Չափաբերում… անշարժ պահեցէք</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Վերակայել չափաբերումը</value></data>
-  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Կը ջնջէ ժիրոսքոփին հանգստի վիճակի շեղումը եւ վերջին չափաբերման ժամանշանը։ Յաջորդ հարցման շրջանը այս սարքին վրայ կրկին կը կատարէ 1.5 վայրկեաննոց ինքնաշխատ չափաբերումը։</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Կը ջնջէ ժիրոսքոփին հանգստի վիճակի շեղումը եւ վերջին չափաբերման ժամանշանը։ Յաջորդ հարցման շրջանը այս սարքին վրայ կրկին կը կատարէ 1.5 երկվայրկեաննոց ինքնաշխատ չափաբերումը։</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Իրական ժամանակի արագացման չափիչ</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Հորիզոնական զգայնութիւն</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Կը չափաւորէ ժիրոսքոփին հորիզոնական (աջ-ձախ դարձ + կողային թեքում) նպաստը ելքին մէջ։ 1.0-ը արագութիւնը կը թողու այնպէս, ինչպէս շարժիչը կը տեսնէ։ Բարձր արժէքները կ'ուժեղացնեն, ցած արժէքները կը թուլացնեն։ Կը կիրարկուի սարքի մակարդակով, որպէսզի այս կառավարիչին ժիրոսքոփի բոլոր կապերը ժառանգեն նոյն հորիզոնական զգացողութիւնը։</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Ուղղահայեաց զգայնութիւն</value></data>
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Կը չափաւորէ ժիրոսքոփին ուղղահայեաց (առաջ-ետ թեքում) նպաստը ելքին մէջ։ Հորիզոնականէն առանձին է, որպէսզի կարենաք նշանառութեան X-ը եւ Y-ը իրարմէ անկախ կարգաւորել։</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Մեռեալ գօտի</value></data>
-  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Պտոյտի նուազագոյն արագութիւն (աստիճան վայրկեանին), որմէ ցած ժիրոսքոփին ելքը զրօ կը համարուի։ Կը մերժէ հանգստի վիճակի ձեռքի դողը՝ առանց ցատկի։ Սեմէն բարձր արագութիւնները կ'անցնին՝ սեմը հանուած։</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Պտոյտի նուազագոյն արագութիւն (աստիճան երկվայրկեանին), որմէ ցած ժիրոսքոփին ելքը զրօ կը համարուի։ Կը մերժէ հանգստի վիճակի ձեռքի դողը՝ առանց ցատկի։ Սեմէն բարձր արագութիւնները կ'անցնին՝ սեմը հանուած։</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Արագացում</value></data>
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Արագութենէն կախեալ ուժեղացում։ 0 = անջատ (գծային չափաւորում)։ Բարձր արժէքները դանդաղ շարժումները անփոփոխ կ'անցընեն, իսկ արագ շարժումները կ'ուժեղացնեն։ Օգտակար է ճշգրիտ նշանառութիւնը արագ դարձերու հետ համատեղելու համար։</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Ելքի կոր</value></data>
@@ -2727,7 +2727,7 @@
   <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Վերակայել կողային թեքման շրջումը</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Կողմնացոյց</value></data>
   <data name="Pad_Compass_FoldHint" xml:space="preserve"><value>Աջ-ձախ դարձը կը կապէ մագնիսական հիւսիսին</value></data>
-  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Այս կառավարիչը մագնիսաչափ ունի։ Աջ-ձախ դարձը մագնիսական հիւսիսին կապելը կը վերացնէ ժիրոսքոփով նշանառութեան դանդաղ հորիզոնական սահքը։ Նախ չափաբերեցէք՝ սեղմեցէք «Չափաբերել», քանի մը վայրկեան կառավարիչը բոլոր ուղղութիւններով դարձուցէք 8 թիւի ձեւով, ապա կրկին սեղմեցէք։</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Այս կառավարիչը մագնիսաչափ ունի։ Աջ-ձախ դարձը մագնիսական հիւսիսին կապելը կը վերացնէ ժիրոսքոփով նշանառութեան դանդաղ հորիզոնական սահքը։ Նախ չափաբերեցէք՝ սեղմեցէք «Չափաբերել», քանի մը երկվայրկեան կառավարիչը բոլոր ուղղութիւններով դարձուցէք 8 թիւի ձեւով, ապա կրկին սեղմեցէք։</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Աջ-ձախ դարձը կապել կողմնացոյցին</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Կ'աւելցնէ փոքր ուղղիչ արագութիւն մը, որ հորիզոնական նշանառութիւնը կը քաշէ դէպի մագնիսական ուղղութիւնը, որպէսզի սահքը չկարենայ կուտակուիլ։ Կը պահանջէ պահուած մագնիսաչափի չափաբերում։ Մօտակայ մետաղէն կամ մագնիսներէն խանգարուած նմուշները ինքնաշխատօրէն կը մերժուին։</value></data>
   <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Առաջ-ետ եւ կողային թեքման նմանակում</value></data>
@@ -2881,10 +2881,10 @@
   <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Կը մեծցնէ կամ կը փոքրցնէ նետումին մեկնարկի արագութիւնը՝ առանց քաշելու արագութիւնը փոխելու։ 1.00-ով նետումը կը մեկնի ճիշդ այն արագութեամբ, որով ձեր մատը կը շարժէր։</value></data>
   <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Վերակայել նետումի ուժեղացումը</value></data>
   <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Նետումի սեմ</value></data>
-  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Որքան արագ պէտք է շարժի մատը բարձրանալու պահուն, որպէսզի նշորդը շարունակէ սահիլ, վահանակի լայնութիւններով՝ վայրկեանին։ Ատկէ վար նշորդը իսկոյն կը կանգնի։</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Որքան արագ պէտք է շարժի մատը բարձրանալու պահուն, որպէսզի նշորդը շարունակէ սահիլ, վահանակի լայնութիւններով՝ երկվայրկեանին։ Ատկէ վար նշորդը իսկոյն կը կանգնի։</value></data>
   <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Վերակայել նետումի սեմը</value></data>
   <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Նետումի առաւելագոյն արագութիւն</value></data>
-  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Կը սահմանափակէ նետումին մեկնարկի արագութիւնը, վահանակի լայնութիւններով՝ վայրկեանին։ 0 սահմանափակումը կ՚անջատէ։</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Կը սահմանափակէ նետումին մեկնարկի արագութիւնը, վահանակի լայնութիւններով՝ երկվայրկեանին։ 0 սահմանափակումը կ՚անջատէ։</value></data>
   <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Վերակայել նետումի առաւելագոյն արագութիւնը</value></data>
   <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Նետումներու կուտակում</value></data>
   <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Ամէն նոր սահեցում կը գումարուի արդէն ընթացող թափին՝ փոխանակ զայն փոխարինելու։ Թեթեւ հպում մը կամ անշարժ բարձրացում մը ամէն ինչ կը կանգնեցնէ։ Արագութիւնը կը սահմանափակուի «Նետումի առաւելագոյն արագութիւն»-ով, իսկ երբ սահմանափակումը անջատուած է՝ ներկառուցուած վերին սահմանով։</value></data>
@@ -3436,8 +3436,8 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Աջ մոթոր</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Մակարդակ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Անգործութեան ժամանակասահման</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Վայրկեաններ, որոնցմէ ետք վիրթուալ կառավարիչը կը ջնջուի, երբ անոր համապատասխանեցուած բոլոր սարքերը անցանց են։ 0 կ՚անջատէ։ Նոյն տեսակի մնացած կառավարիչները վեր կը շարժին՝ բացը լեցնելու համար, եւ կը կապուին աւելի ցած խցիկներու։</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>վայրկեան (0 = երբեք)</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Երկվայրկեաններ, որոնցմէ ետք վիրթուալ կառավարիչը կը ջնջուի, երբ անոր համապատասխանեցուած բոլոր սարքերը անցանց են։ 0 կ՚անջատէ։ Նոյն տեսակի մնացած կառավարիչները վեր կը շարժին՝ բացը լեցնելու համար, եւ կը վերակապուին աւելի ցած խցիկներու։</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>երկվայրկեան (0 = երբեք)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Աւելցնել շերտ</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Աւելցնել լրացուցիչ շերտ։ Համապատասխանեցումներու երկրորդ աղիւսակ մը, որ կը գործէ, երբ կոճակ մը սեղմած կը պահուի կամ փոխարկուած է։</value></data>
@@ -3674,7 +3674,7 @@
   <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Տակաւին գործարկուած չէ</value></data>
   <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Չափուած</value></data>
   <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Ձեր ձեռքերը ղեկէն հեռացուցէք։ PadForge զայն կը դարձնէ {0}°, ազատ կը ձգէ եւ կ'արձանագրէ, թէ ինչպէս կը վերադառնայ։</value></data>
-  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ղեկին անկիւնը իւրաքանչիւր ազատումէն ետք {0} վայրկեանի ընթացքին։</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ղեկին անկիւնը իւրաքանչիւր ազատումէն ետք {0} երկվայրկեանի ընթացքին։</value></data>
   <data name="ReleaseTest_Before" xml:space="preserve"><value>Առաջ</value></data>
   <data name="ReleaseTest_After" xml:space="preserve"><value>Ետք</value></data>
   <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Կը չափուի, {0}%</value></data>
@@ -4283,7 +4283,7 @@
     <value>Ինքնաշխատ չեղարկում անգործութենէ ետք</value>
   </data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
-    <value>Մինչ շերտը փոխարկմամբ միացած է, ան ինքզինք կ'անջատէ այսքան միլիվայրկեան ետք, եթէ շերտին սեփական համապատասխանեցուած մուտքերէն ոչ մէկը գործօն չէ։ Ժամաչափը կը սկսի, երբ շերտը կը միանայ, եւ կը վերսկսի շերտի իւրաքանչիւր մուտքի պարագային։ 0-ն շերտը միացած կը պահէ, մինչեւ որ զայն ինքներդ անջատէք։</value>
+    <value>Մինչ շերտը փոխարկմամբ միացած է, ան ինքզինք կ'անջատէ այսքան միլիերկվայրկեան ետք, եթէ շերտին սեփական համապատասխանեցուած մուտքերէն ոչ մէկը գործօն չէ։ Ժամաչափը կը սկսի, երբ շերտը կը միանայ, եւ կը վերսկսի շերտի իւրաքանչիւր մուտքի պարագային։ 0-ն շերտը միացած կը պահէ, մինչեւ որ զայն ինքներդ անջատէք։</value>
   </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Վերակայել ինքնաշխատ չեղարկումը 0-ի (շերտը միացած կը մնայ, մինչեւ որ անջատուի)։</value>
@@ -5397,7 +5397,7 @@
   <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Թոյլ կու տայ Novint Falcon-ով խաղալ Force Dimension-ի SDK-ին միջոցով, որ կը տեղադրէք Force Dimension-էն։ Բռնակը լծակ է, բռնակին չորս կոճակները՝ կոճակներ, եւ PadForge-ը խաղին թրթռումն ու էֆեկտները բռնակին վրայ կը փոխանցէ իբրեւ ուժ։ Իւրաքանչիւր կառավարիչի «Թրթռում եւ հպական արձագանգ» բաժինին «Novint Falcon» քարտը կ'որոշէ, թէ Falcon-ը ինչպէս կը զգացուի։</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Կառավարել Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Իւրաքանչիւր Falcon կը բանայ Force Dimension-ի dhd64.dll-ով։ Բաց Falcon-ը կը պատկանի միայն PadForge-ին, ուստի FalconJoyForce-ը եւ Force Dimension-ի գործիքները չեն կրնար զայն բանալ, քանի դեռ այս ընտրանքը միացուած է։ Երբ անջատուած է, PadForge-ը կը փակէ բոլոր Falcon-ները։</value></data>
-  <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon-ի գրադարանը սահմանուեցաւ՝ {0}։ PadForge-ը զայն կը բեռնէ քանի մը վայրկեանի ընթացքին, եւ ուրիշ օրինակի վրայ բաց Falcon մը կրկին կը բացուի այս մէկուն վրայ։</value></data>
+  <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon-ի գրադարանը սահմանուեցաւ՝ {0}։ PadForge-ը զայն կը բեռնէ քանի մը երկվայրկեանի ընթացքին, եւ ուրիշ օրինակի վրայ բաց Falcon մը կրկին կը բացուի այս մէկուն վրայ։</value></data>
   <data name="Status_InstallingFalconDriver" xml:space="preserve"><value>Կը տեղադրուի Force Dimension-ի Falcon վարիչը…</value></data>
   <data name="Status_FalconDriverPackageMissing_Format" xml:space="preserve"><value>Force Dimension-ի Falcon վարիչի փաթեթը կամ անոր կատալոգը կը պակսի՝ {0}։ Վերատեղադրեցէք Force Dimension-ի SDK-ն։</value></data>
   <data name="Status_FalconNotPluggedIn" xml:space="preserve"><value>Միացուած Falcon չկայ։</value></data>
@@ -5406,7 +5406,7 @@
   <data name="Status_FalconDriverNotBound" xml:space="preserve"><value>Վարիչը տեղադրուած է, բայց Falcon-ը տակաւին անոր չէ անցած։ Անջատեցէք Falcon-ը եւ նորէն միացուցէք։</value></data>
   <data name="Pad_Falcon_Header" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Pad_More_Falcon" xml:space="preserve"><value>Հարուած, ցնցում, կայունացում, նախալարում, ծանրութիւն</value></data>
-  <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge-ը Falcon-ի բռնակին վրայ ազդող իւրաքանչիւր ուժ կը հաշուէ վայրկեանին մօտաւորապէս հազար անգամ՝ բռնակին դիրքէն եւ խաղին էֆեկտներէն մեկնելով։ Այս կարգաւորումները կը պատկանին այս խցիկին։</value></data>
+  <data name="Pad_Falcon_Description" xml:space="preserve"><value>PadForge-ը Falcon-ի բռնակին վրայ ազդող իւրաքանչիւր ուժ կը հաշուէ երկվայրկեանին մօտաւորապէս հազար անգամ՝ բռնակին դիրքէն եւ խաղին էֆեկտներէն մեկնելով։ Այս կարգաւորումները կը պատկանին այս խցիկին։</value></data>
   <data name="Pad_Falcon_ResetAll" xml:space="preserve"><value>Վերակայել Novint Falcon-ը</value></data>
   <data name="Pad_Falcon_Feel" xml:space="preserve"><value>Զգացողութիւն</value></data>
   <data name="Pad_Falcon_Feel_Tooltip" xml:space="preserve"><value>Ճոյսթիք՝ բռնակին դիրքը լծակն է, եւ զսպանակ մը զայն ետ կը քաշէ դէպի կեդրոն։ Նշանառում՝ բռնակին շարժումը կը շարժէ լծակը, եւ բռնակը իր եզրի պատին դէմ պահելը կը շարունակէ դարձը։</value></data>
@@ -5415,7 +5415,7 @@
   <data name="Pad_Falcon_Spring" xml:space="preserve"><value>Կեդրոնացնող զսպանակ</value></data>
   <data name="Pad_Falcon_ResetSpring" xml:space="preserve"><value>Վերակայել կեդրոնացնող զսպանակը</value></data>
   <data name="Pad_Falcon_KickButton" xml:space="preserve"><value>Հարուածի կոճակ</value></data>
-  <data name="Pad_Falcon_KickButton_Tooltip" xml:space="preserve"><value>Քանի դեռ բռնակի այս կոճակը սեղմուած է, եւ անկէ ետք քառորդ վայրկեան, խաղին թրթռումը բռնակը կը հրէ դէպի ձեզ։ Այլ ժամանակ թրթռումը կը ցնցէ բռնակը։</value></data>
+  <data name="Pad_Falcon_KickButton_Tooltip" xml:space="preserve"><value>Քանի դեռ բռնակի այս կոճակը սեղմուած է, եւ անկէ ետք քառորդ երկվայրկեան, խաղին թրթռումը բռնակը կը հրէ դէպի ձեզ։ Այլ ժամանակ թրթռումը կը ցնցէ բռնակը։</value></data>
   <data name="Pad_Falcon_Button1" xml:space="preserve"><value>Կոճակ 1</value></data>
   <data name="Pad_Falcon_Button2" xml:space="preserve"><value>Կոճակ 2</value></data>
   <data name="Pad_Falcon_Button3" xml:space="preserve"><value>Կոճակ 3</value></data>
@@ -5436,7 +5436,7 @@
   <data name="Pad_Falcon_NewtonsUnit" xml:space="preserve"><value>Ն</value></data>
   <data name="Pad_Falcon_ResetForceCap" xml:space="preserve"><value>Վերակայել ուժի սահմանը</value></data>
   <data name="Falcon_Calibrate" xml:space="preserve"><value>Չափաբերել հասողութիւնը</value></data>
-  <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Կը չափէ, թէ բռնակը որքան հեռու կը շարժի։ Չափումին չորս վայրկեաններուն ընթացքին զայն շարժեցէք դէպի իր հասողութեան բոլոր եզրերը։ Այդ ընթացքին ուժերը կը դադրին։</value></data>
+  <data name="Falcon_Calibrate_Tooltip" xml:space="preserve"><value>Կը չափէ, թէ բռնակը որքան հեռու կը շարժի։ Չափումին չորս երկվայրկեաններուն ընթացքին զայն շարժեցէք դէպի իր հասողութեան բոլոր եզրերը։ Այդ ընթացքին ուժերը կը դադրին։</value></data>
   <data name="DeviceType_GameTelemetry" xml:space="preserve"><value>Խաղի հեռաչափութիւն</value></data>
   <data name="Dashboard_GameTelemetry" xml:space="preserve"><value>Խաղի հեռաչափութիւն</value></data>
   <data name="Dashboard_GameTelemetryDescription" xml:space="preserve"><value>Վարորդական խաղերու ղրկած հեռաչափութիւնը եւ Assetto Corsa-ի համատեղ յիշողութիւնը կը դնէ Սարքեր էջի Խաղի հեռաչափութիւն տողին վրայ։ Համապատասխանեցուցէք անոր արագութիւնը, ոտնակները եւ փոխանցումները ինչպէս որեւէ մուտք, անոնցմով գործարկեցէք մաքրօներ կամ փորձարկեցէք զանոնք Անհատական արտայայտութեան մէջ։ Երբ կ՚ունկնդրէ, ղեկի RPM փոխանցման LED-երն ալ խաղը այստեղէն կը կարդան։</value></data>
@@ -5554,7 +5554,7 @@
   <data name="MacroAction_TriggerEffect_SecondFoot" xml:space="preserve"><value>Երկրորդ ոտք</value></data>
   <data name="MacroAction_TriggerEffect_StrengthA" xml:space="preserve"><value>Ուժ A</value></data>
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Ուժ B</value></data>
-  <data name="MacroAction_TriggerEffect_Period" xml:space="preserve"><value>Շրջան (վայրկեանի տասներորդներ)</value></data>
+  <data name="MacroAction_TriggerEffect_Period" xml:space="preserve"><value>Շրջան (երկվայրկեանի տասներորդներ)</value></data>
   <data name="MacroAction_TriggerEffect_StartStrength" xml:space="preserve"><value>Սկզբնական ուժ</value></data>
   <data name="MacroAction_TriggerEffect_EndStrength" xml:space="preserve"><value>Վերջնական ուժ</value></data>
   <data name="MacroAction_TriggerEffect_Zone_Format" xml:space="preserve"><value>Գօտի {0}-ի ուժ</value></data>

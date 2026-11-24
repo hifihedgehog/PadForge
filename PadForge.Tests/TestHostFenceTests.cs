@@ -852,6 +852,9 @@ namespace PadForge.Tests
                 "PadForge.Engine/Common/RawInputListener.cs",
                 "PadForge.Engine/Common/SdlDeviceWrapper.cs",
                 "PadForge.Engine/Common/Tablets/TabletNative.cs",
+                // Opens each folder above a vendor library to read its access
+                // list: READ_CONTROL alone.
+                "PadForge.Engine/Common/TrustedLibrary.cs",
             };
             Assert.Equal(expected, FenceSource.Census(@"\bextern\b.*\bCreateFile[A-Za-z]*\(").Keys.ToArray());
         }

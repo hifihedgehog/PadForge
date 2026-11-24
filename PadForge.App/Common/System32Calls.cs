@@ -101,6 +101,7 @@ namespace PadForge.Common
         private static readonly IntPtr pGetSecurityDescriptorLength = Find(Advapi32, "GetSecurityDescriptorLength");
         private static readonly IntPtr pConvertStringSdToSd = Find(Advapi32, "ConvertStringSecurityDescriptorToSecurityDescriptorW");
         private static readonly IntPtr pRegGetValueW = Find(Advapi32, "RegGetValueW");
+        private static readonly IntPtr pGetLastError = Find(Kernel32, "GetLastError");
 
         internal static readonly IntPtr InvalidHandle = new IntPtr(-1);
         internal static readonly IntPtr CurrentProcess = new IntPtr(-1);
@@ -269,14 +270,29 @@ namespace PadForge.Common
         /// process's), as <c>name=value</c> lines, or the machine's alone
         /// with no token. Null when Windows refused.
         /// </summary>
-        internal static string[] VariablesOf(IntPtr token)
+        internal static string[] VariablesOf(IntPtr token) => VariablesOf(token, out _);
+
+        /// <summary>The same, with the Windows error of a refusal in
+        /// <paramref name="error"/>, 0 when the variables were read. A
+        /// primary token needs TOKEN_QUERY and TOKEN_DUPLICATE (Microsoft,
+        /// CreateEnvironmentBlock).</summary>
+        internal static string[] VariablesOf(IntPtr token, out int error)
         {
+            error = 0;
             if (s_userenv == IntPtr.Zero) s_userenv = Load("userenv.dll");
             IntPtr create = Find(s_userenv, "CreateEnvironmentBlock");
             IntPtr destroy = Find(s_userenv, "DestroyEnvironmentBlock");
-            if (create == IntPtr.Zero || destroy == IntPtr.Zero) return null;
+            if (create == IntPtr.Zero || destroy == IntPtr.Zero)
+            {
+                error = ErrorProcNotFound;
+                return null;
+            }
             void* block = null;
-            if (((delegate* unmanaged<void**, IntPtr, int, int>)create)(&block, token, 0) == 0 || block == null) return null;
+            if (((delegate* unmanaged<void**, IntPtr, int, int>)create)(&block, token, 0) == 0 || block == null)
+            {
+                error = LastError();
+                return null;
+            }
             try
             {
                 return Lines((char*)block);
@@ -286,6 +302,52 @@ namespace PadForge.Common
                 ((delegate* unmanaged<void*, int>)destroy)(block);
             }
         }
+
+        /// <summary>
+        /// The variables Windows builds for the user <paramref name="process"/>
+        /// runs as, from that user's profile and the machine's
+        /// (<see cref="VariablesOf(IntPtr, out int)"/> on the process's own
+        /// token, opened with TOKEN_QUERY and TOKEN_DUPLICATE), never this
+        /// process's. The handle needs PROCESS_QUERY_LIMITED_INFORMATION
+        /// (Microsoft, OpenProcessToken). Null with the Windows error in
+        /// <paramref name="error"/> when the token or its variables cannot be
+        /// read.
+        /// </summary>
+        internal static string[] VariablesOfProcess(IntPtr process, out int error)
+        {
+            error = 0;
+            if (pOpenProcessToken == IntPtr.Zero)
+            {
+                error = ErrorProcNotFound;
+                return null;
+            }
+            IntPtr token = IntPtr.Zero;
+            if (((delegate* unmanaged<IntPtr, uint, IntPtr*, int>)pOpenProcessToken)(process, TokenQuery | TokenDuplicateAccess, &token) == 0)
+            {
+                error = LastError();
+                if (error == 0) error = ErrorAccessDenied;
+                return null;
+            }
+            try
+            {
+                string[] lines = VariablesOf(token, out error);
+                if (lines == null && error == 0) error = ErrorAccessDenied;
+                return lines;
+            }
+            finally
+            {
+                Close(token);
+            }
+        }
+
+        private const int ErrorAccessDenied = 5;
+        private const int ErrorProcNotFound = 127;
+        private const uint TokenDuplicateAccess = 0x0002;
+
+        /// <summary>The calling thread's last Windows error, read through
+        /// System32's kernel32 at once after the call that set it.</summary>
+        private static int LastError()
+            => pGetLastError == IntPtr.Zero ? 0 : unchecked((int)((delegate* unmanaged<uint>)pGetLastError)());
 
         /// <summary>The lines of a block Windows keeps: each ends in a null
         /// character, and the block in one more.</summary>

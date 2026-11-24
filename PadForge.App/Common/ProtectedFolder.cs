@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Security.AccessControl;
-using System.Security.Principal;
+using PadForge.Engine.Common;
 
 namespace PadForge.Common
 {
@@ -24,6 +22,12 @@ namespace PadForge.Common
     /// Access Rights), so a folder whose own list shuts them out is moved all
     /// the same, and nothing that was in it is ever opened.</para>
     ///
+    /// <para>Who may change a folder is judged by the one rule
+    /// (<see cref="ChangeRule"/>) on the descriptor read here, at
+    /// <see cref="ChangeRule.Level.Own"/> for the folders themselves and
+    /// <see cref="ChangeRule.Level.Parent"/> for the folder that holds the
+    /// root.</para>
+    ///
     /// <para>Every member works through <see cref="System32Calls"/>, since
     /// <see cref="PadForge.Services.ProtectedStart"/> uses them before the
     /// process may make a <c>DllImport</c> call, and none of them
@@ -34,19 +38,11 @@ namespace PadForge.Common
         internal const string AdministratorsSid = "S-1-5-32-544";
         internal const string SystemSid = "S-1-5-18";
         internal const string TrustedInstallerSid = "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464";
-        internal const string CreatorOwnerSid = "S-1-3-0";
-        internal const string OwnerRightsSid = "S-1-3-4";
 
         /// <summary>Owner Administrators. A protected list: Administrators
         /// and SYSTEM full control, Users read and execute, each inherited by
         /// every folder and file inside.</summary>
         internal const string Sddl = "O:BAD:P(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;0x1200a9;;;BU)";
-
-        /// <summary>The rights that only read: read data and attributes and
-        /// extended attributes, execute or traverse, read the access list,
-        /// wait on the object, and the generic read and execute. Every other
-        /// bit changes the folder, what is in it, or who may.</summary>
-        internal const int ReadOnlyRights = unchecked((int)0xA01200A9);
 
         /// <summary>Set by the test assembly for the life of its process,
         /// never by the app. While it is set and no <see cref="RootSeam"/>
@@ -84,10 +80,6 @@ namespace PadForge.Common
             /// is made in it.</summary>
             OthersMayChange,
         }
-
-        /// <summary>One entry of an access list, as <see cref="Judge(string, bool, IReadOnlyList{Entry})"/>
-        /// reads it.</summary>
-        internal readonly record struct Entry(bool Allows, int Rights, string Sid, bool InheritOnly);
 
         private const string ProfileList = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList";
 
@@ -184,11 +176,6 @@ namespace PadForge.Common
             return Judge(descriptor, trustTrustedInstaller);
         }
 
-        /// <summary>The rights over a folder that let an account take away
-        /// or replace a folder inside it: delete a child, change the list or
-        /// the owner, all rights, and the most it may be granted.</summary>
-        internal const int ReplaceChildRights = 0x40 | 0x40000 | 0x80000 | 0x10000000 | 0x02000000;
-
         /// <summary>
         /// Judges the folder that holds <paramref name="path"/>: sound when it
         /// is owned by Administrators, SYSTEM or TrustedInstaller and no other
@@ -211,104 +198,27 @@ namespace PadForge.Common
             return JudgeParent(descriptor);
         }
 
-        internal static Verdict JudgeParent(byte[] descriptor)
-        {
-            RawSecurityDescriptor sd;
-            try
-            {
-                sd = new RawSecurityDescriptor(descriptor, 0);
-            }
-            catch
-            {
-                return Verdict.Unreadable;
-            }
-            if (!IsTrustedOwner(sd.Owner?.ToString(), trustTrustedInstaller: true)) return Verdict.OtherOwner;
-            RawAcl acl = sd.DiscretionaryAcl;
-            if ((sd.ControlFlags & ControlFlags.DiscretionaryAclPresent) == 0 || acl == null) return Verdict.NoList;
-            foreach (GenericAce ace in acl)
-            {
-                if ((ace.AceFlags & AceFlags.InheritOnly) != 0) continue;
-                if (ace is not QualifiedAce qualified) return Verdict.OthersMayChange;
-                if (qualified.AceQualifier != AceQualifier.AccessAllowed) continue;
-                if ((qualified.AccessMask & ReplaceChildRights) == 0) continue;
-                string sid = qualified.SecurityIdentifier.ToString();
-                if (IsTrustedAccount(sid) || sid == OwnerRightsSid) continue;
-                return Verdict.OthersMayChange;
-            }
-            return Verdict.Sound;
-        }
+        /// <summary>The parent's descriptor by the one rule at
+        /// <see cref="ChangeRule.Level.Parent"/>.</summary>
+        internal static Verdict JudgeParent(byte[] descriptor) => Of(ChangeRule.Judge(descriptor, ChangeRule.Level.Parent));
 
-        /// <summary>Judges a security descriptor in its binary form.
-        /// <paramref name="trustTrustedInstaller"/> lets TrustedInstaller own
-        /// it too, as it owns the folders Windows sets up.</summary>
+        /// <summary>Judges a security descriptor in its binary form by the one
+        /// rule at <see cref="ChangeRule.Level.Own"/>: every right past
+        /// reading counts, and so do the entries only what is made inside
+        /// inherits. <paramref name="trustTrustedInstaller"/> lets
+        /// TrustedInstaller own it too, as it owns the folders Windows sets
+        /// up.</summary>
         internal static Verdict Judge(byte[] descriptor, bool trustTrustedInstaller)
+            => Of(ChangeRule.Judge(descriptor, ChangeRule.Level.Own, trustTrustedInstaller));
+
+        private static Verdict Of(ChangeRule.Verdict verdict) => verdict switch
         {
-            RawSecurityDescriptor sd;
-            try
-            {
-                sd = new RawSecurityDescriptor(descriptor, 0);
-            }
-            catch
-            {
-                return Verdict.Unreadable;
-            }
-            var entries = new List<Entry>();
-            RawAcl acl = sd.DiscretionaryAcl;
-            bool hasList = (sd.ControlFlags & ControlFlags.DiscretionaryAclPresent) != 0 && acl != null;
-            if (hasList)
-            {
-                foreach (GenericAce ace in acl)
-                {
-                    bool inheritOnly = (ace.AceFlags & AceFlags.InheritOnly) != 0;
-                    switch (ace)
-                    {
-                        case QualifiedAce qualified:
-                            bool allows = qualified.AceQualifier == AceQualifier.AccessAllowed;
-                            if (qualified.AceQualifier == AceQualifier.AccessDenied || qualified.AceQualifier == AceQualifier.SystemAudit
-                                || qualified.AceQualifier == AceQualifier.SystemAlarm)
-                                allows = false;
-                            entries.Add(new Entry(allows, qualified.AccessMask, qualified.SecurityIdentifier.ToString(), inheritOnly));
-                            break;
-                        default:
-                            // A kind of entry this does not read could allow
-                            // anything to anyone.
-                            entries.Add(new Entry(true, -1, string.Empty, inheritOnly));
-                            break;
-                    }
-                }
-            }
-            return Judge(sd.Owner?.ToString(), hasList, entries, trustTrustedInstaller);
-        }
-
-        /// <summary>The rule itself. The owner is Administrators or SYSTEM
-        /// (or TrustedInstaller, when it is trusted), there is a list, and
-        /// every entry that allows more than reading goes to Administrators,
-        /// SYSTEM or TrustedInstaller. An entry for CREATOR OWNER or OWNER
-        /// RIGHTS gives its rights to whoever owns what it covers, who is one
-        /// of those when the rest holds. Entries inherited only by what is
-        /// made inside count as well, since what PadForge unpacks there would
-        /// carry them.</summary>
-        internal static Verdict Judge(string ownerSid, bool hasList, IReadOnlyList<Entry> entries, bool trustTrustedInstaller = false)
-        {
-            if (!IsTrustedOwner(ownerSid, trustTrustedInstaller)) return Verdict.OtherOwner;
-            if (!hasList) return Verdict.NoList;
-            foreach (var entry in entries)
-            {
-                if (!entry.Allows) continue;
-                if ((entry.Rights & ~ReadOnlyRights) == 0) continue;
-                if (IsTrustedAccount(entry.Sid)) continue;
-                if (entry.Sid == CreatorOwnerSid || entry.Sid == OwnerRightsSid) continue;
-                return Verdict.OthersMayChange;
-            }
-            return Verdict.Sound;
-        }
-
-        private static bool IsTrustedOwner(string sid, bool trustTrustedInstaller)
-            => sid == AdministratorsSid || sid == SystemSid || (trustTrustedInstaller && sid == TrustedInstallerSid);
-
-        /// <summary>Administrators, SYSTEM and TrustedInstaller.</summary>
-        internal static bool IsTrustedAccount(string sid)
-            => sid == AdministratorsSid || sid == SystemSid || sid == TrustedInstallerSid;
+            ChangeRule.Verdict.Sound => Verdict.Sound,
+            ChangeRule.Verdict.OtherOwner => Verdict.OtherOwner,
+            ChangeRule.Verdict.NoList => Verdict.NoList,
+            ChangeRule.Verdict.OthersMayChange => Verdict.OthersMayChange,
+            _ => Verdict.Unreadable,
+        };
 
         /// <summary>
         /// Makes <paramref name="path"/> a sound folder and says whether it

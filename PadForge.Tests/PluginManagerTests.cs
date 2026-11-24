@@ -449,7 +449,12 @@ namespace PadForge.Tests
             var (_, variables, process) = _launcher.Starts.Single();
             string token = variables[PluginManager.TokenVariable];
 
-            Assert.Null(_manager.AcceptToken("0" + token.Substring(1), process.Id));
+            // A key one digit off. The key is hex, so a fixed first digit of
+            // "0" was the key itself whenever the key began with 0, one start
+            // in 16.
+            string wrong = (token[0] == '0' ? "1" : "0") + token.Substring(1);
+            Assert.NotEqual(token, wrong);
+            Assert.Null(_manager.AcceptToken(wrong, process.Id));
             Assert.Null(_manager.AcceptToken(token, process.Id + 1));
             Assert.Contains(_manager.LogOf(run), l => l.Kind == PluginLogKind.ForeignKey && l.Code == process.Id + 1);
 

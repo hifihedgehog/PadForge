@@ -341,7 +341,13 @@ namespace PadForge.Tests
                 foreach (string path in OffLimitsSource.Sources(project))
                     if (System.IO.File.ReadAllText(path).Contains("ShellLaunch.StartOwnHelper(", StringComparison.Ordinal))
                         helpers.Add(Path.GetFileName(path));
-            Assert.Equal(new[] { "App.xaml.cs", "DsxStandIn.cs" }, helpers.OrderBy(h => h, StringComparer.Ordinal).ToArray());
+            // The library host is one too, started so only with UAC off,
+            // where every program of the user has full rights and no lower
+            // right exists to start it with.
+            Assert.Equal(new[] { "App.xaml.cs", "DsxStandIn.cs", "NativeHost.cs" }, helpers.OrderBy(h => h, StringComparer.Ordinal).ToArray());
+            string host = OffLimitsSource.Read("PadForge.App/Services/NativeHost/NativeHost.cs");
+            Assert.True(host.IndexOf("if (launch.Refusal == PluginRefusal.ShellElevated && UacIsOff())", StringComparison.Ordinal)
+                        < host.IndexOf("Common.ShellLaunch.StartOwnHelper(psi)", StringComparison.Ordinal));
         }
     }
 

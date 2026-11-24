@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Microsoft.Win32.SafeHandles;
+using PadForge.Common;
 using PadForge.Services.Automation;
 
 namespace PadForge.Services.Plugins
@@ -30,7 +30,8 @@ namespace PadForge.Services.Plugins
         /// <summary>The program asks for administrator rights in its
         /// manifest (error 740).</summary>
         NeedsAdministrator,
-        /// <summary>Windows refused the start, with
+        /// <summary>Windows refused the start, or refused to read the
+        /// variables Windows builds for the shell's user, with
         /// <see cref="PluginLaunch.Error"/>.</summary>
         Failed,
         /// <summary>The test host does not start this program.</summary>
@@ -95,16 +96,38 @@ namespace PadForge.Services.Plugins
     /// <para>The plugin is made suspended, put in a job object of its own
     /// that ends every process in it when the job's last handle closes, and
     /// only then let run. PadForge holds that handle, so the plugin and
-    /// whatever it starts end when PadForge stops it, closes or dies. Its
-    /// environment block is built here: the user's variables and the
-    /// variables given, the one-time key and the pipe's name.</para>
+    /// whatever it starts end when PadForge stops it, closes or dies.</para>
     ///
-    /// <para>It never falls back to PadForge's own rights. When no shell
-    /// runs, the shell has administrator rights, or the started process
-    /// turns out to have them, nothing is left running.</para>
+    /// <para>Its variables are the ones Windows builds for the shell's own
+    /// token, the user's and the machine's
+    /// (<see cref="System32Calls.VariablesOfProcess"/>), with the variables
+    /// given in place of any of the same name (the one-time key and the
+    /// pipe's name) and no <c>__COMPAT_LAYER</c>
+    /// (<see cref="UserVariables"/>). None comes from PadForge's own
+    /// process: after a start with rights those are the allow list
+    /// <see cref="RightsVariables"/> builds, without the user's own Path
+    /// entries.</para>
+    ///
+    /// <para>It never falls back to PadForge's own rights or variables. When
+    /// no shell runs, the shell has administrator rights, the shell's
+    /// variables cannot be read, or the started process turns out to have
+    /// rights, nothing is left running.</para>
     /// </summary>
     internal sealed class PluginLauncher : IPluginLauncher
     {
+        /// <summary>Reads the variables Windows builds for the user a
+        /// process runs as, or null with the Windows error.</summary>
+        internal delegate string[] VariablesReader(SafeProcessHandle process, out int error);
+
+        private readonly VariablesReader _variablesOf;
+
+        public PluginLauncher() : this(null) { }
+
+        /// <summary>A launcher that reads the shell's variables with
+        /// <paramref name="variablesOf"/>, a test's stand-in, or
+        /// <see cref="ShellVariables"/> when null.</summary>
+        internal PluginLauncher(VariablesReader variablesOf) => _variablesOf = variablesOf ?? ShellVariables;
+
         /// <summary>Set for the test host's whole life: only a program in the
         /// test host's own folder, the helper the tests build, is
         /// started.</summary>
@@ -121,23 +144,16 @@ namespace PadForge.Services.Plugins
             return !full.StartsWith(folder, StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>The variables a plugin's environment never takes from
-        /// PadForge's: a compatibility layer that asks for administrator
-        /// rights would raise the plugin's start.</summary>
-        private static readonly string[] Dropped = { "__COMPAT_LAYER" };
-
         public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
         {
             if (Refuses(command?.Program)) return PluginLaunch.Refused(PluginRefusal.OffLimits);
             if (command == null) return PluginLaunch.Refused(PluginRefusal.NoProgram);
 
-            IntPtr shell = GetShellWindow();
-            if (shell == IntPtr.Zero) return PluginLaunch.Refused(PluginRefusal.NoShell);
-            GetWindowThreadProcessId(shell, out uint shellId);
-            if (shellId == 0) return PluginLaunch.Refused(PluginRefusal.NoShell);
-            using var shellProcess = OpenProcess(ProcessCreateProcess | ProcessQueryLimitedInformation, false, shellId);
-            if (shellProcess.IsInvalid) return PluginLaunch.Refused(PluginRefusal.NoShell);
+            using var shellProcess = OpenShell();
+            if (shellProcess == null) return PluginLaunch.Refused(PluginRefusal.NoShell);
             if (HasAdministratorRights(shellProcess) != false) return PluginLaunch.Refused(PluginRefusal.ShellElevated);
+            string block = UserVariables.Block(_variablesOf(shellProcess, out int variablesError), variables);
+            if (block == null) return PluginLaunch.Refused(PluginRefusal.Failed, variablesError);
 
             IntPtr size = IntPtr.Zero;
             InitializeProcThreadAttributeList(IntPtr.Zero, 1, 0, ref size);
@@ -154,7 +170,7 @@ namespace PadForge.Services.Plugins
                 if (!UpdateProcThreadAttribute(list, 0, ProcThreadAttributeParentProcess, parent, (IntPtr)IntPtr.Size, IntPtr.Zero, IntPtr.Zero))
                     return PluginLaunch.Refused(PluginRefusal.Failed, Marshal.GetLastWin32Error());
 
-                environment = Marshal.StringToHGlobalUni(EnvironmentBlock(CurrentVariables(), variables));
+                environment = Marshal.StringToHGlobalUni(block);
                 var startup = new STARTUPINFOEX();
                 startup.StartupInfo.cb = Marshal.SizeOf<STARTUPINFOEX>();
                 startup.lpAttributeList = list;
@@ -205,40 +221,35 @@ namespace PadForge.Services.Plugins
             }
         }
 
-        /// <summary>PadForge's own variables, as the user's: an elevated
-        /// start keeps the user's environment.</summary>
-        private static Dictionary<string, string> CurrentVariables()
+        /// <summary>The desktop shell's process, opened to be a new process's
+        /// parent and to read its token, or null when no shell runs.</summary>
+        internal static SafeProcessHandle OpenShell()
         {
-            var all = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (DictionaryEntry e in Environment.GetEnvironmentVariables())
-                if (e.Key is string key && e.Value is string value) all[key] = value;
-            return all;
+            IntPtr shell = GetShellWindow();
+            if (shell == IntPtr.Zero) return null;
+            GetWindowThreadProcessId(shell, out uint shellId);
+            if (shellId == 0) return null;
+            var process = OpenProcess(ProcessCreateProcess | ProcessQueryLimitedInformation, false, shellId);
+            if (!process.IsInvalid) return process;
+            process.Dispose();
+            return null;
         }
 
-        /// <summary>
-        /// The environment block a plugin starts with: the user's variables,
-        /// those of <paramref name="added"/> in place of any of the same
-        /// name, none of <see cref="Dropped"/>, sorted by name without regard
-        /// to case as CreateProcess documents, each as <c>name=value</c> and
-        /// a NUL, and a NUL at the end.
-        /// </summary>
-        internal static string EnvironmentBlock(IReadOnlyDictionary<string, string> user, IReadOnlyDictionary<string, string> added)
+        /// <summary>The variables Windows builds for the user
+        /// <paramref name="process"/> runs as, read through its token, or
+        /// null with the Windows error.</summary>
+        internal static string[] ShellVariables(SafeProcessHandle process, out int error)
         {
-            var all = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            if (user != null)
-                foreach (var pair in user)
-                {
-                    if (string.IsNullOrEmpty(pair.Key) || pair.Key.IndexOf('=') >= 0 || pair.Key.IndexOf('\0') >= 0) continue;
-                    if (Array.Exists(Dropped, d => string.Equals(d, pair.Key, StringComparison.OrdinalIgnoreCase))) continue;
-                    all[pair.Key] = (pair.Value ?? string.Empty).Replace("\0", string.Empty);
-                }
-            if (added != null)
-                foreach (var pair in added) all[pair.Key] = pair.Value ?? string.Empty;
-            var block = new StringBuilder(4096);
-            foreach (var pair in all) block.Append(pair.Key).Append('=').Append(pair.Value).Append('\0');
-            if (all.Count == 0) block.Append('\0');
-            block.Append('\0');
-            return block.ToString();
+            bool held = false;
+            try
+            {
+                process.DangerousAddRef(ref held);
+                return System32Calls.VariablesOfProcess(process.DangerousGetHandle(), out error);
+            }
+            finally
+            {
+                if (held) process.DangerousRelease();
+            }
         }
 
         /// <summary>Whether a process's token has administrator rights: it is

@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>更多玩法</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>傳送到其他地方</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>熒幕顯示</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>配合其他程式</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>把手機或平板電腦當作控制器使用。</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>用頭部追蹤器或 VR 頭戴裝置環顧四周。</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>對應駕駛遊戲的速度、踏板和檔位。</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>在其他視窗上方顯示圖片、計時器或時鐘。</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>在遊戲上顯示你自己的十字準星。</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>放大鏡片、全熒幕放大或聚光燈。</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>讓啟動器、指令碼和助理與 PadForge 配合使用。</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>加入由程式提供的裝置。</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>連接埠、未加密的 HTTP、存取碼</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自動重新連線、連接埠、配對身分、以位址連線</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>連接埠、DSX.exe 替身程式</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>連接埠、全速值、自訂格式</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML、技能</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>用頭部追蹤器或 VR 頭戴式裝置環顧四周，雙手拇指仍可留在按鈕上。</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>把賽車遊戲傳送的速度、踏板和檔位，像任何輸入一樣對應。</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>把控制器體感傳送給讀取 DSU 體感來源的模擬器。</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>暗度</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows 未能啟動放大鏡。</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>鏡片和聚光燈會顯示在視窗模式和無邊框模式的遊戲上方，點擊會穿透。全熒幕模式會用 Windows 的全熒幕放大鏡放大整個桌面。巨集可顯示或隱藏放大鏡，也可只在按住期間顯示。</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>自動化</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>允許外部程式</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>程式可以做甚麼</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>等級</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>指令</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>讀取</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>傳送輸入</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>變更設定</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>程式可以切換及釋放設定檔、啟動和停止引擎、開啟和關閉虛擬控制器、顯示和隱藏視窗、關閉 PadForge、儲存診斷快照，以及查詢目前的執行狀況。</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>包含「指令」等級的所有功能，另外程式可以查看裝置、虛擬控制器、對應、設定檔和設定，即時追蹤每個裝置的輸入，並在 PadForge 內向你顯示某個位置。「讀取」等級的程式會看到每個裝置上按下的每個按鍵，包括在以系統管理員身分執行的視窗中輸入的按鍵。</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>包含「讀取」等級的所有功能，另外程式可以加入自己的裝置並操控它們、按住任何裝置的任何控制項，以及把命名數值交給巨集觸發條件。</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>包含「傳送輸入」等級的所有功能，另外程式可以變更你在各頁面上能變更的項目。</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>助理</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>把這段內容貼到助理的 MCP 設定中。助理之後便會按上方的等級與 PadForge 配合使用。</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>複製為 TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>讀取 TOML 的助理</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>指令碼</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>指令碼程式庫</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>儲存程式庫…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>一個檔案，供 AutoHotkey v2、Python 或 PowerShell 使用。載入它的指令碼可按上方的等級讀取裝置和操控對應。</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>等你回應</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>活動</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>尚未有程式發出呼叫。每個呼叫及其結果都會列在這裡。</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>復原</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>助理技能</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>儲存技能…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge 無法儲存：{0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>在「讀取」或更高等級的程式連接期間，它會看到每個裝置上按下的內容，包括鍵盤。</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>外掛程式</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>執行外掛程式</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>沒有外掛程式在執行。</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>外掛程式以你的權限執行，而不是 PadForge 的權限。</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>體感伺服器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>提供陀螺儀和加速度計數據的 DSU/CemuHook Motion Provider 協定伺服器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>啟用 DSU 體感伺服器（CemuHook Motion Provider 協定）</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>某個遊戲模組</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>另一個程式已佔用管道名稱 {0}。請關閉該程式。</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows 拒絕建立管道 {0}，因此程式無法連接。</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>沒有程式連接。</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>已連接：{0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>未知程式</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>已完成</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>未完成</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>此等級不允許</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>目前無法使用</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge 正忙</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>請求中有一個數值不正確</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>沒有此設定檔</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>沒有此虛擬控制器</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge 不認識此請求</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>請求是空白的</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge 遇到問題</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>切換到設定檔 {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>返回預設設定檔</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>查詢使用中的設定檔</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>查詢 PadForge 的版本</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>查詢目前的執行狀況</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>傳送 PadForge 不認識的一行：{0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>允許</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>不允許</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>來自 {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>來自 {1}，它自稱「{0}」</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>來自自稱「{0}」的程式</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>來自 Windows 無法識別名稱的程式</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>還有 {0} 項</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} 內沒有回應即視為不允許。</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>適用於 OpenTrack 以及任何能傳送其 UDP 輸出或寫入 FreeTrack 2.0 共用記憶體的追蹤器，亦適用於這部電腦上能在背景執行工作階段的 OpenXR 執行階段。</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>讀取 Logitech G 鍵</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>透過 Logitech G-key SDK 讀取 G 鍵。需要執行 Logitech Gaming Software 8.55 或更新版本。請在該軟件中，把 G-key 指令拖曳到 PadForge 設定檔的每個按鍵上。請將該設定檔設為常駐，否則只有當 PadForge 視窗位於最前時，這些按鍵才會傳到 PadForge。此外，G600 或 G300 滑鼠必須離開內置記憶體模式。</value></data>

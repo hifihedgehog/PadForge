@@ -704,7 +704,8 @@ namespace PadForge
                      or nameof(DashboardViewModel.CrosshairsLastOn)
                      or nameof(DashboardViewModel.HomeCards)
                      or nameof(DashboardViewModel.EnableAutomation)
-                     or nameof(DashboardViewModel.AutomationLevel))
+                     or nameof(DashboardViewModel.AutomationLevel)
+                     or nameof(DashboardViewModel.EnablePlugins))
                     _settingsService.MarkDirty();
                 // A "Mouse Travel" source shows Lock at Speed only while
                 // Game Telemetry is on (#597), so the rows hear the switch.
@@ -3548,6 +3549,8 @@ namespace PadForge
                 // is, and no program's command runs into the teardown (#597).
                 App.InstanceSignal?.MarkClosing();
                 _automation?.Dispose();
+                _requestCard?.Close();
+                _requestCard = null;
 
                 // A problem recording that still runs is stopped and its
                 // file finished while everything it describes is here (#597).

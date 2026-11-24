@@ -384,6 +384,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod de jeu</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Un autre programme détient le nom de canal {0}. Fermez ce programme.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows a refusé le canal {0}, les programmes ne peuvent donc pas se connecter.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Aucun programme n'est connecté.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connectés : {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programme inconnu</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Fait</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Non fait</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Non autorisé à ce niveau</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Indisponible pour le moment</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge était occupé</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Une valeur de la requête était incorrecte</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Profil introuvable</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Contrôleur virtuel introuvable</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ne connaît pas cette requête</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>La requête était vide</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge a rencontré un problème</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Passer au profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Revenir au profil par défaut</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Demander quel profil est actif</value></data>
@@ -404,6 +418,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Demander la version de PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Demander ce qui est en cours</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Envoyer une ligne que PadForge ne connaît pas : {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Autoriser</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ne pas autoriser</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>De {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De {1}, qui se nomme « {0} »</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>D'un programme qui se nomme « {0} »</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>D'un programme que Windows n'a pas nommé</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>et {0} de plus</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sur {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sans réponse sous {0}, la demande est refusée.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Fonctionne avec OpenTrack et tout tracker qui envoie sa sortie UDP ou écrit dans la mémoire partagée FreeTrack 2.0, ainsi qu’avec un runtime OpenXR installé sur cette machine capable d’exécuter une session en arrière-plan.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lire les touches G Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lit les touches G via le SDK G-key de Logitech. Nécessite Logitech Gaming Software 8.55 ou ultérieur en cours d’exécution. Dans ce logiciel, faites glisser la commande G-key sur chaque touche du profil PadForge. Rendez ce profil persistant, sinon les touches n’atteignent PadForge que lorsque sa fenêtre est au premier plan. Une souris G600 ou G300 ne doit pas non plus être en mode mémoire intégrée.</value></data>
@@ -3790,6 +3813,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_Group_Play" xml:space="preserve"><value>Plus de façons de jouer</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Envoyer ailleurs</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>À l'écran</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Avec d'autres programmes</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Utilisez un téléphone ou une tablette comme manette.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Regardez autour de vous avec un suiveur de tête ou un casque VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mappez la vitesse, les pédales et les rapports des jeux de conduite.</value></data>
@@ -3802,10 +3826,14 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Une image, un minuteur ou une horloge au-dessus des autres fenêtres.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Votre propre réticule par-dessus un jeu.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Une loupe, un zoom plein écran ou un projecteur.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Laissez les lanceurs, les scripts et les assistants travailler avec PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ajoutez des appareils fournis par des programmes.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP non chiffré, code d'accès</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnexion automatique, port, identité d'appairage, connexion par adresse</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Vitesse maximale, Formats personnalisés</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Regardez autour de vous avec un traqueur de tête ou un casque VR, les deux pouces restant sur les boutons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mappez la vitesse, les pédales et les rapports qu'envoie un jeu de conduite, comme n'importe quelle entrée.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Envoyez le mouvement des manettes aux émulateurs qui lisent une source de mouvement DSU.</value></data>
@@ -3922,6 +3950,38 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Obscurité</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows n'a pas démarré la loupe.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>La lentille et le projecteur s'affichent au-dessus des jeux en fenêtre et en fenêtré sans bordure, et les clics les traversent. Le mode plein écran zoome tout le bureau avec la loupe plein écran de Windows. Une macro peut afficher ou masquer la loupe, ou ne l'afficher que tant qu'elle est maintenue.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatisation</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Autoriser les programmes extérieurs</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ce que les programmes peuvent faire</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Commandes</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lecture</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Envoi d'entrées</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Modification des paramètres</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Les programmes peuvent changer de profil et le libérer, démarrer et arrêter le moteur, activer et désactiver les contrôleurs virtuels, afficher et masquer la fenêtre, fermer PadForge, enregistrer un instantané de diagnostic et demander ce qui est en cours.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tout ce que permet Commandes, et les programmes peuvent voir les appareils, les contrôleurs virtuels, les mappages, les profils et les paramètres, suivre en direct les entrées de chaque appareil et vous montrer un endroit de PadForge. Un programme au niveau Lecture voit chaque touche pressée sur chaque appareil, y compris les touches tapées dans des fenêtres exécutées en administrateur.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tout ce que permet Lecture, et les programmes peuvent ajouter leurs propres appareils et les piloter, maintenir une commande de n'importe quel appareil et transmettre des valeurs nommées aux déclencheurs de macros.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tout ce que permet Envoi d'entrées, et les programmes peuvent modifier ce que vous pouvez modifier dans les pages.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistants</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Collez ceci dans les paramètres MCP d'un assistant. L'assistant travaille ensuite avec PadForge au niveau ci-dessus.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copier en TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistants qui lisent le TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Bibliothèque de scripts</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Enregistrer une bibliothèque…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un fichier pour AutoHotkey v2, Python ou PowerShell. Un script qui le charge lit les appareils et pilote les mappages au niveau ci-dessus.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>À votre réponse</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activité</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Aucun programme n'a encore fait d'appel. Chaque appel est listé ici avec son résultat.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Annuler</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill pour les assistants</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Enregistrer le Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge n'a pas pu l'enregistrer : {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Tant qu'un programme au niveau Lecture ou plus est connecté, il voit ce qui est pressé sur chaque appareil, claviers compris.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Exécuter les plugins</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Aucun plugin en cours.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un plugin s'exécute avec vos droits, pas ceux de PadForge.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Annotations de mappage</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

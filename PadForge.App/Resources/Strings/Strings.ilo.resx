@@ -124,6 +124,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Maysa a game mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sabali a programa ti mangig-iggem iti pipe a nagan {0}. Irikep dayta a programa.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Inlaksid ti Windows ti pipe {0}, isu a saan a makakonekta dagiti programa.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Awan ti programa a nakakonekta.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonekta: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Di am-ammo a programa</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Naaramid</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Saan a naaramid</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Saan a maipalubos iti daytoy a level</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Saan a magun-od ita</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Okupado ti PadForge</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Biddut ti maysa a value iti kiddaw</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Awan ti kasta a profile</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Awan ti kasta a virtual controller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Saan nga ammo ti PadForge daytoy a kiddaw</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Awan ti linaon ti kiddaw</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>Adda parikut a nasabat ti PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Umakar iti profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Agsubli iti default a profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Damagen no ania a profile ti aktibo</value></data>
@@ -1219,6 +1233,8 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Alaen dagiti epekto ti trigger ken silaw manipud kadagiti game mod.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, kasukat ti DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Dagiti port, Naan-anay a kapardas, Dagiti bukod a format</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Agsapul kadagiti setting, device ken profile</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Agsapul</value></data>
@@ -1434,6 +1450,35 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Naiddiskonekta ti {0} a device</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Naikonekta ti {0} a device</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Maulit-ulit a maiddiskonekta ti {0}</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Kadua dagiti sabali a programa</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Ipalubos kadagiti launcher, script ken assistant nga agtrabaho iti PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Agnayon kadagiti device nga ited dagiti programa.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Ipalubos dagiti programa iti ruar</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Dagiti assistant</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ikabil daytoy kadagiti MCP setting ti assistant. Kalpasanna, agtrabaho ti assistant iti PadForge iti level iti ngato.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiaen a kas TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Dagiti assistant a mangbasa iti TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Dagiti script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Library ti script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Idulin ti library…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Maysa a file para iti AutoHotkey v2, Python wenno PowerShell. Ti script a mangikarga iti daytoy ket mangbasa kadagiti device ken mangiturong kadagiti mapping iti level iti ngato.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Agur-uray kenka</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktibidad</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Awan pay ti programa a nangawag. Mailista ditoy ti tunggal awag ken ti nagbanaganna.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Isubli</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill para kadagiti assistant</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Idulin ti skill…</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Patarayen dagiti plugin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Awan ti plugin nga agtartaray.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Ipalubos</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Saan nga ipalubos</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Manipud iti {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Manipud iti {1}, a mangawag iti bagina iti “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Manipud iti programa a mangawag iti bagina iti “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Manipud iti programa a saan a ninaganan ti Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ken {0} pay</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} iti {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>No awan ti sungbat iti uneg ti {0}, maibilang a saan.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ti Update Now ket mangi-download iti database ti controller ti komunidad (SDL_GameControllerDB) manipud iti GitHub ken idulinna, iti settings file, dagiti mapping nga awan iti daytoy a bersion ti PadForge. Ti baro a mapping ket mausar laeng para iti controller nga awan ti sabali a mangbasa a kas gamepad, saan a naitudingan ken saan nga adda iti Force Raw Joystick Mode. Ikkaten ti reset amin a na-download a mapping.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}. Na-update iti {2}: {3} baro, {4} nabaliwan.</value></data>

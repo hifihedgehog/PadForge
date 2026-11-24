@@ -1780,5 +1780,23 @@
     "Id": "Reset_MacroAction_ProblemRecordingMode_59703",
     "Owner": "PadForge.ViewModels.MacroAction",
     "Property": "ProblemRecordingMode"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableAutomation_59701",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableAutomation"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_AutomationLevel_59702",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "AutomationLevel"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnablePlugins_59703",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnablePlugins"
   }
 ]

@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>თამაშის მეტი გზა</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>გადაგზავნა სხვაგან</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>ეკრანზე</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>სხვა პროგრამებთან ერთად</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>გამოიყენეთ ტელეფონი ან ტაბლეტი კონტროლერად.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>მიმოიხედეთ თავის ტრეკერით ან VR ჰარნიტურით.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები სარბოლო თამაშებიდან.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>სურათი, ტაიმერი ან საათი სხვა ფანჯრების თავზე.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>თქვენი საკუთარი სამიზნე თამაშის თავზე.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ლინზა, მთელი ეკრანის გადიდება ან პროჟექტორი.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>ლაუნჩერებს, სკრიპტებსა და ასისტენტებს აძლევს PadForge-თან მუშაობის საშუალებას.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>დაამატეთ მოწყობილობები, რომლებსაც პროგრამები უზრუნველყოფენ.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>პორტი, უბრალო HTTP, წვდომის კოდი</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური გადაკავშირება, პორტი, დაწყვილების პირადობა, დაკავშირება მისამართით</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>პორტი, DSX.exe-ის შემცვლელი</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>პორტები, სრული სიჩქარე და საკუთარი ფორმატები</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, უნარი</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ირგვლივ იხედეთ თავის ტრეკერით ან VR ჰედსეტით, ხოლო ორივე ცერა თითი ღილაკებზე რჩება.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები, რომლებსაც მანქანის მართვის თამაში აგზავნის, ნებისმიერი შეყვანის მსგავსად.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>გაუგზავნეთ კონტროლერის მოძრაობა ემულატორებს, რომლებიც DSU მოძრაობის წყაროს კითხულობენ.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>სიბნელე</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ვერ გაუშვა გამადიდებელი.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ლინზა და პროჟექტორი ჩანს ფანჯრულ და უჩარჩოო თამაშებზე და დაწკაპუნებები მათ გაივლის. მთელი ეკრანის რეჟიმი ზრდის მთელ სამუშაო მაგიდას Windows გამადიდებლის სრულეკრანიანი რეჟიმით. მაკროს შეუძლია გამადიდებლის ჩვენება ან დამალვა, ან ჩვენება მხოლოდ დაჭერისას.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>ავტომატიზაცია</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>გარე პროგრამების დაშვება</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>რა შეუძლიათ პროგრამებს</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>დონე</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>ბრძანებები</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>წაკითხვა</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>შეყვანების გაგზავნა</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>პარამეტრების შეცვლა</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>პროგრამებს შეუძლიათ პროფილების გადართვა და გათავისუფლება, ძრავის გაშვება და გაჩერება, ვირტუალური კონტროლერების ჩართვა და გამორთვა, ფანჯრის ჩვენება და დამალვა, PadForge-ის დახურვა, დიაგნოსტიკის სნეპშოტის შენახვა და კითხვა, რა მუშაობს.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ყველაფერი, რაც ბრძანებების დონეზეა, და პროგრამებს შეუძლიათ მოწყობილობების, ვირტუალური კონტროლერების, რუკების, პროფილებისა და პარამეტრების ნახვა, ყველა მოწყობილობის შეყვანების რეალურ დროში თვალყურის დევნება და PadForge-ში ადგილის ჩვენება. წაკითხვის დონეზე მყოფი პროგრამა ხედავს ყველა მოწყობილობაზე დაჭერილ ყველა კლავიშს, ადმინისტრატორის უფლებებით გაშვებულ ფანჯრებში აკრეფილებსაც.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>ყველაფერი, რაც წაკითხვის დონეზეა, და პროგრამებს შეუძლიათ საკუთარი მოწყობილობების დამატება და მართვა, ნებისმიერი მოწყობილობის კონტროლის დაჭერა და მაკროს ტრიგერებისთვის დასახელებული მნიშვნელობების გადაცემა.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ყველაფერი, რაც შეყვანების გაგზავნის დონეზეა, და პროგრამებს შეუძლიათ ის შეცვალონ, რისი შეცვლაც გვერდებზე თქვენ შეგიძლიათ.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ასისტენტები</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ჩასვით ეს ასისტენტის MCP პარამეტრებში. ამის შემდეგ ასისტენტი PadForge-თან ზემოთ მითითებული დონით იმუშავებს.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML-ად კოპირება</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ასისტენტები, რომლებიც TOML-ს კითხულობენ</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>სკრიპტები</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>სკრიპტების ბიბლიოთეკა</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ბიბლიოთეკის შენახვა…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ერთი ფაილი AutoHotkey v2-ისთვის, Python-ისთვის ან PowerShell-ისთვის. სკრიპტი, რომელიც მას ჩატვირთავს, კითხულობს მოწყობილობებს და მართავს რუკებს ზემოთ მითითებული დონით.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>გელოდებათ</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>აქტივობა</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ჯერ არც ერთ პროგრამას არ მიუმართავს. თითოეული მიმართვა აქ ჩანს მისი შედეგით.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>გაუქმება</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>უნარი ასისტენტებისთვის</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>უნარის შენახვა…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-მა ვერ შეინახა: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>სანამ წაკითხვის ან უფრო მაღალი დონის პროგრამა დაკავშირებულია, ის ხედავს, რა იჭერება ყველა მოწყობილობაზე, კლავიატურებზეც.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>პლაგინები</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>პლაგინების გაშვება</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>არც ერთი პლაგინი არ მუშაობს.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>პლაგინი თქვენი უფლებებით მუშაობს და არა PadForge-ის უფლებებით.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>მოძრაობის სერვერი</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider პროტოკოლის სერვერი გიროსკოპისა და აქსელერომეტრის მონაცემებისთვის.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU მოძრაობის სერვერის ჩართვა (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>თამაშის მოდი</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>სხვა პროგრამას უკავია მილის სახელი {0}. დახურეთ ეს პროგრამა.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-მა უარყო მილი {0}, ამიტომ პროგრამები ვერ უკავშირდებიან.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>არც ერთი პროგრამა არ არის დაკავშირებული.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>დაკავშირებულია: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>უცნობი პროგრამა</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>შესრულდა</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>არ შესრულდა</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ამ დონეზე დაუშვებელია</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ახლა მიუწვდომელია</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge დაკავებული იყო</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>მოთხოვნაში მნიშვნელობა არასწორი იყო</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>ასეთი პროფილი არ არის</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>ასეთი ვირტუალური კონტროლერი არ არის</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ამ მოთხოვნას არ იცნობს</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>მოთხოვნა ცარიელი იყო</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-ს პრობლემა შეექმნა</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>გადართვა პროფილზე {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>დაბრუნება ნაგულისხმევ პროფილზე</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>კითხვა, რომელი პროფილია აქტიური</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ის ვერსიის მოთხოვნა</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>კითხვა, რა მუშაობს</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ისთვის უცნობი ხაზის გაგზავნა: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>დაშვება</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>არ დაიშვას</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>გამომგზავნი: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>გამომგზავნი: {1}, რომელიც საკუთარ თავს „{0}“ უწოდებს</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>გამომგზავნი: პროგრამა, რომელიც საკუთარ თავს „{0}“ უწოდებს</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>გამომგზავნი: პროგრამა, რომელიც Windows-მა არ დაასახელა</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>და კიდევ {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>პასუხის გარეშე {0} ნიშნავს უარს.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>მუშაობს OpenTrack-თან და ნებისმიერ ტრეკერთან, რომელიც UDP გამოსვლას აგზავნის ან FreeTrack 2.0 გაზიარებულ მეხსიერებაში წერს, ასევე OpenXR გაშვების გარემოსთან ამ კომპიუტერზე, რომელსაც სესიის ფონზე გაშვება შეუძლია.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key-ების წაკითხვა</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>კითხულობს G-key-ებს Logitech-ის G-key SDK-ს მეშვეობით. საჭიროა გაშვებული Logitech Gaming Software 8.55 ან უფრო ახალი. ამ პროგრამაში გადაათრიეთ G-key ბრძანება PadForge-ის პროფილის თითოეულ კლავიშზე. ეს პროფილი გახადეთ მუდმივი, თორემ კლავიშები PadForge-ს მხოლოდ მაშინ აღწევს, როცა მისი ფანჯარა წინა პლანზეა. G600 ან G300 მაუსიც უნდა იყოს ჩაშენებული მეხსიერების რეჟიმიდან გამოსული.</value></data>

@@ -358,7 +358,7 @@ public static class W {
     if (Go 'Extras' 'Extras') {
         foreach ($key in @('WebController', 'HeadTracking', 'GameTelemetry', 'TwitchChat', 'RemoteLink',
                            'MotionServer', 'GameMods', 'Overlays', 'TouchpadOverlay', 'ScreenOverlay',
-                           'Crosshair', 'Magnifier')) {
+                           'Crosshair', 'Magnifier', 'Automation', 'Plugins')) {
             $opened = Invoke-El (Find-ByAid ('Extras_Open_' + $key))
             $back = if ($opened) { Wait-Aid $win ('Extras_Back_' + $key) 3000 } else { $null }
             if (-not $back) {

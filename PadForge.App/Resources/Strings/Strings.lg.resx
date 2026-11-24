@@ -866,6 +866,31 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ebyuma {0} bisaliddwako</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ebyuma {0} biyungiddwa</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kyeyongera okusalibwako</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Abayambi</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Teeka kino mu nsengeka za MCP ez'omuyambi. Omuyambi olwo akola ne PadForge ku ddaala eriri waggulu.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Koppa nga TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Abayambi Abasoma TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Sikulipiti</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Etterekero lya Sikulipiti</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Tereka Etterekero…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fayiro emu eya AutoHotkey v2, Python oba PowerShell. Sikulipiti egiteeka esoma ebyuma era efuga okugatta ku ddaala eriri waggulu.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Bikulindiridde</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ebikoleddwa</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Tewali pulogulaamu ekyakuba. Buli kukuba kulagibwa wano n'ekyavaamu.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Ddamu</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Obukugu bw'Abayambi</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tereka Obukugu…</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Kikoleddwa</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tekikoleddwa</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tekikkirizibwa ku ddaala lino</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tekiriiwo kati</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge yali ekola ekirala</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Omuwendo mu kusaba gwali mukyamu</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Tewali pulofayiro eyo</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Tewali kifuga kya virtual ekyo</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tetegeera kusaba kuno</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Okusaba kwali kwereere</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yafuna obuzibu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kyusa ogende ku pulofayiro {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ddayo ku pulofayiro ey'olubeerera</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buuza pulofayiro ekola</value></data>
@@ -886,6 +911,11 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Buuza enkyusa ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Buuza ekikola</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sindika olunyiriri PadForge lw'etamanyi: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Kkiriza</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Tokkiriza</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>n'endala {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ku {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Bw'otaddamu mu {0}, kitwalibwa nga nedda.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>emitendera</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Bulijjo</value></data>
 </root>

@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>விளையாட மேலும் வழிகள்</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>வேறிடத்துக்கு அனுப்பு</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>திரையில்</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>பிற நிரல்களுடன்</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ஃபோன் அல்லது டேப்லெட்டைக் கட்டுப்படுத்தியாகப் பயன்படுத்தவும்.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ஹெட் டிராக்கர் அல்லது VR ஹெட்செட் மூலம் சுற்றிப் பார்க்கவும்.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ஓட்டுநர் கேம்களின் வேகம், மிதிகள், கியர்களை மேப் செய்யவும்.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>மற்ற சாளரங்களுக்கு மேலே ஒரு படம், டைமர் அல்லது கடிகாரம்.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ஒரு விளையாட்டின் மேல் உங்கள் சொந்தக் குறுக்குக்கோடு.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ஒரு பெரிதாக்கும் லென்ஸ், முழுத்திரை பெரிதாக்கம் அல்லது ஒரு ஒளிக்குவியல்.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>லாஞ்சர்கள், ஸ்கிரிப்ட்கள், உதவியாளர்கள் PadForge உடன் செயல்பட அனுமதிக்கவும்.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>நிரல்கள் வழங்கும் சாதனங்களைச் சேர்க்கவும்.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>போர்ட், சாதாரண HTTP, அணுகல் குறியீடு</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>தானியங்கி மறுஇணைப்பு, போர்ட், இணைசேர்ப்பு அடையாளம், முகவரி மூலம் இணை</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>போர்ட், DSX.exe மாற்றுநிரல்</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>போர்ட்டுகள், முழு வேகம், தனிப்பயன் வடிவங்கள்</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, திறன்</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>இரு கட்டைவிரல்களும் பொத்தான்களிலேயே இருக்க, ஹெட் டிராக்கர் அல்லது VR ஹெட்செட் மூலம் சுற்றிப் பார்க்கலாம்.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ஓட்டுதல் கேம் அனுப்பும் வேகம், பெடல்கள், கியர்களை எந்த உள்ளீட்டையும் போல மேப் செய்யலாம்.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU அசைவு மூலத்தைப் படிக்கும் எமுலேட்டர்களுக்குக் கட்டுப்படுத்தியின் அசைவை அனுப்பும்.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>இருள் அளவு</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows பெரிதாக்கியைத் தொடங்கவில்லை.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>லென்ஸும் ஒளிக்குவியலும் சாளர மற்றும் எல்லையற்ற முறை விளையாட்டுகளின் மேல் தெரியும், கிளிக்குகள் அவற்றின் வழியாகச் செல்லும். முழுத்திரை முறை, Windows இன் முழுத்திரை பெரிதாக்கியால் முழு டெஸ்க்டாப்பையும் பெரிதாக்கும். ஒரு மேக்ரோ பெரிதாக்கியைக் காட்டவோ மறைக்கவோ முடியும், அல்லது பிடித்திருக்கும்போது மட்டும் காட்ட முடியும்.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>தானியக்கம்</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>வெளிப்புற நிரல்களை அனுமதி</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>நிரல்கள் செய்யக்கூடியவை</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>நிலை</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>கட்டளைகள்</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>படித்தல்</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>உள்ளீடுகளை அனுப்புதல்</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>அமைப்புகளை மாற்றுதல்</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>நிரல்கள் சுயவிவரங்களை மாற்றவும் விடுவிக்கவும், இன்ஜினைத் தொடங்கவும் நிறுத்தவும், மெய்நிகர் கட்டுப்படுத்திகளை இயக்கவும் அணைக்கவும், சாளரத்தைக் காட்டவும் மறைக்கவும், PadForge-ஐ மூடவும், பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமிக்கவும், என்ன இயங்குகிறது என்று கேட்கவும் முடியும்.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>கட்டளைகள் நிலையில் உள்ள அனைத்தும், மேலும் நிரல்கள் சாதனங்கள், மெய்நிகர் கட்டுப்படுத்திகள், மேப்பிங்குகள், சுயவிவரங்கள், அமைப்புகளைப் பார்க்கவும், ஒவ்வொரு சாதனத்தின் உள்ளீடுகளையும் நடக்கும்போதே பின்தொடரவும், PadForge-இல் ஓர் இடத்தை உங்களுக்குக் காட்டவும் முடியும். படித்தல் நிலையில் உள்ள நிரல், நிர்வாகியாக இயங்கும் சாளரங்களில் தட்டச்சு செய்த விசைகள் உட்பட, ஒவ்வொரு சாதனத்திலும் அழுத்தப்படும் ஒவ்வொரு விசையையும் பார்க்கும்.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>படித்தல் நிலையில் உள்ள அனைத்தும், மேலும் நிரல்கள் தங்களுக்கே உரிய சாதனங்களைச் சேர்த்து இயக்கவும், எந்தச் சாதனத்தின் கட்டுப்பாட்டையும் பிடித்து வைக்கவும், மேக்ரோ தூண்டிகளுக்குப் பெயரிட்ட மதிப்புகளை வழங்கவும் முடியும்.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>உள்ளீடுகளை அனுப்புதல் நிலையில் உள்ள அனைத்தும், மேலும் பக்கங்களில் நீங்கள் மாற்றக்கூடியவற்றை நிரல்களும் மாற்ற முடியும்.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>உதவியாளர்கள்</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>இதை ஓர் உதவியாளரின் MCP அமைப்புகளில் ஒட்டவும். அப்போது உதவியாளர் மேலே உள்ள நிலையில் PadForge உடன் செயல்படும்.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML ஆக நகலெடு</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML படிக்கும் உதவியாளர்கள்</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ஸ்கிரிப்ட்கள்</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>ஸ்கிரிப்ட் நூலகம்</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>நூலகத்தைச் சேமி…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python அல்லது PowerShell க்கான ஒரு கோப்பு. இதை ஏற்றும் ஸ்கிரிப்ட் மேலே உள்ள நிலையில் சாதனங்களைப் படித்து மேப்பிங்குகளை இயக்கும்.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>உங்கள் பதிலுக்காகக் காத்திருக்கிறது</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>செயல்பாடு</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>இன்னும் எந்த நிரலும் அழைக்கவில்லை. ஒவ்வொரு அழைப்பும் அதன் விளைவுடன் இங்கே பட்டியலிடப்படும்.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>செயல்தவிர்</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>உதவியாளர்களுக்கான திறன்</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>திறனைச் சேமி…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ஆல் அதைச் சேமிக்க முடியவில்லை: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>படித்தல் நிலையில் அல்லது அதற்கு மேல் உள்ள நிரல் இணைந்திருக்கும்போது, விசைப்பலகைகள் உட்பட ஒவ்வொரு சாதனத்திலும் அழுத்துவதை அது பார்க்கும்.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>செருகுநிரல்கள்</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>செருகுநிரல்களை இயக்கு</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>எந்தச் செருகுநிரலும் இயங்கவில்லை.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>செருகுநிரல் PadForge-இன் உரிமைகளில் அல்ல, உங்கள் உரிமைகளுடன் இயங்கும்.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>அசைவுச் சேவையகம்</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>கைரோ மற்றும் முடுக்கமானித் தரவுக்கான DSU/CemuHook Motion Provider நெறிமுறைச் சேவையகம்.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU அசைவுச் சேவையகத்தை இயக்கு (CemuHook Motion Provider நெறிமுறை)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ஒரு கேம் மோட்</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>வேறொரு நிரல் {0} என்ற குழாய்ப் பெயரை வைத்திருக்கிறது. அந்த நிரலை மூடவும்.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} குழாயை மறுத்துவிட்டது, எனவே நிரல்களால் இணைய முடியாது.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>எந்த நிரலும் இணைக்கப்படவில்லை.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>இணைந்தவை: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>அறியப்படாத நிரல்</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>முடிந்தது</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>செய்யப்படவில்லை</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>இந்த நிலையில் அனுமதி இல்லை</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>இப்போது கிடைக்காது</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge பிஸியாக இருந்தது</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>கோரிக்கையில் ஒரு மதிப்பு தவறாக இருந்தது</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>அப்படி ஒரு சுயவிவரம் இல்லை</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>அப்படி ஒரு மெய்நிகர் கட்டுப்படுத்தி இல்லை</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-க்கு இந்தக் கோரிக்கை தெரியாது</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>கோரிக்கை காலியாக இருந்தது</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-இல் ஒரு சிக்கல் ஏற்பட்டது</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>சுயவிவரத்தை மாற்று: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>இயல்புநிலை சுயவிவரத்துக்குத் திரும்பு</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>எந்தச் சுயவிவரம் செயலில் உள்ளது என்று கேள்</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-இன் பதிப்பைக் கேள்</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>என்ன இயங்குகிறது என்று கேள்</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-க்குத் தெரியாத ஒரு வரியை அனுப்பு: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>அனுமதி</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>அனுமதிக்காதே</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} இலிருந்து</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} இலிருந்து, அது தன்னை “{0}” என்று அழைத்துக்கொள்கிறது</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>தன்னை “{0}” என்று அழைத்துக்கொள்ளும் ஒரு நிரலிலிருந்து</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows பெயரிடாத ஒரு நிரலிலிருந்து</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>மேலும் {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1}-இல் {0}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0}-க்குள் பதில் இல்லையெனில் மறுப்பாகக் கருதப்படும்.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack உடனும், தன் UDP வெளியீட்டை அனுப்பும் அல்லது FreeTrack 2.0 பகிர்ந்த நினைவகத்தில் எழுதும் எந்த டிராக்கருடனும், பின்னணியில் ஓர் அமர்வை இயக்கக்கூடிய இந்தக் கணினியிலுள்ள OpenXR ரன்டைமுடனும் வேலை செய்யும்.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-விசைகளைப் படி</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK வழியாக G-விசைகளைப் படிக்கிறது. Logitech Gaming Software 8.55 அல்லது அதற்குப் பிந்தைய பதிப்பு இயங்கிக்கொண்டிருக்க வேண்டும். அந்த மென்பொருளில், PadForge சுயவிவரத்தில் உள்ள ஒவ்வொரு விசையின் மீதும் G-key கட்டளையை இழுத்து விடவும். அந்தச் சுயவிவரத்தை நிலையானதாக (Persistent) அமைக்கவும், இல்லையெனில் PadForge சாளரம் முன்னால் இருக்கும்போது மட்டுமே விசைகள் PadForge-ஐ வந்தடையும். G600 அல்லது G300 சுட்டியாக இருந்தால், அது ஆன்-போர்டு நினைவகப் பயன்முறையிலிருந்தும் வெளியே இருக்க வேண்டும்.</value></data>

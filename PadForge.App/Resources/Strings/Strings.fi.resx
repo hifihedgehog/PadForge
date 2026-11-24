@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Lisää tapoja pelata</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Lähetä muualle</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Näytöllä</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Muiden ohjelmien kanssa</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Käytä puhelinta tai tablettia ohjaimena.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Katsele ympärillesi pääseurantalaitteella tai VR-kuulokkeilla.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Yhdistä ajopelien nopeus, polkimet ja vaihteet ohjaimen toimintoihin.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kuva, ajastin tai kello muiden ikkunoiden päällä.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Oma tähtäin pelin päälle.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Linssi, koko näytön suurennus tai valokeila.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Anna käynnistimien, skriptien ja avustajien toimia PadForge-sovelluksen kanssa.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Lisää laitteita, joita ohjelmat tarjoavat.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Portti, salaamaton HTTP, pääsykoodi</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automaattinen uudelleenyhdistys, portti, pariliitoksen tunniste, yhdistäminen osoitteella</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Portti, DSX.exe-korvike</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portit, Täysi nopeus, Mukautetut formaatit</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, osaamispaketti</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Katso ympärillesi päänseurantalaitteella tai VR-laseilla, kun molemmat peukalot pysyvät painikkeilla.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Kohdista ajopelin lähettämät nopeus, polkimet ja vaihteet kuten mikä tahansa syöte.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Lähetä ohjaimen liike emulaattoreille, jotka lukevat DSU-liikelähdettä.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tummuus</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ei käynnistänyt suurennuslasia.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Linssi ja valokeila näkyvät ikkuna- ja reunattomassa ikkunatilassa olevien pelien päällä, ja napsautukset menevät niiden läpi. Koko näyttö suurentaa koko työpöydän Windowsin koko näytön suurennuslasilla. Makro voi näyttää tai piilottaa suurennuslasin tai näyttää sen vain pidettäessä.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automaatio</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Salli ulkopuoliset ohjelmat</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Mitä ohjelmat saavat tehdä</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Taso</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Komennot</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Luku</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Lähetä syötteitä</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Muuta asetuksia</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Ohjelmat voivat vaihtaa profiileja ja vapauttaa ne, käynnistää ja pysäyttää moottorin, kytkeä virtuaaliohjaimet päälle ja pois, näyttää ja piilottaa ikkunan, sulkea PadForge-sovelluksen, tallentaa diagnostiikan tilannevedoksen ja kysyä, mikä on käynnissä.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Kaikki tasolta Komennot, ja lisäksi ohjelmat voivat nähdä laitteet, virtuaaliohjaimet, määritykset, profiilit ja asetukset, seurata jokaisen laitteen syötteitä sitä mukaa kuin ne tapahtuvat ja näyttää sinulle paikan PadForge-sovelluksessa. Tasolla Luku oleva ohjelma näkee jokaisen jokaisella laitteella painetun näppäimen, myös järjestelmänvalvojana ajettaviin ikkunoihin kirjoitetut.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Kaikki tasolta Luku, ja lisäksi ohjelmat voivat lisätä omia laitteita ja ohjata niitä, pitää mitä tahansa laitteen ohjauselementtiä painettuna ja antaa nimettyjä arvoja makrojen liipaisimille.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Kaikki tasolta Lähetä syötteitä, ja lisäksi ohjelmat voivat muuttaa sitä, mitä itse voit muuttaa sivuilla.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Avustajat</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Liitä tämä avustajan MCP-asetuksiin. Avustaja toimii sitten PadForge-sovelluksen kanssa yllä olevalla tasolla.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopioi TOML-muodossa</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML-muotoa lukevat avustajat</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skriptit</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Skriptikirjasto</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Tallenna kirjasto…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Yksi tiedosto kielelle AutoHotkey v2, Python tai PowerShell. Sen lataava skripti lukee laitteita ja ohjaa määrityksiä yllä olevalla tasolla.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Odottaa sinua</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Toiminta</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Mikään ohjelma ei ole vielä tehnyt kutsua. Jokainen kutsu näkyy tässä tuloksineen.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Kumoa</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Avustajien osaamispaketti</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tallenna osaamispaketti…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ei voinut tallentaa sitä: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Kun tasolla Luku tai sitä ylemmällä tasolla oleva ohjelma on yhdistetty, se näkee, mitä jokaisella laitteella painetaan, näppäimistöt mukaan lukien.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Laajennukset</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Suorita laajennukset</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Yksikään laajennus ei ole käynnissä.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Laajennus toimii sinun oikeuksillasi, ei PadForge-sovelluksen.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikepalvelin</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider -protokollan palvelin gyro- ja kiihtyvyysanturitiedoille.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ota DSU-liikepalvelin käyttöön (CemuHook Motion Provider -protokolla)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Pelimodi</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Toinen ohjelma on varannut putken nimen {0}. Sulje se ohjelma.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows hylkäsi putken {0}, joten ohjelmat eivät voi muodostaa yhteyttä.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Yhtään ohjelmaa ei ole yhdistetty.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Yhdistetty: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Tuntematon ohjelma</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Tehty</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ei tehty</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ei sallittu tällä tasolla</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ei käytettävissä nyt</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge oli kiireinen</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Pyynnön arvo oli virheellinen</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Profiilia ei ole</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Virtuaaliohjainta ei ole</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ei tunne tätä pyyntöä</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Pyyntö oli tyhjä</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge kohtasi ongelman</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaihda profiiliin {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Palaa oletusprofiiliin</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Kysy, mikä profiili on käytössä</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Kysy PadForge-sovelluksen versiota</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Kysy, mikä on käynnissä</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Lähetä rivi, jota PadForge ei tunne: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Salli</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Älä salli</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Lähde: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Lähde: {1}, joka kutsuu itseään nimellä ”{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Ohjelmasta, joka kutsuu itseään nimellä ”{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Ohjelmasta, jota Windows ei nimennyt</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ja {0} muuta</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0}/{1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Vastaamatta jättäminen {0} kuluessa tarkoittaa kieltoa.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Toimii OpenTrack-ohjelman ja minkä tahansa sellaisen seurantaohjelman kanssa, joka lähettää tulosteensa UDP:nä tai kirjoittaa FreeTrack 2.0 -muotoiseen jaettuun muistiin, sekä tämän koneen OpenXR-ajoympäristön kanssa, joka pystyy suorittamaan istunnon taustalla.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lue Logitechin G-näppäimet</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lukee G-näppäimet Logitechin G-key SDK:n kautta. Vaatii, että Logitech Gaming Software 8.55 tai uudempi on käynnissä. Vedä ohjelmassa G-key-komento PadForge-profiilin jokaiselle näppäimelle. Tee profiilista pysyvä, muuten näppäimet tavoittavat PadForge-sovelluksen vain, kun sen ikkuna on edessä. G600- tai G300-hiiren on myös oltava poissa sisäisen muistin tilasta.</value></data>

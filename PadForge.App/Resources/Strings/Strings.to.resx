@@ -852,6 +852,16 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Toʻo ʻa e lanu ʻe fā mei he fakatātā.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>ʻOku ʻikai lava ʻe PadForge ʻo lau ʻa e fakatātā ʻa Steam ki he vaʻinga ko ʻení.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hokohoko ʻa e Fekau</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ʻOku ʻikai ha polokalama tānaki ʻoku lele.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻOku ʻikai ha polokalama kuo fakafehokotaki.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Fakafehokotaki: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalama taʻeʻiloa</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mei he {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mei he {1}, ʻa ia ʻoku ui ia ko “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mei ha polokalama ʻoku ui ia ko “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Mei ha polokalama naʻe ʻikai fakahingoa ʻe Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>mo e {0} kehe</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ʻi he {1}</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>lau</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Maʻu pē</value></data>
 </root>

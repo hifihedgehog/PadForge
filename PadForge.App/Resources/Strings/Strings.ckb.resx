@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>ڕێگەی زیاتر بۆ یاریکردن</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>بینێرە بۆ شوێنێکی تر</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>لەسەر شاشە</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>لەگەڵ بەرنامەکانی تر</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>مۆبایل یان تابلێت وەک کۆنترۆڵەر بەکاربهێنە.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>بە شوێنپێهەڵگرەری سەر یان کڵاوی VR بە دەوروبەردا بڕوانە.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>خێرایی، پێدال و گێڕەکانی یارییەکانی لێخوڕین ببەستەوە.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>وێنە، کاتژمێری پێوانە یان کاتژمێر لەسەرووی پەنجەرەکانی ترەوە.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>نیشانەی تایبەتی خۆت لەسەر یارییەک.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>هاوێنەیەکی زووم، زوومی هەموو شاشە یان ڕووناکییەکی تیشکدار.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>ڕێگە بدە لانچەر، سکریپت و یاریدەدەرەکان لەگەڵ PadForge کار بکەن.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>ئەو ئامێرانە زیاد بکە کە بەرنامەکان دابینیان دەکەن.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>پۆرت، HTTP ی سادە، کۆدی دەستگەیشتن</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>دووبارە پەیوەستبوونەوەی خۆکار، پۆرت، ناسنامەی جووتکردن، پەیوەستبوون بە ناونیشان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پۆرت، جێگرەوەی DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پۆرت، خێرایی تەواو، فۆرماتە دڵخوازەکان</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML، کارامەیی</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>بە شوێنپێهەڵگری سەر یان هێدسێتی VR بە دەوروبەردا بڕوانە و هەردوو پەنجە گەورەکەت لەسەر دوگمەکان بمێننەوە.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>خێرایی، پێدالەکان و گێڕەکان کە یارییەکی شۆفێری دەینێرێت وەک هەر تێخستنێکی تر ببەستەوە.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>جووڵەی کۆنترۆڵەر بنێرە بۆ ئەو ئیمولەیتەرانەی سەرچاوەی جووڵەی DSU دەخوێننەوە.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>تاریکی</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows گەورەکەرەکەی دەست پێنەکرد.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>هاوێنەکە و ڕووناکییە تیشکدارەکە لەسەر یارییە پەنجەرەیی و بێ چوارچێوەکان دەردەکەون و کرتەکان پێیاندا تێدەپەڕن. شاشەی تەواو هەموو ڕووی کارەکە بە گەورەکەری شاشەی تەواوی Windows زووم دەکات. ماکرۆیەک دەتوانێت گەورەکەرەکە پیشان بدات یان بیشارێتەوە، یان تەنها لەکاتی ڕاگرتندا پیشانی بدات.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>خۆکارکردن</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>ڕێگەدان بە بەرنامە دەرەکییەکان</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>ئەوەی بەرنامەکان دەتوانن بیکەن</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>ئاست</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>فەرمانەکان</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>خوێندنەوە</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ناردنی تێخەرەکان</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>گۆڕینی ڕێکخستنەکان</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>بەرنامەکان دەتوانن پرۆفایل بگۆڕن و بەریان بدەن، بزوێنەر دەست پێبکەن و بیوەستێنن، کۆنترۆڵەرە مەجازییەکان هەڵبکەن و بکوژێننەوە، پەنجەرەکە پیشان بدەن و بیشارنەوە، PadForge دابخەن، دۆخی ئێستای دەستنیشانکردن پاشەکەوت بکەن و بپرسن چی کاردەکات.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی فەرمانەکاندایە، و بەرنامەکان دەتوانن ئامێر، کۆنترۆڵەرە مەجازییەکان، بەستنەوەکان، پرۆفایل و ڕێکخستنەکان ببینن، تێخەرەکانی هەموو ئامێرێک لە کاتی ڕوودانیاندا بەدوادا بچن، و شوێنێک لە PadForge پیشانت بدەن. بەرنامەیەک لە ئاستی خوێندنەوە هەموو کلیلێک دەبینێت کە لەسەر هەموو ئامێرێک دادەگیرێت، تەنانەت ئەو کلیلانەی لە پەنجەرەیەکدا دەنووسرێن کە وەک بەڕێوەبەر کاردەکات.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی خوێندنەوەدایە، و بەرنامەکان دەتوانن ئامێری خۆیان زیاد بکەن و بەڕێوەیان ببەن، کۆنترۆڵێکی هەر ئامێرێک ڕابگرن و بەهای ناودار بدەن بە تریگەرەکانی ماکرۆ.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی ناردنی تێخەرەکاندایە، و بەرنامەکان دەتوانن ئەوە بگۆڕن کە تۆ دەتوانیت لە پەڕەکاندا بیگۆڕیت.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>یاریدەدەرەکان</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ئەمە لە ڕێکخستنەکانی MCP ی یاریدەدەرێکدا دابنێ. پاشان یاریدەدەرەکە لە ئاستی سەرەوەدا لەگەڵ PadForge کار دەکات.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>لەبەرگرتنەوە وەک TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ئەو یاریدەدەرانەی TOML دەخوێننەوە</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>سکریپتەکان</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>کتێبخانەی سکریپت</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>پاشەکەوتکردنی کتێبخانەیەک…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>یەک فایل بۆ AutoHotkey v2، Python یان PowerShell. سکریپتێک کە باری دەکات ئامێرەکان دەخوێنێتەوە و بەستنەوەکان لە ئاستی سەرەوەدا بەڕێوە دەبات.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>چاوەڕێی تۆیە</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>چالاکی</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>هێشتا هیچ بەرنامەیەک داوای نەکردووە. هەر داوایەک لێرە لەگەڵ ئەنجامەکەی ڕیز دەکرێت.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>پاشگەزبوونەوە</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>کارامەیی بۆ یاریدەدەرەکان</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>پاشەکەوتکردنی کارامەییەکە…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge نەیتوانی پاشەکەوتی بکات: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>تا بەرنامەیەک لە ئاستی خوێندنەوە یان سەرووتر پەیوەستە، ئەوە دەبینێت کە لەسەر هەموو ئامێرێک دادەگیرێت، کیبۆردەکانیش.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>پلەگینەکان</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>کارپێکردنی پلەگینەکان</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلەگینێک کار ناکات.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلەگین بە مافەکانی تۆ کار دەکات، نەک بە مافەکانی PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ڕاژەکاری جووڵە</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ڕاژەکاری پرۆتۆکۆلی DSU/CemuHook Motion Provider بۆ داتای جایرۆ و ئەکسێلەرۆمیتەر.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>چالاککردنی ڕاژەکاری جووڵەی DSU (پرۆتۆکۆلی CemuHook Motion Provider)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>مۆدێکی یاری</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>بەرنامەیەکی تر ناوی پایپی {0} ی گرتووە. ئەو بەرنامەیە دابخە.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows پایپی {0} ی ڕەت کردەوە، بۆیە بەرنامەکان ناتوانن پەیوەست بن.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>هیچ بەرنامەیەک پەیوەست نییە.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>پەیوەستکراو: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>بەرنامەی نەناسراو</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>ئەنجامدرا</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>ئەنجام نەدرا</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>لەم ئاستەدا ڕێگەپێنەدراوە</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ئێستا بەردەست نییە</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge سەرقاڵ بوو</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>بەهایەک لە داواکارییەکەدا هەڵە بوو</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>پرۆفایلی وا نییە</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>کۆنترۆڵەری مەجازیی وا نییە</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ئەم داواکارییە ناناسێت</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>داواکارییەکە بەتاڵ بوو</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge تووشی کێشەیەک بوو</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>گۆڕین بۆ پرۆفایلی {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>گەڕانەوە بۆ پرۆفایلی بنەڕەت</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسین کە کام پرۆفایل چالاکە</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>پرسین بۆ وەشانی PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>پرسین کە چی کاردەکات</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ناردنی دێڕێک کە PadForge نایناسێت: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>ڕێگەدان</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>ڕێگە نەدان</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>لەلایەن {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>لەلایەن {1}، کە خۆی ناو دەنێت «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>لەلایەن بەرنامەیەک کە خۆی ناو دەنێت «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>لەلایەن بەرنامەیەک کە Windows ناوی نەبردووە</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>و {0}ی تر</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} لە {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>ئەگەر لە {0}دا وەڵام نەدرێتەوە، وەک نا هەژمار دەکرێت.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>لەگەڵ OpenTrack و هەر شوێنپێهەڵگرێک کار دەکات کە دەرچوونی UDP دەنێرێت یان بیرگەی هاوبەشی FreeTrack 2.0 دەنووسێت، و لەگەڵ ڕەنتایمێکی OpenXR لەسەر ئەم کۆمپیوتەرە کە بتوانێت دانیشتنێک لە پاشبنەمادا بەڕێوە ببات.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>خوێندنەوەی کلیلەکانی G ی Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>کلیلەکانی G لە ڕێگەی Logitech G-key SDK دەخوێنێتەوە. پێویستی بە کارکردنی Logitech Gaming Software 8.55 یان نوێتر هەیە. لەو نەرمەکاڵایەدا، فەرمانی G-key ڕابکێشە سەر هەر کلیلێک لە پرۆفایلی PadForge دا. ئەو پرۆفایلە بکە بە بەردەوام، ئەگینا کلیلەکان تەنها کاتێک دەگەنە PadForge کە پەنجەرەکەی لە پێشەوەیە. ماوسی G600 یان G300 دەبێت لە دۆخی بیرگەی ناوخۆیی دەربهێنرێت.</value></data>

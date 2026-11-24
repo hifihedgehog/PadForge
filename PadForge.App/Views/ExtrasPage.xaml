@@ -12,16 +12,16 @@
              xmlns:views="clr-namespace:PadForge.Views">
 
     <!-- The Extras page (#574): the optional features that were the ten
-         Services cards of the Dashboard. It opens on a catalog of tiles,
-         and each extra has a page of its own in one frame, as the boards
-         draw it: the way back to the catalog, a head with the extra's
-         square, its name, one line on what it does and its switch, then a
-         status card, the cards of its settings, a More card that opens the
-         rest in place, and a note. Every control came over as it was: its
+         Services cards of the Dashboard, and those added since. It opens
+         on a catalog of tiles, and each extra has a page of its own in one
+         frame, as the boards draw it: the way back to the catalog, a head
+         with the extra's square, its name, one line on what it does and its
+         switch, then a status card, the cards of its settings, a More card
+         that opens the rest in place, and a note. Every control came over as it was: its
          binding, its AutomationId, its reset button and its tooltip. The
          paragraphs the boards drop are the tooltips of what they explain.
          The data context is DashboardViewModel, Home's too.
-         ExtrasPage.xaml.cs shows one of the thirteen panels at a time. -->
+         ExtrasPage.xaml.cs shows one of the fifteen panels at a time. -->
     <UserControl.Resources>
 
         <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
@@ -340,7 +340,7 @@
         <StackPanel Margin="36,26,36,36" TextElement.FontSize="14">
 
             <!-- ═══ The catalog ═══
-                 One tile for each extra, in three groups. A tile's switch is the
+                 One tile for each extra, in four groups. A tile's switch is the
                  extra's own setting, the one its page shows, so the two always
                  agree. A click on a tile anywhere else opens the extra's page
                  (ExtraTile.OpenRequested, handled once here for every tile).
@@ -451,6 +451,23 @@
                                         SwitchLabel="{Binding Extras_Magnifier_Show, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding MagnifierEnabled}"
                                         Status="{Binding Magnifier.Status}"/>
+                </controls:TileGridPanel>
+
+                <TextBlock Text="{Binding Extras_Group_Programs, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource PageSectionTitle}" Margin="0,26,0,12"/>
+                <controls:TileGridPanel MinItemWidth="240" Gap="14" FillRows="True" Balance="True">
+                    <controls:ExtraTile x:Name="AutomationTile" Key="Automation" Glyph="&#xE9F5;"
+                                        Title="{Binding Extras_Automation_Title, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_Automation, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Extras_Automation_Switch, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnableAutomation}"
+                                        Status="{Binding AutomationStatus}"/>
+                    <controls:ExtraTile x:Name="PluginsTile" Key="Plugins" Glyph="&#xECF0;"
+                                        Title="{Binding Extras_Plugins_Title, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_Plugins, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Extras_Plugins_Switch, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding EnablePlugins}"
+                                        Status="{Binding PluginsStatus}"/>
                 </controls:TileGridPanel>
             </StackPanel>
 
@@ -2581,6 +2598,302 @@
                 </StackPanel>
 
                 <TextBlock Text="{Binding Extras_Magnifier_Footer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
+            </StackPanel>
+
+
+            <!-- ═══ Automation (#597) ═══
+                 The one switch for every outside program: launchers, scripts
+                 and assistants. E9F5 is Segoe MDL2 Processing, two gears that
+                 turn each other, work one program hands another. Its glyph
+                 is no gear of Settings (E713). Under the head and the status:
+                 the level, the block an assistant's settings take, Save a
+                 Library while the build carries the libraries, the questions
+                 that wait for the user while one does, and the record of what
+                 programs asked. Under More: the same block in TOML and Save
+                 the Skill while the build can write it. -->
+            <StackPanel x:Name="AutomationPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_Automation"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" Style="{StaticResource ExtrasCrumbText}" Margin="4,0,4,0"/>
+                    <TextBlock Text="{Binding Extras_Automation_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtrasCrumbText}"/>
+                </StackPanel>
+                <controls:HeadRowPanel LeadingMinWidth="328" Gap="12" Margin="0,10,0,0">
+                    <Grid Margin="0,0,14,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:ExtraBadge Glyph="&#xE9F5;" IsOn="{Binding EnableAutomation}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="AutomationTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Automation_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraTitle}"/>
+                            <TextBlock Text="{Binding Extras_Tile_Automation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraLine}"/>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  AutomationProperties.AutomationId="Automation_Enable"
+                                  Content="{Binding Extras_Automation_Switch, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding EnableAutomation}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableAutomation" SettingLabel="{Binding Extras_Automation_Switch, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableAutomation_59701" Margin="14,0,0,0"/>
+                    </StackPanel>
+                </controls:HeadRowPanel>
+
+                <!-- Serving = flame: the control pipe answers programs, which
+                     the host says, not the switch. The line names the
+                     programs connected. -->
+                <Border x:Name="AutomationStatusCard" Style="{StaticResource ExtraStatusCard}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:StatusFlame IsOn="{Binding EnableAutomation}" IsLive="{Binding IsAutomationRunning}"
+                                              VerticalAlignment="Center" Margin="0,0,14,0"/>
+                        <TextBlock Grid.Column="1" common:LiveText.Polite="True" Text="{Binding AutomationStatus}"
+                                   Style="{StaticResource ExtraStatusText}" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- The level: a choice of four, and one line on what the
+                     chosen one allows. The four lines are never drawn at
+                     once. -->
+                <Border x:Name="AutomationLevelCard" Style="{StaticResource ExtraCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                        <controls:SettingRow MinHeight="44">
+                            <TextBlock Text="{Binding Extras_Automation_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding AutomationLevelNames}" SelectedIndex="{Binding AutomationLevelIndex, Mode=TwoWay}"
+                                      AutomationProperties.AutomationId="Automation_Level"
+                                      AutomationProperties.Name="{Binding Extras_Automation_Level, Source={x:Static strings:Strings.Instance}}"/>
+                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AutomationLevel" SettingLabel="{Binding Extras_Automation_Level, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_AutomationLevel_59702"/>
+                        </controls:SettingRow>
+                        <TextBlock Text="{Binding AutomationLevelLine}" Style="{StaticResource ExtraRowNote}" common:LiveText.Polite="True"
+                                   AutomationProperties.AutomationId="Automation_LevelLine"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- What an assistant's MCP settings take, shown as it is
+                     copied: this exe as the command, and the switch that
+                     starts it for an assistant. -->
+                <Border x:Name="AutomationAssistantsCard" Style="{StaticResource ExtraCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Assistants, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,12"/>
+                        <Border Background="{DynamicResource SteelFieldBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="14,10">
+                            <TextBlock Text="{Binding AutomationAssistantJson}" Style="{StaticResource ExtraAddress}"
+                                       AutomationProperties.AutomationId="Automation_AssistantJson"/>
+                        </Border>
+                        <DockPanel Margin="0,10,0,0">
+                            <ui:Button DockPanel.Dock="Right" MinHeight="32" Padding="12,0" VerticalAlignment="Center"
+                                       AutomationProperties.AutomationId="Automation_CopyJson" Command="{Binding CopyAutomationJsonCommand}"
+                                       Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                            <TextBlock Text="{Binding Extras_Automation_AssistantsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
+                                       TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Save a Library: one Save dialog whose file types are the
+                     libraries the build carries. -->
+                <Border x:Name="AutomationScriptsCard" Style="{StaticResource ExtraCard}"
+                        Visibility="{Binding HasAutomationLibraries, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Scripts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                        <controls:SettingRow MinHeight="44">
+                            <TextBlock Text="{Binding Extras_Automation_Library, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                            <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationLibrary_Click"
+                                    AutomationProperties.AutomationId="Automation_SaveLibrary"
+                                    Content="{Binding Extras_Automation_SaveLibrary, Source={x:Static strings:Strings.Instance}}"/>
+                        </controls:SettingRow>
+                        <TextBlock Text="{Binding Extras_Automation_LibraryHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- The questions that wait, while one does: where a keyboard
+                     or a screen reader answers what the request card asks.
+                     An answer here closes the card's question. Don't Allow
+                     stands first, as on the card. -->
+                <Border x:Name="AutomationWaitingCard" Style="{StaticResource ExtraCard}"
+                        Visibility="{Binding HasAutomationRequests, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Extras_Automation_Card_Waiting, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                        <ItemsControl ItemsSource="{Binding AutomationRequests}" IsTabStop="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,8,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Margin="0,0,14,0">
+                                            <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding From}" Style="{StaticResource ExtraSmall}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                            <ItemsControl ItemsSource="{Binding Detail}" Margin="0,6,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,2"
+                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                                            <Button Style="{StaticResource ExtraButton}" Command="{Binding DenyCommand}"
+                                                    AutomationProperties.AutomationId="{Binding DenyId}"
+                                                    Content="{Binding Automation_Request_Deny, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Button Style="{StaticResource ExtraButton}" Command="{Binding AllowCommand}" Margin="10,0,0,0"
+                                                    AutomationProperties.AutomationId="{Binding AllowId}"
+                                                    Content="{Binding Automation_Request_Allow, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- What programs asked, newest first: time, program, what,
+                     and what came of it, with Undo on a call that can be
+                     undone. The list grows to 288 and then scrolls inside the
+                     card, so the page keeps its length. Clear empties it. -->
+                <Border x:Name="AutomationActivityCard" Style="{StaticResource ExtraCard}">
+                    <StackPanel>
+                        <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                            <TextBlock Text="{Binding Extras_Automation_Card_Activity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}"/>
+                            <ui:Button Command="{Binding ClearAutomationActivityCommand}" Style="{StaticResource ResetAllButton}"
+                                       IsEnabled="{Binding HasAutomationActivity}"
+                                       Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                                       AutomationProperties.AutomationId="Automation_ClearActivity"/>
+                        </DockPanel>
+                        <TextBlock Text="{Binding Extras_Automation_ActivityEmpty, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
+                                   TextWrapping="Wrap" Margin="0,8,0,4"
+                                   Visibility="{Binding HasAutomationActivity, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                        <ItemsControl x:Name="AutomationActivityList" ItemsSource="{Binding AutomationActivity}" MaxHeight="288" Margin="0,4,0,0"
+                                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                      Visibility="{Binding HasAutomationActivity, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl.Template>
+                                <ControlTemplate TargetType="ItemsControl">
+                                    <ScrollViewer CanContentScroll="True" PanningMode="VerticalOnly" Focusable="True"
+                                                  AutomationProperties.Name="{Binding Extras_Automation_Card_Activity, Source={x:Static strings:Strings.Instance}}">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </ControlTemplate>
+                            </ItemsControl.Template>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid MinHeight="36" Margin="0,0,12,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Time}" FontSize="13" VerticalAlignment="Center" Typography.NumeralAlignment="Tabular"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Program}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                   Margin="0,0,12,0" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Asked}" FontSize="13" VerticalAlignment="Center" TextWrapping="Wrap"
+                                                   Margin="0,4,12,4" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding Result}" FontSize="13" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <Button Grid.Column="4" Style="{StaticResource ExtraButton}" MinHeight="30" Padding="11,0" Margin="12,0,0,0"
+                                                Command="{Binding UndoCommand}"
+                                                Visibility="{Binding CanUndo, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Content="{Binding Extras_Automation_Undo, Source={x:Static strings:Strings.Instance}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <controls:FoldList Gap="0" Margin="0,16,0,0">
+                    <controls:MoreRow x:Name="AutomationMore" Style="{StaticResource MoreCardRow}" StateKey="Extras.Automation.More"
+                                      AutomationProperties.AutomationId="Extras_More_Automation"
+                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                      Hint="{Binding AutomationMoreHint}">
+                        <StackPanel>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Automation_TomlLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Button Style="{StaticResource ExtraButton}" Command="{Binding CopyAutomationTomlCommand}"
+                                        AutomationProperties.AutomationId="Automation_CopyToml"
+                                        Content="{Binding Extras_Automation_CopyToml, Source={x:Static strings:Strings.Instance}}"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" Visibility="{Binding CanSaveAutomationSkill, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Extras_Automation_SkillLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationSkill_Click"
+                                        AutomationProperties.AutomationId="Automation_SaveSkill"
+                                        Content="{Binding Extras_Automation_SaveSkill, Source={x:Static strings:Strings.Instance}}"/>
+                            </controls:SettingRow>
+                        </StackPanel>
+                    </controls:MoreRow>
+                </controls:FoldList>
+
+                <TextBlock Text="{Binding Extras_Automation_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
+            </StackPanel>
+
+            <!-- ═══ Plugins (#597) ═══
+                 Programs that add devices. ECF0 is Segoe MDL2's plug, a
+                 device a program plugs in. The page is the frame: the head
+                 with the switch, the status card and the note. The plugin
+                 manager's cards go in PluginsCards. -->
+            <StackPanel x:Name="PluginsPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_Plugins"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" Style="{StaticResource ExtrasCrumbText}" Margin="4,0,4,0"/>
+                    <TextBlock Text="{Binding Extras_Plugins_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtrasCrumbText}"/>
+                </StackPanel>
+                <controls:HeadRowPanel LeadingMinWidth="328" Gap="12" Margin="0,10,0,0">
+                    <Grid Margin="0,0,14,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:ExtraBadge Glyph="&#xECF0;" IsOn="{Binding EnablePlugins}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="PluginsTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Plugins_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraTitle}"/>
+                            <TextBlock Text="{Binding Extras_Tile_Plugins, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraLine}"/>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  AutomationProperties.AutomationId="Plugins_Enable"
+                                  Content="{Binding Extras_Plugins_Switch, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding EnablePlugins}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnablePlugins" SettingLabel="{Binding Extras_Plugins_Switch, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnablePlugins_59703" Margin="14,0,0,0"/>
+                    </StackPanel>
+                </controls:HeadRowPanel>
+
+                <!-- Running = flame: a plugin runs now, which the plugin
+                     manager says, not the switch. -->
+                <Border x:Name="PluginsStatusCard" Style="{StaticResource ExtraStatusCard}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:StatusFlame IsOn="{Binding EnablePlugins}" IsLive="{Binding IsPluginsRunning}"
+                                              VerticalAlignment="Center" Margin="0,0,14,0"/>
+                        <TextBlock Grid.Column="1" common:LiveText.Polite="True" Text="{Binding PluginsStatus}"
+                                   Style="{StaticResource ExtraStatusText}" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- The plugin manager's cards. -->
+                <StackPanel x:Name="PluginsCards"/>
+
+                <TextBlock Text="{Binding Extras_Plugins_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
             </StackPanel>
 
         </StackPanel>

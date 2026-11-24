@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>วิธีเล่นเพิ่มเติม</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ส่งต่อไปที่อื่น</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>บนหน้าจอ</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>ทำงานร่วมกับโปรแกรมอื่น</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ใช้โทรศัพท์หรือแท็บเล็ตเป็นคอนโทรลเลอร์</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>มองไปรอบ ๆ ด้วยตัวติดตามศีรษะหรือชุดหูฟัง VR</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>แมปความเร็ว แป้นเหยียบ และเกียร์จากเกมขับรถ</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>รูปภาพ ตัวจับเวลา หรือนาฬิกาเหนือหน้าต่างอื่น</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>เป้าเล็งของคุณเองบนเกม</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>เลนส์ขยาย การขยายเต็มหน้าจอ หรือสปอตไลต์</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>ให้ตัวเปิดเกม สคริปต์ และผู้ช่วยทำงานร่วมกับ PadForge</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>เพิ่มอุปกรณ์ที่โปรแกรมต่างๆ มอบให้</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>พอร์ต, HTTP ธรรมดา, รหัสเข้าใช้</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>เชื่อมต่อใหม่อัตโนมัติ, พอร์ต, ข้อมูลระบุตัวตนการจับคู่, เชื่อมต่อด้วยที่อยู่</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>พอร์ต ตัวแทน DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>พอร์ต, ความเร็วเต็มช่วง, รูปแบบกำหนดเอง</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, สกิล</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>มองไปรอบ ๆ ด้วยตัวติดตามศีรษะหรือชุดหูฟัง VR ขณะที่นิ้วโป้งทั้งสองยังอยู่บนปุ่ม</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>แมปความเร็ว แป้นเหยียบ และเกียร์ที่เกมขับรถส่งมา เหมือนอินพุตทั่วไป</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ส่งการเคลื่อนไหวของคอนโทรลเลอร์ไปยังอีมูเลเตอร์ที่อ่านแหล่งการเคลื่อนไหว DSU</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ความมืด</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ไม่ได้เริ่มแว่นขยาย</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>เลนส์และสปอตไลต์จะแสดงเหนือเกมแบบหน้าต่างและแบบไร้ขอบ และการคลิกจะทะลุผ่านไป โหมดเต็มหน้าจอจะซูมทั้งเดสก์ท็อปด้วยแว่นขยายเต็มหน้าจอของ Windows แมโครสามารถแสดงหรือซ่อนแว่นขยาย หรือแสดงเฉพาะขณะกดค้างได้</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>ระบบอัตโนมัติ</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>อนุญาตโปรแกรมภายนอก</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>สิ่งที่โปรแกรมทำได้</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>ระดับ</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>คำสั่ง</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>อ่าน</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ส่งอินพุต</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>เปลี่ยนการตั้งค่า</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>โปรแกรมสลับโปรไฟล์และปล่อยโปรไฟล์ได้ เริ่มและหยุดเอนจิน เปิดและปิดคอนโทรลเลอร์เสมือน แสดงและซ่อนหน้าต่าง ปิด PadForge บันทึกสแนปช็อตการวินิจฉัย และสอบถามว่าอะไรกำลังทำงานอยู่</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ทุกอย่างในระดับคำสั่ง และโปรแกรมมองเห็นอุปกรณ์ คอนโทรลเลอร์เสมือน การแมป โปรไฟล์ และการตั้งค่า ติดตามอินพุตของทุกอุปกรณ์แบบเรียลไทม์ และพาคุณไปยังตำแหน่งหนึ่งใน PadForge ได้ โปรแกรมที่อยู่ในระดับอ่านมองเห็นทุกปุ่มที่กดบนทุกอุปกรณ์ รวมถึงปุ่มที่พิมพ์ในหน้าต่างที่ทำงานในฐานะผู้ดูแลระบบ</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>ทุกอย่างในระดับอ่าน และโปรแกรมเพิ่มอุปกรณ์ของตัวเองและควบคุมอุปกรณ์นั้นได้ กดค้างตัวควบคุมของอุปกรณ์ใดก็ได้ และส่งค่าที่ตั้งชื่อไว้ให้ทริกเกอร์แมโคร</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ทุกอย่างในระดับส่งอินพุต และโปรแกรมเปลี่ยนสิ่งที่คุณเปลี่ยนได้ในหน้าต่างๆ ได้</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ผู้ช่วย</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>วางข้อความนี้ในการตั้งค่า MCP ของผู้ช่วย จากนั้นผู้ช่วยจะทำงานร่วมกับ PadForge ในระดับข้างต้น</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>คัดลอกเป็น TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ผู้ช่วยที่อ่าน TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>สคริปต์</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>ไลบรารีสคริปต์</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>บันทึกไลบรารี…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ไฟล์เดียวสำหรับ AutoHotkey v2, Python หรือ PowerShell สคริปต์ที่โหลดไฟล์นี้จะอ่านอุปกรณ์และควบคุมการแมปในระดับข้างต้น</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>รอคำตอบจากคุณ</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>กิจกรรม</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ยังไม่มีโปรแกรมใดเรียกใช้ ทุกการเรียกจะแสดงที่นี่พร้อมผลที่เกิดขึ้น</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>เลิกทำ</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>สกิลสำหรับผู้ช่วย</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>บันทึกสกิล…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge บันทึกไม่ได้: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>ขณะที่โปรแกรมระดับอ่านขึ้นไปเชื่อมต่ออยู่ โปรแกรมนั้นจะเห็นสิ่งที่กดบนทุกอุปกรณ์ รวมถึงคีย์บอร์ด</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>ปลั๊กอิน</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>เรียกใช้ปลั๊กอิน</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ไม่มีปลั๊กอินที่กำลังทำงาน</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ปลั๊กอินทำงานด้วยสิทธิ์ของคุณ ไม่ใช่สิทธิ์ของ PadForge</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>เซิร์ฟเวอร์การเคลื่อนไหว</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>เซิร์ฟเวอร์โปรโตคอล DSU/CemuHook Motion Provider สำหรับข้อมูลไจโรและเซนเซอร์วัดความเร่ง</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>เปิดใช้งานเซิร์ฟเวอร์การเคลื่อนไหว DSU (โปรโตคอล CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ม็อดเกม</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>โปรแกรมอื่นถือชื่อไปป์ {0} อยู่ ให้ปิดโปรแกรมนั้น</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ปฏิเสธไปป์ {0} โปรแกรมจึงเชื่อมต่อไม่ได้</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ไม่มีโปรแกรมที่เชื่อมต่ออยู่</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>เชื่อมต่ออยู่: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>โปรแกรมที่ไม่ทราบชื่อ</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>เสร็จแล้ว</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>ไม่ได้ทำ</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ไม่อนุญาตในระดับนี้</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ใช้ไม่ได้ในตอนนี้</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge กำลังไม่ว่าง</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>ค่าในคำขอไม่ถูกต้อง</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>ไม่มีโปรไฟล์นี้</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>ไม่มีคอนโทรลเลอร์เสมือนนี้</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ไม่รู้จักคำขอนี้</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>คำขอว่างเปล่า</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge พบปัญหา</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>สลับไปที่โปรไฟล์ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>กลับไปที่โปรไฟล์เริ่มต้น</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ถามว่าโปรไฟล์ใดทำงานอยู่</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>ถามเวอร์ชันของ PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ถามว่าอะไรกำลังทำงานอยู่</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ส่งบรรทัดที่ PadForge ไม่รู้จัก: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>อนุญาต</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>ไม่อนุญาต</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>จาก {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>จาก {1} ซึ่งเรียกตัวเองว่า “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>จากโปรแกรมที่เรียกตัวเองว่า “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>จากโปรแกรมที่ Windows ไม่ทราบชื่อ</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>และอีก {0} รายการ</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} จาก {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>หากไม่ตอบใน {0} จะถือว่าไม่อนุญาต</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ใช้งานได้กับ OpenTrack และตัวติดตามใดก็ตามที่ส่งเอาต์พุต UDP หรือเขียนหน่วยความจำที่ใช้ร่วมกันแบบ FreeTrack 2.0 รวมถึงรันไทม์ OpenXR บนเครื่องนี้ที่รันเซสชันในเบื้องหลังได้</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>อ่าน G-Keys ของ Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>อ่าน G-key ผ่าน Logitech G-key SDK ต้องเปิด Logitech Gaming Software 8.55 ขึ้นไปไว้ ในซอฟต์แวร์นั้น ให้ลากคำสั่ง G-key ไปวางบนแต่ละคีย์ในโปรไฟล์ PadForge และตั้งโปรไฟล์นั้นเป็นแบบถาวร (Persistent) ไม่เช่นนั้นคีย์จะส่งถึง PadForge เฉพาะตอนที่หน้าต่างของ PadForge อยู่ด้านหน้าเท่านั้น เมาส์ G600 หรือ G300 ยังต้องออกจากโหมดหน่วยความจำในตัว (On-Board Memory) ด้วย</value></data>

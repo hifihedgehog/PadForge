@@ -412,6 +412,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Daugiau žaidimo būdų</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Siųsti kitur</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekrane</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Su kitomis programomis</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Naudokite telefoną ar planšetę kaip valdiklį.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Dairykitės judindami galvą su galvos sekikliu ar VR ausinėmis.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Priskirkite greitį, pedalus ir pavaras iš lenktynių žaidimų.</value></data>
@@ -424,10 +425,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Paveikslėlis, laikmatis ar laikrodis virš kitų langų.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jūsų pačių taikiklis virš žaidimo.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Didinamasis lęšis, viso ekrano didinimas ar prožektorius.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Leiskite paleidimo programoms, scenarijams ir asistentams dirbti su „PadForge“.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Pridėkite įrenginių, kuriuos teikia programos.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Prievadas, paprastas HTTP, prieigos kodas</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatinis prisijungimas iš naujo, prievadas, susiejimo tapatybė, prisijungimas adresu</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Prievadas, DSX.exe pakaitalas</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Prievadai, Visas greitis, Pasirinktiniai formatai</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, įgūdis</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Dairykitės galvos sekikliu ar VR ausinėmis, o abu nykščiai lieka ant mygtukų.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Priskirkite greitį, pedalus ir pavaras, kuriuos siunčia lenktynių žaidimas, kaip bet kokią įvestį.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Siųskite valdiklio judesį emuliatoriams, kurie skaito DSU judesio šaltinį.</value></data>
@@ -544,6 +549,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tamsumas</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nepaleido didintuvo.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lęšis ir prožektorius rodomi virš langų režimu ir be rėmelių veikiančių žaidimų, o spustelėjimai pro juos praeina. Visas ekranas priartina visą darbalaukį naudodamas Windows viso ekrano didintuvą. Makrokomanda gali parodyti ar paslėpti didintuvą arba rodyti jį tik kol laikoma.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizavimas</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Leisti išorines programas</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ką programos gali daryti</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Lygis</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Komandos</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Skaitymas</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Įvesčių siuntimas</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Nustatymų keitimas</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programos gali perjungti profilius ir juos atlaisvinti, paleisti ir sustabdyti variklį, įjungti ir išjungti virtualius valdiklius, rodyti ir slėpti langą, uždaryti „PadForge“, išsaugoti diagnostikos momentinę kopiją ir paklausti, kas veikia.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Viskas, kas lygyje Komandos, o programos dar gali matyti įrenginius, virtualius valdiklius, susiejimus, profilius ir nustatymus, realiu laiku sekti kiekvieno įrenginio įvestis ir parodyti jums vietą „PadForge“. Skaitymo lygio programa mato kiekvieną bet kuriame įrenginyje paspaustą klavišą, įskaitant klavišus, įvestus į langus, veikiančius administratoriaus teisėmis.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Viskas, kas lygyje Skaitymas, o programos dar gali pridėti savo įrenginių ir jais valdyti, laikyti bet kurio įrenginio valdiklį ir perduoti pavadintas reikšmes makrokomandų paleidikliams.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Viskas, kas lygyje Įvesčių siuntimas, o programos dar gali keisti tai, ką galite keisti puslapiuose.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistentai</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Įklijuokite tai į asistento MCP nustatymus. Tada asistentas dirba su „PadForge“ pirmiau nurodytu lygiu.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopijuoti kaip TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistentai, skaitantys TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scenarijai</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Scenarijų biblioteka</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Išsaugoti biblioteką…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Vienas failas, skirtas AutoHotkey v2, Python arba PowerShell. Jį įkeliantis scenarijus skaito įrenginius ir valdo susiejimus pirmiau nurodytu lygiu.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Laukiama jūsų</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Veikla</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Dar nė viena programa nesikreipė. Kiekvienas kreipinys išvardytas čia kartu su rezultatu.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Anuliuoti</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Įgūdis asistentams</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Išsaugoti įgūdį…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>„PadForge“ nepavyko to išsaugoti: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Kol prisijungusi programa, kurios lygis yra Skaitymas ar aukštesnis, mato, kas paspausta kiekviename įrenginyje, įskaitant klaviatūras.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Įskiepiai</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Vykdyti įskiepius</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nė vienas įskiepis neveikia.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Įskiepis veikia su jūsų, o ne „PadForge“ teisėmis.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Judesio serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook judesio teikėjo protokolo serveris giroskopo ir akselerometro duomenims.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Įjungti DSU judesio serverį (CemuHook judesio teikėjo protokolas)</value></data>
@@ -566,6 +603,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Žaidimo modifikacija</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Kita programa naudoja kanalo pavadinimą {0}. Uždarykite tą programą.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>„Windows“ atmetė kanalą {0}, todėl programos negali prisijungti.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nė viena programa neprisijungusi.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Prisijungusios: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Nežinoma programa</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Atlikta</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Neatlikta</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Šiame lygyje neleidžiama</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Šiuo metu nepasiekiama</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>„PadForge“ buvo užsiėmusi</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Užklausoje buvo neteisinga reikšmė</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Tokio profilio nėra</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Tokio virtualaus valdiklio nėra</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>„PadForge“ šios užklausos nepažįsta</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Užklausa buvo tuščia</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>„PadForge“ susidūrė su problema</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Perjungti į profilį {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Grįžti į numatytąjį profilį</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Paklausti, kuris profilis aktyvus</value></data>
@@ -586,6 +637,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Paklausti „PadForge“ versijos</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Paklausti, kas veikia</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Siųsti eilutę, kurios „PadForge“ nepažįsta: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Leisti</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Neleisti</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Iš {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Iš {1}, kuri save vadina „{0}“</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Iš programos, kuri save vadina „{0}“</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Iš programos, kurios „Windows“ nepavadino</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ir dar {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} iš {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Neatsakius per {0}, laikoma, kad atsakyta ne.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Veikia su „OpenTrack“ ir bet kuriuo sekikliu, kuris siunčia UDP išvestį arba rašo į FreeTrack 2.0 bendrąją atmintį, taip pat su šio kompiuterio OpenXR vykdymo aplinka, galinčia vykdyti seansą fone.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Skaityti „Logitech“ G klavišus</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Skaito G klavišus per „Logitech“ G-key SDK. Reikia, kad veiktų „Logitech Gaming Software“ 8.55 ar naujesnė versija. Toje programoje nuvilkite komandą „G-key“ ant kiekvieno klavišo „PadForge“ profilyje. Nustatykite tą profilį kaip nuolatinį („Set as Persistent“), kitaip klavišai pasieks „PadForge“ tik tada, kai jos langas bus priekiniame plane. Pelė G600 arba G300 taip pat turi būti išjungta iš vidinės atminties režimo.</value></data>

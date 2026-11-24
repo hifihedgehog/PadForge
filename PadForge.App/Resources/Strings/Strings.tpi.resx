@@ -246,6 +246,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Wanpela mod bilong gem</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Narapela program i holim nem bilong paip {0}. Pasim dispela program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows i no orait long paip {0}, olsem na ol program i no inap konek.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>I no gat program i konek.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>I konek: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program i no gat nem</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Pinis</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>I no mekim</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>I no orait long dispela lewel</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>I no stap nau</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge i bisi</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Wanpela namba o nem long askim i no stret</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>I no gat kain profail olsem</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>I no gat kain virtual kontrola olsem</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge i no save long dispela askim</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Askim i no gat samting insait</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge i bungim hevi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Senis i go long profail {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Go bek long namba wan profail</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Askim wanem profail i wok</value></data>
@@ -1935,6 +1949,7 @@
   <data name="Extras_Title" xml:space="preserve"><value>Ol ekstra</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Salim i go long narapela hap</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Long skrin</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Wantaim ol narapela program</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kisim ol efek bilong trika na lait long ol mod bilong gem.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Soim ol menu, ol lea, ol senis bilong profail na ol konek bilong masin taim yu pilai.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, senis bilong DSX.exe</value></data>
@@ -2201,8 +2216,41 @@
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} i no inap kisim nem na lukluk bilong yu yet, olsem na em i yusim profail bilong en yet.</value></data>
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge i no inap ritim dispela fail.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no inap painim dispela fail.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Larim ol launcher, skrip na asistan i wok wantaim PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Putim ol masin we ol program i givim.</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skil</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nem bilong masin i mapim taim em i no konek moa.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nem bilong masin i mapim taim em i konek.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Larim ol program long ausait</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Wanem samting ol program i ken mekim</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Lewel</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Ol asistan</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Pestim dispela i go insait long ol MCP seting bilong wanpela asistan. Bihain asistan i wok wantaim PadForge long lewel antap.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopim olsem TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Ol asistan i ritim TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Ol skrip</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Laibreri bilong skrip</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Seivim wanpela laibreri…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Wanpela fail bilong AutoHotkey v2, Python o PowerShell. Skrip i lodim em i ken ritim ol masin na kontrolim ol mep long lewel antap.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>I wetim yu</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ol wok</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>I no gat program i singaut yet. Olgeta singaut i kamap hia wantaim wanem samting i kamap long en.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Tekewe senis</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skil bilong ol asistan</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Seivim skil…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge i no inap seivim: {0}</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ranim ol plagin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>I no gat plagin i ran.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Orait</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>No ken</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Long {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Long {1}, we i kolim em yet “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Long wanpela program i kolim em yet “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Long wanpela program Windows i no kolim nem</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>na {0} moa</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} long {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sapos i no gat bekim insait long {0}, em i olsem no.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Data bilong ol kontrola</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdeitim nau i daunlodim data bilong ol kontrola bilong komuniti (SDL_GameControllerDB) long GitHub na i holim, long fail bilong ol seting, ol mep dispela vesen bilong PadForge i no gat. Nupela mep i wok tasol long kontrola we narapela samting i no ritim olsem gempet, we i no putim i go long virtual kontrola, na we i no stap long Force Raw Joystick Mode. Reset i rausim olgeta mep i bin daunlod.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Apdeitim nau</value></data>

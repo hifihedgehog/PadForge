@@ -412,6 +412,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Més maneres de jugar</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Envia-ho a un altre lloc</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>En pantalla</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Amb altres programes</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Fes servir un telèfon o una tauleta com a comandament.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Mira al teu voltant amb un sensor de moviment del cap o uns cascos de RV.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Assigna la velocitat, els pedals i les marxes dels jocs de conducció.</value></data>
@@ -424,10 +425,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Una imatge, un temporitzador o un rellotge per sobre d'altres finestres.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>El teu propi punt de mira sobre un joc.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Una lent d'ampliació, un zoom a pantalla completa o un focus.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Deixa que llançadors, scripts i assistents treballin amb PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Afegeix dispositius que ofereixen els programes.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP sense xifrar, codi d'accés</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnexió automàtica, port, identitat d'aparellament, connexió per adreça</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut de DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Velocitat màxima, Formats personalitzats</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Mira al teu voltant amb un seguidor del cap o uns cascos de RV mentre tens els dos polzes als botons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Assigna la velocitat, els pedals i les marxes que envia un joc de conducció, com qualsevol entrada.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Envia el moviment del comandament als emuladors que llegeixen una font de moviment DSU.</value></data>
@@ -544,6 +549,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Foscor</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows no ha iniciat la lupa.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>La lent i el focus es mostren sobre jocs en mode finestra i sense vores, i els clics hi passen a través. Pantalla completa amplia tot l'escriptori amb la lupa de pantalla completa de Windows. Una macro pot mostrar o amagar la lupa, o mostrar-la només mentre es manté premuda.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatització</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Permet programes externs</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Què poden fer els programes</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nivell</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Ordres</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lectura</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Enviament d'entrades</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Canvi de configuració</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Els programes poden canviar de perfil i alliberar-lo, iniciar i aturar el motor, activar i desactivar comandaments virtuals, mostrar i amagar la finestra, tancar PadForge, desar una instantània de diagnòstic i preguntar què s'està executant.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tot el del nivell Ordres, i els programes poden veure dispositius, comandaments virtuals, assignacions, perfils i configuració, seguir les entrades de tots els dispositius mentre passen i ensenyar-te un lloc de PadForge. Un programa amb Lectura veu totes les tecles premudes a tots els dispositius, també les que s'escriuen en finestres executades com a administrador.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tot el del nivell Lectura, i els programes poden afegir dispositius propis i controlar-los, mantenir un control de qualsevol dispositiu i passar valors amb nom als activadors de macros.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot el del nivell Enviament d'entrades, i els programes poden canviar el que tu pots canviar a les pàgines.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistents</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Enganxa això a la configuració MCP d'un assistent. Després l'assistent treballa amb PadForge al nivell d'aquí a dalt.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copia com a TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistents que llegeixen TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Biblioteca de scripts</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Desa una biblioteca…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un fitxer per a AutoHotkey v2, Python o PowerShell. Un script que el carrega llegeix dispositius i controla assignacions al nivell d'aquí a dalt.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Esperant la teva resposta</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activitat</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Cap programa ha fet cap crida encara. Cada crida apareix aquí amb el seu resultat.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Desfés</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill per a assistents</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Desa el Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge no ho ha pogut desar: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Mentre un programa amb Lectura o més està connectat, veu el que es prem a tots els dispositius, teclats inclosos.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Complements</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Executa complements</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No s'executa cap complement.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un complement s'executa amb els teus drets, no amb els de PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor del protocol DSU/CemuHook Motion Provider per a dades de giroscopi i acceleròmetre.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activa el servidor de moviment DSU (protocol CemuHook Motion Provider)</value></data>
@@ -566,6 +603,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod de joc</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Un altre programa té el nom de canonada {0}. Tanca aquest programa.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ha refusat la canonada {0}, així que els programes no es poden connectar.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Cap programa està connectat.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connectats: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa desconegut</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Fet</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>No fet</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>No permès en aquest nivell</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>No disponible ara</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge estava ocupat</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Un valor de la petició era incorrecte</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>No existeix aquest perfil</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>No existeix aquest comandament virtual</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge no coneix aquesta petició</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>La petició era buida</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ha tingut un problema</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Canvia al perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Torna al perfil per defecte</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pregunta quin perfil és actiu</value></data>
@@ -586,6 +637,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Demana la versió de PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pregunta què s'està executant</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Envia una línia que PadForge no coneix: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Permet</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>No permetis</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>De {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De {1}, que es diu «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>D'un programa que es diu «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>D'un programa que Windows no ha identificat</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>i {0} més</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} de {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Si no hi ha resposta en {0}, es compta com un no.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funciona amb OpenTrack i amb qualsevol seguidor que enviï la seva sortida per UDP o escrigui a la memòria compartida de FreeTrack 2.0, i amb un entorn d'execució OpenXR d'aquest equip que pugui executar una sessió en segon pla.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Llegeix les tecles G de Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Llegeix les tecles G mitjançant l'SDK G-key de Logitech. Cal que Logitech Gaming Software 8.55 o posterior s'estigui executant. En aquest programari, arrossega l'ordre G-key a cada tecla del perfil de PadForge. Fes que aquest perfil sigui persistent, o les tecles només arribaran a PadForge mentre la seva finestra estigui en primer pla. A més, un ratolí G600 o G300 no ha d'estar en mode de memòria integrada.</value></data>

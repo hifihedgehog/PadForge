@@ -174,6 +174,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isa ka game mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>May iban nga programa nga nagagamit sang pipe nga {0}. Sirhi ina nga programa.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Gin-indi sang Windows ang pipe nga {0}, gani indi makaconnect ang mga programa.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Wala sing programa nga naka-connect.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Naka-connect: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Wala makilala nga programa</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Nahimo</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wala nahimo</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Indi ginatugot sa sini nga lebel</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Indi mahimo subong</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Masako ang PadForge</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>May sala nga balor sa hangyo</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Wala sing amo sina nga profile</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Wala sing amo sina nga virtual controller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Wala nakilala sang PadForge ini nga hangyo</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Wala sing sulod ang hangyo</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>May problema nga natabo sa PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bayluhan sa profile nga {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Balik sa default nga profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pamangkuton kon diin nga profile ang aktibo</value></data>
@@ -1558,11 +1572,14 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Dugang nga paagi sa pagdula</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadala sa iban nga lugar</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa screen</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Upod ang iban nga programa</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang tulin, pedal kag gear gikan sa mga dula sang pagdrayb.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa ang mga epekto sang trigger kag suga gikan sa mga game mod.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer, pagbaylo sang profile kag pag-connect sang device samtang nagadula ka.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pulili sang DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga Port, Bug-os nga Tulin, Custom nga mga Format</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Naka-connect ang {0} kag wala ginagamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita ini</value></data>
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Ano ang dapat makita sang mga game?</value></data>
@@ -1819,8 +1836,38 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Nag-disconnect ang {0} ka device</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Nag-connect ang {0} ka device</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Pirme lang nagadisconnect ang {0}</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Tuguti ang mga launcher, script kag assistant nga magtrabaho upod sa PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Magdugang sang mga device nga ginahatag sang mga programa.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ang ngalan sang device nga may mapping kon mag-disconnect ini.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ang ngalan sang device nga may mapping kon mag-connect ini.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Tuguti ang mga programa sa guwa</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ano ang Mahimo sang mga Programa</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Lebel</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Mga assistant</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>I-paste ini sa MCP settings sang assistant. Dayon magatrabaho ang assistant upod sa PadForge sa lebel sa ibabaw.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopyaha subong TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Mga assistant nga nagabasa sang TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Mga script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Library sang script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Tipigi ang library…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Isa ka file para sa AutoHotkey v2, Python ukon PowerShell. Ang script nga nagakarga sini nagabasa sang mga device kag nagapadalagan sang mga mapping sa lebel sa ibabaw.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ginahulat ka</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktibidad</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Wala pa sing programa nga nagtawag. Ang tagsa ka tawag makita diri upod ang resulta sini.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>I-undo</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill para sa mga assistant</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tipigi ang skill…</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Padalagana ang mga plugin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Wala sing plugin nga nagadalagan.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Tuguti</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Indi pagtuguti</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Halin sa {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Halin sa {1}, nga nagatawag sa iya kaugalingon nga “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Halin sa programa nga nagatawag sa iya kaugalingon nga “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Halin sa programa nga wala ginhingalanan sang Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>kag {0} pa</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kon wala sing sabat sa sulod sang {0}, maisip ini nga indi.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ang bag-o nga mapping ginagamit lang para sa controller nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Ang reset nagakuha sang tanan nga na-download nga mapping.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}. Na-update {2}: bag-o {3}, ginbaylo {4}.</value></data>

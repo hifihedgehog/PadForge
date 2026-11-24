@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Thêm cách chơi</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Gửi đi nơi khác</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Trên màn hình</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Với chương trình khác</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Dùng điện thoại hoặc máy tính bảng làm tay cầm.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Nhìn quanh bằng thiết bị theo dõi đầu hoặc kính VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Ánh xạ tốc độ, bàn đạp và số từ các trò chơi lái xe.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Một hình, bộ đếm giờ hoặc đồng hồ phía trên các cửa sổ khác.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Tâm ngắm của riêng bạn phía trên trò chơi.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Kính lúp dạng thấu kính, thu phóng toàn màn hình hoặc đèn rọi.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Cho trình khởi chạy, tập lệnh và trợ lý làm việc với PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Thêm thiết bị do chương trình cung cấp.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Cổng, HTTP thường, mã truy cập</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Tự động kết nối lại, cổng, danh tính ghép đôi, kết nối bằng địa chỉ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Cổng, DSX.exe thay thế</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Cổng, Tốc độ tối đa, Định dạng tùy chỉnh</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Nhìn quanh bằng thiết bị theo dõi đầu hoặc kính VR trong khi hai ngón cái vẫn đặt trên các nút.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Ánh xạ tốc độ, bàn đạp và số mà trò chơi lái xe gửi đến, như mọi đầu vào khác.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Gửi chuyển động của tay cầm đến các trình giả lập đọc nguồn chuyển động DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Độ tối</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows không khởi động được kính lúp.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Thấu kính và đèn rọi hiển thị trên các trò chơi ở chế độ cửa sổ và không viền, và các cú nhấp chuột xuyên qua chúng. Toàn màn hình phóng to toàn bộ màn hình bằng kính lúp toàn màn hình của Windows. Macro có thể hiện hoặc ẩn kính lúp, hoặc chỉ hiện khi đang giữ.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Tự động hóa</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Cho phép chương trình bên ngoài</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Chương trình được làm gì</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Mức</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Lệnh</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Đọc</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Gửi đầu vào</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Đổi thiết lập</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Chương trình có thể chuyển hồ sơ và thả chúng ra, khởi động và dừng bộ máy, bật và tắt các tay cầm ảo, hiện và ẩn cửa sổ, đóng PadForge, lưu ảnh chụp nhanh chẩn đoán và hỏi xem đang chạy gì.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Mọi thứ ở mức Lệnh, và chương trình có thể xem thiết bị, tay cầm ảo, ánh xạ, hồ sơ và thiết lập, theo dõi đầu vào của mọi thiết bị khi chúng xảy ra, và chỉ cho bạn một nơi trong PadForge. Chương trình ở mức Đọc thấy mọi phím được nhấn trên mọi thiết bị, kể cả phím gõ vào các cửa sổ chạy với quyền quản trị.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Mọi thứ ở mức Đọc, và chương trình có thể thêm thiết bị riêng của nó rồi điều khiển, giữ một điều khiển của bất kỳ thiết bị nào và chuyển các giá trị có tên cho bộ kích hoạt macro.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Mọi thứ ở mức Gửi đầu vào, và chương trình có thể đổi những gì bạn đổi được trên các trang.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Trợ lý</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Dán đoạn này vào thiết lập MCP của một trợ lý. Trợ lý sẽ làm việc với PadForge ở mức nêu trên.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Sao chép dạng TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Trợ lý đọc TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Tập lệnh</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Thư viện tập lệnh</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Lưu một thư viện…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Một tệp cho AutoHotkey v2, Python hoặc PowerShell. Tập lệnh nạp nó sẽ đọc thiết bị và điều khiển ánh xạ ở mức nêu trên.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Đang chờ bạn</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Hoạt động</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Chưa có chương trình nào gọi. Mỗi lệnh gọi được liệt kê tại đây cùng kết quả của nó.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Hoàn tác</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill cho trợ lý</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Lưu Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge không lưu được: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Khi một chương trình ở mức Đọc trở lên đang kết nối, nó thấy mọi thứ được nhấn trên mọi thiết bị, kể cả bàn phím.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Chạy plugin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Không có plugin nào đang chạy.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin chạy với quyền của bạn, không phải quyền của PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Máy chủ chuyển động</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Máy chủ giao thức DSU/CemuHook Motion Provider cho dữ liệu con quay hồi chuyển và gia tốc kế.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Bật máy chủ chuyển động DSU (giao thức CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Một mod trò chơi</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Một chương trình khác đang giữ tên đường ống {0}. Hãy đóng chương trình đó.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows đã từ chối đường ống {0}, nên chương trình không kết nối được.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Không có chương trình nào đang kết nối.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Đang kết nối: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Chương trình không rõ</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Đã xong</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Chưa thực hiện</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Không được phép ở mức này</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Hiện không khả dụng</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge đang bận</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Một giá trị trong yêu cầu không đúng</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Không có hồ sơ như vậy</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Không có tay cầm ảo như vậy</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge không biết yêu cầu này</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Yêu cầu trống</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge gặp sự cố</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chuyển sang hồ sơ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Quay về hồ sơ mặc định</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Hỏi hồ sơ nào đang hoạt động</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Hỏi phiên bản của PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Hỏi đang chạy gì</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Gửi một dòng PadForge không biết: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Cho phép</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Không cho phép</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Từ {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Từ {1}, tự xưng là “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Từ một chương trình tự xưng là “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Từ một chương trình Windows không nêu tên</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>và {0} mục nữa</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} trên {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Không trả lời trong {0} được tính là từ chối.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Hoạt động với OpenTrack và mọi bộ theo dõi gửi đầu ra UDP hoặc ghi vào bộ nhớ dùng chung FreeTrack 2.0, cũng như với một runtime OpenXR trên máy này có thể chạy phiên ở chế độ nền.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Đọc phím G của Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Đọc phím G thông qua Logitech G-key SDK. Cần Logitech Gaming Software 8.55 trở lên đang chạy. Trong phần mềm đó, hãy kéo lệnh G-key vào từng phím trong hồ sơ PadForge. Hãy đặt hồ sơ đó ở chế độ cố định (persistent), nếu không các phím chỉ đến được PadForge khi cửa sổ của nó ở phía trước. Chuột G600 hoặc G300 còn phải thoát khỏi chế độ bộ nhớ tích hợp.</value></data>

@@ -212,9 +212,9 @@ namespace PadForge.ViewModels
 
         /// <summary>How many extras the Extras page lists. The page's own
         /// list is ExtrasPage.Keys, and a test holds the two to one number.</summary>
-        internal const int ExtrasCount = 12;
+        internal const int ExtrasCount = 14;
 
-        /// <summary>How many of the twelve extras are on, each read through the
+        /// <summary>How many of the fourteen extras are on, each read through the
         /// switch its tile on the Extras page shows.</summary>
         public int ExtrasInUseCount =>
             (EnableWebController ? 1 : 0)
@@ -228,7 +228,9 @@ namespace PadForge.ViewModels
             + (EnableTouchpadOverlay ? 1 : 0)
             + (ScreenOverlaysAnyEnabled ? 1 : 0)
             + (CrosshairsAnyEnabled ? 1 : 0)
-            + (Magnifier.Enabled ? 1 : 0);
+            + (Magnifier.Enabled ? 1 : 0)
+            + (EnableAutomation ? 1 : 0)
+            + (EnablePlugins ? 1 : 0);
 
         /// <summary>Whether Home lists any extra: its Extras in Use heading
         /// and rows show.</summary>
@@ -263,7 +265,7 @@ namespace PadForge.ViewModels
         private string ExtrasRestPart(int part)
             => BracketPart(string.Format(Strings.Instance.Home_MoreExtras, ExtrasCount - ExtrasInUseCount), part);
 
-        /// <summary>The count at the end of the Extras page's head, 2 of 12
+        /// <summary>The count at the end of the Extras page's head, 2 of 14
         /// on, in three parts so the page can draw the number large: what
         /// the language puts before the number, the number, and what it
         /// puts after, with the total in its place.</summary>
@@ -327,6 +329,8 @@ namespace PadForge.ViewModels
                 case nameof(ScreenOverlays):
                 case nameof(Crosshairs):
                 case nameof(Magnifier):
+                case nameof(EnableAutomation):
+                case nameof(EnablePlugins):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasInUseCount)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HasExtrasInUse)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ShowsExtrasRestLine)));

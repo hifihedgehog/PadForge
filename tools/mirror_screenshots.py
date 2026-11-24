@@ -47,6 +47,8 @@ ALIASES = {
     "screen-overlay": "dashboard-screen-overlay",
     "crosshair": "extras-crosshair",
     "magnifier": "extras-magnifier",
+    "automation": "extras-automation",
+    "plugins": "extras-plugins",
     "wheel-centering": "pad-wheel-centering",
     "wheel-centering-more": "pad-wheel-centering-more",
     "gyro-engage": "pad-gyro-engage",

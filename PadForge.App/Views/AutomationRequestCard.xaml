@@ -1,0 +1,83 @@
+<Window x:Class="PadForge.Views.AutomationRequestCard" FontFamily="{DynamicResource BodyFontFamily}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Focusable="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="Manual"
+        Background="Transparent"
+        Title="{Binding Extras_Automation_Card_Waiting, Source={x:Static strings:Strings.Instance}}"
+        AutomationProperties.Name="{Binding Extras_Automation_Card_Waiting, Source={x:Static strings:Strings.Instance}}">
+
+    <!--
+        The request card (#597): a program asked for a change only the user
+        may allow. It stands above other windows at the bottom right of the
+        work area of PadForge's display, clear of the profile and layer
+        flyouts at the bottom center. It is the On-Screen Keyboard's window
+        that never activates (WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW,
+        WM_MOUSEACTIVATE refused) and takes clicks, so the game in front
+        keeps the focus and PadForge's window stays where it is. Its two
+        buttons take no focus for the same reason: the Automation page's
+        Waiting for You card is where a keyboard answers.
+
+        The surface is the flyouts' own (FlyoutSurface: the dropdowns'
+        ground, edge and corner), so it follows the theme, with the shadow
+        on a layer of its own under it as ProfileSwitchOverlay draws one.
+        The data context is the question shown, an AutomationRequestItem.
+    -->
+    <Grid Margin="10,10,10,14">
+        <Border x:Name="ShadowLayer" Style="{StaticResource FlyoutSurface}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" ShadowDepth="3" Direction="270" Opacity="0.30" Color="Black"/>
+            </Border.Effect>
+        </Border>
+        <Border x:Name="Surface" Style="{StaticResource FlyoutSurface}" Width="384" Padding="18,14,18,16">
+            <StackPanel>
+                <DockPanel>
+                    <TextBlock x:Name="PositionText" DockPanel.Dock="Right" FontSize="12" VerticalAlignment="Center"
+                               Typography.NumeralAlignment="Tabular"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="{Binding Common_PadForge, Source={x:Static strings:Strings.Instance}}" FontSize="12" FontWeight="SemiBold"
+                               VerticalAlignment="Center" Foreground="{DynamicResource EmberHotBrush}"/>
+                </DockPanel>
+                <TextBlock x:Name="TitleText" Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,8,0,0"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <TextBlock x:Name="FromText" Text="{Binding From}" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,0"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <ItemsControl x:Name="DetailList" ItemsSource="{Binding CardDetail}" Margin="0,10,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,3"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock x:Name="RestText" Text="{Binding CardDetailRest}" FontSize="12" Margin="0,1,0,0"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           Visibility="{Binding CardDetailRest, Converter={StaticResource StringToVisibility}}"/>
+                <TextBlock x:Name="TimeText" FontSize="12" TextWrapping="Wrap" Margin="0,12,0,0"
+                           Typography.NumeralAlignment="Tabular"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <!-- Don't Allow first, where a hand lands first, in the plain
+                     look, and Allow after it in the ember one: the order and
+                     the looks of the shared confirm's Cancel and action. -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+                    <Button x:Name="DenyButton" Style="{StaticResource DialogButton}" Focusable="False" IsTabStop="False"
+                            Command="{Binding DenyCommand}"
+                            Content="{Binding Automation_Request_Deny, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.AutomationId="AutomationCard_Deny"/>
+                    <Button x:Name="AllowButton" Style="{StaticResource DialogPrimaryButton}" Focusable="False" IsTabStop="False" Margin="10,0,0,0"
+                            Command="{Binding AllowCommand}"
+                            Content="{Binding Automation_Request_Allow, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.AutomationId="AutomationCard_Allow"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

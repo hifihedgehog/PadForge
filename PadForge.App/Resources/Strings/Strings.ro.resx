@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Mai multe moduri de joc</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Trimitere în altă parte</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Pe ecran</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Cu alte programe</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Folosiți un telefon sau o tabletă ca controler.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Priviți în jur cu un dispozitiv de urmărire a capului sau cu o cască VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapați viteza, pedalele și treptele de viteză din jocurile de condus.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>O imagine, un cronometru sau un ceas deasupra celorlalte ferestre.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Propriul reticul peste un joc.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>O lentilă de mărire, o mărire pe tot ecranul sau un reflector.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Permiteți lansatoarelor, scripturilor și asistenților să lucreze cu PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Adăugați dispozitive furnizate de programe.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP simplu, cod de acces</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconectare automată, port, identitate de asociere, conectare după adresă</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porturi, Viteză maximă, Formate personalizate</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Priviți în jur cu un dispozitiv de urmărire a capului sau cu o cască VR, în timp ce ambele degete mari rămân pe butoane.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapați viteza, pedalele și treptele de viteză trimise de un joc de condus, ca orice altă intrare.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Trimiteți mișcarea controlerului către emulatoarele care citesc o sursă de mișcare DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Întunecare</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nu a pornit lupa.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lentila și reflectorul apar peste jocurile în fereastră și fără chenar, iar clicurile trec prin ele. Ecran complet mărește tot desktopul cu lupa pe ecran complet din Windows. O macrocomandă poate afișa sau ascunde lupa, sau o poate afișa doar cât timp este ținută apăsată.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizare</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Permitere programe externe</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ce pot face programele</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nivel</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Comenzi</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Citire</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Trimitere intrări</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Modificare setări</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programele pot comuta și elibera profiluri, porni și opri motorul, activa și dezactiva controlerele virtuale, afișa și ascunde fereastra, închide PadForge, salva un instantaneu de diagnosticare și întreba ce rulează.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tot ce permite nivelul Comenzi, iar programele pot vedea dispozitivele, controlerele virtuale, mapările, profilurile și setările, pot urmări intrările fiecărui dispozitiv pe măsură ce apar și vă pot arăta un loc din PadForge. Un program de la nivelul Citire vede fiecare tastă apăsată pe fiecare dispozitiv, inclusiv tastele scrise în ferestre care rulează ca administrator.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tot ce permite nivelul Citire, iar programele pot adăuga dispozitive proprii și le pot comanda, pot ține apăsat un control al oricărui dispozitiv și pot transmite valori cu nume către declanșatoarele de macrocomenzi.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot ce permite nivelul Trimitere intrări, iar programele pot schimba ce puteți schimba dumneavoastră în pagini.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistenți</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Lipiți textul în setările MCP ale unui asistent. Asistentul lucrează apoi cu PadForge la nivelul de mai sus.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copiere ca TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistenți care citesc TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripturi</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Bibliotecă de scripturi</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Salvare bibliotecă…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un singur fișier pentru AutoHotkey v2, Python sau PowerShell. Un script care îl încarcă citește dispozitivele și comandă mapările la nivelul de mai sus.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Așteaptă răspunsul dumneavoastră</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activitate</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Niciun program nu a făcut încă vreo solicitare. Fiecare solicitare apare aici, cu rezultatul ei.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Anulare modificare</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill pentru asistenți</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Salvare skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge nu a putut salva: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Cât timp este conectat un program de la nivelul Citire sau mai sus, acesta vede ce se apasă pe fiecare dispozitiv, tastaturile incluse.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pluginuri</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Rulare pluginuri</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Niciun plugin nu rulează.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un plugin rulează cu drepturile dumneavoastră, nu cu cele ale PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server de mișcare</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server pentru protocolul DSU/CemuHook Motion Provider, pentru datele giroscopului și ale accelerometrului.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activare server de mișcare DSU (protocolul CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>O modificare de joc</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Alt program deține numele de canal {0}. Închideți acel program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows a refuzat canalul {0}, deci programele nu se pot conecta.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Niciun program nu este conectat.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Conectate: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program necunoscut</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Efectuat</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Neefectuat</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Nepermis la acest nivel</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Indisponibil acum</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge era ocupat</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>O valoare din solicitare era greșită</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Profil inexistent</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Controler virtual inexistent</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nu cunoaște această solicitare</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Solicitarea era goală</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge a întâmpinat o problemă</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Trecere la profilul {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Revenire la profilul implicit</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Întrebare despre profilul activ</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Întrebare despre versiunea PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Întrebare despre ce rulează</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Trimitere unei linii necunoscute pentru PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Permitere</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Refuzare</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>De la {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De la {1}, care își spune „{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>De la un program care își spune „{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>De la un program pe care Windows nu l-a numit</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>și încă {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} din {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Lipsa unui răspuns în {0} înseamnă refuz.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funcționează cu OpenTrack și cu orice dispozitiv de urmărire care își trimite ieșirea prin UDP sau scrie în memoria partajată FreeTrack 2.0, precum și cu un mediu de execuție OpenXR de pe acest computer care poate rula o sesiune în fundal.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Citire taste G Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Citește tastele G prin Logitech G-key SDK. Necesită să ruleze Logitech Gaming Software 8.55 sau o versiune ulterioară. În acel program, trageți comanda G-key pe fiecare tastă din profilul PadForge. Setați acel profil ca persistent, altfel tastele ajung la PadForge doar când fereastra sa este în prim-plan. Un mouse G600 sau G300 trebuie, de asemenea, scos din modul de memorie integrată.</value></data>

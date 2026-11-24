@@ -1210,6 +1210,35 @@
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} e golagane</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} e golagane, betri {1}%</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Didirisiwa di le {0} di golagane</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Bathusi</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kgomaretsa se mo dithulaganyong tsa MCP tsa mothusi. Morago mothusi o dira le PadForge ka legato le le kwa godimo.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopolola jaaka TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Bathusi ba ba balang TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Diskripiti</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Laeborari ya diskripiti</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Boloka laeborari…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faele e le nngwe ya AutoHotkey v2, Python kgotsa PowerShell. Skripiti e e e tsenyang e bala didirisiwa mme e laola dimapo ka legato le le kwa godimo.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>E go emetse</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ditiragalo</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ga go na porogeramo e e leditseng go fitlha jaanong. Pitso nngwe le nngwe e kwalwa fano le se se tswileng mo go yone.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Dirolola</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Bokgoni jwa bathusi</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Boloka bokgoni…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ga go na plugin e e dirang.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ga go na porogeramo e e golaganeng.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tse di golaganeng: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Porogeramo e e sa itsiweng</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Go dirilwe</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ga go a dirwa</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ga go a letlelelwa mo legatong le</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ga go kgonege jaanong</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge e ne e tshwaregile</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Boleng mo kopong bo ne bo phoso</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ga go na porofaele e e jalo</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ga go na controller ya virtual e e jalo</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ga e itse kopo e</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Kopo e ne e se na sepe</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge e kopane le bothata</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetolela kwa porofaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela kwa porofaeleng ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa gore ke porofaele efe e e dirang</value></data>
@@ -1230,6 +1259,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Botsa phetolelo ya PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Botsa gore ke eng se se dirang</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mola o PadForge e sa o itseng: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Letla</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Se letle</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Go tswa go {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Go tswa go {1}, e e ipitsang “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Go tswa mo porogerameng e e ipitsang “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Go tswa mo porogerameng e Windows e sa e neelang leina</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>le tse dingwe di le {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ya {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Fa go se na karabo mo go {0}, go balwa jaaka nnyaa.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ntšhafatsa jaanong e tsenya database ya setšhaba ya dicontroller (SDL_GameControllerDB) go tswa kwa GitHub mme e boloka, mo faeleng ya dithulaganyo, dimapo tse phetolelo e ya PadForge e se nang tsone. Mapo e ntšha e dirisiwa fela mo controller e go se nang sepe se sengwe se se e balang jaaka gamepad, e e sa abelwang, e e seng mo Force Raw Joystick Mode. Go busetsa go tlosa mapo nngwe le nngwe e e tsentsweng.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Ntšhafatsa jaanong</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>E a ntšhafatsa…</value></data>

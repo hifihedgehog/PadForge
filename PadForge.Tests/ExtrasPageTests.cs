@@ -117,9 +117,10 @@ namespace PadForge.Tests
             }
             // The 43 reset buttons of the cards, and the two beside the
             // switches of Head Tracking and Overlays, on the pages of the ten
-            // extras that were cards. The two added since (#585) have their own.
-            // The two device notes (#597) brought the Overlays page two more.
-            Assert.Equal(47, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier"))
+            // extras that were cards. The four added since (#585, #597) have
+            // their own. The two device notes (#597) brought the Overlays
+            // page two more.
+            Assert.Equal(47, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier" or "Automation" or "Plugins"))
                 .Sum(k => Count(PageOf(k), "<reset:SettingResetButton ")));
             Assert.Equal(6, Count(PageOf("Overlays"), "<reset:SettingResetButton "));
             foreach (string id in new[]
@@ -235,6 +236,7 @@ namespace PadForge.Tests
         [InlineData("Overlays", 260)]
         [InlineData("TouchpadOverlay", 260)]
         [InlineData("ScreenOverlay", 260)]
+        [InlineData("Automation", 260)]
         public void EachPage_KeepsOneLabelColumn_AtItsBoardsWidth(string key, int width)
         {
             System.Xml.Linq.XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
@@ -289,6 +291,7 @@ namespace PadForge.Tests
         [InlineData("Overlays")]
         [InlineData("TouchpadOverlay")]
         [InlineData("ScreenOverlay")]
+        [InlineData("Plugins")]
         public void AShortPage_HasNoMoreRow(string key) =>
             Assert.DoesNotContain("<controls:MoreRow", PageOf(key));
 
@@ -325,6 +328,8 @@ namespace PadForge.Tests
         [InlineData("TwitchChat", "EnableTwitchChat", "CommandParameter=\"EnableTwitchChat\"")]
         [InlineData("Overlays", "OverlaysAnyEnabled", "Command=\"{Binding ResetOverlaysCommand}\"")]
         [InlineData("TouchpadOverlay", "EnableTouchpadOverlay", "CommandParameter=\"EnableTouchpadOverlay\"")]
+        [InlineData("Automation", "EnableAutomation", "CommandParameter=\"EnableAutomation\"")]
+        [InlineData("Plugins", "EnablePlugins", "CommandParameter=\"EnablePlugins\"")]
         public void APage_OpensOnItsTitleAndItsOwnSwitch(string key, string property, string reset)
         {
             string body = PageOf(key);
@@ -366,7 +371,7 @@ namespace PadForge.Tests
 
         /// <summary>The catalog as its board of the world-class pass draws
         /// it: the boards' gutters, the title of 28 in the display face
-        /// with its line, how many extras are on at the head's end, three
+        /// with its line, how many extras are on at the head's end, four
         /// group headings 26 under what is above them, and each group's
         /// tiles sharing their row, in the decided order.</summary>
         [Fact]
@@ -399,7 +404,7 @@ namespace PadForge.Tests
             Assert.Equal("{DynamicResource DisplayFontFamily}", Set("FontFamily"));
             Assert.Equal("40.6", Set("LineHeight"));
 
-            // 2 of 12 on: the number large, in the code face and ember, and
+            // 2 of 14 on: the number large, in the code face and ember, and
             // the words around it as the language puts them, all three from
             // the view model that counts the switches. The runs stand on
             // one line of markup so no space falls between them.
@@ -423,12 +428,13 @@ namespace PadForge.Tests
             Assert.DoesNotContain(catalog.Descendants(), e => e.Name.LocalName == "WrapPanel");
 
             var headings = parts.Where(e => (string)e.Attribute("Style") == "{StaticResource PageSectionTitle}").ToList();
-            Assert.Equal(new[] { "Extras_Group_Play", "Extras_Group_Send", "Extras_Group_Screen" },
+            Assert.Equal(new[] { "Extras_Group_Play", "Extras_Group_Send", "Extras_Group_Screen", "Extras_Group_Programs" },
                 headings.Select(h => Regex.Match((string)h.Attribute("Text"), @"\{Binding (\w+),").Groups[1].Value));
             Assert.All(headings, h => Assert.Equal("0,26,0,12", (string)h.Attribute("Margin")));
             var grids = parts.Where(e => e.Name.LocalName == "TileGridPanel").ToList();
-            // On Screen took Crosshair and Magnifier after the board's three (#585).
-            Assert.Equal(new[] { 4, 3, 5 }, grids.Select(g => g.Elements().Count()));
+            // On Screen took Crosshair and Magnifier after the board's three
+            // (#585), and With Other Programs holds Automation and Plugins (#597).
+            Assert.Equal(new[] { 4, 3, 5, 2 }, grids.Select(g => g.Elements().Count()));
             // Tiles at least 240 wide, 14 apart, sharing their row's whole
             // width, and two and two where four do not fit one row.
             Assert.All(grids, g =>
@@ -438,7 +444,7 @@ namespace PadForge.Tests
                 Assert.Equal("True", (string)g.Attribute("FillRows"));
                 Assert.Equal("True", (string)g.Attribute("Balance"));
             });
-            for (int i = 0; i < 3; i++) Assert.Same(grids[i], headings[i].ElementsAfterSelf().First());
+            for (int i = 0; i < 4; i++) Assert.Same(grids[i], headings[i].ElementsAfterSelf().First());
             var tiles = grids.SelectMany(g => g.Elements()).ToList();
             Assert.Equal(PadForge.Views.ExtrasPage.Keys, tiles.Select(t => (string)t.Attribute("Key")));
             // Show QR on the Web Controller's tile alone, in Home's words.

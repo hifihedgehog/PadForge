@@ -315,6 +315,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>I-mod yomdlalo</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Olunye uhlelo lubambe igama lepayipi elithi {0}. Vala lolo hlelo.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>I-Windows yenqabe ipayipi elithi {0}, ngakho izinhlelo azikwazi ukuxhuma.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Alukho uhlelo oluxhunyiwe.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Kuxhunyiwe: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Uhlelo olungaziwa</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Kwenziwe</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Akwenziwanga</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Akuvunyelwe kuleli zinga</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Akutholakali manje</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>I-PadForge ibimatasa</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Inani elisesicelweni beliyiphutha</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ayikho iphrofayela enjalo</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Asikho isilawuli esibonakalayo esinjalo</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>I-PadForge ayisazi lesi sicelo</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Isicelo besingenalutho</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>I-PadForge ihlangabezane nenkinga</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Shintshela kuphrofayela ethi {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kuphrofayela ezenzakalelayo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuthi iyiphi iphrofayela esebenzayo</value></data>
@@ -335,6 +349,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Buza inguqulo ye-PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Buza ukuthi yini esebenzayo</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Thumela umugqa i-PadForge engawazi: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Vumela</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ungavumeli</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kusuka ku-{0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Kusuka ku-{1}, oluzibiza ngokuthi “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Kusuka ohlelweni oluzibiza ngokuthi “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Kusuka ohlelweni i-Windows engalinikanga igama</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>nokunye okungu-{0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kwangu-{1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ukungaphenduli ku-{0} kubalwa njengokuthi cha.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Isilawuli sewebhu</value></data>
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Ikhodi yokungena</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Ikhodi entsha</value></data>
@@ -2678,6 +2701,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Ezinye izindlela zokudlala</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Kuthumele kwenye indawo</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Esikrinini</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Nezinye izinhlelo</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Sebenzisa ifoni noma ithebulethi njengesilawuli.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Bheka nxazonke ngesilandeleli sekhanda noma ngehedsethi ye-VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mepha isivinini, amaphedali namagiya emidlalweni yokushayela.</value></data>
@@ -2686,6 +2710,8 @@
   <data name="Extras_More_WebController" xml:space="preserve"><value>Imbobo, i-HTTP evamile, ikhodi yokungena</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Imbobo, i-DSX.exe engumbambeli</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Izimbobo, Isivinini esiphelele, Amafomethi angokwezifiso</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ikhono</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Bheka nxazonke ngesilandeleli sekhanda noma ngehedsethi ye-VR ngenkathi izithupha zombili zihlala ezinkinobhweni.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mepha isivinini, amaphedali namagiya athunyelwa umdlalo wokushayela, njenganoma yikuphi okokufaka.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Uphawu lapho ukushayela kufika emkhawulweni</value></data>
@@ -2925,4 +2951,38 @@
   <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Iphrofayela ye-HIDMaestro yesilawuli esibonakalayo ayikho. Ilogi yokuxilonga isho igama laso.</value></data>
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>{0} ayikwazanga ukuthatha ubuyena nesakhiwo sayo okwenziwe ngokwezifiso, ngakho isebenzisa okwephrofayela yayo.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda isithombe se-Steam salo mdlalo.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Vumela iziqalisi, imibhalo nabasizi basebenze ne-PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Engeza amadivayisi ahlinzekwa yizinhlelo.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Ukuzenzakalela</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Vumela izinhlelo zangaphandle</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Lokho izinhlelo ezingakwenza</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Izinga</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Imiyalo</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Funda</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Thumela okufakwayo</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Shintsha izilungiselelo</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Izinhlelo zingashintsha amaphrofayela futhi ziwadedele, ziqale futhi zimise injini, zivule futhi zivale izilawuli ezibonakalayo, zibonise futhi zifihle iwindi, zivale i-PadForge, zilondoloze isithombe sokuxilonga futhi zibuze ukuthi yini esebenzayo.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Konke okusezingeni elithi Imiyalo, futhi izinhlelo zingabona amadivayisi, izilawuli ezibonakalayo, ukumaphwa, amaphrofayela nezilungiselelo, zilandele okufakwayo kwayo yonke idivayisi ngesikhathi kwenzeka, futhi zikubonise indawo ku-PadForge. Uhlelo olusezingeni elithi Funda lubona yonke inkinobho ecindezelwa kuyo yonke idivayisi, kuhlanganise nokhiye abathayiphwa emawindini asebenza njengomlawuli.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Konke okusezingeni elithi Funda, futhi izinhlelo zingengeza amadivayisi azo futhi ziwaqhube, zibambe isilawuli sanoma iyiphi idivayisi futhi zinikeze amanani anamagama kuma-trigger ama-macro.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Konke okusezingeni elithi Thumela okufakwayo, futhi izinhlelo zingashintsha lokho ongakushintsha emakhasini.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Abasizi</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Namathisela lokhu ezilungiselelweni ze-MCP zomsizi. Umsizi uzosebenza ne-PadForge ezingeni elingenhla.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopisha njenge-TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Abasizi abafunda i-TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Imibhalo</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Umtapo wemibhalo</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Londoloza umtapo…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ifayela elilodwa le-AutoHotkey v2, i-Python noma i-PowerShell. Umbhalo oyilayishayo ufunda amadivayisi futhi uqhuba ukumaphwa ezingeni elingenhla.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Kulindelwe wena</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Umsebenzi</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Alukho uhlelo oluseshayele. Ucingo ngalunye lubhalwa lapha nomphumela walo.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Hlehlisa</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Ikhono labasizi</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Londoloza ikhono…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukukulondoloza: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Ngenkathi uhlelo olusezingeni elithi Funda noma ngaphezulu luxhunyiwe, lubona okucindezelwa kuyo yonke idivayisi, kuhlanganise namakhibhodi.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Ama-plugin</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Qalisa ama-plugin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ayikho i-plugin esebenzayo.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>I-plugin isebenza ngamalungelo akho, hhayi ngamalungelo e-PadForge.</value></data>
 </root>

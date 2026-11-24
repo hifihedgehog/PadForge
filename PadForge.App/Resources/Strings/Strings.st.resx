@@ -114,6 +114,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ya papadi</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lenaneo le leng le tshwere lebitso la pipe {0}. Kwala lenaneo leo.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e hanne pipe {0}, kahoo mananeo a ke ke a hokahana.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ha ho lenaneo le hokahantsweng.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A hokahantswe: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Lenaneo le sa tsejweng</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Ho entswe</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ha ho a etswa</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ha ho a dumellwa boemong bona</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ha ho fumanehe hona jwale</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge e ne e phathahane</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Boleng bo bong kopong bo ne bo fosahetse</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ha ho profaele e jwalo</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ha ho taolo ya sebele e jwalo</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ha e tsebe kopo ena</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Kopo e ne e se na letho</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge e kopane le bothata</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetohela profaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kgutlela profaeleng ya kamehla</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa hore na ke profaele efe e sebetsang</value></data>
@@ -1267,6 +1281,37 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Disebediswa tse {0} di kgaotswe</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Disebediswa tse {0} di hokahantswe</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} e ntse e kgaoha kgafetsa</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Le mananeo a mang</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Dumella di launcher, diskripte le bathusi ho sebetsa le PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Kenya disebediswa tseo mananeo a di fanang.</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Bokgoni</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Dumella mananeo a kantle</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Bathusi</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kgomaretsa sena ditlhophisong tsa MCP tsa mothusi. Mothusi o tla sebetsa le PadForge boemong bo ka hodimo.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopitsa e le TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Bathusi ba balang TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Diskripte</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Laeborari ya diskripte</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Boloka laeborari…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faele e le nngwe bakeng sa AutoHotkey v2, Python kapa PowerShell. Skripte e e kenyang e bala disebediswa mme e tsamaisa dimmapping boemong bo ka hodimo.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>E o emetse</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Mesebetsi</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ha ho lenaneo le so letseng. Pitso ka nngwe e thathamiswa mona le seo e se tlisitseng.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Etsolla</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Bokgoni ba bathusi</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Boloka bokgoni…</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Sebedisa diplagini</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ha ho plagini e sebetsang.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Dumella</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>O se ke wa dumella</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Ho tswa ho {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Ho tswa ho {1}, e ipitsang “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Ho tswa lenaneong le ipitsang “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Ho tswa lenaneong leo Windows e sa le bolelang ka lebitso</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>le tse ding: {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ho {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ho se arabe ka {0} ho nkuwa e le kgano.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dikhaonto</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kamehla</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ha o ntse o tshwere</value></data>

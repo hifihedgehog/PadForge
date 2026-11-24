@@ -404,6 +404,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Plis fason pou jwe</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Voye l yon lòt kote</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Sou ekran</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Avèk lòt pwogram</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Sèvi ak yon telefòn oswa yon tablèt kòm kontwolè.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Gade toutotou ak yon aparèy swivi tèt oswa yon kas VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Asiye vitès, pedal ak rapò vitès nan jwèt kondui yo.</value></data>
@@ -416,10 +417,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Yon imaj, yon kwonomèt oswa yon revèy anlè lòt fenèt yo.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Pwòp viz ou anlè yon jwèt.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Yon lantiy zoum, yon zoum sou tout ekran an oswa yon pwojektè.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Kite lansè, script ak asistan travay avèk PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ajoute aparèy ke pwogram bay.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Pò, HTTP senp, kòd aksè</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekoneksyon otomatik, pò, idantite asosyasyon, konekte ak adrès</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pò, ranplasan DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pò, Vitès maksimòm, Fòma pèsonalize</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Konpetans</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Gade toutotou ak yon aparèy swivi tèt oswa yon kas VR pandan de pous ou rete sou bouton yo.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Asiyen vitès, pedal yo ak bwat vitès yon jwèt kous voye, tankou nenpòt antre.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Voye mouvman kontwolè a bay emilatè ki li yon sous mouvman DSU.</value></data>
@@ -460,6 +465,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Yon mod jwèt</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Yon lòt pwogram kenbe non tiyo {0} la. Fèmen pwogram sa a.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows refize tiyo {0} la, kidonk pwogram yo pa ka konekte.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Okenn pwogram pa konekte.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konekte: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Pwogram enkoni</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Fèt</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Pa fèt</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Pa pèmèt nan nivo sa a</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Pa disponib kounye a</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge te okipe</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Yon valè nan demann lan pa t bon</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Pwofil sa a pa egziste</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Kontwolè vityèl sa a pa egziste</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge pa konnen demann sa a</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Demann lan te vid</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge te jwenn yon pwoblèm</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chanje pou pwofil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Retounen nan pwofil pa defo a</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mande ki pwofil ki aktif</value></data>
@@ -480,6 +499,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Mande vèsyon PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Mande sa k ap mache</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Voye yon liy PadForge pa konnen: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Pèmèt</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Pa pèmèt</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Soti nan {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Soti nan {1}, ki rele tèt li “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Soti nan yon pwogram ki rele tèt li “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Soti nan yon pwogram Windows pa t bay non</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ak {0} lòt</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sou {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Si pa gen repons nan {0}, se non.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
   <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Li klavye analòg yo</value></data>
@@ -4630,6 +4658,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Fènwa</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows pa t demare loup la.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lantiy la ak pwojektè a parèt anlè jwèt an mòd fenèt ak san bòdi, epi klik yo pase atravè yo. Plen ekran grandi tout biwo a ak loup plen ekran Windows la. Yon makwo ka montre oswa kache loup la, oswa montre l sèlman pandan w kenbe l.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Otomatizasyon</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Pèmèt pwogram deyò</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Sa pwogram yo gen dwa fè</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nivo</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Konekte</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Pa konekte</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Pa gen aparèy ki koresponn.</value></data>
@@ -4787,6 +4819,26 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Maket yo te filme pou seri orijinal Star Trek la, nan yon foto Smithsonian National Air and Space Museum, mize ki kenbe l la: imaj tèm Star Trek LCARS la.</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imaj tèm: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Yon imaj nan Star Trek: The Next Generation: imaj tèm Star Trek Starfleet la. Yo jwenn li sou Memory Alpha.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistan</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kole sa a nan paramèt MCP yon asistan. Apre sa, asistan an travay avèk PadForge nan nivo ki anwo a.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopye an TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistan ki li TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Bibliyotèk script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Anrejistre yon bibliyotèk…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Yon sèl fichye pou AutoHotkey v2, Python oswa PowerShell. Yon script ki chaje l li aparèy yo epi kontwole asiyasyon yo nan nivo ki anwo a.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>K ap tann ou</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivite</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Okenn pwogram poko rele. Chak apèl parèt isit la ak sa ki soti ladan l.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Defèt</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Konpetans pou asistan</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Anrejistre konpetans lan…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge pa t ka anrejistre l: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Pandan yon pwogram nan nivo Li oswa pi wo konekte, li wè sa ki peze sou chak aparèy, klavye yo enkli.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Fè plugin yo mache</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Okenn plugin pa ap mache.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Yon plugin mache ak dwa pa w, pa ak dwa PadForge.</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Anrejistreman pwoblèm</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kòmanse oswa kanpe anrejistreman</value></data>

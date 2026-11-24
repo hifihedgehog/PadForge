@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Още начини за игра</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Изпращане другаде</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>На екрана</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>С други програми</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Използвайте телефон или таблет като контролер.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Оглеждайте се с проследяващо устройство за глава или VR шлем.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Съпоставяйте скорост, педали и предавки от състезателни игри.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Картинка, таймер или часовник над другите прозорци.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Собствен мерник върху играта.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Увеличителна леща, увеличение на целия екран или прожектор.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Позволете на стартери, скриптове и асистенти да работят с PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Добавяйте устройства, които предоставят програми.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, обикновен HTTP, код за достъп</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматично повторно свързване, порт, идентичност при сдвояване, свързване по адрес</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, заместник DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портове, Пълна скорост, Персонализирани формати</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, умение</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Оглеждайте се с проследяващо устройство за глава или VR шлем, докато палците ви остават на бутоните.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Съпоставяйте скоростта, педалите и предавките, които изпраща една състезателна игра, като всеки друг вход.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Изпращайте движението на контролера към емулатори, които четат източник на движение DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Затъмнение</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows не стартира лупата.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Лещата и прожекторът се показват върху игри в прозорец и без рамка, а щракванията минават през тях. Режимът Цял екран увеличава целия работен плот с лупата на Windows за цял екран. Макрос може да показва или скрива лупата, или да я показва само докато е задържан.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Автоматизация</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Разрешаване на външни програми</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Какво могат програмите</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Ниво</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Команди</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Четене</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Изпращане на входове</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Промяна на настройки</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програмите могат да превключват профили и да ги освобождават, да стартират и спират двигателя, да включват и изключват виртуалните контролери, да показват и скриват прозореца, да затварят PadForge, да записват моментна снимка за диагностика и да питат какво работи.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Всичко от ниво „Команди“ и още: програмите могат да виждат устройствата, виртуалните контролери, съпоставянията, профилите и настройките, да следят входовете на всяко устройство в реално време и да ви показват място в PadForge. Програма на ниво „Четене“ вижда всеки натиснат клавиш на всяко устройство, включително клавишите, въведени в прозорци, работещи като администратор.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Всичко от ниво „Четене“ и още: програмите могат да добавят собствени устройства и да ги управляват, да задържат контрол на всяко устройство и да подават именувани стойности към тригерите на макроси.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Всичко от ниво „Изпращане на входове“ и още: програмите могат да променят всичко, което можете да променяте на страниците.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Асистенти</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Поставете това в настройките за MCP на асистента. Тогава асистентът работи с PadForge на нивото по-горе.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Копирай като TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Асистенти, които четат TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Скриптове</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Библиотека със скриптове</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Запиши библиотека…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Един файл за AutoHotkey v2, Python или PowerShell. Скрипт, който го зарежда, чете устройства и управлява съпоставянията на нивото по-горе.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Чака ви</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Дейност</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Още няма обаждане от програма. Всяко обаждане се изброява тук с резултата си.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Отмени</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Умение за асистенти</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Запиши умението…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge не можа да го запише: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Докато е свързана програма на ниво „Четене“ или по-високо, тя вижда какво се натиска на всяко устройство, включително клавиатурите.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Приставки</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Изпълнение на приставки</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Не работи приставка.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Приставката работи с вашите права, а не с тези на PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сървър за движение</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сървър по протокола DSU/CemuHook Motion Provider за данни от жироскопа и акселерометъра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Включи DSU сървъра за движение (протокол CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Игрови мод</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Друга програма държи името на канала {0}. Затворете тази програма.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows отказа канала {0}, затова програмите не могат да се свържат.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Няма свързана програма.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Свързани: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Неизвестна програма</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Готово</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Не е направено</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Не е разрешено на това ниво</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Не е налично в момента</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge беше зает</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Стойност в заявката беше грешна</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Няма такъв профил</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Няма такъв виртуален контролер</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge не познава тази заявка</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Заявката беше празна</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge се сблъска с проблем</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Превключване към профила {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Връщане към профила по подразбиране</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Запитване кой профил е активен</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Запитване за версията на PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Запитване какво работи</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Изпращане на ред, който PadForge не познава: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Разреши</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Не разрешавай</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>От {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>От {1}, която се нарича „{0}“</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>От програма, която се нарича „{0}“</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>От програма, която Windows не назова</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>и още {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} от {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Липсата на отговор до {0} се счита за отказ.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Работи с OpenTrack и всеки тракер, който изпраща изхода си по UDP или записва в споделената памет на FreeTrack 2.0, както и с OpenXR среда за изпълнение на този компютър, която може да изпълнява сесия във фонов режим.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Четене на Logitech G-клавиши</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Чете G-клавишите чрез Logitech G-key SDK. Изисква да работи Logitech Gaming Software 8.55 или по-нова версия. В този софтуер плъзнете командата G-key върху всеки клавиш в профила на PadForge. Направете този профил постоянен, иначе клавишите достигат до PadForge само докато прозорецът му е на преден план. Мишка G600 или G300 също трябва да е извън режима на вградена памет.</value></data>

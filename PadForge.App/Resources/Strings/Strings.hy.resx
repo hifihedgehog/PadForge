@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Խաղալու այլ եղանակներ</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ուղարկել այլ տեղ</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Էկրանին</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Այլ ծրագրերի հետ</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Օգտագործեք հեռախոսը կամ պլանշետը որպես կառավարիչ։</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Նայեք շուրջը գլխի հետևիչով կամ վիրտուալ իրականության ականջակալով։</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Կապակցեք վարորդական խաղերի արագությունը, ոտնակներն ու փոխանցումները։</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Նկար, ժմչփ կամ ժամացույց մյուս պատուհանների վրա։</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ձեր սեփական նշանակետը խաղի վրա։</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Խոշորացնող ոսպնյակ, ամբողջ էկրանի խոշորացում կամ լուսարձակ։</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Թույլ տվեք գործարկիչներին, սկրիպտներին և օգնականներին աշխատել PadForge-ի հետ։</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ավելացրեք սարքեր, որոնք տրամադրում են ծրագրերը։</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Պորտ, պարզ HTTP, մուտքի կոդ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ինքնավերամիացում, պորտ, զուգակցման ինքնություն, միանալ հասցեով</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Պորտ, DSX.exe փոխարինող</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Պորտեր, Լրիվ արագություն, Հարմարեցված ձևաչափեր</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Հմտություն</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Նայեք շուրջը գլխի հետագծիչով կամ VR գլխադիրով, մինչ երկու բութ մատները մնում են կոճակների վրա։</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Կապակցեք մրցարշավային խաղի ուղարկած արագությունը, ոտնակները և փոխանցումները ինչպես ցանկացած մուտք։</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ուղարկեք կառավարչի շարժումը էմուլյատորներին, որոնք կարդում են DSU շարժման աղբյուր։</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Մթություն</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows-ը չգործարկեց խոշորացույցը։</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Ոսպնյակն ու լուսարձակը երևում են պատուհանային և առանց շրջանակի խաղերի վրա, իսկ սեղմումները անցնում են դրանց միջով։ «Ամբողջ էկրանը» ռեժիմը խոշորացնում է ամբողջ աշխատասեղանը Windows-ի էկրանային խոշորացույցով։ Մակրոն կարող է ցուցադրել կամ թաքցնել խոշորացույցը, կամ ցուցադրել այն միայն պահելիս։</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Ավտոմատացում</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Թույլատրել արտաքին ծրագրերը</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ինչ կարող են անել ծրագրերը</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Մակարդակ</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Հրամաններ</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Կարդալ</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Ուղարկել մուտքեր</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Փոխել կարգավորումները</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Ծրագրերը կարող են փոխել պրոֆիլները և ազատել դրանք, մեկնարկել ու կանգնեցնել մեխանիզմը, միացնել և անջատել վիրտուալ կառավարիչները, ցուցադրել և թաքցնել պատուհանը, փակել PadForge-ը, պահել ախտորոշման ակնթարթային պատկեր և հարցնել, թե ինչ է աշխատում։</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Այն ամենը, ինչ «Հրամաններ» մակարդակում է, և ծրագրերը կարող են տեսնել սարքերը, վիրտուալ կառավարիչները, կապակցումները, պրոֆիլներն ու կարգավորումները, իրական ժամանակում հետևել յուրաքանչյուր սարքի մուտքերին և ցույց տալ ձեզ PadForge-ի որևէ վայր։ «Կարդալ» մակարդակի ծրագիրը տեսնում է յուրաքանչյուր սարքի յուրաքանչյուր սեղմված ստեղն, այդ թվում՝ ադմինիստրատորի իրավունքներով աշխատող պատուհաններում մուտքագրվածները։</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Այն ամենը, ինչ «Կարդալ» մակարդակում է, և ծրագրերը կարող են ավելացնել իրենց սեփական սարքերը և կառավարել դրանք, պահել ցանկացած սարքի կառավարման տարր և մակրոների ակտիվացուցիչներին փոխանցել անվանված արժեքներ։</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Այն ամենը, ինչ «Ուղարկել մուտքեր» մակարդակում է, և ծրագրերը կարող են փոխել այն, ինչ դուք կարող եք փոխել էջերում։</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Օգնականներ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Տեղադրեք սա օգնականի MCP կարգավորումներում։ Այդ դեպքում օգնականը կաշխատի PadForge-ի հետ վերևի մակարդակով։</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Պատճենել որպես TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML կարդացող օգնականներ</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Սկրիպտներ</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Սկրիպտների գրադարան</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Պահել գրադարան…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Մեկ ֆայլ AutoHotkey v2-ի, Python-ի կամ PowerShell-ի համար։ Այն բեռնող սկրիպտը կարդում է սարքերը և կառավարում կապակցումները վերևի մակարդակով։</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Սպասում է ձեզ</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Գործունեություն</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Դեռ ոչ մի ծրագիր չի կանչել։ Յուրաքանչյուր կանչ նշվում է այստեղ՝ իր արդյունքով։</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Հետարկել</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Օգնականների հմտություն</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Պահել հմտությունը…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ պահել այն՝ {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Քանի դեռ «Կարդալ» կամ ավելի բարձր մակարդակի ծրագիր է միացված, այն տեսնում է, թե ինչ է սեղմվում յուրաքանչյուր սարքում, ստեղնաշարերն էլ ներառյալ։</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Պլագիններ</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Գործարկել պլագինները</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ոչ մի պլագին չի աշխատում։</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Պլագինն աշխատում է ձեր իրավունքներով, ոչ թե PadForge-ի։</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Շարժման սերվեր</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider արձանագրության սերվեր՝ գիրոյի և արագացուցաչափի տվյալների համար։</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Միացնել DSU շարժման սերվերը (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Խաղի մոդ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Մեկ այլ ծրագիր զբաղեցրել է {0} խողովակի անունը։ Փակեք այդ ծրագիրը։</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-ը մերժեց {0} խողովակը, ուստի ծրագրերը չեն կարող միանալ։</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ոչ մի ծրագիր միացված չէ։</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Միացված՝ {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Անհայտ ծրագիր</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Կատարված է</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Չի կատարվել</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Այս մակարդակում չի թույլատրվում</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Այժմ հասանելի չէ</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge-ը զբաղված էր</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Հարցման մեջ արժեքը սխալ էր</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Այդպիսի պրոֆիլ չկա</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Այդպիսի վիրտուալ կառավարիչ չկա</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-ը չի ճանաչում այս հարցումը</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Հարցումը դատարկ էր</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-ը խնդրի հանդիպեց</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Անցնել {0} պրոֆիլին</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Վերադառնալ լռելյայն պրոֆիլին</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Հարցնել, թե որ պրոֆիլն է ակտիվ</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Հարցնել PadForge-ի տարբերակը</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Հարցնել, թե ինչ է աշխատում</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ուղարկել PadForge-ին անծանոթ տող՝ {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Թույլատրել</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Չթույլատրել</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Աղբյուր՝ {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Աղբյուր՝ {1}, որն իրեն անվանում է «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Աղբյուր՝ ծրագիր, որն իրեն անվանում է «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Աղբյուր՝ ծրագիր, որի անունը Windows-ը չտվեց</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>և եվս {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0}՝ {1}-ից</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Պատասխանի բացակայությունը {0} ընթացքում համարվում է մերժում։</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Աշխատում է OpenTrack-ի և ցանկացած հետևիչի հետ, որը ուղարկում է իր UDP ելքը կամ գրում է FreeTrack 2.0 ընդհանուր հիշողության մեջ, ինչպես նաև այս մեքենայի OpenXR runtime-ի հետ, որը կարող է ֆոնային ռեժիմում սեսիա աշխատեցնել։</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Կարդալ Logitech G-ստեղները</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G-ստեղները կարդում է Logitech G-key SDK-ի միջոցով։ Պահանջվում է Logitech Gaming Software 8.55 կամ ավելի նոր տարբերակի աշխատանքը։ Այդ ծրագրում քաշեք G-key հրամանը PadForge պրոֆիլի յուրաքանչյուր ստեղնի վրա։ Այդ պրոֆիլը դարձրեք մշտական, այլապես ստեղները PadForge-ին հասնում են միայն այն ժամանակ, երբ դրա պատուհանը առջևում է։ G600 կամ G300 մկնիկը նույնպես պետք է դուրս լինի ներկառուցված հիշողության ռեժիմից։</value></data>

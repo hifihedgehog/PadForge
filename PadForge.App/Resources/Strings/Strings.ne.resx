@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>खेल्ने थप तरिकाहरू</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>अन्यत्र पठाउनुहोस्</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>स्क्रिनमा</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>अन्य प्रोग्रामहरूसँग</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>फोन वा ट्याब्लेटलाई कन्ट्रोलरको रूपमा प्रयोग गर्नुहोस्।</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>हेड ट्र्याकर वा VR हेडसेटले वरिपरि हेर्नुहोस्।</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ड्राइभिङ गेमहरूबाट गति, पेडल र गियर म्याप गर्नुहोस्।</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>अन्य झ्यालहरूमाथि चित्र, टाइमर वा घडी।</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>खेलमाथि तपाईंको आफ्नै क्रसहेयर।</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>जुम लेन्स, पूरा स्क्रिन जुम वा स्पटलाइट।</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>लन्चर, स्क्रिप्ट र सहायकहरूलाई PadForge सँग काम गर्न दिनुहोस्।</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>प्रोग्रामहरूले दिने यन्त्रहरू थप्नुहोस्।</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>पोर्ट, सादा HTTP, पहुँच कोड</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>स्वतः पुनः जडान, पोर्ट, जोडा पहिचान, ठेगानाबाट जोड्नुहोस्</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>पोर्ट, DSX.exe को सट्टा चल्ने प्रोग्राम</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>पोर्ट, पूर्ण गति, अनुकूल ढाँचाहरू</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, स्किल</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>दुवै बुढी औंला बटनमै राखेर हेड ट्र्याकर वा VR हेडसेटले वरिपरि हेर्नुहोस्।</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ड्राइभिङ खेलले पठाउने गति, पेडल र गियरलाई कुनै पनि इनपुटजस्तै म्याप गर्नुहोस्।</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU मोसन स्रोत पढ्ने इमुलेटरहरूमा कन्ट्रोलरको मोसन पठाउनुहोस्।</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>अँध्यारोपन</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ले म्याग्निफायर सुरु गरेन।</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>लेन्स र स्पटलाइट विन्डो र बोर्डरलेस मोडका खेलहरूमाथि देखिन्छन् र क्लिकहरू तिनबाट आरपार जान्छन्। पूरा स्क्रिन मोडले Windows को पूरा स्क्रिन म्याग्निफायरबाट सम्पूर्ण डेस्कटप जुम गर्छ। म्याक्रोले म्याग्निफायर देखाउन वा लुकाउन सक्छ, वा थिचिराख्दा मात्र देखाउन सक्छ।</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>स्वचालन</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>बाहिरी प्रोग्रामहरूलाई अनुमति दिनुहोस्</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>प्रोग्रामहरूले के गर्न सक्छन्</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>स्तर</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>आदेशहरू</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>पढ्ने</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>इनपुट पठाउने</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>सेटिङ परिवर्तन गर्ने</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>प्रोग्रामहरूले प्रोफाइल बदल्न र छोड्न, इन्जिन सुरु गर्न र रोक्न, भर्चुअल कन्ट्रोलरहरू अन र अफ गर्न, विन्डो देखाउन र लुकाउन, PadForge बन्द गर्न, निदान स्न्यापसट सेभ गर्न र के चलिरहेको छ भनेर सोध्न सक्छन्।</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>“आदेशहरू” स्तरका सबै कुरा, र प्रोग्रामहरूले यन्त्र, भर्चुअल कन्ट्रोलर, म्यापिङ, प्रोफाइल र सेटिङहरू हेर्न, हरेक यन्त्रका इनपुटहरू हुँदाहुँदै पछ्याउन, र तपाईंलाई PadForge मा कुनै ठाउँ देखाउन सक्छन्। “पढ्ने” स्तरको प्रोग्रामले हरेक यन्त्रमा थिचिएका सबै कीहरू देख्छ, प्रशासकका रूपमा चल्ने विन्डोहरूमा टाइप गरिएका कीहरू पनि।</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>“पढ्ने” स्तरका सबै कुरा, र प्रोग्रामहरूले आफ्नै यन्त्रहरू थपेर चलाउन, कुनै पनि यन्त्रको नियन्त्रण समात्न र म्याक्रो ट्रिगरहरूलाई नाम दिइएका मानहरू दिन सक्छन्।</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>“इनपुट पठाउने” स्तरका सबै कुरा, र प्रोग्रामहरूले पृष्ठहरूमा तपाईंले बदल्न सक्ने कुराहरू बदल्न सक्छन्।</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>सहायकहरू</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>यसलाई सहायकको MCP सेटिङहरूमा टाँस्नुहोस्। त्यसपछि सहायकले माथिको स्तरमा PadForge सँग काम गर्छ।</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML का रूपमा कपी गर्नुहोस्</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML पढ्ने सहायकहरू</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>स्क्रिप्टहरू</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>स्क्रिप्ट लाइब्रेरी</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>लाइब्रेरी सेभ गर्नुहोस्…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python वा PowerShell का लागि एउटा फाइल। यसलाई लोड गर्ने स्क्रिप्टले माथिको स्तरमा यन्त्रहरू पढ्छ र म्यापिङहरू चलाउँछ।</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>तपाईंको प्रतीक्षामा</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>गतिविधि</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>अहिलेसम्म कुनै प्रोग्रामले कल गरेको छैन। हरेक कल र त्यसको नतिजा यहाँ सूचीबद्ध हुन्छ।</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>पूर्ववत् गर्नुहोस्</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>सहायकहरूका लागि स्किल</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>स्किल सेभ गर्नुहोस्…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ले यसलाई सेभ गर्न सकेन: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>“पढ्ने” वा माथिको स्तरको प्रोग्राम जडान भएसम्म, त्यसले किबोर्डसमेत हरेक यन्त्रमा के थिचिन्छ भनेर देख्छ।</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>प्लगइनहरू</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>प्लगइनहरू चलाउनुहोस्</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>कुनै प्लगइन चलिरहेको छैन।</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>प्लगइन PadForge को होइन, तपाईंको अधिकारमा चल्छ।</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोसन सर्भर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जाइरो र एक्सेलेरोमिटर डेटाका लागि DSU/CemuHook Motion Provider प्रोटोकल सर्भर।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोसन सर्भर सक्षम गर्नुहोस् (CemuHook Motion Provider Protocol)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>कुनै गेम मोड</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>अर्को प्रोग्रामले पाइप नाम {0} लिएको छ। त्यो प्रोग्राम बन्द गर्नुहोस्।</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ले पाइप {0} अस्वीकार गर्यो, त्यसैले प्रोग्रामहरू जडान हुन सक्दैनन्।</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>कुनै प्रोग्राम जडान भएको छैन।</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>जडान भएका: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>अज्ञात प्रोग्राम</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>भयो</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>भएन</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>यो स्तरमा अनुमति छैन</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>अहिले उपलब्ध छैन</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge व्यस्त थियो</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>अनुरोधमा एउटा मान गलत थियो</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>यस्तो प्रोफाइल छैन</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>यस्तो भर्चुअल कन्ट्रोलर छैन</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge लाई यो अनुरोध थाहा छैन</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>अनुरोध खाली थियो</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge मा समस्या आयो</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>प्रोफाइल {0} मा जानुहोस्</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>पूर्वनिर्धारित प्रोफाइलमा फर्कनुहोस्</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>कुन प्रोफाइल सक्रिय छ भनेर सोध्नुहोस्</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge को संस्करण सोध्नुहोस्</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>के चलिरहेको छ भनेर सोध्नुहोस्</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge लाई थाहा नभएको लाइन पठाउनुहोस्: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>अनुमति दिनुहोस्</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>अनुमति नदिनुहोस्</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} बाट</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} बाट, जसले आफूलाई “{0}” भन्छ</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>आफूलाई “{0}” भन्ने प्रोग्रामबाट</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows ले नाम नदिएको प्रोग्रामबाट</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>र थप {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1} मध्ये {0}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} भित्र जवाफ नआए अस्वीकार मानिन्छ।</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack र आफ्नो UDP आउटपुट पठाउने वा FreeTrack 2.0 साझा मेमोरी लेख्ने जुनसुकै ट्र्याकरसँग, र यो मेसिनमा पृष्ठभूमिमा सत्र चलाउन सक्ने OpenXR रनटाइमसँग काम गर्छ।</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-कुञ्जीहरू पढ्नुहोस्</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK मार्फत G-key कुञ्जीहरू पढ्छ। Logitech Gaming Software 8.55 वा पछिको संस्करण चलिरहेको हुनुपर्छ। त्यो सफ्टवेयरमा, PadForge प्रोफाइलको हरेक कुञ्जीमा G-key कमान्ड तान्नुहोस्। त्यो प्रोफाइललाई स्थायी बनाउनुहोस्, नत्र PadForge को सञ्झ्याल अगाडि हुँदा मात्र कुञ्जीहरू PadForge मा पुग्छन्। G600 वा G300 माउसलाई अन-बोर्ड मेमोरी मोडबाट पनि बाहिर निकाल्नुपर्छ।</value></data>

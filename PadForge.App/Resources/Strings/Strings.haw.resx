@@ -1179,8 +1179,37 @@
   <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Nalowale ka profile HIDMaestro o kekahi controller virtual. Aia kona inoa ma ka moʻolelo nānā pilikia.</value></data>
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>ʻAʻole i hiki iā {0} ke lawe i kona ʻano a me kona hoʻonohonoho pihi i hoʻopilikino ʻia, a hoʻohana ʻo ia i ko kona profile ponoʻī.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hoʻomau i ka hoʻouna</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Nā kōkua AI</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>E hoʻopili i kēia i loko o nā hoʻonohonoho MCP o kekahi kōkua AI. A laila hana ke kōkua me PadForge ma ka pae ma luna.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kope ma ke ʻano TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Nā kōkua AI e heluhelu ana i ka TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Nā script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Waihona script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Mālama i kekahi waihona…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Hoʻokahi faila no AutoHotkey v2, Python a i ʻole PowerShell. Heluhelu ka script e hoʻouka ana iā ia i nā hāmeʻa a hoʻokele i nā hoʻonohonoho pihi ma ka pae ma luna.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ke kali nei iā ʻoe</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Nā hana</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ʻAʻohe polokalamu i kāhea mai. Helu ʻia kēlā me kēia kāhea ʻana ma ʻaneʻi me kona hopena.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Hoʻihoʻi</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Mākau no nā kōkua AI</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Mālama i ka mākau…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ʻAʻohe plugin e holo nei.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Paʻa ka inoa pipe {0} i kekahi polokalamu ʻē aʻe. E pani i kēlā polokalamu.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Ua hōʻole ʻo Windows i ka pipe {0}, no laila ʻaʻole hiki i nā polokalamu ke hoʻopili.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻAʻohe polokalamu i hoʻopili ʻia.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Hoʻopili ʻia: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalamu ʻike ʻole ʻia</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Ua pau</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>ʻAʻole i hana ʻia</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ʻAʻole ʻae ʻia ma kēia pae</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ʻAʻole loaʻa i kēia manawa</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Paʻa ʻo PadForge i ka hana</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Ua hewa kekahi waiwai o ke noi</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>ʻAʻohe profile pēlā</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>ʻAʻohe controller kikohoʻe pēlā</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>ʻAʻole ʻike ʻo PadForge i kēia noi</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Ua hakahaka ke noi</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>Ua loaʻa iā PadForge kekahi pilikia</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hoʻololi i ka profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoʻi i ka profile paʻamau</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nīnau i ka profile e hana nei</value></data>
@@ -1201,6 +1230,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Nīnau i ka mana o PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Nīnau i nā mea e holo nei</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Hoʻouna i kekahi laina ʻike ʻole ʻia e PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>ʻAe</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Mai ʻae</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mai {1}, e kapa ana iā ia iho “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mai kekahi polokalamu e kapa ana iā ia iho “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Mai kekahi polokalamu i kapa ʻole ʻia e Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>a he {0} hou aku</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Inā ʻaʻohe pane i loko o {0}, he ʻaʻole ia.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Neʻe ʻiole X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Neʻe ʻiole Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Neʻe a hiki i ka wili piha</value></data>

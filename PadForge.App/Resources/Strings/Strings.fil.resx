@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Higit Pang Paraan ng Paglalaro</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadala sa Iba</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa Screen</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Kasama ang Ibang Program</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gamitin ang phone o tablet bilang controller.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tumingin sa paligid gamit ang head tracker o VR headset.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang bilis, mga pedal at gear mula sa mga larong pang-drive.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Isang larawan, timer o orasan sa ibabaw ng ibang mga window.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Sarili mong crosshair sa ibabaw ng laro.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Isang lens na nagpapalaki, pagpapalaki ng buong screen o isang spotlight.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Hayaang makipagtulungan ang mga launcher, script at assistant sa PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Magdagdag ng mga device na ibinibigay ng mga program.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP, access code</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, pagkonekta gamit ang address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga Port, Buong Bilis, Mga Custom Format</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Tumingin sa paligid gamit ang head tracker o VR headset habang nasa mga button pa rin ang dalawang hinlalaki mo.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ang bilis, mga pedal at gear na ipinapadala ng isang laro sa pagmamaneho, gaya ng anumang input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Magpadala ng galaw ng controller sa mga emulator na nagbabasa ng DSU motion source.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Dilim</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Hindi napatakbo ng Windows ang magnifier.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lumalabas ang lens at ang spotlight sa ibabaw ng mga larong windowed at borderless, at dumadaan sa mga ito ang mga click. Ang Full Screen ay nagza-zoom sa buong desktop gamit ang full screen magnifier ng Windows. Maaaring ipakita o itago ng isang macro ang magnifier, o ipakita ito habang hawak lang.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Awtomasyon</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Payagan ang mga Panlabas na Program</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ano ang Maaaring Gawin ng mga Program</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Antas</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Mga Command</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Pagbasa</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Pagpapadala ng Input</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Pagbabago ng Setting</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Maaaring magpalit ng profile at bitawan ito ang mga program, magsimula at huminto ng engine, mag-on at mag-off ng mga virtual controller, magpakita at magtago ng window, magsara ng PadForge, mag-save ng diagnostics snapshot at magtanong kung ano ang tumatakbo.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Lahat ng nasa Mga Command, at nakikita ng mga program ang mga device, virtual controller, mapping, profile at setting, nasusundan ang mga input ng bawat device habang nangyayari ang mga ito, at nakakapagpakita sila sa iyo ng isang lugar sa PadForge. Nakikita ng program na nasa Pagbasa ang bawat key na pinindot sa bawat device, pati ang mga key na tinipa sa mga window na tumatakbo bilang administrator.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Lahat ng nasa Pagbasa, at maaaring magdagdag ng sarili nilang device ang mga program at patakbuhin ang mga ito, humawak ng kontrol ng alinmang device at magbigay ng mga pinangalanang value sa mga macro trigger.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Lahat ng nasa Pagpapadala ng Input, at maaaring baguhin ng mga program ang mga maaari mong baguhin sa mga page.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Mga Assistant</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>I-paste ito sa MCP settings ng isang assistant. Makikipagtulungan na ang assistant sa PadForge sa antas sa itaas.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopyahin bilang TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Mga Assistant na Nagbabasa ng TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Mga Script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Script Library</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>I-save ang Library…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Isang file para sa AutoHotkey v2, Python o PowerShell. Ang script na naglo-load nito ay nagbabasa ng mga device at nagpapatakbo ng mga mapping sa antas sa itaas.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Naghihintay sa Iyo</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktibidad</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Wala pang program na tumatawag. Nakalista rito ang bawat tawag kasama ang kinalabasan nito.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>I-undo</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill para sa mga Assistant</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>I-save ang Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Hindi ito na-save ng PadForge: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Habang nakakonekta ang isang program na nasa Pagbasa o mas mataas, nakikita nito ang pinipindot sa bawat device, kasama ang mga keyboard.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Mga Plugin</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Patakbuhin ang mga Plugin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Walang tumatakbong plugin.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Tumatakbo ang isang plugin gamit ang iyong mga karapatan, hindi ang sa PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protocol server ng DSU/CemuHook Motion Provider para sa data ng gyro at accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>I-enable ang DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isang game mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>May ibang program na may hawak ng pangalan ng pipe na {0}. Isara ang program na iyon.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Tinanggihan ng Windows ang pipe na {0}, kaya hindi makakonekta ang mga program.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Walang nakakonektang program.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonekta: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Hindi kilalang program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Tapos na</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Hindi nagawa</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Hindi pinapayagan sa antas na ito</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Hindi available ngayon</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Abala ang PadForge</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>May maling value sa request</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Walang ganoong profile</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Walang ganoong virtual controller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Hindi alam ng PadForge ang request na ito</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Walang laman ang request</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>Nagkaproblema ang PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Lumipat sa profile na {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bumalik sa default na profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Itanong kung aling profile ang aktibo</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Itanong ang bersyon ng PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Itanong kung ano ang tumatakbo</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Magpadala ng linyang hindi alam ng PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Payagan</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Huwag Payagan</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mula sa {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mula sa {1}, na tinatawag ang sarili nitong “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mula sa program na tinatawag ang sarili nitong “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Mula sa program na hindi napangalanan ng Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>at {0} pa</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ituturing na hindi ang walang sagot sa loob ng {0}.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Gumagana sa OpenTrack at anumang tracker na nagpapadala ng UDP output nito o sumusulat sa FreeTrack 2.0 shared memory, at sa OpenXR runtime sa makinang ito na kayang magpatakbo ng session sa background.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Basahin ang mga Logitech G-key</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Binabasa ang mga G-key sa pamamagitan ng Logitech G-key SDK. Kailangang tumatakbo ang Logitech Gaming Software 8.55 o mas bago. Sa software na iyon, i-drag ang G-key command papunta sa bawat key sa profile ng PadForge. Gawing persistent ang profile na iyon, kung hindi ay aabot lang sa PadForge ang mga key habang nasa harapan ang window nito. Kailangan ding wala sa on-board memory mode ang mouse na G600 o G300.</value></data>

@@ -964,6 +964,8 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Game mod se trigger aur light effect lo.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe ke badle</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Full speed, Custom format</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Use karo</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Key aur Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note aur Control</value></data>
@@ -1193,8 +1195,40 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} device disconnect hoe gais</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} device connect hoe gais</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} baar baar disconnect hoe hai</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Dusra program ke saathe</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Launcher, script aur assistant ke PadForge ke saathe kaam kare do.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Program jon device dete hai, uu add karo.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Mapping wala device ke naam jab uu disconnect hoe.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Mapping wala device ke naam jab uu connect hoe.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistant</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ii ke assistant ke MCP settings me paste karo. Phir assistant upar wala level pe PadForge ke saathe kaam kari.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML jaisan copy karo</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML padhe wala assistant</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Script library</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Library save karo…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python ya PowerShell ke liye ek file. Jon script isse load kare, uu upar wala level pe device padhe hai aur mapping chalaawe hai.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Aap ke intazaar me</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activity</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Abhi tak koi program call nai karis. Har call yahan dikhi, aur oke kya natija bhais.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Undo karo</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Assistant ke liye skill</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Skill save karo…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Koi plugin nai chale hai.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Koi program connect nai hai.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connect hai: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Anjaan program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Hoe gais</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nai bhais</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ii level pe allow nai hai</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Abhi nai mile sake</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge busy rahaa</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Request me ek value galat rahaa</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Aisan koi profile nai hai</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Aisan koi virtual controller nai hai</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ii request nai jaane hai</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Request khaali rahaa</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge me koi problem aais</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Profile {0} pe jaao</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Default profile pe lauto</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Poocho kon profile chalu hai</value></data>
@@ -1215,6 +1249,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ke version poocho</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Poocho kya chale hai</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Aisan line bhejo jon PadForge nai jaane: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Allow karo</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Allow mat karo</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} se</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} se, jon apan ke “{0}” bole hai</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Ek program se jon apan ke “{0}” bole hai</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Ek program se jiske naam Windows nai dis</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>aur {0} baaki</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1} me se {0}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} me jawaab nai mile to nai gina jaai.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Naya mapping khali uu controller ke liye use hoi jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Reset sab download karaa mapping hataawe hai.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Abhi update karo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Update hoe rahaa…</value></data>

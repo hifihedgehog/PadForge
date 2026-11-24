@@ -389,6 +389,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod di wega</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Otro programa tin e nòmber di pipe {0}. Sera e programa ei.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows a nenga e pipe {0}, p'esei programanan no por konektá.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ningun programa no ta konektá.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektá: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa deskonosí</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Hasí</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>No hasí</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>No ta permití na e nivel aki</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>No ta disponibel awor</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge tabata okupá</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Un balor den e petishon tabata robes</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>E perfil no ta eksistí</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>E kontrol virtual no ta eksistí</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge no konosé e petishon aki</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>E petishon tabata bashí</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge a topa ku un problema</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kambia na e perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bolbe na e perfil standard</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Puntra ki perfil ta aktivo</value></data>
@@ -2694,6 +2708,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Mas manera pa hunga</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Manda e pa otro kaminda</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Riba pantaya</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Ku otro programa</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Usa un telefòn òf tablet komo kontrol.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Asigná velosidat, pedalnan i marchanan for di wega di kore.</value></data>
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Manehá e kontrolnan virtual riba otro PC.</value></data>
@@ -2705,6 +2720,8 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekonekshon outomátiko, pòrt, identidat di pareamentu, konektá pa medio di adrès</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pòrt, sustituto di DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pòrtnan, Velosidat máksimo, Formatonan personalisá</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Usa e</value></data>
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Kiko wega mester mira?</value></data>
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ta kambia e kontrol aki den esun ku bo wega ta spera. Skohe un pa kuminsá. Bo por kambi'é despues ku un klik.</value></data>
@@ -2968,6 +2985,37 @@
   <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge no por lesa e archivo ei komo potrèt.</value></data>
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Potrèt: arte di biblioteka di Steam pa {0}.</value></data>
   <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktivá Konfigurashon di komunidat den Konfigurashon pa haña e potrèt di e wega for di Steam.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Laga lanzadó, script i asistente traha ku PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Agregá aparatonan ku programa ta duna.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Permití programanan di afó</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Kiko programanan por hasi</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nivel</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistentenan</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Pega esaki den e konfigurashon MCP di un asistente. Despues e asistente ta traha ku PadForge na e nivel ariba.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiá komo TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistentenan ku ta lesa TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scriptnan</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Biblioteka di script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Warda un biblioteka…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un archivo pa AutoHotkey v2, Python òf PowerShell. Un script ku karga e ta lesa aparatonan i ta manehá asignashonnan na e nivel ariba.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ta warda bo</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktividat</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ningun programa no a yama ainda. Kada yamada ta aparesé aki ku kiko a sali di dje.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Deshasí</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill pa asistentenan</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Warda e Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge no por a warda esaki: {0}</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kore pluginnan</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ningun plugin no ta kore.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Permití</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>No permití</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>For di {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>For di {1}, ku ta yama su mes “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>For di un programa ku ta yama su mes “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>For di un programa ku Windows no a duna nòmber</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>i {0} mas</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} di {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Si no tin kontesta den {0}, e ta konta komo no.</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kuminsá graba</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Para di graba ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>

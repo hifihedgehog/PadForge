@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>ఆడటానికి మరిన్ని మార్గాలు</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>మరోచోటికి పంపండి</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>తెరపై</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>ఇతర ప్రోగ్రామ్లతో</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ఫోన్ లేదా టాబ్లెట్‌ను కంట్రోలర్‌గా వాడండి.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>హెడ్ ట్రాకర్ లేదా VR హెడ్‌సెట్‌తో చుట్టూ చూడండి.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>డ్రైవింగ్ గేమ్‌ల నుండి వేగం, పెడల్స్, గేర్లను మ్యాప్ చేయండి.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ఇతర విండోల పైన ఒక చిత్రం, టైమర్ లేదా గడియారం.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ఆటపై మీ స్వంత క్రాస్‌హెయిర్.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>జూమ్ లెన్స్, పూర్తి స్క్రీన్ జూమ్ లేదా స్పాట్‌లైట్.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>లాంచర్లు, స్క్రిప్టులు, అసిస్టెంట్లు PadForge తో పని చేయనివ్వండి.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>ప్రోగ్రామ్లు అందించే పరికరాలను జోడించండి.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>పోర్ట్, సాధారణ HTTP, యాక్సెస్ కోడ్</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ఆటో రీకనెక్ట్, పోర్ట్, జత చేసే గుర్తింపు, చిరునామా ద్వారా కనెక్ట్</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>పోర్ట్, DSX.exe స్టాండ్ ఇన్</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>పోర్ట్‌లు, పూర్తి వేగం, కస్టమ్ ఫార్మాట్‌లు</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, స్కిల్</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>రెండు బొటనవేళ్లు బటన్లపైనే ఉంచి, హెడ్ ట్రాకర్ లేదా VR హెడ్‌సెట్‌తో చుట్టూ చూడండి.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>డ్రైవింగ్ గేమ్ పంపే వేగం, పెడల్స్, గేర్లను ఏ ఇతర ఇన్పుట్‌లాగే మ్యాప్ చేయండి.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU మోషన్ సోర్స్‌ను చదివే ఎమ్యులేటర్లకు కంట్రోలర్ మోషన్‌ను పంపండి.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>చీకటి స్థాయి</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows భూతద్దాన్ని ప్రారంభించలేదు.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>లెన్స్ మరియు స్పాట్‌లైట్ విండో మరియు బోర్డర్‌లెస్ ఆటల పైన కనిపిస్తాయి, క్లిక్‌లు వాటి గుండా వెళ్తాయి. పూర్తి స్క్రీన్ మోడ్ Windows పూర్తి స్క్రీన్ భూతద్దంతో మొత్తం డెస్క్‌టాప్‌ను జూమ్ చేస్తుంది. మాక్రో భూతద్దాన్ని చూపవచ్చు లేదా దాచవచ్చు, లేదా నొక్కి ఉంచినంత సేపే చూపవచ్చు.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>ఆటోమేషన్</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>బయటి ప్రోగ్రామ్లను అనుమతించు</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>ప్రోగ్రామ్లు ఏమి చేయవచ్చు</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>స్థాయి</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>ఆదేశాలు</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>చదువు</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ఇన్‌పుట్లు పంపు</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>సెట్టింగులు మార్చు</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ప్రోగ్రామ్లు ప్రొఫైల్లను మార్చి విడుదల చేయగలవు, ఇంజిన్‌ను ప్రారంభించి ఆపగలవు, వర్చువల్ కంట్రోలర్లను ఆన్ లేదా ఆఫ్ చేయగలవు, విండోను చూపి దాచగలవు, PadForge ను మూసివేయగలవు, డయాగ్నోస్టిక్స్ స్నాప్‌షాట్‌ను సేవ్ చేయగలవు, ఏది నడుస్తోందో అడగగలవు.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ఆదేశాలు స్థాయిలోని ప్రతిదీ, పైగా ప్రోగ్రామ్లు పరికరాలను, వర్చువల్ కంట్రోలర్లను, మ్యాపింగ్లను, ప్రొఫైల్లను, సెట్టింగులను చూడగలవు, ప్రతి పరికరం ఇన్‌పుట్లను జరుగుతున్నప్పుడే అనుసరించగలవు, PadForge లో మీకు ఒక స్థలాన్ని చూపగలవు. చదువు స్థాయిలోని ప్రోగ్రామ్ ప్రతి పరికరంలో నొక్కిన ప్రతి కీని చూస్తుంది, అడ్మినిస్ట్రేటర్‌గా నడిచే విండోలలో టైప్ చేసిన కీలతో సహా.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>చదువు స్థాయిలోని ప్రతిదీ, పైగా ప్రోగ్రామ్లు తమ సొంత పరికరాలను జోడించి వాటిని నడపగలవు, ఏ పరికరం నియంత్రణనైనా పట్టి ఉంచగలవు, మాక్రో ట్రిగ్గర్లకు పేరున్న విలువలను అందించగలవు.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ఇన్‌పుట్లు పంపు స్థాయిలోని ప్రతిదీ, పైగా పేజీలలో మీరు మార్చగలిగే వాటిని ప్రోగ్రామ్లు మార్చగలవు.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>అసిస్టెంట్లు</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>దీన్ని అసిస్టెంట్ MCP సెట్టింగులలో అతికించండి. అప్పుడు అసిస్టెంట్ పై స్థాయిలో PadForge తో పని చేస్తుంది.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML గా కాపీ చేయి</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML చదివే అసిస్టెంట్లు</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>స్క్రిప్టులు</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>స్క్రిప్ట్ లైబ్రరీ</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>లైబ్రరీని సేవ్ చేయి…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python లేదా PowerShell కోసం ఒక ఫైల్. దాన్ని లోడ్ చేసే స్క్రిప్ట్ పై స్థాయిలో పరికరాలను చదివి మ్యాపింగ్లను నడుపుతుంది.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>మీ కోసం ఎదురుచూస్తున్నవి</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>కార్యకలాపం</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ఏ ప్రోగ్రామ్ ఇంకా కాల్ చేయలేదు. ప్రతి కాల్ దాని ఫలితంతో పాటు ఇక్కడ కనిపిస్తుంది.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>అన్‌డూ</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>అసిస్టెంట్ల కోసం స్కిల్</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>స్కిల్‌ను సేవ్ చేయి…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge దాన్ని సేవ్ చేయలేకపోయింది: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>చదువు లేదా అంతకంటే పై స్థాయిలోని ప్రోగ్రామ్ కనెక్ట్ అయి ఉన్నంత వరకు, అది కీబోర్డులతో సహా ప్రతి పరికరంలో నొక్కినదాన్ని చూస్తుంది.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>ప్లగిన్లు</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ప్లగిన్లను నడుపు</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ఏ ప్లగిన్ నడవడం లేదు.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ప్లగిన్ మీ హక్కులతో నడుస్తుంది, PadForge హక్కులతో కాదు.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>మోషన్ సర్వర్</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>గైరో, యాక్సిలరోమీటర్ డేటా కోసం DSU/CemuHook Motion Provider ప్రోటోకాల్ సర్వర్.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU మోషన్ సర్వర్‌ను ప్రారంభించు (CemuHook Motion Provider ప్రోటోకాల్)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ఒక గేమ్ మోడ్</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>మరొక ప్రోగ్రామ్ పైప్ పేరు {0} ను వాడుతోంది. ఆ ప్రోగ్రామ్‌ను మూసివేయండి.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows పైప్ {0} ను నిరాకరించింది, కాబట్టి ప్రోగ్రామ్లు కనెక్ట్ కాలేవు.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ఏ ప్రోగ్రామ్ కనెక్ట్ కాలేదు.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>కనెక్ట్ అయినవి: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>తెలియని ప్రోగ్రామ్</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>పూర్తయింది</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>చేయలేదు</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ఈ స్థాయిలో అనుమతి లేదు</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ఇప్పుడు అందుబాటులో లేదు</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge బిజీగా ఉంది</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>అభ్యర్థనలోని విలువ తప్పు</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>అలాంటి ప్రొఫైల్ లేదు</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>అలాంటి వర్చువల్ కంట్రోలర్ లేదు</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>ఈ అభ్యర్థన PadForge కు తెలియదు</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>అభ్యర్థన ఖాళీగా ఉంది</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge లో సమస్య ఎదురైంది</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ప్రొఫైల్ {0} కు మారు</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>డిఫాల్ట్ ప్రొఫైల్‌కు తిరిగి వెళ్లు</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ఏ ప్రొఫైల్ ఆన్‌లో ఉందో అడుగు</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge వెర్షన్ అడుగు</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ఏది నడుస్తోందో అడుగు</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge కు తెలియని లైన్ పంపు: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>అనుమతించు</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>అనుమతించవద్దు</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} నుండి</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} నుండి, అది తనను “{0}” అని పిలుచుకుంటుంది</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>తనను “{0}” అని పిలుచుకునే ప్రోగ్రామ్ నుండి</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows పేరు పెట్టని ప్రోగ్రామ్ నుండి</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ఇంకా {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1} లో {0}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} లో సమాధానం లేకపోతే కాదు అని లెక్క.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack తోనూ, UDP అవుట్పుట్ పంపే లేదా FreeTrack 2.0 షేర్డ్ మెమరీకి రాసే ఏ ట్రాకర్‌తోనూ, బ్యాక్‌గ్రౌండ్‌లో సెషన్ నడపగల ఈ మెషీన్‌లోని OpenXR రన్టైమ్‌తోనూ పనిచేస్తుంది.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key లను చదువు</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK ద్వారా G-key లను చదువుతుంది. Logitech Gaming Software 8.55 లేదా ఆ తరువాతిది నడుస్తూ ఉండాలి. ఆ సాఫ్ట్‌వేర్‌లో PadForge ప్రొఫైల్‌లోని ప్రతి కీపైకి G-key కమాండ్‌ను లాగండి. ఆ ప్రొఫైల్‌ను శాశ్వతంగా చేయండి, లేకపోతే PadForge విండో ముందు ఉన్నప్పుడు మాత్రమే కీలు PadForgeకు చేరతాయి. G600 లేదా G300 మౌస్ ఆన్-బోర్డ్ మెమరీ మోడ్ నుండి కూడా బయట ఉండాలి.</value></data>

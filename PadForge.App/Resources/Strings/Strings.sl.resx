@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Več načinov igranja</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Pošlji drugam</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Na zaslonu</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Z drugimi programi</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uporabite telefon ali tablico kot krmilnik.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Razgledujte se s sledilnikom glave ali slušalkami VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Preslikajte hitrost, pedala in prestave iz voznih iger.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Slika, časovnik ali ura nad drugimi okni.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Svoj merilni križ nad igro.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Povečevalna leča, povečava celotnega zaslona ali reflektor.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Naj zaganjalniki, skripte in pomočniki sodelujejo s programom PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Dodajte naprave, ki jih zagotavljajo programi.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Vrata, navaden HTTP, koda za dostop</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Samodejna ponovna povezava, vrata, identiteta seznanjanja, povezava prek naslova</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Vrata, nadomestek DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Vrata, Polna hitrost, Formati po meri</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, veščina</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Razgledujte se z glavo s sledilnikom glave ali slušalkami VR, medtem ko imate oba palca na gumbih.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Preslikajte hitrost, pedale in prestave, ki jih pošilja vozniška igra, kot vsak drug vnos.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Pošiljajte gibanje krmilnika emulatorjem, ki berejo vir gibanja DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Temnost</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ni zagnal povečevalnika.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Leča in reflektor se prikažeta nad igrami v oknu in brez obrobe, kliki pa gredo skoznje. Celozaslonski način poveča celotno namizje z Windowsovim celozaslonskim povečevalnikom. Makro lahko povečevalnik pokaže ali skrije ali pa ga pokaže le med držanjem.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Avtomatizacija</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Dovoli zunanje programe</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Kaj smejo programi</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Raven</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Ukazi</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Branje</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Pošiljanje vnosov</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Spreminjanje nastavitev</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programi lahko preklapljajo profile in jih sproščajo, zaženejo in ustavijo mehanizem, vklopijo in izklopijo navidezne krmilnike, pokažejo in skrijejo okno, zaprejo PadForge, shranijo posnetek diagnostike in vprašajo, kaj deluje.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Vse na ravni Ukazi, programi pa lahko tudi vidijo naprave, navidezne krmilnike, preslikave, profile in nastavitve, sproti spremljajo vnose vsake naprave in vam pokažejo mesto v programu PadForge. Program na ravni Branje vidi vsako tipko, pritisnjeno na kateri koli napravi, tudi tipke, vtipkane v okna, ki se izvajajo kot skrbnik.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Vse na ravni Branje, programi pa lahko tudi dodajo lastne naprave in jih upravljajo, držijo krmilni element katere koli naprave in predajo poimenovane vrednosti sprožilcem makrov.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Vse na ravni Pošiljanje vnosov, programi pa lahko tudi spreminjajo to, kar lahko spreminjate na straneh.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Pomočniki</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Prilepite to v nastavitve MCP pomočnika. Pomočnik nato s programom PadForge sodeluje na zgornji ravni.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiraj kot TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Pomočniki, ki berejo TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skripte</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Knjižnica skript</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Shrani knjižnico …</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ena datoteka za AutoHotkey v2, Python ali PowerShell. Skripta, ki jo naloži, bere naprave in upravlja preslikave na zgornji ravni.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Čakajo na vas</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Dejavnost</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Noben program še ni poklical. Vsak klic je naveden tukaj z izidom.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Razveljavi</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Veščina za pomočnike</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Shrani veščino …</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge tega ni mogel shraniti: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Dokler je povezan program na ravni Branje ali višji, vidi, kaj je pritisnjeno na vsaki napravi, tudi na tipkovnicah.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Vtičniki</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Zaženi vtičnike</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Noben vtičnik ne deluje.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Vtičnik se izvaja z vašimi pravicami, ne s pravicami programa PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Strežnik gibanja</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Strežnik protokola DSU/CemuHook Motion Provider za podatke žiroskopa in merilnika pospeška.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Omogoči strežnik gibanja DSU (protokol CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Modifikacija igre</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Drug program drži ime cevi {0}. Zaprite ta program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows je zavrnil cev {0}, zato se programi ne morejo povezati.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Noben program ni povezan.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Povezano: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Neznan program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Opravljeno</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ni opravljeno</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Na tej ravni ni dovoljeno</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Zdaj ni na voljo</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge je bil zaseden</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Vrednost v zahtevi je bila napačna</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ni takega profila</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ni takega navideznega krmilnika</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge te zahteve ne pozna</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Zahteva je bila prazna</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge je naletel na težavo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Preklopi na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrni se na privzeti profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vprašaj, kateri profil je dejaven</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Vprašaj za različico programa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Vprašaj, kaj deluje</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Pošlji vrstico, ki je PadForge ne pozna: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Dovoli</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ne dovoli</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od {1}, ki se imenuje „{0}“</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programa, ki se imenuje „{0}“</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Od programa, ki ga Windows ni poimenoval</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>in še {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} od {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Brez odgovora v {0} velja kot ne.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Deluje s programom OpenTrack in vsakim sledilnikom, ki pošilja izhod prek UDP ali zapisuje v skupni pomnilnik FreeTrack 2.0, ter z izvajalnim okoljem OpenXR na tem računalniku, ki lahko izvaja sejo v ozadju.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Beri tipke G Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Bere tipke G prek kompleta SDK Logitech G-key. Zahteva, da se izvaja Logitech Gaming Software 8.55 ali novejši. V tem programu povlecite ukaz G-key na vsako tipko v profilu PadForge. Profil nastavite kot trajen, sicer tipke dosežejo PadForge le, ko je njegovo okno v ospredju. Miška G600 ali G300 mora biti poleg tega izven načina vgrajenega pomnilnika.</value></data>

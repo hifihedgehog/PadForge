@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Gèng duō wánfǎ</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Zhuǎnfā dào biéchù</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Píngmù xiǎnshì</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Yǔ qítā chéngxù xiézuò</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Jiāng shǒujī huò píngbǎn diànnǎo yòngzuò kòngzhìqì.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tōngguò tóubù zhuīzōngqì huò VR tóuxiǎn huánshì sìzhōu.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Yìngshè sàichē yóuxì zhōng de chēsù, tàbǎn hé dǎngwèi.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Zài qítā chuāngkǒu shàngfāng xiǎnshì túpiàn, jìshíqì huò shízhōng.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Zài yóuxì shàngfāng xiǎnshì nǐ zìjǐ de zhǔnxīng.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Fàngdà jìngtóu, quánpíng fàngdà huò jùguāngdēng.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Ràng qǐdòngqì, jiǎoběn hé zhùshǒu yǔ PadForge xiézuò.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Tiānjiā yóu chéngxù tígōng de shèbèi.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Duānkǒu, wèi jiāmì de HTTP, fǎngwènmǎ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Zìdòng chóngliánjiē, duānkǒu, pèiduì shēnfèn, tōngguò dìzhǐ liánjiē</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Duānkǒu, DSX.exe tìshēn chéngxù</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Duānkǒu, Mǎnfú chēsù, Zìdìngyì géshì</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Jìnéng</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Yòng tóubù zhuīzōngqì huò VR tóuxiǎn huánshì sìzhōu, shuāng mǔzhǐ réng kě liú zài ànniǔ shàng.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Xiàng yìngshè rènhé shūrù yíyàng, yìngshè sàichē yóuxì fāchū de chēsù, tàbǎn hé dàngwèi.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Jiāng kòngzhìqì tǐgǎn fāsòng gěi dúqǔ DSU tǐgǎn yuán de mónǐqì.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Hēi'àn chéngdù</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows wèi néng qǐdòng fàngdàjìng.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Jìngtóu hé jùguāngdēng xiǎnshì zài chuāngkǒu huà hé wúbiānkuàng yóuxì shàngfāng, diǎnjī huì chuāntòu tāmen. Quánpíng móshì yòng Windows de quánpíng fàngdàjìng fàngdà zhěnggè zhuōmiàn. Hóng kě xiǎnshì huò yǐncáng fàngdàjìng, huò jǐn zài àn zhù shí xiǎnshì.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Zìdònghuà</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Yǔnxǔ wàibù chéngxù</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Chéngxù kě zuò de shì</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Jíbié</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Mìnglìng</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Dúqǔ</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Fāsòng shūrù</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Gēnggǎi shèzhì</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Chéngxù kěyǐ qiēhuàn hé shìfàng pèizhì wénjiàn, qǐdòng hé tíngzhǐ yǐnqíng, kāiqǐ hé guānbì xūnǐ kòngzhìqì, xiǎnshì hé yǐncáng chuāngkǒu, guānbì PadForge, bǎocún zhěnduàn kuàizhào, yǐjí xúnwèn zhèngzài yùnxíng de nèiróng.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Bāohán Mìnglìng jíbié de quánbù quánxiàn, chéngxù hái kěyǐ chákàn shèbèi, xūnǐ kòngzhìqì, yìngshè, pèizhì wénjiàn hé shèzhì, shíshí gēnzōng měi gè shèbèi de shūrù, bìng zài PadForge zhōng xiàng nín zhǐchū mǒu gè wèizhì. Dúqǔ jíbié de chéngxù néng kàndào měi gè shèbèi shàng àn xià de měi gè jiàn, bāokuò zài yǐ guǎnlǐyuán shēnfèn yùnxíng de chuāngkǒu zhōng shūrù de jiàn.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Bāohán Dúqǔ jíbié de quánbù quánxiàn, chéngxù hái kěyǐ tiānjiā bìng qūdòng zìjǐ de shèbèi, bǎochí rènhé shèbèi de mǒu gè kòngjiàn, bìng xiàng hóng chùfāqì chuándì mìngmíng zhí.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Bāohán Fāsòng shūrù jíbié de quánbù quánxiàn, chéngxù hái kěyǐ gēnggǎi nín zài gè yèmiàn shàng kě gēnggǎi de nèiróng.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Zhùshǒu</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Jiāng cǐ nèiróng zhāntiē dào zhùshǒu de MCP shèzhì zhōng. Zhùshǒu suíhòu jiāng àn shàngfāng de jíbié yǔ PadForge xiézuò.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Fùzhì wéi TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Dúqǔ TOML de zhùshǒu</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Jiǎoběn</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Jiǎoběn kù</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Bǎocún kù…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Shìyòng yú AutoHotkey v2, Python huò PowerShell de dān gè wénjiàn. Jiāzài tā de jiǎoběn kě àn shàngfāng de jíbié dúqǔ shèbèi bìng qūdòng yìngshè.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Děngdài nín quèrèn</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Huódòng</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Shàngwèi yǒu chéngxù diàoyòng. Měi cì diàoyòng jí qí jiéguǒ dōu huì liè zài zhèlǐ.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Chèxiāo</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Zhùshǒu jìnéng</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Bǎocún jìnéng…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge wúfǎ bǎocún: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Dúqǔ jí gèng gāo jíbié de chéngxù liánjiē shí, néng kàndào měi gè shèbèi shàng àn xià de nèiróng, bāokuò jiànpán.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Chājiàn</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Yùnxíng chājiàn</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Méiyǒu chājiàn zài yùnxíng.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Chājiàn yǐ nín de quánxiàn yùnxíng, ér fēi PadForge de quánxiàn.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Tǐgǎn fúwùqì</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Yòng yú tuóluóyí hé jiāsùdùjì shùjù de DSU / CemuHook Motion Provider xiéyì fúwùqì.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Qǐyòng DSU tǐgǎn fúwùqì (CemuHook Motion Provider xiéyì)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mǒu gè yóuxì mózǔ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lìng yí gè chéngxù zhànyòng le guǎndào míngchēng {0}. Qǐng guānbì gāi chéngxù.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows jùjué le guǎndào {0}, yīncǐ chéngxù wúfǎ liánjiē.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Wèi liánjiē rènhé chéngxù.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Yǐ liánjiē: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Wèizhī chéngxù</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Yǐ wánchéng</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wèi wánchéng</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Cǐ jíbié bù yǔnxǔ</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Dāngqián bù kěyòng</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge dāngshí zhèng máng</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Qǐngqiú zhōng de mǒu gè zhí cuòwù</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Méiyǒu cǐ pèizhì wénjiàn</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Méiyǒu cǐ xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge bù rènshí cǐ qǐngqiú</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Qǐngqiú wéi kōng</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yùdào wèntí</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Qiēhuàn dào pèizhì wénjiàn {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fǎnhuí mòrèn pèizhì wénjiàn</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Xúnwèn dāngqián huódòng de pèizhì wénjiàn</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Xúnwèn PadForge de bǎnběn</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Xúnwèn zhèngzài yùnxíng de nèiróng</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Fāsòng PadForge bù rènshí de xíng: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Yǔnxǔ</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Bù yǔnxǔ</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Láizì {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Láizì {1}, qí zìchēng “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Láizì zìchēng “{0}” de chéngxù</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Láizì Windows wèi mìngmíng de chéngxù</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>lìng yǒu {0} xiàng</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} nèi wèi huídá jí shìwéi jùjué.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Shìyòng yú OpenTrack, rènhé fāsòng qí UDP shūchū huò xiěrù FreeTrack 2.0 gòngxiǎng nèicún de zhuīzōngqì, yǐjí běn jī shàng néng zài hòutái yùnxíng huìhuà de OpenXR yùnxíngshí.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Dúqǔ Logitech G jiàn</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Tōngguò Logitech G-key SDK dúqǔ G jiàn. Xūyào yùnxíng Logitech Gaming Software 8.55 huò gèng gāo bǎnběn. Qǐng zài gāi ruǎnjiàn zhōng, jiāng G-key mìnglìng tuō dào PadForge pèizhì wénjiàn de měi gè jiàn shàng. Qǐng jiāng gāi pèizhì wénjiàn shèwéi chángzhù, fǒuzé zhèxiē jiàn jǐn zài PadForge chuāngkǒu wèiyú qiántái shí cái huì sòngdá. Cǐwài, G600 huò G300 shǔbiāo bù néng chǔyú bǎnzài nèicún móshì.</value></data>

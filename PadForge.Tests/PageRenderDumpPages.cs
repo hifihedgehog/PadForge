@@ -218,6 +218,128 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The Automation and Plugins extras (#597): the catalog with
+        /// its fourth group, the Automation page off, then on with programs
+        /// connected, two questions waiting, a record of calls and every
+        /// part a later build provides, its More open, at the window's own
+        /// width too, the Plugins page off and on, and beside them the Game
+        /// Mods and Overlays pages at the same width to hold them against.
+        /// Then Home with both extras on, and the request card.</summary>
+        [Fact]
+        public void DrawAutomation()
+        {
+            Run("automation", drawing =>
+            {
+                const double Board = 1440 - 264, Usual = 1100 - 264;
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                var now = new DateTimeOffset(2026, 11, 23, 16, 4, 0, TimeSpan.Zero);
+                using var host = new PadForge.Services.Automation.AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                    "PadForge.Tests.Draw." + Guid.NewGuid().ToString("N"), _ => PadForge.Services.Automation.AutomationProgram.Unknown, () => now);
+                var dash = new DashboardViewModel
+                {
+                    RemoteLink = new SettingsViewModel(),
+                    DiscoverOpenXrRuntimes = () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>(),
+                    AutomationExePath = @"C:\PadForge\PadForge.exe",
+                };
+                dash.HeadTrackingFreeTrack = false;
+                dash.HeadTrackingOpenXr = false;
+                dash.AttachAutomation(host, drawing.App.Dispatcher);
+                var page = new ExtrasPage { DataContext = dash };
+                var ground = drawing.Ground(page);
+                drawing.Step("the Extras page is made");
+
+                dash.EngineStateKey = "Running";
+                drawing.Picture(ground, "automation-catalog.png", Board, 1180, () => page.Show(null));
+                drawing.Picture(ground, "automation-off.png", Board, 900, () => page.Show("Automation"));
+
+                // On, serving, with two programs connected and every part a
+                // later build provides.
+                dash.EnableAutomation = true;
+                dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.Read;
+                dash.IsAutomationRunning = true;
+                dash.AutomationStatus = string.Format(s.Automation_Status_Connected_Format, "Playnite, powershell");
+                host.Libraries = new DrawnLibraries();
+                host.SaveSkill = _ => { };
+                PadForge.Services.Automation.AutomationActivityEntry Call(int minute, string program, PadForge.Services.Automation.AutomationAskKind kind,
+                    bool ok, string argument = null)
+                    => new PadForge.Services.Automation.AutomationActivityEntry(now.AddMinutes(minute - 4),
+                        new PadForge.Services.Automation.AutomationProgram(program, 4000 + minute, program + ".exe"),
+                        new PadForge.Services.Automation.AutomationAsk(kind, argument), ok ? "ok" : "error not-allowed", ok);
+                var undoable = Call(1, "assistant", PadForge.Services.Automation.AutomationAskKind.ControllerOff, true, "2");
+                host.Activity.Add(Call(0, "Playnite", PadForge.Services.Automation.AutomationAskKind.ActivateProfile, true, "Forza Wheel"));
+                host.Activity.Add(undoable);
+                host.Activity.Add(Call(2, "powershell", PadForge.Services.Automation.AutomationAskKind.EngineOff, false));
+                host.Activity.Add(Call(3, "Playnite", PadForge.Services.Automation.AutomationAskKind.State, true));
+                host.Activity.Add(Call(3, "AutoHotkey64", PadForge.Services.Automation.AutomationAskKind.Snapshot, true));
+                host.Activity.Add(Call(4, "Playnite", PadForge.Services.Automation.AutomationAskKind.DeactivateProfile, true));
+                host.CanUndo = e => ReferenceEquals(e, undoable);
+                host.Undo = _ => { };
+                drawing.Picture(ground, "automation-on-idle.png", Board, 1700, () => page.Show("Automation"));
+                var playnite = new PadForge.Services.Automation.AutomationProgram("Playnite", 4100, "Playnite.DesktopApp.exe");
+                string[] runs = { @"C:\Tools\SimHub\SimHubWPF.exe", "Arguments: --minimized" };
+                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(playnite, "Run a program when the profile Forza Wheel starts", runs));
+                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(
+                    new PadForge.Services.Automation.AutomationProgram("powershell", 4200, "powershell.exe"),
+                    "Import the profile Racing.pfprofile", Array.Empty<string>()));
+                drawing.Picture(ground, "automation-on.png", Board, 2100, () => page.Show("Automation"));
+                var more = (Expander)page.FindName("AutomationMore");
+                drawing.Picture(ground, "automation-more.png", Board, 2250, () => more.IsExpanded = true);
+                drawing.Picture(ground, "automation-1100.png", Usual, 2500);
+                more.IsExpanded = false;
+                drawing.Picture(ground, "automation-change-settings.png", Board, 2100,
+                    () => dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.ChangeSettings);
+
+                drawing.Picture(ground, "plugins-off.png", Board, 700, () => page.Show("Plugins"));
+                drawing.Picture(ground, "plugins-on.png", Board, 700, () => dash.EnablePlugins = true);
+                drawing.Picture(ground, "automation-catalog-on.png", Board, 1180, () => page.Show(null));
+
+                // The pages they are held against, at the same width.
+                dash.EnableGameModServer = true;
+                dash.IsGameModServerRunning = true;
+                dash.GameModServerStatus = string.Format(s.Server_ListeningOn_Format, 6969);
+                drawing.Picture(ground, "compare-gamemods.png", Board, 700, () => page.Show("GameMods"));
+                dash.OverlaysAnyEnabled = true;
+                drawing.Picture(ground, "compare-overlays.png", Board, 700, () => page.Show("Overlays"));
+                // A choice of a few, its reset and a line under it, as the
+                // level's row has.
+                dash.MagnifierEnabled = true;
+                drawing.Picture(ground, "compare-magnifier.png", Board, 1000, () => page.Show("Magnifier"));
+
+                // Home with both extras on, beside one controller, which takes
+                // Home past its first page.
+                dash.OnlineDevices = 1;
+                dash.SlotSummaries.Add(new SlotSummary(0)
+                {
+                    OutputType = VirtualControllerType.KeyboardMouse, PresetName = "Keyboard + Mouse", TypeInstanceLabel = "1", SlotNumber = 1,
+                });
+                var home = new HomePage { DataContext = dash };
+                drawing.Picture(drawing.Ground(home), "automation-home.png", Board, 1400);
+
+                // The request card: two questions, the first with more lines
+                // than the card shows, then one alone.
+                foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(
+                    new PadForge.Services.Automation.AutomationProgram(null, 4300, "python.exe"),
+                    "Send keyboard input to Windows from a macro",
+                    Enumerable.Range(1, 8).Select(i => "Macro " + i + " types into the window in front").ToArray()));
+                host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(playnite, "Run a program when the profile Forza Wheel starts", runs));
+                drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(8)), "automation-card.png");
+                dash.AutomationRequests[0].DenyCommand.Execute(null);
+                drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(70)), "automation-card-one.png");
+                foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+            });
+        }
+
+        private sealed class DrawnLibraries : PadForge.Services.Automation.IAutomationLibraries
+        {
+            public System.Collections.Generic.IReadOnlyList<PadForge.Services.Automation.AutomationLibraryKind> Kinds { get; } = new[]
+            {
+                new PadForge.Services.Automation.AutomationLibraryKind("AutoHotkey v2", "PadForge.ahk", "AutoHotkey v2 (*.ahk)|*.ahk"),
+            };
+
+            public void Save(PadForge.Services.Automation.AutomationLibraryKind kind, string path) { }
+        }
+
         /// <summary>Get Profiles on each tab, drawn from a window shown off
         /// every screen and never activated: a window has no picture until it
         /// is shown. Community stays cold, since its other states reach the

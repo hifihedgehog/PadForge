@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>ተጨማሪ የመጫወቻ መንገዶች</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ወደ ሌላ ቦታ ይላኩ</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>በማያ ገጽ ላይ</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>ከሌሎች ፕሮግራሞች ጋር</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ስልክን ወይም ታብሌትን እንደ መቆጣጠሪያ ይጠቀሙ።</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>በራስ መከታተያ ወይም በVR መነጽር ዙሪያውን ይመልከቱ።</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ከመንዳት ጨዋታዎች ፍጥነትን፣ ፔዳሎችን እና ማርሾችን ያዛምዱ።</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ከሌሎች መስኮቶች በላይ የሚታይ ምስል፣ ሰዓት ቆጣሪ ወይም ሰዓት።</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>በጨዋታ ላይ የሚታይ የራስዎ ማነጣጠሪያ።</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>የማጉያ ሌንስ፣ ሙሉ ማያ ገጽ ማጉላት ወይም የትኩረት ብርሃን።</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>ማስጀመሪያዎች፣ ስክሪፕቶች እና ረዳቶች ከPadForge ጋር እንዲሠሩ ይፍቀዱ።</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>ፕሮግራሞች የሚያቀርቧቸውን መሣሪያዎች ያክሉ።</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ወደብ፣ ተራ HTTP፣ የመዳረሻ ኮድ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ራስ-ሰር ዳግም ግንኙነት፣ ወደብ፣ የማጣመሪያ ማንነት፣ በአድራሻ አገናኝ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ወደብ፣ የDSX.exe ተተኪ</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ወደቦች፣ «ሙሉ ፍጥነት»፣ «ብጁ ቅርጸቶች»</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML፣ ክህሎት</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ሁለቱም አውራ ጣቶችዎ በአዝራሮቹ ላይ እንዳሉ በራስ መከታተያ ወይም በVR ሄድሴት ዙሪያውን ይመልከቱ።</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>የመንዳት ጨዋታ የሚልከውን ፍጥነት፣ ፔዳሎች እና ማርሾች እንደማንኛውም ግብዓት ያዛምዱ።</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>የDSU እንቅስቃሴ ምንጭ ለሚያነቡ ኢምዩሌተሮች የመቆጣጠሪያ እንቅስቃሴን ይላኩ።</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ጨለማነት</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ማጉያውን አላስጀመረም።</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ሌንሱ እና የትኩረት ብርሃኑ በመስኮት እና ያለ ድንበር በሚሄዱ ጨዋታዎች ላይ ይታያሉ፣ ጠቅታዎችም በውስጣቸው ያልፋሉ። «ሙሉ ማያ ገጽ» መላውን ዴስክቶፕ Windows ባለው የሙሉ ማያ ገጽ ማጉያ ያጎላል። ማክሮ ማጉያውን ሊያሳይ ወይም ሊደብቅ፣ ወይም ተጭኖ ሲያዝ ብቻ ሊያሳየው ይችላል።</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>አውቶሜሽን</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>የውጭ ፕሮግራሞችን ፍቀድ</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>ፕሮግራሞች ማድረግ የሚችሉት</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>ደረጃ</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>ትዕዛዞች</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>ማንበብ</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ግብዓቶችን መላክ</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>ቅንብሮችን መቀየር</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ፕሮግራሞች መገለጫዎችን መቀየር እና መልቀቅ፣ ሞተሩን ማስጀመር እና ማቆም፣ ምናባዊ መቆጣጠሪያዎችን ማብራት እና ማጥፋት፣ መስኮቱን ማሳየት እና መደበቅ፣ PadForge መዝጋት፣ የምርመራ ቅጽበታዊ ቅጂ ማስቀመጥ እና ምን እየሄደ እንደሆነ መጠየቅ ይችላሉ።</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>በ«ትዕዛዞች» ያለው ሁሉ፣ እና ፕሮግራሞች መሣሪያዎችን፣ ምናባዊ መቆጣጠሪያዎችን፣ ማዛመጃዎችን፣ መገለጫዎችን እና ቅንብሮችን ማየት፣ የእያንዳንዱን መሣሪያ ግብዓቶች በተከሰቱበት ቅጽበት መከታተል እና በPadForge ውስጥ አንድ ቦታ ሊያሳዩዎት ይችላሉ። በ«ማንበብ» ደረጃ ያለ ፕሮግራም በእያንዳንዱ መሣሪያ ላይ የተጫነውን እያንዳንዱን ቁልፍ ያያል፣ እንደ አስተዳዳሪ በሚሄዱ መስኮቶች ውስጥ የተተየቡ ቁልፎችንም ጨምሮ።</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>በ«ማንበብ» ያለው ሁሉ፣ እና ፕሮግራሞች የራሳቸውን መሣሪያዎች ማከል እና መቆጣጠር፣ የማንኛውንም መሣሪያ መቆጣጠሪያ ክፍል መያዝ እና የተሰየሙ እሴቶችን ለማክሮ ቀስቅሴዎች ማስተላለፍ ይችላሉ።</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>በ«ግብዓቶችን መላክ» ያለው ሁሉ፣ እና ፕሮግራሞች እርስዎ በገጾቹ ላይ መቀየር የሚችሉትን መቀየር ይችላሉ።</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ረዳቶች</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ይህንን በረዳቱ የMCP ቅንብሮች ውስጥ ይለጥፉ። ከዚያ ረዳቱ ከላይ ባለው ደረጃ ከPadForge ጋር ይሠራል።</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>እንደ TOML ቅዳ</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML የሚያነቡ ረዳቶች</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ስክሪፕቶች</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>የስክሪፕት ቤተ መጻሕፍት</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ቤተ መጻሕፍት አስቀምጥ…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ለAutoHotkey v2፣ Python ወይም PowerShell አንድ ፋይል። የሚጭነው ስክሪፕት ከላይ ባለው ደረጃ መሣሪያዎችን ያነባል እና ማዛመጃዎችን ይቆጣጠራል።</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>እርስዎን በመጠበቅ ላይ</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>እንቅስቃሴ</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>እስካሁን ምንም ፕሮግራም ጥሪ አላደረገም። እያንዳንዱ ጥሪ ከውጤቱ ጋር እዚህ ይዘረዘራል።</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>ቀልብስ</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>ክህሎት ለረዳቶች</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>ክህሎቱን አስቀምጥ…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ሊያስቀምጠው አልቻለም፦ {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>በ«ማንበብ» ወይም ከዚያ በላይ ያለ ፕሮግራም ተገናኝቶ ሳለ በእያንዳንዱ መሣሪያ ላይ የሚጫነውን ያያል፣ የቁልፍ ሰሌዳዎችንም ጨምሮ።</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>ተሰኪዎች</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ተሰኪዎችን አሂድ</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ምንም ተሰኪ እየሄደ አይደለም።</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ተሰኪ የሚሄደው በእርስዎ መብቶች ነው እንጂ በPadForge መብቶች አይደለም።</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>የእንቅስቃሴ አገልጋይ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ለጋይሮ እና ለአክስሌሮሜትር ውሂብ የDSU/CemuHook Motion Provider ፕሮቶኮል አገልጋይ።</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>የDSU እንቅስቃሴ አገልጋይን አንቃ (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>አንድ የጨዋታ ሞድ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>ሌላ ፕሮግራም የቧንቧ ስሙን {0} ይዞታል። ያንን ፕሮግራም ይዝጉ።</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ቧንቧውን {0} ስላልፈቀደ ፕሮግራሞች መገናኘት አይችሉም።</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ምንም ፕሮግራም አልተገናኘም።</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>የተገናኙ፦ {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>ያልታወቀ ፕሮግራም</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>ተከናውኗል</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>አልተከናወነም</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>በዚህ ደረጃ አይፈቀድም</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>አሁን አይገኝም</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge ሥራ በዝቶበት ነበር</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>በጥያቄው ውስጥ ያለ እሴት ትክክል አልነበረም</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>እንደዚህ ያለ መገለጫ የለም</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>እንደዚህ ያለ ምናባዊ መቆጣጠሪያ የለም</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ይህንን ጥያቄ አያውቀውም</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>ጥያቄው ባዶ ነበር</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ችግር አጋጥሞታል</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ወደ መገለጫው {0} ቀይር</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ወደ ነባሪው መገለጫ ተመለስ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>የትኛው መገለጫ ንቁ እንደሆነ ጠይቅ</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>የPadForge ስሪትን ጠይቅ</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ምን እየሄደ እንደሆነ ጠይቅ</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge የማያውቀውን መስመር ላክ፦ {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>ፍቀድ</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>አትፍቀድ</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>ከ{0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ራሱን «{0}» ብሎ ከሚጠራው {1}</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ራሱን «{0}» ብሎ ከሚጠራ ፕሮግራም</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows ስም ካልሰጠው ፕሮግራም</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>እና ሌሎች {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ከ{1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>በ{0} ውስጥ መልስ ካልተሰጠ እንደ አይሆንም ይቆጠራል።</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ከOpenTrack እና የUDP ውጽዓቱን ከሚልክ ወይም የFreeTrack 2.0 የጋራ ማህደረ ትውስታ ከሚጽፍ ማንኛውም መከታተያ ጋር ይሠራል፣ እንዲሁም በዚህ ኮምፒውተር ላይ ክፍለ ጊዜን ከበስተጀርባ ማስኬድ ከሚችል የOpenXR ራንታይም ጋር ይሠራል።</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>የLogitech G ቁልፎችን አንብብ</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>የG-key ቁልፎችን በLogitech G-key SDK በኩል ያነባል። Logitech Gaming Software 8.55 ወይም ከዚያ በኋላ ያለው እየሄደ መሆን አለበት። በዚያ ሶፍትዌር ውስጥ የG-key ትዕዛዙን በPadForge መገለጫ ውስጥ ባለው በእያንዳንዱ ቁልፍ ላይ ይጎትቱ። ያንን መገለጫ ቋሚ ያድርጉት፣ አለበለዚያ ቁልፎቹ PadForge የሚደርሱት መስኮቱ ፊት ለፊት ሲሆን ብቻ ነው። G600 ወይም G300 መዳፊት ደግሞ ከውስጠ-መሣሪያ ማህደረ ትውስታ ሁነታ መውጣት አለበት።</value></data>

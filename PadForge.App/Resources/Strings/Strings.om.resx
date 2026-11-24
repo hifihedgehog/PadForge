@@ -2177,8 +2177,38 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamtii kutaniiru</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamaniiru</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} irra deddeebiin wal qunnamtii kutaa jira</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Sagantaalee biroo wajjin</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Gargaartota</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kana qindaa'ina MCP gargaaraa tokkoo keessa maxxansi. Gargaaraan sun sana booda sadarkaa olii irratti PadForge wajjin hojjeta.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Bifa TOML irratti garagalchi</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Gargaartota TOML dubbisan</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Iskiriptoota</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Mana kitaabaa iskiriptii</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Mana kitaabaa olkaa'i…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faayilii tokko kan AutoHotkey v2, Python ykn PowerShell. Iskiriptiin isa fe'u meeshaalee dubbisa, walqabsiisa immoo sadarkaa olii irratti oofa.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Si eeggachaa jira</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Sochii</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ammaaf sagantaan tokkollee hin waamne. Waamichi hundi bu'aa isaa wajjin as tarreeffama.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Duubatti deebisi</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Dandeettii gargaartotaaf</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Dandeettii olkaa'i…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Pilaagiin tokkollee hin hojjetu.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sagantaan biraa maqaa paayippii {0} qabateera. Sagantaa sana cufi.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows paayippii {0} dideera, kanaaf sagantaaleen wal qunnamuu hin danda'an.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Sagantaan wal qunname hin jiru.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wal qunnamaa: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Sagantaa hin beekamne</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Raawwatameera</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Hin raawwatamne</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Sadarkaa kanatti hin hayyamamu</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Amma hin argamu</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge hojii biraatiin qabamee ture</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Gatiin gaaffii keessaa tokko dogoggora ture</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Piroofaayiliin akkasii hin jiru</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Kontirolaan fakkeessaa akkasii hin jiru</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge gaaffii kana hin beeku</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Gaaffiin duwwaa ture</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge rakkoo keessa gale</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gara piroofaayilii {0} jijjiiri</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gara piroofaayilii durtii deebi'i</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Piroofaayiliin kam akka hojii irra jiru gaafadhu</value></data>
@@ -2199,6 +2229,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Veershinii PadForge gaafadhu</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Maaltu akka hojjechaa jiru gaafadhu</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sarara PadForge hin beekne ergi: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Hayyami</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Hin hayyamin</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} irraa</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} irraa, kan ofiin “{0}” jedhu</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Sagantaa ofiin “{0}” jedhu irraa</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Sagantaa Windows maqaa hin kenniniif irraa</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>fi {0} dabalataa</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kan {1} keessaa</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Deebiin {0} keessatti hin kennamne akka lakkii lakkaa'ama.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kuusa odeeffannoo kontirolaa</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Amma haaromsi kuusa odeeffannoo kontirolaa hawaasaa (SDL_GameControllerDB) GitHub irraa buufata, walqabsiisa veershiniin PadForge kun hin qabne immoo faayilii qindaa'inaa keessatti kuusa. Walqabsiisni haaraan kan fayyadamu kontirolaa wanti biraa akka gamepad hin dubbisne, hin ramadamne fi Haala joystick dheedhii dirqisiisi keessa hin jirreef qofa. Deebisuun walqabsiisa buufatame hunda haqa.</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Haaromsaa jira…</value></data>

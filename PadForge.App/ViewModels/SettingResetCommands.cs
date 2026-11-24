@@ -328,7 +328,8 @@ namespace PadForge.ViewModels
             nameof(EnableAutomation) or
             nameof(AutomationLevel) or
             nameof(EnableDeviceDisconnectedNote) or
-            nameof(EnableDeviceConnectedNote);
+            nameof(EnableDeviceConnectedNote) or
+            nameof(EnablePlugins);
 
         private void ResetSetting(string name)
         {
@@ -430,6 +431,13 @@ namespace PadForge.ViewModels
                 case nameof(EnableDeviceConnectedNote):
                 {
                     EnableDeviceConnectedNote = false;
+                    break;
+                }
+                case nameof(EnablePlugins):
+                {
+                    // Off is the default: no plugin runs until the user
+                    // asks.
+                    EnablePlugins = false;
                     break;
                 }
                 default: return;

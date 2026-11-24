@@ -288,6 +288,11 @@ namespace PadForge.ViewModels
                 case nameof(Magnifier):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(MagnifierEnabled)));
                     break;
+                case nameof(AutomationLevel):
+                    // The Automation page's choice and its line (#597).
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(AutomationLevelIndex)));
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(AutomationLevelLine)));
+                    break;
             }
             // Home's own followers: its engine button and its count of the
             // extras in use (the Home part).

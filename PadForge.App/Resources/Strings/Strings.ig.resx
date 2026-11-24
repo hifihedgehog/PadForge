@@ -126,6 +126,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Otu mod egwuregwu</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Mmemme ọzọ jidere aha pipe {0}. Mechie mmemme ahụ.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows jụrụ pipe {0}, ya mere mmemme enweghị ike ijikọ.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ọ dịghị mmemme jikọrọ.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Ejikọrọ: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Mmemme amaghị ama</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Emechara</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Emeghị ya</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Anaghị ekwe ya n'ọkwa a</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ọ dịghị ugbu a</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge nọ n'ọrụ</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Otu uru dị na arịrịọ ahụ ezighi ezi</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Enweghị profile dị otu a</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Enweghị virtual controller dị otu a</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge amaghị arịrịọ a</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Arịrịọ ahụ tọgbọrọ chakoo</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge zutere nsogbu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gbanwee gaa na profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Laghachi na profile ndabara</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Jụọ profile na-arụ ọrụ</value></data>
@@ -1311,11 +1325,14 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Ụzọ ndị ọzọ iji gwuo egwu</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ziga ya ebe ọzọ</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Na ihuenyo</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Ya na mmemme ndị ọzọ</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Kenye ọsọ, pedal na gear sitere na egwuregwu ịkwọ ụgbọala.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nata mmetụta trigger na ọkụ sitere na mod egwuregwu.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Gosi menu, layer, mgbanwe profile na njikọ ngwaọrụ mgbe ị na-egwu egwu.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, ihe nnọchi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Ọsọ zuru ezu, Usoro nke gị</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} jikọrọ, mana a naghị eji ya.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Jiri ya</value></data>
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Gịnị ka egwuregwu kwesịrị ịhụ?</value></data>
@@ -1543,8 +1560,38 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ngwaọrụ {0} akwụsịla njikọ</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ngwaọrụ {0} ejikọla</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} na-akwụsị njikọ ugboro ugboro</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Kwe ka launcher, script na assistant rụọ ọrụ ya na PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Tinye ngwaọrụ ndị mmemme na-enye.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Aha ngwaọrụ e kenyere mgbe ọ kwụsịrị njikọ.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Aha ngwaọrụ e kenyere mgbe ọ jikọrọ.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Kwe ka mmemme ndị ọzọ banye</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ihe mmemme nwere ike ime</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Ọkwa</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistant</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Mado nke a n'ime ntọala MCP nke assistant. Assistant ahụ ga-arụ ọrụ ya na PadForge n'ọkwa dị n'elu.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Detuo dịka TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistant na-agụ TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Ọbá script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Chekwaa ọbá…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Otu faịlụ maka AutoHotkey v2, Python ma ọ bụ PowerShell. Script na-ebunye ya na-agụ ngwaọrụ ma na-achịkwa mapping n'ọkwa dị n'elu.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Na-echere gị</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ihe omume</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ọ dịbeghị mmemme kpọrọ oku. A ga-edepụta oku ọ bụla ebe a ya na ihe si na ya pụta.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Megharịa</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill maka assistant</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Chekwaa skill ahụ…</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Gbaa plugin</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ọ dịghị plugin na-agba.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Kwe</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ekwela</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Site na {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Site na {1}, nke na-akpọ onwe ya “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Site na mmemme na-akpọ onwe ya “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Site na mmemme Windows na-akpọghị aha</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>na {0} ọzọ</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} n'ime {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ọ bụrụ na azaghị n'ime {0}, ọ bụ mba.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ntọgharị ahụ na-ewepụ mapping niile e budatara.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>

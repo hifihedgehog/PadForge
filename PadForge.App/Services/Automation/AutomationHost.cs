@@ -27,6 +27,11 @@ namespace PadForge.Services.Automation
     /// <see cref="RecordStop"/>, <see cref="RecordMark"/>,
     /// <see cref="Recording"/>), empty until a build's recorder fills
     /// them.</item>
+    /// <item>What the Automation page calls for its Undo, Save the Skill and
+    /// Save a Library buttons (<see cref="CanUndo"/>, <see cref="Undo"/>,
+    /// <see cref="SaveSkill"/>, <see cref="Libraries"/>), empty until a
+    /// build's part fills them, and the buttons absent while they
+    /// are.</item>
     /// </list>
     ///
     /// <para><see cref="Apply"/> and <see cref="Dispose"/> are called on the
@@ -57,12 +62,17 @@ namespace PadForge.Services.Automation
         /// of its own, since a pipe name is one for the whole PC.</param>
         /// <param name="programOf">Names the program behind a process ID. A
         /// test gives its own.</param>
-        /// <param name="now">The clock Activity is stamped by.</param>
+        /// <param name="now">The clock Activity and the questions are
+        /// stamped by.</param>
+        /// <param name="approvalWait">How long a question waits for the
+        /// user. Two minutes when none is given. A test gives a short
+        /// one.</param>
         public AutomationHost(IAutomationTarget target, IAutomationUi ui, string controlPipeName = null,
-            Func<int, AutomationProgram> programOf = null, Func<DateTimeOffset> now = null)
+            Func<int, AutomationProgram> programOf = null, Func<DateTimeOffset> now = null, TimeSpan? approvalWait = null)
         {
             _programOf = programOf ?? AutomationProgram.FromProcessId;
             _now = now ?? (() => DateTimeOffset.Now);
+            Approvals = new AutomationApprovals(approvalWait, _now);
             Commands = new AutomationCommands(target, this, ui);
             _control = new ExternalControlService(AnswerControlLine, controlPipeName);
             _control.StateChanged += OnControlPipeEnded;
@@ -110,7 +120,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>The questions a program's call put to the user. Nothing
         /// in the command set asks one.</summary>
-        public AutomationApprovals Approvals { get; } = new AutomationApprovals();
+        public AutomationApprovals Approvals { get; }
 
         /// <summary>The programs connected over the long-lived pipe.</summary>
         public AutomationClients Clients { get; } = new AutomationClients();
@@ -135,6 +145,54 @@ namespace PadForge.Services.Automation
         /// in a build with no recorder, which the state line reads as
         /// no.</summary>
         public Func<bool> Recording { get; set; }
+
+        private Func<AutomationActivityEntry, bool> _canUndo;
+        private Action<AutomationActivityEntry> _undo;
+        private Action<string> _saveSkill;
+        private IAutomationLibraries _libraries;
+
+        /// <summary>Raised on the thread that set one of
+        /// <see cref="CanUndo"/>, <see cref="Undo"/>, <see cref="SaveSkill"/>
+        /// and <see cref="Libraries"/>, so the Automation page shows or
+        /// hides the buttons that call it.</summary>
+        public event EventHandler ProvidedChanged;
+
+        /// <summary>Whether the change an Activity entry records can be
+        /// undone now. Null in a build where nothing can be undone, and then
+        /// no entry offers Undo. Called on the interface's thread.</summary>
+        public Func<AutomationActivityEntry, bool> CanUndo
+        {
+            get => _canUndo;
+            set { _canUndo = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
+        }
+
+        /// <summary>Undoes the change an Activity entry records, as one step.
+        /// Null as <see cref="CanUndo"/> is. Called on the interface's
+        /// thread, for an entry <see cref="CanUndo"/> said yes to.</summary>
+        public Action<AutomationActivityEntry> Undo
+        {
+            get => _undo;
+            set { _undo = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
+        }
+
+        /// <summary>Writes the skill an assistant reads from disk into the
+        /// folder given, which the user picked. Null in a build that has no
+        /// skill to write, and then the page has no Save the Skill button.
+        /// Called on the interface's thread. A failure throws.</summary>
+        public Action<string> SaveSkill
+        {
+            get => _saveSkill;
+            set { _saveSkill = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
+        }
+
+        /// <summary>The script libraries Save a Library writes. Null in a
+        /// build that carries none, and then the page has no Scripts
+        /// card.</summary>
+        public IAutomationLibraries Libraries
+        {
+            get => _libraries;
+            set { _libraries = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
+        }
 
         /// <summary>
         /// Takes the Automation switch and its level as the settings hold

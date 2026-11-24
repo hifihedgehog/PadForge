@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>More Ways to Play</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Send It Elsewhere</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>On Screen</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>With Other Programs</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Use a phone or tablet as a controller.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Look around with a head tracker or VR headset.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Map speed, pedals and gears from driving games.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>A picture, timer or clock above other windows.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Your own crosshair over a game.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>A zoom lens, a full-screen zoom or a spotlight.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Let launchers, scripts and assistants work with PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Add devices that programs provide.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP, access code</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, connect by address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Full Speed, Custom Formats</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Look around with a head tracker or VR headset while both thumbs stay on the buttons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Map the speed, pedals and gears a driving game sends, like any input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Send controller motion to emulators that read a DSU motion source.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Darkness</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows did not start the magnifier.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>The lens and the spotlight show over windowed and borderless games, and clicks pass through them. Full Screen zooms the whole desktop with Windows’ full-screen magnifier. A macro can show or hide the magnifier, or show it only while held.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automation</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Allow Outside Programs</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>What Programs May Do</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Level</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Commands</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Read</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Send Inputs</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Change Settings</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programs can switch profiles and release them, start and stop the engine, turn virtual controllers on and off, show and hide the window, close PadForge, save a diagnostics snapshot and ask what is running.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Everything at Commands, and programs can see devices, virtual controllers, mappings, profiles and settings, follow the inputs of every device as they happen, keyboards and mice included, and show you a place in PadForge.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Everything at Read, and programs can add devices of their own and drive them, hold a control of any device and hand named values to macro triggers.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Everything at Send Inputs, and programs can change what you can change on the pages.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistants</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Paste this into an assistant’s MCP settings. The assistant then works with PadForge at the level above.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copy as TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistants That Read TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Script Library</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Save a Library…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>One file for AutoHotkey v2, Python or PowerShell. A script that loads it reads devices and drives mappings at the level above.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Waiting for You</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activity</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>No program has called yet. Each call is listed here with what came of it.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Undo</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill for Assistants</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Save the Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge could not save it: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>While a program at Read or higher is connected, it sees what is pressed on every device, keyboards included.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Run Plugins</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No plugin runs.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>A plugin runs with your rights, not PadForge’s.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>A game mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Another program holds the pipe name {0}. Close that program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows refused the pipe {0}, so programs cannot connect.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>No program is connected.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connected: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Unknown program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Not done</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Not allowed at this level</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Not available now</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge was busy</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>A value in the request was wrong</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>No such profile</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>No such virtual controller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge does not know this request</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>The request was empty</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ran into a problem</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Switch to the profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Return to the default profile</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ask which profile is active</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Ask for PadForge’s version</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Ask what is running</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Send a line PadForge does not know: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Allow</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Don’t Allow</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>From {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>From {1}, which calls itself “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>From a program that calls itself “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>From a program Windows did not name</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>and {0} more</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} of {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>No answer in {0} counts as no.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Works with OpenTrack and any tracker that sends its UDP output or writes FreeTrack 2.0 shared memory, and with an OpenXR runtime on this machine that can run a session in the background.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Read Logitech G-Keys</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Reads G-keys through the Logitech G-key SDK. Needs Logitech Gaming Software 8.55 or later running. In that software, drag the G-key command onto each key in the PadForge profile. Make that profile persistent, or the keys only reach PadForge while its window is in front. A G600 or G300 mouse also has to be out of on-board memory mode.</value></data>

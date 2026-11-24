@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Daha fazla oynama yolu</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Başka yere gönder</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekranda</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Diğer programlarla</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Telefonu veya tableti kontrolcü olarak kullanın.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Kafa takip cihazı veya VR gözlüğüyle etrafa bakın.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Sürüş oyunlarındaki hızı, pedalları ve vitesleri eşleyin.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Diğer pencerelerin üstünde bir resim, zamanlayıcı veya saat.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Oyunun üstünde kendi nişangahınız.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Bir yakınlaştırma merceği, tam ekran yakınlaştırma veya bir spot ışığı.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Başlatıcıların, betiklerin ve asistanların PadForge ile çalışmasına izin verin.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Programların sağladığı cihazları ekleyin.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, düz HTTP, erişim kodu</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Otomatik yeniden bağlan, port, eşleştirme kimliği, adresle bağlan</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe vekili</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portlar, Tam hız, Özel biçimler</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Beceri</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Başparmaklarınız düğmelerde kalırken bir kafa izleyici veya VR gözlüğüyle etrafa bakın.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Sürüş oyununun gönderdiği hızı, pedalları ve vitesleri herhangi bir giriş gibi eşleyin.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Kontrolcü hareketini DSU hareket kaynağı okuyan öykünücülere gönderin.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Karanlık</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows büyüteci başlatmadı.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Mercek ve spot ışığı pencereli ve çerçevesiz oyunların üstünde görünür ve tıklamalar içlerinden geçer. Tam ekran modu, Windows'un tam ekran büyütecini kullanarak masaüstünün tamamını yakınlaştırır. Bir makro büyüteci gösterebilir veya gizleyebilir ya da yalnızca basılı tutulurken gösterebilir.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Otomasyon</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Dış programlara izin ver</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Programlar ne yapabilir</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Düzey</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Komutlar</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Okuma</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Giriş gönderme</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Ayarları değiştirme</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programlar profil değiştirebilir ve bırakabilir, motoru başlatıp durdurabilir, sanal kontrolcüleri açıp kapatabilir, pencereyi gösterip gizleyebilir, PadForge'u kapatabilir, tanılama anlık görüntüsü kaydedebilir ve nelerin çalıştığını sorabilir.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Komutlar düzeyindeki her şey, ayrıca programlar cihazları, sanal kontrolcüleri, eşlemeleri, profilleri ve ayarları görebilir, her cihazın girişlerini anında izleyebilir ve size PadForge'da bir yer gösterebilir. Okuma düzeyindeki bir program, yönetici olarak çalışan pencerelere yazılan tuşlar dahil, her cihazda basılan her tuşu görür.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Okuma düzeyindeki her şey, ayrıca programlar kendi cihazlarını ekleyip sürebilir, herhangi bir cihazın bir kontrolünü basılı tutabilir ve makro tetikleyicilerine adlandırılmış değerler iletebilir.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Giriş gönderme düzeyindeki her şey, ayrıca programlar sayfalarda değiştirebildiğiniz her şeyi değiştirebilir.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistanlar</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Bunu bir asistanın MCP ayarlarına yapıştırın. Asistan bundan sonra PadForge ile yukarıdaki düzeyde çalışır.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML olarak kopyala</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML okuyan asistanlar</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Betikler</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Betik kitaplığı</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Kitaplık kaydet…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python veya PowerShell için tek dosya. Onu yükleyen bir betik, yukarıdaki düzeyde cihazları okur ve eşlemeleri yönetir.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Sizi bekleyenler</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Etkinlik</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Henüz hiçbir program çağrı yapmadı. Her çağrı, sonucuyla birlikte burada listelenir.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Geri al</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Asistanlar için beceri</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Beceriyi kaydet…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kaydedemedi: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Okuma veya daha yüksek düzeyde bir program bağlıyken, klavyeler dahil her cihazda nelere basıldığını görür.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Eklentiler</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Eklentileri çalıştır</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hiçbir eklenti çalışmıyor.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Bir eklenti, PadForge'un değil sizin haklarınızla çalışır.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hareket sunucusu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Jiroskop ve ivmeölçer verileri için DSU/CemuHook Motion Provider protokol sunucusu.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU hareket sunucusunu etkinleştir (CemuHook Motion Provider protokolü)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Bir oyun modu</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Başka bir program {0} adlı kanalı tutuyor. O programı kapatın.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} kanalını reddetti, bu yüzden programlar bağlanamıyor.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Bağlı program yok.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Bağlı: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Bilinmeyen program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Yapıldı</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Yapılmadı</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Bu düzeyde izin verilmiyor</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Şu anda kullanılamıyor</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge meşguldü</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>İstekteki bir değer yanlıştı</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Böyle bir profil yok</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Böyle bir sanal kontrolcü yok</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge bu isteği tanımıyor</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>İstek boştu</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge bir sorunla karşılaştı</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} profiline geç</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Varsayılan profile dön</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Hangi profilin etkin olduğunu sor</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge'un sürümünü sor</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Nelerin çalıştığını sor</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge'un tanımadığı bir satır gönder: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>İzin ver</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>İzin verme</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Gönderen: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Gönderen: {1}, kendine “{0}” diyor</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Gönderen: kendine “{0}” diyen bir program</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Gönderen: Windows'un adlandırmadığı bir program</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ve {0} tane daha</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} içinde yanıt gelmezse hayır sayılır.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack ile, OpenTrack'in UDP çıkışını gönderen veya FreeTrack 2.0 paylaşılan belleğine yazan her izleyiciyle ve bu makinede arka planda oturum çalıştırabilen bir OpenXR çalışma zamanıyla çalışır.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G tuşlarını oku</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G tuşlarını Logitech G-key SDK üzerinden okur. Logitech Gaming Software 8.55 veya sonraki bir sürümünün çalışıyor olması gerekir. O yazılımda, PadForge profilindeki her tuşa G-key komutunu sürükleyin. Bu profili kalıcı yapın, yoksa tuşlar PadForge'a yalnızca penceresi öndeyken ulaşır. Ayrıca G600 veya G300 farenin dahili bellek modundan çıkarılmış olması gerekir.</value></data>

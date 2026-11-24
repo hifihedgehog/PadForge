@@ -8,7 +8,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// ViewModel of the Home page and of the twelve Extras pages (#574). Home
+    /// ViewModel of the Home page and of the fourteen Extras pages (#574). Home
     /// shows the engine's state, a card for each virtual controller slot,
     /// the offer for a device not in use and the extras that are on. The
     /// Extras pages hold the settings of the optional features. It keeps
@@ -36,6 +36,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Home_Title;
             RefreshHomeText();
             RefreshAutomationText();
+            RefreshAutomationPageText();
             OnPropertyChanged(nameof(PollingFrequencyText));
             RaisePollingRateParts();
             OnPropertyChanged(nameof(TouchpadOverlayStatus));

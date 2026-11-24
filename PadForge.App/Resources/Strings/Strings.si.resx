@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>ක්‍රීඩා කිරීමට තවත් ක්‍රම</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>වෙනත් තැනකට යවන්න</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>තිරය මත</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>වෙනත් වැඩසටහන් සමඟ</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>දුරකථනයක් හෝ ටැබ්ලටයක් පාලකයක් ලෙස භාවිත කරන්න.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>හිස් ලුහුබැඳීමේ උපකරණයකින් හෝ VR හෙඩ්සෙට් එකකින් වටපිට බලන්න.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>රිය පැදවීමේ ක්‍රීඩාවලින් වේගය, පැඩල සහ ගියර සිතියම්ගත කරන්න.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>වෙනත් කවුළුවලට ඉහළින් පින්තූරයක්, ටයිමරයක් හෝ ඔරලෝසුවක්.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ක්‍රීඩාවක් මත ඔබේම ක්‍රොස්හෙයාර් එකක්.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>විශාලන කාචයක්, සම්පූර්ණ තිර විශාලනයක් හෝ ස්පොට්ලයිට් එකක්.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>දියත්කරුවන්ට, ස්ක්‍රිප්ට්වලට සහ සහායකයින්ට PadForge සමඟ වැඩ කිරීමට ඉඩ දෙන්න.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>වැඩසටහන් සපයන උපාංග එක් කරන්න.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>තොට, සරල HTTP, ප්‍රවේශ කේතය</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ස්වයංක්‍රීය නැවත සම්බන්ධ වීම, තොට, යුගල කිරීමේ අනන්‍යතාව, ලිපිනයෙන් සම්බන්ධ වන්න</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>තොට, DSX.exe ආදේශකය</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>තොටවල්, සම්පූර්ණ වේගය (km/h), අභිරුචි ආකෘති</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, කුසලතාව</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>මාපට ඇඟිලි දෙකම බොත්තම් මත තබාගෙන, හිස් ට්‍රැකරයකින් හෝ VR හෙඩ්සෙට් එකකින් වටපිට බලන්න.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ධාවන ක්‍රීඩාවක් යවන වේගය, පැඩල සහ ගියර ඕනෑම ආදානයක් මෙන් සිතියම්ගත කරන්න.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU චලන මූලාශ්‍රයක් කියවන ඉමියුලේටර වෙත පාලක චලනය යවන්න.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>අඳුර</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows විශාලකය ආරම්භ කළේ නැත.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>කාචය සහ ස්පොට්ලයිට් කවුළුගත සහ මායිම් රහිත ක්‍රීඩා මත දිස් වන අතර, ක්ලික් ඒවා හරහා යයි. සම්පූර්ණ තිරය, Windows හි සම්පූර්ණ තිර විශාලකය මඟින් මුළු ඩෙස්ක්ටොප් එකම විශාලනය කරයි. මැක්‍රෝවකට විශාලකය පෙන්වීමට හෝ සැඟවීමට, නැතහොත් ඔබාගෙන සිටින අතරතුර පමණක් පෙන්වීමට හැක.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>බාහිර වැඩසටහන්වලට ඉඩ දෙන්න</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>වැඩසටහන්වලට කළ හැකි දේ</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>මට්ටම</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>විධාන</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>කියවීම</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ආදාන යැවීම</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>සැකසීම් වෙනස් කිරීම</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>වැඩසටහන්වලට පැතිකඩ මාරු කිරීමට සහ ඒවා නිදහස් කිරීමට, එන්ජිම ආරම්භ කිරීමට සහ නැවැත්වීමට, අතථ්‍ය පාලක ක්‍රියාත්මක සහ අක්‍රිය කිරීමට, කවුළුව පෙන්වීමට සහ සැඟවීමට, PadForge වසා දැමීමට, දෝෂ නිර්ණය ස්නැප්ෂොට් එකක් සුරැකීමට සහ ධාවනය වන්නේ කුමක්දැයි විමසීමට හැක.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>“විධාන” හි ඇති සියල්ල, තවද වැඩසටහන්වලට උපාංග, අතථ්‍ය පාලක, සිතියම්ගත කිරීම්, පැතිකඩ සහ සැකසීම් දැකීමට, සෑම උපාංගයකම ආදාන සිදු වන විටම අනුගමනය කිරීමට සහ PadForge තුළ ස්ථානයක් ඔබට පෙන්වීමට හැක. “කියවීම” මට්ටමේ වැඩසටහනකට, පරිපාලක ලෙස ධාවනය වන කවුළුවලට ටයිප් කරන යතුරුද ඇතුළුව, සෑම උපාංගයකම එබූ සෑම යතුරක්ම පෙනේ.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>“කියවීම” හි ඇති සියල්ල, තවද වැඩසටහන්වලට තමන්ගේම උපාංග එක් කර ඒවා හැසිරවීමට, ඕනෑම උපාංගයක පාලනයක් අල්ලා තබා ගැනීමට සහ නම් කළ අගයන් මැක්‍රෝ ට්‍රිගරවලට ලබා දීමට හැක.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>“ආදාන යැවීම” හි ඇති සියල්ල, තවද ඔබට පිටුවල වෙනස් කළ හැකි දේ වැඩසටහන්වලටද වෙනස් කළ හැක.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>සහායකයින්</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>මෙය සහායකයෙකුගේ MCP සැකසීම්වලට අලවන්න. එවිට සහායකයා ඉහත මට්ටමින් PadForge සමඟ වැඩ කරයි.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML ලෙස පිටපත් කරන්න</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML කියවන සහායකයින්</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ස්ක්‍රිප්ට්</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>ස්ක්‍රිප්ට් පුස්තකාලය</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>පුස්තකාලයක් සුරකින්න…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python හෝ PowerShell සඳහා එක් ගොනුවක්. එය පූරණය කරන ස්ක්‍රිප්ට් එකක් ඉහත මට්ටමින් උපාංග කියවා සිතියම්ගත කිරීම් හසුරුවයි.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>ඔබේ පිළිතුරට රැඳී ඇත</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>ක්‍රියාකාරකම්</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>තවම කිසිදු වැඩසටහනක් ඇමතුමක් කර නැත. සෑම ඇමතුමක්ම එහි ප්‍රතිඵලය සමඟ මෙහි ලැයිස්තුගත වේ.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>අහෝසි කරන්න</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>සහායකයින් සඳහා කුසලතාව</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>කුසලතාව සුරකින්න…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge හට එය සුරැකිය නොහැකි විය: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>“කියවීම” හෝ ඊට ඉහළ මට්ටමේ වැඩසටහනක් සම්බන්ධව ඇති අතරතුර, යතුරුපුවරු ඇතුළුව සෑම උපාංගයකම එබෙන දේ එයට පෙනේ.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>ප්ලගින</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ප්ලගින ධාවනය කරන්න</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>කිසිදු ප්ලගිනයක් ධාවනය නොවේ.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ප්ලගිනයක් ධාවනය වන්නේ PadForge හි අයිතිවාසිකම්වලින් නොව, ඔබේ අයිතිවාසිකම්වලිනි.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>චලන සේවාදායකය</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ගයිරෝ සහ ත්වරණමාන දත්ත සඳහා DSU/CemuHook Motion Provider ප්‍රොටෝකෝල සේවාදායකය.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU චලන සේවාදායකය සබල කරන්න (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ක්‍රීඩා මොඩ් එකක්</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>වෙනත් වැඩසටහනක් {0} පයිප්ප නාමය දරයි. එම වැඩසටහන වසන්න.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} පයිප්පය ප්‍රතික්ෂේප කළ බැවින් වැඩසටහන්වලට සම්බන්ධ විය නොහැක.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>කිසිදු වැඩසටහනක් සම්බන්ධ වී නැත.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>සම්බන්ධිත: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>නොදන්නා වැඩසටහන</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>සිදු කළා</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>සිදු කළේ නැත</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>මෙම මට්ටමේදී ඉඩ නොදේ</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>දැන් ලබා ගත නොහැක</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge කාර්යබහුලව සිටියේය</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>ඉල්ලීමේ අගයක් වැරදි විය</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>එවැනි පැතිකඩක් නැත</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>එවැනි අතථ්‍ය පාලකයක් නැත</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge මෙම ඉල්ලීම නොදනී</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>ඉල්ලීම හිස් විය</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge හට ගැටලුවක් ඇති විය</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} පැතිකඩට මාරු වන්න</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>පෙරනිමි පැතිකඩට ආපසු යන්න</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>සක්‍රිය පැතිකඩ කුමක්දැයි විමසන්න</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge හි අනුවාදය විමසන්න</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ධාවනය වන්නේ කුමක්දැයි විමසන්න</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge නොදන්නා පේළියක් යවන්න: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>ඉඩ දෙන්න</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>ඉඩ නොදෙන්න</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} වෙතින්</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>තමන්ව “{0}” ලෙස හඳුන්වන {1} වෙතින්</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>තමන්ව “{0}” ලෙස හඳුන්වන වැඩසටහනකින්</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows නම් නොකළ වැඩසටහනකින්</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>සහ තවත් {0}ක්</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} ඇතුළත පිළිතුරක් නොමැති නම් එය නැත ලෙස ගණන් ගැනේ.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack සමඟ සහ එහි UDP ප්‍රතිදානය යවන හෝ FreeTrack 2.0 හවුල් මතකයට ලියන ඕනෑම ට්‍රැකරයක් සමඟ ද, පසුබිමේ සැසියක් ධාවනය කළ හැකි මෙම පරිගණකයේ OpenXR ධාවන කාලයක් සමඟ ද ක්‍රියා කරයි.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Keys කියවන්න</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK හරහා G-keys කියවයි. Logitech Gaming Software 8.55 හෝ ඊට පසු අනුවාදයක් ධාවනය විය යුතුය. එම මෘදුකාංගයේ, PadForge පැතිකඩෙහි සෑම යතුරකටම G-key විධානය ඇදගෙන යන්න. එම පැතිකඩ ස්ථිර කරන්න, නැතහොත් යතුරු PadForge වෙත ළඟා වන්නේ එහි කවුළුව ඉදිරියෙන් ඇති විට පමණි. G600 හෝ G300 මූසිකයක් ද ඔන්බෝඩ් මතක ප්‍රකාරයෙන් පිටත තිබිය යුතුය.</value></data>

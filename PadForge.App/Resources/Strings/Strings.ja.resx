@@ -384,6 +384,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ゲーム MOD</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>別のプログラムがパイプ名 {0} を使用しています。そのプログラムを閉じてください。</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows がパイプ {0} を拒否したため、プログラムは接続できません。</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>接続中のプログラムはありません。</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>接続中: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>不明なプログラム</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>完了</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>未実行</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>このレベルでは許可されていません</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>現在は利用できません</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge は処理中でした</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>リクエストの値が正しくありませんでした</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>そのようなプロファイルはありません</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>そのような仮想コントローラーはありません</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge はこのリクエストを認識しません</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>リクエストが空でした</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge で問題が発生しました</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>プロファイル {0} に切り替える</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>既定のプロファイルに戻す</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>有効なプロファイルを問い合わせる</value></data>
@@ -404,6 +418,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge のバージョンを問い合わせる</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>実行中の内容を問い合わせる</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge が認識しない行を送る: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>許可</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>許可しない</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} から</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} から。自称「{0}」</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>「{0}」と名乗るプログラムから</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows が名前を特定できなかったプログラムから</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ほか {0} 件</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} 以内に応答がない場合は拒否として扱います。</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack や、UDP 出力を送信するまたは FreeTrack 2.0 の共有メモリに書き込むあらゆるトラッカー、およびこのマシンにインストールされた、バックグラウンドでセッションを実行できる OpenXR ランタイムで動作します。</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G キーを読み取る</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK で G キーを読み取ります。Logitech Gaming Software 8.55 以降が実行されている必要があります。そのソフトで、PadForge プロファイルの各キーに G-key コマンドをドラッグしてください。そのプロファイルを常設に設定しない場合、キーは PadForge のウィンドウが前面にあるときだけ届きます。また、G600 または G300 マウスはオンボードモードを解除しておく必要があります。</value></data>
@@ -3790,6 +3813,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>さまざまな遊び方</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ほかの場所へ送る</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>画面表示</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>他のプログラムと連携</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>スマートフォンやタブレットをコントローラーとして使います。</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ヘッドトラッカーや VR ヘッドセットで見回します。</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ドライビングゲームの速度、ペダル、ギアをマッピングします。</value></data>
@@ -3802,10 +3826,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>他のウィンドウの前面に画像、タイマー、時計を表示します。</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ゲーム画面にオリジナルのクロスヘアを表示します。</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ズームレンズ、全画面ズーム、スポットライトを使えます。</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>ランチャー、スクリプト、アシスタントから PadForge を操作できるようにします。</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>プログラムが提供するデバイスを追加します。</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ポート、暗号化なしの HTTP、アクセス コード</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自動再接続、ポート、ペアリング ID、アドレスを指定して接続</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ポート、DSX.exe の代替プログラム</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ポート、「最高速度」、「カスタム形式」</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML、スキル</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ヘッドトラッカーや VR ヘッドセットで周囲を見回しながら、両手の親指はボタンに置いたままにできます。</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>運転ゲームが送る速度、ペダル、ギアを、ほかの入力と同じように割り当てます。</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU モーションソースを読み取るエミュレーターに、コントローラーのモーションを送ります。</value></data>
@@ -3922,6 +3950,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>暗さ</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows が拡大鏡を起動できませんでした。</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>レンズとスポットライトはウィンドウモードやボーダーレスのゲームの前面に表示され、クリックは通り抜けます。全画面モードでは、Windows の全画面拡大鏡でデスクトップ全体をズームします。マクロでは、拡大鏡の表示と非表示の切り替えや、押している間だけの表示ができます。</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>オートメーション</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>外部プログラムを許可</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>プログラムに許可する操作</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>レベル</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>コマンド</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>読み取り</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>入力送信</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>設定変更</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>プログラムは、プロファイルの切り替えと解除、エンジンの開始と停止、仮想コントローラーのオンとオフ、ウィンドウの表示と非表示、PadForge の終了、診断スナップショットの保存、実行中の内容の問い合わせができます。</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>コマンドの操作に加えて、プログラムはデバイス、仮想コントローラー、マッピング、プロファイル、設定を確認し、すべてのデバイスの入力をリアルタイムで追跡し、PadForge 内の場所をあなたに表示できます。読み取りレベルのプログラムは、管理者として実行中のウィンドウに入力したキーを含め、すべてのデバイスで押されたすべてのキーを見ることができます。</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>読み取りの操作に加えて、プログラムは独自のデバイスを追加して操作し、任意のデバイスのコントロールを押したままにし、名前付きの値をマクロのトリガーに渡せます。</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>入力送信の操作に加えて、プログラムは各ページで変更できる内容を変更できます。</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>アシスタント</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>これをアシスタントの MCP 設定に貼り付けます。アシスタントは上のレベルで PadForge を操作します。</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML としてコピー</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML を読むアシスタント</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>スクリプト</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>スクリプトライブラリ</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ライブラリを保存…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2、Python、PowerShell 用のファイルが 1 つ。これを読み込んだスクリプトは、上のレベルでデバイスを読み取り、マッピングを操作します。</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>確認待ち</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>アクティビティ</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>まだ呼び出したプログラムはありません。呼び出しはその結果とともにここに一覧表示されます。</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>元に戻す</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>アシスタント用スキル</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>スキルを保存…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge は保存できませんでした: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>読み取り以上のレベルのプログラムが接続されている間、プログラムはキーボードを含むすべてのデバイスで押された内容を見ることができます。</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>プラグイン</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>プラグインを実行</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>実行中のプラグインはありません。</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>プラグインは PadForge の権限ではなく、あなたの権限で実行されます。</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>マッピング注釈</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

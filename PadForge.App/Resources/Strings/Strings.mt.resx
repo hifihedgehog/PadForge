@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Aktar modi kif tilgħab</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ibgħatu x'imkien ieħor</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Fuq l-iskrin</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Ma' programmi oħra</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uża telefown jew tablet bħala kontrollur.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Dur madwar b'apparat tat-traċċar tar-ras jew headset tal-VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mappja l-veloċità, il-pedali u l-ingranaġġi minn logħob tas-sewqan.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Stampa, timer jew arloġġ fuq it-twieqi l-oħra.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Il-mira tiegħek stess fuq logħba.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lenti ta' zoom, zoom fuq l-iskrin kollu jew spotlight.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Ħalli launchers, skripts u assistenti jaħdmu ma' PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Żid apparati li jipprovdu programmi.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP sempliċi, kodiċi ta' aċċess</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rikonnessjoni awtomatika, port, identità tal-ippearjar, qabbad bl-indirizz</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sostitut ta' DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Veloċità Sħiħa, Formati Personalizzati</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Dawwar madwarek b'head tracker jew headset VR waqt li ż-żewġ swaba' l-kbar jibqgħu fuq il-buttuni.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mappja l-veloċità, il-pedali u l-gears li logħba tas-sewqan tibgħat, bħal kull input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ibgħat il-moviment tal-kontrollur lil emulaturi li jaqraw sors tal-moviment DSU.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Dlam</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ma bediex it-tkabbir.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Il-lenti u l-ispotlight jidhru fuq logħob b'tieqa u bla fruntiera, u l-klikks jgħaddu minnhom. Skrin sħiħ iżżoomja d-desktop kollu bil-magnifier ta' Windows għall-iskrin sħiħ. Makro jista' juri jew jaħbi t-tkabbir, jew juri biss waqt li jinżamm.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Awtomazzjoni</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Ippermetti programmi esterni</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Dak li jistgħu jagħmlu l-programmi</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Livell</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Kmandi</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Aqra</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Ibgħat inputs</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Biddel is-settings</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Il-programmi jistgħu jibdlu l-profili u jneħħuhom, ibdew u jwaqqfu l-engine, jixgħelu u jitfgħu l-kontrolluri virtwali, juru u jaħbu t-tieqa, jagħlqu PadForge, isalvaw snapshot tad-dijanjostika u jistaqsu x'qed jaħdem.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Dak kollu fil-livell Kmandi, u l-programmi jistgħu jaraw l-apparati, il-kontrolluri virtwali, l-immappjar, il-profili u s-settings, isegwu l-inputs ta' kull apparat hekk kif iseħħu, u juruk post f'PadForge. Programm fil-livell Aqra jara kull ċavetta mgħaffġa fuq kull apparat, inklużi ċ-ċwievet ittajpjati f'twieqi li jaħdmu bħala amministratur.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Dak kollu fil-livell Aqra, u l-programmi jistgħu jżidu apparati tagħhom stess u jmexxuhom, iżommu kontroll ta' kwalunkwe apparat u jgħaddu valuri bi isem lil triggers tal-makros.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Dak kollu fil-livell Ibgħat inputs, u l-programmi jistgħu jbiddlu dak li tista' tbiddel int fuq il-paġni.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistenti</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Waħħal dan fis-settings MCP ta' assistent. Imbagħad l-assistent jaħdem ma' PadForge fil-livell t'hawn fuq.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Ikkopja bħala TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistenti li jaqraw TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skripts</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Librerija tal-iskripts</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Salva librerija…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fajl wieħed għal AutoHotkey v2, Python jew PowerShell. Skript li jtellgħu jaqra l-apparati u jmexxi l-immappjar fil-livell t'hawn fuq.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Qed jistennewk</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Attività</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ebda programm ma għamel talba s'issa. Kull talba tidher hawn bir-riżultat tagħha.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Irrevoka</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill għall-assistenti</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Salva l-Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ma setax isalvah: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Waqt li programm fil-livell Aqra jew ogħla jkun imqabbad, jara dak li jinqafel fuq kull apparat, inklużi t-tastieri.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Mexxi l-plugins</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ebda plugin ma qed jaħdem.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin jaħdem bid-drittijiet tiegħek, mhux dawk ta' PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server tal-moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server tal-protokoll DSU/CemuHook Motion Provider għad-data tal-ġiroskopju u tal-aċċelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Attiva s-server tal-moviment DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ta' logħba</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programm ieħor qed iżomm l-isem tal-pipe {0}. Agħlaq dak il-programm.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows irrifjuta l-pipe {0}, għalhekk il-programmi ma jistgħux jikkonnettjaw.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ebda programm mhu mqabbad.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Imqabbdin: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programm mhux magħruf</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Magħmul</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ma sarx</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Mhux permess f'dan il-livell</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Mhux disponibbli issa</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge kien okkupat</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Valur fit-talba kien ħażin</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ebda profil bħal dan</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ebda kontrollur virtwali bħal dan</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ma jafx din it-talba</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>It-talba kienet vojta</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge sab problema</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibdel għall-profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Erġa' lura għall-profil awtomatiku</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Staqsi liema profil huwa attiv</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Staqsi għall-verżjoni ta' PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Staqsi x'qed jaħdem</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ibgħat linja li PadForge ma jafx: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Ippermetti</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ma tippermettix</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Minn {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Minn {1}, li jsejjaħ lilu nnifsu “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Minn programm li jsejjaħ lilu nnifsu “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Minn programm li Windows ma semmiehx</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>u {0} oħra</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} minn {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Nuqqas ta' tweġiba fi {0} jgħodd bħala le.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Jaħdem ma' OpenTrack u ma' kull tracker li jibgħat l-output UDP tiegħu jew jikteb fil-memorja kondiviża FreeTrack 2.0, u ma' runtime OpenXR fuq din il-magna li jista' jħaddem sessjoni fl-isfond.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Aqra l-G-keys ta' Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Jaqra l-G-keys permezz tas-SDK G-key ta' Logitech. Jeħtieġ Logitech Gaming Software 8.55 jew aktar recenti jaħdem. F'dak is-software, kaxkar il-kmand G-key fuq kull tast fil-profil ta' PadForge. Agħmel dak il-profil persistenti, inkella t-tasti jaslu f'PadForge biss waqt li t-tieqa tiegħu tkun quddiem. Maws G600 jew G300 irid ukoll ikun barra mill-modalità tal-memorja interna.</value></data>

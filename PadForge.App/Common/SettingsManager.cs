@@ -94,6 +94,11 @@ namespace PadForge.Common.Input
         /// <summary>What a program may do while Automation is on.</summary>
         public static Services.Automation.AutomationLevel AutomationLevel { get; set; }
 
+        /// <summary>Whether PadForge runs the plugins the user approved
+        /// (#597): programs that add devices. Off by default. The switch is
+        /// the Plugins extra's.</summary>
+        public static bool EnablePlugins { get; set; }
+
         /// <summary>True while a profile was activated over the external
         /// control channel (#366). The foreground monitor early-returns while
         /// this holds, so focusing a game cannot clobber a scripted choice.

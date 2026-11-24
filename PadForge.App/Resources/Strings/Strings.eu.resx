@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Jokatzeko modu gehiago</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Bidali beste nonbaitera</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Pantailan</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Beste programekin</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Erabili telefonoa edo tableta kontrolagailu gisa.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Begiratu inguruan buru-jarraipeneko gailu batekin edo VR betaurrekoekin.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Esleitu gidatze-jokoetako abiadura, pedalak eta martxak.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Irudi, tenporizadore edo erloju bat beste leihoen gainean.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Zure ikusmira propioa jokoaren gainean.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lupa bat, pantaila osoko zooma edo fokua.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Utzi abiarazleei, script-ei eta laguntzaileei PadForge-rekin lan egiten.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Gehitu programek eskaintzen dituzten gailuak.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Ataka, HTTP arrunta, sarbide-kodea</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Birkonexio automatikoa, ataka, parekatze-identitatea, helbidearen bidez konektatzea</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Ataka, DSX.exe ordezkoa</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Atakak, Abiadura osoa, Formatu pertsonalizatuak</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Begiratu inguruan buru-jarraitzaile edo VR betaurreko batekin, bi hatz lodiak botoietan egon daitezen.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Esleitu gidatze-joko batek bidaltzen dituen abiadura, pedalak eta martxak, edozein sarrera bezala.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Bidali kontrolagailuaren mugimendua DSU mugimendu-iturri bat irakurtzen duten emuladoreei.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Iluntasuna</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windowsek ez du lupa abiarazi.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lenteak eta fokuak leiho moduko eta ertzik gabeko jokoen gainean agertzen dira, eta klikak haietatik igarotzen dira. Pantaila osoak mahaigain osoa handitzen du Windowsen pantaila osoko lupa erabiliz. Makro batek lupa erakutsi edo ezkutatu dezake, edo eutsita dagoen bitartean soilik erakutsi.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizazioa</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Baimendu kanpoko programak</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Programek zer egin dezaketen</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Maila</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Aginduak</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Irakurri</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Bidali sarrerak</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Aldatu ezarpenak</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programek profilak aldatu eta askatu ditzakete, motorra abiarazi eta gelditu, kontrolagailu birtualak aktibatu eta desaktibatu, leihoa erakutsi eta ezkutatu, PadForge itxi, diagnostiko-argazki bat gorde eta zer dabilen galdetu.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Aginduen mailako guztia, eta programek gailuak, kontrolagailu birtualak, mapaketak, profilak eta ezarpenak ikus ditzakete, gailu guztien sarrerak gertatzen diren heinean jarraitu, eta PadForge-ren leku bat erakutsi. Irakurri mailako programa batek gailu guztietan sakatutako tekla guztiak ikusten ditu, administratzaile gisa exekutatzen diren leihoetan idatzitakoak barne.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Irakurri mailako guztia, eta programek euren gailuak gehitu eta gidatu ditzakete, edozein gailutako kontrol bati eutsi eta izendun balioak eman makro-abiarazleei.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Bidali sarrerak mailako guztia, eta programek orrietan alda dezakezun guztia alda dezakete.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Laguntzaileak</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Itsatsi hau laguntzaile baten MCP ezarpenetan. Laguntzaileak orduan PadForge-rekin lan egingo du goiko mailan.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiatu TOML gisa</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML irakurtzen duten laguntzaileak</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script-ak</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Script-liburutegia</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Gorde liburutegi bat…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fitxategi bat AutoHotkey v2, Python edo PowerShell-erako. Hura kargatzen duen script batek gailuak irakurtzen ditu eta mapaketak gidatzen ditu goiko mailan.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Zure erantzunaren zain</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Jarduera</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ez da programarik deitu oraindik. Dei bakoitza hemen zerrendatzen da, zer gertatu zen adierazita.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Desegin</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Laguntzaileentzako skill-a</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Gorde skill-a…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-k ezin izan du gorde: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Irakurri mailako edo goragoko programa bat konektatuta dagoen bitartean, gailu guztietan sakatutakoa ikusten du, teklatuak barne.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin-ak</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Exekutatu plugin-ak</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ez dago plugin-ik exekutatzen.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin bat zure eskubideekin exekutatzen da, ez PadForge-renekin.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mugimendu-zerbitzaria</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokoloaren zerbitzaria, giroskopio- eta azelerometro-datuetarako.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Gaitu DSU mugimendu-zerbitzaria (CemuHook Motion Provider protokoloa)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Joko-mod bat</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Beste programa batek {0} hodi-izena du. Itxi programa hori.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-ek {0} hodia ukatu du, beraz programak ezin dira konektatu.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ez dago programarik konektatuta.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektatuta: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa ezezaguna</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Eginda</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ez da egin</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Maila honetan ez dago baimenduta</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ez dago eskuragarri orain</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge lanpetuta zegoen</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Eskaerako balio bat okerra zen</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ez dago profil hori</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ez dago kontrolagailu birtual hori</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge-k ez daki eskaera hau</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Eskaera hutsik zegoen</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-k arazo bat izan du</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Aldatu {0} profilera</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Itzuli profil lehenetsira</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Galdetu zein profil dagoen aktibo</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eskatu PadForge-ren bertsioa</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Galdetu zer dabilen</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Bidali PadForge-k ezagutzen ez duen lerro bat: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Baimendu</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ez baimendu</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Nork: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Nork: {1}, bere burua “{0}” deitzen duena</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Nork: bere burua “{0}” deitzen duen programa bat</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Nork: Windows-ek izendatu ez duen programa bat</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>eta {0} gehiago</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} barru erantzunik ez badago, ezetz da.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-ekin funtzionatzen du, baita UDP irteera bidaltzen duen edo FreeTrack 2.0 memoria partekatuan idazten duen edozein jarraitzailerekin ere, eta ordenagailu honetan saio bat atzeko planoan exekuta dezakeen OpenXR exekuzio-ingurune batekin.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Irakurri Logitech G teklak</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G teklak Logitech G-key SDK-aren bidez irakurtzen ditu. Logitech Gaming Software 8.55 edo berriagoa exekutatzen egon behar da. Programa horretan, arrastatu G-key komandoa PadForge profileko tekla bakoitzera. Ezarri profil hori iraunkor gisa. Bestela, teklak PadForge-ra iritsiko dira haren leihoa aurrean dagoen bitartean soilik. Gainera, G600 edo G300 sagu batek barneko memoriaren modutik kanpo egon behar du.</value></data>

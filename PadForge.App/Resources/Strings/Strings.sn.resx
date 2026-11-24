@@ -1525,8 +1525,37 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Midziyo {0} yabviswa</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Midziyo {0} yabatanidzwa</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} inoramba ichibva</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Vabatsiri</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Isa izvi mumasetingi e-MCP emubatsiri. Mubatsiri anobva ashanda ne-PadForge padanho riri pamusoro.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopa se-TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Vabatsiri vanoverenga TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Maskripiti</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Raibhurari yemaskripiti</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Chengetedza raibhurari…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faira imwe chete ye-AutoHotkey v2, Python kana PowerShell. Skripiti inoiverenga inoverenga midziyo uye inotonga mepu padanho riri pamusoro.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Zvakakumirira</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Zviitiko</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Hapana chirongwa chati chadana. Kudana kwese kunonyorwa pano pamwe nezvakabuda makuri.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Dzosa</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Unyanzvi hwevabatsiri</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Chengetedza unyanzvi…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hapana plugin iri kushanda.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Chimwe chirongwa chakabata zita repaipi {0}. Vhara chirongwa ichocho.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows yaramba paipi {0}, saka zvirongwa hazvigone kubatana.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Hapana chirongwa chakabatana.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Zvakabatana: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Chirongwa chisingazivikanwi</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Zvaitwa</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Hazvina kuitwa</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Hazvibvumirwi padanho iri</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Hazviwanikwi izvozvi</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge yanga yakabatikana</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Kumwe kukosha muchikumbiro kwanga kusiri ko</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Hapana purofaira yakadaro</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Hapana kontiroura yenhema yakadaro</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge haizive chikumbiro ichi</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Chikumbiro changa chisina chinhu</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yasangana nedambudziko</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chinja kuenda kupurofaira {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dzokera kupurofaira yekutanga</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bvunza kuti ndeipi purofaira iri kushanda</value></data>
@@ -1547,6 +1576,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Bvunza shanduro ye-PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Bvunza kuti chii chiri kushanda</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumira mutsara usingazivikanwe ne-PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Bvumira</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Usabvumira</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kubva ku{0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Kubva ku{1}, chinozviti “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Kubva kuchirongwa chinozviti “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Kubva kuchirongwa chisina kutumidzwa neWindows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>uye zvimwe {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} pa{1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kusapindura mukati me{0} kunoverengwa sekuti kwete.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now inodhawunirodha dhatabhesi yekontiroura yenharaunda (SDL_GameControllerDB) kubva ku-GitHub uye inochengeta, mufaira yemasetingi, mepu dzisina shanduro iyi ye-PadForge. Mepu itsva inoshandiswa chete kukontiroura isingaverengwe sechigamepad nechimwe chinhu, isina kugoverwa uye isiri muForce Raw Joystick Mode. Kudzorera kunobvisa mepu dzese dzakadhawunirodhwa.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Zvakavakirwa mukati: mepu {0}, kopi yenharaunda ya{1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Zvakavakirwa mukati: mepu {0}, kopi yenharaunda ya{1}. Zvakagadziridzwa {2}: itsva {3}, dzakachinjwa {4}.</value></data>

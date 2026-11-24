@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Më shumë mënyra për të luajtur</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Dërgoje diku tjetër</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Në ekran</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Me programe të tjera</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Përdor një telefon ose tablet si kontrollues.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet nga lojërat e drejtimit.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Një figurë, kohëmatës ose orë mbi dritaret e tjera.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Shënjestra jote mbi një lojë.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Një lente zmadhuese, zmadhim në ekran të plotë ose një reflektor.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Lejo nisësit, skriptet dhe asistentët të punojnë me PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Shto pajisje që ofrojnë programet.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP e thjeshtë, kodi i qasjes</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja automatike, porta, identiteti i çiftimit, lidhja me adresë</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, zëvendësuesi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portat, Shpejtësia e plotë, Formate të personalizuara</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Aftësia</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR ndërsa të dy gishtat e mëdhenj qëndrojnë te butonat.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet që dërgon një lojë me makina, si çdo hyrje tjetër.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Dërgo lëvizjen e kontrolluesit te emulatorët që lexojnë një burim lëvizjeje DSU.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Errësimi</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nuk e nisi zmadhuesin.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lenta dhe reflektori shfaqen mbi lojërat në dritare dhe pa kornizë, dhe klikimet kalojnë përmes tyre. Ekrani i plotë zmadhon gjithë tryezën me zmadhuesin e ekranit të plotë të Windows. Një makro mund ta shfaqë ose fshehë zmadhuesin, ose ta shfaqë vetëm ndërsa mbahet.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizimi</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Lejo programet e jashtme</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Çfarë mund të bëjnë programet</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Niveli</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Komandat</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lexo</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Dërgo hyrje</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Ndrysho cilësimet</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programet mund të ndërrojnë profilet dhe t'i lirojnë, të nisin dhe ndalojnë motorin, të ndezin e fikin kontrolluesit virtualë, të shfaqin e fshehin dritaren, të mbyllin PadForge, të ruajnë një pamje çasti të diagnostikimit dhe të pyesin çfarë është në punë.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Gjithçka te Komandat, dhe programet mund të shohin pajisjet, kontrolluesit virtualë, hartëzimet, profilet dhe cilësimet, të ndjekin hyrjet e çdo pajisjeje në çast dhe të të shfaqin një vend në PadForge. Një program te Lexo sheh çdo tast të shtypur në çdo pajisje, edhe tastet e shkruara në dritare që punojnë si administrator.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Gjithçka te Lexo, dhe programet mund të shtojnë pajisje të veta dhe t'i drejtojnë, të mbajnë një kontroll të çdo pajisjeje dhe t'u japin vlera me emër shkaktarëve të makrove.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Gjithçka te Dërgo hyrje, dhe programet mund të ndryshojnë çfarë mund të ndryshosh ti në faqe.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistentët</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ngjite këtë te cilësimet MCP të një asistenti. Pastaj asistenti punon me PadForge në nivelin e mësipërm.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopjo si TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistentët që lexojnë TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skriptet</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Libraria e skripteve</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Ruaj një librari…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Një skedar për AutoHotkey v2, Python ose PowerShell. Një skript që e ngarkon lexon pajisjet dhe drejton hartëzimet në nivelin e mësipërm.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Presin përgjigjen tënde</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Veprimtaria</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Asnjë program nuk ka thirrur ende. Çdo thirrje listohet këtu me atë që ndodhi.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Zhbëj</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Aftësia për asistentët</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Ruaj aftësinë…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge nuk mundi ta ruante: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Ndërsa një program në nivelin Lexo ose më lart është i lidhur, ai sheh çfarë shtypet në çdo pajisje, tastierat përfshirë.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Shtojcat</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ekzekuto shtojcat</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Asnjë shtojcë nuk është në punë.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Një shtojcë punon me të drejtat e tua, jo me ato të PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serveri i lëvizjes</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server i protokollit DSU/CemuHook Motion Provider për të dhënat e xhiros dhe akselerometrit.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktivizo serverin e lëvizjes DSU (protokolli CemuHook Motion Provider)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Një mod loje</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Një program tjetër mban emrin e kanalit {0}. Mbylle atë program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e refuzoi kanalin {0}, ndaj programet nuk mund të lidhen.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Asnjë program nuk është i lidhur.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Të lidhur: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program i panjohur</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>U krye</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nuk u krye</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Nuk lejohet në këtë nivel</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Nuk mund të bëhet tani</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge ishte i zënë</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Një vlerë në kërkesë ishte e gabuar</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Nuk ka profil të tillë</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Nuk ka kontrollues virtual të tillë</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nuk e njeh këtë kërkesë</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Kërkesa ishte bosh</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge hasi një problem</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ndërro te profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kthehu te profili i parazgjedhur</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pyet cili profil është aktiv</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pyet për versionin e PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pyet çfarë është në punë</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Dërgo një rresht që PadForge nuk e njeh: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Lejo</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Mos lejo</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Nga {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Nga {1}, që e quan veten „{0}“</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Nga një program që e quan veten „{0}“</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Nga një program që Windows nuk e emërtoi</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>dhe {0} të tjera</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} nga {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Mungesa e përgjigjes për {0} llogaritet si jo.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funksionon me OpenTrack dhe çdo gjurmues që dërgon daljen e vet UDP ose shkruan memorie të përbashkët FreeTrack 2.0, dhe me një runtime OpenXR në këtë kompjuter që mund të ekzekutojë një seancë në sfond.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lexo G-keys të Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lexon G-keys përmes Logitech G-key SDK. Kërkon që Logitech Gaming Software 8.55 ose më i ri të jetë në punë. Në atë softuer, tërhiq komandën G-key mbi çdo tast në profilin PadForge. Bëje atë profil të përhershëm, përndryshe tastet arrijnë te PadForge vetëm kur dritarja e tij është përpara. Një maus G600 ose G300 duhet gjithashtu të jetë jashtë modalitetit të memories së brendshme.</value></data>

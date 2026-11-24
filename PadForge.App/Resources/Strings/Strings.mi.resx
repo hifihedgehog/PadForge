@@ -181,6 +181,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>He mod kēmu</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Kei tētahi atu hōtaka te ingoa paipa {0}. Katia taua hōtaka.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>I whakakāhoretia e Windows te paipa {0}, nō reira kāore e taea e ngā hōtaka te hono.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kāore he hōtaka kua hono.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Kua hono: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Hōtaka kāore e mōhiotia</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Kua oti</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Kāore i oti</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Kāore e whakaaetia i tēnei taumata</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Kāore e wātea ināianei</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>I pukumahi a PadForge</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>I hē tētahi uara i te tono</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Kāore he kōtaha pērā</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Kāore he controller mariko pērā</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Kāore a PadForge e mōhio ki tēnei tono</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Kāore he aha i roto i te tono</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>I tūtaki a PadForge ki tētahi raruraru</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Huri ki te kōtaha {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoki ki te kōtaha taunoa</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pātai ko tēhea kōtaha e hohe ana</value></data>
@@ -1882,6 +1896,8 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Whiwhi i ngā pānga trigger me ngā pānga rama mai i ngā mod kēmu.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, whakakapi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ngā port, Tere mōrahi, Ngā hōputu ritenga</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Pūkenga</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Kōtaha</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Rapu tautuhinga, pūrere, kōtaha</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Rapu</value></data>
@@ -2176,6 +2192,36 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>E {0} ngā pūrere kua momotu</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>E {0} ngā pūrere kua hono</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Ka momotu tonu a {0}</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Me ētahi atu hōtaka</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Tukua ngā kaiwhakarewa, ngā hōtuhi me ngā kaiāwhina kia mahi tahi me PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Tāpiritia ngā pūrere e whakaratohia ana e ngā hōtaka.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Whakaaetia ngā hōtaka o waho</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Ngā kaiāwhina</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Whakapirihia tēnei ki ngā tautuhinga MCP o tētahi kaiāwhina. Kātahi ka mahi tahi te kaiāwhina me PadForge i te taumata i runga ake.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Tāruatia hei TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Ngā kaiāwhina e pānui ana i te TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Ngā hōtuhi</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Puna hōtuhi</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Tiakina he puna…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Kotahi te kōnae mō AutoHotkey v2, Python, PowerShell rānei. Ka pānui te hōtuhi e uta ana i a ia i ngā pūrere, ā, ka whakahaere i ngā mahere i te taumata i runga ake.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>E tatari ana ki a koe</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ngā mahi</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Kāore anō tētahi hōtaka kia karanga. Ka whakarārangitia ia karanga ki konei me tōna hua.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Wetekina</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Pūkenga mō ngā kaiāwhina</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tiakina te pūkenga…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tiaki: {0}</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Whakahaerehia ngā monomai</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kāore he monomai e rere ana.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Whakaae</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Kaua e whakaae</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mai i {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mai i {1}, e kī ana ko “{0}” tōna ingoa</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mai i tētahi hōtaka e kī ana ko “{0}” tōna ingoa</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Mai i tētahi hōtaka kāore i tapaina e Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>me {0} atu anō</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ki te kore he whakautu i roto i te {0}, ka kīia he kāore.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Pātengi raraunga controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ka tikiake a Whakahōu ināianei i te pātengi raraunga controller a te hapori (SDL_GameControllerDB) mai i GitHub, ā, ka puritia ki te kōnae tautuhinga ngā mahere kāore i tēnei putanga o PadForge. Ka whakamahia he mahere hou mō tētahi controller anake e kore e pānuitia hei gamepad e tētahi atu mea, kāore i tautapatia, ā, kāore i te Aratau Joystick Mata. Ka tangohia e Tautuhi anō ngā mahere katoa i tikiakehia.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Whakahōu ināianei</value></data>

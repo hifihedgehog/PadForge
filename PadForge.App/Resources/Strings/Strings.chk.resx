@@ -787,6 +787,25 @@
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ese tongeni álleani ewe sasing seni Steam ren ei urumwot.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Sópwelo le Tiinnóó</value></data>
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} a mwúchútiw. Esor device a chuen nom ren {1}.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Chón Álillis</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Pacheei ei non ekkewe MCP settings an emén chón álillis. Mwirin, ewe chón álillis epwe angang ngeni PadForge won ewe level asan.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kapiini usun TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Chón Álillis mi álleani TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Library ren Script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Isóni eu Library…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Eu chök file ren AutoHotkey v2, Python are PowerShell. Eu script mi uwei epwe álleani ekkewe device me emmweni ekkewe mapping won ewe level asan.</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill ren Chón Álillis</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Isóni ewe Skill…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Esor plugin a angang.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Esor program a riri.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A riri: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program ese silles</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Eu value non ewe tingor ese pwúng</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Esor ena profile</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Esor ena virtual controller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ese silei ei tingor</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Esor met non ewe tingor</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Siwil ngeni ewe profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Liwin ngeni ewe profile default</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eis ifa ewe profile mi angang</value></data>
@@ -807,5 +826,9 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eis ren version an PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Eis met a angang</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tinala eu line PadForge ese silei: {0}</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Seni {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Seni {1}, mi aita pwisin “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Seni eu program mi aita pwisin “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Seni eu program Windows ese aita</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
 </root>

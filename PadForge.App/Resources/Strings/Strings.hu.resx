@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Játék másképp</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Küldés máshová</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>A képernyőn</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Más programokkal</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Telefon vagy táblagép használata kontrollerként.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Körbenézés fejkövetővel vagy VR-headsettel.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Sebesség, pedálok és sebességfokozatok hozzárendelése autós játékokból.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kép, időzítő vagy óra a többi ablak felett.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Saját célkereszt a játék felett.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Nagyítólencse, teljes képernyős nagyítás vagy reflektorfény.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Indítóprogramok, szkriptek és asszisztensek együttműködése a PadForge-dzsal.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Programok által biztosított eszközök hozzáadása.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, sima HTTP, hozzáférési kód</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-újracsatlakozás, port, párosítási identitás, csatlakozás cím alapján</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe helyettesítő</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portok, Teljes sebesség, Egyéni formátumok</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Nézzen körül fejkövetővel vagy VR-headsettel, miközben mindkét hüvelykujja a gombokon marad.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Képezze le egy autós játék által küldött sebességet, pedálokat és sebességfokozatokat, mint bármely más bemenetet.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Kontrollermozgás küldése olyan emulátoroknak, amelyek DSU mozgásforrást olvasnak.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Sötétség</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>A Windows nem indította el a nagyítót.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>A lencse és a reflektorfény ablakos és keret nélküli játékok felett jelenik meg, és a kattintások áthatolnak rajtuk. A Teljes képernyő a Windows teljes képernyős nagyítójával nagyítja fel az egész asztalt. Egy makró megjelenítheti vagy elrejtheti a nagyítót, vagy csak nyomva tartás közben mutathatja.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizálás</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Külső programok engedélyezése</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Mit tehetnek a programok</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Szint</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Parancsok</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Olvasás</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Bemenetek küldése</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Beállítások módosítása</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>A programok válthatnak profilt és elengedhetik azt, elindíthatják és leállíthatják a motort, be- és kikapcsolhatják a virtuális kontrollereket, megjeleníthetik és elrejthetik az ablakot, bezárhatják a PadForge-ot, menthetnek diagnosztikai pillanatképet, és megkérdezhetik, mi fut éppen.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Minden, ami a Parancsok szinten, ezen felül a programok láthatják az eszközöket, a virtuális kontrollereket, a leképezéseket, a profilokat és a beállításokat, valós időben követhetik minden eszköz bemeneteit, és megmutathatnak Önnek egy helyet a PadForge-ban. Az Olvasás szinten lévő program minden eszköz minden lenyomott billentyűjét látja, a rendszergazdaként futó ablakokba gépelteket is.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Minden, ami az Olvasás szinten, ezen felül a programok hozzáadhatnak saját eszközöket és vezérelhetik azokat, bármely eszköz egy vezérlőelemét lenyomva tarthatják, és megnevezett értékeket adhatnak át a makróindítóknak.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Minden, ami a Bemenetek küldése szinten, ezen felül a programok módosíthatják mindazt, amit Ön az oldalakon módosíthat.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asszisztensek</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Illessze be ezt egy asszisztens MCP-beállításai közé. Az asszisztens ezután a fenti szinten dolgozik a PadForge-dzsal.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Másolás TOML formátumban</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML-t olvasó asszisztensek</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Szkriptek</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Szkriptkönyvtár</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Könyvtár mentése…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Egyetlen fájl AutoHotkey v2, Python vagy PowerShell számára. Az azt betöltő szkript a fenti szinten olvassa az eszközöket és vezérli a leképezéseket.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Az Ön válaszára vár</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Tevékenység</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Még egy program sem hívott. Minden hívás itt jelenik meg az eredményével együtt.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Visszavonás</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill asszisztensek számára</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>A Skill mentése…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>A PadForge nem tudta menteni: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Amíg egy Olvasás vagy magasabb szintű program csatlakozik, látja, mi van lenyomva minden eszközön, a billentyűzeteket is beleértve.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Bővítmények</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Bővítmények futtatása</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Egy bővítmény sem fut.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>A bővítmény az Ön jogaival fut, nem a PadForge jogaival.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mozgáskiszolgáló</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokollt használó kiszolgáló a giroszkóp és a gyorsulásmérő adataihoz.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU mozgáskiszolgáló engedélyezése (CemuHook Motion Provider protokoll)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Egy játékmod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Egy másik program használja a(z) {0} csőnevet. Zárja be azt a programot.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>A Windows elutasította a(z) {0} csövet, ezért a programok nem tudnak csatlakozni.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Egy program sincs csatlakozva.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Csatlakozva: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ismeretlen program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Kész</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nem történt meg</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ezen a szinten nem engedélyezett</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Most nem érhető el</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>A PadForge foglalt volt</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>A kérésben egy érték hibás volt</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Nincs ilyen profil</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Nincs ilyen virtuális kontroller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>A PadForge nem ismeri ezt a kérést</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>A kérés üres volt</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>A PadForge hibába ütközött</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Váltás erre a profilra: {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Visszatérés az alapértelmezett profilra</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>A mostani profil lekérdezése</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>A PadForge verziójának lekérdezése</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Annak lekérdezése, mi fut</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Egy, a PadForge által nem ismert sor küldése: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Engedélyezés</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Elutasítás</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Forrás: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Forrás: {1}, amely magát „{0}” néven nevezi</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Forrás: egy program, amely magát „{0}” néven nevezi</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Forrás: egy program, amelynek nevét a Windows nem ismeri</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>és még {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ha {0} alatt nem válaszol, az elutasításnak számít.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Együttműködik az OpenTrack programmal és minden olyan követővel, amely elküldi az UDP-kimenetét vagy FreeTrack 2.0 megosztott memóriába ír, valamint a gépen lévő olyan OpenXR-futtatókörnyezettel, amely a háttérben is tud munkamenetet futtatni.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-billentyűk olvasása</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>A G-billentyűket a Logitech G-key SDK-n keresztül olvassa. Ehhez futnia kell a Logitech Gaming Software 8.55-ös vagy újabb verziójának. Abban a programban húzza a „G-key” parancsot a PadForge-profil minden billentyűjére. Állítsa a profilt állandóra, különben a billentyűk csak akkor jutnak el a PadForge-hoz, amikor annak ablaka van előtérben. A G600 és a G300 egeret emellett ki kell venni a beépített memóriás módból.</value></data>

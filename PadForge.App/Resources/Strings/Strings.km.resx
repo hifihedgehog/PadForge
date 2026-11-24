@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>វិធីលេងច្រើនទៀត</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>បញ្ជូនទៅកន្លែងផ្សេង</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>លើអេក្រង់</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>ជាមួយកម្មវិធីផ្សេង</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ប្រើទូរសព្ទ ឬថេប្លេតជាឧបករណ៍បញ្ជា។</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>មើលជុំវិញដោយប្រើឧបករណ៍តាមដានក្បាល ឬកាស VR។</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ម៉ាបល្បឿន ឈ្នាន់ និងលេខប្រអប់លេខពីហ្គេមបើកបរ។</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>រូបភាព កម្មវិធីកំណត់ម៉ោង ឬនាឡិកា នៅពីលើបង្អួចផ្សេងទៀត។</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>សញ្ញាតម្រង់ផ្ទាល់ខ្លួនរបស់អ្នកពីលើហ្គេម។</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>កែវពង្រីក ការពង្រីកពេញអេក្រង់ ឬពន្លឺផ្ដោត។</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>អនុញ្ញាតឱ្យកម្មវិធីបើកហ្គេម ស្គ្រីប និងជំនួយការ ធ្វើការជាមួយ PadForge។</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>បន្ថែមឧបករណ៍ដែលកម្មវិធីផ្ដល់។</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ច្រក, HTTP ធម្មតា, លេខកូដចូលប្រើ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ភ្ជាប់ឡើងវិញស្វ័យប្រវត្តិ, ច្រក, អត្តសញ្ញាណផ្គូផ្គង, ភ្ជាប់តាមអាសយដ្ឋាន</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ច្រក កម្មវិធីជំនួស DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ច្រក, ល្បឿនពេញ, ទម្រង់ផ្ទាល់ខ្លួន</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, ជំនាញ</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>មើលជុំវិញដោយប្រើឧបករណ៍តាមដានក្បាល ឬកាសពាក់ក្បាល VR ខណៈមេដៃទាំងពីរនៅលើប៊ូតុង។</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ម៉ាបល្បឿន ឈ្នាន់ និងលេខប្រអប់លេខដែលហ្គេមបើកបរផ្ញើ ដូចការបញ្ចូលផ្សេងទៀត។</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ផ្ញើចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាមដែលអានប្រភពចលនា DSU។</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ភាពងងឹត</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows មិនបានចាប់ផ្ដើមកែវពង្រីកទេ។</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>កែវ និងពន្លឺផ្ដោតបង្ហាញនៅពីលើហ្គេមក្នុងបង្អួច និងគ្មានស៊ុម ហើយការចុចឆ្លងកាត់វា។ «ពេញអេក្រង់» ពង្រីកផ្ទៃតុទាំងមូលដោយកែវពង្រីកពេញអេក្រង់របស់ Windows ។ ម៉ាក្រូអាចបង្ហាញ ឬលាក់កែវពង្រីក ឬបង្ហាញវាតែពេលសង្កត់ជាប់ប៉ុណ្ណោះ។</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>ស្វ័យប្រវត្តិកម្ម</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>អនុញ្ញាតកម្មវិធីខាងក្រៅ</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>អ្វីដែលកម្មវិធីអាចធ្វើបាន</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>កម្រិត</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>ពាក្យបញ្ជា</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>អាន</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ផ្ញើការបញ្ចូល</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>ប្ដូរការកំណត់</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>កម្មវិធីអាចប្ដូរប្រូហ្វាល់ និងលែងវាវិញ ចាប់ផ្ដើម និងបញ្ឈប់ម៉ាស៊ីន បើក និងបិទឧបករណ៍បញ្ជានិម្មិត បង្ហាញ និងលាក់បង្អួច បិទ PadForge រក្សាទុករូបថតស្ថានភាពរោគវិនិច្ឆ័យ និងសួរថាអ្វីកំពុងដំណើរការ។</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>អ្វីៗទាំងអស់នៅកម្រិត «ពាក្យបញ្ជា» ហើយកម្មវិធីអាចមើលឃើញឧបករណ៍ ឧបករណ៍បញ្ជានិម្មិត ការម៉ាប ប្រូហ្វាល់ និងការកំណត់ តាមដានការបញ្ចូលរបស់ឧបករណ៍នីមួយៗខណៈវាកើតឡើង និងបង្ហាញអ្នកនូវកន្លែងមួយក្នុង PadForge។ កម្មវិធីនៅកម្រិត «អាន» មើលឃើញគ្រប់គ្រាប់ចុចដែលបានចុចនៅលើគ្រប់ឧបករណ៍ រួមទាំងគ្រាប់ចុចដែលវាយក្នុងបង្អួចដែលដំណើរការជាអ្នកគ្រប់គ្រងផង។</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>អ្វីៗទាំងអស់នៅកម្រិត «អាន» ហើយកម្មវិធីអាចបន្ថែមឧបករណ៍ផ្ទាល់ខ្លួន និងបញ្ជាវា សង្កត់ការបញ្ជាណាមួយរបស់ឧបករណ៍ណាក៏បាន និងផ្ដល់តម្លៃដែលមានឈ្មោះទៅកេះម៉ាក្រូ។</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>អ្វីៗទាំងអស់នៅកម្រិត «ផ្ញើការបញ្ចូល» ហើយកម្មវិធីអាចប្ដូរអ្វីដែលអ្នកអាចប្ដូរនៅលើទំព័រនានា។</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ជំនួយការ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>បិទភ្ជាប់វានេះទៅក្នុងការកំណត់ MCP របស់ជំនួយការ។ បន្ទាប់មកជំនួយការធ្វើការជាមួយ PadForge នៅកម្រិតខាងលើ។</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>ចម្លងជា TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ជំនួយការដែលអាន TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ស្គ្រីប</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>បណ្ណាល័យស្គ្រីប</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>រក្សាទុកបណ្ណាល័យ…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ឯកសារតែមួយសម្រាប់ AutoHotkey v2, Python ឬ PowerShell។ ស្គ្រីបដែលផ្ទុកវា អានឧបករណ៍ និងបញ្ជាការម៉ាបនៅកម្រិតខាងលើ។</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>កំពុងរង់ចាំអ្នក</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>សកម្មភាព</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>មិនទាន់មានកម្មវិធីណាហៅនៅឡើយទេ។ ការហៅនីមួយៗត្រូវបានរាយនៅទីនេះ ជាមួយលទ្ធផលរបស់វា។</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>មិនធ្វើវិញ</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>ជំនាញសម្រាប់ជំនួយការ</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>រក្សាទុកជំនាញ…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge មិនអាចរក្សាទុកវាបានទេ៖ {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>ខណៈកម្មវិធីនៅកម្រិត «អាន» ឬខ្ពស់ជាងនេះកំពុងភ្ជាប់ វាមើលឃើញអ្វីដែលត្រូវបានចុចនៅលើគ្រប់ឧបករណ៍ រួមទាំងក្ដារចុចផង។</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>កម្មវិធីបន្ថែម</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ដំណើរការកម្មវិធីបន្ថែម</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>គ្មានកម្មវិធីបន្ថែមណាកំពុងដំណើរការទេ។</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>កម្មវិធីបន្ថែមដំណើរការដោយសិទ្ធិរបស់អ្នក មិនមែនសិទ្ធិរបស់ PadForge ទេ។</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ម៉ាស៊ីនមេចលនា</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ម៉ាស៊ីនមេពិធីការ DSU/CemuHook Motion Provider សម្រាប់ទិន្នន័យហ្ស៊ីរ៉ូ និងឧបករណ៍វាស់សំទុះ។</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>បើកម៉ាស៊ីនមេចលនា DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ម៉ូដហ្គេមមួយ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>កម្មវិធីផ្សេងកំពុងកាន់ឈ្មោះបំពង់ {0}។ បិទកម្មវិធីនោះ។</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows បានបដិសេធបំពង់ {0} ដូច្នេះកម្មវិធីមិនអាចភ្ជាប់បានទេ។</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>គ្មានកម្មវិធីណាបានភ្ជាប់ទេ។</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>បានភ្ជាប់៖ {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>កម្មវិធីមិនស្គាល់</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>រួចរាល់</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>មិនបានធ្វើ</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>មិនអនុញ្ញាតនៅកម្រិតនេះ</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>មិនអាចប្រើបានឥឡូវនេះ</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge កំពុងរវល់</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>តម្លៃមួយក្នុងសំណើមិនត្រឹមត្រូវ</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>គ្មានប្រូហ្វាល់នេះទេ</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>គ្មានឧបករណ៍បញ្ជានិម្មិតនេះទេ</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge មិនស្គាល់សំណើនេះទេ</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>សំណើទទេ</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge បានជួបបញ្ហា</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ប្ដូរទៅប្រូហ្វាល់ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ត្រឡប់ទៅប្រូហ្វាល់លំនាំដើម</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>សួរថាប្រូហ្វាល់ណាសកម្ម</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>សួររកកំណែរបស់ PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>សួរថាអ្វីកំពុងដំណើរការ</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ផ្ញើបន្ទាត់ដែល PadForge មិនស្គាល់៖ {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>អនុញ្ញាត</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>មិនអនុញ្ញាត</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>ពី {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ពី {1} ដែលហៅខ្លួនវាថា «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ពីកម្មវិធីដែលហៅខ្លួនវាថា «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>ពីកម្មវិធីដែល Windows មិនបានដាក់ឈ្មោះ</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>និង {0} ទៀត</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} នៃ {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>បើគ្មានចម្លើយក្នុង {0} ទេ នឹងរាប់ថាមិនអនុញ្ញាត។</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ដំណើរការជាមួយ OpenTrack និងកម្មវិធីតាមដានណាមួយដែលផ្ញើលទ្ធផល UDP របស់វា ឬសរសេរអង្គចងចាំរួម FreeTrack 2.0 ហើយជាមួយកម្មវិធីដំណើរការ OpenXR នៅលើម៉ាស៊ីននេះ ដែលអាចដំណើរការវគ្គមួយនៅផ្ទៃខាងក្រោយ។</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>អានគ្រាប់ចុច G របស់ Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>អានគ្រាប់ចុច G តាមរយៈ Logitech G-key SDK។ ត្រូវការ Logitech Gaming Software 8.55 ឬថ្មីជាងនេះកំពុងដំណើរការ។ នៅក្នុងកម្មវិធីនោះ សូមអូសពាក្យបញ្ជា G-key ទៅលើគ្រាប់ចុចនីមួយៗក្នុងប្រូហ្វាល់ PadForge។ សូមកំណត់ប្រូហ្វាល់នោះឲ្យជាប់លាប់ បើមិនដូច្នោះទេ គ្រាប់ចុចនឹងទៅដល់ PadForge តែពេលបង្អួចរបស់វានៅខាងមុខប៉ុណ្ណោះ។ កណ្ដុរ G600 ឬ G300 ក៏ត្រូវតែចេញពីរបៀបអង្គចងចាំក្នុងឧបករណ៍ដែរ។</value></data>

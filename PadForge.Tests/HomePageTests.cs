@@ -814,12 +814,12 @@ namespace PadForge.Tests
                 .ToList();
 
         /// <summary>Home lists the extras by the catalog's own facts: the same
-        /// twelve keys in the same order, each with the catalog tile's glyph,
+        /// fourteen keys in the same order, each with the catalog tile's glyph,
         /// title, line and status, and each showing while the switch that
         /// tile shows is on. A tile that read another switch would show an
         /// extra the catalog calls off.</summary>
         [Fact]
-        public void TheExtrasInUse_AreTheCatalogsTwelve_EachByTheCatalogsOwnSwitch()
+        public void TheExtrasInUse_AreTheCatalogsFourteen_EachByTheCatalogsOwnSwitch()
         {
             var catalog = Tiles(ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml"));
             var rows = Tiles(Home());
@@ -898,12 +898,12 @@ namespace PadForge.Tests
             Assert.Matches(new Regex("<Trigger Property=\"Status\" Value=\"\">\\s*<Setter TargetName=\"StatusText\" Property=\"Visibility\" Value=\"Collapsed\"/>\\s*<Setter TargetName=\"OnLine\" Property=\"Visibility\" Value=\"Visible\"/>"), home);
         }
 
-        /// <summary>The count Home reads is the twelve catalog switches, one
+        /// <summary>The count Home reads is the fourteen catalog switches, one
         /// each. The heading and the line follow it: with none on the
         /// section introduces Extras, with some on it lists them and says
-        /// where the rest are, and with all twelve on the line is gone.</summary>
+        /// where the rest are, and with all fourteen on the line is gone.</summary>
         [Fact]
-        public void TheExtrasCount_FollowsEachOfTheTwelveSwitches()
+        public void TheExtrasCount_FollowsEachOfTheFourteenSwitches()
         {
             bool udp = HeadTrackingRuntime.Enabled, free = HeadTrackingRuntime.FreeTrackEnabled, xr = HeadTrackingRuntime.OpenXrEnabled;
             bool telemetry = GameTelemetryRuntime.Enabled, twitch = TwitchChatRuntime.Enabled;
@@ -924,6 +924,8 @@ namespace PadForge.Tests
                     (nameof(vm.ScreenOverlaysAnyEnabled), v => vm.ScreenOverlaysAnyEnabled = v),
                     (nameof(vm.CrosshairsAnyEnabled), v => vm.CrosshairsAnyEnabled = v),
                     (nameof(vm.MagnifierEnabled), v => vm.MagnifierEnabled = v),
+                    (nameof(vm.EnableAutomation), v => vm.EnableAutomation = v),
+                    (nameof(vm.EnablePlugins), v => vm.EnablePlugins = v),
                 };
                 Assert.Equal(DashboardViewModel.ExtrasCount, switches.Length);
                 foreach (var s in switches) s.Set(false);
@@ -950,7 +952,7 @@ namespace PadForge.Tests
                     Assert.Equal(0, vm.ExtrasInUseCount);
                 }
 
-                // All twelve: nothing is left to point at.
+                // All fourteen: nothing is left to point at.
                 foreach (var s in switches) s.Set(true);
                 Assert.Equal(DashboardViewModel.ExtrasCount, vm.ExtrasInUseCount);
                 Assert.True(vm.HasExtrasInUse);
@@ -1028,6 +1030,7 @@ namespace PadForge.Tests
                     v => vm.EnableTwitchChat = v, v => vm.EnableRemoteLink = v, v => vm.EnableDsuMotionServer = v,
                     v => vm.EnableGameModServer = v, v => vm.OverlaysAnyEnabled = v, v => vm.EnableTouchpadOverlay = v,
                     v => vm.ScreenOverlaysAnyEnabled = v, v => vm.CrosshairsAnyEnabled = v, v => vm.MagnifierEnabled = v,
+                    v => vm.EnableAutomation = v, v => vm.EnablePlugins = v,
                 })
                     set(false);
                 vm.EnableWebController = true;
@@ -1036,7 +1039,7 @@ namespace PadForge.Tests
                 Assert.Equal(3, vm.ExtrasInUseCount);
 
                 string whole = string.Format(Strings.Instance.Home_MoreExtras, DashboardViewModel.ExtrasCount - 3);
-                Assert.Contains("9", whole);
+                Assert.Contains("11", whole);
                 int open = whole.IndexOf('['), close = whole.IndexOf(']');
                 Assert.True(open >= 0 && close > open + 1, "the English line has no bracketed word");
                 Assert.Equal(whole.Substring(0, open), vm.ExtrasRestLead);
@@ -1052,7 +1055,7 @@ namespace PadForge.Tests
                 vm.EnableTwitchChat = true;
                 foreach (string part in new[] { nameof(vm.ExtrasRestLead), nameof(vm.ExtrasRestLink), nameof(vm.ExtrasRestTail) })
                     Assert.Contains(part, changed);
-                Assert.Contains("8", vm.ExtrasRestLead + vm.ExtrasRestTail);
+                Assert.Contains("10", vm.ExtrasRestLead + vm.ExtrasRestTail);
             }
             finally
             {
@@ -1064,7 +1067,7 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>The Extras page's count, 2 of 12 on, is the number Home
+        /// <summary>The Extras page's count, 2 of 14 on, is the number Home
         /// counts, in three parts: what the language puts before the
         /// number, the number, and what it puts after, with the total in
         /// its place. A screen reader has the sentence whole. A switch
@@ -1083,6 +1086,7 @@ namespace PadForge.Tests
                     v => vm.EnableTwitchChat = v, v => vm.EnableRemoteLink = v, v => vm.EnableDsuMotionServer = v,
                     v => vm.EnableGameModServer = v, v => vm.OverlaysAnyEnabled = v, v => vm.EnableTouchpadOverlay = v,
                     v => vm.ScreenOverlaysAnyEnabled = v, v => vm.CrosshairsAnyEnabled = v, v => vm.MagnifierEnabled = v,
+                    v => vm.EnableAutomation = v, v => vm.EnablePlugins = v,
                 })
                     set(false);
                 vm.EnableWebController = true;
@@ -1097,9 +1101,9 @@ namespace PadForge.Tests
                 int at = format.IndexOf("{0}", StringComparison.Ordinal);
                 Assert.True(at >= 0 && format.Contains("{1}"), "the count's string lost a place: " + format);
                 Assert.Equal("2", vm.ExtrasOnNumber);
-                Assert.Equal(format.Substring(0, at).Replace("{1}", "12"), vm.ExtrasOnLead);
-                Assert.Equal(format.Substring(at + 3).Replace("{1}", "12"), vm.ExtrasOnTail);
-                Assert.Equal(string.Format(format, 2, 12), vm.ExtrasOnSpoken);
+                Assert.Equal(format.Substring(0, at).Replace("{1}", "14"), vm.ExtrasOnLead);
+                Assert.Equal(format.Substring(at + 3).Replace("{1}", "14"), vm.ExtrasOnTail);
+                Assert.Equal(string.Format(format, 2, 14), vm.ExtrasOnSpoken);
                 Assert.Equal(vm.ExtrasOnSpoken, vm.ExtrasOnLead + vm.ExtrasOnNumber + vm.ExtrasOnTail);
 
                 var changed = new List<string>();
@@ -1108,7 +1112,7 @@ namespace PadForge.Tests
                 foreach (string part in new[] { nameof(vm.ExtrasOnLead), nameof(vm.ExtrasOnNumber), nameof(vm.ExtrasOnTail), nameof(vm.ExtrasOnSpoken) })
                     Assert.Contains(part, changed);
                 Assert.Equal("3", vm.ExtrasOnNumber);
-                Assert.Equal(string.Format(format, 3, 12), vm.ExtrasOnSpoken);
+                Assert.Equal(string.Format(format, 3, 14), vm.ExtrasOnSpoken);
             }
             finally
             {

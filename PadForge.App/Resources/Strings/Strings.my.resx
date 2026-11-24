@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>နောက်ထပ် ကစားနည်းများ</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>အခြားနေရာသို့ ပို့ရန်</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>ဖန်သားပြင်ပေါ်တွင်</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>အခြားပရိုဂရမ်များနှင့်အတူ</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ဖုန်း သို့မဟုတ် တက်ဘလက်ကို ကွန်ထရိုလာအဖြစ် အသုံးပြုပါ။</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ခေါင်းခြေရာခံကိရိယာ သို့မဟုတ် VR ခေါင်းစွပ်ဖြင့် ပတ်ပတ်လည် ကြည့်ပါ။</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ကားမောင်းဂိမ်းများမှ အမြန်နှုန်း၊ ခြေနင်းများနှင့် ဂီယာများကို မက်ပ်လုပ်ပါ။</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>အခြားဝင်းဒိုးများ၏ အပေါ်တွင် ပုံ၊ အချိန်တိုင်းကိရိယာ သို့မဟုတ် နာရီ။</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ဂိမ်းတစ်ခု၏ အပေါ်တွင် သင့်ကိုယ်ပိုင် ချိန်ရွယ်အမှတ်။</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ချဲ့ကြည့်မှန်ဘီလူး၊ ဖန်သားပြင်အပြည့် ချဲ့ကြည့်ခြင်း သို့မဟုတ် မီးမောင်း။</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>လွှင့်တင်ပရိုဂရမ်များ၊ စခရစ်များနှင့် အကူအညီပေး ပရိုဂရမ်များကို PadForge နှင့် တွဲလုပ်ခွင့်ပေးပါ။</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>ပရိုဂရမ်များ ပံ့ပိုးသော စက်ပစ္စည်းများကို ထည့်ပါ။</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ပေါ့တ်၊ ရိုးရိုး HTTP၊ ဝင်ရောက်ခွင့်ကုဒ်</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>အလိုအလျောက် ပြန်ချိတ်ဆက်၊ ပေါ့တ်၊ တွဲချိတ်မှု အထောက်အထား၊ လိပ်စာဖြင့် ချိတ်ဆက်ရန်</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ပေါ့တ်၊ DSX.exe အစားထိုး ပရိုဂရမ်</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ပေါ့တ်၊ အပြည့် အမြန်နှုန်း၊ စိတ်ကြိုက် ဖော်မတ်များ</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML၊ ကျွမ်းကျင်မှု</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>လက်မနှစ်ချောင်းလုံး ခလုတ်များပေါ်တွင် ထားလျက် ဦးခေါင်းခြေရာခံကိရိယာ သို့မဟုတ် VR ခေါင်းစွပ်ဖြင့် ပတ်ပတ်လည်ကို ကြည့်ပါ။</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ကားမောင်းဂိမ်းက ပို့သော အမြန်နှုန်း၊ ခြေနင်းများနှင့် ဂီယာများကို အခြားအဝင်များကဲ့သို့ မက်ပ်လုပ်ပါ။</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU လှုပ်ရှားမှုရင်းမြစ်ကို ဖတ်သော အီမြူလေတာများထံ ကွန်ထရိုလာ၏ လှုပ်ရှားမှုကို ပို့ပါ။</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>မှောင်မှု</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows က ချဲ့ကြည့်ကိရိယာကို မစတင်ခဲ့ပါ။</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>မှန်ဘီလူးနှင့် မီးမောင်းသည် ဝင်းဒိုးမုဒ်နှင့် နယ်စပ်မဲ့မုဒ် ဂိမ်းများ၏ အပေါ်တွင် ပေါ်ပြီး ကလစ်များသည် ၎င်းတို့ကို ဖြတ်သွားသည်။ “ဖန်သားပြင်အပြည့်” သည် Windows ၏ ဖန်သားပြင်အပြည့် ချဲ့ကြည့်ကိရိယာဖြင့် ဒက်စ်တော့တစ်ခုလုံးကို ချဲ့သည်။ မက်ခရိုတစ်ခုသည် ချဲ့ကြည့်ကိရိယာကို ပြနိုင်၊ ဖျောက်နိုင် သို့မဟုတ် ဖိထားစဉ်သာ ပြနိုင်သည်။</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>ပြင်ပပရိုဂရမ်များကို ခွင့်ပြုရန်</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>ပရိုဂရမ်များ လုပ်ခွင့်ရှိသည့်အရာ</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>အဆင့်</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>အမိန့်များ</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>ဖတ်ရန်</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>အဝင်များ ပို့ရန်</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>ဆက်တင်များ ပြောင်းရန်</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ပရိုဂရမ်များသည် ပရိုဖိုင်များကို ပြောင်းနိုင်ပြီး ပြန်လွှတ်ပေးနိုင်သည်၊ အင်ဂျင်ကို စတင်နိုင်၊ ရပ်နိုင်သည်၊ ဗာချွယ်ကွန်ထရိုလာများကို ဖွင့်နိုင်၊ ပိတ်နိုင်သည်၊ ဝင်းဒိုးကို ပြနိုင်၊ ဝှက်နိုင်သည်၊ PadForge ကို ပိတ်နိုင်သည်၊ ချို့ယွင်းချက်ရှာဖွေရေး ခဏတာမှတ်တမ်း သိမ်းနိုင်ပြီး ဘာလည်ပတ်နေသည်ကို မေးနိုင်သည်။</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>“အမိန့်များ” အဆင့်ရှိ အရာအားလုံးအပြင် ပရိုဂရမ်များသည် စက်ပစ္စည်းများ၊ ဗာချွယ်ကွန်ထရိုလာများ၊ မက်ပင်းများ၊ ပရိုဖိုင်များနှင့် ဆက်တင်များကို မြင်နိုင်သည်၊ စက်ပစ္စည်းတိုင်း၏ အဝင်များကို ဖြစ်ပေါ်သည့်အတိုင်း လိုက်ကြည့်နိုင်ပြီး PadForge အတွင်းရှိ နေရာတစ်ခုကို သင့်အား ပြနိုင်သည်။ “ဖတ်ရန်” အဆင့်ရှိ ပရိုဂရမ်သည် စီမံခန့်ခွဲသူအဖြစ် လည်ပတ်သော ဝင်းဒိုးများထဲ ရိုက်သော ခလုတ်များ အပါအဝင် စက်ပစ္စည်းတိုင်းတွင် နှိပ်သော ခလုတ်တိုင်းကို မြင်သည်။</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>“ဖတ်ရန်” အဆင့်ရှိ အရာအားလုံးအပြင် ပရိုဂရမ်များသည် ကိုယ်ပိုင် စက်ပစ္စည်းများကို ထည့်ပြီး မောင်းနှင်နိုင်သည်၊ မည်သည့်စက်ပစ္စည်း၏ ထိန်းချုပ်ကိရိယာကိုမဆို ဖိထားနိုင်ပြီး အမည်ပေးထားသော တန်ဖိုးများကို မက်ခရို ထရီဂါများထံ ပေးနိုင်သည်။</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>“အဝင်များ ပို့ရန်” အဆင့်ရှိ အရာအားလုံးအပြင် ပရိုဂရမ်များသည် စာမျက်နှာများပေါ်တွင် သင် ပြောင်းနိုင်သည့်အရာကို ပြောင်းနိုင်သည်။</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>အကူအညီပေး ပရိုဂရမ်များ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>၎င်းကို အကူအညီပေး ပရိုဂရမ်တစ်ခု၏ MCP ဆက်တင်များထဲ ကူးထည့်ပါ။ ထို့နောက် အကူအညီပေး ပရိုဂရမ်သည် အထက်ပါ အဆင့်ဖြင့် PadForge နှင့် တွဲလုပ်သည်။</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML အဖြစ် ကူးယူရန်</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML ဖတ်သော အကူအညီပေး ပရိုဂရမ်များ</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>စခရစ်များ</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>စခရစ် စာကြည့်တိုက်</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>စာကြည့်တိုက် သိမ်းရန်…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2၊ Python သို့မဟုတ် PowerShell အတွက် ဖိုင်တစ်ခု။ ၎င်းကို ဖွင့်တင်သော စခရစ်သည် အထက်ပါ အဆင့်ဖြင့် စက်ပစ္စည်းများကို ဖတ်ပြီး မက်ပင်းများကို မောင်းနှင်သည်။</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>သင့်ကို စောင့်နေသည်</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>လုပ်ဆောင်ချက်</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>မည်သည့်ပရိုဂရမ်မျှ မခေါ်ရသေးပါ။ ခေါ်ဆိုမှုတိုင်းကို ၎င်း၏ ရလဒ်နှင့်အတူ ဤနေရာတွင် ပြသည်။</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>ပြန်ဖျက်ရန်</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>အကူအညီပေး ပရိုဂရမ်များအတွက် ကျွမ်းကျင်မှု</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>ကျွမ်းကျင်မှု သိမ်းရန်…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge က ၎င်းကို သိမ်းဆည်း၍ မရပါ: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>“ဖတ်ရန်” အဆင့် သို့မဟုတ် ထို့ထက်မြင့်သော ပရိုဂရမ် ချိတ်ဆက်ထားစဉ် ၎င်းသည် ကီးဘုတ်များ အပါအဝင် စက်ပစ္စည်းတိုင်းတွင် နှိပ်ထားသည့်အရာကို မြင်သည်။</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>ပလပ်အင်များ</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ပလပ်အင်များ လည်ပတ်ရန်</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>မည်သည့်ပလပ်အင်မျှ မလည်ပတ်ပါ။</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ပလပ်အင်သည် PadForge ၏ အခွင့်အရေးဖြင့် မဟုတ်ဘဲ သင့်အခွင့်အရေးဖြင့် လည်ပတ်သည်။</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>လှုပ်ရှားမှု ဆာဗာ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ဂိုင်ရိုနှင့် အရှိန်တိုင်းကိရိယာ ဒေတာအတွက် DSU/CemuHook Motion Provider ပရိုတိုကော ဆာဗာ။</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU လှုပ်ရှားမှု ဆာဗာကို ဖွင့်ရန် (CemuHook Motion Provider ပရိုတိုကော)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ဂိမ်းမော့ဒ်တစ်ခု</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>အခြားပရိုဂရမ်တစ်ခုက ပိုက်လိုင်းအမည် {0} ကို ယူထားသည်။ ထိုပရိုဂရမ်ကို ပိတ်ပါ။</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows က ပိုက်လိုင်း {0} ကို ငြင်းပယ်သဖြင့် ပရိုဂရမ်များ ချိတ်ဆက်၍ မရပါ။</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>မည်သည့်ပရိုဂရမ်မျှ ချိတ်ဆက်မထားပါ။</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>ချိတ်ဆက်ထားသည်: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>အမည်မသိ ပရိုဂရမ်</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>ပြီးပါပြီ</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>မလုပ်ခဲ့ပါ</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ဤအဆင့်တွင် ခွင့်မပြုပါ</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ယခု မရနိုင်ပါ</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge အလုပ်များနေသည်</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>တောင်းဆိုချက်ထဲရှိ တန်ဖိုးတစ်ခု မှားနေသည်</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>ထိုပရိုဖိုင် မရှိပါ</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>ထိုဗာချွယ်ကွန်ထရိုလာ မရှိပါ</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge သည် ဤတောင်းဆိုချက်ကို မသိပါ</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>တောင်းဆိုချက် ဗလာဖြစ်နေသည်</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge တွင် ပြဿနာ ဖြစ်သွားသည်</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ပရိုဖိုင် {0} သို့ ပြောင်းရန်</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>မူလ ပရိုဖိုင်သို့ ပြန်သွားရန်</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>မည်သည့်ပရိုဖိုင် အသက်ဝင်နေသည်ကို မေးရန်</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ၏ ဗားရှင်းကို မေးရန်</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ဘာလည်ပတ်နေသည်ကို မေးရန်</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge မသိသော စာကြောင်းကို ပို့ရန်: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>ခွင့်ပြုရန်</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>ခွင့်မပြုပါ</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} မှ</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} မှ၊ ၎င်းကိုယ်ကို “{0}” ဟု ခေါ်သည်</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>၎င်းကိုယ်ကို “{0}” ဟု ခေါ်သော ပရိုဂရမ်မှ</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows က အမည်မပေးသော ပရိုဂရမ်မှ</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>နောက်ထပ် {0} ခု</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0}/{1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} အတွင်း မဖြေလျှင် ငြင်းပယ်သည်ဟု မှတ်သည်။</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack နှင့်လည်းကောင်း၊ ၎င်း၏ UDP အထွက်ကို ပို့သော သို့မဟုတ် FreeTrack 2.0 မျှဝေမှတ်ဉာဏ်သို့ ရေးသော မည်သည့်ခြေရာခံကိရိယာနှင့်မဆိုလည်းကောင်း အလုပ်လုပ်သည်။ နောက်ခံတွင် ဆက်ရှင်တစ်ခု လည်ပတ်နိုင်သော ဤစက်ရှိ OpenXR ရန်တိုင်းနှင့်လည်း အလုပ်လုပ်သည်။</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Keys ကို ဖတ်ရန်</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK မှတစ်ဆင့် G-keys ကို ဖတ်သည်။ Logitech Gaming Software 8.55 သို့မဟုတ် နောက်ပိုင်းဗားရှင်း လည်ပတ်နေရန် လိုအပ်သည်။ ထိုဆော့ဖ်ဝဲတွင် G-key ကွန်မန်းကို PadForge ပရိုဖိုင်ရှိ ကီးတစ်ခုစီပေါ်သို့ ဆွဲထည့်ပါ။ ထိုပရိုဖိုင်ကို အမြဲတမ်း (persistent) ဖြစ်အောင် သတ်မှတ်ပါ၊ မဟုတ်ပါက PadForge ၏ဝင်းဒိုး ရှေ့ဆုံးတွင် ရှိနေချိန်၌သာ ကီးများ PadForge သို့ ရောက်မည်။ G600 သို့မဟုတ် G300 မောက်စ်ကိုလည်း on-board memory မုဒ်မှ ထွက်ထားရမည်။</value></data>

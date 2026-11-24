@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>روش‌های بیشتر برای بازی</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ارسال به جای دیگر</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>روی صفحه</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>همراه برنامه‌های دیگر</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>از تلفن یا تبلت به‌عنوان کنترلر استفاده کنید.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>با ردیاب سر یا هدست واقعیت مجازی به اطراف نگاه کنید.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>سرعت، پدال‌ها و دنده‌ها را از بازی‌های رانندگی نگاشت کنید.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>تصویر، زمان‌سنج یا ساعت بالای پنجره‌های دیگر.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>نشانه‌گیر دلخواه شما روی بازی.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ذره‌بین عدسی، بزرگ‌نمایی کل صفحه یا نورافکن.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>به لانچرها، اسکریپت‌ها و دستیارها اجازه دهید با PadForge کار کنند.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>دستگاه‌هایی را که برنامه‌ها فراهم می‌کنند اضافه کنید.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>پورت، HTTP ساده، کد دسترسی</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>اتصال خودکار دوباره، پورت، هویت جفت‌سازی، اتصال با نشانی</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پورت، جایگزین DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پورت‌ها، سرعت کامل و قالب‌های سفارشی</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML، مهارت</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>با ردیاب سر یا هدست VR به اطراف نگاه کنید، در حالی که هر دو شست روی دکمه‌ها می‌مانند.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>سرعت، پدال‌ها و دنده‌هایی را که یک بازی رانندگی می‌فرستد مثل هر ورودی دیگری نگاشت کنید.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>حرکت کنترلر را برای شبیه‌سازهایی که از منبع حرکت DSU می‌خوانند ارسال کنید.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>تاریکی</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>ویندوز ذره‌بین را راه‌اندازی نکرد.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>عدسی و نورافکن روی بازی‌های پنجره‌ای و بدون کادر نمایش داده می‌شوند و کلیک‌ها از آن‌ها عبور می‌کنند. حالت تمام‌صفحه کل دسکتاپ را با ذره‌بین تمام‌صفحه ویندوز بزرگ می‌کند. یک ماکرو می‌تواند ذره‌بین را نشان دهد یا پنهان کند، یا فقط هنگام نگه داشتن نشانش دهد.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>خودکارسازی</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>اجازه به برنامه‌های بیرونی</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>کارهای مجاز برای برنامه‌ها</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>سطح</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>فرمان‌ها</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>خواندن</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ارسال ورودی‌ها</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>تغییر تنظیمات</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>برنامه‌ها می‌توانند پروفایل‌ها را عوض کنند و رها کنند، موتور را روشن و خاموش کنند، کنترلرهای مجازی را روشن و خاموش کنند، پنجره را نشان دهند و پنهان کنند، PadForge را ببندند، تصویر لحظه‌ای عیب‌یابی ذخیره کنند و بپرسند چه چیزی در حال اجراست.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>همه کارهای سطح «فرمان‌ها»، و برنامه‌ها می‌توانند دستگاه‌ها، کنترلرهای مجازی، نگاشت‌ها، پروفایل‌ها و تنظیمات را ببینند، ورودی هر دستگاه را لحظه‌به‌لحظه دنبال کنند و جایی از PadForge را به شما نشان دهند. برنامه‌ای در سطح «خواندن» هر کلیدی را که روی هر دستگاه فشرده می‌شود می‌بیند، از جمله کلیدهایی که در پنجره‌های اجراشده با دسترسی مدیر تایپ می‌شوند.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>همه کارهای سطح «خواندن»، و برنامه‌ها می‌توانند دستگاه‌های خودشان را اضافه کنند و هدایت کنند، یک کنترل از هر دستگاه را نگه دارند و مقدارهای نام‌دار را به محرک‌های ماکرو بدهند.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>همه کارهای سطح «ارسال ورودی‌ها»، و برنامه‌ها می‌توانند هر چیزی را که شما در صفحه‌ها می‌توانید تغییر دهید تغییر دهند.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>دستیارها</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>این را در تنظیمات MCP یک دستیار جای‌گذاری کنید. دستیار از آن پس در سطحی که بالا انتخاب شده با PadForge کار می‌کند.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>کپی به‌صورت TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>دستیارهایی که TOML می‌خوانند</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>اسکریپت‌ها</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>کتابخانه اسکریپت</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ذخیره یک کتابخانه…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>یک فایل برای AutoHotkey v2، Python یا PowerShell. اسکریپتی که آن را بارگذاری کند، در سطحی که بالا انتخاب شده دستگاه‌ها را می‌خواند و نگاشت‌ها را هدایت می‌کند.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>منتظر شما</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>فعالیت</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>هنوز هیچ برنامه‌ای درخواستی نداده است. هر درخواست همراه با نتیجه‌اش اینجا فهرست می‌شود.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>واگرد</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>مهارت برای دستیارها</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>ذخیره مهارت…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge نتوانست آن را ذخیره کند: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>تا وقتی برنامه‌ای در سطح «خواندن» یا بالاتر وصل است، می‌بیند روی هر دستگاه چه فشرده می‌شود، از جمله صفحه‌کلیدها.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>پلاگین‌ها</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>اجرای پلاگین‌ها</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلاگینی اجرا نمی‌شود.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلاگین با دسترسی‌های شما اجرا می‌شود، نه با دسترسی‌های PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>سرور حرکت</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>سرور پروتکل DSU/CemuHook Motion Provider برای داده‌های ژیروسکوپ و شتاب‌سنج.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>فعال کردن سرور حرکت DSU (پروتکل CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>یک مود بازی</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>برنامه دیگری نام لوله {0} را در اختیار دارد. آن برنامه را ببندید.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows لوله {0} را رد کرد، بنابراین برنامه‌ها نمی‌توانند وصل شوند.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>هیچ برنامه‌ای وصل نیست.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>متصل: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>برنامه ناشناس</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>انجام شد</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>انجام نشد</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>در این سطح مجاز نیست</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>اکنون در دسترس نیست</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge مشغول بود</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>یکی از مقدارهای درخواست نادرست بود</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>چنین پروفایلی وجود ندارد</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>چنین کنترلر مجازی‌ای وجود ندارد</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge این درخواست را نمی‌شناسد</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>درخواست خالی بود</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge با مشکلی روبه‌رو شد</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>رفتن به پروفایل {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>بازگشت به پروفایل پیش‌فرض</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسیدن اینکه کدام پروفایل فعال است</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>پرسیدن نسخه PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>پرسیدن اینکه چه چیزی در حال اجراست</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ارسال خطی که PadForge نمی‌شناسد: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>اجازه دادن</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>اجازه ندادن</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>از {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>از {1} که خود را «{0}» می‌نامد</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>از برنامه‌ای که خود را «{0}» می‌نامد</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>از برنامه‌ای که Windows نامی برایش نداد</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>و {0} مورد دیگر</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} از {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>اگر تا {0} دیگر پاسخی ندهید، رد می‌شود.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>با OpenTrack و هر ردیابی که خروجی UDP آن را می‌فرستد یا در حافظه مشترک FreeTrack 2.0 می‌نویسد کار می‌کند، و نیز با یک محیط اجرای OpenXR روی همین رایانه که بتواند نشستی را در پس‌زمینه اجرا کند.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>خواندن کلیدهای G از Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>کلیدهای G را از طریق Logitech G-key SDK می‌خواند. باید Logitech Gaming Software نسخه 8.55 یا جدیدتر در حال اجرا باشد. در آن نرم‌افزار، فرمان G-key را در پروفایل PadForge روی هر کلید بکشید. آن پروفایل را ماندگار کنید، وگرنه کلیدها فقط وقتی به PadForge می‌رسند که پنجره آن جلو باشد. ماوس G600 یا G300 همچنین باید از حالت حافظه داخلی خارج باشد.</value></data>

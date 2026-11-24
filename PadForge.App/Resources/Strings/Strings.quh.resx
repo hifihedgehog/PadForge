@@ -1495,6 +1495,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Astawan pukllanapaq ñankuna</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Huk chiqaman kachay</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Pantallapi</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Huk programakunawan</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Carro pukllaykunamanta velocidadta, pedalkunata, cambiokunatapas asignay.</value></data>
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Huk PC-pi virtual controlkunata kamachiy.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pukllachkaspa menúkunata, capakunata, perfil t'ikraykunata, dispositivo tinkiykunatapas rikuchiy.</value></data>
@@ -1685,10 +1686,44 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Dispositivokuna t'aqakurqan: {0}</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Dispositivokuna tinkikurqan: {0}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kuti kuti t'aqakuchkan</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Lanzadorkunata, scriptkunata, asistentekunatapas PadForge nisqawan llamk'achiy.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Programakunap quwasqan dispositivokunata yapay.</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Asignasqa dispositivop sutin, t'aqakuqtin.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Asignasqa dispositivop sutin, tinkikuqtin.</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Programakuna ima ruwayta atinku</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nivel</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistentekuna</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kayta huk asistentep MCP configuraciónninman ch'aqtay. Chaymantataq asistenteqa PadForge nisqawan hanaq nivelpi llamk'anqa.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML hina copiay</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML ñawinchaq asistentekuna</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scriptkuna</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Scriptkunap bibliotecan</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Huk bibliotecata waqaychay…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Huk archivo AutoHotkey v2, Python utaq PowerShell nisqapaq. Chayta cargaq scriptqa dispositivokunata ñawinchan, asignaciónkunatataq hanaq nivelpi kamachin.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Qanta suyakuchkan</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ruwasqakuna</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Manaraq ni mayqin programa waqyanchu. Sapa waqyay kaypi rikhurinqa, imayna tukukusqanwan.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Kutichiy</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Asistentekunapaq Skill</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Skillta waqaychay…</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Mana ni mayqin plugin llamk'achkanchu.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Huk programa {0} pipe sutita hap'in. Chay programata wisq'ay.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows mana {0} pipeta munarqanchu, chayrayku programakuna mana tinkikuyta atinkuchu.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Mana ni mayqin programa tinkisqachu.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tinkisqa: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Mana riqsisqa programa</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Ruwasqa</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Mana ruwasqa</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Kay nivelpi mana atikunchu</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Kunan mana kanchu</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge llamk'achkarqan</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Mañakuypi huk valor mana allinchu karqan</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Chay perfil mana kanchu</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Chay control virtual mana kanchu</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge mana kay mañakuyta riqsinchu</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Mañakuyqa ch'usaq karqan</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge huk sasachakuywan tuparqan</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} perfilman t'ikray</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ñawpaq kaq perfilman kutiy</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mayqin perfil llamk'achkasqanta tapuy</value></data>
@@ -1709,6 +1744,12 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nisqap versiónninta tapuy</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Ima llamk'achkasqanta tapuy</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge mana riqsisqan siq'ita kachay: {0}</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} nisqamanta</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} nisqamanta, “{0}” sutichakuq</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>“{0}” sutichakuq programamanta</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows mana sutichasqan programamanta</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>astawan: {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now nisqa comunidadpa control base de datosninta (SDL_GameControllerDB) GitHub nisqamanta uraykachin, configuración archivopitaq kay PadForge versiónpa mana kapuqnin asignaciónkunata waqaychan. Musuq asignaciónqa mana imapas gamepad hina ñawinchasqan, mana asignasqa, mana Force Raw Joystick Mode nisqapi kaq controlpaqlla llamk'achikun. Ñawpaqman kutichiyqa tukuy uraykachisqa asignaciónkunata qichun.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian. {2} musuqyachisqa: musuq {3}, t'ikrasqa {4}.</value></data>

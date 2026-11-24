@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>ວິທີຫຼິ້ນເພີ່ມເຕີມ</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ສົ່ງໄປບ່ອນອື່ນ</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>ເທິງໜ້າຈໍ</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>ກັບໂປຣແກຣມອື່ນ</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ໃຊ້ໂທລະສັບ ຫຼື ແທັບເລັດເປັນຕົວຄວບຄຸມ.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ຫັນມຸມມອງໃນເກມດ້ວຍເຄື່ອງຕິດຕາມຫົວ ຫຼື ແວ່ນ VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ແມັບຄວາມໄວ, ແປ້ນຢຽບ ແລະ ເກຍຈາກເກມຂັບລົດ.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ຮູບພາບ, ຕົວຈັບເວລາ ຫຼື ໂມງ ຢູ່ເທິງໜ້າຕ່າງອື່ນ.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ເປົ້າເລັງຂອງທ່ານເອງເທິງເກມ.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ເລນຂະຫຍາຍ, ການຂະຫຍາຍເຕັມໜ້າຈໍ ຫຼື ໄຟສ່ອງ.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>ໃຫ້ຕົວເປີດເກມ, ສະຄຣິບ ແລະ ຜູ້ຊ່ວຍເຮັດວຽກກັບ PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>ເພີ່ມອຸປະກອນທີ່ໂປຣແກຣມສະໜອງໃຫ້.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ພອດ, HTTP ທຳມະດາ, ລະຫັດເຂົ້າເຖິງ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ການເຊື່ອມຕໍ່ຄືນອັດຕະໂນມັດ, ພອດ, ຕົວຕົນການຈັບຄູ່, ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ພອດ, DSX.exe ຕົວແທນ</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ພອດ, ຄວາມໄວເຕັມ (ກມ/ຊມ), ຮູບແບບກຳນົດເອງ</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, ທັກສະ</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ເບິ່ງໄປຮອບໆດ້ວຍຕົວຕິດຕາມຫົວ ຫຼື ແວ່ນ VR ໃນຂະນະທີ່ນິ້ວໂປ້ທັງສອງຍັງຢູ່ເທິງປຸ່ມ.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ແມັບຄວາມໄວ, ແປ້ນຢຽບ ແລະ ເກຍທີ່ເກມຂັບລົດສົ່ງມາ ຄືກັບອິນພຸດອື່ນໆ.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ສົ່ງການເຄື່ອນໄຫວຂອງຕົວຄວບຄຸມໄປຫາອີມູເລເຕີທີ່ອ່ານແຫຼ່ງການເຄື່ອນໄຫວ DSU.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ຄວາມມືດ</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ບໍ່ໄດ້ເລີ່ມແວ່ນຂະຫຍາຍ.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ເລນ ແລະ ໄຟສ່ອງສະແດງເທິງເກມແບບໜ້າຕ່າງ ແລະ ແບບບໍ່ມີຂອບ, ແລະ ການຄລິກຈະຜ່ານມັນໄປ. ເຕັມໜ້າຈໍຈະຂະຫຍາຍເດັສທັອບທັງໝົດດ້ວຍແວ່ນຂະຫຍາຍເຕັມໜ້າຈໍຂອງ Windows. ມາໂຄຣສາມາດສະແດງ ຫຼື ເຊື່ອງແວ່ນຂະຫຍາຍ ຫຼື ສະແດງມັນສະເພາະຂະນະກົດຄ້າງ.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດ</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>ອະນຸຍາດໂປຣແກຣມພາຍນອກ</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>ສິ່ງທີ່ໂປຣແກຣມເຮັດໄດ້</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>ລະດັບ</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>ຄຳສັ່ງ</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>ອ່ານ</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ສົ່ງອິນພຸດ</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>ປ່ຽນການຕັ້ງຄ່າ</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌ ແລະ ປ່ອຍມັນ, ເລີ່ມ ແລະ ຢຸດເອັນຈິນ, ເປີດ ແລະ ປິດຕົວຄວບຄຸມສະເໝືອນ, ສະແດງ ແລະ ເຊື່ອງໜ້າຕ່າງ, ປິດ PadForge, ບັນທຶກສະແນັບຊັອດການວິນິດໄສ ແລະ ຖາມວ່າມີຫຍັງກຳລັງເຮັດວຽກ.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ທຸກຢ່າງໃນລະດັບ ຄຳສັ່ງ, ແລະ ໂປຣແກຣມສາມາດເບິ່ງອຸປະກອນ, ຕົວຄວບຄຸມສະເໝືອນ, ການແມັບ, ໂປຣໄຟລ໌ ແລະ ການຕັ້ງຄ່າ, ຕິດຕາມອິນພຸດຂອງທຸກອຸປະກອນໃນຂະນະທີ່ມັນເກີດຂຶ້ນ, ແລະ ສະແດງບ່ອນໃດໜຶ່ງໃນ PadForge ໃຫ້ທ່ານເບິ່ງ. ໂປຣແກຣມໃນລະດັບ ອ່ານ ເຫັນທຸກປຸ່ມທີ່ກົດໃນທຸກອຸປະກອນ, ລວມທັງປຸ່ມທີ່ພິມໃສ່ໜ້າຕ່າງທີ່ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບ.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>ທຸກຢ່າງໃນລະດັບ ອ່ານ, ແລະ ໂປຣແກຣມສາມາດເພີ່ມອຸປະກອນຂອງມັນເອງ ແລະ ຂັບເຄື່ອນມັນ, ຄ້າງການຄວບຄຸມຂອງອຸປະກອນໃດກໍໄດ້ ແລະ ສົ່ງຄ່າທີ່ມີຊື່ໃຫ້ທຣິກເກີຂອງມາໂຄຣ.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ທຸກຢ່າງໃນລະດັບ ສົ່ງອິນພຸດ, ແລະ ໂປຣແກຣມສາມາດປ່ຽນສິ່ງທີ່ທ່ານປ່ຽນໄດ້ໃນໜ້າຕ່າງໆ.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ຜູ້ຊ່ວຍ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ວາງສິ່ງນີ້ໃສ່ການຕັ້ງຄ່າ MCP ຂອງຜູ້ຊ່ວຍ. ຈາກນັ້ນຜູ້ຊ່ວຍຈະເຮັດວຽກກັບ PadForge ໃນລະດັບຂ້າງເທິງ.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>ສຳເນົາເປັນ TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ຜູ້ຊ່ວຍທີ່ອ່ານ TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ສະຄຣິບ</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>ຄັງສະຄຣິບ</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ບັນທຶກຄັງ…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ໄຟລ໌ດຽວສຳລັບ AutoHotkey v2, Python ຫຼື PowerShell. ສະຄຣິບທີ່ໂຫຼດມັນຈະອ່ານອຸປະກອນ ແລະ ຂັບເຄື່ອນການແມັບໃນລະດັບຂ້າງເທິງ.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>ລໍຖ້າທ່ານຢູ່</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>ກິດຈະກຳ</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ຍັງບໍ່ມີໂປຣແກຣມໃດເອີ້ນເທື່ອ. ແຕ່ລະການເອີ້ນຈະຖືກລາຍຊື່ຢູ່ນີ້ພ້ອມກັບຜົນຂອງມັນ.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>ຍ້ອນກັບ</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>ທັກສະສຳລັບຜູ້ຊ່ວຍ</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>ບັນທຶກທັກສະ…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດບັນທຶກມັນໄດ້: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>ໃນຂະນະທີ່ໂປຣແກຣມໃນລະດັບ ອ່ານ ຫຼື ສູງກວ່າເຊື່ອມຕໍ່ຢູ່, ມັນຈະເຫັນສິ່ງທີ່ກົດໃນທຸກອຸປະກອນ, ລວມທັງແປ້ນພິມ.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>ປລັກອິນ</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ເປີດໃຊ້ປລັກອິນ</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ບໍ່ມີປລັກອິນໃດເຮັດວຽກ.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ປລັກອິນເຮັດວຽກດ້ວຍສິດຂອງທ່ານ, ບໍ່ແມ່ນສິດຂອງ PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ເຊີບເວີການເຄື່ອນໄຫວ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ເຊີບເວີໂປຣໂຕຄອນ DSU/CemuHook Motion Provider ສຳລັບຂໍ້ມູນໄຈໂຣ ແລະ ເຊັນເຊີວັດຄວາມເລັ່ງ.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>ເປີດໃຊ້ເຊີບເວີການເຄື່ອນໄຫວ DSU (ໂປຣໂຕຄອນ CemuHook Motion Provider)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ມອດເກມໜຶ່ງ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>ໂປຣແກຣມອື່ນຖືຊື່ໄປປ໌ {0} ຢູ່. ປິດໂປຣແກຣມນັ້ນ.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ປະຕິເສດໄປປ໌ {0}, ສະນັ້ນໂປຣແກຣມຈຶ່ງເຊື່ອມຕໍ່ບໍ່ໄດ້.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ບໍ່ມີໂປຣແກຣມໃດເຊື່ອມຕໍ່ຢູ່.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>ໂປຣແກຣມທີ່ບໍ່ຮູ້ຈັກ</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>ສຳເລັດ</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>ບໍ່ສຳເລັດ</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ບໍ່ອະນຸຍາດໃນລະດັບນີ້</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ບໍ່ພ້ອມໃຊ້ໃນຕອນນີ້</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge ກຳລັງຫຍຸ້ງ</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>ຄ່າໜຶ່ງໃນຄຳຂໍບໍ່ຖືກຕ້ອງ</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>ບໍ່ມີໂປຣໄຟລ໌ນີ້</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນນີ້</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ບໍ່ຮູ້ຈັກຄຳຂໍນີ້</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>ຄຳຂໍຫວ່າງເປົ່າ</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ພົບບັນຫາ</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ປ່ຽນໄປໂປຣໄຟລ໌ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ກັບໄປໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>ຖາມວ່າໂປຣໄຟລ໌ໃດເປີດໃຊ້ຢູ່</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>ຖາມເວີຊັນຂອງ PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>ຖາມວ່າມີຫຍັງກຳລັງເຮັດວຽກ</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ສົ່ງແຖວທີ່ PadForge ບໍ່ຮູ້ຈັກ: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>ອະນຸຍາດ</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>ບໍ່ອະນຸຍາດ</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>ຈາກ {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ຈາກ {1}, ເຊິ່ງເອີ້ນຕົວເອງວ່າ “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ຈາກໂປຣແກຣມທີ່ເອີ້ນຕົວເອງວ່າ “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>ຈາກໂປຣແກຣມທີ່ Windows ບໍ່ໄດ້ບອກຊື່</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ແລະ ອີກ {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ຈາກ {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>ບໍ່ຕອບພາຍໃນ {0} ຖືວ່າບໍ່ອະນຸຍາດ.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບ OpenTrack ແລະ ຕົວຕິດຕາມໃດໆທີ່ສົ່ງເອົາພຸດ UDP ຫຼື ຂຽນໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack 2.0, ແລະ ກັບຣັນທາມ OpenXR ໃນເຄື່ອງນີ້ທີ່ສາມາດແລ່ນເຊດຊັນໃນພື້ນຫຼັງໄດ້.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>ອ່ານປຸ່ມ G-Key ຂອງ Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>ອ່ານປຸ່ມ G-key ຜ່ານ Logitech G-key SDK. ຕ້ອງມີ Logitech Gaming Software 8.55 ຫຼື ໃໝ່ກວ່າເຮັດວຽກຢູ່. ໃນຊອບແວນັ້ນ, ລາກຄຳສັ່ງ G-key ໄປໃສ່ແຕ່ລະປຸ່ມໃນໂປຣໄຟລ໌ PadForge. ຕັ້ງໂປຣໄຟລ໌ນັ້ນໃຫ້ຖາວອນ, ບໍ່ດັ່ງນັ້ນປຸ່ມຈະສົ່ງເຖິງ PadForge ສະເພາະຕອນທີ່ໜ້າຕ່າງຂອງມັນຢູ່ດ້ານໜ້າ. ເມົ້າ G600 ຫຼື G300 ຍັງຕ້ອງອອກຈາກໂໝດໜ່ວຍຄວາມຈຳໃນຕົວນຳ.</value></data>

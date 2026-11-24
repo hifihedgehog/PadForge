@@ -2524,6 +2524,8 @@ namespace PadForge.Services
             SettingsManager.AutomationLevel = automationLevel;
             _mainVm.Dashboard.EnableAutomation = appSettings.EnableAutomation;
             SettingsManager.EnableAutomation = appSettings.EnableAutomation;
+            _mainVm.Dashboard.EnablePlugins = appSettings.EnablePlugins;
+            SettingsManager.EnablePlugins = appSettings.EnablePlugins;
             vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
             vm.ShowLegacyWorkshopConfigs = appSettings.ShowLegacyWorkshopConfigs;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -5058,6 +5060,7 @@ namespace PadForge.Services
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
             SettingsManager.EnableAutomation = _mainVm.Dashboard.EnableAutomation;
             SettingsManager.AutomationLevel = _mainVm.Dashboard.AutomationLevel;
+            SettingsManager.EnablePlugins = _mainVm.Dashboard.EnablePlugins;
 
             // Collect per-slot controller types and HIDMaestro profile slugs.
             var slotTypes = new int[_mainVm.Pads.Count];
@@ -5208,6 +5211,7 @@ namespace PadForge.Services
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 EnableAutomation = _mainVm.Dashboard.EnableAutomation,
                 AutomationLevel = (int)_mainVm.Dashboard.AutomationLevel,
+                EnablePlugins = _mainVm.Dashboard.EnablePlugins,
                 EnableCommunityConfigLookup = vm.EnableCommunityConfigLookup,
                 ShowLegacyWorkshopConfigs = vm.ShowLegacyWorkshopConfigs,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
@@ -6272,6 +6276,7 @@ namespace PadForge.Services
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.EnableAutomation = false;
             SettingsManager.AutomationLevel = Automation.AutomationLevel.Commands;
+            SettingsManager.EnablePlugins = false;
             SettingsManager.ExternalProfilePinActive = false;
             SettingsManager.ActiveProfileId = null;
             // Every game look's picture goes with the profiles: no profile
@@ -7498,6 +7503,12 @@ namespace PadForge.Services
         /// none. A number no level has reads as 0.</summary>
         [XmlElement]
         public int AutomationLevel { get; set; }
+
+        /// <summary>The Plugins extra's switch (#597): PadForge runs the
+        /// plugins the user approved. Default false, and false in a file from
+        /// before it.</summary>
+        [XmlElement]
+        public bool EnablePlugins { get; set; }
 
         /// <summary>The External Control switch of #366 as files before #597
         /// saved it: a launcher or script could switch profiles over the

@@ -1344,6 +1344,34 @@
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ndaikatúi olee upe marandurenda.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ndojuhúi upe marandurenda.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Emondo meme</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Ambue programa ndive</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Emoheñói lanzador, script ha pytyvõhára omba'apo hag̃ua PadForge ndive.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Embojoapy mba'e'oka programa ome'ẽva.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Pytyvõhára</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Emoĩ kóva pytyvõhára configuración MCP ryepýpe. Upéi pytyvõhára omba'apo PadForge ndive yvategua nivel-pe.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Ekopia TOML ramo</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Pytyvõhára olee va'ekue TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Script aty</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Eñongatu peteĩ aty…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Peteĩ archivo AutoHotkey v2, Python térã PowerShell peg̃uarã. Script ohupíva ohecha mba'e'oka ha omboguata mapeo yvategua nivel peve.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Oha'arõ ndéve</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Tembiapo</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ni peteĩ programa nohenóiri gueteri. Opaite ñehenói ojehai ko'ápe mba'épa osẽ chugui ndive.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Embojevy</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Katupyry pytyvõhára peg̃uarã</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Eñongatu katupyry…</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Ojejapóma</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ndojejapói</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Noñemoneĩri ko nivel-pe</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ndaipóri ko'ág̃a</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge ojepytaso hína</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Peteĩ valor ñemaña ryepýpe ndoikói</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ndaipóri upéicha perfil</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ndaipóri upéicha mando virtual</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ndoikuaái ko ñemaña</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Ñemaña nandi</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ojuhu peteĩ apañuãi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Emoambue perfil {0} peve</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ejevy perfil ypykuépe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eporandu mba'e perfilpa oĩ hína</value></data>
@@ -1364,6 +1392,11 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Eporandu PadForge versión</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Eporandu mba'épa omba'apo hína</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Emondo peteĩ línea PadForge ndoikuaáiva: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Emoneĩ</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ani emoneĩ</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ha {0} hetave</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} {1} apytégui</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ndembohováiramo {0} ryepýpe, ojeipapa nahániri ramo.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now omboguejy mando aty tekoha rehegua (SDL_GameControllerDB) GitHub guive ha oñongatu, configuración archivo ryepýpe, mapeo ko PadForge versión ndoguerekóiva. Peteĩ mapeo pyahu ojeporu añoite peteĩ mando ambue mba'eve nolee'ỹva gamepad ramo, noñemoĩriva ha ndaiporiva Force Raw Joystick Mode ryepýpe. Restablecer omboguete opaite mapeo ojeboguejy va'ekue.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ijapytepegua: {0} mapeo, tekoha kopia {1} rehegua.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ijapytepegua: {0} mapeo, tekoha kopia {1} rehegua. Oñembopyahu {2}: pyahu {3}, oñemoambuéva {4}.</value></data>

@@ -1411,6 +1411,7 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ntawm {1} txog thaum nres</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Yam ntxiv</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Saum lub vijtsam</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Nrog lwm cov program</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Qhia cov menu, cov txheej, kev hloov profile thiab kev txuas khoom siv thaum koj ua si.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Nrhiav kev teeb tsa, khoom siv thiab profile</value></data>
@@ -1635,8 +1636,40 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} lub khoom siv tsis txuas lawm</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} lub khoom siv txuas lawm</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} pheej tu txuas</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Yam uas cov program ua tau</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Theem</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Cov assistant</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Muab qhov no tso rau hauv ib lub assistant qhov teeb tsa MCP. Ces lub assistant yuav ua hauj lwm nrog PadForge raws li theem saum toj no.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Theej ua TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Cov assistant uas nyeem TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Cov script</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Lub tsev qiv script</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Khaws ib lub tsev qiv…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ib daim ntawv rau AutoHotkey v2, Python los yog PowerShell. Ib tsab script uas thauj nws nyeem tau cov khoom siv thiab tswj tau cov mapping raws li theem saum toj no.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Tos koj</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Kev ua</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Tseem tsis tau muaj program twg hu. Txhua zaus hu yuav teev rau ntawm no nrog rau qhov tshwm sim.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Thim rov qab</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill rau cov assistant</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Khaws lub skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge khaws tsis tau: {0}</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tsis muaj plugin twg khiav.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lwm qhov program tuav lub npe pipe {0}. Kaw qhov program ntawd.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows tsis kam tsim lub pipe {0}, yog li cov program txuas tsis tau.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tsis muaj program twg txuas.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Txuas lawm: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program tsis paub npe</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Ua tiav lawm</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tsis tau ua</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Theem no tsis pub ua</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tam sim no ua tsis tau</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge tseem tab tom ua lwm yam</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Ib tus nqi hauv qhov kev thov tsis yog</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Tsis muaj profile no</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Tsis muaj controller virtual no</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tsis paub qhov kev thov no</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Qhov kev thov khoob</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge muaj teeb meem</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hloov mus rau profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rov qab mus rau profile neej ntawd</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Nug saib profile twg siv</value></data>
@@ -1657,6 +1690,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Nug txog PadForge tus version</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Nug saib dab tsi tab tom khiav</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Xa ib kab uas PadForge tsis paub: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Tso cai</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Tsis tso cai</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Los ntawm {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Los ntawm {1}, uas hu nws tus kheej tias “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Los ntawm ib qhov program uas hu nws tus kheej tias “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Los ntawm ib qhov program uas Windows tsis tau muab npe</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>thiab {0} ntxiv</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ntawm {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Yog tsis teb hauv {0} yuav suav tias tsis kam.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Ib qho mapping tshiab tsuas siv rau ib lub controller uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Kev rov teeb tsa dua tshem txhua qho mapping uas rub tawm lawm.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Hloov tshiab tam sim no</value></data>

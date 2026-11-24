@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Тоглох өөр арга замууд</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Өөр газар илгээх</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Дэлгэц дээр</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Бусад програмуудтай</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Утас эсвэл таблетыг контроллер болгон ашиглана.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын хурд, дөрөө, арааг онооно.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Бусад цонхны дээр харагдах зураг, хугацаа хэмжигч эсвэл цаг.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Тоглоом дээр харагдах өөрийн онилгоо.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Томруулах линз, бүтэн дэлгэцийн томруулалт эсвэл гэрэлтүүлэг.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Лаунчер, скрипт болон туслахуудад PadForge-тай ажиллах боломж олгоно.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Програмуудын нийлүүлдэг төхөөрөмжүүдийг нэмнэ.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, энгийн HTTP, нэвтрэх код</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автомат дахин холболт, порт, хослуулалтын таних мэдээлэл, хаягаар холбогдох</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe орлуулагч</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портууд, Бүрэн хурд, Өөрийн форматууд</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ур чадвар</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Хоёр эрхий хуруу товчлуур дээрээ байх зуур толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын илгээдэг хурд, дөрөө, арааг бусад оролтын адил онооно.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU хөдөлгөөний эх үүсвэр уншдаг эмуляторуудад контроллерын хөдөлгөөнийг илгээнэ.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Харанхуйлалт</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows томруулагчийг эхлүүлсэнгүй.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Линз ба гэрэлтүүлэг цонхон болон хүрээгүй горимтой тоглоомын дээр харагдах бөгөөд товшилт түүгээр нэвтэрч өнгөрнө. Бүтэн дэлгэц горим нь Windows-ийн бүтэн дэлгэцийн томруулагчаар ажлын талбарыг бүхэлд нь томруулна. Макро томруулагчийг харуулах, нуух эсвэл зөвхөн дарж байх үед харуулж чадна.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Автоматжуулалт</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Гадны програмуудыг зөвшөөрөх</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Програмууд юу хийж болох</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Түвшин</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Тушаалууд</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Унших</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Оролт илгээх</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Тохиргоо өөрчлөх</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програмууд профайл сольж чөлөөлөх, хөдөлгүүрийг эхлүүлж зогсоох, виртуал контроллеруудыг асааж унтраах, цонхыг харуулж нуух, PadForge-ийг хаах, оношилгооны агшин зураг хадгалах болон юу ажиллаж байгааг асуух боломжтой.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Тушаалууд түвшний бүх зүйл, мөн програмууд төхөөрөмж, виртуал контроллер, оноолт, профайл, тохиргоог харах, төхөөрөмж бүрийн оролтыг тухай бүрд нь дагах, PadForge доторх байршлыг танд үзүүлэх боломжтой. Унших түвшний програм төхөөрөмж бүр дээр дарагдсан товч бүрийг, тэр дундаа администраторын эрхээр ажиллаж буй цонхонд бичсэн товчнуудыг харна.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Унших түвшний бүх зүйл, мөн програмууд өөрийн төхөөрөмж нэмж удирдах, дурын төхөөрөмжийн удирдлагыг барих, макро гохуудад нэртэй утга дамжуулах боломжтой.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Оролт илгээх түвшний бүх зүйл, мөн програмууд таны хуудсууд дээр өөрчилж болох зүйлсийг өөрчлөх боломжтой.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Туслахууд</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Үүнийг туслахын MCP тохиргоонд буулгана уу. Ингэснээр туслах дээрх түвшинд PadForge-тай ажиллана.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML хэлбэрээр хуулах</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML уншдаг туслахууд</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Скриптүүд</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Скриптийн сан</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Сан хадгалах…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python эсвэл PowerShell-д зориулсан нэг файл. Үүнийг ачаалсан скрипт дээрх түвшинд төхөөрөмжүүдийг уншиж, оноолтуудыг удирдана.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Таныг хүлээж байна</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Үйл ажиллагаа</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Одоогоор ямар ч програм хандаагүй байна. Хандалт бүр үр дүнгийн хамт энд жагсаагдана.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Буцаах</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Туслахуудад зориулсан ур чадвар</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Ур чадварыг хадгалах…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge үүнийг хадгалж чадсангүй: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Унших буюу түүнээс дээш түвшний програм холбогдсон үед гарыг оролцуулан төхөөрөмж бүр дээр юу дарагдаж байгааг харна.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Залгаасууд</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Залгаасуудыг ажиллуулах</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ажиллаж буй залгаас алга.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Залгаас PadForge-ийн биш, таны эрхээр ажиллана.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Хөдөлгөөний сервер</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп болон акселерометрийн өгөгдөлд зориулсан DSU/CemuHook Motion Provider протоколын сервер.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU хөдөлгөөний серверийг идэвхжүүлэх (CemuHook Motion Provider Protocol)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Тоглоомын мод</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>{0} нэртэй хоолойг өөр програм эзэмшиж байна. Тэр програмыг хаана уу.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} хоолойг үүсгэхээс татгалзсан тул програмууд холбогдож чадахгүй.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Холбогдсон програм алга.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Холбогдсон: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Үл мэдэгдэх програм</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Хийгдсэн</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Хийгдээгүй</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Энэ түвшинд зөвшөөрөгдөөгүй</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Одоогоор боломжгүй</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge завгүй байсан</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Хүсэлт дэх утга буруу байсан</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ийм профайл алга</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ийм виртуал контроллер алга</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge энэ хүсэлтийг мэдэхгүй</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Хүсэлт хоосон байсан</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge асуудалтай тулгарсан</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профайл руу шилжих</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Үндсэн профайл руу буцах</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Аль профайл идэвхтэйг асуух</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ийн хувилбарыг асуух</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Юу ажиллаж байгааг асуух</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ийн мэдэхгүй мөр илгээх: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Зөвшөөрөх</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Зөвшөөрөхгүй</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Илгээгч: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Илгээгч: {1}, өөрийгөө “{0}” гэж нэрлэдэг</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Илгээгч: өөрийгөө “{0}” гэж нэрлэдэг програм</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Илгээгч: Windows нэрлээгүй програм</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>болон өөр {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0}/{1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} дотор хариулахгүй бол татгалзсанд тооцно.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack болон UDP гаралтаа илгээдэг эсвэл FreeTrack 2.0 хуваалцсан санах ойд бичдэг аливаа хянагчтай, мөн энэ компьютер дээрх арын горимд сесс ажиллуулж чадах OpenXR ажиллах орчинтой ажиллана.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key товчлууруудыг унших</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G товчлууруудыг Logitech G-key SDK-ээр уншина. Logitech Gaming Software 8.55 буюу түүнээс хойшх хувилбар ажиллаж байх шаардлагатай. Тэр програмд PadForge профайлын товчлуур бүр дээр G-key командыг чирж тавина уу. Тэр профайлыг байнгын болгоно уу, эс бөгөөс PadForge-ийн цонх урд байх үед л товчлуурын дохио түүнд хүрнэ. G600 эсвэл G300 хулгана мөн дотоод санах ойн горимоос гарсан байх ёстой.</value></data>

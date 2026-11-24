@@ -21,6 +21,7 @@ namespace PadForge
     public partial class MainWindow
     {
         private AutomationHost _automation;
+        private Views.AutomationRequestCard _requestCard;
 
         /// <summary>Automation's host, for the parts of the app that serve
         /// outside programs. Null until the settings are loaded.</summary>
@@ -53,6 +54,14 @@ namespace PadForge
         {
             _automation = new AutomationHost(new AutomationTarget(this), new DispatcherAutomationUi(Dispatcher));
             _automation.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(ShowAutomationState));
+            // The status line names the programs connected.
+            _automation.Clients.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(ShowAutomationState));
+            // The Automation page's questions, record and the buttons of the
+            // parts later builds provide, and the card that asks above other
+            // windows from the same list of questions.
+            _viewModel.Dashboard.AttachAutomation(_automation, Dispatcher);
+            _requestCard = new Views.AutomationRequestCard(_viewModel.Dashboard.AutomationRequests,
+                () => new System.Windows.Interop.WindowInteropHelper(this).Handle);
             // Nothing can release a profile a program held once the pipe is
             // gone, so it is let go, and switching by game goes on.
             _automation.TurnedOff += (s, e) => _inputService?.ReleaseExternalPin();
@@ -84,19 +93,36 @@ namespace PadForge
             if (_automation == null) return;
             var dash = _viewModel.Dashboard;
             dash.IsAutomationRunning = _automation.IsServing;
-            dash.AutomationStatus = AutomationStatusLine(_automation.ControlPipe);
+            dash.AutomationStatus = AutomationStatusLine(_automation.ControlPipe, _automation.Clients.Snapshot());
         }
 
-        /// <summary>The host's line for where its control pipe stands.</summary>
-        internal static string AutomationStatusLine(ExternalControlService.PipeState pipe) => pipe switch
+        /// <summary>The host's line for where its control pipe stands: off,
+        /// on with no program connected, on with the programs connected by
+        /// name, or why programs cannot connect.</summary>
+        internal static string AutomationStatusLine(ExternalControlService.PipeState pipe, IReadOnlyList<AutomationClient> clients)
         {
-            ExternalControlService.PipeState.Serving => Strings.Instance.Common_Running,
-            ExternalControlService.PipeState.NameTaken =>
-                string.Format(Strings.Instance.Automation_Status_NameTaken_Format, ExternalControlService.PipeName),
-            ExternalControlService.PipeState.Failed =>
-                string.Format(Strings.Instance.Automation_Status_Failed_Format, ExternalControlService.PipeName),
-            _ => Strings.Instance.Common_Stopped,
-        };
+            var s = Strings.Instance;
+            switch (pipe)
+            {
+                case ExternalControlService.PipeState.Serving:
+                    if (clients == null || clients.Count == 0) return s.Automation_Status_NoPrograms;
+                    var names = new List<string>();
+                    foreach (var client in clients)
+                    {
+                        string name = !string.IsNullOrEmpty(client.Name) ? client.Name
+                            : !string.IsNullOrEmpty(client.ImageName) ? client.ImageName
+                            : s.Automation_Program_Unknown;
+                        if (!names.Contains(name)) names.Add(name);
+                    }
+                    return string.Format(s.Automation_Status_Connected_Format, string.Join(", ", names));
+                case ExternalControlService.PipeState.NameTaken:
+                    return string.Format(s.Automation_Status_NameTaken_Format, ExternalControlService.PipeName);
+                case ExternalControlService.PipeState.Failed:
+                    return string.Format(s.Automation_Status_Failed_Format, ExternalControlService.PipeName);
+                default:
+                    return s.Common_Stopped;
+            }
+        }
 
         /// <summary>Runs the steps of this copy's own command line that
         /// belong to <paramref name="phase"/>, in the order given. They are

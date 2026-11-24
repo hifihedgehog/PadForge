@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Raith am an telias</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Menno hon na sad egel</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Bo cenedril</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Adh curu egel</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Maetho carf palan sui maethas.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tiro os ah tirith dol egor thôl VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Sesto lagor, tellyn a rind o thelias noriod.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Em, nediad lû egor oreth bo henneth egel.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Till tirith lín bo i delias.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Cenedril veleg, cenedril pân veleg egor calad erin.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Davo curu iestad, teithais a sedryn maetha PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Goianno cerf i anna curu.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Fen, HTTP ú-gwistannen, peth minnad</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ianno ad, fen, eneth ialthad, ianno o sad</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Fen, sui DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Fin, lagor pân, cant i cerig</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Golu</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Tiro os ah tirith dol egor thôl VR ir atheg tad rethar bo i sarn.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Sesto i lagor, tellyn a rind i menna telias noriod, sui minnad pân.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Menno mîn maethas na curu lammad i gethir eithel mîn DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Fuin</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ú-iesta i heledh beleg.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>I heledh a i calad tana or telias vi henneth egor pen edrain, a nistad lang thar hon. Cenedril pân gant i genedril pân adh i heledh beleg o Windows. Carthas tana egor tobla i heledh beleg, egor tana hon ero lo mangannen.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Maethad Curu</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Davo curu eth</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Men i curu pol cari</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Pâd</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Hestad</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Hennad</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Mennad minnad</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Gwist cilith</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Curu pol gwista panu a leithia hain, iesta a posta i naur, echuida a lortha maethais nem, tana a tobla i henneth, hol PadForge, haudha em tastaith a mabed men cuia.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Ilnad vi Hestad, a curu pol tíra cerf, maethais nem, theinas, panu a cilith, aphad minnad ilphen carf ir tolar, a tana sad vi PadForge an le. Curu vi Hennad tíra ilphen ledil nistannen vi ilphen carf, eithro ledil teithannen vi henneth i cuiar adh polodh herdir.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Ilnad vi Hennad, a curu pol goianna cerf în a maetha hain, manga minnad o ilphen carf a anna noth ennen na echuidad carthas.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Ilnad vi Mennad minnad, a curu pol gwista men le pol gwista vi palt.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Sedryn</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Panno hen vi cilith MCP o sadron. I sadron maetha PadForge vi i pâd or.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Lammo sui TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Sedryn i henna TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Teithais</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Partham teithas</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Haudho partham…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Parlas er an AutoHotkey v2, Python egor PowerShell. Teithas i ged hon henna cerf a maetha theinas vi i pâd or.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Dartha an le</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Carth</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Alnad nallan sî. Ilphen nallan tôl sí na narth, adh i dangweth în.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Dangaro</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Golu an sedryn</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Haudho i golu…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ú-haudhant hon: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Lo curu vi Hennad egor pâd or iannannen, tíra men nistannen vi ilphen carf, eithro pan ledil.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Goiannais</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Iesto goiannais</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Goiannas ú-cuia.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Goiannas cuia adh polodh lín, ú adh polodh PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pethron mîn</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Pethron DSU/CemuHook Motion Provider an sarth pirad a genediad adlod.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Echuido Pethron mîn DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Tavn telias</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Curu egel gar eneth i rod {0}. Holo i curu hen.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows bodant i rod {0}, a curu ú-pol ianna.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Alnad curu iannannen.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Iannannen: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Curu ú-sinnen</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Carnen</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ú-carnen</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ú-davannen vi pâd hen</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ú-ferui sí</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge carweg</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Noth vi mabedad dŷr</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Panu ú-sinnen</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Maethas nem ú-sinnen</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Mabedad ú-sinnen na PadForge</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>I mabedad lost</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge hirant press</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gwisto na banu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dammeno na banu senu</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Mabedo men panu echuidannen</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Mabedo noth PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Mabedo men cuia</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Menno lîr ú-sinnen na PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Davo</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ú-davo</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>O {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>O {1}, i esta im “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>O curu i esta im “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>O curu i Windows ú-estant</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>a {0} am</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Alnad dangweth vi {0} nedia sui ú.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Ianna gu OpenTrack a pân tirith dol i menna etholad UDP egor teitha haudhad govannen FreeTrack 2.0, a gu curu OpenXR vi garf nediad hen i pol northa carthas toblannen.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Henno G-Keys Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Henna G-keys adh Logitech G-key SDK. Baura Logitech Gaming Software 8.55 egor cŷr, norol. Vi curu hen, logo i hesta G-key na pân ledil vi panu PadForge. Caro i panu hen thand, egor i ledil tolar na PadForge ero lo i henneth în cuin. Nigol G600 egor G300 boe eithro haena i men haudhad în.</value></data>

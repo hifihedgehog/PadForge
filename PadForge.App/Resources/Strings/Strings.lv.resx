@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Vairāk veidu, kā spēlēt</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Sūtīt citur</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Ekrānā</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Ar citām programmām</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Izmantojiet tālruni vai planšetdatoru kā kontrolleri.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Skatieties apkārt ar galvas izsekotāju vai VR austiņām.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Piesaistiet ātrumu, pedāļus un pārnesumus no braukšanas spēlēm.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Attēls, taimeris vai pulkstenis virs citiem logiem.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jūsu pašu krustiņš virs spēles.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Palielinātājstikls, pilnekrāna tālummaiņa vai prožektors.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Ļaujiet palaidējiem, skriptiem un asistentiem strādāt ar PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Pievienojiet ierīces, ko nodrošina programmas.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Ports, vienkāršs HTTP, piekļuves kods</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automātiska atkārtota savienošana, ports, savienošanas identitāte, savienoties pēc adreses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Ports, DSX.exe aizstājējs</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porti, Pilns ātrums, Pielāgoti formāti</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, prasme</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Skatieties apkārt ar galvas izsekotāju vai VR brillēm, kamēr abi īkšķi paliek uz pogām.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Piesaistiet ātrumu, pedāļus un pārnesumus, ko sūta braukšanas spēle, kā jebkuru ievadi.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Sūtiet kontrollera kustību emulatoriem, kas lasa DSU kustību avotu.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tumsas pakāpe</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows neuzsāka lupu.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Palielinātājstikls un prožektors tiek rādīti virs spēlēm logā un bezrāmju režīmā, un klikšķi iet tiem cauri. Pilnekrāna režīms pietuvina visu darbvirsmu ar Windows pilnekrāna lupu. Makross var parādīt vai paslēpt lupu vai rādīt to tikai turot.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizācija</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Atļaut ārējās programmas</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Ko programmas drīkst darīt</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Līmenis</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Komandas</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lasīt</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Sūtīt ievades</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Mainīt iestatījumus</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmas var pārslēgt profilus un atbrīvot tos, startēt un apturēt dzinēju, ieslēgt un izslēgt virtuālos kontrollerus, rādīt un slēpt logu, aizvērt PadForge, saglabāt diagnostikas momentuzņēmumu un pajautāt, kas darbojas.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Viss līmenī Komandas, un programmas var redzēt ierīces, virtuālos kontrollerus, piesaistes, profilus un iestatījumus, sekot katras ierīces ievadēm to notikšanas brīdī un parādīt jums vietu PadForge. Programma līmenī Lasīt redz katru taustiņu, kas nospiests katrā ierīcē, arī taustiņus, kas ievadīti logos, kuri darbojas kā administrators.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Viss līmenī Lasīt, un programmas var pievienot savas ierīces un tās vadīt, turēt jebkuras ierīces vadīklu un nodot nosauktas vērtības makrosu aktivizētājiem.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Viss līmenī Sūtīt ievades, un programmas var mainīt to, ko jūs varat mainīt lapās.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistenti</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ielīmējiet to asistenta MCP iestatījumos. Pēc tam asistents strādā ar PadForge iepriekš norādītajā līmenī.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopēt kā TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistenti, kas lasa TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skripti</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Skriptu bibliotēka</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Saglabāt bibliotēku…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Viens fails priekš AutoHotkey v2, Python vai PowerShell. Skripts, kas to ielādē, lasa ierīces un vada piesaistes iepriekš norādītajā līmenī.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Gaida jūs</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivitāte</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Neviena programma vēl nav izsaukusi. Katrs izsaukums ir uzskaitīts šeit kopā ar rezultātu.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Atsaukt</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Prasme asistentiem</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Saglabāt prasmi…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge to nevarēja saglabāt: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Kamēr ir pievienota programma ar līmeni Lasīt vai augstāku, tā redz, kas tiek nospiests katrā ierīcē, arī tastatūrās.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Spraudņi</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Palaist spraudņus</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nedarbojas neviens spraudnis.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Spraudnis darbojas ar jūsu tiesībām, nevis ar PadForge tiesībām.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Kustību serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokola serveris žiroskopa un akselerometra datiem.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Iespējot DSU kustību serveri (CemuHook Motion Provider protokols)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Spēles modifikācija</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Cita programma jau izmanto cauruļvada nosaukumu {0}. Aizveriet to programmu.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows noraidīja cauruļvadu {0}, tāpēc programmas nevar pievienoties.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nav pievienota neviena programma.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Pievienotās programmas: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Nezināma programma</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Izdarīts</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nav izdarīts</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Šajā līmenī nav atļauts</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tagad nav pieejams</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge bija aizņemts</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Pieprasījuma vērtība bija nepareiza</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Šāda profila nav</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Šāda virtuālā kontrollera nav</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nepazīst šo pieprasījumu</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Pieprasījums bija tukšs</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge sastapās ar problēmu</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Pārslēgties uz profilu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Atgriezties pie noklusējuma profila</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pajautāt, kurš profils ir aktīvs</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Pieprasīt PadForge versiju</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Pajautāt, kas darbojas</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Nosūtīt rindu, ko PadForge nepazīst: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Atļaut</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Neatļaut</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>No {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>No {1}, kas sevi dēvē par „{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>No programmas, kas sevi dēvē par „{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>No programmas, ko Windows nenosauca</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>un vēl {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} no {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ja atbildes nav {0} laikā, tas tiek uzskatīts par atteikumu.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Darbojas ar OpenTrack un jebkuru izsekotāju, kas sūta savu UDP izvadi vai raksta FreeTrack 2.0 koplietojamajā atmiņā, kā arī ar šī datora OpenXR izpildlaiku, kas spēj darbināt sesiju fonā.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lasīt Logitech G taustiņus</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lasa G taustiņus, izmantojot Logitech G-key SDK. Jādarbojas Logitech Gaming Software 8.55 vai jaunākai versijai. Šajā programmatūrā velciet G-key komandu uz katru taustiņu PadForge profilā. Padariet šo profilu pastāvīgu, citādi taustiņi sasniegs PadForge tikai tad, kad tā logs ir priekšplānā. Pelei G600 vai G300 arī jābūt ārpus iebūvētās atmiņas režīma.</value></data>

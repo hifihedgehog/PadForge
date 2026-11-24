@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Περισσότεροι τρόποι παιχνιδιού</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Αποστολή αλλού</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Στην οθόνη</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Με άλλα προγράμματα</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Χρησιμοποιήστε ένα τηλέφωνο ή tablet ως χειριστήριο.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Κοιτάξτε γύρω σας με συσκευή παρακολούθησης κεφαλιού ή headset VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Αντιστοιχίστε ταχύτητα, πεντάλ και σχέσεις ταχυτήτων από παιχνίδια οδήγησης.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Εικόνα, χρονόμετρο ή ρολόι πάνω από άλλα παράθυρα.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Το δικό σας σταυρόνημα πάνω από ένα παιχνίδι.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Φακός μεγέθυνσης, μεγέθυνση ολόκληρης της οθόνης ή προβολέας.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Αφήστε εκκινητές, σενάρια και βοηθούς να συνεργάζονται με το PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Προσθέστε συσκευές που παρέχουν προγράμματα.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Θύρα, απλό HTTP, κωδικός πρόσβασης</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Αυτόματη επανάληψη σύνδεσης, θύρα, ταυτότητα σύζευξης, σύνδεση μέσω διεύθυνσης</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Θύρα, υποκατάστατο DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Θύρες, Πλήρης ταχύτητα, Προσαρμοσμένες μορφές</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Κοιτάξτε γύρω σας με ανιχνευτή κεφαλιού ή κράνος VR, ενώ και οι δύο αντίχειρες μένουν στα κουμπιά.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Αντιστοιχίστε την ταχύτητα, τα πεντάλ και τις σχέσεις ταχυτήτων που στέλνει ένα παιχνίδι οδήγησης, όπως οποιαδήποτε είσοδο.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Στείλτε την κίνηση του χειριστηρίου σε εξομοιωτές που διαβάζουν πηγή κίνησης DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Σκοτεινότητα</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Τα Windows δεν ξεκίνησαν τον μεγεθυντή.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Ο φακός και ο προβολέας εμφανίζονται πάνω από παιχνίδια σε παράθυρο και χωρίς περιθώριο, και τα κλικ περνούν μέσα από αυτούς. Η Πλήρης οθόνη μεγεθύνει ολόκληρη την επιφάνεια εργασίας με τον μεγεθυντή πλήρους οθόνης των Windows. Μια μακροεντολή μπορεί να εμφανίσει ή να κρύψει τον μεγεθυντή ή να τον εμφανίσει μόνο όσο κρατιέται.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Αυτοματισμός</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Να επιτρέπονται εξωτερικά προγράμματα</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Τι μπορούν να κάνουν τα προγράμματα</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Επίπεδο</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Εντολές</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Ανάγνωση</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Αποστολή εισόδων</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Αλλαγή ρυθμίσεων</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Τα προγράμματα μπορούν να αλλάζουν προφίλ και να τα αποδεσμεύουν, να ξεκινούν και να σταματούν τη μηχανή, να ενεργοποιούν και να απενεργοποιούν εικονικά χειριστήρια, να εμφανίζουν και να κρύβουν το παράθυρο, να κλείνουν το PadForge, να αποθηκεύουν στιγμιότυπο διαγνωστικών και να ρωτούν τι εκτελείται.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Όλα όσα ισχύουν στο επίπεδο Εντολές, και τα προγράμματα μπορούν να βλέπουν συσκευές, εικονικά χειριστήρια, αντιστοιχίσεις, προφίλ και ρυθμίσεις, να παρακολουθούν τις εισόδους κάθε συσκευής καθώς συμβαίνουν και να σας δείχνουν ένα σημείο στο PadForge. Ένα πρόγραμμα στο επίπεδο Ανάγνωση βλέπει κάθε πλήκτρο που πατιέται σε κάθε συσκευή, ακόμη και πλήκτρα που πληκτρολογούνται σε παράθυρα που εκτελούνται ως διαχειριστής.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Όλα όσα ισχύουν στο επίπεδο Ανάγνωση, και τα προγράμματα μπορούν να προσθέτουν δικές τους συσκευές και να τις οδηγούν, να κρατούν ένα χειριστήριο οποιασδήποτε συσκευής και να δίνουν ονομασμένες τιμές σε σκανδάλες μακροεντολών.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Όλα όσα ισχύουν στο επίπεδο Αποστολή εισόδων, και τα προγράμματα μπορούν να αλλάζουν ό,τι μπορείτε να αλλάξετε εσείς στις σελίδες.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Βοηθοί</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Επικολλήστε το στις ρυθμίσεις MCP ενός βοηθού. Ο βοηθός θα συνεργάζεται τότε με το PadForge στο παραπάνω επίπεδο.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Αντιγραφή ως TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Βοηθοί που διαβάζουν TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Σενάρια</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Βιβλιοθήκη σεναρίων</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Αποθήκευση βιβλιοθήκης…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ένα αρχείο για AutoHotkey v2, Python ή PowerShell. Ένα σενάριο που το φορτώνει διαβάζει συσκευές και οδηγεί αντιστοιχίσεις στο παραπάνω επίπεδο.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Περιμένουν την απάντησή σας</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Δραστηριότητα</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Κανένα πρόγραμμα δεν έχει κάνει ακόμη κλήση. Κάθε κλήση εμφανίζεται εδώ μαζί με το αποτέλεσμά της.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Αναίρεση</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill για βοηθούς</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Αποθήκευση του Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να το αποθηκεύσει: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Όσο είναι συνδεδεμένο ένα πρόγραμμα στο επίπεδο Ανάγνωση ή υψηλότερα, βλέπει τι πατιέται σε κάθε συσκευή, και στα πληκτρολόγια.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Πρόσθετα</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Εκτέλεση προσθέτων</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Κανένα πρόσθετο δεν εκτελείται.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Ένα πρόσθετο εκτελείται με τα δικαιώματά σας, όχι με του PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Διακομιστής κίνησης</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Διακομιστής πρωτοκόλλου DSU/CemuHook Motion Provider για δεδομένα γυροσκοπίου και επιταχυνσιομέτρου.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ενεργοποίηση διακομιστή κίνησης DSU (πρωτόκολλο CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ένα mod παιχνιδιού</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Άλλο πρόγραμμα κρατά το όνομα σωλήνα {0}. Κλείστε αυτό το πρόγραμμα.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Τα Windows αρνήθηκαν τον σωλήνα {0}, επομένως τα προγράμματα δεν μπορούν να συνδεθούν.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Κανένα πρόγραμμα δεν είναι συνδεδεμένο.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Συνδεδεμένα: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Άγνωστο πρόγραμμα</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Ολοκληρώθηκε</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Δεν ολοκληρώθηκε</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Δεν επιτρέπεται σε αυτό το επίπεδο</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Μη διαθέσιμο τώρα</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Το PadForge ήταν απασχολημένο</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Μια τιμή στο αίτημα ήταν λανθασμένη</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Δεν υπάρχει τέτοιο προφίλ</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Δεν υπάρχει τέτοιο εικονικό χειριστήριο</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Το PadForge δεν γνωρίζει αυτό το αίτημα</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Το αίτημα ήταν κενό</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>Το PadForge αντιμετώπισε πρόβλημα</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Αλλαγή στο προφίλ {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Επιστροφή στο προεπιλεγμένο προφίλ</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Ερώτηση για το ενεργό προφίλ</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Ερώτηση για την έκδοση του PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Ερώτηση για το τι εκτελείται</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Αποστολή γραμμής που το PadForge δεν γνωρίζει: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Να επιτραπεί</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Να μην επιτραπεί</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Από {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Από {1}, που αυτοαποκαλείται «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Από πρόγραμμα που αυτοαποκαλείται «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Από πρόγραμμα που τα Windows δεν ονόμασαν</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>και άλλες {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} από {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Αν δεν απαντήσετε σε {0}, θεωρείται άρνηση.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Λειτουργεί με το OpenTrack και με κάθε ανιχνευτή που στέλνει την έξοδό του μέσω UDP ή γράφει στην κοινόχρηστη μνήμη FreeTrack 2.0, καθώς και με ένα περιβάλλον εκτέλεσης OpenXR σε αυτόν τον υπολογιστή που μπορεί να εκτελεί μια συνεδρία στο παρασκήνιο.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Ανάγνωση πλήκτρων G της Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Διαβάζει τα πλήκτρα G μέσω του Logitech G-key SDK. Απαιτεί να εκτελείται το Logitech Gaming Software 8.55 ή νεότερο. Σε αυτό το λογισμικό, σύρετε την εντολή «G-key» σε κάθε πλήκτρο του προφίλ PadForge. Ορίστε αυτό το προφίλ ως μόνιμο, αλλιώς τα πλήκτρα φτάνουν στο PadForge μόνο όσο το παράθυρό του είναι σε πρώτο πλάνο. Ένα ποντίκι G600 ή G300 πρέπει επίσης να μην είναι σε λειτουργία ενσωματωμένης μνήμης.</value></data>

@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>طرق أكثر للعب</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>أرسلها إلى مكان آخر</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>على الشاشة</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>مع برامج أخرى</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>استخدم هاتفا أو جهازا لوحيا كوحدة تحكم.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>انظر حولك بجهاز تتبع الرأس أو سماعة واقع افتراضي.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>عيّن السرعة والدواسات والتروس من ألعاب القيادة.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>صورة أو مؤقت أو ساعة فوق النوافذ الأخرى.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>مؤشر التصويب الخاص بك فوق اللعبة.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>عدسة تكبير أو تكبير للشاشة كاملة أو بقعة ضوء.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>دع المشغلات والنصوص البرمجية والمساعدين يعملون مع PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>أضف أجهزة تقدمها البرامج.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>المنفذ، HTTP عادي، رمز الوصول</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>إعادة اتصال تلقائي، المنفذ، هوية الإقران، الاتصال بالعنوان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>المنفذ، بديل DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>المنافذ، «السرعة الكاملة»، «تنسيقات مخصصة»</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML، المهارة</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>انظر حولك بمتتبع رأس أو نظارة واقع افتراضي بينما يبقى إبهاماك على الأزرار.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>عيّن السرعة والدواسات والتروس التي ترسلها لعبة قيادة، كأي إدخال.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>أرسل حركة وحدة التحكم إلى المحاكيات التي تقرأ مصدر حركة DSU.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>درجة العتمة</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>لم يشغّل Windows المكبر.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>تظهر العدسة وبقعة الضوء فوق الألعاب في وضع النافذة وبلا إطار، وتمر النقرات عبرهما. يكبّر ملء الشاشة سطح المكتب كله بمكبر ملء الشاشة في Windows. يمكن لماكرو إظهار المكبر أو إخفاؤه، أو إظهاره فقط أثناء الضغط المستمر.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>الأتمتة</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>السماح للبرامج الخارجية</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>ما يمكن للبرامج فعله</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>المستوى</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>الأوامر</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>القراءة</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>إرسال المدخلات</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>تغيير الإعدادات</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>يمكن للبرامج تبديل ملفات التعريف وتحريرها، وبدء المحرك وإيقافه، وتشغيل وحدات التحكم الظاهرية وإيقافها، وإظهار النافذة وإخفاءها، وإغلاق PadForge، وحفظ لقطة تشخيص، والسؤال عما يعمل.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>كل ما في مستوى الأوامر، ويمكن للبرامج أيضا رؤية الأجهزة ووحدات التحكم الظاهرية والتعيينات وملفات التعريف والإعدادات، ومتابعة مدخلات كل جهاز لحظة حدوثها، وعرض مكان في PadForge عليك. البرنامج في مستوى القراءة يرى كل مفتاح يُضغط على كل جهاز، بما فيه المفاتيح المكتوبة في نوافذ تعمل بصلاحيات المسؤول.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>كل ما في مستوى القراءة، ويمكن للبرامج إضافة أجهزة خاصة بها والتحكم فيها، والإمساك بعنصر تحكم في أي جهاز، وتمرير قيم مسماة إلى مشغلات الماكرو.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>كل ما في مستوى إرسال المدخلات، ويمكن للبرامج تغيير ما يمكنك تغييره في الصفحات.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>المساعدون</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>الصق هذا في إعدادات MCP لدى المساعد. يعمل المساعد بعدها مع PadForge بالمستوى المذكور أعلاه.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>نسخ بصيغة TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>المساعدون الذين يقرؤون TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>النصوص البرمجية</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>مكتبة النصوص</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>حفظ مكتبة…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ملف واحد من أجل AutoHotkey v2 أو Python أو PowerShell. النص الذي يحمّله يقرأ الأجهزة ويتحكم في التعيينات بالمستوى المذكور أعلاه.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>بانتظارك</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>النشاط</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>لم يستدع أي برنامج شيئا بعد. يُدرج هنا كل استدعاء مع نتيجته.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>تراجع</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>مهارة للمساعدين</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>حفظ المهارة…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>تعذر على PadForge حفظه: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>ما دام برنامج في مستوى القراءة أو أعلى متصلا، فإنه يرى ما يُضغط على كل جهاز، بما فيها لوحات المفاتيح.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>المكونات الإضافية</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>تشغيل المكونات الإضافية</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>لا يعمل أي مكون إضافي.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>يعمل المكون الإضافي بصلاحياتك أنت، لا بصلاحيات PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>خادم الحركة</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>خادم بروتوكول DSU/CemuHook Motion Provider لبيانات الجيروسكوب ومقياس التسارع.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>تفعيل خادم الحركة DSU (بروتوكول CemuHook Motion Provider)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>تعديل لعبة</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>برنامج آخر يحجز اسم القناة {0}. أغلق ذلك البرنامج.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>رفض Windows القناة {0}، لذا لا تستطيع البرامج الاتصال.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>لا يوجد برنامج متصل.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>المتصلة: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>برنامج غير معروف</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>تم</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>لم يتم</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>غير مسموح في هذا المستوى</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>غير متاح الآن</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>كان PadForge مشغولا</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>كانت إحدى القيم في الطلب خاطئة</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>لا يوجد ملف تعريف بهذا الاسم</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>لا توجد وحدة تحكم ظاهرية بهذا الاسم</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>لا يعرف PadForge هذا الطلب</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>كان الطلب فارغا</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>واجه PadForge مشكلة</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>التبديل إلى ملف التعريف {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>العودة إلى ملف التعريف الافتراضي</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>السؤال عن ملف التعريف النشط</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>السؤال عن إصدار PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>السؤال عما يعمل</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>إرسال سطر لا يعرفه PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>السماح</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>عدم السماح</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>من {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>من {1}، الذي يسمي نفسه «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>من برنامج يسمي نفسه «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>من برنامج لم يسمّه Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>و{0} أخرى</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} من {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>عدم الرد خلال {0} يُعد رفضا.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>يعمل مع OpenTrack وأي متتبع يرسل مخرجاته عبر UDP أو يكتب في الذاكرة المشتركة FreeTrack 2.0، ومع وقت تشغيل OpenXR على هذا الجهاز يستطيع تشغيل جلسة في الخلفية.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>قراءة مفاتيح G من Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>يقرأ مفاتيح G عبر Logitech G-key SDK. يتطلب تشغيل Logitech Gaming Software 8.55 أو أحدث. في ذلك البرنامج، اسحب أمر G-key إلى كل مفتاح في ملف تعريف PadForge. اجعل ملف التعريف هذا دائما، وإلا فلن تصل المفاتيح إلى PadForge إلا ونافذته في المقدمة. ويجب كذلك إخراج ماوس G600 أو G300 من وضع الذاكرة المدمجة.</value></data>

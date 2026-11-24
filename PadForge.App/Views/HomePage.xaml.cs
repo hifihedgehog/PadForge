@@ -15,7 +15,7 @@ namespace PadForge.Views
     /// each virtual controller, and the extras that are on. It took the
     /// place of the Dashboard, whose service cards are the Extras page's.
     /// Its view model is still <see cref="ViewModels.DashboardViewModel"/>,
-    /// which serves this page and the twelve Extras pages.</summary>
+    /// which serves this page and the fourteen Extras pages.</summary>
     public partial class HomePage : UserControl
     {
         public HomePage()

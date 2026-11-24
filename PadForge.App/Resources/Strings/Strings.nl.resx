@@ -384,6 +384,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Een gamemod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Een ander programma gebruikt de pijpnaam {0}. Sluit dat programma af.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows weigerde de pijp {0}, dus programma's kunnen geen verbinding maken.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Er is geen programma verbonden.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Verbonden: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Onbekend programma</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Uitgevoerd</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Niet uitgevoerd</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Niet toegestaan op dit niveau</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Nu niet beschikbaar</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge was bezig</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Een waarde in het verzoek was onjuist</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Dat profiel bestaat niet</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Die virtuele controller bestaat niet</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kent dit verzoek niet</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Het verzoek was leeg</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge kreeg een probleem</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Overschakelen naar het profiel {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Terugkeren naar het standaardprofiel</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Vragen welk profiel actief is</value></data>
@@ -404,6 +418,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Vragen naar de versie van PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Vragen wat er draait</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Een regel sturen die PadForge niet kent: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Toestaan</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Niet toestaan</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Van {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Van {1}, dat zichzelf “{0}” noemt</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Van een programma dat zichzelf “{0}” noemt</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Van een programma dat Windows niet kon benoemen</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>en nog {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} van {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Geen antwoord binnen {0} telt als nee.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Werkt met OpenTrack en met elke tracker die zijn UDP-uitvoer verstuurt of naar het gedeelde geheugen van FreeTrack 2.0 schrijft, en met een OpenXR-runtime op deze machine die een sessie op de achtergrond kan uitvoeren.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-toetsen lezen</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Leest G-toetsen via de Logitech G-key SDK. Vereist dat Logitech Gaming Software 8.55 of nieuwer draait. Sleep daarin de opdracht G-key naar elke toets in het PadForge-profiel. Maak dat profiel permanent, anders bereiken de toetsen PadForge alleen terwijl het venster op de voorgrond is. Een G600- of G300-muis mag bovendien niet in de onboardmodus staan.</value></data>
@@ -3810,6 +3833,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Meer manieren om te spelen</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Stuur het door</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Op het scherm</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Met andere programma's</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gebruik een telefoon of tablet als controller.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Kijk rond met een headtracker of VR-bril.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Wijs snelheid, pedalen en versnellingen uit racegames toe.</value></data>
@@ -3822,10 +3846,14 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Een afbeelding, timer of klok boven andere vensters.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Je eigen dradenkruis boven een game.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Een zoomlens, een zoom over het hele scherm of een spotlight.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Laat launchers, scripts en assistenten met PadForge werken.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Voeg apparaten toe die programma's leveren.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Poort, onversleuteld HTTP, toegangscode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatisch herverbinden, poort, koppelingsidentiteit, verbinden via adres</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-vervanger</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Poorten, Volle snelheid, Aangepaste indelingen</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Kijk rond met een hoofdtracker of VR-headset terwijl je duimen op de knoppen blijven.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Wijs de snelheid, pedalen en versnellingen die een racegame verstuurt toe, net als elke invoer.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Stuur controllerbeweging naar emulators die een DSU-bewegingsbron lezen.</value></data>
@@ -3942,6 +3970,38 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Donkerte</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows heeft het vergrootglas niet gestart.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>De lens en de spotlight verschijnen boven games in een venster of zonder rand, en klikken gaan erdoorheen. Volledig scherm zoomt het hele bureaublad in met het vergrootglas van Windows. Een macro kan het vergrootglas tonen of verbergen, of het alleen tonen zolang de macro wordt vastgehouden.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatisering</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Externe programma's toestaan</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Wat programma's mogen doen</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Opdrachten</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lezen</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Invoer verzenden</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Instellingen wijzigen</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programma's kunnen van profiel wisselen en het profiel loslaten, de engine starten en stoppen, virtuele controllers in- en uitschakelen, het venster tonen en verbergen, PadForge afsluiten, een diagnostische momentopname opslaan en vragen wat er draait.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Alles bij Opdrachten, en programma's kunnen apparaten, virtuele controllers, koppelingen, profielen en instellingen zien, de invoer van elk apparaat live volgen en je een plek in PadForge tonen. Een programma op niveau Lezen ziet elke toets die op elk apparaat wordt ingedrukt, ook toetsen die worden getypt in vensters die als beheerder draaien.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Alles bij Lezen, en programma's kunnen eigen apparaten toevoegen en aansturen, een besturingselement van elk apparaat vasthouden en genoemde waarden doorgeven aan macrotriggers.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alles bij Invoer verzenden, en programma's kunnen wijzigen wat jij op de pagina's kunt wijzigen.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistenten</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Plak dit in de MCP-instellingen van een assistent. De assistent werkt dan met PadForge op het niveau hierboven.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiëren als TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistenten die TOML lezen</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Scriptbibliotheek</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Een bibliotheek opslaan…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Eén bestand voor AutoHotkey v2, Python of PowerShell. Een script dat het laadt, leest apparaten en stuurt koppelingen aan op het niveau hierboven.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Wacht op jou</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activiteit</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Nog geen programma heeft iets aangeroepen. Elke aanroep staat hier met het resultaat.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Ongedaan maken</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill voor assistenten</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>De skill opslaan…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kon het niet opslaan: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Zolang een programma op niveau Lezen of hoger verbonden is, ziet het wat er op elk apparaat wordt ingedrukt, toetsenborden inbegrepen.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Plugins uitvoeren</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Er draait geen plugin.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Een plugin draait met jouw rechten, niet met die van PadForge.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Toewijzingsannotaties</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

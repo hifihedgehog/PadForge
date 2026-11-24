@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Flere måter å spille på</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Send det videre</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>På skjermen</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Med andre programmer</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Bruk en telefon eller et nettbrett som kontroller.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Se deg rundt med en hodesporer eller et VR-headset.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tilordne fart, pedaler og gir fra kjørespill.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Et bilde, en tidtaker eller en klokke oppå andre vinduer.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ditt eget trådkors over et spill.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>En zoomlinse, en zoom for hele skjermen eller et søkelys.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>La oppstartere, skript og assistenter jobbe med PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Legg til enheter som programmer leverer.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, vanlig HTTP, tilgangskode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatisk gjenkobling, port, sammenkoblingsidentitet, tilkobling med adresse</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-stedfortreder</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porter, full fart og egendefinerte formater</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, ferdighet</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Se deg rundt med en hodesporer eller et VR-headset mens begge tommelene blir på knappene.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Tilordne farten, pedalene og girene et kjørespill sender, som en hvilken som helst inndata.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Send kontrollerbevegelser til emulatorer som leser en DSU-bevegelseskilde.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Mørkhet</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows startet ikke forstørrelsesglasset.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Linsen og søkelyset vises over spill i vindu og spill uten ramme, og klikk går rett gjennom dem. Hele skjermen zoomer hele skrivebordet med forstørrelsesglasset i Windows for hele skjermen. En makro kan vise eller skjule forstørrelsesglasset, eller vise det bare mens den holdes inne.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatisering</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Tillat eksterne programmer</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Hva programmer får gjøre</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nivå</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Kommandoer</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Les</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Send inndata</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Endre innstillinger</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmer kan bytte profiler og frigjøre dem, starte og stoppe motoren, slå virtuelle kontrollere av og på, vise og skjule vinduet, lukke PadForge, lagre et diagnostikkøyeblikksbilde og spørre hva som kjører.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Alt som ved Kommandoer, og programmer kan se enheter, virtuelle kontrollere, tilordninger, profiler og innstillinger, følge inndataene fra hver enhet etter hvert som de skjer, og vise deg et sted i PadForge. Et program på nivået Les ser hver tast som trykkes på hver enhet, også taster som skrives i vinduer som kjører som administrator.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Alt som ved Les, og programmer kan legge til egne enheter og styre dem, holde inne en kontroll på en hvilken som helst enhet og gi navngitte verdier til makroutløsere.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alt som ved Send inndata, og programmer kan endre det du selv kan endre på sidene.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistenter</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Lim dette inn i MCP-innstillingene til en assistent. Assistenten jobber da med PadForge på nivået ovenfor.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopier som TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistenter som leser TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skript</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Skriptbibliotek</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Lagre et bibliotek…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Én fil for AutoHotkey v2, Python eller PowerShell. Et skript som laster den, leser enheter og styrer tilordninger på nivået ovenfor.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Venter på deg</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivitet</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ingen programmer har ringt ennå. Hvert kall vises her sammen med utfallet.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Angre</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Ferdighet for assistenter</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Lagre ferdigheten…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kunne ikke lagre den: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Mens et program på nivået Les eller høyere er tilkoblet, ser det hva som trykkes på hver enhet, tastaturer inkludert.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Utvidelser</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kjør utvidelser</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ingen utvidelse kjører.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>En utvidelse kjører med dine rettigheter, ikke med rettighetene til PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bevegelsesserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protokollserver for DSU/CemuHook Motion Provider, for gyro- og akselerometerdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktiver DSU-bevegelsesserver (CemuHook Motion Provider Protocol)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>En spillmod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Et annet program holder rørnavnet {0}. Lukk det programmet.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows avviste røret {0}, så programmer kan ikke koble til.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ingen programmer er tilkoblet.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tilkoblet: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ukjent program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Utført</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ikke utført</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ikke tillatt på dette nivået</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ikke tilgjengelig nå</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge var opptatt</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>En verdi i forespørselen var feil</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ingen slik profil</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Ingen slik virtuell kontroller</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kjenner ikke denne forespørselen</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Forespørselen var tom</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge støtte på et problem</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bytt til profilen {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gå tilbake til standardprofilen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spør hvilken profil som er aktiv</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Spør etter versjonen av PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Spør hva som kjører</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Send en linje PadForge ikke kjenner: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Tillat</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ikke tillat</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Fra {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Fra {1}, som kaller seg «{0}»</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Fra et program som kaller seg «{0}»</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Fra et program Windows ikke ga navn</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>og {0} til</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} av {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Uten svar innen {0} regnes det som nei.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Fungerer med OpenTrack og alle hodesporere som sender UDP-utdata eller skriver til delt minne for FreeTrack 2.0, og med et OpenXR-kjøretidsmiljø på denne maskinen som kan kjøre en økt i bakgrunnen.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Les Logitech G-taster</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Leser G-taster gjennom Logitech G-key SDK. Krever at Logitech Gaming Software 8.55 eller nyere kjører. I det programmet drar du G-key-kommandoen til hver tast i PadForge-profilen. Gjør profilen vedvarende, ellers når tastene bare fram til PadForge mens vinduet til PadForge er i forgrunnen. En G600- eller G300-mus må også være ute av modusen for innebygd minne.</value></data>

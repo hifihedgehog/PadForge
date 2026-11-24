@@ -355,6 +355,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod di jogu</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Otu programa ten nómi di pipe {0}. Fitxa es programa.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows rekuza pipe {0}, pur isu programas ka podi konekta.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nenhun programa ka sta konektadu.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektadu: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa diskonxidu</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Feitu</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ka feitu</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ka permitidu na es nível</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ka disponível gosi</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge staba okupadu</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Un valor na pididu staba eradu</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Perfil ka izisti</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Komandu virtual ka izisti</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ka kunxi es pididu</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Pididu staba bazíu</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge atxa un prubléma</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Troka pa perfil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Volta pa Perfil Padron</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Pergunta kal perfil ki sta ativu</value></data>
@@ -3089,6 +3103,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Más manera di joga</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Manda pa otu lugar</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Na ekran</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Ku otus programa</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uza un telemóvel o tablet suma komandu.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Djobe pa tudu ladu ku un rastreador di kabesa o un óklus VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapia velosidadi, pedal i mudansa di jogus di kondusón.</value></data>
@@ -3101,6 +3116,8 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekonekson otomátiku, porta, identidadi di emparelhamentu, konekta pa enderesu</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substitutu di DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, Velosidadi máxima, Formatus personalizadu</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Odja pa tudu ladu ku un head tracker o un óklus VR timenti ki dos dedu grandi ta fika na botons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapia velosidadi, pedal i marxa ki un jogu di kondison ta manda, sima kualker entrada.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Manda muvimentu di komandu pa emuladoris ki ta lê un fonti di muvimentu DSU.</value></data>
@@ -3295,8 +3312,39 @@
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imajen: arti di biblioteka di Steam pa {0}.</value></data>
   <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ativa Konfigurason di komunidadi na Definisons pa pega imajen di jogu na Steam.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kontinua manda</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Dexa launchers, scripts i asistentis trabadja ku PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Adisiona dispozitivu ki programas ta da.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nómi di un dispozitivu mapiadu kantu el ta dizkonekta.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nómi di un dispozitivu mapiadu kantu el ta konekta.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Dexa programas di fora</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Kuzé ki programas podi faze</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Nível</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistentis</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kola es na konfigurason MCP di un asistenti. Dipôs asistenti ta trabadja ku PadForge na nível di riba.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopia suma TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistentis ki ta lé TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Biblioteka di scripts</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Guarda un biblioteka…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un fixeru pa AutoHotkey v2, Python o PowerShell. Un script ki ta karega-l ta lé dispozitivus i ta kontrola mapiamentus na nível di riba.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ta spera pa bo</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Atividadi</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Inda nenhun programa ka txoma. Kada txomada ta fika na lista li ku kuzé ki dja di el.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Disfaze</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill pa asistentis</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Guarda Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ka konsigi guarda-l: {0}</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Roda plugins</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nenhun plugin ka sta ta roda.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Dexa</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ka dexa</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Di {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Di {1}, ki ta txoma si mésmu “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Di un programa ki ta txoma si mésmu “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Di un programa ki Windows ka da nómi</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>i más {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} di {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sen resposta en {0} e konsideradu nãu.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Bazi di dadus di komandus</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualiza gosi ta baxa bazi di dadus di komandus di komunidadi (SDL_GameControllerDB) di GitHub i ta guarda, na fixeru di konfigurason, mapiamentus ki es vérson di PadForge ka ten. Un mapiamentu novu ta uzadu só pa un komandu ki nada más ka ta lé suma gamepad, ki ka sta atribuídu i ki ka sta na Modu joystick brutu forsadu. Ripoi ta rimove tudu mapiamentu baxadu.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualiza gosi</value></data>

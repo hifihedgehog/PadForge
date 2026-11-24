@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Ойнаудың қосымша тәсілдері</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Басқа жерге жіберу</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Экранда</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Басқа бағдарламалармен</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Телефонды немесе планшетті контроллер ретінде пайдаланыңыз.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Бас трекерімен немесе VR гарнитурасымен айналаңызға қараңыз.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Жарыс ойындарындағы жылдамдықты, педальдерді және берілістерді тағайындаңыз.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Басқа терезелердің үстінде сурет, таймер немесе сағат.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ойындағы өзіңіздің прицеліңіз.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Лупа линзасы, бүкіл экранды үлкейту немесе прожектор.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Лаунчерлерге, скрипттерге және көмекшілерге PadForge-пен жұмыс істеуге рұқсат етіңіз.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Бағдарламалар ұсынатын құрылғыларды қосыңыз.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, қарапайым HTTP, кіру коды</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматты қайта қосылу, порт, жұптастыру сәйкестендіруі, мекенжай арқылы қосылу</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe алмастырғышы</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порттар, Толық жылдамдық, Теңшелетін пішімдер</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Дағды</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Бас трекерімен немесе VR гарнитурасымен айналаға қараңыз, ал екі бас бармағыңыз түймелерде қалады.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Ойын жіберетін жылдамдықты, педальдарды және берілістерді кез келген кіріс сияқты сәйкестендіріңіз.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын DSU қозғалыс көзін оқитын эмуляторларға жіберіңіз.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Қараңғылық</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows лупаны іске қоспады.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Линза мен прожектор терезелі және жиексіз ойындардың үстінде көрінеді, шерту олар арқылы өтіп кетеді. Толық экран режимі бүкіл жұмыс үстелін Windows жүйесінің толық экрандық лупасымен үлкейтеді. Макрос лупаны көрсете немесе жасыра алады, не оны тек ұстап тұрғанда көрсете алады.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Автоматтандыру</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Сыртқы бағдарламаларға рұқсат ету</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Бағдарламалар не істей алады</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Деңгей</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Командалар</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Оқу</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Кірістерді жіберу</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Параметрлерді өзгерту</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Бағдарламалар профильдерді ауыстырып, оларды босата алады, қозғалтқышты іске қосып, тоқтата алады, виртуалды контроллерлерді қосып, өшіре алады, терезені көрсетіп, жасыра алады, PadForge-ты жаба алады, диагностика үзіндісін сақтай алады және не жұмыс істеп тұрғанын сұрай алады.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Командалар деңгейіндегінің бәрі, сонымен қатар бағдарламалар құрылғыларды, виртуалды контроллерлерді, тағайындауларды, профильдер мен параметрлерді көре алады, әр құрылғының кірістерін олар болып жатқан сәтте қадағалай алады және сізге PadForge ішіндегі бір орынды көрсете алады. Оқу деңгейіндегі бағдарлама әр құрылғыда басылған әр пернені көреді, әкімші ретінде жұмыс істейтін терезелерге теріліген пернелерді қоса.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Оқу деңгейіндегінің бәрі, сонымен қатар бағдарламалар өздерінің құрылғыларын қосып, оларды басқара алады, кез келген құрылғының басқару элементін ұстап тұра алады және макро триггерлеріне аталған мәндерді бере алады.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Кірістерді жіберу деңгейіндегінің бәрі, сонымен қатар бағдарламалар беттерде өзіңіз өзгерте алатын нәрсені өзгерте алады.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Көмекшілер</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Мұны көмекшінің MCP параметрлеріне қойыңыз. Сонда көмекші PadForge-пен жоғарыдағы деңгейде жұмыс істейді.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML ретінде көшіру</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML оқитын көмекшілер</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Скрипттер</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Скрипт кітапханасы</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Кітапхананы сақтау…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python немесе PowerShell үшін бір файл. Оны жүктейтін скрипт құрылғыларды оқиды және тағайындауларды жоғарыдағы деңгейде басқарады.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Сіздің жауабыңызды күтуде</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Белсенділік</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ешбір бағдарлама әлі шақыру жасаған жоқ. Әр шақыру нәтижесімен осында көрсетіледі.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Қайтару</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Көмекшілерге арналған дағды</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Дағдыны сақтау…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge оны сақтай алмады: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Оқу немесе одан жоғары деңгейдегі бағдарлама қосылып тұрғанда, ол әр құрылғыда не басылғанын көреді, пернетақталарды қоса.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Плагиндер</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Плагиндерді іске қосу</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ешбір плагин жұмыс істемейді.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Плагин PadForge құқықтарымен емес, сіздің құқықтарыңызбен жұмыс істейді.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Қозғалыс сервері</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп пен акселерометр деректеріне арналған DSU/CemuHook Motion Provider хаттамасының сервері.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU қозғалыс серверін қосу (CemuHook Motion Provider хаттамасы)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ойын моды</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Басқа бағдарлама {0} құбыр атын ұстап тұр. Сол бағдарламаны жабыңыз.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} құбырын қабылдамады, сондықтан бағдарламалар қосыла алмайды.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ешбір бағдарлама қосылмаған.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Қосылғандар: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Белгісіз бағдарлама</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Орындалды</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Орындалмады</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Бұл деңгейде рұқсат етілмеген</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Қазір қолжетімсіз</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge бос емес еді</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Сұраудағы мән дұрыс емес болды</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Мұндай профиль жоқ</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Мұндай виртуалды контроллер жоқ</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge бұл сұрауды танымайды</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Сұрау бос болды</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge-та ақау шықты</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профиліне ауысу</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Әдепкі профильге оралу</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Қай профиль белсенді екенін сұрау</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge нұсқасын сұрау</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Не жұмыс істеп тұрғанын сұрау</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge танымайтын жолды жіберу: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Рұқсат ету</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Рұқсат бермеу</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Көзі: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Көзі: {1}, ол өзін “{0}” деп атайды</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Көзі: өзін “{0}” деп атайтын бағдарлама</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Көзі: Windows атын атамаған бағдарлама</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>және тағы {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} ішінде жауап болмаса, бұл бас тарту болып саналады.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-пен, UDP шығысын жіберетін немесе FreeTrack 2.0 ортақ жадына жазатын кез келген трекермен, сондай-ақ осы компьютердегі сеансты фондық режимде іске қоса алатын OpenXR орындау ортасымен жұмыс істейді.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Keys пернелерін оқу</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G пернелерін Logitech G-key SDK арқылы оқиды. Logitech Gaming Software 8.55 немесе одан кейінгі нұсқасы іске қосулы болуы керек. Сол бағдарламада G-key командасын PadForge профиліндегі әр пернеге сүйреп апарыңыз. Ол профильді тұрақты етіңіз, әйтпесе пернелер PadForge бағдарламасына тек оның терезесі алдыңғы жоспарда тұрғанда ғана жетеді. G600 не G300 тінтуірін де кірістірілген жад режимінен шығару керек.</value></data>

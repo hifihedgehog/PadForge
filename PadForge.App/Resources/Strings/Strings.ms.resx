@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Lebih Banyak Cara Bermain</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Hantar ke Tempat Lain</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Pada Skrin</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Bersama Program Lain</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Gunakan telefon atau tablet sebagai pengawal.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Lihat sekeliling dengan penjejak kepala atau set kepala VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Petakan kelajuan, pedal dan gear daripada permainan pemanduan.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Gambar, pemasa atau jam di atas tetingkap lain.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Garis silang anda sendiri di atas permainan.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Kanta zum, zum skrin penuh atau lampu sorot.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Benarkan pelancar, skrip dan pembantu berfungsi dengan PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Tambah peranti yang disediakan oleh program.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP biasa, kod akses</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung Semula Automatik, port, identiti penggandingan, sambung melalui alamat</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pengganti DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Kelajuan Penuh, Format Tersuai</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Kemahiran</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Lihat sekeliling dengan penjejak kepala atau set kepala VR sementara kedua-dua ibu jari kekal pada butang.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Petakan kelajuan, pedal dan gear yang dihantar oleh permainan pemanduan, seperti mana-mana input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Hantar gerakan pengawal kepada emulator yang membaca sumber gerakan DSU.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Kegelapan</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows tidak memulakan pembesar.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Kanta dan lampu sorot ditunjukkan di atas permainan bertetingkap dan tanpa sempadan, dan klik melaluinya. Skrin Penuh menzum seluruh desktop dengan pembesar skrin penuh Windows. Makro boleh menunjukkan atau menyembunyikan pembesar, atau menunjukkannya hanya semasa ditahan.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automasi</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Benarkan Program Luar</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Apa yang Boleh Dilakukan Program</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Tahap</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Arahan</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Baca</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Hantar Input</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Ubah Tetapan</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Program boleh menukar profil dan melepaskannya, memulakan dan menghentikan enjin, menghidupkan dan mematikan pengawal maya, menunjukkan dan menyembunyikan tetingkap, menutup PadForge, menyimpan syot kilat diagnostik dan bertanya apa yang sedang berjalan.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Semua pada tahap Arahan, dan program boleh melihat peranti, pengawal maya, pemetaan, profil dan tetapan, mengikuti input setiap peranti ketika ia berlaku, dan menunjukkan sesuatu tempat dalam PadForge kepada anda. Program pada tahap Baca melihat setiap kekunci yang ditekan pada setiap peranti, termasuk kekunci yang ditaip ke dalam tetingkap yang dijalankan sebagai pentadbir.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Semua pada tahap Baca, dan program boleh menambah peranti sendiri dan memandunya, menahan kawalan pada mana-mana peranti dan menyerahkan nilai bernama kepada pencetus makro.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Semua pada tahap Hantar Input, dan program boleh mengubah apa yang anda boleh ubah pada halaman.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Pembantu</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Tampal ini ke dalam tetapan MCP pembantu. Pembantu itu kemudian berfungsi dengan PadForge pada tahap di atas.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Salin sebagai TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Pembantu yang Membaca TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skrip</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Pustaka Skrip</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Simpan Pustaka…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Satu fail untuk AutoHotkey v2, Python atau PowerShell. Skrip yang memuatkannya membaca peranti dan memandu pemetaan pada tahap di atas.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Menunggu Anda</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktiviti</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Belum ada program yang membuat panggilan. Setiap panggilan disenaraikan di sini bersama hasilnya.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Buat Asal</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Kemahiran untuk Pembantu</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Simpan Kemahiran…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge tidak dapat menyimpannya: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Semasa program pada tahap Baca atau lebih tinggi bersambung, ia melihat apa yang ditekan pada setiap peranti, termasuk papan kekunci.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pemalam</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Jalankan Pemalam</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tiada pemalam berjalan.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Pemalam berjalan dengan hak anda, bukan hak PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pelayan Gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Pelayan protokol DSU/CemuHook Motion Provider untuk data giro dan meter pecutan.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Dayakan Pelayan Gerakan DSU (Protokol CemuHook Motion Provider)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Sebuah mod permainan</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Program lain memegang nama paip {0}. Tutup program itu.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows menolak paip {0}, jadi program tidak dapat bersambung.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tiada program bersambung.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Bersambung: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program tidak dikenali</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Selesai</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tidak dilakukan</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tidak dibenarkan pada tahap ini</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tidak tersedia sekarang</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge sedang sibuk</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Satu nilai dalam permintaan itu salah</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Tiada profil sedemikian</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Tiada pengawal maya sedemikian</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge tidak mengenali permintaan ini</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Permintaan itu kosong</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge menemui masalah</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Tukar ke profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kembali ke profil lalai</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Tanya profil mana yang aktif</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Tanya versi PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Tanya apa yang sedang berjalan</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Hantar baris yang tidak dikenali PadForge: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Benarkan</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Jangan Benarkan</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Daripada {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Daripada {1}, yang menamakan dirinya “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Daripada program yang menamakan dirinya “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Daripada program yang tidak dinamakan Windows</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>dan {0} lagi</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} daripada {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Tiada jawapan dalam {0} dikira sebagai tidak.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Berfungsi dengan OpenTrack dan mana-mana penjejak yang menghantar output UDP-nya atau menulis memori kongsi FreeTrack 2.0, dan dengan masa jalan OpenXR pada mesin ini yang boleh menjalankan sesi di latar belakang.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Baca G-Keys Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Membaca G-keys melalui Logitech G-key SDK. Memerlukan Logitech Gaming Software 8.55 atau lebih baharu sedang berjalan. Dalam perisian itu, seret arahan G-key ke atas setiap kekunci dalam profil PadForge. Jadikan profil itu berterusan, atau kekunci hanya sampai ke PadForge semasa tetingkapnya di hadapan. Tetikus G600 atau G300 juga mesti keluar daripada mod memori terbina dalam.</value></data>

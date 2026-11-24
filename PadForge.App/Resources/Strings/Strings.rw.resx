@@ -197,6 +197,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod y'umukino</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Indi porogaramu ifite izina ry'umuyoboro {0}. Funga iyo porogaramu.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows yanze umuyoboro {0}, bityo porogaramu ntizishobora guhuza.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nta porogaramu ihujwe.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Zihujwe: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Porogaramu itazwi</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Byakozwe</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ntibyakozwe</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ntibyemewe kuri uru rwego</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ntibiboneka ubu</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge yari ihuze</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Agaciro kari mu busabe kari kibeshye</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Nta profili nk'iyo ibaho</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Nta kontorola y'ikoranabuhanga nk'iyo ibaho</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge ntizi ubu busabe</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Ubusabe bwari burimo ubusa</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge yahuye n'ikibazo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hindurira kuri profili {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Subira kuri profili isanzwe</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Baza profili ikora</value></data>
@@ -2038,8 +2052,30 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ibikoresho {0} byavanyweho</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ibikoresho {0} byahujwe</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} gikomeza kuvaho</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Hamwe n'izindi porogaramu</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Reka porogaramu zitangiza imikino, scripts n'abafasha bakorane na PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ongeramo ibikoresho porogaramu zitanga.</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ubumenyi</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Izina ry'igikoresho gihujwe iyo kivuyeho.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Izina ry'igikoresho gihujwe iyo gihujwe.</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Emerera porogaramu zo hanze</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Bigutegereje</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ibikorwa</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Nta porogaramu irahamagara. Buri muhamagaro ugaragara hano n'icyo wavuyemo.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Siba igikorwa</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ntiyashoboye kubika: {0}</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Koresha plugins</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nta plugin irimo gukora.</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Emera</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ntubyemere</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Biturutse kuri {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Biturutse kuri {1}, yiyita “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Biturutse kuri porogaramu yiyita “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Biturutse kuri porogaramu Windows itavuze izina</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>n'indi {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kuri {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Nta gisubizo mu {0} bifatwa nko kwanga.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ububiko bw'amakuru bwa kontorola</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Vugurura nonaha imanura ububiko bw'amakuru bwa kontorola bw'umuryango (SDL_GameControllerDB) kuri GitHub kandi ikabika, muri dosiye y'igenamiterere, ihuzwa iyi verisiyo ya PadForge idafite. Ihuzwa rishya rikoreshwa gusa kuri kontorola nta kindi gisoma nka gamepad, idahujwe kandi itari muri Force Raw Joystick Mode. Gusubiza uko byari biri bikuraho ihuzwa ryose ryamanuwe.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Vugurura nonaha</value></data>

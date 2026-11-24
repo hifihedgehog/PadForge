@@ -846,6 +846,25 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ma ɛne mfonini no nhyia</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ɛfa ahosu anan no fi mfonini no mu.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kɔ so soma</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ɛretwɛn Wo</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Dwumadi</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Program biara nfrɛɛ ase. Wɔbɛkyerɛw frɛ biara wɔ ha ne nea efi mu bae.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>San yi</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Plugin biara nnyɛ adwuma.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Program biara nni nkitahodi mu.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wɔaka abom: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program a wonnim</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Wɔayɛ</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wɔnyɛe</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Wɔmma kwan wɔ level yi so</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ɛnni hɔ seesei</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Na PadForge yɛ adagyew a onni</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Bo bi a ɛwɔ abisade no mu nyɛ papa</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Profile a ɛte saa nni hɔ</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Virtual controller a ɛte saa nni hɔ</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge nnim abisade yi</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Na abisade no yɛ hwee</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge hyiaa ɔhaw bi</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sesa kɔ profile {0} so</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>San kɔ profile a edi kan no so</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Bisa profile a ɛreyɛ adwuma</value></data>
@@ -866,6 +885,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Bisa PadForge version</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Bisa nea ɛreyɛ adwuma</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Mane line bi a PadForge nnim: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Ma Kwan</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Mma Kwan</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Efi {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Efi {1}, a ɛfrɛ ne ho “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Efi program bi a ɛfrɛ ne ho “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Efi program bi a Windows ammɔ ne din</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ne {0} bio</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} wɔ {1} mu</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sɛ mmuae biara amma wɔ {0} mu a, ɛyɛ daabi.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Daa</value></data>
   <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Button a ɛma mouse no kanyan steering no, wɔ device koro a mouse no travel wɔ so no ara so. Sɛ wompaw biara a, mouse no kanyan steering no daa.</value></data>

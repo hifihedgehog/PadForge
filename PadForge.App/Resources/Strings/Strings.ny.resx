@@ -1552,6 +1552,31 @@
   <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Zipangizo {0} zachotsedwa</value></data>
   <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Zipangizo {0} zalumikizidwa</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ikuchotsedwa mobwerezabwereza</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Othandizira</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ikani izi mu zokonda za MCP za wothandizira. Kenako wothandizirayo amagwira ntchito ndi PadForge pa mlingo womwe uli pamwambapa.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Koperani ngati TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Othandizira omwe amawerenga TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Masikiripiti</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Laibulale ya masikiripiti</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Sungani laibulale…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fayilo imodzi ya AutoHotkey v2, Python kapena PowerShell. Sikiripiti yomwe imaitsegula imawerenga zipangizo ndikuyendetsa mapu pa mlingo womwe uli pamwambapa.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Zikukudikirani</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Zochitika</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Palibe pulogalamu yomwe yaimba foni pano. Kuyimba kulikonse kumalembedwa pano pamodzi ndi zotsatira zake.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Bwezerani</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Luso la othandizira</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Sungani lusoli…</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Zachitika</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Sizinachitike</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Sizololedwa pa mlingo uwu</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Sizikupezeka pano</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge inali yotanganidwa</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Mtengo wina mu pempholo unali wolakwika</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Palibe mbiri yotere</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Palibe kontrola ya pakompyuta yotere</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge sikudziwa pempholi</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Pempholo linali lopanda kanthu</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge inakumana ndi vuto</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sinthani kupita ku mbiri {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bwererani ku mbiri yokhazikika</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Funsani mbiri yomwe ikugwira ntchito</value></data>
@@ -1572,6 +1597,11 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Funsani mtundu wa PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Funsani zomwe zikuyenda</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumizani mzere womwe PadForge sikudziwa: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Lolani</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Musalole</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ndi zina {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} mwa {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ngati palibe yankho mkati mwa {0}, ndiye kuti ayi.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Sinthani tsopano imatsitsa nkhokwe ya makontrola ya anthu onse (SDL_GameControllerDB) kuchokera ku GitHub ndikusunga, mu fayilo ya zokonda, mapu omwe mtundu uwu wa PadForge ulibe. Mapu atsopano amagwiritsidwa ntchito pa kontrola yokha yomwe palibe china chimaiwerenga ngati gamepad, yomwe sinaperekedwe ndipo yomwe siili mu Force Raw Joystick Mode. Kubwezeretsa kumachotsa mapu onse otsitsidwa.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Sinthani tsopano</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ikusintha…</value></data>

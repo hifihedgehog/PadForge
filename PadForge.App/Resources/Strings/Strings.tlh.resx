@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>latlh QujmeH mIwmey</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>latlh DaqDaq yIngeH</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>jIH Dung</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>latlh nIqHommey lo'meH</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>ghogh HablI' pagh De'wI' 'echlet yIlo', SeHjan rurmeH.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>nach ghochwI' pagh VR mIv lo'DI', Dat yIbej.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>SeDmeH Qujmeyvo' Do, tI'varmey, Do patlh je yInel.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>latlh Qorwaghmey Dung, mIllogh, poH ghochwI' pagh tlhaq.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Quj Dung 'uchmeH ghaSwI'lIj.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>jo'meH 'enno, naQ jIH jo'meH Ho'DoS, pagh wovbogh Daq.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>PadForge lo' tagh nIqHommey, ghItlhmey, QaHwI'pu' je 'e' yIchaw'.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>nIqHommey nobbogh janmey tIchel.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>vergh, HTTP neH, naw'meH ngoq</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>rarqa'meH DuH, vergh, nelmeH ngoq, SIr'o' Daqvo' rar</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>vergh, DSX.exe tamwI'</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>verghmey, naQ Do, chenmoHlu'bogh Qurmey</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, po'meH De'</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>leQmeyDaq ratlhtaHvIS cha' SenwI', nach ghochwI' pagh VR mIv lo'DI' Dat yIbej.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>SeDmeH Quj ngeHbogh Do, tI'varmey, Do patlh je yInel, latlh 'elmoHghach Danelbogh rur.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU vIHtaHghach Hal laDbogh rurwI' nIqHommeyvaD SeHjan vIHtaHghach yIngeH.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>yaH'ach</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>jo'wI' taghpu'be' Windows.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Qorwagh Qujmey Dung, HeH Hutlhbogh Qujmey Dung je 'anglu' 'enno wovmoHwI' je, 'ej bIH lutol rISmey. jIH naQ: Windows jIH naQ jo'wI' lo'mo', De'wI' jIH naQ jo'lu'. jo'wI' 'anglaH ghap So'laH mIw, ghap leQ 'uylu'taHvIS neH 'anglaH.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>nIqHom SeH</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Hur nIqHommey tIchaw'</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>nIqHommey ta'laHbogh Dochmey</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>patlh</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>ra' mu'mey</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>laD</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>'elmoHghach ngeH</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>DuHmey choH</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>tu'qommey luchu'laH 'ej luchu'Ha'laH nIqHommey, QuQ lutaghlaH 'ej lumevmoHlaH, SeHjan velqa'mey luchu'laH 'ej luchu'Ha'laH, Qorwagh lu'anglaH 'ej luSo'laH, PadForge luSoQmoHlaH, Qagh nejmeH DaH Dotlh lupollaH, QaptaHbogh Dochmey luyu'laH je.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ra' mu'mey patlhDaq Hoch Doch, 'ej janmey, SeHjan velqa'mey, neltaHghachmey, tu'qommey, DuHmey je luleghlaH nIqHommey, Hoch jan 'elmoHghach lughochlaH, PadForge Daq Du'anglaH je. laD patlhDaq nIqHom, Hoch janDaq Hoch nItlh leQ 'uylu'bogh legh, loHwI' DIb ghajbogh Qorwaghmey ghItlhlu'bogh nItlh leQmey je.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>laD patlhDaq Hoch Doch, 'ej janmeychaj luchellaH 'ej luSeHlaH nIqHommey, Hoch jan SeHwI' lu'uchlaH, mIw rajwI'meyvaD pongmey ghajbogh mI'mey lunoblaH je.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>'elmoHghach ngeH patlhDaq Hoch Doch, 'ej tenwalmeyDaq DachoHlaHbogh Dochmey luchoHlaH nIqHommey.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>QaHwI'pu'</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>QaHwI' MCP DuHmeyDaq Dochvam yIlan. ghIq Dung patlhDaq PadForge lo' QaHwI'.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML velqa' yIchenmoH</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML laDbogh QaHwI'pu'</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ghItlhmey</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>ghItlh paq</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>paq yIpol…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python, PowerShell ghap lo'meH wa' 'a'baqa'. 'oH 'elmoHbogh ghItlh, Dung patlhDaq janmey laD 'ej neltaHghachmey SeH.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>DuloStaH</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>wanI'mey</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>wej chabal ngeHpu' nIqHom. naDev Hoch chabal, ghIq wanI'Daj je 'anglu'.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>yIchoHHa'</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>QaHwI'pu'vaD po'meH De'</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>po'meH De' yIpol…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>pollaHbe' PadForge: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>rarlu'taHvIS laD patlh ghap Dung patlh ghajbogh nIqHom, Hoch janDaq 'uylu'bogh Doch legh, nItlh 'echletmey je.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>jan chelwI'mey</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>jan chelwI'mey tIQapmoH</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Qap pagh jan chelwI'.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>DIblIj lo' jan chelwI', PadForge DIbDaj lo'be'.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>vIHtaHghach turwI'</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ngaDmoQ De' tom noch De' je turwI', DSU/CemuHook Motion Provider ngoq lo'bogh.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU vIHtaHghach turwI' yIchu' (CemuHook Motion Provider Protocol)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Quj DI'wI'</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>'och pong {0} ghaj latlh nIqHom. nIqHomvetlh yISoQmoH.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>'och {0} lajQo' Windows, vaj rarlaHbe' nIqHommey.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>nIqHom rarlu'be'.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>rarpu': {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>nIqHom Sovlu'be'</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>rInpu'</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>rInbe'</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>patlhvamDaq chaw'lu'be'</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>DaH lo'laHbe'</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>ngIQ PadForge</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>chabalDaq muj mI'</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>tu'qomvetlh tu'lu'be'</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>SeHjan velqa'vetlh tu'lu'be'</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>chabalvam Sovbe' PadForge</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>chIm chabal</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>Qagh PadForge</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>tu'qom {0} yIchu'</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>motlh tu'qomDaq yIchegh</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>chu'lu'bogh tu'qom yIyu'</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nIqHom mI' yItlhob</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>QaptaHbogh Dochmey yIyu'</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge Sovbe'bogh tlhegh yIngeH: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>yIchaw'</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>yIchaw'Qo'</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Hal: {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Hal: {1}, “{0}” 'oH pongDaj 'e' ja'</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Hal: “{0}” 'oH pongDaj 'e' ja'bogh nIqHom</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Hal: Windows pongbe'bogh nIqHom</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>'ej {0} latlh</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} Dorpa' bIjangbe'chugh, ghobe' 'oH.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack lo'laH, UDP mejmoHghach ngeHbogh ghap FreeTrack 2.0 qawHaq lInlu'bogh ghItlhbogh ghochwI' lo'laH je, De'wI'vamDaq OpenXR Qapbogh nIqHom lo'laH je, HurDaq poH QapmoHlaHchugh.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G leQmey yIlaD</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK lo'taHvIS G-key leQmey laD. Logitech Gaming Software, 8.55 ghap chu'qu'bogh, QaptaH 'e' poQ. nIqHomvetlhDaq, PadForge tu'qomDaq Hoch nItlh leQDaq G-key ra' yIHoq. tu'qomvetlh reH yItaHmoH. pagh, tlhopDaq Qorwagh tu'lu'taHvIS neH PadForge lughoS nItlh leQmey. G600 'eQway' ghap G300 'eQway' ghap lo'lu'chugh, qawHaq lo'Daj chu'Ha'nISlu' je.</value></data>

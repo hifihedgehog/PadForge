@@ -10,7 +10,7 @@ namespace PadForge.Views
 {
     /// <summary>
     /// The Extras page (#574): a catalog of the optional features and a page
-    /// for each. The catalog and the twelve pages are panels of one scroll view,
+    /// for each. The catalog and the fourteen pages are panels of one scroll view,
     /// and this class shows one of them at a time.
     ///
     /// <para>An extra is named by its key (<see cref="Keys"/>). The key names
@@ -27,12 +27,13 @@ namespace PadForge.Views
     public partial class ExtrasPage : UserControl
     {
         /// <summary>The extras in catalog order: More Ways to Play, Send It
-        /// Elsewhere, On Screen.</summary>
+        /// Elsewhere, On Screen, With Other Programs.</summary>
         public static readonly IReadOnlyList<string> Keys = new[]
         {
             "WebController", "HeadTracking", "GameTelemetry", "TwitchChat",
             "RemoteLink", "MotionServer", "GameMods",
             "Overlays", "TouchpadOverlay", "ScreenOverlay", "Crosshair", "Magnifier",
+            "Automation", "Plugins",
         };
 
         /// <summary>Back to the catalog from an extra's page: Alt+Left and
@@ -195,6 +196,66 @@ namespace PadForge.Views
                 };
             }
             _displayTimer.Start();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Automation (#597)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Save a Library: one Save dialog whose file types are the
+        /// libraries the build carries, on the first. The type the user
+        /// leaves picked is the library written.</summary>
+        private void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationLibraries is not { } libraries) return;
+            var kinds = libraries.Kinds;
+            if (kinds == null || kinds.Count == 0) return;
+            string title = PadForge.Resources.Strings.Strings.Instance.Extras_Automation_SaveLibrary.TrimEnd('…');
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = title,
+                Filter = LibraryFilter(kinds),
+                FilterIndex = 1,
+                FileName = kinds[0].FileName,
+                DefaultExt = System.IO.Path.GetExtension(kinds[0].FileName),
+                AddExtension = true,
+                OverwritePrompt = true,
+            };
+            if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            var kind = kinds[Math.Clamp(dialog.FilterIndex, 1, kinds.Count) - 1];
+            try
+            {
+                libraries.Save(kind, dialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                ConfirmDialog.Notice(Window.GetWindow(this), title,
+                    string.Format(PadForge.Resources.Strings.Strings.Instance.Extras_Automation_NotSaved_Format, ex.Message));
+            }
+        }
+
+        /// <summary>The Save dialog's file types, one for each library, in
+        /// the order given.</summary>
+        internal static string LibraryFilter(IReadOnlyList<PadForge.Services.Automation.AutomationLibraryKind> kinds)
+            => string.Join("|", System.Linq.Enumerable.Select(kinds, k => k.Filter));
+
+        /// <summary>Save the Skill: the folder the user picks gets the skill
+        /// an assistant reads from disk.</summary>
+        private void SaveAutomationSkill_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationSaveSkill is not { } save) return;
+            string title = PadForge.Resources.Strings.Strings.Instance.Extras_Automation_SaveSkill.TrimEnd('…');
+            var dialog = new Microsoft.Win32.OpenFolderDialog { Title = title };
+            if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            try
+            {
+                save(dialog.FolderName);
+            }
+            catch (Exception ex)
+            {
+                ConfirmDialog.Notice(Window.GetWindow(this), title,
+                    string.Format(PadForge.Resources.Strings.Strings.Instance.Extras_Automation_NotSaved_Format, ex.Message));
+            }
         }
 
         /// <summary>Enter keeps a paired PC's new name and Escape puts the old

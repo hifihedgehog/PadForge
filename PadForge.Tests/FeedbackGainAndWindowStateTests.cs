@@ -157,6 +157,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("nameof(DashboardViewModel.EnableAutomation)")]
         [InlineData("nameof(DashboardViewModel.AutomationLevel)")]
+        [InlineData("nameof(DashboardViewModel.EnablePlugins)")]
         [InlineData("nameof(PadViewModel.FlickRotationOffset)")]
         [InlineData("nameof(MappingItem.InvertOutput)")]
         [InlineData("nameof(MappingItem.ParamAccel)")]

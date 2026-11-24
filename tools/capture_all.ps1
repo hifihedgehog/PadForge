@@ -6037,7 +6037,7 @@ function Capture-SettingsSearch {
 # at its end like every other change. The keys are ExtrasPage.Keys:
 # WebController, HeadTracking, GameTelemetry, TwitchChat, RemoteLink,
 # MotionServer, GameMods, Overlays, TouchpadOverlay, ScreenOverlay,
-# Crosshair, Magnifier. A page's
+# Crosshair, Magnifier, Automation, Plugins. A page's
 # way back, Extras_Back_ plus the key, is in the tree only while that page
 # shows, so finding it proves the page opened. False when the tile, the page
 # or the More row is not there.
@@ -6179,13 +6179,13 @@ function Capture-ExtrasPages {
     }
 }
 
-# The Extras catalog (#574): the twelve tiles in their three groups, from the
+# The Extras catalog (#574): the fourteen tiles in their four groups, from the
 # first tile to the last.
 function Capture-ExtrasCatalog {
     if (-not (Want "extras-catalog")) { return }
     Write-Host "[6.0.0] Extras: the catalog"
     Nav "Extras"; Start-Sleep -Milliseconds 700
-    if (Show-ExtraAnchors -Anchors @("Web Controller", "Magnifier")) { Cap "extras-catalog" }
+    if (Show-ExtraAnchors -Anchors @("Web Controller", "Plugins")) { Cap "extras-catalog" }
     else { Refuse-Shots @("extras-catalog") "the Extras catalog never framed its first and last tile" }
 }
 
@@ -8435,6 +8435,25 @@ function Capture-MagnifierCard {
     else { Refuse-Shots @("extras-magnifier") "the Magnifier page never framed [Show Magnifier, Zoom]" }
 }
 
+# The Automation page of Extras (#597), framed from its switch down to the
+# Level row. Automation stays as the staged file has it, off, so no program
+# reaches the app during the capture.
+function Capture-AutomationCard {
+    if (-not (Want "extras-automation")) { return }
+    Write-Host "[6.0.0] Extras: Automation page"
+    if ((Open-Extra "Automation") -and (Show-ExtraAnchors -Anchors @("Allow Outside Programs", "Level"))) { Cap "extras-automation" }
+    else { Refuse-Shots @("extras-automation") "the Automation page never framed [Allow Outside Programs, Level]" }
+}
+
+# The Plugins page of Extras (#597), framed from its switch. Plugins stay off,
+# so no plugin starts during the capture.
+function Capture-PluginsCard {
+    if (-not (Want "extras-plugins")) { return }
+    Write-Host "[6.0.0] Extras: Plugins page"
+    if ((Open-Extra "Plugins") -and (Show-ExtraAnchors -Anchors @("Run Plugins"))) { Cap "extras-plugins" }
+    else { Refuse-Shots @("extras-plugins") "the Plugins page never framed [Run Plugins]" }
+}
+
 # Map Key Lights (#557), opened from the first of this PC's lit keyboards
 # whose row offers it and closed by WM_CLOSE. Nothing in it is pressed, so no
 # light changes. The button needs a live lighting link
@@ -8914,9 +8933,12 @@ if ($Only.Count -gt 0) {
     Capture-ScreenOverlayCard
     Capture-MapKeyLights
     Capture-ImportPreview
-    # The 6.0.0 Crosshair and Magnifier pages. Each checks Want.
+    # The 6.0.0 Crosshair, Magnifier, Automation and Plugins pages. Each
+    # checks Want.
     Capture-CrosshairCard
     Capture-MagnifierCard
+    Capture-AutomationCard
+    Capture-PluginsCard
 
     # Unscrolled whole-page shots.
     $pageTargets = @(
@@ -10466,9 +10488,11 @@ Capture-TwitchChatShots
 Capture-ScreenOverlayCard
 Capture-MapKeyLights
 Capture-ImportPreview
-# The 6.0.0 Crosshair and Magnifier pages.
+# The 6.0.0 Crosshair, Magnifier, Automation and Plugins pages.
 Capture-CrosshairCard
 Capture-MagnifierCard
+Capture-AutomationCard
+Capture-PluginsCard
 
 # The Pair dialog, every family it offers (Capture-PairDialog).
 Capture-PairDialog

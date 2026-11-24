@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Fleiri leiðir til að spila</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Sendu það annað</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Á skjánum</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Með öðrum forritum</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Notaðu síma eða spjaldtölvu sem leikjastýringu.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Horfðu í kringum þig með höfuðrakningartæki eða sýndarveruleikagleraugum.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Varpaðu hraða, pedulum og gírum úr akstursleikjum.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Mynd, tímamælir eða klukka ofan á öðrum gluggum.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Þinn eigin miðunarkross yfir leik.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Aðdráttarlinsa, aðdráttur á allan skjáinn eða kastljós.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Leyfðu ræsiforritum, skriftum og aðstoðarforritum að vinna með PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Bættu við tækjum sem forrit útvega.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Gátt, ódulkóðað HTTP, aðgangskóði</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sjálfvirk endurtenging, gátt, paraauðkenni, tengjast með vistfangi</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Gátt, staðgengill DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Gáttir, Fullur hraði, Sérsniðin snið</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, kunnátta</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Líttu í kringum þig með höfuðrakningartæki eða VR-gleraugum á meðan báðir þumlar halda sig á hnöppunum.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hraði, pedalar og gírar sem akstursleikur sendir verða að inntaki sem þú getur varpað eins og öðru.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Sendu hreyfingu leikjastýringar til herma sem lesa DSU-hreyfiuppsprettu.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Myrkvun</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ræsti ekki skjástækkarann.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Linsan og kastljósið birtast yfir leikjum í glugga og rammalausum leikjum og smellir fara í gegnum þau. Allur skjárinn stækkar allt skjáborðið með skjástækkara Windows. Fjölvi getur sýnt eða falið skjástækkarann, eða sýnt hann aðeins á meðan haldið er.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Sjálfvirkni</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Leyfa utanaðkomandi forrit</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Hvað forrit mega gera</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Stig</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Skipanir</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lesa</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Senda inntök</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Breyta stillingum</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Forrit geta skipt um snið og sleppt þeim, ræst og stöðvað vélina, kveikt og slökkt á sýndarstýringum, sýnt og falið gluggann, lokað PadForge, vistað greiningarskyndimynd og spurt hvað er í gangi.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Allt sem Skipanir leyfa, og forrit geta séð tæki, sýndarstýringar, varpanir, snið og stillingar, fylgst með inntökum hvers tækis jafnóðum og sýnt þér stað í PadForge. Forrit á stiginu Lesa sér hvern takka sem er ýtt á hverju tæki, líka takka sem eru slegnir í glugga sem keyra sem kerfisstjóri.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Allt sem Lesa leyfir, og forrit geta bætt við eigin tækjum og stýrt þeim, haldið stjórntæki hvaða tækis sem er og gefið fjölvaræsum nefnd gildi.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Allt sem Senda inntök leyfir, og forrit geta breytt því sem þú getur breytt á síðunum.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Aðstoðarforrit</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Límdu þetta í MCP-stillingar aðstoðarforrits. Aðstoðarforritið vinnur þá með PadForge á stiginu hér að ofan.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Afrita sem TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Aðstoðarforrit sem lesa TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skriftur</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Skriftusafn</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Vista safn…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ein skrá fyrir AutoHotkey v2, Python eða PowerShell. Skrifta sem hleður henni les tæki og stýrir varpunum á stiginu hér að ofan.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Bíður eftir þér</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Virkni</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ekkert forrit hefur hringt enn. Hvert símtal birtist hér ásamt niðurstöðu þess.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Afturkalla</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Kunnátta fyrir aðstoðarforrit</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Vista kunnáttuna…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge gat ekki vistað það: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Á meðan forrit á stiginu Lesa eða hærra er tengt sér það hvað er ýtt á hverju tæki, líka lyklaborðum.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Viðbætur</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Keyra viðbætur</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Engin viðbót er í gangi.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Viðbót keyrir með þínum réttindum, ekki réttindum PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hreyfiþjónn</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Þjónn fyrir DSU/CemuHook Motion Provider-samskiptareglurnar, fyrir gögn úr snúningsskynjara og hröðunarmæli.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Virkja DSU-hreyfiþjón (CemuHook Motion Provider-samskiptareglur)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Leikjabreyting</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Annað forrit heldur pípunafninu {0}. Lokaðu því forriti.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows hafnaði pípunni {0}, svo forrit geta ekki tengst.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ekkert forrit er tengt.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tengd: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Óþekkt forrit</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Gert</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ekki gert</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ekki leyft á þessu stigi</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ekki tiltækt núna</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge var upptekið</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Gildi í beiðninni var rangt</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Ekkert slíkt snið</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Engin slík sýndarstýring</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge þekkir ekki þessa beiðni</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Beiðnin var tóm</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge lenti í vandamáli</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skipta yfir í sniðið {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fara aftur í sjálfgefna sniðið</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Spyrja hvaða snið er virkt</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Spyrja um útgáfu PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Spyrja hvað er í gangi</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Senda línu sem PadForge þekkir ekki: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Leyfa</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Ekki leyfa</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Frá {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Frá {1}, sem kallar sig „{0}“</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Frá forriti sem kallar sig „{0}“</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Frá forriti sem Windows nefndi ekki</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>og {0} í viðbót</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} af {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ef ekkert svar berst innan {0} telst það nei.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Virkar með OpenTrack og hverjum þeim rakningarbúnaði sem sendir UDP-úttak sitt eða skrifar í sameiginlegt minni FreeTrack 2.0, og með OpenXR-keyrsluumhverfi á þessari vél sem getur keyrt lotu í bakgrunni.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa Logitech G-lykla</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Les G-lykla í gegnum Logitech G-key SDK. Logitech Gaming Software 8.55 eða nýrra þarf að vera í gangi. Í því forriti skaltu draga skipunina „G-key“ á hvern lykil í PadForge-sniðinu. Gerðu sniðið varanlegt, annars berast lyklarnir aðeins til PadForge á meðan gluggi þess er fremstur. Einnig þarf að taka G600- eða G300-mús úr ham innbyggðs minnis.</value></data>

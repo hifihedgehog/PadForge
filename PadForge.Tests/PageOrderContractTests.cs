@@ -103,7 +103,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The extras' title keys, in catalog order: More Ways to
-        /// Play, Send It Elsewhere, On Screen.</summary>
+        /// Play, Send It Elsewhere, On Screen, With Other Programs.</summary>
         private static readonly string[] ExtrasTitleKeys =
         {
             "Dashboard_WebController",
@@ -118,11 +118,13 @@ namespace PadForge.Tests
             "Dashboard_ScreenOverlay",
             "Extras_Crosshair_Title",
             "Extras_Magnifier_Title",
+            "Extras_Automation_Title",
+            "Extras_Plugins_Title",
         };
 
-        /// <summary>The Extras page carries the ten extras in the decided
+        /// <summary>The Extras page carries the fourteen extras in the decided
         /// order three times over: the catalog's tiles, the pages' titles and
-        /// the key list the page's code shows them by. The three groups head
+        /// the key list the page's code shows them by. The four groups head
         /// the tiles in order, each over its own.</summary>
         [Fact]
         public void Extras_TilesAndPagesRunInTheDecidedOrder()
@@ -151,14 +153,16 @@ namespace PadForge.Tests
             int play = At("{Binding Extras_Group_Play,"), send = At("{Binding Extras_Group_Send,"), screen = At("{Binding Extras_Group_Screen,");
             int web = At("x:Name=\"WebControllerTile\""), twitch = At("x:Name=\"TwitchChatTile\"");
             int remote = At("x:Name=\"RemoteLinkTile\""), mods = At("x:Name=\"GameModsTile\"");
-            int overlays = At("x:Name=\"OverlaysTile\""), last = At("x:Name=\"MagnifierTile\"");
-            Assert.True(play < web && twitch < send && send < remote && mods < screen && screen < overlays && overlays < last,
+            int overlays = At("x:Name=\"OverlaysTile\""), magnifier = At("x:Name=\"MagnifierTile\"");
+            int programs = At("{Binding Extras_Group_Programs,"), automation = At("x:Name=\"AutomationTile\""), last = At("x:Name=\"PluginsTile\"");
+            Assert.True(play < web && twitch < send && send < remote && mods < screen && screen < overlays && overlays < magnifier
+                && magnifier < programs && programs < automation && automation < last,
                 "a group heading is not over its own tiles");
 
-            // The code's list is the same twelve keys in the same order, and
+            // The code's list is the same fourteen keys in the same order, and
             // each names a tile, a page and a way back. The ten that were the
-            // Dashboard's cards keep its title strings, and the two added
-            // since (#585) have Extras_ ones.
+            // Dashboard's cards keep its title strings, and the four added
+            // since (#585, #597) have Extras_ ones.
             string[] keys = PadForge.Views.ExtrasPage.Keys.ToArray();
             Assert.Equal(ExtrasTitleKeys.Select(k => k.StartsWith("Dashboard_", StringComparison.Ordinal)
                 ? k.Substring("Dashboard_".Length)

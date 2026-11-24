@@ -412,6 +412,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Njia Zaidi za Kucheza</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Tuma Kwingine</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Kwenye Skrini</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Pamoja na Programu Nyingine</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Tumia simu au tableti kama kidhibiti.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tazama pande zote kwa kifuatiliaji cha kichwa au kifaa cha VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Ramani ya kasi, kanyagio na gia kutoka kwenye michezo ya kuendesha.</value></data>
@@ -424,10 +425,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Picha, kipima muda au saa juu ya madirisha mengine.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Shabaha yako mwenyewe juu ya mchezo.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lenzi ya kukuza, ukuzaji wa skrini nzima au mwanga wa mwelekeo.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Ruhusu vizindua, hati na wasaidizi kufanya kazi na PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ongeza vifaa vinavyotolewa na programu.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Mlango, HTTP ya kawaida, msimbo wa ufikiaji</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Unganisha upya kiotomatiki, mlango, utambulisho wa kuoanisha, unganisha kwa anwani</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Mlango, mbadala wa DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Milango, Kasi Kamili, Miundo Maalum</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ujuzi</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Angalia pande zote kwa kifuatiliaji cha kichwa au headset ya VR huku vidole gumba vyote viwili vikibaki kwenye vitufe.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Weka ramani ya kasi, kanyagio na gia ambazo mchezo wa kuendesha hutuma, kama ingizo lolote.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Tuma mwendo wa kidhibiti kwa emulator zinazosoma chanzo cha mwendo cha DSU.</value></data>
@@ -544,6 +549,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Giza</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows haikuanzisha kikuza.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lenzi na mwanga wa mwelekeo huonekana juu ya michezo ya dirisha na isiyo na mipaka, na mibofyo hupita kwenye vyote viwili. Skrini Nzima hukuza eneo-kazi lote kwa kikuza cha skrini nzima cha Windows. Makro inaweza kuonyesha au kuficha kikuza, au kukionyesha tu kinaposhikiliwa.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Uendeshaji otomatiki</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Ruhusu Programu za Nje</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Programu Zinaweza Kufanya Nini</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Kiwango</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Amri</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Kusoma</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Kutuma Maingizo</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Kubadilisha Mipangilio</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programu zinaweza kubadilisha wasifu na kuuachilia, kuanzisha na kusimamisha injini, kuwasha na kuzima vidhibiti pepe, kuonyesha na kuficha dirisha, kufunga PadForge, kuhifadhi picha ya hali ya uchunguzi na kuuliza kinachoendesha.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Kila kitu cha Amri, na programu zinaweza kuona vifaa, vidhibiti pepe, ramani, wasifu na mipangilio, kufuata maingizo ya kila kifaa yanapotokea, na kukuonyesha mahali ndani ya PadForge. Programu ya kiwango cha Kusoma huona kila kitufe kinachobonyezwa kwenye kila kifaa, pamoja na vitufe vilivyoandikwa kwenye madirisha yanayoendeshwa kama msimamizi.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Kila kitu cha Kusoma, na programu zinaweza kuongeza vifaa vyake na kuviendesha, kushikilia kidhibiti cha kifaa chochote na kukabidhi thamani zenye majina kwa vichochezi vya makro.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Kila kitu cha Kutuma Maingizo, na programu zinaweza kubadilisha unachoweza kubadilisha kwenye kurasa.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Wasaidizi</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Bandika hii kwenye mipangilio ya MCP ya msaidizi. Msaidizi kisha hufanya kazi na PadForge kwa kiwango kilicho juu.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Nakili kama TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Wasaidizi Wanaosoma TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Hati</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Maktaba ya Hati</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Hifadhi Maktaba…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faili moja ya AutoHotkey v2, Python au PowerShell. Hati inayoipakia husoma vifaa na kuendesha ramani kwa kiwango kilicho juu.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Inakusubiri</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Shughuli</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Hakuna programu iliyopiga simu bado. Kila simu huorodheshwa hapa pamoja na matokeo yake.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Tendua</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Ujuzi kwa Wasaidizi</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Hifadhi Ujuzi…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge haikuweza kuihifadhi: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Programu ya kiwango cha Kusoma au zaidi ikiwa imeunganishwa, huona kinachobonyezwa kwenye kila kifaa, pamoja na kibodi.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Programu jalizi</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Endesha Programu Jalizi</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hakuna programu jalizi inayoendesha.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Programu jalizi huendesha kwa haki zako, si za PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Seva ya mwendo</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Seva ya itifaki ya DSU/CemuHook Motion Provider ya data ya gyro na accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Washa seva ya mwendo ya DSU (Itifaki ya CemuHook Motion Provider)</value></data>
@@ -566,6 +603,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ya mchezo</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programu nyingine inashikilia jina la bomba {0}. Ifunge programu hiyo.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ilikataa bomba {0}, kwa hiyo programu haziwezi kuunganishwa.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Hakuna programu iliyounganishwa.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Zilizounganishwa: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programu isiyojulikana</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Imefanyika</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Haijafanyika</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Hairuhusiwi kwenye kiwango hiki</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Haipatikani sasa</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge ilikuwa na shughuli</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Thamani kwenye ombi ilikuwa si sahihi</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Hakuna wasifu kama huo</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Hakuna kidhibiti pepe kama hicho</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge haijui ombi hili</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Ombi lilikuwa tupu</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ilikumbana na tatizo</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Badilisha kwenda wasifu {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rudi kwenye wasifu chaguomsingi</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Uliza ni wasifu upi unaotumika</value></data>
@@ -586,6 +637,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Uliza toleo la PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Uliza kinachoendesha</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tuma mstari ambao PadForge haujui: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Ruhusu</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Usiruhusu</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kutoka {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Kutoka {1}, inayojiita “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Kutoka programu inayojiita “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Kutoka programu ambayo Windows haikuitaja</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>na zaidi {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kati ya {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kutojibu ndani ya {0} kunahesabiwa kama hapana.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Inafanya kazi na OpenTrack na kifuatiliaji chochote kinachotuma towe lake la UDP au kuandika kumbukumbu ya pamoja ya FreeTrack 2.0, na pia na runtime ya OpenXR kwenye kompyuta hii inayoweza kuendesha kipindi chinichini.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Soma vitufe vya G vya Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Husoma vitufe vya G kupitia Logitech G-key SDK. Inahitaji Logitech Gaming Software 8.55 au mpya zaidi iwe inaendesha. Kwenye programu hiyo, buruta amri ya G-key hadi kila kitufe kwenye wasifu wa PadForge. Fanya wasifu huo uwe wa kudumu, la sivyo vitufe vinafika PadForge tu wakati dirisha lake liko mbele. Kipanya cha G600 au G300 pia lazima kiwe nje ya hali ya kumbukumbu ya ndani.</value></data>

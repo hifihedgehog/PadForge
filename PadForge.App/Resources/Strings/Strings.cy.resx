@@ -418,6 +418,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Mwy o Ffyrdd i Chwarae</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ei Anfon i Rywle Arall</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Ar y Sgrin</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Gyda Rhaglenni Eraill</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Defnyddiwch ffôn neu lechen fel rheolydd.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Edrychwch o gwmpas gyda thraciwr pen neu glustffon VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapiwch gyflymder, pedalau a gerau o gemau gyrru.</value></data>
@@ -430,10 +431,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Llun, amserydd neu gloc uwchben ffenestri eraill.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Eich croesflew eich hun dros gêm.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lens chwyddo, chwyddo sgrin lawn neu sbotolau.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Gadewch i lanswyr, sgriptiau a chynorthwywyr weithio gyda PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ychwanegwch ddyfeisiau y mae rhaglenni'n eu darparu.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porth, HTTP plaen, cod mynediad</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ailgysylltu Awtomatig, porth, hunaniaeth paru, cysylltu drwy gyfeiriad</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porth, dirprwy DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porthladdoedd, Cyflymder Llawn, Fformatau Personol</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Sgìl</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Edrychwch o'ch cwmpas gyda thraciwr pen neu glustffon VR tra bydd y ddau fawd yn aros ar y botymau.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapiwch y cyflymder, y pedalau a'r gerau y mae gêm yrru yn eu hanfon, fel unrhyw fewnbwn.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Anfonwch symudiad rheolydd i efelychwyr sy'n darllen ffynhonnell symudiad DSU.</value></data>
@@ -550,6 +555,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tywyllwch</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Ni wnaeth Windows gychwyn y chwyddwr.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Mae'r lens a'r sbotolau yn dangos dros gemau ffenestr a gemau heb ymyl, ac mae clicio'n mynd drwyddynt. Mae Sgrin Lawn yn chwyddo'r bwrdd gwaith cyfan gyda chwyddwr sgrin lawn Windows. Gall macro ddangos neu guddio'r chwyddwr, neu ei ddangos dim ond tra bydd yn cael ei ddal.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Awtomeiddio</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Caniatáu Rhaglenni Allanol</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Beth y Caiff Rhaglenni ei Wneud</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Lefel</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Gorchmynion</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Darllen</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Anfon Mewnbynnau</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Newid Gosodiadau</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Gall rhaglenni newid proffiliau a'u rhyddhau, cychwyn a stopio'r injan, troi rheolyddion rhithwir ymlaen ac i ffwrdd, dangos a chuddio'r ffenestr, cau PadForge, cadw ciplun diagnosteg a holi beth sy'n rhedeg.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Popeth ar lefel Gorchmynion, a gall rhaglenni weld dyfeisiau, rheolyddion rhithwir, mapiadau, proffiliau a gosodiadau, dilyn mewnbynnau pob dyfais wrth iddynt ddigwydd, a dangos lle yn PadForge i chi. Mae rhaglen ar lefel Darllen yn gweld pob allwedd a wasgir ar bob dyfais, gan gynnwys allweddi a deipir i ffenestri sy'n rhedeg fel gweinyddwr.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Popeth ar lefel Darllen, a gall rhaglenni ychwanegu dyfeisiau eu hunain a'u gyrru, dal rheolydd unrhyw ddyfais a throsglwyddo gwerthoedd wedi'u henwi i sbardunau macro.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Popeth ar lefel Anfon Mewnbynnau, a gall rhaglenni newid yr hyn y gallwch ei newid ar y tudalennau.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Cynorthwywyr</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Gludwch hwn i osodiadau MCP cynorthwyydd. Yna mae'r cynorthwyydd yn gweithio gyda PadForge ar y lefel uchod.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copïo fel TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Cynorthwywyr sy'n Darllen TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Sgriptiau</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Llyfrgell Sgriptiau</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Cadw Llyfrgell…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un ffeil ar gyfer AutoHotkey v2, Python neu PowerShell. Mae sgript sy'n ei llwytho yn darllen dyfeisiau ac yn gyrru mapiadau ar y lefel uchod.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Yn Aros amdanoch</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Gweithgarwch</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Nid oes rhaglen wedi galw eto. Rhestrir pob galwad yma gyda'r hyn a ddaeth ohoni.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Dadwneud</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Sgìl i Gynorthwywyr</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Cadw'r Sgìl…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Nid oedd PadForge yn gallu ei gadw: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Tra bydd rhaglen ar lefel Darllen neu uwch wedi cysylltu, mae'n gweld yr hyn a wasgir ar bob dyfais, gan gynnwys bysellfyrddau.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Ategion</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Rhedeg Ategion</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nid oes ategyn yn rhedeg.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Mae ategyn yn rhedeg gyda'ch hawliau chi, nid rhai PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Gweinydd Symudiad</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Gweinydd protocol DSU/CemuHook Motion Provider ar gyfer data gyrosgop a chyflymiadur.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Galluogi Gweinydd Symudiad DSU (Protocol CemuHook Motion Provider)</value></data>
@@ -572,6 +609,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod gêm</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Mae rhaglen arall yn dal enw'r bibell {0}. Caewch y rhaglen honno.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Gwrthododd Windows y bibell {0}, felly ni all rhaglenni gysylltu.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nid oes rhaglen wedi cysylltu.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wedi cysylltu: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Rhaglen anhysbys</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Wedi'i wneud</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Heb ei wneud</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ni chaniateir ar y lefel hon</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ddim ar gael nawr</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>Roedd PadForge yn brysur</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Roedd gwerth yn y cais yn anghywir</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Dim proffil o'r fath</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Dim rheolydd rhithwir o'r fath</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>Nid yw PadForge yn adnabod y cais hwn</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Roedd y cais yn wag</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>Daeth PadForge ar draws problem</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Newid i'r proffil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dychwelyd i'r proffil rhagosodedig</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Holi pa broffil sy'n weithredol</value></data>
@@ -592,6 +643,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Holi am fersiwn PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Holi beth sy'n rhedeg</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Anfon llinell nad yw PadForge yn ei hadnabod: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Caniatáu</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Peidio â Chaniatáu</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>O {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>O {1}, sy'n galw ei hun yn “{0}”</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>O raglen sy'n galw ei hun yn “{0}”</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>O raglen na wnaeth Windows ei henwi</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>a {0} arall</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Mae peidio ag ateb ymhen {0} yn cyfrif fel na.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Yn gweithio gydag OpenTrack ac unrhyw draciwr sy'n anfon ei allbwn UDP neu'n ysgrifennu cof a rennir FreeTrack 2.0, a chydag amser rhedeg OpenXR ar y peiriant hwn a all redeg sesiwn yn y cefndir.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Darllen Logitech G-Keys</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Yn darllen G-keys drwy Logitech G-key SDK. Mae angen i Logitech Gaming Software 8.55 neu ddiweddarach fod yn rhedeg. Yn y meddalwedd hwnnw, llusgwch y gorchymyn G-key ar bob bysell ym mhroffil PadForge. Gwnewch y proffil hwnnw'n barhaus, neu dim ond pan fydd ei ffenestr o'r blaen y bydd y bysellau'n cyrraedd PadForge. Rhaid i lygoden G600 neu G300 hefyd fod allan o'r modd cof mewnol.</value></data>

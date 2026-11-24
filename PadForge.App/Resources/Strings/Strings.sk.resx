@@ -431,6 +431,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Viac spôsobov hrania</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Odoslať inam</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Na obrazovke</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>S inými programami</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Použite telefón alebo tablet ako ovládač.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Rozhliadajte sa pomocou sledovania hlavy alebo náhlavnej súpravy VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapujte rýchlosť, pedále a prevodovky z pretekárskych hier.</value></data>
@@ -443,10 +444,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obrázok, časovač alebo hodiny nad ostatnými oknami.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Vlastný zameriavač nad hrou.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Zväčšovacia šošovka, zväčšenie celej obrazovky alebo reflektor.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Umožnite spúšťačom, skriptom a asistentom pracovať s programom PadForge.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Pridajte zariadenia, ktoré poskytujú programy.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, obyčajné HTTP, prístupový kód</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatické pripojenie, port, identita párovania, pripojenie cez adresu</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, náhrada DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porty, Plná rýchlosť, Vlastné formáty</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Rozhliadajte sa pomocou sledovania hlavy alebo náhlavnej súpravy VR a pritom majte oba palce na tlačidlách.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Namapujte rýchlosť, pedále a prevodové stupne, ktoré posiela pretekárska hra, ako ktorýkoľvek iný vstup.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Posielajte pohyb ovládača emulátorom, ktoré čítajú zdroj pohybu DSU.</value></data>
@@ -563,6 +568,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tmavosť</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nespustil lupu.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Šošovka a reflektor sa zobrazujú nad hrami v okne aj bez okraja a kliknutia cez ne prechádzajú. Celá obrazovka priblíži celú plochu pomocou lupy Windows na celú obrazovku. Makro môže lupu zobraziť alebo skryť, prípadne ju zobraziť len počas podržania.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatizácia</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Povoliť vonkajšie programy</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Čo smú programy robiť</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Úroveň</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Príkazy</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Čítanie</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Odosielanie vstupov</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Zmena nastavení</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programy môžu prepínať profily a uvoľňovať ich, spúšťať a zastavovať jadro, zapínať a vypínať virtuálne ovládače, zobrazovať a skrývať okno, zatvoriť PadForge, uložiť diagnostickú snímku a pýtať sa, čo beží.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Všetko z úrovne Príkazy a programy môžu vidieť zariadenia, virtuálne ovládače, mapovania, profily a nastavenia, sledovať vstupy každého zariadenia v reálnom čase a ukázať vám miesto v programe PadForge. Program na úrovni Čítanie vidí každý stlačený kláves na každom zariadení, vrátane klávesov písaných do okien spustených ako správca.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Všetko z úrovne Čítanie a programy môžu pridávať vlastné zariadenia a ovládať ich, držať ovládací prvok ľubovoľného zariadenia a odovzdávať pomenované hodnoty spúšťačom makier.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Všetko z úrovne Odosielanie vstupov a programy môžu meniť to, čo môžete meniť vy na jednotlivých stránkach.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistenti</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Vložte to do nastavení MCP asistenta. Asistent potom pracuje s programom PadForge na úrovni uvedenej vyššie.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopírovať ako TOML</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistenti, ktorí čítajú TOML</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skripty</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Knižnica skriptov</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Uložiť knižnicu…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Jeden súbor pre AutoHotkey v2, Python alebo PowerShell. Skript, ktorý ho načíta, číta zariadenia a ovláda mapovania na úrovni uvedenej vyššie.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Čaká na vás</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivita</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Zatiaľ nevolal žiadny program. Každé volanie sa tu zobrazí s jeho výsledkom.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Vrátiť späť</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill pre asistentov</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Uložiť Skill…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge to nemohol uložiť: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Kým je pripojený program na úrovni Čítanie alebo vyššej, vidí, čo sa stláča na každom zariadení, vrátane klávesníc.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pluginy</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Spúšťať pluginy</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nebeží žiadny plugin.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin beží s vašimi právami, nie s právami programu PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server pohybu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokolu DSU/CemuHook Motion Provider pre údaje gyroskopu a akcelerometra.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Povoliť server pohybu DSU (protokol CemuHook Motion Provider)</value></data>
@@ -585,6 +622,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Herný mód</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Iný program drží názov kanála {0}. Zatvorte ten program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows odmietol kanál {0}, preto sa programy nemôžu pripojiť.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nie je pripojený žiadny program.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Pripojené: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Neznámy program</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Hotovo</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nevykonané</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Na tejto úrovni nie je povolené</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Teraz nie je dostupné</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge bol zaneprázdnený</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>Hodnota v žiadosti bola nesprávna</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Taký profil neexistuje</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Taký virtuálny ovládač neexistuje</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge túto žiadosť nepozná</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>Žiadosť bola prázdna</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge narazil na problém</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Prepnúť na profil {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrátiť sa na predvolený profil</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Opýtať sa, ktorý profil je aktívny</value></data>
@@ -605,6 +656,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>Opýtať sa na verziu programu PadForge</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Opýtať sa, čo beží</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Poslať riadok, ktorý PadForge nepozná: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Povoliť</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Nepovoliť</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od {1}, ktorý sa nazýva „{0}“</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programu, ktorý sa nazýva „{0}“</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Od programu, ktorý Windows nepomenoval</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>a ďalšie: {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} z {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ak do {0} neodpoviete, platí odpoveď nie.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funguje s OpenTrack a s každým sledovačom, ktorý posiela výstup cez UDP alebo zapisuje do zdieľanej pamäte FreeTrack 2.0, a s modulom runtime OpenXR na tomto počítači, ktorý dokáže spustiť reláciu na pozadí.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Čítať klávesy Logitech G-key</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Číta klávesy G cez Logitech G-key SDK. Vyžaduje spustený Logitech Gaming Software 8.55 alebo novší. V tomto softvéri presuňte príkaz G-key na každý kláves v profile PadForge. Nastavte tento profil ako trvalý, inak sa klávesy dostanú do programu PadForge, len keď je jeho okno v popredí. Myš G600 alebo G300 tiež nesmie byť v režime vstavanej pamäte.</value></data>

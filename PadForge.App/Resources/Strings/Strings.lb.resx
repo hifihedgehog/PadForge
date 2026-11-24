@@ -412,6 +412,7 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Méi Weeër fir ze spillen</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Anerwäerts schécken</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Um Bildschierm</value></data>
+  <data name="Extras_Group_Programs" xml:space="preserve"><value>Mat anere Programmer</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>En Handy oder Tablet als Controller benotzen.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Mat engem Head-Tracker oder VR-Headset ronderëm kucken.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Vitess, Pedalen a Gäng aus Rennspiller zouuerdnen.</value></data>
@@ -424,10 +425,14 @@
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>E Bild, en Timer oder eng Auer iwwer anere Fënsteren.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Äert eegent Fadekräiz iwwer engem Spill.</value></data>
   <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Eng Zoomlëns, e Vollbildzoom oder e Spotlight.</value></data>
+  <data name="Extras_Tile_Automation" xml:space="preserve"><value>Launcher, Scripten an Assistente mat PadForge schaffe loossen.</value></data>
+  <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Apparater derbäisetzen, déi Programmer liwweren.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, onverschlësselt HTTP, Zougangscode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatescht Neiverbannen, Port, Koppelungsidentitéit, iwwer eng Adress verbannen</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-Ersatz</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Maximal Vitess, Benotzerdefinéiert Formater</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
+  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Mat engem Head-Tracker oder VR-Headset ronderëm kucken, wärend béid Daume bei de Knäppercher bleiwen.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>D'Vitess, d'Pedalen an d'Gäng, déi e Rennspill schéckt, wéi all aner Agab zouuerdnen.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Controllerbeweegung un Emulatore schécken, déi eng DSU-Beweegungsquell liesen.</value></data>
@@ -544,6 +549,38 @@
   <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Däischtert</value></data>
   <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows huet d'Lupp net gestart.</value></data>
   <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>D'Lëns an de Spotlight ginn iwwer Spiller an enger Fënster oder randlos ugewisen, an d'Klicken ginn duerch si duerch. „Vollbild“ vergréissert de ganzen Desktop mat der Vollbildlupp vu Windows. E Makro kann d'Lupp weisen oder verstoppen, oder se nëmme weisen, soulaang en gehale gëtt.</value></data>
+  <data name="Extras_Automation_Title" xml:space="preserve"><value>Automatiséierung</value></data>
+  <data name="Extras_Automation_Switch" xml:space="preserve"><value>Extern Programmer erlaben</value></data>
+  <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Wat Programmer dierfen</value></data>
+  <data name="Extras_Automation_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Extras_Automation_Level_Commands" xml:space="preserve"><value>Befeeler</value></data>
+  <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Liesen</value></data>
+  <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Agabe schécken</value></data>
+  <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Astellungen änneren</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmer kënne Profiler wiesselen an se fräiginn, d'Engine starten a stoppen, virtuell Controller un- an ausschalten, d'Fënster weisen a verstoppen, PadForge zoumaachen, eng Diagnose-Momentopnam späicheren a froen, wat leeft.</value></data>
+  <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Alles vu „Befeeler“, an derbäi gesi Programmer Apparater, virtuell Controller, Zouuerdnungen, Profiler an Astellungen, verfollegen d'Agabe vun all Apparat a Realzäit a kënnen Iech eng Plaz a PadForge weisen. E Programm um Niveau „Liesen“ gesäit all Tast, déi op all Apparat gedréckt gëtt, och Tasten, déi a Fënstere getippt ginn, déi als Administrateur lafen.</value></data>
+  <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Alles vu „Liesen“, an derbäi kënne Programmer eegen Apparater derbäisetzen a steieren, e Bedienelement vun all Apparat halen a benannt Wäerter u Makro-Ausléiser weiderginn.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alles vun „Agabe schécken“, an derbäi kënne Programmer dat änneren, wat Dir op de Säiten ännere kënnt.</value></data>
+  <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistenten</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Setzt dat an d'MCP-Astellunge vun engem Assistent an. Den Assistent schafft dann um Niveau uewendriwwer mat PadForge.</value></data>
+  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Als TOML kopéieren</value></data>
+  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistenten, déi TOML liesen</value></data>
+  <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripten</value></data>
+  <data name="Extras_Automation_Library" xml:space="preserve"><value>Script-Bibliothéik</value></data>
+  <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Eng Bibliothéik späicheren…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Eng Datei fir AutoHotkey v2, Python oder PowerShell. E Script, deen se lued, liest Apparater a steiert Zouuerdnungen um Niveau uewendriwwer.</value></data>
+  <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Waart op Iech</value></data>
+  <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivitéit</value></data>
+  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Nach kee Programm huet eppes ugefrot. All Opruff steet hei mat sengem Resultat.</value></data>
+  <data name="Extras_Automation_Undo" xml:space="preserve"><value>Réckgängeg maachen</value></data>
+  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill fir Assistenten</value></data>
+  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>De Skill späicheren…</value></data>
+  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge konnt et net späicheren: {0}</value></data>
+  <data name="Extras_Automation_Note" xml:space="preserve"><value>Soulaang e Programm um Niveau „Liesen“ oder méi héich verbonnen ass, gesäit en, wat op all Apparat gedréckt gëtt, Tastature mat abegraff.</value></data>
+  <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
+  <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Plugins ausféieren</value></data>
+  <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kee Plugin leeft.</value></data>
+  <data name="Extras_Plugins_Note" xml:space="preserve"><value>E Plugin leeft mat Äre Rechter, net mat deene vu PadForge.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Beweegungsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook-Motion-Provider-Protokollserver fir Gyro- a Beschleunegungsdaten.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Beweegungsserver aktivéieren (CemuHook-Motion-Provider-Protokoll)</value></data>
@@ -566,6 +603,20 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>E Spill-Mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>En anere Programm huet de Pipe-Numm {0}. Maacht dee Programm zou.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows huet d'Pipe {0} refuséiert, dofir kënne Programmer sech net verbannen.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kee Programm ass verbonnen.</value></data>
+  <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Verbonnen: {0}</value></data>
+  <data name="Automation_Program_Unknown" xml:space="preserve"><value>Onbekannte Programm</value></data>
+  <data name="Automation_Result_Done" xml:space="preserve"><value>Gemaach</value></data>
+  <data name="Automation_Result_NotDone" xml:space="preserve"><value>Net gemaach</value></data>
+  <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Op dësem Niveau net erlaabt</value></data>
+  <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Elo net verfügbar</value></data>
+  <data name="Automation_Result_Busy" xml:space="preserve"><value>PadForge war beschäftegt</value></data>
+  <data name="Automation_Result_BadArgument" xml:space="preserve"><value>E Wäert an der Ufro war falsch</value></data>
+  <data name="Automation_Result_UnknownProfile" xml:space="preserve"><value>Dëse Profil gëtt et net</value></data>
+  <data name="Automation_Result_UnknownSlot" xml:space="preserve"><value>Dëse virtuelle Controller gëtt et net</value></data>
+  <data name="Automation_Result_UnknownCommand" xml:space="preserve"><value>PadForge kennt dës Ufro net</value></data>
+  <data name="Automation_Result_Empty" xml:space="preserve"><value>D'Ufro war eidel</value></data>
+  <data name="Automation_Result_Internal" xml:space="preserve"><value>PadForge ass op e Problem gestouss</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Op de Profil {0} wiesselen</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Op de Standardprofil zréckgoen</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Froen, wéi e Profil aktiv ass</value></data>
@@ -586,6 +637,15 @@
   <data name="Automation_Asked_Version" xml:space="preserve"><value>No der Versioun vu PadForge froen</value></data>
   <data name="Automation_Asked_State" xml:space="preserve"><value>Froen, wat leeft</value></data>
   <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Eng Zeil schécken, déi PadForge net kennt: {0}</value></data>
+  <data name="Automation_Request_Allow" xml:space="preserve"><value>Erlaben</value></data>
+  <data name="Automation_Request_Deny" xml:space="preserve"><value>Net erlaben</value></data>
+  <data name="Automation_Request_From_Format" xml:space="preserve"><value>Vun {0}</value></data>
+  <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Vun {1}, deen sech „{0}“ nennt</value></data>
+  <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Vun engem Programm, deen sech „{0}“ nennt</value></data>
+  <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Vun engem Programm, deen Windows net benannt huet</value></data>
+  <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>an nach {0}</value></data>
+  <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} vun {1}</value></data>
+  <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Keng Äntwert bannent {0} gëllt als Nee.</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funktionéiert mat OpenTrack an all Tracker, deen seng UDP-Ausgab schéckt oder an de gemeinsame Späicher vu FreeTrack 2.0 schreift, a mat enger OpenXR-Runtime op dësem Computer, déi eng Sessioun am Hannergrond lafe loosse kann.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Taste liesen</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Liest G-Tasten iwwer d'Logitech G-key SDK. Brauch eng lafend Logitech Gaming Software 8.55 oder méi nei. Zitt an där Software de Befeel „G-key“ op all Tast am PadForge-Profil. Maacht dëse Profil persistent, soss kommen d'Tasten nëmme bei PadForge un, wann seng Fënster am Virdergrond ass. Eng G600- oder G300-Maus däerf ausserdeem net am Onboard-Späichermodus sinn.</value></data>

@@ -1438,7 +1438,7 @@
                  there are, and the word that names the Extras page in it
                  opens that page. With none on, the section introduces the
                  Extras page in the page's own words, with a button to it.
-                 ExtrasPageTests holds these tiles to the catalog's twelve keys. -->
+                 ExtrasPageTests holds these tiles to the catalog's fourteen keys. -->
             <TextBlock x:Name="ExtrasHeading" Margin="0,28,0,12">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource PageSectionTitle}">
@@ -1524,6 +1524,18 @@
                                     IsOn="{Binding MagnifierEnabled, Mode=OneWay}"
                                     Status="{Binding Magnifier.Status}"
                                     Visibility="{Binding MagnifierEnabled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <controls:ExtraTile Style="{StaticResource HomeExtraTile}" Key="Automation" Glyph="&#xE9F5;"
+                                    Title="{Binding Extras_Automation_Title, Source={x:Static strings:Strings.Instance}}"
+                                    Line="{Binding Extras_Tile_Automation, Source={x:Static strings:Strings.Instance}}"
+                                    IsOn="{Binding EnableAutomation, Mode=OneWay}"
+                                    Status="{Binding AutomationStatus}"
+                                    Visibility="{Binding EnableAutomation, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <controls:ExtraTile Style="{StaticResource HomeExtraTile}" Key="Plugins" Glyph="&#xECF0;"
+                                    Title="{Binding Extras_Plugins_Title, Source={x:Static strings:Strings.Instance}}"
+                                    Line="{Binding Extras_Tile_Plugins, Source={x:Static strings:Strings.Instance}}"
+                                    IsOn="{Binding EnablePlugins, Mode=OneWay}"
+                                    Status="{Binding PluginsStatus}"
+                                    Visibility="{Binding EnablePlugins, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </controls:TileGridPanel>
 
             <!-- Under the tiles. With some extras on and some off: how many
@@ -1531,7 +1543,7 @@
                  to the Extras page (the three runs sit on one line of markup,
                  since a line break between runs would add a space). With
                  none on: the Extras page's own subtitle and a button to it.
-                 With all twelve on: nothing. -->
+                 With all fourteen on: nothing. -->
             <StackPanel x:Name="ExtrasFoot" Margin="0,14,0,0">
                 <TextBlock x:Name="ExtrasLine" FontSize="13" TextWrapping="Wrap"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"

@@ -164,19 +164,16 @@ namespace PadForge.Services.Automation
                     "text/markdown", () => file.Text, file.Size);
         }
 
-        /// <summary>Save the Skill: writes the folder <c>padforge</c> with
-        /// every file into <paramref name="folder"/>, byte for byte, and
-        /// gives the folder written.</summary>
+        /// <summary>Save the Skill in this process: brings the folder
+        /// <c>padforge</c> in <paramref name="folder"/> to exactly the skill's
+        /// files (#600), writing only what differs and removing what this
+        /// copy no longer has, and gives the folder. The page starts it with
+        /// the user's own rights through <c>--install skill</c>.</summary>
         internal static string Save(string folder)
         {
             if (string.IsNullOrWhiteSpace(folder)) throw new ArgumentException("No folder was given.", nameof(folder));
             string root = Path.Combine(folder, Name);
-            foreach (var file in Files)
-            {
-                string path = Path.Combine(root, file.Path.Replace('/', Path.DirectorySeparatorChar));
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                File.WriteAllBytes(path, file.Bytes);
-            }
+            Install.OwnFiles.Mirror(root, Files.Select(f => (f.Path, f.Bytes)).ToList());
             return root;
         }
     }

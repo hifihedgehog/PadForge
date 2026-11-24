@@ -417,6 +417,7 @@ namespace PadForge.Services.Automation
                 case "declare": Declare(session, r); return;
                 case "s": Set(session, r); return;
                 case "gone": Gone(session, r); return;
+                case "rest": RestDevice(session, r); return;
                 case "own": Own(session, r); return;
                 case "rel": Release(session, r); return;
                 case "var": Value(session, r); return;
@@ -618,7 +619,36 @@ namespace PadForge.Services.Automation
             }
             if (ud == null && entry == null) { Fail(session, r, AutomationAskKind.Read, id, "unknown-device"); return; }
             if (state == null) { Fail(session, r, AutomationAskKind.Read, id, "offline"); return; }
-            Done(session, r, AutomationAskKind.Read, id, AutomationDevices.StateLine(state, buttons));
+            Done(session, r, AutomationAskKind.Read, id, session.Outbox.Plain
+                ? AutomationDevices.StateLine(state, buttons, RestsOf(ud, entry))
+                : AutomationDevices.StateLine(state, buttons));
+        }
+
+        /// <summary>Each axis's rest on a device, which plain values are read
+        /// and written against: what the device's own record gives, or the
+        /// default rest where it names none (#600). Read under the device
+        /// list's lock for a row.</summary>
+        internal static int[] RestsOf(UserDevice ud, ProgramDevices.Entry entry)
+        {
+            var rests = AxisStreamSlots.DefaultRests();
+            if (entry != null)
+            {
+                var shape = entry.Device.Shape;
+                for (int i = 0; i < rests.Length; i++) rests[i] = RestOrDefault(shape, i);
+                return rests;
+            }
+            if (ud == null) return rests;
+            var list = SettingsManager.UserDevices;
+            if (list != null)
+                lock (list.SyncRoot) Fill(rests, ud);
+            else Fill(rests, ud);
+            return rests;
+
+            static void Fill(int[] into, UserDevice row)
+            {
+                for (int i = 0; i < into.Length; i++)
+                    if (AutomationDevices.RestOf(row, i) is int rest) into[i] = rest;
+            }
         }
 
         private void Outputs(AutomationSession session, AutomationRequest r)
@@ -681,20 +711,33 @@ namespace PadForge.Services.Automation
             AutomationWatch.Entry made;
             string kind = bare.Count > 1 ? bare[1].ToLowerInvariant() : null;
             string axisText = r.Get("axis");
+            int[] rests = RestsOf(ud, entry);
             if (axisText != null)
             {
+                // above= and hyst= are raw, or plain against the axis's
+                // rest (#600): above=80% on a stick, hyst=3%.
                 if (!AutomationLine.TryInt(axisText, out int axis) || axis < 0 || axis >= ProgramAxis.End
-                    || !AutomationLine.TryInt(r.Get("above"), out int above) || above < 0 || above > 65535)
+                    || PlainUnits.ReadAxis(r.Get("above"), rests[axis], out int above) != null)
                 {
-                    Fail(session, r, AutomationAskKind.Subscribe, what, "bad-argument", "axis is 0 to 31 and above is 0 to 65535");
+                    Fail(session, r, AutomationAskKind.Subscribe, what, "bad-argument", "axis is 0 to 31 and above is 0 to 65535 or a percent");
                     return;
                 }
                 int hyst = 1024;
                 string hystText = r.Get("hyst");
-                if (hystText != null && (!AutomationLine.TryInt(hystText, out hyst) || hyst < 0 || hyst > 65535))
+                if (hystText != null)
                 {
-                    Fail(session, r, AutomationAskKind.Subscribe, what, "bad-argument", "hyst is 0 to 65535");
-                    return;
+                    bool read;
+                    if (PlainUnits.TryParsePercent(hystText, out double share))
+                    {
+                        read = share >= 0 && share <= 100;
+                        hyst = (int)Math.Round(share * PlainUnits.RawMax / 100);
+                    }
+                    else read = AutomationLine.TryInt(hystText, out hyst) && hyst >= 0 && hyst <= 65535;
+                    if (!read)
+                    {
+                        Fail(session, r, AutomationAskKind.Subscribe, what, "bad-argument", "hyst is 0 to 65535 or a percent");
+                        return;
+                    }
                 }
                 made = new AutomationWatch.Crossing(session, device, id, axis, above, hyst);
                 what = id + " axis=" + axis;
@@ -710,7 +753,7 @@ namespace PadForge.Services.Automation
                     Fail(session, r, AutomationAskKind.Subscribe, what, "bad-argument", "an axis stream runs 1 to 1000 times a second");
                     return;
                 }
-                made = new AutomationWatch.Axes(session, device, id, hz);
+                made = new AutomationWatch.Axes(session, device, id, hz, rests);
             }
             else
             {
@@ -841,6 +884,18 @@ namespace PadForge.Services.Automation
             Done(session, r, AutomationAskKind.Gone, id);
         }
 
+        /// <summary><c>rest &lt;id&gt;</c>: every control of the session's own
+        /// device at rest in one word (#600). The device stays online.</summary>
+        private void RestDevice(AutomationSession session, AutomationRequest r)
+        {
+            string id = FirstBare(r);
+            if (!Allows(session, AutomationLevel.SendInputs, pluginToo: true)) { Refuse(session, r, AutomationAskKind.Rest, id); return; }
+            var entry = Devices.Owned(session, id, out string code);
+            if (entry == null) { Fail(session, r, AutomationAskKind.Rest, id, code); return; }
+            entry.Device.Rest();
+            Done(session, r, AutomationAskKind.Rest, id);
+        }
+
         /// <summary><c>s &lt;id&gt; b3=1 a0=40000 h0=9000 ...</c>: several
         /// controls of the session's own device as one change. Answered only
         /// when it fails or carries a tag, so a stream at 1,000 lines a
@@ -852,7 +907,8 @@ namespace PadForge.Services.Automation
             var entry = Devices.Owned(session, id, out string code);
             if (entry == null) { Fail(session, r, AutomationAskKind.Set, id, code); return; }
             var change = new ProgramDeviceChange();
-            string bad = ReadChange(r, change);
+            var shape = entry.Device.Shape;
+            string bad = ReadChange(r, change, i => shape.Axes.Count == 0 ? PlainUnits.DefaultRest(i) : RestOrDefault(shape, i));
             if (bad != null) { Fail(session, r, AutomationAskKind.Set, id, "bad-argument", bad); return; }
             AfterTheLevelCheck?.Invoke();
             entry.Device.Apply(change);
@@ -871,16 +927,33 @@ namespace PadForge.Services.Automation
             Done(session, r, AutomationAskKind.Set, id, quiet: true);
         }
 
-        /// <summary>Reads the controls of an <c>s</c> line. Null when every
-        /// word reads, or the words naming the first that does not.</summary>
-        internal static string ReadChange(AutomationRequest r, ProgramDeviceChange change)
+        /// <summary>The rest a device's shape gives an axis it declared, or
+        /// the default rest of one it did not.</summary>
+        internal static int RestOrDefault(ProgramDeviceShape shape, int index)
         {
+            foreach (var axis in shape.Axes)
+                if (axis.Index == index) return axis.Rest;
+            return PlainUnits.DefaultRest(index);
+        }
+
+        /// <summary>Reads the controls of an <c>s</c> line. Null when every
+        /// word reads, or the words naming the first that does not. A value
+        /// is raw or plain (#600): a button 0, 1, true or false, an axis 0 to
+        /// 65535 or a percent read against the axis's rest
+        /// (<paramref name="restOf"/>, the default rests when null), a hat in
+        /// hundredths, in degrees (<c>90deg</c>) or as directions
+        /// (<c>Up+Right</c>). The bare word <c>rest</c> after the device puts
+        /// every control at rest before the others apply.</summary>
+        internal static string ReadChange(AutomationRequest r, ProgramDeviceChange change, Func<int, int> restOf = null)
+        {
+            restOf ??= PlainUnits.DefaultRest;
             bool first = true;
             foreach (var word in r.Words)
             {
                 if (!word.IsPair)
                 {
                     if (first) { first = false; continue; }
+                    if (string.Equals(word.Value, "rest", StringComparison.OrdinalIgnoreCase)) { change.Rest = true; continue; }
                     return "a control is name=value: " + word.Raw;
                 }
                 first = false;
@@ -888,21 +961,26 @@ namespace PadForge.Services.Automation
                 string value = word.Value;
                 if (TryControl(key, out char kind, out int index))
                 {
-                    if (!AutomationLine.TryInt(value, out int v)) return key + " takes a whole number";
                     switch (kind)
                     {
                         case 'b':
-                            if (v is not (0 or 1)) return key + " is 0 or 1";
-                            change.Buttons.Add((index, v == 1));
+                            if (!PlainUnits.TryReadButton(value, out bool down)) return key + " is 0 or 1";
+                            change.Buttons.Add((index, down));
                             break;
                         case 'a':
-                            if (v < 0 || v > 65535) return key + " is 0 to 65535";
-                            change.Axes.Add((index, v));
+                        {
+                            string why = PlainUnits.ReadAxis(value, restOf(index), out int raw);
+                            if (why != null) return key + ": " + why;
+                            change.Axes.Add((index, raw));
                             break;
+                        }
                         case 'h':
-                            if (v != -1 && (v < 0 || v >= 36000)) return key + " is -1 or 0 to 35999";
-                            change.Hats.Add((index, v));
+                        {
+                            string why = PlainUnits.ReadHat(value, out int raw);
+                            if (why != null) return key + ": " + why;
+                            change.Hats.Add((index, raw));
                             break;
+                        }
                     }
                     continue;
                 }
@@ -993,16 +1071,29 @@ namespace PadForge.Services.Automation
             Guid device = ud?.InstanceGuid ?? entry?.Guid ?? Guid.Empty;
             if (device == Guid.Empty) { Fail(session, r, AutomationAskKind.Own, id, "unknown-device"); return; }
             var wanted = new List<((Guid, char, int) Key, int Value)>();
+            int[] rests = null;
             foreach (var word in r.Words)
             {
                 if (!word.IsPair) continue;
                 string key = word.Key.ToLowerInvariant();
-                if (!TryControl(key, out char kind, out int index) || !AutomationLine.TryInt(word.Value, out int v)
-                    || (kind == 'b' && v is not (0 or 1))
-                    || (kind == 'a' && (v < 0 || v > 65535))
-                    || (kind == 'h' && v != -1 && (v < 0 || v >= 36000)))
+                // Raw or plain, as an s line takes them (#600).
+                int v = 0;
+                bool read = TryControl(key, out char kind, out int index);
+                if (read && kind == 'b')
                 {
-                    Fail(session, r, AutomationAskKind.Own, id, "bad-argument", "own takes b<i>=0|1, a<i>=0..65535 or h<i>=-1..35999: " + word.Raw);
+                    read = PlainUnits.TryReadButton(word.Value, out bool down);
+                    v = down ? 1 : 0;
+                }
+                else if (read && kind == 'a')
+                {
+                    rests ??= RestsOf(ud, entry);
+                    read = PlainUnits.ReadAxis(word.Value, rests[index], out v) == null;
+                }
+                else if (read) read = PlainUnits.ReadHat(word.Value, out v) == null;
+                if (!read)
+                {
+                    Fail(session, r, AutomationAskKind.Own, id, "bad-argument",
+                        "own takes b<i>=0|1, a<i>=0..65535 or a percent, h<i>=-1..35999, degrees or directions: " + word.Raw);
                     return;
                 }
                 wanted.Add(((device, kind, index), v));

@@ -38,9 +38,9 @@ namespace PadForge.Services.Automation
     /// The script libraries embedded in PadForge (#597): AutoHotkey v2,
     /// Python and PowerShell, each one file that speaks protocol 1 of the
     /// Automation pipe. The Automation page's Save a Library button lists
-    /// <see cref="All"/> and writes the one the user picks with
-    /// <see cref="Save"/> where the user says. PadForge writes no library by
-    /// itself. <see cref="Instance"/> is what the window hands the host as
+    /// <see cref="All"/> and has the one the user picks written where the
+    /// user says, by <c>PadForge.exe --install</c> run with the user's own
+    /// rights (#600). PadForge writes no library by itself. <see cref="Instance"/> is what the window hands the host as
     /// its <see cref="AutomationHost.Libraries"/>.
     /// </summary>
     internal sealed class AutomationLibraries : IAutomationLibraries
@@ -53,7 +53,21 @@ namespace PadForge.Services.Automation
 
         IReadOnlyList<AutomationLibrary> IAutomationLibraries.All => All;
 
-        void IAutomationLibraries.Save(AutomationLibraryKind kind, string path) => Save(kind, path);
+        /// <summary>The page's Save a Library: <c>--install</c> started with
+        /// the user's own rights (#600), so the file is the user's.</summary>
+        void IAutomationLibraries.Save(AutomationLibraryKind kind, string path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("No file was named.", nameof(path));
+            var (code, error) = Install.UserInstall.AsUserAsync(new Install.InstallRequest(WhatOf(kind), path)).GetAwaiter().GetResult();
+            if (code != Install.UserInstall.Done) throw new InvalidOperationException(error ?? "The install ended with code " + code + ".");
+        }
+
+        internal static Install.InstallWhat WhatOf(AutomationLibraryKind kind) => kind switch
+        {
+            AutomationLibraryKind.Python => Install.InstallWhat.Python,
+            AutomationLibraryKind.PowerShell => Install.InstallWhat.PowerShell,
+            _ => Install.InstallWhat.AutoHotkey,
+        };
 
         /// <summary>Every library, in the order a picker lists them.</summary>
         internal static IReadOnlyList<AutomationLibrary> All { get; } = new[]
@@ -81,13 +95,16 @@ namespace PadForge.Services.Automation
             return copy.ToArray();
         }
 
-        /// <summary>Writes the library to <paramref name="path"/>, which the
-        /// user picked, replacing a file there. Throws the file system's
-        /// error for a path that cannot be written.</summary>
+        /// <summary>Writes the library to <paramref name="path"/>, a file or
+        /// a folder, in this process, through the install's own writer
+        /// (<see cref="Install.UserInstall"/>). Throws for a path that cannot
+        /// be written.</summary>
         internal static void Save(AutomationLibraryKind kind, string path)
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("No file was named.", nameof(path));
-            File.WriteAllBytes(path, Read(kind));
+            string error = null;
+            int code = Install.UserInstall.Run(new Install.InstallRequest(WhatOf(kind), path), _ => { }, e => error = e);
+            if (code != Install.UserInstall.Done) throw new IOException(error ?? "The library was not written.");
         }
     }
 }

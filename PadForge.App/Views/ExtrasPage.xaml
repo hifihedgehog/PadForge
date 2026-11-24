@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.ExtrasPage"
+<UserControl common:Reach.Class="Free" x:Class="PadForge.Views.ExtrasPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -476,7 +476,7 @@
                  why there is none) beside the phones connected now. Under
                  More: the port, and the plain HTTP address with its own port,
                  This PC Only and the access code. -->
-            <StackPanel x:Name="WebControllerPage" Visibility="Collapsed">
+            <StackPanel x:Name="WebControllerPage" common:Reach.Class="Asks" common:Reach.Why="Network" Visibility="Collapsed">
                 <StackPanel.Resources>
                     <!-- The Web Controller's rows, as its board draws them: a label column 230 wide. -->
                     <Style x:Key="DzLabel" TargetType="TextBlock" BasedOn="{StaticResource ExtraLabel}">
@@ -672,11 +672,11 @@
                             <controls:SettingRow MinHeight="44">
                                 <TextBlock Text="{Binding Dashboard_WebAccessCode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                            ToolTip="{Binding Dashboard_WebAccessCodeHint, Source={x:Static strings:Strings.Instance}}"/>
-                                <ui:TextBox Style="{StaticResource ExtraField}" Width="120" Typography.NumeralAlignment="Tabular"
+                                <ui:TextBox common:Reach.Class="UsersOwn" Style="{StaticResource ExtraField}" Width="120" Typography.NumeralAlignment="Tabular"
                                             IsReadOnly="True" AutomationProperties.AutomationId="WebControllerAccessCodeBox"
                                             Text="{Binding WebControllerAccessCode, Mode=OneWay}"
                                             ToolTip="{Binding Dashboard_WebAccessCodeHint, Source={x:Static strings:Strings.Instance}}"/>
-                                <ui:Button AutomationProperties.AutomationId="NewWebAccessCodeButton" Margin="12,0,0,0" MinHeight="34" Padding="14,0"
+                                <ui:Button common:Reach.Class="UsersOwn" AutomationProperties.AutomationId="NewWebAccessCodeButton" Margin="12,0,0,0" MinHeight="34" Padding="14,0"
                                            VerticalAlignment="Center" Command="{Binding NewWebAccessCodeCommand}"
                                            Content="{Binding Dashboard_WebNewAccessCode, Source={x:Static strings:Strings.Instance}}"
                                            ToolTip="{Binding Dashboard_WebAccessCodeHint, Source={x:Static strings:Strings.Instance}}"/>
@@ -1292,7 +1292,7 @@
                  First: whether it is serving, the paired PCs, and the PCs to
                  pair with and this PC's code. Under More: Auto-Reconnect, the
                  port, the pairing identity and connecting by address. -->
-            <StackPanel x:Name="RemoteLinkPage" Visibility="Collapsed">
+            <StackPanel x:Name="RemoteLinkPage" common:Reach.Class="Asks" common:Reach.Why="Network" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
                             AutomationProperties.AutomationId="Extras_Back_RemoteLink"
@@ -1557,7 +1557,7 @@
             <!-- ═══ Motion Server ═══
                  First: whether it is serving, and how an emulator reaches it.
                  Under More: the port. -->
-            <StackPanel x:Name="MotionServerPage" Visibility="Collapsed">
+            <StackPanel x:Name="MotionServerPage" common:Reach.Class="Asks" common:Reach.Why="Network" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
                             AutomationProperties.AutomationId="Extras_Back_MotionServer"
@@ -1627,7 +1627,7 @@
                  piece added to a game. First: whether it is listening, in a status
                  line that wraps, since it names the program sending. Under More:
                  the port and the DSX.exe stand-in switch. -->
-            <StackPanel x:Name="GameModsPage" Visibility="Collapsed">
+            <StackPanel x:Name="GameModsPage" common:Reach.Class="Asks" common:Reach.Why="Network" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
                             AutomationProperties.AutomationId="Extras_Back_GameMods"
@@ -2611,7 +2611,7 @@
                  that wait for the user while one does, and the record of what
                  programs asked. Under More: the same block in TOML and Save
                  the Skill while the build can write it. -->
-            <StackPanel x:Name="AutomationPage" Visibility="Collapsed">
+            <StackPanel x:Name="AutomationPage" common:Reach.Class="UsersOwn" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
                             AutomationProperties.AutomationId="Extras_Back_Automation"
@@ -2856,7 +2856,7 @@
                  device a program plugs in. The head with the switch, the
                  status card, the plugin manager's cards in PluginsCards, and
                  the note. -->
-            <StackPanel x:Name="PluginsPage" Visibility="Collapsed">
+            <StackPanel x:Name="PluginsPage" common:Reach.Class="UsersOwn" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
                             AutomationProperties.AutomationId="Extras_Back_Plugins"

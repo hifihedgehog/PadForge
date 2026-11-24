@@ -761,6 +761,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Add the device {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Set the controls of device {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Remove the device {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Put every control of device {0} at rest</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Makes PadForge run a program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Opens a file, a folder or a web page.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Makes PadForge send keys or mouse input to Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Imports a profile from outside PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge asks you before a program does this.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialogs</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Macros</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hold controls of device {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Let go of controls of device {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Set the value {0}</value></data>

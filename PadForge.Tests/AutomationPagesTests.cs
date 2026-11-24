@@ -569,11 +569,13 @@ namespace PadForge.Tests
             Assert.Contains("Click=\"SaveAutomationLibrary_Click\"", body);
             Assert.Contains("Click=\"SaveAutomationSkill_Click\"", body);
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
-            Assert.Contains("private void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)", code);
+            // Both write through --install with the user's own rights
+            // (#600), off the interface's thread.
+            Assert.Contains("private async void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)", code);
             Assert.Contains("var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];", code);
-            Assert.Contains("libraries.Save(picked.Kind, dialog.FileName);", code);
+            Assert.Contains("await System.Threading.Tasks.Task.Run(() => libraries.Save(picked.Kind, file));", code);
             Assert.Contains("new Microsoft.Win32.OpenFolderDialog", code);
-            Assert.Contains("save(dialog.FolderName);", code);
+            Assert.Contains("await System.Threading.Tasks.Task.Run(() => save(folder));", code);
         }
 
         /// <summary>More holds Copy as TOML and Save the Skill, and the
@@ -697,7 +699,7 @@ namespace PadForge.Tests
             Assert.Contains("ProfilesPageView.OpenAutomationRequested += (s, e) => OpenExtra(\"Automation\");", window);
             string automation = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.Automation.cs");
             Assert.Contains("if (!ExtrasPageView.HasPage(key)) return;", automation);
-            Assert.Contains("<StackPanel x:Name=\"AutomationPage\" Visibility=\"Collapsed\">", Page());
+            Assert.Contains("<StackPanel x:Name=\"AutomationPage\" common:Reach.Class=\"UsersOwn\" Visibility=\"Collapsed\">", Page());
             Assert.Contains("Click=\"OpenAutomation_Click\"", ExtrasPageTests.RepoText("PadForge.App", "Views", "ProfilesPage.xaml"));
         }
 

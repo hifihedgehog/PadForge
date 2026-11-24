@@ -268,6 +268,9 @@ namespace PadForge
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Every window and dialog from here on passes through the
+            // catalog's registry of what is open (#600).
+            PadForge.Services.Catalog.DialogRegistry.Watch();
             // Make the process's first known-folder lookup here, on the UI
             // thread, before any other thread starts or any window renders.
             // The first lookup resolves windows.storage's delay-loaded

@@ -81,6 +81,9 @@ namespace PadForge.Tests
             foreach (var entry in Index().Entries.Where(e => e.Page == SearchPage.Pad && e.Section >= 0))
             {
                 if (entry.Kind == SearchKind.Section) continue;
+                // The macro editor's own menus (#600) stand in its section,
+                // on no tab of their own.
+                if (entry.Kind == SearchKind.MenuItem && entry.Section == PadViewModel.MacrosSection) continue;
                 if (entry.Kind == SearchKind.Part)
                 {
                     Assert.Equal(PadViewModel.SectionOfTab(entry.Tab), entry.Section);
@@ -133,8 +136,10 @@ namespace PadForge.Tests
             var calibrate = index.Single(e => e.Kind == SearchKind.Action && e.Label.Key == "Pad_CalibrateCenter" && e.ItemsPath == "StickConfigs");
             Assert.Equal("Title", calibrate.Qualifier?.Path);
 
-            // Nothing of Macros & Menus but its two parts.
-            Assert.DoesNotContain(index, e => e.Page == SearchPage.Pad && e.Section == PadViewModel.MacrosSection && e.Kind != SearchKind.Part && e.Kind != SearchKind.Section);
+            // Nothing of Macros & Menus but its two parts and the menus of
+            // its buttons (#600), which ask.
+            Assert.DoesNotContain(index, e => e.Page == SearchPage.Pad && e.Section == PadViewModel.MacrosSection && e.Kind != SearchKind.Part && e.Kind != SearchKind.Section
+                && !(e.Kind == SearchKind.MenuItem && e.Reach == PadForge.Common.ReachClass.Asks));
         }
 
         /// <summary>The copies the app carries are the files on disk.</summary>

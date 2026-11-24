@@ -78,7 +78,34 @@ namespace PadForge.Search
         // property element (styles, templates, triggers, columns, tooltips) is
         // read only for its reset buttons.
         private static readonly HashSet<string> ContentProperties = new(StringComparer.Ordinal)
-            { "Header", "HeaderAction", "Content", "Child", "Children", "Items" };
+            { "Header", "HeaderAction", "Content", "Child", "Children", "Items", "Foot", "Subtitle", "TrailingContent", "LeadingContent" };
+
+        /// <summary>The page of the catalog a source beyond Search's five
+        /// pages stands for (#600): Home, About, the window's own markup
+        /// (its title bar and sidebar), or a dialog.</summary>
+        internal static SearchPage CatalogPageOf(string name) => name switch
+        {
+            "HomePage" => SearchPage.Home,
+            "AboutPage" => SearchPage.About,
+            "MainWindow" => SearchPage.Window,
+            _ => SearchPage.Dialog,
+        };
+
+        /// <summary>The catalog's markup beyond Search's five pages, by name
+        /// (#600): every dialog, read as a page of its own whose entries name
+        /// the dialog, and Home, About and the window's own markup.</summary>
+        internal static IReadOnlyList<SearchEntry> BuildCatalog(IReadOnlyDictionary<string, string> sources)
+        {
+            var entries = new List<SearchEntry>();
+            var resets = new List<(SearchPage, int, ResetOutcome)>();
+            foreach (var (name, text) in sources.OrderBy(d => d.Key, StringComparer.Ordinal))
+            {
+                var doc = XDocument.Parse(text, LoadOptions.SetLineInfo);
+                var page = CatalogPageOf(name);
+                new PageWalk(page, Views.PadPage.TabOfGroupName, entries, resets, doc, page == SearchPage.Dialog ? name : null).Run();
+            }
+            return entries;
+        }
 
         /// <summary>The index of the pages given, with the controller page's
         /// groups placed by <see cref="Views.PadPage.TabOfGroupName"/>.</summary>
@@ -119,6 +146,13 @@ namespace PadForge.Search
             public SearchLabel ItemQualifier { get; init; }
             public IReadOnlyList<SearchGate> Gates { get; init; } = Array.Empty<SearchGate>();
             public CardState Card { get; init; }
+            /// <summary>The reach class and reason from the nearest
+            /// Reach.Class on the way down (#600).</summary>
+            public PadForge.Common.ReachClass Reach { get; init; }
+            public PadForge.Common.ReachReason Why { get; init; }
+            /// <summary>The label of the button a context menu belongs
+            /// to, which qualifies its items.</summary>
+            public SearchLabel MenuOwner { get; init; }
             /// <summary>The path from the item, or from the page's data, to
             /// the data an element on the way down set for itself
             /// (DataContext): a rule, a value or a title under it is read
@@ -146,12 +180,14 @@ namespace PadForge.Search
             private readonly Dictionary<string, XElement> _rowParts = new(StringComparer.Ordinal);
             private readonly HashSet<string> _cardStyles;
             private readonly HashSet<string> _cardTitleStyles;
+            private readonly string _dialog;
             private int _order;
 
             public PageWalk(SearchPage page, IReadOnlyDictionary<string, int> tabOfGroupName, List<SearchEntry> entries,
-                List<(SearchPage, int, ResetOutcome)> resets, XDocument doc)
+                List<(SearchPage, int, ResetOutcome)> resets, XDocument doc, string dialog = null)
             {
                 _page = page;
+                _dialog = dialog;
                 _tabOfGroupName = tabOfGroupName;
                 _entries = entries;
                 _resets = resets;
@@ -195,7 +231,28 @@ namespace PadForge.Search
                 return m.Success && _rowParts.TryGetValue(m.Groups[1].Value, out var template) ? template : null;
             }
 
-            public void Run() => Walk(_doc.Root, new Ctx());
+            /// <summary>A source of the catalog alone (a dialog, Home, About,
+            /// the window): its buttons are entries whatever their words,
+            /// an icon button's by its screen-reader name.</summary>
+            private bool CatalogOnly => _page is SearchPage.Dialog or SearchPage.Window or SearchPage.Home or SearchPage.About;
+
+            public void Run()
+            {
+                var ctx = Enter(_doc.Root, new Ctx());
+                if (_dialog != null)
+                {
+                    // The dialog itself: its title, or its name when the
+                    // title is set in code.
+                    string title = KeyIn(Attr(_doc.Root, "Title"));
+                    _current = _doc.Root;
+                    Add(ctx, SearchKind.Dialog, title != null ? new SearchLabel(title, null) : new SearchLabel(null, "=" + _dialog), null, SearchLabelSource.CardTitle);
+                }
+                Walk(_doc.Root, ctx, entered: true);
+            }
+
+            /// <summary>The element an entry being added stands for, whose
+            /// screen-reader words and AutomationId the entry carries.</summary>
+            private XElement _current;
 
             private static string Local(XElement e) => e.Name.LocalName;
 
@@ -249,17 +306,70 @@ namespace PadForge.Search
             private static IEnumerable<XElement> Kids(XElement e) => e.Elements().Where(c => !IsProperty(c));
 
             private void Add(Ctx ctx, SearchKind kind, SearchLabel label, SearchLabel qualifier, SearchLabelSource source,
-                SearchValueSource value = null, string target = null, string extraKey = null)
+                SearchValueSource value = null, string target = null, string extraKey = null, XElement element = null)
             {
                 SearchLabel card = ctx.RowOptions ? null : ctx.Card?.Title;
                 if (kind == SearchKind.Card || card == qualifier || (card != null && qualifier != null && card.Equals(qualifier)))
                     card = null;
+                element ??= _current;
                 _entries.Add(new SearchEntry(kind, _page, label, qualifier, card, ctx.Section, ctx.Tab, extraKey ?? ctx.ExtraKey,
-                    ctx.UnderMore, ctx.RowOptions, ctx.ScopeName, ctx.ItemsPath, ctx.Gates, value, target, source, _order++));
+                    ctx.UnderMore, ctx.RowOptions, ctx.ScopeName, ctx.ItemsPath, ctx.Gates, value, target, source, _order++)
+                {
+                    Name = element == null ? null : WordsOf(element, "AutomationProperties.Name"),
+                    Help = element == null ? null : WordsOf(element, "AutomationProperties.HelpText") ?? WordsOf(element, "ToolTip"),
+                    AutomationId = element == null ? null : PlainAttr(element, "AutomationProperties.AutomationId"),
+                    Reach = ReachOf(element, ctx),
+                    Why = ReachOf(element, ctx) == PadForge.Common.ReachClass.Asks ? WhyOf(element, ctx) : PadForge.Common.ReachReason.None,
+                    Dialog = _dialog,
+                    Handler = element == null ? null : HandlerOf(element),
+                });
+            }
+
+            /// <summary>A string key or a plain data path an attribute
+            /// binds, as a label, or null.</summary>
+            private static SearchLabel WordsOf(XElement e, string attribute)
+            {
+                string value = Attr(e, attribute);
+                if (value == null) return null;
+                if (KeyIn(value) is { } key) return new SearchLabel(key, null);
+                return Binding.Parse(value) is { IsPlainPath: true } b ? new SearchLabel(null, b.Path) : null;
+            }
+
+            /// <summary>An attribute's text when it is no binding.</summary>
+            private static string PlainAttr(XElement e, string attribute)
+                => Attr(e, attribute) is { } v && !v.StartsWith("{", StringComparison.Ordinal) ? v : null;
+
+            /// <summary>The class an element carries: its own, else the one on
+            /// the way down.</summary>
+            private static PadForge.Common.ReachClass ReachOf(XElement e, Ctx ctx)
+                => e != null && Enum.TryParse(Attr(e, "Reach.Class"), out PadForge.Common.ReachClass own) && own > ctx.Reach ? own : ctx.Reach;
+
+            private static PadForge.Common.ReachReason WhyOf(XElement e, Ctx ctx)
+            {
+                if (e != null && Enum.TryParse(Attr(e, "Reach.Class"), out PadForge.Common.ReachClass own) && own > ctx.Reach)
+                    return Enum.TryParse(Attr(e, "Reach.Why"), out PadForge.Common.ReachReason why) ? why : PadForge.Common.ReachReason.None;
+                return ctx.Why;
+            }
+
+            /// <summary>An action's Click handler or Command binding.</summary>
+            private static string HandlerOf(XElement e)
+            {
+                if (PlainAttr(e, "Click") is { } click) return click;
+                return Binding.Parse(Attr(e, "Command"))?.Path;
             }
 
             private Ctx Enter(XElement e, Ctx ctx)
             {
+                // The reach class on the way down (#600): the strictest so
+                // far, as Reach.Of reads it. A stricter class takes its own
+                // reason or none.
+                string reach = Attr(e, "Reach.Class");
+                if (reach != null && Enum.TryParse(reach, out PadForge.Common.ReachClass cls) && cls > ctx.Reach)
+                    ctx = ctx with
+                    {
+                        Reach = cls,
+                        Why = Enum.TryParse(Attr(e, "Reach.Why"), out PadForge.Common.ReachReason why) ? why : PadForge.Common.ReachReason.None,
+                    };
                 // Data the element sets for itself is what its own bindings,
                 // and every binding under it, read. The attribute in no
                 // namespace: the designer's d:DataContext is not data.
@@ -295,12 +405,24 @@ namespace PadForge.Search
                 return ctx;
             }
 
-            private void Walk(XElement e, Ctx ctx)
+            private void Walk(XElement e, Ctx ctx, bool entered = false)
             {
                 string local = Local(e);
                 if (IsProperty(e))
                 {
                     string property = local.Substring(local.LastIndexOf('.') + 1);
+                    // A button's menu (#600): each item is an entry, under
+                    // the button's words.
+                    // Every button's menu, a template's and the macro
+                    // editor's included: the class on the way down is the
+                    // menu's.
+                    if (property == "ContextMenu")
+                    {
+                        foreach (var item in e.Descendants().Where(d => Local(d) == "MenuItem"))
+                            if (KeyIn(Attr(item, "Header")) is { } header)
+                                Add(Enter(item, ctx), SearchKind.MenuItem, new SearchLabel(header, null), ctx.MenuOwner, SearchLabelSource.Button, element: item);
+                        return;
+                    }
                     if (property == "Resources")
                     {
                         foreach (var r in e.Elements())
@@ -308,7 +430,7 @@ namespace PadForge.Search
                             string key = (string)r.Attribute(Xaml + "Key");
                             if (!ctx.LeftOut && Local(r) == "DataTemplate" && key == RowTemplate && _page == SearchPage.Pad)
                                 foreach (var c in Kids(r))
-                                    Walk(c, new Ctx { Section = 0, Tab = ViewModels.PadViewModel.MappingsTabIndex, RowOptions = true, InTemplate = true });
+                                    Walk(c, new Ctx { Section = 0, Tab = ViewModels.PadViewModel.MappingsTabIndex, RowOptions = true, InTemplate = true, Reach = ctx.Reach, Why = ctx.Why });
                             else if (Local(r) == "DataTemplate" && key != null && _rowParts.ContainsKey(key))
                                 continue; // read in its place in the open row
                             else
@@ -351,7 +473,10 @@ namespace PadForge.Search
                     return;
                 }
 
-                ctx = Enter(e, ctx);
+                if (!entered) ctx = Enter(e, ctx);
+                _current = e;
+                if (Local(e) is "Button" or "ToggleButton" or "SplitButton" or "DropDownButton" or "RadioButton" || IsReset(e))
+                    ctx = ctx with { MenuOwner = MenuOwnerOf(e) };
 
                 // A part of the open row that a template of its own draws:
                 // the template is read here, on the content the part gives
@@ -392,7 +517,8 @@ namespace PadForge.Search
                 {
                     Setting(e, ctx);
                 }
-                else if (!ctx.RowOptions && (local == "Button") && ActionKey(e) is { } action)
+                else if (!ctx.RowOptions && (local == "Button" || (CatalogOnly && local.EndsWith("Button", StringComparison.Ordinal) && !IsReset(e)))
+                         && ActionKey(e, CatalogOnly) is { } action)
                 {
                     Add(ctx, SearchKind.Action, new SearchLabel(action, null), ActionQualifier(e, ctx), SearchLabelSource.Button);
                 }
@@ -427,10 +553,20 @@ namespace PadForge.Search
             /// <summary>Macros &amp; Menus: its part switch, and nothing else.</summary>
             private void WalkMacros(XElement tabItem, Ctx ctx)
             {
+                // The editor's own menus are entries, under the section's
+                // class (#600). Everything else edits the picked macro.
+                var asks = Enter(tabItem, ctx);
                 foreach (var e in tabItem.Descendants())
                 {
                     if (IsReset(e)) _resets.Add((_page, LineOf(e), ResetOutcome.LeftOut));
                     else if (Local(e) == "RadioButton") StripEntry(e, ctx);
+                    else if (IsProperty(e) && Local(e).EndsWith(".ContextMenu", StringComparison.Ordinal))
+                    {
+                        var owner = asks with { MenuOwner = MenuOwnerOf(e.Parent) };
+                        foreach (var item in e.Descendants().Where(d => Local(d) == "MenuItem"))
+                            if (KeyIn(Attr(item, "Header")) is { } header)
+                                Add(Enter(item, owner), SearchKind.MenuItem, new SearchLabel(header, null), owner.MenuOwner, SearchLabelSource.Button, element: item);
+                    }
                 }
             }
 
@@ -484,7 +620,17 @@ namespace PadForge.Search
             /// <summary>A button's words when they are a string: its Content, or
             /// the first Content setter of its own style. Shared verbs, Reset
             /// All and the Extras pages' Back say nothing alone.</summary>
-            private static string ActionKey(XElement e)
+            /// <summary>The words a button's context menu is read under: its
+            /// own words, its screen-reader name or its tooltip.</summary>
+            private static SearchLabel MenuOwnerOf(XElement e)
+            {
+                if (KeyIn(Attr(e, "Content")) is { } key) return new SearchLabel(key, null);
+                foreach (string attribute in new[] { "AutomationProperties.Name", "ToolTip" })
+                    if (KeyIn(Attr(e, attribute)) is { } other) return new SearchLabel(other, null);
+                return null;
+            }
+
+            private static string ActionKey(XElement e, bool inDialog = false)
             {
                 if (StyleOf(e) == "ResetAllButton") return null;
                 if ((Attr(e, "AutomationProperties.AutomationId") ?? string.Empty).StartsWith("Extras_Back_", StringComparison.Ordinal)) return null;
@@ -495,7 +641,12 @@ namespace PadForge.Search
                         .FirstOrDefault(s => Local(s) == "Setter" && (string)s.Attribute("Property") == "Content");
                     key = KeyIn((string)setter?.Attribute("Value"));
                 }
-                if (key == null || key.StartsWith("Common_", StringComparison.Ordinal)) return null;
+                // An icon button of the catalog's own sources is named by its
+                // screen-reader name (#600): the title bar's buttons.
+                if (key == null && inDialog) key = KeyIn(Attr(e, "AutomationProperties.Name"));
+                // A dialog's OK and Cancel are its answers, and are entries
+                // of the dialog (#600).
+                if (key == null || (!inDialog && key.StartsWith("Common_", StringComparison.Ordinal))) return null;
                 return key;
             }
 
@@ -559,7 +710,16 @@ namespace PadForge.Search
                     qualifier = new SearchLabel(subsection, null);
                 var value = ctx.DataUnread ? null : ValueOf(row);
                 if (value?.Path != null) value = value with { Path = OnData(ctx, value.Path) };
-                Add(ctx, SearchKind.Setting, label, qualifier, source, value, TargetOf(row));
+                // The row's input carries the setting's screen-reader words
+                // (#600). Where it has no help, its label's tooltip is it.
+                var input = Kids(row).FirstOrDefault(k => Inputs.Contains(Local(k))) ?? reset;
+                int at = _entries.Count;
+                Add(ctx, SearchKind.Setting, label, qualifier, source, value, TargetOf(row), element: input);
+                if (_entries[at].Help == null)
+                {
+                    var labelText = Kids(row).FirstOrDefault(k => Local(k) == "TextBlock" && TextLabel(k, false) is { } l && l.Equals(label));
+                    if (labelText != null && WordsOf(labelText, "ToolTip") is { } tip) _entries[at] = _entries[at] with { Help = tip };
+                }
             }
 
             private static SearchLabel ActionQualifier(XElement button, Ctx ctx)

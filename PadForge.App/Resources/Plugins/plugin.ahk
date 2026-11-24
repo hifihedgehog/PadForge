@@ -29,9 +29,9 @@ Move() {
     if pf.Closed
         ExitApp()
     t := (A_TickCount - start) / 1000
-    pad.Set("a0", Round(32768 + 32767 * Cos(t * 3.141592653589793)))
-    pad.Set("a1", Round(32768 + 32767 * Sin(t * 3.141592653589793)))
-    pad.Set("b0", Mod(t, 1.0) < 0.2 ? 1 : 0)
+    pad.Set("a0", Round(100 * Cos(t * 3.141592653589793), 1))
+    pad.Set("a1", Round(100 * Sin(t * 3.141592653589793), 1))
+    pad.Set("b0", Mod(t, 1.0) < 0.2)
     pad.Send()
 }
 SetTimer(Move, 20)

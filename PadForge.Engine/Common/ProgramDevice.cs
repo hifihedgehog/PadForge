@@ -89,7 +89,12 @@ namespace PadForge.Engine
         public int? Battery;
         public bool? Charging;
 
-        public bool IsEmpty => Buttons.Count == 0 && Axes.Count == 0 && Hats.Count == 0 && Gyro == null
+        /// <summary>Every control goes to its rest first, before the rest
+        /// of the change applies (#600): the pipe's <c>rest</c> word. The
+        /// battery stays as it was.</summary>
+        public bool Rest;
+
+        public bool IsEmpty => !Rest && Buttons.Count == 0 && Axes.Count == 0 && Hats.Count == 0 && Gyro == null
             && Accel == null && Fingers.Count == 0 && Clicks.Count == 0 && Battery == null && Charging == null;
     }
 
@@ -231,7 +236,9 @@ namespace PadForge.Engine
             lock (_stateLock)
             {
                 var shape = _shape;
-                var s = _state.Clone();
+                var s = change.Rest
+                    ? RestState(shape, _state.BatteryPercent, _state.BatteryCharging)
+                    : _state.Clone();
                 foreach (var (index, down) in change.Buttons)
                     if (HasButton(shape, index)) s.Buttons[index] = down;
                 foreach (var (index, value) in change.Axes)

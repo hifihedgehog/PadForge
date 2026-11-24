@@ -43,6 +43,10 @@ namespace PadForge.Search
             SearchPage.Settings => "settings",
             SearchPage.Extras => "extras",
             SearchPage.Devices => "devices",
+            SearchPage.Dialog => "dialog",
+            SearchPage.Window => "window",
+            SearchPage.Home => "home",
+            SearchPage.About => "about",
             _ => "profiles",
         };
 
@@ -51,6 +55,7 @@ namespace PadForge.Search
             var sb = new StringBuilder(PageWord(entry.Page));
             if (entry.Kind != SearchKind.Setting) sb.Append('.').Append(entry.Kind.ToString().ToLowerInvariant());
             sb.Append('/');
+            if (!string.IsNullOrEmpty(entry.Dialog)) sb.Append(entry.Dialog).Append('/');
             if (!string.IsNullOrEmpty(entry.ExtraKey)) sb.Append(entry.ExtraKey).Append('/');
             if (!string.IsNullOrEmpty(entry.ScopeName)) sb.Append(entry.ScopeName).Append('/');
             if (!string.IsNullOrEmpty(entry.ItemsPath)) sb.Append('[').Append(entry.ItemsPath).Append("]/");

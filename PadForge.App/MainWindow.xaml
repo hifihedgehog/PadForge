@@ -1,4 +1,4 @@
-<ui:FluentWindow x:Class="PadForge.MainWindow"
+<ui:FluentWindow xmlns:common="clr-namespace:PadForge.Common" common:Reach.Class="Free" x:Class="PadForge.MainWindow"
     FontFamily="{DynamicResource BodyFontFamily}"
     FontSize="13"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

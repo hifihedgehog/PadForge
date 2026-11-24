@@ -221,6 +221,8 @@ namespace PadForge.Tests
         private const string ProtectedFolderFile = "PadForge.App/Common/ProtectedFolder.cs";
         private const string ProtectedCalls = "PadForge.App/Common/System32Calls.cs";
         private const string ExeFolderFile = Services + "ExeFolder.cs";
+        private const string UserFoldersFile = Services + "Install/UserFolders.cs";
+        private const string UserInstallFile = Services + "Install/UserInstall.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -269,6 +271,8 @@ namespace PadForge.Tests
             (Magnifier, "MagnifierNative"),
             (ProtectedFolderFile, "ProtectedFolder"),
             (ExeFolderFile, "ExeFolder"),
+            (UserFoldersFile, "UserFolders"),
+            (UserInstallFile, "UserInstall"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -325,6 +329,8 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Crosshairs.MagnifierNative.OffLimitsForTest);
             Assert.True(ProtectedFolder.OffLimitsForTest);
             Assert.True(ExeFolder.OffLimitsForTest);
+            Assert.True(PadForge.Services.Install.UserFolders.OffLimitsForTest);
+            Assert.True(PadForge.Services.Install.UserInstall.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -380,6 +386,12 @@ namespace PadForge.Tests
 
         public static IEnumerable<object[]> AskedFirst() => new[]
         {
+            // An install for the user (#600): its folders, the programs it
+            // runs, the Pythons it finds and the commands it looks for.
+            new object[] { UserFoldersFile, "internal static string Of(UserFolder folder)", "if (OffLimitsForTest && Seam == null) return null;" },
+            new object[] { UserInstallFile, "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)", "if (ToolSeam == null && OffLimitsForTest) return (-1, null);" },
+            new object[] { UserInstallFile, "internal static IReadOnlyList<string> Pythons()", "if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();" },
+            new object[] { UserInstallFile, "internal static string FindCommand(string name)", "if (FindSeam == null && OffLimitsForTest) return null;" },
             // A device opened by a writer that makes its own handle.
             new object[] { Input + "AnalogKeyboardHid.cs", "private static SafeFileHandle CreateOverlapped(string path, uint access, uint share)", "if (DirectDeviceAccess.Refuses(path))" },
             new object[] { Passthrough, "public static IntPtr OpenHidSync(string path)", "if (DirectDeviceAccess.Refuses(path)) return new IntPtr(-1);" },
@@ -666,7 +678,13 @@ namespace PadForge.Tests
         [Fact]
         public void EveryProcessStart_IsOnTheList()
         {
-            Assert.Equal(Map((RightsVariablesStartFile, 1), (StartWithRightsFile, 1)), FenceSource.Census(@"\bProcess\.Start\("));
+            // And the install's run of the user's own tools, an assistant's
+            // add command and a Python, from a process without rights with
+            // the user's own variables (#600).
+            Assert.Equal(Map((RightsVariablesStartFile, 1), (StartWithRightsFile, 1), (UserInstallFile, 1)), FenceSource.Census(@"\bProcess\.Start\("));
+            Assert.Contains("using var process = Process.Start(psi);",
+                FenceSource.Body(OffLimitsSource.Read(UserInstallFile), "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)"), StringComparison.Ordinal);
+
             Assert.Equal(Map(
                 ("PadForge.App/Common/DriverInstaller.cs", 1),
                 ("PadForge.App/Common/HidHideArm64Installer.cs", 1),

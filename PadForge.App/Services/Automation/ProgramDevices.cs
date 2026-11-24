@@ -194,8 +194,13 @@ namespace PadForge.Services.Automation
                     if (item.TryGetProperty("name", out var n) && n.ValueKind == JsonValueKind.String) name = n.GetString();
                     if (item.TryGetProperty("rest", out var r))
                     {
-                        if (!hasRest || !r.TryGetInt32(out rest) || rest < 0 || rest > 65535)
-                        { error = "a rest is 0 to 65535"; return false; }
+                        // Raw, or a share of the travel as a percent (#600):
+                        // "50%" makes a stick, "0%" a trigger.
+                        bool read = hasRest && (r.ValueKind == JsonValueKind.String
+                            ? PlainUnits.TryParsePercent(r.GetString(), out double share) && share >= 0 && share <= 100
+                              && (rest = PlainUnits.AxisToRaw(share, 0)) >= 0
+                            : r.TryGetInt32(out rest) && rest >= 0 && rest <= 65535);
+                        if (!read) { error = "a rest is 0 to 65535, or a percent of the travel such as 50%"; return false; }
                     }
                 }
                 else { error = "a control is a name or an object"; return false; }

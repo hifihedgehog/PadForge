@@ -205,7 +205,7 @@ namespace PadForge.Views
         /// <summary>Save a Library: one Save dialog whose file types are the
         /// libraries the build carries, on the first. The type the user
         /// leaves picked is the library written.</summary>
-        private void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)
+        private async void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationLibraries is not { } libraries) return;
             var all = libraries.All;
@@ -223,9 +223,12 @@ namespace PadForge.Views
             };
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
             var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];
+            string file = dialog.FileName;
             try
             {
-                libraries.Save(picked.Kind, dialog.FileName);
+                // Written by --install with the user's own rights (#600),
+                // which the page does not wait on.
+                await System.Threading.Tasks.Task.Run(() => libraries.Save(picked.Kind, file));
             }
             catch (Exception ex)
             {
@@ -241,15 +244,16 @@ namespace PadForge.Views
 
         /// <summary>Save the Skill: the folder the user picks gets the skill
         /// an assistant reads from disk.</summary>
-        private void SaveAutomationSkill_Click(object sender, RoutedEventArgs e)
+        private async void SaveAutomationSkill_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationSaveSkill is not { } save) return;
             string title = PadForge.Resources.Strings.Strings.Instance.Extras_Automation_SaveSkill.TrimEnd('…');
             var dialog = new Microsoft.Win32.OpenFolderDialog { Title = title };
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            string folder = dialog.FolderName;
             try
             {
-                save(dialog.FolderName);
+                await System.Threading.Tasks.Task.Run(() => save(folder));
             }
             catch (Exception ex)
             {

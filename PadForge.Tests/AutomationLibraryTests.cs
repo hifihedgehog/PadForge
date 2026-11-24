@@ -243,7 +243,8 @@ namespace PadForge.Tests
             string id = AutomationPipeRig.IdOf(pad);
             Assert.Equal("found " + id + " gamepad Pad", run.Expect("found "));
             string controller = run.Expect("controller ").Substring("controller ".Length);
-            Assert.Equal("read 1 777", run.Expect("read "));
+            // The libraries read in plain units (#600): raw 0 on a stick is -100.
+            Assert.Equal("read 1 -100", run.Expect("read "));
             run.Expect("ready");
 
             // What the host holds now: the hold, the value, the controller's
@@ -254,7 +255,8 @@ namespace PadForge.Tests
             Assert.Equal(controllerKey, entry.Key);
             var state = entry.Device.PeekState();
             Assert.True(state.Buttons[1]);
-            Assert.Equal(40000, state.Axis[0]);
+            // Plain 50 on a stick that rests in the middle (#600).
+            Assert.Equal(PadForge.Engine.PlainUnits.AxisToRaw(50, 32768), state.Axis[0]);
             Assert.Contains(rig.Target.Calls, c => c.Contains("Racing", StringComparison.Ordinal));
 
             // A button of the device it follows, and the game's rumble.
@@ -270,7 +272,7 @@ namespace PadForge.Tests
         {
             var pad = rig.AddDevice(InputDeviceType.Gamepad, "Pad");
             pad.InputState.Buttons[5] = true;
-            pad.InputState.Axis[1] = 777;
+            pad.InputState.Axis[1] = 0;
             return pad;
         }
 
@@ -303,7 +305,7 @@ namespace PadForge.Tests
             ctl.on_rumble(lambda low, high: out("rumble", low, high))
             out("controller", ctl.id)
             ctl.press(1)
-            ctl.set(a0=40000)
+            ctl.set(a0=50)
             ctl.send()
             pf.hold(pad, b2=1)
             pf.set_value("pyspeed", 12.5)
@@ -401,7 +403,7 @@ namespace PadForge.Tests
             Register-PadForgeRumble -Controller $ctl -Action { param($low, $high) [Console]::Out.WriteLine("rumble $low $high"); [Console]::Out.Flush() }
             Out-Line ("controller $($ctl.Id)")
             $ctl.Press(1)
-            $ctl.Set('a0', 40000)
+            $ctl.Set('a0', 50)
             $ctl.Send()
             Set-PadForgeHold $pad @{ b2 = 1 }
             Set-PadForgeValue -Name psspeed -Value 3.25
@@ -494,7 +496,7 @@ namespace PadForge.Tests
             ctl.OnRumble((low, high) => Log("rumble " low " " high))
             Log("controller " ctl.Id)
             ctl.Press(1)
-            ctl.Set("a0", 40000)
+            ctl.Set("a0", 50)
             ctl.Send()
             pf.Hold(pad, "b2=1")
             pf.SetValue("ahkspeed", 7)

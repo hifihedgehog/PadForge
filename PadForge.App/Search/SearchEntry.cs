@@ -2,11 +2,14 @@ using System.Collections.Generic;
 
 namespace PadForge.Search
 {
-    /// <summary>What a search entry stands for (#574).</summary>
-    internal enum SearchKind { Setting, Card, Action, Extra, Section, Part }
+    /// <summary>What a search entry stands for (#574). A dialog and an item
+    /// of a menu joined it with the catalog (#600). Append-only.</summary>
+    internal enum SearchKind { Setting, Card, Action, Extra, Section, Part, Dialog, MenuItem }
 
-    /// <summary>The pages Search reads.</summary>
-    internal enum SearchPage { Pad, Settings, Extras, Devices, Profiles }
+    /// <summary>The pages Search reads. A dialog's markup (#600) and the
+    /// window's own parts, the tray menu among them, follow the five pages.
+    /// Append-only.</summary>
+    internal enum SearchPage { Pad, Settings, Extras, Devices, Profiles, Dialog, Window, Home, About }
 
     /// <summary>How an entry's label is shown on its page, so the locator
     /// looks only at that kind of element.</summary>
@@ -47,5 +50,36 @@ namespace PadForge.Search
         SearchValueSource Value,        // how to read the row's value. Null for none
         string TargetAutomationId,      // the AutomationId of the row's input, when it has one
         SearchLabelSource LabelSource,  // the kind of element that shows the label
-        int Order);                     // document order in its page
+        int Order)                      // document order in its page
+    {
+        /// <summary>The element's screen-reader name
+        /// (AutomationProperties.Name) when the markup gives one: the words a
+        /// screen reader, Search and a program read for it (#600).</summary>
+        public SearchLabel Name { get; init; }
+
+        /// <summary>The element's help: AutomationProperties.HelpText, else
+        /// its tooltip, which WPF hands a screen reader as the help text
+        /// when no HelpText is set. One source for hover help, screen
+        /// readers, Search and programs (#600).</summary>
+        public SearchLabel Help { get; init; }
+
+        /// <summary>The element's AutomationId, when it has one.</summary>
+        public string AutomationId { get; init; }
+
+        /// <summary>The reach class the markup gives the element, through
+        /// the nearest Reach.Class on it or above it (#600). Unset where no
+        /// element above it sets one.</summary>
+        public PadForge.Common.ReachClass Reach { get; init; }
+
+        /// <summary>Why it asks, for a class of Asks.</summary>
+        public PadForge.Common.ReachReason Why { get; init; }
+
+        /// <summary>The dialog's own name (its class's name, such as
+        /// ProfileDialog) for an entry of a dialog's markup, else null.</summary>
+        public string Dialog { get; init; }
+
+        /// <summary>The Click handler's or the Command binding's name of an
+        /// action, which says what opens a dialog (DialogCatalog).</summary>
+        public string Handler { get; init; }
+    }
 }

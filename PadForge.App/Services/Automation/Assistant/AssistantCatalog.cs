@@ -45,12 +45,16 @@ namespace PadForge.Services.Automation
         private readonly Action<PadViewModel> _bindPad;
         private readonly Func<AssistantWindowPlace> _windowPlace;
 
-        /// <summary>The extras whose pages hold the user's own settings.</summary>
-        internal static readonly string[] UsersOwnExtras = { "Automation", "Plugins" };
+        /// <summary>The class a program reads an entry by (#600): Unset reads
+        /// as the user's own.</summary>
+        internal static PadForge.Common.ReachClass ReachOf(SearchEntry entry)
+            => entry.Reach == PadForge.Common.ReachClass.Unset ? PadForge.Common.ReachClass.UsersOwn : entry.Reach;
 
-        /// <summary>The extras that listen on the network once they are
-        /// on.</summary>
-        internal static readonly string[] NetworkExtras = { "WebController", "RemoteLink", "MotionServer", "GameMods" };
+        private static void RefuseUsersOwn(SearchEntry entry)
+        {
+            if (ReachOf(entry) == PadForge.Common.ReachClass.UsersOwn)
+                throw new AssistantRefusal("users-own", "Only the user can change this, in PadForge. show takes the user to it.");
+        }
 
         public AssistantCatalog(SearchService service, SearchNavigator navigator, Func<SearchPage, FrameworkElement> pageOf,
             MainViewModel vm, Action<PadViewModel> bindPad, Func<AssistantWindowPlace> windowPlace)
@@ -147,6 +151,7 @@ namespace PadForge.Services.Automation
                 Kind = KindOf(entry),
                 UnderMore = entry.UnderMore,
                 Available = false,
+                Reach = AutomationReadScrub.ReachWord(ReachOf(entry)),
             };
         }
 
@@ -213,11 +218,15 @@ namespace PadForge.Services.Automation
                 Id = IdOf(shown),
                 Name = string.IsNullOrEmpty(qualifier) ? title : title + " " + qualifier,
                 Where = _service.WhereFor(shown),
-                Shown = _service.ValueFor(shown),
+                // Read by its class (#600): the user's own value is not read.
+                Shown = AutomationReadScrub.ForReach(ReachOf(entry), _service.ValueFor(shown)),
                 Kind = KindOf(entry),
                 UnderMore = entry.UnderMore,
                 Available = true,
+                Reach = AutomationReadScrub.ReachWord(ReachOf(entry)),
+                Help = AutomationReadScrub.Text(SearchLocator.LabelText(entry.Help, data)),
             };
+            if (ReachOf(entry) == PadForge.Common.ReachClass.UsersOwn) return setting;
             var bound = IsBound(shown);
             var row = bound && shown.Label != null ? SearchLocator.Up(shown.Label) as FrameworkElement : null;
             switch (setting.Kind)
@@ -338,8 +347,7 @@ namespace PadForge.Services.Automation
         public AssistantAsk AskFor(string id, JsonElement value)
         {
             var (shown, entry) = Resolve(id);
-            if (entry.Page == SearchPage.Extras && Array.IndexOf(UsersOwnExtras, entry.ExtraKey) >= 0)
-                throw new AssistantRefusal("users-own", "Only the user can change the Automation and Plugins settings, on their pages in PadForge.");
+            RefuseUsersOwn(entry);
             if (shown == null) return null;
             var setting = Describe(shown.Value);
             string valueText = value.ValueKind switch
@@ -349,20 +357,11 @@ namespace PadForge.Services.Automation
                 JsonValueKind.String => value.GetString(),
                 _ => value.ToString() + (string.IsNullOrEmpty(setting.Unit) ? string.Empty : " " + setting.Unit),
             };
-            string reason = null;
-            string path = entry.Value?.Path ?? string.Empty;
-            string labelKey = entry.Label?.Key ?? string.Empty;
-            if (entry.Page == SearchPage.Extras && Array.IndexOf(NetworkExtras, entry.ExtraKey) >= 0 && value.ValueKind == JsonValueKind.True)
-                reason = AssistantToolWords.ListensOnNetwork();
-            else if (entry.Page == SearchPage.Settings && shown.Value.Label != null
-                     && _pageOf(SearchPage.Settings) is SettingsPage settings && settings.GroupOf(shown.Value.Label) == SettingsGroup.Drivers)
-                reason = AssistantToolWords.ChangesDrivers();
-            else if (path.Contains("HidHide", StringComparison.OrdinalIgnoreCase) || labelKey.Contains("HidHide", StringComparison.OrdinalIgnoreCase))
-                reason = AssistantToolWords.ChangesDrivers();
-            else if (path.Contains("OnlyInPadForge", StringComparison.OrdinalIgnoreCase) || labelKey.Contains("OnlyInPadForge", StringComparison.OrdinalIgnoreCase)
-                     || path.Contains("UseOnly", StringComparison.OrdinalIgnoreCase))
-                reason = AssistantToolWords.ChangesUseOnly();
-            if (reason == null) return null;
+            // The class the markup gives the setting decides (#600). An
+            // extra that listens on the network asks when it is turned on.
+            if (ReachOf(entry) != PadForge.Common.ReachClass.Asks) return null;
+            if (entry.Why == PadForge.Common.ReachReason.Network && value.ValueKind != JsonValueKind.True) return null;
+            string reason = AssistantToolWords.Reason(entry.Why);
             return new AssistantAsk(AssistantToolWords.AskSetting(setting.Name),
                 new[] { AssistantToolWords.SetsTo(setting.Name, valueText), reason });
         }
@@ -370,8 +369,7 @@ namespace PadForge.Services.Automation
         public AssistantSetting Set(string id, JsonElement value)
         {
             var (shown, entry) = Resolve(id);
-            if (entry.Page == SearchPage.Extras && Array.IndexOf(UsersOwnExtras, entry.ExtraKey) >= 0)
-                throw new AssistantRefusal("users-own", "Only the user can change the Automation and Plugins settings, on their pages in PadForge.");
+            RefuseUsersOwn(entry);
             if (shown == null)
                 throw new AssistantRefusal("not-available", "The page does not show this setting now, for that controller or device, so it cannot be set. get_setting says so with available false.");
             if (entry.Value?.Path == null)

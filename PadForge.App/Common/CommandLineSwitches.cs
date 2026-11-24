@@ -116,8 +116,13 @@ namespace PadForge.Common
             /// it itself.</summary>
             public bool Internal { get; set; }
 
+            /// <summary><c>--install</c> and what it installs (#600), or
+            /// null. A client run of its own, which never starts the
+            /// app.</summary>
+            public Services.Install.InstallRequest Install { get; set; }
+
             /// <summary>Whether anything but the update marker was given.</summary>
-            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait;
+            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -196,6 +201,19 @@ namespace PadForge.Common
                         if (inline != null) return Fail(r, name + " takes no value.");
                         r.Mcp = true;
                         break;
+
+                    case "--install":
+                    {
+                        // The words after it are its own (#600):
+                        // what, the program, folder or file, and --remove
+                        // or --check.
+                        if (inline != null) return Fail(r, "--install takes its words after a space: --install skill claude-code.");
+                        if (r.Install != null) return Fail(r, "--install is given once.");
+                        string mistake = Services.Install.UserInstall.Parse(args, ref i, out var install);
+                        if (mistake != null) return Fail(r, mistake);
+                        r.Install = install;
+                        break;
+                    }
 
                     case "--wait":
                         if (inline != null) return Fail(r, name + " takes no value.");
@@ -396,6 +414,10 @@ namespace PadForge.Common
             "  --record start|stop|mark  Record a problem\r\n" +
             "  --wait                    Return when PadForge exits, with its exit code\r\n" +
             "  --mcp                     Serve an assistant over standard input and output\r\n" +
+            "  --install <what> [where]  Install for the user: skill <program or folder>,\r\n" +
+            "                            autohotkey, powershell, python [folder or file]\r\n" +
+            "                            or assistant <program>. --remove takes it out,\r\n" +
+            "                            --check says current (0), older (6) or none (7)\r\n" +
             "  --version, --help         Print and exit\r\n" +
             "\r\n" +
             "Switches run in order. --name=value works as --name value does.\r\n" +

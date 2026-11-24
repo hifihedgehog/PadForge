@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PadForge.Views.DevicesPage"
+﻿<UserControl common:Reach.Class="Free" x:Class="PadForge.Views.DevicesPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -246,7 +246,7 @@
              Link column, or after the device's type where the list is too
              narrow for the column. -->
         <DataTemplate x:Key="DeviceLinkFact" DataType="{x:Type vm:DeviceRowViewModel}">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <StackPanel common:Reach.Class="Free" Orientation="Horizontal" VerticalAlignment="Center">
                 <controls:DecorativeStrokeIcon x:Name="Mark" Size="15" StrokeWidth="2"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding LinkText}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
@@ -271,7 +271,7 @@
              under the level Settings names. In the Battery column, or
              after the type where the list is narrow. -->
         <DataTemplate x:Key="DeviceBatteryFact" DataType="{x:Type vm:DeviceRowViewModel}">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <StackPanel common:Reach.Class="Free" Orientation="Horizontal" VerticalAlignment="Center">
                 <controls:BatteryMeter Percent="{Binding BatteryPercent}" Charging="{Binding BatteryCharging}" Low="{Binding BatteryLow}"/>
                 <TextBlock Text="{Binding BatteryText}" Margin="7,0,0,0"
                            Typography.NumeralAlignment="Tabular" FontSize="13" VerticalAlignment="Center"
@@ -341,7 +341,7 @@
                  has no name, since the allowlist knows it by its handlers:
                  the grid inside is the row the triggers read. Under the
                  container's hairline every row is the board's 64. -->
-            <Border Background="Transparent" Padding="18,0,16,0"
+            <Border common:Reach.Class="Free" Background="Transparent" Padding="18,0,16,0"
                     PreviewMouseLeftButtonDown="DeviceCard_MouseDown"
                     PreviewMouseMove="DeviceCard_MouseMove"
                     PreviewMouseLeftButtonUp="DeviceCard_MouseUp">
@@ -2310,7 +2310,7 @@
                                          by it. -->
                                     <StackPanel x:Name="HidingRows"
                                                 Visibility="{Binding SelectedDevice.ShowInputHidingSection, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <controls:SettingRow MinHeight="44"
+                                        <controls:SettingRow common:Reach.Class="Asks" common:Reach.Why="Drivers" MinHeight="44"
                                                              Visibility="{Binding SelectedDevice.ShowHidHideToggle, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Style="{StaticResource DeviceRowLabel}"
                                                        Text="{Binding Devices_HideFromGames, Source={x:Static strings:Strings.Instance}}"/>
@@ -2390,7 +2390,7 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </controls:FlexLinePanel.Style>
-                                            <Button Content="{Binding DriverBindText}" Style="{StaticResource DeviceButton}"
+                                            <Button common:Reach.Class="Asks" common:Reach.Why="UseOnly" Content="{Binding DriverBindText}" Style="{StaticResource DeviceButton}"
                                                     Click="DriverBind_Click"
                                                     Visibility="{Binding ShowHidingDriverBind, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <Button Content="{Binding DriverRestoreText}" Style="{StaticResource DeviceButton}"
@@ -2539,7 +2539,7 @@
                                     <StackPanel x:Name="DeviceTools" Margin="0,8,0,4"
                                                 Visibility="{Binding ShowDeviceTools, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <controls:FlexLinePanel Gap="8" LineGap="8">
-                                            <Button Content="{Binding DriverBindText}" Style="{StaticResource DeviceButton}"
+                                            <Button common:Reach.Class="Asks" common:Reach.Why="UseOnly" Content="{Binding DriverBindText}" Style="{StaticResource DeviceButton}"
                                                     Click="DriverBind_Click"
                                                     Visibility="{Binding ShowDriverBind, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <Button Content="{Binding Devices_DriverRestore, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"

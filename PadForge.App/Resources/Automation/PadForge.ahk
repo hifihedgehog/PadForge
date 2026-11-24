@@ -13,9 +13,11 @@
 ;   pad := pf.Find("gamepad")
 ;   pf.OnButton(pad, 0, (down) => ToolTip("A " (down ? "down" : "up")))
 ;
-; Buttons, axes and hats use PadForge's own numbers and ranges: an axis runs 0
-; to 65535 with a stick at rest on 32768, axes 0 to 23 are the axes and 24 to
-; 31 the sliders, and a hat is in hundredths of a degree or -1.
+; Values are in plain units: a button is true or false, a stick runs from -100
+; to 100 with 0 at rest, a trigger or slider from 0 to 100, and a hat is in
+; degrees clockwise from up, or -1 at rest. A hat's directions are Up, Right,
+; Down and Left, two for a diagonal, such as "Up+Right". Axes 0 to 23 are the
+; axes and 24 to 31 the sliders.
 ;
 ; PadForge posts the message PadForge.Wake to this script's window after it
 ; writes, and the library then reads everything that waits in the pipe. The
@@ -74,7 +76,7 @@ class PadForge {
         OnMessage(this.WakeMessage, this.WakeFn)
         kind := token != "" ? "kind=plugin token=" PadForge.Quote(token) : "kind=script"
         hello := this.Request("hello name=" PadForge.Quote(name) " " kind " protocol=" PadForge.Protocol
-            " lease=" lease " hwnd=" A_ScriptHwnd)
+            " units=plain lease=" lease " hwnd=" A_ScriptHwnd)
         this.Version := hello.Get("padforge", "")
         this.Level := hello.Get("level", "")
         this.Session := Integer(hello.Get("session", "0"))
@@ -342,7 +344,30 @@ class PadForge {
             return
         if !this.Mirror.Has(dev)
             this.Mirror[dev] := {b: Map(), h: Map(), a: Map()}
-        this.Mirror[dev].%kind%[Integer(w[4])] := Integer(w[5])
+        this.Mirror[dev].%kind%[Integer(w[4])] := kind = "b" ? w[5] = "1" : Number(w[5])
+    }
+
+    ; The directions a hat in degrees holds: the nearest of the eight
+    ; points, a diagonal holding two, "" at rest.
+    static Directions(degrees) {
+        if (degrees < 0)
+            return ""
+        point := Mod(Round(degrees / 45), 8)
+        static names := ["Up", "Up+Right", "Right", "Right+Down", "Down", "Down+Left", "Left", "Up+Left"]
+        return names[point + 1]
+    }
+
+    ; A value as the pipe takes it in plain units: a button true or false, an
+    ; axis a percent, a hat degrees or directions.
+    static Plain(control, value) {
+        kind := SubStr(control, 1, 1)
+        if (kind = "b")
+            return value ? "1" : "0"
+        if (kind = "a")
+            return value "%"
+        if (kind = "h")
+            return value is Number ? (value < 0 ? "-1" : value "deg") : (value = "" ? "-1" : value)
+        return value
     }
 
     _OnWake(wParam, lParam, msg, hwnd) {
@@ -367,8 +392,8 @@ class PadForge {
             return
         switch w[2] {
             case "b": this._Call("b|" w[3] "|" w[4], w[5] = "1")
-            case "h": this._Call("h|" w[3] "|" w[4], Integer(w[5]))
-            case "a": this._Call("a|" w[3] "|" w[4], Integer(w[5]))
+            case "h": this._Call("h|" w[3] "|" w[4], Number(w[5]))
+            case "a": this._Call("a|" w[3] "|" w[4], Number(w[5]))
             case "x": this._Call("x|" w[3] "|" w[4], w[5] = "1")
             case "dev": this._Call("dev", w[3], w[4] = "online")
             case "profile": this._Call("profile", w.Length > 2 ? w[3] : "default")
@@ -466,7 +491,8 @@ class PadForge {
         }
     }
 
-    ; callback(value) when a hat moves: hundredths of a degree, or -1.
+    ; callback(degrees) when a hat moves: degrees clockwise from up, or -1.
+    ; PadForge.Directions(degrees) gives its directions.
     OnHat(device, hat, callback) {
         id := PadForge.Id(device)
         this._Add("h|" id "|" hat, callback)
@@ -477,13 +503,14 @@ class PadForge {
     }
 
     ; With above, callback(true) when the axis reaches it and callback(false)
-    ; when it falls back past above - hyst, worked out by PadForge. Without
-    ; it, callback(value) up to hz times a second.
+    ; when it falls back past above - hyst, worked out by PadForge. above and
+    ; hyst are plain: OnAxis(pad, 0, fn, 80) on a stick. Without above,
+    ; callback(value) up to hz times a second.
     OnAxis(device, axis, callback, above := "", hyst := "", hz := 100) {
         id := PadForge.Id(device)
         if (above != "") {
             this._Add("x|" id "|" axis, callback)
-            this.Request("sub " id " axis=" axis " above=" above (hyst != "" ? " hyst=" hyst : ""))
+            this.Request("sub " id " axis=" axis " above=" above "%" (hyst != "" ? " hyst=" hyst "%" : ""))
         } else {
             this._Add("a|" id "|" axis, callback)
             this.Request("sub " id " axes " hz)
@@ -522,9 +549,13 @@ class PadForge {
 
     ; A button, an axis or a hat of a device the script follows, from the
     ; local copy: no round trip.
-    Button(device, button) => this._Seen(device, "b", button, 0)
+    Button(device, button) => this._Seen(device, "b", button, false)
     Hat(device, hat) => this._Seen(device, "h", hat, -1)
     Axis(device, axis) => this._Seen(device, "a", axis, 0)
+    ; A hat's directions, "Up+Right", or "" at rest.
+    HatDirections(device, hat) => PadForge.Directions(this.Hat(device, hat))
+    ; Whether a hat holds one direction: HatHolds(pad, 0, "Up").
+    HatHolds(device, hat, direction) => InStr("+" this.HatDirections(device, hat) "+", "+" direction "+") > 0
 
     _Seen(device, kind, index, otherwise) {
         id := PadForge.Id(device)
@@ -555,22 +586,25 @@ class PadForge {
         return ""
     }
 
-    ; A device's whole state: .Buttons (an array from button 0), .Axes (0 to
-    ; 31), .Hats and .Battery.
+    ; A device's whole state in plain units: .Buttons (true or false, from
+    ; button 0), .Axes (0 to 31), .Hats in degrees, .HatDirections and
+    ; .Battery.
     Read(device) {
         p := this.Request("read " PadForge.Id(device))
         hex := p["b"], buttons := []
         loop StrLen(hex) // 2 {
             byte := Integer("0x" SubStr(hex, A_Index * 2 - 1, 2))
             loop 8
-                buttons.Push((byte >> (A_Index - 1)) & 1)
+                buttons.Push(((byte >> (A_Index - 1)) & 1) = 1)
         }
-        axes := [], hats := []
+        axes := [], hats := [], directions := []
         for v in StrSplit(p["a"], ",")
-            axes.Push(Integer(v))
-        for v in StrSplit(p["h"], ",")
-            hats.Push(Integer(v))
-        return {Buttons: buttons, Axes: axes, Hats: hats, Battery: Integer(StrSplit(p["bat"], ",")[1])}
+            axes.Push(Number(v))
+        for v in StrSplit(p["h"], ",") {
+            hats.Push(Number(v))
+            directions.Push(PadForge.Directions(Number(v)))
+        }
+        return {Buttons: buttons, Axes: axes, Hats: hats, HatDirections: directions, Battery: Integer(StrSplit(p["bat"], ",")[1])}
     }
 
     ; What virtual controller number sends to the game now, as a Map.
@@ -580,14 +614,31 @@ class PadForge {
 
     ; Adds a controller of the script's own. key keeps its identity, and its
     ; mappings, across runs. buttons, axes, sliders and hats are arrays of
-    ; names, or of objects with index, name and rest. feedback holds any of
-    ; "rumble", "trigrumble", "light" and "player".
+    ; names, or of objects with index, name and rest. A rest is where the
+    ; axis rests as a share of its travel, 0 to 100: 50 makes a stick. An
+    ; axis rests at 50 and a slider at 0 when rest is left out. feedback
+    ; holds any of "rumble", "trigrumble", "light" and "player".
     AddController(key, name, buttons := [], axes := [], sliders := [], hats := [], feedback := []) {
-        json := "{" '"buttons":' PadForge._Json(buttons) ',"axes":' PadForge._Json(axes)
-            . ',"sliders":' PadForge._Json(sliders) ',"hats":' PadForge._Json(hats)
+        json := "{" '"buttons":' PadForge._Json(buttons) ',"axes":' PadForge._Json(PadForge._Rests(axes))
+            . ',"sliders":' PadForge._Json(PadForge._Rests(sliders)) ',"hats":' PadForge._Json(hats)
             . ',"feedback":' PadForge._Json(feedback) "}"
         p := this.Request("declare key=" key " name=" PadForge.Quote(name) " " json)
         return PadForgeController(this, p["id"])
+    }
+
+    ; Axes with a rest as a share, for the declaration: "50%".
+    static _Rests(list) {
+        out := []
+        for item in list {
+            if IsObject(item) && !(item is Array) && item.HasOwnProp("rest") {
+                copy := {}
+                for k, v in item.OwnProps()
+                    copy.%k% := k = "rest" ? v "%" : v
+                out.Push(copy)
+            } else
+                out.Push(item)
+        }
+        return out
     }
 
     static _Json(value) {
@@ -609,8 +660,8 @@ class PadForge {
         return '"' text '"'
     }
 
-    ; Holds controls of any device at a value until released:
-    ; Hold(pad, "b3=1 a0=40000").
+    ; Holds controls of any device at a value until released, in plain units:
+    ; Hold(pad, "b3=1 a0=40% h0=Up").
     Hold(device, controls) => this.Request("own " PadForge.Id(device) " " controls)
 
     ; Lets go of controls held on a device, "b3 a0", or all of them.
@@ -668,8 +719,13 @@ class PadForgeController {
     Press(button) => this.PadForge._Set(this.Id, "b" button "=1")
     Release(button) => this.PadForge._Set(this.Id, "b" button "=0")
 
-    ; Stages a value to go out with Send: Set("a0", 40000).
-    Set(control, value) => this.Staged[control] := value
+    ; Stages a value to go out with Send, in plain units: Set("a0", -50) for a
+    ; stick half left, Set("a24", 100) for a slider at its top, Set("h0", 90)
+    ; or Set("h0", "Up+Right") for a hat, Set("b3", true) for a button.
+    Set(control, value) => this.Staged[control] := PadForge.Plain(control, value)
+
+    ; Every control at rest in one word.
+    Rest() => this.PadForge.Request("rest " this.Id)
 
     ; Sends what Set staged as one change: a stick's two axes never land on
     ; different passes.

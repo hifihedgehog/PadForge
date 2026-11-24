@@ -916,6 +916,14 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Asked_Declare_Format => Get("Automation_Asked_Declare_Format");
     public string Automation_Asked_Set_Format => Get("Automation_Asked_Set_Format");
     public string Automation_Asked_Gone_Format => Get("Automation_Asked_Gone_Format");
+    public string Automation_Asked_Rest_Format => Get("Automation_Asked_Rest_Format");
+    public string Automation_Ask_RunsProgram => Get("Automation_Ask_RunsProgram");
+    public string Automation_Ask_OpensPlace => Get("Automation_Ask_OpensPlace");
+    public string Automation_Ask_SendsInput => Get("Automation_Ask_SendsInput");
+    public string Automation_Ask_ImportsProfile => Get("Automation_Ask_ImportsProfile");
+    public string Automation_Ask_Always => Get("Automation_Ask_Always");
+    public string Search_Group_Dialogs => Get("Search_Group_Dialogs");
+    public string Search_Group_Macros => Get("Search_Group_Macros");
     public string Automation_Asked_Own_Format => Get("Automation_Asked_Own_Format");
     public string Automation_Asked_Release_Format => Get("Automation_Asked_Release_Format");
     public string Automation_Asked_Value_Format => Get("Automation_Asked_Value_Format");

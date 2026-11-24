@@ -79,6 +79,12 @@ namespace PadForge.Services.Automation
 
         [Description("Whether the page shows it now. A setting the page hides for the device or controller in use cannot be set.")]
         public bool Available { get; set; } = true;
+
+        [Description("What a program may do with it: free (set it at Change Settings), asks (the user is asked first) or yours-alone (only the user, and its value is not read).")]
+        public string Reach { get; set; }
+
+        [Description("What it does, in the words the user hears on hover and from a screen reader.")]
+        public string Help { get; set; }
     }
 
     internal enum AssistantShowKind { Setting, Device, Controller, Profile }

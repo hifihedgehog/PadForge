@@ -19,6 +19,28 @@ namespace PadForge.Search
 
         internal static string ResourceName(SearchPage page) => "PadForge.SearchSources." + FileNames[page];
 
+        /// <summary>The prefix of the catalog's own markup in the app's
+        /// resources (#600): every DialogWindow, the request card, the two
+        /// dialogs the window shows inside itself (Add Controller and
+        /// Search), Home, About and the window itself.</summary>
+        internal const string DialogPrefix = "PadForge.CatalogSources.";
+
+        /// <summary>Each source's markup by its name, read from the app's
+        /// resources.</summary>
+        internal static IReadOnlyDictionary<string, string> LoadCatalog()
+        {
+            var assembly = typeof(SearchSources).Assembly;
+            var texts = new Dictionary<string, string>(System.StringComparer.Ordinal);
+            foreach (string name in assembly.GetManifestResourceNames())
+            {
+                if (!name.StartsWith(DialogPrefix, System.StringComparison.Ordinal) || !name.EndsWith(".xaml", System.StringComparison.Ordinal)) continue;
+                using var stream = assembly.GetManifestResourceStream(name);
+                using var reader = new StreamReader(stream);
+                texts[name.Substring(DialogPrefix.Length, name.Length - DialogPrefix.Length - ".xaml".Length)] = reader.ReadToEnd();
+            }
+            return texts;
+        }
+
         /// <summary>Each page's markup, read from the app's resources.</summary>
         internal static IReadOnlyDictionary<SearchPage, string> Load()
         {

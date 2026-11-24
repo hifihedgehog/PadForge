@@ -28,6 +28,7 @@ namespace PadForge.Search
         private readonly Action<PadViewModel> _bindPad;
         private readonly SearchLocator _locator;
         private IReadOnlyList<SearchEntry> _index = Array.Empty<SearchEntry>();
+        private IReadOnlyList<SearchEntry> _dialogs = Array.Empty<SearchEntry>();
         private readonly List<Available> _available = new();
 
         /// <summary>An entry that shows now. A controller page's entry names
@@ -71,7 +72,7 @@ namespace PadForge.Search
         /// its dynamic results.</summary>
         internal void BuildIndex(Dispatcher dispatcher)
         {
-            Task.Run(() => SearchIndexBuilder.Build(SearchSources.Load())).ContinueWith(done =>
+            Task.Run(() => (Pages: SearchIndexBuilder.Build(SearchSources.Load()), Dialogs: SearchIndexBuilder.BuildCatalog(SearchSources.LoadCatalog()))).ContinueWith(done =>
             {
                 if (done.IsFaulted)
                 {
@@ -80,7 +81,8 @@ namespace PadForge.Search
                 }
                 dispatcher.BeginInvoke(new Action(() =>
                 {
-                    SetIndex(done.Result);
+                    SetIndex(done.Result.Pages);
+                    SetDialogs(done.Result.Dialogs);
                     IndexBuilt?.Invoke(this, EventArgs.Empty);
                 }));
             }, TaskScheduler.Default);
@@ -96,6 +98,26 @@ namespace PadForge.Search
         }
 
         private Dictionary<SearchEntry, string> _ids = new(ReferenceEqualityComparer.Instance);
+
+        /// <summary>Takes the dialogs' entries (#600): each dialog, and its
+        /// buttons and settings.</summary>
+        internal void SetDialogs(IReadOnlyList<SearchEntry> dialogs)
+        {
+            _dialogs = dialogs ?? Array.Empty<SearchEntry>();
+            foreach (var (entry, id) in SearchIds.Assign(_dialogs)) _ids[entry] = id;
+        }
+
+        /// <summary>The dialogs' entries.</summary>
+        internal IReadOnlyList<SearchEntry> Dialogs => _dialogs;
+
+        /// <summary>The page's action that opens a dialog, through the
+        /// catalog's table of openers (DialogCatalog), or null when PadForge
+        /// opens it by itself.</summary>
+        internal SearchEntry OpenerOf(SearchEntry dialog)
+        {
+            if (dialog?.Dialog == null || !PadForge.Services.Catalog.DialogCatalog.Openers.TryGetValue(dialog.Dialog, out var opener)) return null;
+            return _index.FirstOrDefault(e => e.Kind is SearchKind.Action or SearchKind.MenuItem && e.Page == opener.Page && e.Handler == opener.Handler);
+        }
 
         /// <summary>An entry's stable ID (#597), the same in every
         /// language.</summary>
@@ -136,7 +158,7 @@ namespace PadForge.Search
             string english = SearchLocator.EnglishText(entry.Label);
             string englishQualifier = SearchLocator.EnglishText(entry.Qualifier);
             if (english != null && englishQualifier != null) english += " " + englishQualifier;
-            int score = SearchMatcher.Score(query, qualifier.Length > 0 ? title + " " + qualifier : title, WhereFor(shown), english);
+            int score = SearchMatcher.Score(query, WithName(entry, data, qualifier.Length > 0 ? title + " " + qualifier : title), WhereFor(shown), english);
             return score == 0 ? 0 : score + Weight(entry);
         }
 
@@ -326,7 +348,7 @@ namespace PadForge.Search
                     int n = 0;
                     string text = null;
                     bool located = entry.ItemsPath == null && !entry.RowOptions
-                                   && entry.Kind is not (SearchKind.Section or SearchKind.Part or SearchKind.Extra);
+                                   && entry.Kind is not (SearchKind.Section or SearchKind.Part or SearchKind.Extra or SearchKind.MenuItem);
                     if (located)
                     {
                         text = SearchLocator.LabelText(entry.Label, _pageOf(entry.Page)?.DataContext);
@@ -344,7 +366,7 @@ namespace PadForge.Search
                     else if (entry.Page == SearchPage.Devices && _vm.Devices?.SelectedDevice == null)
                         continue;
 
-                    if (entry.Kind is SearchKind.Section or SearchKind.Part or SearchKind.Extra)
+                    if (entry.Kind is SearchKind.Section or SearchKind.Part or SearchKind.Extra or SearchKind.MenuItem)
                     {
                         Add(entry, null, null);
                         continue;
@@ -397,12 +419,12 @@ namespace PadForge.Search
                 string english = SearchLocator.EnglishText(entry.Label);
                 string englishQualifier = SearchLocator.EnglishText(entry.Qualifier);
                 if (english != null && englishQualifier != null) english += " " + englishQualifier;
-                int score = SearchMatcher.Score(q, qualifier.Length > 0 ? title + " " + qualifier : title, where, english);
+                int score = SearchMatcher.Score(q, WithName(entry, data, qualifier.Length > 0 ? title + " " + qualifier : title), where, english);
                 if (score == 0) continue;
                 var group = entry.Kind switch
                 {
                     SearchKind.Extra or SearchKind.Section or SearchKind.Part => SearchGroup.Pages,
-                    SearchKind.Action => SearchGroup.Actions,
+                    SearchKind.Action or SearchKind.MenuItem => SearchGroup.Actions,
                     _ => SearchGroup.Settings,
                 };
                 scored.Add(new SearchResult
@@ -423,6 +445,7 @@ namespace PadForge.Search
             }
 
             AddDynamic(scored, q);
+            AddDialogs(scored, q);
 
             var groups = scored.GroupBy(r => r.Group)
                 .Select(g => g.OrderByDescending(r => r.Score).ThenBy(r => r.Order).ThenBy(r => r.Title.Length).Take(5).ToList())
@@ -433,6 +456,41 @@ namespace PadForge.Search
             var results = groups.SelectMany(g => g).ToList();
             foreach (var r in results) r.Value = r.ReadValue ?? (r.Entry == null ? string.Empty : ValueOf(r.Entry, r.Payload));
             return results;
+        }
+
+        /// <summary>The dialogs whose opener shows now (#600): a result
+        /// lands on the button that opens the dialog.</summary>
+        private void AddDialogs(List<SearchResult> scored, string q)
+        {
+            foreach (var dialog in _dialogs)
+            {
+                if (dialog.Kind != SearchKind.Dialog || dialog.Page != SearchPage.Dialog || OpenerOf(dialog) is not { } opener) continue;
+                var shown = _available.FirstOrDefault(a => ReferenceEquals(a.Entry, opener));
+                if (shown == null) continue;
+                string title = SearchLocator.LabelText(dialog.Label, null) ?? string.Empty;
+                if (title.Length == 0) continue;
+                object data = shown.Item ?? (object)shown.Pad ?? _pageOf(opener.Page)?.DataContext;
+                string where = WhereOf(opener, shown.Pad, shown.Section, data);
+                string openedBy = SearchLocator.LabelText(opener.Label, data);
+                if (!string.IsNullOrEmpty(openedBy)) where = string.IsNullOrEmpty(where) ? openedBy : where + Strings.Instance.Search_WhereSeparator + openedBy;
+                int score = SearchMatcher.Score(q, title, where, SearchLocator.EnglishText(dialog.Label));
+                if (score == 0) continue;
+                scored.Add(new SearchResult
+                {
+                    Title = title, Where = where, Group = SearchGroup.Dialogs, GroupLabel = GroupLabel(SearchGroup.Dialogs),
+                    Score = score - 1, Order = opener.Order, Target = SearchTarget.Entry, Entry = opener,
+                    Payload = shown.Item ?? shown.Label, Pad = shown.Pad, ReadValue = string.Empty,
+                });
+            }
+        }
+
+        /// <summary>The words an entry is matched by: what its line shows,
+        /// and its element's screen-reader name where that says more
+        /// (#600).</summary>
+        private static string WithName(SearchEntry entry, object data, string words)
+        {
+            string name = entry.Name == null || entry.Name.Equals(entry.Label) ? null : SearchLocator.LabelText(entry.Name, data);
+            return string.IsNullOrEmpty(name) || words.Contains(name, StringComparison.CurrentCultureIgnoreCase) ? words : words + " " + name;
         }
 
         private static int Weight(SearchEntry entry)
@@ -457,6 +515,9 @@ namespace PadForge.Search
             SearchGroup.Profiles => Strings.Instance.Profiles_Title,
             SearchGroup.Settings => Strings.Instance.Settings_Title,
             SearchGroup.Actions => Strings.Instance.Search_Group_Actions,
+            SearchGroup.Dialogs => Strings.Instance.Search_Group_Dialogs,
+            SearchGroup.Macros => Strings.Instance.Search_Group_Macros,
+            SearchGroup.Plugins => Strings.Instance.Extras_Plugins_Title,
             _ => Strings.Instance.Search_Group_Docs,
         };
 
@@ -544,6 +605,16 @@ namespace PadForge.Search
             if (_vm.Settings?.ProfileItems != null)
                 foreach (var profile in _vm.Settings.ProfileItems)
                     Add(profile.Name, SearchGroup.Profiles, SearchTarget.Profile, profile, 0, order++);
+
+            // The catalog's other live objects (#600): each controller's
+            // macros and each plugin.
+            foreach (var live in PadForge.Services.Catalog.LiveCatalog.Entries(_vm))
+            {
+                if (live.Kind == PadForge.Services.Catalog.LiveKind.Macro)
+                    Add(live.Name, SearchGroup.Macros, SearchTarget.Macro, live.Payload, 0, order++, live.Where);
+                else if (live.Kind == PadForge.Services.Catalog.LiveKind.Plugin)
+                    Add(live.Name, SearchGroup.Plugins, SearchTarget.Plugin, live.Payload, 0, order++, live.Where);
+            }
 
             scored.Add(new SearchResult
             {

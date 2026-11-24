@@ -165,6 +165,24 @@ namespace PadForge.Services.Automation
             };
         }
 
+        /// <summary>
+        /// A value a program reads, scrubbed by its element's reach class
+        /// (#600): the value of an element that is the user's alone (an
+        /// access code, the settings file's path, another program's
+        /// Activity) is not read at all, and null comes back. Every other
+        /// value goes through <see cref="Text"/>.
+        /// </summary>
+        internal static string ForReach(PadForge.Common.ReachClass reach, string text)
+            => reach is PadForge.Common.ReachClass.UsersOwn or PadForge.Common.ReachClass.Unset ? null : Text(text);
+
+        /// <summary>The word a program reads for a class.</summary>
+        internal static string ReachWord(PadForge.Common.ReachClass reach) => reach switch
+        {
+            PadForge.Common.ReachClass.Free => "free",
+            PadForge.Common.ReachClass.Asks => "asks",
+            _ => "yours-alone",
+        };
+
         /// <summary>Test seam: the next read makes its scrubber anew.</summary>
         internal static void ForgetForTest()
         {

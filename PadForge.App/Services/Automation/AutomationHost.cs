@@ -327,7 +327,8 @@ namespace PadForge.Services.Automation
         /// <summary>Writes the skill an assistant reads from disk into the
         /// folder given, which the user picked. Null in a build that has no
         /// skill to write, and then the page has no Save the Skill button.
-        /// Called on the interface's thread. A failure throws.</summary>
+        /// It waits for the install, so it is called off the interface's
+        /// thread. A failure throws.</summary>
         public Action<string> SaveSkill
         {
             get => _saveSkill;

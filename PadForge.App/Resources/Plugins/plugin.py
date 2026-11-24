@@ -31,7 +31,7 @@ pf.log("Declared Kit Pad as %s." % pad.id)
 start = time.monotonic()
 while not pf.closed:
     t = time.monotonic() - start
-    pad.send(a0=round(32768 + 32767 * math.cos(t * math.pi)),
-             a1=round(32768 + 32767 * math.sin(t * math.pi)),
-             b0=1 if t % 1.0 < 0.2 else 0)
+    pad.send(a0=round(100 * math.cos(t * math.pi), 1),
+             a1=round(100 * math.sin(t * math.pi), 1),
+             b0=t % 1.0 < 0.2)
     time.sleep(0.02)

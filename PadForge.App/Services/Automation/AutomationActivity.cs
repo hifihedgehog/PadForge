@@ -106,6 +106,10 @@ namespace PadForge.Services.Automation
         /// (#597): the argument is the tool's name and the detail what it
         /// named.</summary>
         Tool,
+
+        /// <summary>The pipe's <c>rest</c>: every control of a program's
+        /// device at rest (#600).</summary>
+        Rest,
     }
 
     /// <summary>
@@ -183,6 +187,7 @@ namespace PadForge.Services.Automation
                     AutomationAskKind.Value => string.Format(s.Automation_Asked_Value_Format, argument),
                     AutomationAskKind.Call => string.Format(s.Automation_Asked_Call_Format, argument),
                     AutomationAskKind.Tool => AssistantToolWords.Asked(Argument, Detail),
+                    AutomationAskKind.Rest => string.Format(s.Automation_Asked_Rest_Format, argument),
                     _ => string.Format(s.Automation_Asked_Unknown_Format, argument),
                 };
             }

@@ -17,8 +17,9 @@ namespace PadForge.Services.Automation
         IReadOnlyList<AutomationLibrary> All { get; }
 
         /// <summary>Writes the library of <paramref name="kind"/> to
-        /// <paramref name="path"/>, replacing a file that is there. A failure
-        /// throws.</summary>
+        /// <paramref name="path"/>, replacing a file that is there, with the
+        /// user's own rights. Waits for the install, so it is called off the
+        /// interface's thread. A failure throws.</summary>
         void Save(AutomationLibraryKind kind, string path);
     }
 }

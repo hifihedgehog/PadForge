@@ -14,9 +14,11 @@ Example:
     pf.on_button(pad, 0, lambda down: print("A", "down" if down else "up"))
     pf.run()
 
-Buttons, axes and hats use PadForge's own numbers and ranges: an axis runs
-0 to 65535 with a stick at rest on 32768, axes 0 to 23 are the axes and 24
-to 31 the sliders, and a hat is in hundredths of a degree or -1.
+Values are in plain units: a button is True or False, a stick runs from
+-100 to 100 with 0 at rest, a trigger or slider from 0 to 100, and a hat is
+in degrees clockwise from up, or -1 at rest. A hat's directions are Up,
+Right, Down and Left, two for a diagonal, as in "Up+Right". Axes 0 to 23
+are the axes and 24 to 31 the sliders.
 
 A plugin is a program PadForge starts itself (Extras, Plugins). It connects
 with connect_plugin(), which reads the one-time key and the pipe's name
@@ -389,15 +391,65 @@ class Device:
         return "Device(%s, %s, %r)" % (self.id, self.type, self.name)
 
 
+def directions(degrees):
+    """The directions a hat in degrees holds: the nearest of the eight
+    points, a diagonal holding two, "" at rest."""
+    if degrees < 0:
+        return ""
+    point = int(degrees / 45.0 + 0.5) % 8
+    return ("Up", "Up+Right", "Right", "Right+Down", "Down", "Down+Left", "Left", "Up+Left")[point]
+
+
+def plain(control, value):
+    """A value as the pipe takes it in plain units: a button True or False,
+    an axis a percent, a hat degrees or directions."""
+    kind = control[:1]
+    if kind == "b":
+        return "1" if value else "0"
+    if kind == "a" and isinstance(value, (int, float)):
+        return "%s%%" % _number(value)
+    if kind == "h":
+        if isinstance(value, (int, float)):
+            return "-1" if value < 0 else "%sdeg" % _number(value)
+        return value or "-1"
+    if isinstance(value, (tuple, list)):
+        return ",".join(str(x) for x in value)
+    if isinstance(value, bool):
+        return "1" if value else "0"
+    return value
+
+
+def _read(text):
+    """A number as PadForge wrote it: whole when it has no point."""
+    return float(text) if "." in text else int(text)
+
+
+def _number(value):
+    text = ("%.3f" % value).rstrip("0").rstrip(".")
+    return "0" if text in ("-0", "") else text
+
+
+def _rests(controls):
+    """Axes with a rest as a share of the travel, for the declaration."""
+    out = []
+    for c in controls:
+        if isinstance(c, dict) and "rest" in c:
+            c = dict(c, rest="%s%%" % _number(c["rest"]))
+        out.append(c)
+    return out
+
+
 class State:
-    """A device's whole state: buttons, axes 0 to 31 (24 to 31 the
-    sliders), hats, motion and battery."""
+    """A device's whole state in plain units: buttons, axes 0 to 31 (24 to
+    31 the sliders), hats in degrees, their directions, motion and
+    battery."""
 
     def __init__(self, pairs):
         raw = bytes.fromhex(pairs.get("b", "00"))
         self.buttons = [bool(raw[i // 8] & (1 << (i % 8))) for i in range(len(raw) * 8)]
-        self.axes = [int(v) for v in pairs.get("a", "").split(",") if v != ""]
-        self.hats = [int(v) for v in pairs.get("h", "").split(",") if v != ""]
+        self.axes = [_read(v) for v in pairs.get("a", "").split(",") if v != ""]
+        self.hats = [_read(v) for v in pairs.get("h", "").split(",") if v != ""]
+        self.hat_directions = [directions(h) for h in self.hats]
         self.gyro = tuple(float(v) for v in pairs.get("gyro", "0,0,0").split(","))
         self.accel = tuple(float(v) for v in pairs.get("accel", "0,0,0").split(","))
         battery = pairs.get("bat", "-1,0").split(",")
@@ -429,17 +481,19 @@ class Controller:
         self._pf._send_set(self.id, {"b%d" % b: 0 for b in buttons})
 
     def set(self, control=None, value=None, **controls):
-        """Stages values to go out together with send(): set("a0", 40000),
-        or set(a0=40000, a1=32768, b3=1). Names are b<i>, a<i>, h<i>, gyro,
-        accel, t<pad>.<finger>, tc<pad>, bat and charging."""
+        """Stages values to go out together with send(), in plain units:
+        set("a0", -50), or set(a0=-50, a1=0, b3=True, h0="Up+Right"). Names
+        are b<i>, a<i>, h<i>, gyro, accel, t<pad>.<finger>, tc<pad>, bat and
+        charging."""
         if control is not None:
             controls[control] = value
         for key, v in controls.items():
-            if isinstance(v, (tuple, list)):
-                v = ",".join(str(x) for x in v)
-            elif isinstance(v, bool):
-                v = 1 if v else 0
-            self._staged[key] = v
+            self._staged[key] = plain(key, v)
+
+    def rest(self):
+        """Every control at rest in one word."""
+        self._staged = {}
+        self._pf.request("rest " + self.id)
 
     def send(self, **controls):
         """Sends what set() staged, and these, as one change: a stick's two
@@ -497,9 +551,9 @@ class PadForge:
         self._dispatcher = threading.Thread(target=self._dispatch_loop, name="padforge-events", daemon=True)
         self._dispatcher.start()
         if token:
-            hello = "hello name=%s kind=plugin token=%s protocol=%d" % (quote(name), word(token), PROTOCOL)
+            hello = "hello name=%s kind=plugin token=%s protocol=%d units=plain" % (quote(name), word(token), PROTOCOL)
         else:
-            hello = "hello name=%s kind=script protocol=%d" % (quote(name), PROTOCOL)
+            hello = "hello name=%s kind=script protocol=%d units=plain" % (quote(name), PROTOCOL)
         if lease:
             hello += " lease=%d" % lease
         _, pairs, _ = self._ask(hello)
@@ -623,10 +677,10 @@ class PadForge:
                 cb(words[4] == "1")
         elif kind == "h" and len(words) >= 5:
             for cb in self._hats.get((words[2], int(words[3])), []):
-                cb(int(words[4]))
+                cb(_read(words[4]))
         elif kind == "a" and len(words) >= 5:
             for cb in self._axes.get((words[2], int(words[3])), []):
-                cb(int(words[4]))
+                cb(_read(words[4]))
         elif kind == "x" and len(words) >= 5:
             for cb in self._crossings.get((words[2], int(words[3])), []):
                 cb(words[4] == "1")
@@ -664,7 +718,8 @@ class PadForge:
             self.request("sub %s buttons" % did)
 
     def on_hat(self, device, hat, callback):
-        """callback(value) when a hat moves: hundredths of a degree, or -1."""
+        """callback(degrees) when a hat moves: degrees clockwise from up, or
+        -1. directions(degrees) gives its directions."""
         did = _id(device)
         first = not any(k[0] == did for k in self._hats)
         self._hats.setdefault((did, hat), []).append(callback)
@@ -674,13 +729,14 @@ class PadForge:
     def on_axis(self, device, axis, callback, above=None, hyst=None, hz=None):
         """With `above`, callback(True) when the axis reaches it and
         callback(False) when it falls back past above - hyst, worked out by
-        PadForge. Without it, callback(value) up to `hz` times a second."""
+        PadForge. above and hyst are plain: on_axis(pad, 0, fn, above=80) on
+        a stick. Without it, callback(value) up to `hz` times a second."""
         did = _id(device)
         if above is not None:
             self._crossings.setdefault((did, axis), []).append(callback)
-            line = "sub %s axis=%d above=%d" % (did, axis, above)
+            line = "sub %s axis=%d above=%s%%" % (did, axis, _number(above))
             if hyst is not None:
-                line += " hyst=%d" % hyst
+                line += " hyst=%s%%" % _number(hyst)
             self.request(line)
         else:
             first = not any(k[0] == did for k in self._axes)
@@ -747,18 +803,20 @@ class PadForge:
                        touchpads=(), battery=False, feedback=()):
         """Adds a controller of the script's own. `key` keeps its identity,
         and its mappings, across runs. buttons, axes, sliders and hats are
-        lists of names or of dicts with index, name and rest. feedback holds
-        any of rumble, trigrumble, light and player."""
-        shape = {"buttons": list(buttons), "axes": list(axes), "sliders": list(sliders), "hats": list(hats),
+        lists of names or of dicts with index, name and rest. A rest is where
+        the axis rests as a share of its travel, 0 to 100: 50 makes a stick.
+        An axis rests at 50 and a slider at 0 when it is left out. feedback
+        holds any of rumble, trigrumble, light and player."""
+        shape = {"buttons": list(buttons), "axes": _rests(axes), "sliders": _rests(sliders), "hats": list(hats),
                  "gyro": bool(gyro), "accel": bool(accel), "touchpads": list(touchpads),
                  "battery": bool(battery), "feedback": list(feedback)}
         pairs = self.request("declare key=%s name=%s %s" % (word(key), quote(name), json.dumps(shape)))
         return Controller(self, pairs["id"])
 
     def hold(self, device, **controls):
-        """Holds controls of any device at a value until released:
-        hold(pad, b3=1, a0=40000)."""
-        parts = ["%s=%s" % (k, v) for k, v in controls.items()]
+        """Holds controls of any device at a value until released, in plain
+        units: hold(pad, b3=True, a0=40, h0="Up")."""
+        parts = ["%s=%s" % (k, plain(k, v)) for k, v in controls.items()]
         self.request("own %s %s" % (_id(device), " ".join(parts)))
 
     def release(self, device=None, *controls):

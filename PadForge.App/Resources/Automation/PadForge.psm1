@@ -14,10 +14,12 @@ Example:
     Register-PadForgeButton -Device $pad -Button 0 -Action { param($down) "A down: $down" }
     Wait-PadForge
 
-Buttons, axes and hats use PadForge's own numbers and ranges: an axis runs 0
-to 65535 with a stick at rest on 32768, axes 0 to 23 are the axes and 24 to
-31 the sliders, and a hat is in hundredths of a degree or -1. Event actions
-run while the script waits in Wait-PadForge or Wait-Event.
+Values are in plain units: a button is $true or $false, a stick runs from
+-100 to 100 with 0 at rest, a trigger or slider from 0 to 100, and a hat is
+in degrees clockwise from up, or -1 at rest. A hat's directions are Up,
+Right, Down and Left, two for a diagonal, as in 'Up+Right'. Axes 0 to 23
+are the axes and 24 to 31 the sliders. Event actions run while the script
+waits in Wait-PadForge or Wait-Event.
 
 A plugin is a program PadForge starts itself (Extras, Plugins). It connects
 with Connect-PadForgePlugin, which reads the one-time key and the pipe's
@@ -433,7 +435,7 @@ function Connect-PadForge {
         Invoke-PadForgeEvent $EventArgs.Line
     } | Out-Null
     $kind = if ($Token) { 'kind=plugin token=' + (ConvertTo-PadForgeQuoted $Token) } else { 'kind=script' }
-    $hello = Invoke-PadForgeRequest ("hello name=" + (ConvertTo-PadForgeQuoted $Name) + " $kind protocol=$($script:Protocol) lease=$Lease")
+    $hello = Invoke-PadForgeRequest ("hello name=" + (ConvertTo-PadForgeQuoted $Name) + " $kind protocol=$($script:Protocol) units=plain lease=$Lease")
     $script:Level = $hello.Pairs['level']
     $script:Connection.Session = [int]$hello.Pairs['session']
     $script:Connection.Version = $hello.Pairs['padforge']
@@ -485,8 +487,8 @@ function Invoke-PadForgeEvent([string]$Line) {
     $key = $null; $value = $null
     switch ($w[1]) {
         'b' { $key = "b|$($w[2])|$($w[3])"; $value = ($w[4] -eq '1') }
-        'h' { $key = "h|$($w[2])|$($w[3])"; $value = [int]$w[4] }
-        'a' { $key = "a|$($w[2])|$($w[3])"; $value = [int]$w[4] }
+        'h' { $key = "h|$($w[2])|$($w[3])"; $value = ConvertFrom-PadForgeNumber $w[4] }
+        'a' { $key = "a|$($w[2])|$($w[3])"; $value = ConvertFrom-PadForgeNumber $w[4] }
         'x' { $key = "x|$($w[2])|$($w[3])"; $value = ($w[4] -eq '1') }
         'dev' { $key = 'dev'; $value = @($w[2], ($w[3] -eq 'online')) }
         'profile' { $key = 'profile'; $value = $(if ($w.Length -gt 2) { $w[2] } else { 'default' }) }
@@ -503,6 +505,54 @@ function Invoke-PadForgeEvent([string]$Line) {
         foreach ($action in $script:Callbacks[$key]) {
             if ($value -is [array]) { & $action @value } else { & $action $value }
         }
+    }
+}
+
+function ConvertFrom-PadForgeNumber([string]$Text) {
+    [double]::Parse($Text, [Globalization.CultureInfo]::InvariantCulture)
+}
+
+function ConvertTo-PadForgeNumber([double]$Value) {
+    $text = $Value.ToString('0.###', [Globalization.CultureInfo]::InvariantCulture)
+    if ($text -eq '-0') { '0' } else { $text }
+}
+
+function Get-PadForgeDirections {
+    <# The directions a hat in degrees holds: the nearest of the eight
+       points, a diagonal holding two, '' at rest. #>
+    param([Parameter(Mandatory, Position = 0)][double]$Degrees)
+    if ($Degrees -lt 0) { return '' }
+    $point = [int][Math]::Floor($Degrees / 45 + 0.5) % 8
+    @('Up', 'Up+Right', 'Right', 'Right+Down', 'Down', 'Down+Left', 'Left', 'Up+Left')[$point]
+}
+
+function ConvertTo-PadForgePlain([string]$Control, $Value) {
+    # A value as the pipe takes it in plain units: a button true or false,
+    # an axis a percent, a hat degrees or directions.
+    switch ($Control.Substring(0, 1)) {
+        'b' { if ($Value) { return '1' } else { return '0' } }
+        'a' { if ($Value -is [ValueType]) { return (ConvertTo-PadForgeNumber $Value) + '%' } }
+        'h' {
+            if ($Value -is [ValueType]) { if ($Value -lt 0) { return '-1' } else { return (ConvertTo-PadForgeNumber $Value) + 'deg' } }
+            if ([string]::IsNullOrEmpty($Value)) { return '-1' }
+            return [string]$Value
+        }
+    }
+    if ($Value -is [array]) { return ($Value -join ',') }
+    if ($Value -is [bool]) { if ($Value) { return '1' } else { return '0' } }
+    [string]$Value
+}
+
+function ConvertTo-PadForgeRests([object[]]$Controls) {
+    # Axes with a rest as a share of the travel, for the declaration.
+    foreach ($c in $Controls) {
+        if ($c -is [System.Collections.IDictionary] -and $c.Contains('rest')) {
+            $copy = [ordered]@{}
+            foreach ($k in $c.Keys) { $copy[$k] = $c[$k] }
+            $copy['rest'] = (ConvertTo-PadForgeNumber $c['rest']) + '%'
+            $copy
+        }
+        else { $c }
     }
 }
 
@@ -529,8 +579,8 @@ function Register-PadForgeButton {
 }
 
 function Register-PadForgeHat {
-    <# Runs -Action { param($value) } when a hat moves: hundredths of a
-       degree, or -1. #>
+    <# Runs -Action { param($degrees) } when a hat moves: degrees clockwise
+       from up, or -1. Get-PadForgeDirections gives its directions. #>
     param([Parameter(Mandatory)]$Device, [Parameter(Mandatory)][int]$Hat, [Parameter(Mandatory)][scriptblock]$Action)
     $id = Get-PadForgeId $Device
     Add-PadForgeCallback "h|$id|$Hat" $Action
@@ -543,14 +593,15 @@ function Register-PadForgeHat {
 function Register-PadForgeAxis {
     <# With -Above, runs -Action { param($above) } when the axis reaches it
        and when it falls back past Above - Hysteresis, worked out by PadForge.
-       Without it, runs -Action { param($value) } up to -Hz times a second. #>
+       -Above and -Hysteresis are plain: -Above 80 on a stick. Without it,
+       runs -Action { param($value) } up to -Hz times a second. #>
     param([Parameter(Mandatory)]$Device, [Parameter(Mandatory)][int]$Axis, [Parameter(Mandatory)][scriptblock]$Action,
-        [int]$Above = -1, [int]$Hysteresis = -1, [int]$Hz = 100)
+        [Nullable[double]]$Above = $null, [Nullable[double]]$Hysteresis = $null, [int]$Hz = 100)
     $id = Get-PadForgeId $Device
-    if ($Above -ge 0) {
+    if ($null -ne $Above) {
         Add-PadForgeCallback "x|$id|$Axis" $Action
-        $line = "sub $id axis=$Axis above=$Above"
-        if ($Hysteresis -ge 0) { $line += " hyst=$Hysteresis" }
+        $line = "sub $id axis=$Axis above=$(ConvertTo-PadForgeNumber $Above)%"
+        if ($null -ne $Hysteresis) { $line += " hyst=$(ConvertTo-PadForgeNumber $Hysteresis)%" }
         Invoke-PadForgeRequest $line | Out-Null
     }
     else {
@@ -621,8 +672,8 @@ function Get-PadForgeCaps {
 }
 
 function Read-PadForgeDevice {
-    <# A device's whole state: Buttons (bools), Axes 0 to 31, Hats, Gyro,
-       Accel and Battery. #>
+    <# A device's whole state in plain units: Buttons (bools), Axes 0 to 31,
+       Hats in degrees, HatDirections, Gyro, Accel and Battery. #>
     param([Parameter(Mandatory)]$Device)
     $p = (Invoke-PadForgeRequest ("read " + (Get-PadForgeId $Device))).Pairs
     $hex = $p['b']
@@ -634,8 +685,9 @@ function Read-PadForgeDevice {
     $battery = $p['bat'].Split(',')
     [pscustomobject]@{
         Buttons = $buttons
-        Axes = @($p['a'].Split(',') | ForEach-Object { [int]$_ })
-        Hats = @($p['h'].Split(',') | ForEach-Object { [int]$_ })
+        Axes = @($p['a'].Split(',') | ForEach-Object { ConvertFrom-PadForgeNumber $_ })
+        Hats = @($p['h'].Split(',') | ForEach-Object { ConvertFrom-PadForgeNumber $_ })
+        HatDirections = @($p['h'].Split(',') | ForEach-Object { Get-PadForgeDirections (ConvertFrom-PadForgeNumber $_) })
         Gyro = @($p['gyro'].Split(',') | ForEach-Object { [double]::Parse($_, [Globalization.CultureInfo]::InvariantCulture) })
         Accel = @($p['accel'].Split(',') | ForEach-Object { [double]::Parse($_, [Globalization.CultureInfo]::InvariantCulture) })
         Battery = [int]$battery[0]
@@ -654,14 +706,16 @@ function Get-PadForgeOutputs {
 function New-PadForgeController {
     <# Adds a controller of the script's own. -Key keeps its identity, and
        its mappings, across runs. -Buttons, -Axes, -Sliders and -Hats take
-       names, or hashtables with index, name and rest. -Feedback takes any of
-       rumble, trigrumble, light and player. The controller has the methods
-       Press, Release, Set and Send. #>
+       names, or hashtables with index, name and rest. A rest is where the
+       axis rests as a share of its travel, 0 to 100: 50 makes a stick. An
+       axis rests at 50 and a slider at 0 when it is left out. -Feedback takes
+       any of rumble, trigrumble, light and player. The controller has the
+       methods Press, Release, Set, Send and Rest. #>
     param([Parameter(Mandatory)][string]$Key, [Parameter(Mandatory)][string]$Name,
         [object[]]$Buttons = @(), [object[]]$Axes = @(), [object[]]$Sliders = @(), [object[]]$Hats = @(),
         [switch]$Gyro, [switch]$Accel, [int[]]$Touchpads = @(), [switch]$Battery, [string[]]$Feedback = @())
     $shape = [ordered]@{
-        buttons = @($Buttons); axes = @($Axes); sliders = @($Sliders); hats = @($Hats)
+        buttons = @($Buttons); axes = @(ConvertTo-PadForgeRests $Axes); sliders = @(ConvertTo-PadForgeRests $Sliders); hats = @($Hats)
         gyro = [bool]$Gyro; accel = [bool]$Accel; touchpads = @($Touchpads); battery = [bool]$Battery; feedback = @($Feedback)
     }
     $json = ConvertTo-Json $shape -Compress -Depth 4
@@ -669,16 +723,17 @@ function New-PadForgeController {
     $controller = [pscustomobject]@{ Id = $answer.Pairs['id']; Staged = [ordered]@{} }
     $controller | Add-Member -MemberType ScriptMethod -Name Press -Value { param([int]$b) Send-PadForgeControl $this @{ "b$b" = 1 } }
     $controller | Add-Member -MemberType ScriptMethod -Name Release -Value { param([int]$b) Send-PadForgeControl $this @{ "b$b" = 0 } }
-    $controller | Add-Member -MemberType ScriptMethod -Name Set -Value { param([string]$control, $value) $this.Staged[$control] = $value }
+    $controller | Add-Member -MemberType ScriptMethod -Name Set -Value { param([string]$control, $value) $this.Staged[$control] = ConvertTo-PadForgePlain $control $value }
+    $controller | Add-Member -MemberType ScriptMethod -Name Rest -Value { $this.Staged = [ordered]@{}; Invoke-PadForgeRequest ("rest " + $this.Id) | Out-Null }
     $controller | Add-Member -MemberType ScriptMethod -Name Send -Value { $staged = $this.Staged; $this.Staged = [ordered]@{}; if ($staged.Count -gt 0) { Send-PadForgeControl $this $staged } }
     $controller
 }
 
 function Send-PadForgeControl {
     <# Sets several controls of a controller of the script's own as one
-       change: @{ a0 = 40000; a1 = 32768; b3 = 1 }. #>
+       change, in plain units: @{ a0 = -50; a1 = 0; b3 = $true; h0 = 'Up' }. #>
     param([Parameter(Mandatory, Position = 0)]$Controller, [Parameter(Mandatory, Position = 1)][System.Collections.IDictionary]$Controls)
-    $parts = foreach ($k in $Controls.Keys) { "$k=$($Controls[$k])" }
+    $parts = foreach ($k in $Controls.Keys) { "$k=$(ConvertTo-PadForgePlain $k $Controls[$k])" }
     (Get-PadForgeConnection).Handle.Send(("s " + (Get-PadForgeId $Controller) + " " + ($parts -join ' ')))
 }
 
@@ -702,10 +757,10 @@ function Register-PadForgeLight {
 }
 
 function Set-PadForgeHold {
-    <# Holds controls of any device at a value until released:
-       Set-PadForgeHold $pad @{ b3 = 1; a0 = 40000 }. #>
+    <# Holds controls of any device at a value until released, in plain
+       units: Set-PadForgeHold $pad @{ b3 = $true; a0 = 40; h0 = 'Up' }. #>
     param([Parameter(Mandatory, Position = 0)]$Device, [Parameter(Mandatory, Position = 1)][System.Collections.IDictionary]$Controls)
-    $parts = foreach ($k in $Controls.Keys) { "$k=$($Controls[$k])" }
+    $parts = foreach ($k in $Controls.Keys) { "$k=$(ConvertTo-PadForgePlain $k $Controls[$k])" }
     Invoke-PadForgeRequest ("own " + (Get-PadForgeId $Device) + " " + ($parts -join ' ')) | Out-Null
 }
 
@@ -747,4 +802,4 @@ Export-ModuleMember -Function Connect-PadForge, Connect-PadForgePlugin, Write-Pa
     New-PadForgeController, Send-PadForgeControl, Remove-PadForgeController, Set-PadForgeHold, Clear-PadForgeHold,
     Set-PadForgeValue, Switch-PadForgeProfile, Reset-PadForgeProfile, Start-PadForgeEngine, Stop-PadForgeEngine,
     Enable-PadForgeController, Disable-PadForgeController, Show-PadForge, Hide-PadForge, Save-PadForgeSnapshot,
-    Get-PadForgeState, Invoke-PadForgeTool, Invoke-PadForgeEvent
+    Get-PadForgeState, Invoke-PadForgeTool, Invoke-PadForgeEvent, Get-PadForgeDirections

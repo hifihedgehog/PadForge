@@ -121,5 +121,19 @@ namespace PadForge.Services.Automation
         internal static string ChangesDrivers() => Strings.Instance.Automation_Ask_Drivers;
 
         internal static string ChangesUseOnly() => Strings.Instance.Automation_Ask_UseOnly;
+
+        /// <summary>The line the request card shows for why an element of
+        /// class Asks asks (#600).</summary>
+        internal static string Reason(PadForge.Common.ReachReason why) => why switch
+        {
+            PadForge.Common.ReachReason.Network => ListensOnNetwork(),
+            PadForge.Common.ReachReason.Drivers => ChangesDrivers(),
+            PadForge.Common.ReachReason.UseOnly => ChangesUseOnly(),
+            PadForge.Common.ReachReason.RunsProgram => Strings.Instance.Automation_Ask_RunsProgram,
+            PadForge.Common.ReachReason.OpensPlace => Strings.Instance.Automation_Ask_OpensPlace,
+            PadForge.Common.ReachReason.SendsInput => Strings.Instance.Automation_Ask_SendsInput,
+            PadForge.Common.ReachReason.ImportsProfile => Strings.Instance.Automation_Ask_ImportsProfile,
+            _ => Strings.Instance.Automation_Ask_Always,
+        };
     }
 }

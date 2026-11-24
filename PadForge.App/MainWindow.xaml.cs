@@ -7968,22 +7968,25 @@ namespace PadForge
                 Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint,
             };
 
-            var showItem = new System.Windows.Controls.MenuItem
+            // One list for the menu and the catalog's entries (#600).
+            foreach (var item in PadForge.Services.Catalog.TrayMenu.Items)
             {
-                Header = Strings.Instance.Main_ShowPadForge,
-                FontWeight = FontWeights.SemiBold,
-            };
-            showItem.Click += (s, e) => RestoreFromTray();
-            menu.Items.Add(showItem);
-
-            menu.Items.Add(new System.Windows.Controls.Separator());
-
-            var exitItem = new System.Windows.Controls.MenuItem
-            {
-                Header = Strings.Instance.Tray_Exit,
-            };
-            exitItem.Click += (s, e) => ExitFromTray();
-            menu.Items.Add(exitItem);
+                if (item.SeparatorBefore) menu.Items.Add(new System.Windows.Controls.Separator());
+                var menuItem = new System.Windows.Controls.MenuItem
+                {
+                    Header = Strings.Get(item.StringKey),
+                    FontWeight = item.Bold ? FontWeights.SemiBold : FontWeights.Normal,
+                };
+                System.Windows.Automation.AutomationProperties.SetAutomationId(menuItem, "Tray_" + item.Key);
+                PadForge.Common.Reach.SetClass(menuItem, item.Reach);
+                menuItem.Click += item.Key switch
+                {
+                    "Show" => (s, e) => RestoreFromTray(),
+                    "Exit" => (s, e) => ExitFromTray(),
+                    _ => throw new InvalidOperationException("The tray menu has no work for " + item.Key + "."),
+                };
+                menu.Items.Add(menuItem);
+            }
 
             menu.IsOpen = true;
         }

@@ -396,5 +396,26 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Common.ConfigImport.DirectInputKeys.OffLimitsForTest = true;
     }
 
+    /// <summary>No folder of the bench's own user is named for an install
+    /// (#600): Documents, the profile and AppData come from a test's own
+    /// temporary folder or not at all, so no install writes into the real
+    /// assistant settings, skill folders, libraries or Python's user
+    /// site.</summary>
+    internal static class UserFoldersOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.Install.UserFolders.OffLimitsForTest = true;
+    }
+
+    /// <summary>An install starts no program (#600): no assistant's add
+    /// command, no Python asked for its user site, no Python found in the
+    /// registry and no command found on the PATH without a test's own
+    /// seam.</summary>
+    internal static class UserInstallOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.Install.UserInstall.OffLimitsForTest = true;
+    }
+
 #pragma warning restore CA2255
 }

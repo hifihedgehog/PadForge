@@ -1,4 +1,4 @@
-<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.KeepDriverDialog"
+<views:DialogWindow xmlns:common="clr-namespace:PadForge.Common" common:Reach.Class="Asks" common:Reach.Why="Drivers" AutomationProperties.IsDialog="True" x:Class="PadForge.Views.KeepDriverDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"

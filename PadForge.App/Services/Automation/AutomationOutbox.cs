@@ -15,9 +15,25 @@ namespace PadForge.Services.Automation
     /// queued for the next.</summary>
     internal sealed class AxisStreamSlots
     {
-        public AxisStreamSlots(string deviceId) => DeviceId = deviceId;
+        public AxisStreamSlots(string deviceId, int[] rests = null)
+        {
+            DeviceId = deviceId;
+            Rests = rests ?? DefaultRests();
+        }
 
         public readonly string DeviceId;
+
+        /// <summary>Each axis's rest, which a plain value is read against
+        /// (#600).</summary>
+        public readonly int[] Rests;
+
+        internal static int[] DefaultRests()
+        {
+            var rests = new int[Engine.ProgramAxis.End];
+            for (int i = 0; i < rests.Length; i++) rests[i] = Engine.PlainUnits.DefaultRest(i);
+            return rests;
+        }
+
         public readonly int[] Value = new int[Engine.ProgramAxis.End];
         public readonly bool[] Waiting = new bool[Engine.ProgramAxis.End];
     }
@@ -106,6 +122,11 @@ namespace PadForge.Services.Automation
         /// must belong to. Set once by hello.</summary>
         public IntPtr WakeWindow { get; set; }
         public AutomationClientProcess Process { get; set; }
+
+        /// <summary>The session asked for plain units in its hello
+        /// (<c>units=plain</c>, #600): axes are written as -100 to 100 or 0
+        /// to 100 and hats in degrees. Set once, before any event.</summary>
+        public bool Plain { get; set; }
 
         /// <summary>Whether the queue passed its cap.</summary>
         public bool CutOff => _cutOff;
@@ -271,7 +292,10 @@ namespace PadForge.Services.Automation
                     text.Append("e b ").Append(item.Device).Append(' ').Append(item.Index).Append(' ').Append(item.Value).Append('\n');
                     break;
                 case Kind.Hat:
-                    text.Append("e h ").Append(item.Device).Append(' ').Append(item.Index).Append(' ').Append(item.Value).Append('\n');
+                    text.Append("e h ").Append(item.Device).Append(' ').Append(item.Index).Append(' ');
+                    if (Plain) text.Append(Engine.PlainUnits.Format(Engine.PlainUnits.HatToPlain(item.Value)));
+                    else text.Append(item.Value);
+                    text.Append('\n');
                     break;
                 case Kind.Crossing:
                     text.Append("e x ").Append(item.Device).Append(' ').Append(item.Index).Append(' ').Append(item.Value).Append('\n');
@@ -284,7 +308,10 @@ namespace PadForge.Services.Automation
                         value = slots.Value[item.Index];
                         slots.Waiting[item.Index] = false;
                     }
-                    text.Append("e a ").Append(slots.DeviceId).Append(' ').Append(item.Index).Append(' ').Append(value).Append('\n');
+                    text.Append("e a ").Append(slots.DeviceId).Append(' ').Append(item.Index).Append(' ');
+                    if (Plain) text.Append(Engine.PlainUnits.Format(Engine.PlainUnits.AxisToPlain(value, slots.Rests[item.Index])));
+                    else text.Append(value);
+                    text.Append('\n');
                     break;
             }
         }

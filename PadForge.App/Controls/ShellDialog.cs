@@ -22,7 +22,16 @@ namespace PadForge.Controls
         private const string FramePartName = "PART_Frame";
 
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
-            nameof(IsOpen), typeof(bool), typeof(ShellDialog), new PropertyMetadata(false));
+            nameof(IsOpen), typeof(bool), typeof(ShellDialog), new PropertyMetadata(false, OnIsOpenChanged));
+
+        /// <summary>An open in-window dialog is in the catalog's registry
+        /// of what is open (#600), as a window is.</summary>
+        private static void OnIsOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dialog = (ShellDialog)d;
+            if ((bool)e.NewValue) PadForge.Services.Catalog.DialogRegistry.Register(dialog);
+            else PadForge.Services.Catalog.DialogRegistry.Unregister(dialog);
+        }
 
         public static readonly DependencyProperty FrameMaxWidthProperty = DependencyProperty.Register(
             nameof(FrameMaxWidth), typeof(double), typeof(ShellDialog), new PropertyMetadata(760.0));

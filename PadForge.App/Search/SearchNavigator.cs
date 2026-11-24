@@ -73,6 +73,23 @@ namespace PadForge.Search
                     _selectNav("Profiles");
                     ShowProfile(result.Payload as ProfileListItem);
                     return;
+                case SearchTarget.Macro:
+                {
+                    // A controller's macro (#600): its page, Macros & Menus,
+                    // with the macro picked.
+                    if (result.Payload is not ValueTuple<int, MacroItem> macro) return;
+                    _openSlot(macro.Item1);
+                    if (_pageOf(SearchPage.Pad) is PadPage pad && pad.DataContext is PadViewModel padVm && padVm.PadIndex == macro.Item1)
+                    {
+                        pad.OpenSection(PadViewModel.MacrosSection);
+                        padVm.SelectedMacro = macro.Item2;
+                    }
+                    return;
+                }
+                case SearchTarget.Plugin:
+                    _selectNav("Extras");
+                    if (_pageOf(SearchPage.Extras) is ExtrasPage plugins) plugins.Show("Plugins");
+                    return;
                 case SearchTarget.Docs:
                     try
                     {
@@ -137,6 +154,7 @@ namespace PadForge.Search
             var entry = result.Entry;
             DependencyObject label;
             if (entry.RowOptions) label = RowOption(entry, page);
+            else if (entry.Kind == SearchKind.MenuItem) label = MenuOwner(page, entry);
             else if (entry.ItemsPath != null) label = _service.Locator.FindInItem(entry, result.Payload, _service.Index);
             else
             {
@@ -154,6 +172,21 @@ namespace PadForge.Search
                 SearchLandingAdorner.Ring(target);
                 if (takeFocus) FocusIn(target, entry);
             }));
+        }
+
+        /// <summary>The button whose context menu holds a menu item's
+        /// entry (#600): the menu's own element is not in the page until it
+        /// opens, so the landing rings what opens it.</summary>
+        private static DependencyObject MenuOwner(FrameworkElement page, SearchEntry entry)
+        {
+            string header = SearchLocator.LabelText(entry.Label, null);
+            foreach (var element in SearchLocator.LogicalDescendants(page).OfType<FrameworkElement>())
+            {
+                if (element.ContextMenu is not { } menu || !element.IsVisible) continue;
+                foreach (var item in menu.Items.OfType<MenuItem>())
+                    if (string.Equals(item.Header as string, header, StringComparison.CurrentCulture)) return element;
+            }
+            return null;
         }
 
         /// <summary>Opens every More row and fold card between an element

@@ -4,11 +4,11 @@ namespace PadForge.Search
 {
     /// <summary>The groups of Search's results, in the order a tie between
     /// their best scores falls (#574). Documentation always comes last.</summary>
-    public enum SearchGroup { Pages, Controllers, Devices, Profiles, Settings, Actions, Docs }
+    public enum SearchGroup { Pages, Controllers, Devices, Profiles, Settings, Actions, Docs, Dialogs, Macros, Plugins }
 
     /// <summary>What a result opens when it is not an entry of a page's
     /// markup.</summary>
-    internal enum SearchTarget { Entry, Page, Controller, AddController, Device, Profile, Docs }
+    internal enum SearchTarget { Entry, Page, Controller, AddController, Device, Profile, Docs, Macro, Plugin }
 
     /// <summary>One line of Search's results (#574): the title, the qualifier
     /// that follows it in the quieter color, where it is, and its value.</summary>

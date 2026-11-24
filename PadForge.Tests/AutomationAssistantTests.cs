@@ -550,9 +550,11 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("level", tool.Name);
             }
             // The catalog refuses the settings of the Automation and Plugins
-            // pages without a question (AutomationAssistantCatalogTests holds
-            // it on the real pages).
-            Assert.Equal(new[] { "Automation", "Plugins" }, AssistantCatalog.UsersOwnExtras);
+            // pages without a question, by their reach class in the markup
+            // (#600; ReachClassTests pins the list).
+            var index = PadForge.Search.SearchIndexBuilder.Build(PadForge.Search.SearchSources.Load());
+            Assert.All(index.Where(e => e.ExtraKey is "Automation" or "Plugins" && e.Kind != PadForge.Search.SearchKind.Extra),
+                e => Assert.Equal(PadForge.Common.ReachClass.UsersOwn, AssistantCatalog.ReachOf(e)));
             await Task.CompletedTask;
         }
 

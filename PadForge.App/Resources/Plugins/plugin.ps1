@@ -25,10 +25,10 @@ Write-PadForgeLog "Declared Kit Pad as $($pad.Id)."
 $clock = [System.Diagnostics.Stopwatch]::StartNew()
 while ($true) {
     $t = $clock.Elapsed.TotalSeconds
-    $fire = if (($t % 1.0) -lt 0.2) { 1 } else { 0 }
+    $fire = ($t % 1.0) -lt 0.2
     Send-PadForgeControl $pad @{
-        a0 = [int][Math]::Round(32768 + 32767 * [Math]::Cos($t * [Math]::PI))
-        a1 = [int][Math]::Round(32768 + 32767 * [Math]::Sin($t * [Math]::PI))
+        a0 = [Math]::Round(100 * [Math]::Cos($t * [Math]::PI), 1)
+        a1 = [Math]::Round(100 * [Math]::Sin($t * [Math]::PI), 1)
         b0 = $fire
     }
     # Event actions run while the script sleeps.

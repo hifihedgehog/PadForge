@@ -60,12 +60,13 @@ namespace PadForge.Tests
             {
                 ["device"] = id,
                 ["buttons"] = new Dictionary<string, object> { ["1"] = true },
-                ["axes"] = new Dictionary<string, object> { ["0"] = 50000 },
+                ["axes"] = new Dictionary<string, object> { ["0"] = 50 },
             });
             Assert.False(set.IsError == true, AssistantRig.Text(set));
             var state = entry.Device.PeekState();
             Assert.True(state.Buttons[1]);
-            Assert.Equal(50000, state.Axis[0]);
+            // Plain units (#600): 50 on a stick is three quarters of its travel.
+            Assert.Equal(PadForge.Engine.PlainUnits.AxisToRaw(50, 32768), state.Axis[0]);
 
             // Another connection does not drive it.
             var other = await rig.ConnectAsync();
@@ -89,7 +90,7 @@ namespace PadForge.Tests
             var pad = AddPad();
             string id = AutomationDevices.IdOf(pad.InstanceGuid);
             var client = await rig.ConnectAsync();
-            var held = await client.CallToolAsync("hold_control", new Dictionary<string, object> { ["device"] = id, ["control"] = "b3", ["value"] = 1 });
+            var held = await client.CallToolAsync("hold_control", new Dictionary<string, object> { ["device"] = id, ["control"] = "b3", ["value"] = true });
             Assert.False(held.IsError == true, AssistantRig.Text(held));
             var session = rig.Host.Sessions.Snapshot().Single(s => s.Kind == AutomationClientKind.Assistant);
             Assert.Equal(1, rig.Host.Sessions.HoldsOf(session));

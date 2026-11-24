@@ -393,6 +393,19 @@ namespace PadForge.Services.Automation
                 LeaseMs = ms;
             }
 
+            // Plain units (#600): what the session reads comes as the
+            // libraries and the assistant tools speak it.
+            string units = request.Get("units");
+            if (units != null)
+            {
+                if (units is not ("plain" or "raw"))
+                {
+                    Answer(request.Tag, AutomationLine.Error("bad-argument", "units is plain or raw"));
+                    return;
+                }
+                Outbox.Plain = units == "plain";
+            }
+
             string hwnd = request.Get("hwnd");
             if (hwnd != null)
             {
@@ -490,7 +503,8 @@ namespace PadForge.Services.Automation
             => "ok padforge=" + BuildIdentity.VersionText(BuildIdentity.Version)
                + " protocol=" + AutomationLine.Protocol
                + " level=" + (_hub.Host.IsOn ? AutomationLevels.Word(_hub.Host.Level) : "off")
-               + " session=" + Number;
+               + " session=" + Number
+               + (Outbox.Plain ? " units=plain" : string.Empty);
 
         /// <summary>The session as a later lane's delegates are told of
         /// it.</summary>

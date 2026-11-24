@@ -62,7 +62,13 @@ namespace PadForge.Services.Automation
         {
             _host.McpSession = ServeAsync;
             _host.Call = CallAsync;
-            _host.SaveSkill = folder => AssistantSkill.Save(folder);
+            // With the user's own rights, through --install (#600). Waits for
+            // it, so the page calls it off the interface's thread.
+            _host.SaveSkill = folder =>
+            {
+                var (code, error) = Install.UserInstall.AsUserAsync(new Install.InstallRequest(Install.InstallWhat.Skill, folder)).GetAwaiter().GetResult();
+                if (code != Install.UserInstall.Done) throw new InvalidOperationException(error ?? "The install ended with code " + code + ".");
+            };
             if (_calls.Undo != null)
             {
                 var undo = _calls.Undo;

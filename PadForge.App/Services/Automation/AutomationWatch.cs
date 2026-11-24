@@ -111,11 +111,11 @@ namespace PadForge.Services.Automation
             private readonly long _period;
             private long _due;
 
-            public Axes(AutomationSession session, Guid device, string id, int hz) : base(session, device, id)
+            public Axes(AutomationSession session, Guid device, string id, int hz, int[] rests = null) : base(session, device, id)
             {
                 Hz = hz;
                 _period = Stopwatch.Frequency / hz;
-                Slots = new AxisStreamSlots(id);
+                Slots = new AxisStreamSlots(id, rests);
             }
 
             public int Hz { get; }

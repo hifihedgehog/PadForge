@@ -228,8 +228,18 @@ namespace PadForge.Services.Automation
         /// click and then <c>:x;y;down</c> for each finger, or <c>-</c> for
         /// none, and <c>bat=</c> the battery and whether it charges.
         /// </summary>
-        internal static string StateLine(CustomInputState s, int buttonCount)
+        /// <summary>The state line with axes and hats in plain units
+        /// (#600): each axis read against its rest in
+        /// <paramref name="rests"/>, hats in degrees or -1.</summary>
+        internal static string StateLine(CustomInputState s, int buttonCount, int[] rests) => StateLine(s, buttonCount, rests, plain: true);
+
+        internal static string StateLine(CustomInputState s, int buttonCount) => StateLine(s, buttonCount, null, plain: false);
+
+        private static string StateLine(CustomInputState s, int buttonCount, int[] rests, bool plain)
         {
+            string Axis(int raw, int index)
+                => plain ? PlainUnits.Format(PlainUnits.AxisToPlain(raw, rests?[index] ?? PlainUnits.DefaultRest(index)))
+                    : raw.ToString(System.Globalization.CultureInfo.InvariantCulture);
             var sb = new StringBuilder(512);
             sb.Append("ok b=");
             int bytes = Math.Max(1, (Math.Clamp(buttonCount, 0, CustomInputState.MaxButtons) + 7) / 8);
@@ -244,16 +254,17 @@ namespace PadForge.Services.Automation
                 sb.Append(v.ToString("x2", System.Globalization.CultureInfo.InvariantCulture));
             }
             sb.Append(" a=");
-            for (int i = 0; i < CustomInputState.MaxAxis; i++) sb.Append(s.Axis[i]).Append(',');
+            for (int i = 0; i < CustomInputState.MaxAxis; i++) sb.Append(Axis(s.Axis[i], i)).Append(',');
             for (int i = 0; i < CustomInputState.MaxSliders; i++)
             {
-                sb.Append(s.Sliders[i]);
+                sb.Append(Axis(s.Sliders[i], ProgramAxis.FirstSlider + i));
                 if (i < CustomInputState.MaxSliders - 1) sb.Append(',');
             }
             sb.Append(" h=");
             for (int i = 0; i < CustomInputState.MaxPovs; i++)
             {
-                sb.Append(s.Povs[i]);
+                if (plain) sb.Append(PlainUnits.Format(PlainUnits.HatToPlain(s.Povs[i])));
+                else sb.Append(s.Povs[i]);
                 if (i < CustomInputState.MaxPovs - 1) sb.Append(',');
             }
             sb.Append(" gyro=").Append(AutomationLine.Number(s.Gyro[0])).Append(',')

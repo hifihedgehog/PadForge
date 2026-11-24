@@ -88,6 +88,10 @@ namespace PadForge.Services
 
             public Func<string> VersionLine = () => "PadForge " + BuildIdentity.Display;
             public Func<int> ServeAssistant = AssistantMirror.Run;
+
+            /// <summary>Runs <c>--install</c> (#600) and gives its exit
+            /// code. Its words go where the run's answers go.</summary>
+            public Func<Install.InstallRequest, Action<string>, Action<string>, int> Install = PadForge.Services.Install.UserInstall.RunAsTheUser;
         }
 
         /// <summary>
@@ -118,6 +122,13 @@ namespace PadForge.Services
             if (request.Version)
             {
                 seams.Tell(seams.VersionLine());
+                return true;
+            }
+            if (request.Install != null)
+            {
+                // An install is the user's own and needs no running copy:
+                // it writes the user's folders with the user's rights.
+                exitCode = seams.Install(request.Install, seams.Say, seams.SayError);
                 return true;
             }
             if (request.Mcp)

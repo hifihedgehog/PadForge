@@ -222,8 +222,11 @@ namespace PadForge.Services.Automation
         [Description("The control's name on the device.")]
         public OutsideText Name { get; set; }
 
-        [Description("The value an axis rests at, when PadForge knows it.")]
-        public int? Rest { get; set; }
+        [Description("Where an axis rests, when PadForge knows it: 0 for a stick, a trigger's own rest from 0 to 100.")]
+        public double? Rest { get; set; }
+
+        [Description("For an axis: stick (-100 to 100) or trigger (0 to 100).")]
+        public string Range { get; set; }
 
         [Description("The input as set_mappings takes it: Button 3, Axis 1, Slider 0, POV 0 Up.")]
         public string Input { get; set; }
@@ -234,14 +237,17 @@ namespace PadForge.Services.Automation
         [Description("The indexes of the buttons held down.")]
         public List<int> ButtonsDown { get; set; } = new();
 
-        [Description("Every axis, 0 to 65535, a stick at rest on 32768.")]
-        public List<int> Axes { get; set; } = new();
+        [Description("Every axis: a stick -100 to 100 with 0 at rest, a trigger 0 to 100.")]
+        public List<double> Axes { get; set; } = new();
 
-        [Description("Every slider, 0 to 65535.")]
-        public List<int> Sliders { get; set; } = new();
+        [Description("Every slider, 0 to 100.")]
+        public List<double> Sliders { get; set; } = new();
 
-        [Description("Every hat, in hundredths of a degree, or -1 at rest.")]
-        public List<int> Hats { get; set; } = new();
+        [Description("Every hat in degrees clockwise from up, or -1 at rest.")]
+        public List<double> Hats { get; set; } = new();
+
+        [Description("Every hat's directions: Up, Right, Down, Left, two for a diagonal, empty at rest.")]
+        public List<string> HatDirections { get; set; } = new();
 
         [Description("The battery in percent, or -1 when the device has none or says nothing.")]
         public int Battery { get; set; }
@@ -295,8 +301,8 @@ namespace PadForge.Services.Automation
         [Description("The input as set_mappings takes it.")]
         public string Input { get; set; }
 
-        [Description("The value it moved to.")]
-        public int Value { get; set; }
+        [Description("The value it moved to: 1 for a button, -100 to 100 for a stick, 0 to 100 for a trigger or slider, degrees for a hat.")]
+        public double Value { get; set; }
 
         public string Message { get; set; }
     }
@@ -391,8 +397,8 @@ namespace PadForge.Services.Automation
     {
         public string Name { get; set; }
 
-        [Description("Where it rests, 0 to 65535. 32768 for an axis and 0 for a slider when left out.")]
-        public int? Rest { get; set; }
+        [Description("Where it rests, as a share of its travel, 0 to 100. 50 makes a stick, read -100 to 100. Left out, an axis rests at 50 and a slider at 0.")]
+        public double? Rest { get; set; }
     }
 
     internal enum AssistantFeedback { Rumble, TriggerRumble, Light, Player }
@@ -444,11 +450,17 @@ namespace PadForge.Services.Automation
         [Description("Buttons by index, true for down.")]
         public Dictionary<string, bool> Buttons { get; set; }
 
-        [Description("Axes and sliders by index, 0 to 65535. Sliders are 24 to 31.")]
-        public Dictionary<string, int> Axes { get; set; }
+        [Description("Axes and sliders by index: a stick -100 to 100 with 0 at rest, a trigger or slider 0 to 100. Sliders are 24 to 31.")]
+        public Dictionary<string, double> Axes { get; set; }
 
-        [Description("Hats by index, in hundredths of a degree, or -1 at rest.")]
-        public Dictionary<string, int> Hats { get; set; }
+        [Description("Hats by index, in degrees clockwise from up, or -1 at rest.")]
+        public Dictionary<string, double> Hats { get; set; }
+
+        [Description("Hats by index as directions: Up, Right, Down, Left, or two joined by +, such as Up+Right. Empty for rest.")]
+        public Dictionary<string, string> HatDirections { get; set; }
+
+        [Description("True puts every control at rest first, before the others apply.")]
+        public bool Rest { get; set; }
     }
 
     internal sealed class DeviceOnlyArgs
@@ -465,8 +477,8 @@ namespace PadForge.Services.Automation
         [JsonRequired, Description("The control: b and a button's index (b3), a and an axis's (a0, sliders a24 to a31), h and a hat's (h0).")]
         public string Control { get; set; }
 
-        [Description("The value to hold it at: 1 or 0 for a button, 0 to 65535 for an axis, hundredths of a degree or -1 for a hat. Leave it out with release.")]
-        public int? Value { get; set; }
+        [Description("The value to hold it at: true or false for a button, -100 to 100 for a stick or 0 to 100 for a trigger or slider, degrees or -1 for a hat, or a hat's directions such as \"Up+Right\". Leave it out with release.")]
+        public JsonElement? Value { get; set; }
 
         [Description("True to let go of the control, which then reads the device again.")]
         public bool Release { get; set; }
@@ -1102,7 +1114,11 @@ namespace PadForge.Services.Automation
                             Kind = slider ? "slider" : "axis",
                             Index = own,
                             Name = OutsideText.Of(r.Get("name")),
-                            Rest = int.TryParse(r.Get("rest"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int rest) ? rest : null,
+                            Rest = int.TryParse(r.Get("rest"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int rest)
+                                ? Plain(PlainUnits.AxisToPlain(rest, rest)) : null,
+                            Range = PlainUnits.IsCentered(int.TryParse(r.Get("rest"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int known)
+                                    ? known : PlainUnits.DefaultRest(index))
+                                ? "stick" : "trigger",
                             Input = (slider ? "Slider " : "Axis ") + own.ToString(CultureInfo.InvariantCulture),
                         });
                         break;
@@ -1140,19 +1156,29 @@ namespace PadForge.Services.Automation
                 }
             }
             if (a.Live && ud.IsOnline && AutomationDevices.CopyState(ud) is { } state)
-                detail.State = StateOf(state, Math.Max(ud.CapButtonCount, CustomInputState.MaxButtons));
+                detail.State = StateOf(state, Math.Max(ud.CapButtonCount, CustomInputState.MaxButtons), AutomationSessions.RestsOf(ud, null));
             return detail;
         }
 
-        private static DeviceState StateOf(CustomInputState s, int buttons)
+        /// <summary>A device's state in plain units (#600), each axis read
+        /// against its rest.</summary>
+        internal static DeviceState StateOf(CustomInputState s, int buttons, int[] rests)
         {
             var state = new DeviceState { Battery = s.BatteryPercent, Charging = s.BatteryCharging };
             for (int i = 0; i < Math.Min(buttons, s.Buttons.Length); i++) if (s.Buttons[i]) state.ButtonsDown.Add(i);
-            state.Axes.AddRange(s.Axis);
-            state.Sliders.AddRange(s.Sliders);
-            state.Hats.AddRange(s.Povs);
+            for (int i = 0; i < s.Axis.Length; i++) state.Axes.Add(Plain(PlainUnits.AxisToPlain(s.Axis[i], rests[i])));
+            for (int i = 0; i < s.Sliders.Length; i++)
+                state.Sliders.Add(Plain(PlainUnits.AxisToPlain(s.Sliders[i], rests[ProgramAxis.FirstSlider + i])));
+            foreach (int hat in s.Povs)
+            {
+                state.Hats.Add(PlainUnits.HatToPlain(hat));
+                state.HatDirections.Add(PlainUnits.DirectionsText(PlainUnits.HatToDirections(hat)));
+            }
             return state;
         }
+
+        /// <summary>A plain value at the precision a program reads it.</summary>
+        internal static double Plain(double value) => Math.Round(value, 3, MidpointRounding.AwayFromZero) + 0.0;
 
         /// <summary>The waiting step of wait_for_input: how often the
         /// devices are compared, and how far an axis moves before it
@@ -1240,9 +1266,19 @@ namespace PadForge.Services.Automation
                 Index = index,
                 Name = OutsideText.Of(name),
                 Input = input,
-                Value = value,
+                Value = kind switch
+                {
+                    "button" => 1,
+                    "hat" => PlainUnits.HatToPlain(value),
+                    "slider" => Plain(PlainUnits.AxisToPlain(value, RestOfAxis(ud, ProgramAxis.FirstSlider + index))),
+                    _ => Plain(PlainUnits.AxisToPlain(value, RestOfAxis(ud, index))),
+                },
             };
         }
+
+        /// <summary>An axis's rest on a device, or the default rest where
+        /// PadForge names none.</summary>
+        private static int RestOfAxis(UserDevice ud, int index) => AutomationSessions.RestsOf(ud, null)[index];
 
         /// <summary>The direction a hat's angle is nearest, as a mapping row
         /// names it.</summary>
@@ -1348,24 +1384,41 @@ namespace PadForge.Services.Automation
         {
             var d = new Dictionary<string, object>();
             if (axis?.Name != null) d["name"] = axis.Name;
-            if (axis?.Rest != null) d["rest"] = axis.Rest.Value;
+            if (axis?.Rest != null)
+            {
+                double share = axis.Rest.Value;
+                if (double.IsNaN(share) || share < 0 || share > 100)
+                    throw new AssistantRefusal("bad-argument", "An axis's rest is 0 to 100, its share of the travel.");
+                d["rest"] = PlainUnits.AxisToRaw(share, 0);
+            }
             return d;
         }
 
         private static async Task<DoneResult> SetDeviceInputs(AssistantInvocation inv, SetDeviceInputsArgs a, CancellationToken ct)
         {
             inv.Detail = a.Device;
+            // Plain units on the wire (#600): a percent for an axis, which
+            // the pipe reads against the axis's rest, and degrees or
+            // directions for a hat.
             var body = new StringBuilder("s ").Append(a.Device);
-            void Add(string prefix, string key, int value)
+            if (a.Rest) body.Append(" rest");
+            void Add(string prefix, string key, string value)
             {
                 if (!int.TryParse(key, NumberStyles.None, CultureInfo.InvariantCulture, out int index))
                     throw new AssistantRefusal("bad-argument", "A control's index is a whole number, as in \"3\".");
-                body.Append(' ').Append(prefix).Append(index.ToString(CultureInfo.InvariantCulture)).Append('=')
-                    .Append(value.ToString(CultureInfo.InvariantCulture));
+                body.Append(' ').Append(prefix).Append(index.ToString(CultureInfo.InvariantCulture)).Append('=').Append(value);
             }
-            if (a.Buttons != null) foreach (var (k, v) in a.Buttons) Add("b", k, v ? 1 : 0);
-            if (a.Axes != null) foreach (var (k, v) in a.Axes) Add("a", k, v);
-            if (a.Hats != null) foreach (var (k, v) in a.Hats) Add("h", k, v);
+            if (a.Buttons != null) foreach (var (k, v) in a.Buttons) Add("b", k, v ? "1" : "0");
+            if (a.Axes != null) foreach (var (k, v) in a.Axes) Add("a", k, PlainUnits.Format(v) + "%");
+            if (a.Hats != null) foreach (var (k, v) in a.Hats) Add("h", k, v < 0 ? "-1" : PlainUnits.Format(v) + "deg");
+            if (a.HatDirections != null)
+                foreach (var (k, v) in a.HatDirections)
+                {
+                    if (string.IsNullOrWhiteSpace(v)) { Add("h", k, "-1"); continue; }
+                    if (!PlainUnits.TryParseDirections(v, out var directions))
+                        throw new AssistantRefusal("bad-argument", "A hat's directions are Up, Right, Down and Left, two joined by +.");
+                    Add("h", k, PlainUnits.DirectionsText(directions));
+                }
             await Line(inv, body.ToString()).ConfigureAwait(false);
             return new DoneResult { Message = "Set." };
         }
@@ -1389,8 +1442,32 @@ namespace PadForge.Services.Automation
                 return new DoneResult { Message = "Released. The control reads the device again." };
             }
             if (a.Value == null) throw new AssistantRefusal("bad-argument", "Give the value to hold the control at, or release.");
-            await Line(inv, "own " + a.Device + " " + control + "=" + a.Value.Value.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            await Line(inv, "own " + a.Device + " " + control + "=" + HoldValue(control[0], a.Value.Value)).ConfigureAwait(false);
             return new DoneResult { Message = "Held until it is released or this connection ends." };
+        }
+
+        /// <summary>A hold's value in plain units, as the pipe's own line
+        /// takes it (#600).</summary>
+        internal static string HoldValue(char kind, JsonElement value)
+        {
+            switch (kind)
+            {
+                case 'b':
+                    if (value.ValueKind is JsonValueKind.True or JsonValueKind.False) return value.ValueKind == JsonValueKind.True ? "1" : "0";
+                    throw new AssistantRefusal("bad-argument", "A button is held at true or false.");
+                case 'a':
+                    if (value.ValueKind == JsonValueKind.Number) return PlainUnits.Format(value.GetDouble()) + "%";
+                    throw new AssistantRefusal("bad-argument", "An axis is held at a number: -100 to 100 for a stick, 0 to 100 for a trigger or slider.");
+                default:
+                    if (value.ValueKind == JsonValueKind.Number)
+                    {
+                        double degrees = value.GetDouble();
+                        return degrees < 0 ? "-1" : PlainUnits.Format(degrees) + "deg";
+                    }
+                    if (value.ValueKind == JsonValueKind.String && PlainUnits.TryParseDirections(value.GetString(), out var directions))
+                        return PlainUnits.DirectionsText(directions);
+                    throw new AssistantRefusal("bad-argument", "A hat is held at degrees, -1, or directions such as \"Up+Right\".");
+            }
         }
 
         // ─────────────────────────────────────────────

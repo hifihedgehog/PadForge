@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ പ്രവർത്തനക്ഷമം</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ പ്രവർത്തനരഹിതം</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ഒന്നോ അതിലധികമോ കൺട്രോളറുകൾ ഓഫ്ലൈൻ ആണ്</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ഡിസ്കണക്റ്റ് ചെയ്തു</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ഡിസ്കണക്റ്റ് ചെയ്തു. {1}-ൽ ഇനി ഉപകരണമില്ല.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തു</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തു, ബാറ്ററി {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} ഉപകരണങ്ങൾ ഡിസ്കണക്റ്റ് ചെയ്തു</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} ഉപകരണങ്ങൾ കണക്റ്റ് ചെയ്തു</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ആവർത്തിച്ച് ഡിസ്കണക്റ്റ് ആകുന്നു</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (പരമാവധി {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (പരമാവധി {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (പരമാവധി {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>മറ്റൊരു PC യിലെ വെർച്വൽ കൺട്രോളറുകൾ നിയന്ത്രിക്കുക.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>കൺട്രോളർ മോഷൻ എമുലേറ്ററുകളിലേക്ക് അയയ്ക്കുക.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ഗെയിം മോഡുകളിൽ നിന്ന് ട്രിഗർ, ലൈറ്റ് ഇഫക്റ്റുകൾ സ്വീകരിക്കുക.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>കളിക്കുമ്പോൾ മെനുകൾ, ലെയറുകൾ, പ്രൊഫൈൽ മാറ്റങ്ങൾ എന്നിവ കാണിക്കുക.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>കളിക്കുമ്പോൾ മെനുകൾ, ലെയറുകൾ, പ്രൊഫൈൽ മാറ്റങ്ങൾ, ഉപകരണ കണക്ഷനുകൾ എന്നിവ കാണിക്കുക.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ടച്ച്പാഡ് ഗെയിമുകൾക്കുള്ള സ്ക്രീനിലെ ടച്ച് പ്രതലം.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>മറ്റ് വിൻഡോകൾക്ക് മുകളിൽ ഒരു ചിത്രം, ടൈമർ അല്ലെങ്കിൽ ക്ലോക്ക്.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ഒരു ഗെയിമിന് മുകളിൽ നിങ്ങളുടെ സ്വന്തം ക്രോസ്ഹെയർ.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ഒരു മെനു തുറന്നിരിക്കുമ്പോൾ അതിന്റെ റിംഗ്, ഗ്രിഡ് അല്ലെങ്കിൽ ബാർ.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓണാകുമ്പോൾ ആ ലെയർ നിശ്ചയിക്കുന്ന സമയത്തേക്ക് ആ ലെയറിന്റെ പേര്.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>പ്രൊഫൈൽ മാറുമ്പോൾ പ്രൊഫൈലിന്റെ പേര്.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>മാപ്പ് ചെയ്ത ഒരു ഉപകരണം ഡിസ്കണക്റ്റ് ആകുമ്പോൾ അതിന്റെ പേര്.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>മാപ്പ് ചെയ്ത ഒരു ഉപകരണം കണക്റ്റ് ആകുമ്പോൾ അതിന്റെ പേര്.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>വിലാസം പകർത്തുക</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>സ്ക്രീനിൽ സ്ഥാപിക്കുക</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ഒരു ഫോൺ കണക്റ്റ് ചെയ്യുക</value></data>
@@ -4316,6 +4325,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>നിങ്ങൾ കളിക്കുമ്പോൾ PadForge കാണിക്കുന്ന ഓൺ-സ്ക്രീൻ സൂചകങ്ങൾ. ഒന്ന് ഓഫാക്കുന്നത് പെരുമാറ്റം മാറ്റില്ല, അത് കാണിക്കുമോ എന്നത് മാത്രമേ മാറൂ.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ഷിഫ്റ്റ് ലെയർ ഫ്ലൈഔട്ട്</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>പ്രൊഫൈൽ സ്വിച്ച് ഓവർലേ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ഉപകരണം ഡിസ്കണക്റ്റ് ആയ അറിയിപ്പ്</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ഉപകരണം കണക്റ്റ് ആയ അറിയിപ്പ്</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>റേഡിയൽ അല്ലെങ്കിൽ ടച്ച് മെനു ഇടപഴകിയിരിക്കുമ്പോൾ ഓൺ-സ്ക്രീൻ റിംഗോ ഗ്രിഡോ കാണിക്കുക. ഓവർലേ ഓഫാണെങ്കിലും മെനുകൾ പ്രവർത്തിക്കും.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ഓൺ-സ്ക്രീൻ മെനു സൃഷ്ടിച്ചു ({0} ബൈൻഡ് ചെയ്ത സെല്ലുകൾ)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ഓൺ-സ്ക്രീൻ മെനു സൃഷ്ടിച്ചു ({0} ബൈൻഡ് ചെയ്ത സെൽ)</value></data>

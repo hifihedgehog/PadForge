@@ -1608,6 +1608,8 @@
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(hin qindoofne)</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Oovarleeyii baafataa</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Oovarleeyii jijjiirraa piroofaayilii</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Beeksisa meeshaan wal qunnamtii kute</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Beeksisa meeshaan wal qunname</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Bahiinsa</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Furtuuwwan fi maawusii</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noota fi to'annoowwan</value></data>
@@ -2024,6 +2026,8 @@
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Maddoota</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Geengoo, kaarqaa ykn baarii meenuu yeroo inni banamee jiru.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Maqaa piroofaayilii yeroo piroofaayiliin jijjiiramu.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Maqaa meeshaa walqabsiifamee yeroo inni wal qunnamtii kutu.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Maqaa meeshaa walqabsiifamee yeroo inni wal qunnamu.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Teessoo garagalchi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Bilbilli wal qunnamu as fi fuula Meeshaalee irratti mul'ata, achitti kontirolaa tokkoof ramadda.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Wal qunnamaa</value></data>
@@ -2166,6 +2170,13 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge faayila sana argachuu hin danda'u.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge suuraa Steam tapha kanaa dubbisuu hin danda'u.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Erguu itti fufi</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} wal qunnamtii kuteera</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} wal qunnamtii kuteera. {1} meeshaan itti hafe hin jiru.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} wal qunnameera</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} wal qunnameera, baatirii {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamtii kutaniiru</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamaniiru</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} irra deddeebiin wal qunnamtii kutaa jira</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sagantaan biraa maqaa paayippii {0} qabateera. Sagantaa sana cufi.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows paayippii {0} dideera, kanaaf sagantaaleen wal qunnamuu hin danda'an.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gara piroofaayilii {0} jijjiiri</value></data>

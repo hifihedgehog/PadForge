@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>وحدات التحكم الظاهرية مفعلة</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>وحدات التحكم الظاهرية معطلة</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>وحدة تحكم واحدة أو أكثر غير متصلة</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>انقطع اتصال {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>انقطع اتصال {0}. لم يبق لدى {1} أي جهاز.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>اتصل {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>اتصل {0}، البطارية {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>انقطع اتصال {0} من الأجهزة</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>اتصل {0} من الأجهزة</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>يتكرر انقطاع اتصال {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (الحد الأقصى {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (الحد الأقصى {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (الحد الأقصى {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>تحكّم في وحدات التحكم الظاهرية على كمبيوتر آخر.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>أرسل حركة وحدة التحكم إلى المحاكيات.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>استقبل مؤثرات الأزندة والإضاءة من تعديلات الألعاب.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>اعرض القوائم والطبقات وتبديل ملفات التعريف أثناء اللعب.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>اعرض القوائم والطبقات وتبديل ملفات التعريف واتصال الأجهزة أثناء اللعب.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمس على الشاشة لألعاب لوحة اللمس في PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>صورة أو مؤقت أو ساعة فوق النوافذ الأخرى.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>مؤشر التصويب الخاص بك فوق اللعبة.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقة القائمة أو شبكتها أو شريطها ما دامت مفتوحة.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة عند تفعيل طبقة تحويل، للمدة التي تحددها تلك الطبقة.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>اسم ملف التعريف عند تغيّره.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>اسم جهاز معين عند انقطاع اتصاله.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>اسم جهاز معين عند اتصاله.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>نسخ العنوان</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>الموضع على الشاشة</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ربط هاتف</value></data>
@@ -4352,6 +4361,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>مؤشرات على الشاشة يعرضها PadForge أثناء اللعب. إيقاف أحدها لا يغيّر السلوك أبدا، بل يحدد فقط هل يتم عرضه.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>النافذة المنبثقة لطبقة Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>تراكب تبديل ملف التعريف</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ملاحظة انقطاع اتصال الجهاز</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ملاحظة اتصال الجهاز</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>إظهار الحلقة أو الشبكة على الشاشة ما دامت قائمة شعاعية أو قائمة لمس مفعلة. القوائم تظل تنطلق والتراكب متوقف.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>تم إنشاء قائمة على الشاشة (الخلايا المرتبطة: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>تم إنشاء قائمة على الشاشة (الخلايا المرتبطة: {0})</value></data>

@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ვირტუალური კონტროლერები ჩართულია</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ვირტუალური კონტროლერები გამორთულია</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ერთი ან მეტი კონტროლერი ოფლაინ რეჟიმშია</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} გაითიშა</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} გაითიშა. {1}: მოწყობილობა აღარ დარჩა.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} დაკავშირდა</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} დაკავშირდა, ბატარეა {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} მოწყობილობა გაითიშა</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} მოწყობილობა დაკავშირდა</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} განმეორებით ითიშება</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (მაქს. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (მაქს. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (მაქს. {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>მართეთ ვირტუალური კონტროლერები სხვა კომპიუტერზე.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>გადაეცით კონტროლერის მოძრაობა ემულატორებს.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>მიიღეთ ტრიგერისა და განათების ეფექტები თამაშის მოდებიდან.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>აჩვენეთ მენიუები, შრეები და პროფილის გადართვები თამაშისას.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>აჩვენეთ მენიუები, შრეები, პროფილის გადართვები და მოწყობილობების დაკავშირებები თამაშისას.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის თამაშებისთვის.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>სურათი, ტაიმერი ან საათი სხვა ფანჯრების თავზე.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>თქვენი საკუთარი სამიზნე თამაშის თავზე.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, როცა Shift-შრე ირთვება, იმ დროის განმავლობაში, რომელსაც ეს შრე განსაზღვრავს.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>პროფილის სახელი, როცა პროფილი იცვლება.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>მიბმული მოწყობილობის სახელი, როცა ის გაითიშება.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>მიბმული მოწყობილობის სახელი, როცა ის დაკავშირდება.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>მისამართის კოპირება</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ადგილი ეკრანზე</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ტელეფონის დაკავშირება</value></data>
@@ -4349,6 +4358,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ეკრანული ინდიკატორები, რომლებსაც PadForge თამაშისას აჩვენებს. ერთის გამორთვა ქცევას არასდროს ცვლის, მხოლოდ იმას, გამოჩნდება თუ არა.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-შრის ამომხტარი პანელი</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>პროფილის გადართვის გადაფარვა</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>მოწყობილობის გათიშვის შენიშვნა</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>მოწყობილობის დაკავშირების შენიშვნა</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>აჩვენებს ეკრანულ რგოლს ან ბადეს, სანამ რადიალური ან სენსორული მენიუ ჩართულია. გადაფარვის გამორთვისასაც მენიუები მუშაობს.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ეკრანული მენიუ შეიქმნა ({0} მიბმული უჯრა)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ეკრანული მენიუ შეიქმნა ({0} მიბმული უჯრა)</value></data>

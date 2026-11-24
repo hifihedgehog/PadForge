@@ -2031,6 +2031,15 @@
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Ifoto: ishusho y'isomero rya Steam ya {0}.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ntishobora gusoma ifoto ya Steam y'uyu mukino.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Komeza kohereza</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} cyavanyweho</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} cyavanyweho. {1} nta gikoresho igisigaranye.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} cyahujwe</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} cyahujwe, bateri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ibikoresho {0} byavanyweho</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ibikoresho {0} byahujwe</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} gikomeza kuvaho</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Izina ry'igikoresho gihujwe iyo kivuyeho.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Izina ry'igikoresho gihujwe iyo gihujwe.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ububiko bw'amakuru bwa kontorola</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Vugurura nonaha imanura ububiko bw'amakuru bwa kontorola bw'umuryango (SDL_GameControllerDB) kuri GitHub kandi ikabika, muri dosiye y'igenamiterere, ihuzwa iyi verisiyo ya PadForge idafite. Ihuzwa rishya rikoreshwa gusa kuri kontorola nta kindi gisoma nka gamepad, idahujwe kandi itari muri Force Raw Joystick Mode. Gusubiza uko byari biri bikuraho ihuzwa ryose ryamanuwe.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Vugurura nonaha</value></data>

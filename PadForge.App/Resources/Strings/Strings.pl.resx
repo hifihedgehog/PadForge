@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Wirtualne kontrolery włączone</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Wirtualne kontrolery wyłączone</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Co najmniej jeden kontroler jest offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Rozłączono: {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Rozłączono: {0}. {1} nie ma już urządzenia.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Połączono: {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Połączono: {0}, bateria {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Rozłączono urządzenia: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Połączono urządzenia: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ciągle się rozłącza</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Steruj wirtualnymi kontrolerami na innym komputerze.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Wysyłaj ruch kontrolera do emulatorów.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Przyjmuj efekty spustów i świateł z modów do gier.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pokazuj menu, warstwy i zmiany profilu podczas gry.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pokazuj menu, warstwy, zmiany profilu i połączenia urządzeń podczas gry.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekranowa powierzchnia dotykowa do gier z panelem dotykowym PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obraz, minutnik lub zegar nad innymi oknami.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Własny celownik nad grą.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Pierścień, siatka lub pasek menu, gdy jest otwarte.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nazwa warstwy, gdy włącza się warstwa Shift, przez czas ustawiony dla tej warstwy.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nazwa profilu, gdy profil się zmienia.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nazwa zmapowanego urządzenia, gdy zostaje rozłączone.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nazwa zmapowanego urządzenia, gdy zostaje połączone.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiuj adres</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Miejsce na ekranie</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Połącz telefon</value></data>
@@ -4614,6 +4623,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Wskaźniki ekranowe, które PadForge pokazuje podczas gry. Wyłączenie któregoś nigdy nie zmienia działania, a jedynie to, czy jest ono pokazywane.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Wysuwane okienko warstwy Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Nakładka przełączania profilu</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Powiadomienie o rozłączeniu urządzenia</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Powiadomienie o połączeniu urządzenia</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Pokazuje ekranowy pierścień lub siatkę, gdy aktywne jest menu promieniowe lub dotykowe. Menu działają także przy wyłączonej nakładce.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>utworzono menu ekranowe (powiązane komórki: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>utworzono menu ekranowe (powiązane komórki: {0})</value></data>

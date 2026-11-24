@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरू सक्षम</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरहरू असक्षम</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>एक वा बढी कन्ट्रोलर अफलाइन</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} को जडान विच्छेद भयो</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} को जडान विच्छेद भयो। {1} मा कुनै यन्त्र बाँकी छैन।</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} जडान भयो</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} जडान भयो, ब्याट्री {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} वटा यन्त्रको जडान विच्छेद भयो</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} वटा यन्त्र जडान भए</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} को जडान बारम्बार विच्छेद भइरहेको छ</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (अधिकतम {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (अधिकतम {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (अधिकतम {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>अर्को PC का भर्चुअल कन्ट्रोलरहरू चलाउनुहोस्।</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>कन्ट्रोलरको मोसन इमुलेटरहरूलाई पठाउनुहोस्।</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>गेम मोडहरूबाट ट्रिगर र लाइट इफेक्टहरू लिनुहोस्।</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेल्दा मेनु, लेयर र प्रोफाइल परिवर्तन देखाउनुहोस्।</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेल्दा मेनु, लेयर, प्रोफाइल परिवर्तन र यन्त्र जडानहरू देखाउनुहोस्।</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचप्याड गेमहरूका लागि स्क्रिनमा देखिने टच सतह।</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>अन्य झ्यालहरूमाथि चित्र, टाइमर वा घडी।</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>खेलमाथि तपाईंको आफ्नै क्रसहेयर।</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>मेनु खुला रहँदा त्यसको रिङ, ग्रिड वा बार।</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ्ट लेयर सक्रिय हुँदा, त्यो लेयरले तोकेको समयसम्म लेयरको नाम।</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>प्रोफाइल बदलिँदा प्रोफाइलको नाम।</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>म्याप गरिएको यन्त्रको जडान विच्छेद हुँदा त्यसको नाम।</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>म्याप गरिएको यन्त्र जडान हुँदा त्यसको नाम।</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ठेगाना कपी गर्नुहोस्</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>स्क्रिनमा स्थान</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>फोन जोड्नुहोस्</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>खेल्दा PadForge ले देखाउने स्क्रिन सूचकहरू। कुनै एउटा बन्द गर्दा व्यवहार कहिल्यै बदलिँदैन, त्यो देखिने मात्र बन्द हुन्छ।</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>सिफ्ट लेयर फ्लाइआउट</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>प्रोफाइल परिवर्तन ओभरले</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>यन्त्र विच्छेद सूचना</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>यन्त्र जडान सूचना</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>रेडियल वा टच मेनु सक्रिय हुँदा स्क्रिनमा रिङ वा ग्रिड देखाउनुहोस्। ओभरले बन्द हुँदा पनि मेनुहरू चल्छन्।</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>स्क्रिन मेनु बनाइयो ({0} बाइन्ड गरिएका सेल)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>स्क्रिन मेनु बनाइयो ({0} बाइन्ड गरिएको सेल)</value></data>

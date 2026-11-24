@@ -167,6 +167,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Kontrolnan virtual aktivá</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Kontrolnan virtual desaktivá</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Un òf mas kontrol ta offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} a deskonektá</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} a deskonektá. {1} no tin ningun aparato mas.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} a konektá</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} a konektá, bateria {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} aparato a deskonektá</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} aparato a konektá</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ta sigui deskonektá</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máksimo {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máksimo {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (máksimo {0})</value></data>
@@ -2237,6 +2244,8 @@
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlaynan</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikadónan riba pantaya ku PadForge ta mustra miéntras bo ta hunga. Desaktivá un di nan nunka ta kambia e funshonamentu, solamente si e ta wòrdu mustrá.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay di kambio di perfil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nota di aparato deskonektá</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nota di aparato konektá</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Aparato di output, kanal, fortalesa, un tono pa kada motor</value></data>
   <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Modo di kanal</value></data>
   <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (tur kanal)</value></data>
@@ -2690,7 +2699,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Manehá e kontrolnan virtual riba otro PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Manda movementu di kontrol na emuladónan.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tuma efektonan di trigger i di lus for di mods di wega.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mustra menu, kapanan i kambionan di perfil miéntras bo ta hunga.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mustra menu, kapanan, kambionan di perfil i konekshon di aparato miéntras bo ta hunga.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Un superfisie di toke riba pantaya pa wega di touchpad di PlayStation.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Pòrt, HTTP simpel, kódigo di akseso</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekonekshon outomátiko, pòrt, identidat di pareamentu, konektá pa medio di adrès</value></data>
@@ -2755,6 +2764,8 @@
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kiko ta mustra</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>E rondo, rooster òf bara di un menu miéntras e ta habrí.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>E nòmber di e perfil ora e perfil kambia.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>E nòmber di un aparato asigná ora e deskonektá.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>E nòmber di un aparato asigná ora e konektá.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiá adrès</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konektá un telefòn</value></data>
   <data name="Extras_WebController_Step1" xml:space="preserve"><value>Pone e telefòn riba e mesun red ku e PC aki.</value></data>

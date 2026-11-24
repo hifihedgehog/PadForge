@@ -118,8 +118,15 @@ namespace PadForge.Tests
             // The 43 reset buttons of the cards, and the two beside the
             // switches of Head Tracking and Overlays, on the pages of the ten
             // extras that were cards. The two added since (#585) have their own.
-            Assert.Equal(45, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier"))
+            // The two device notes (#597) brought the Overlays page two more.
+            Assert.Equal(47, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier"))
                 .Sum(k => Count(PageOf(k), "<reset:SettingResetButton ")));
+            Assert.Equal(6, Count(PageOf("Overlays"), "<reset:SettingResetButton "));
+            foreach (string id in new[]
+            {
+                "Reset_DashboardViewModel_EnableDeviceDisconnectedNote_2032", "Reset_DashboardViewModel_EnableDeviceConnectedNote_2035",
+            })
+                Assert.Equal(1, Count(page, "AutomationProperties.AutomationId=\"" + id + "\""));
             Assert.Equal(0, Count(dashboard, "<reset:SettingResetButton "));
             // The format editor's button kept its handler, which moved with it.
             Assert.Contains("Click=\"GameTelemetryFormatsButton_Click\"", page);

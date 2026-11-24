@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuális kontrollerek engedélyezve</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuális kontrollerek letiltva</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Legalább egy kontroller offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} lecsatlakozott</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} lecsatlakozott. Nincs több eszköze: {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} csatlakozott</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} csatlakozott, az akkumulátor töltöttsége {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} eszköz lecsatlakozott</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} eszköz csatlakozott</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} folyton lecsatlakozik</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (legfeljebb {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (legfeljebb {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (legfeljebb {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Egy másik számítógép virtuális kontrollereinek vezérlése.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Kontrollermozgás küldése emulátoroknak.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ravasz- és fényeffektek fogadása játékmodoktól.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menük, rétegek és profilváltások megjelenítése játék közben.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menük, rétegek, profilváltások és eszközcsatlakozások megjelenítése játék közben.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Képernyőn megjelenő érintőfelület a PlayStation-érintőpados játékokhoz.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kép, időzítő vagy óra a többi ablak felett.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Saját célkereszt a játék felett.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>A menü gyűrűje, rácsa vagy sávja, amíg nyitva van.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amikor egy váltóréteg bekapcsol, az adott réteg által megadott ideig.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>A profil neve, amikor a profil megváltozik.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>A hozzárendelt eszköz neve, amikor lecsatlakozik.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>A hozzárendelt eszköz neve, amikor csatlakozik.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Cím másolása</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Elhelyezés a képernyőn</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Telefon csatlakoztatása</value></data>
@@ -4614,6 +4623,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>A PadForge által játék közben megjelenített képernyős jelzések. Kikapcsolásuk soha nem változtat a működésen, csak azon, hogy megjelennek-e.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Váltóréteg felugró panelje</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilváltási átfedés</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Eszköz lecsatlakozásának jelzése</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Eszköz csatlakozásának jelzése</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>A képernyőn megjelenő gyűrű vagy rács megjelenítése, amíg egy radiális vagy érintőmenü aktív. A menük az átfedés kikapcsolt állapotában is működnek.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>képernyős menü létrehozva ({0} hozzárendelt cella)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>képernyős menü létrehozva ({0} hozzárendelt cella)</value></data>

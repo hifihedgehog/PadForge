@@ -108,6 +108,7 @@ namespace PadForge.Common.Input
             // lingered from a force-killed previous session.
 
             bool changed = false;
+            long enumerationBegan = Environment.TickCount64;
 
             // SDL3: Get array of instance IDs for all connected joysticks.
             uint[] joystickIds = SDL_GetJoysticks();
@@ -628,7 +629,9 @@ namespace PadForge.Common.Input
 
 
             // The rows now say what is connected (DevicesEnumerated). Noted
-            // before the event, so the apply it queues reads it.
+            // before the event, so the apply it queues reads it. When this
+            // enumeration began goes first (DevicesEnumeratedSince).
+            NoteEnumerationBegan(t_runStamp, enumerationBegan);
             NoteDevicesEnumerated(t_runStamp);
 
             // --- Notify if anything changed ---

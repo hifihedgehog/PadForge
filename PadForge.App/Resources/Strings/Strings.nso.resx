@@ -1373,6 +1373,9 @@
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala faele yeo.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ga e kgone go hwetša faele yeo.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala seswantšho sa Steam sa papadi ye.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} e kgokagantšwe</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} e kgokagantšwe, peteri {1}%</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Didirišwa tše di kgokagantšwego: {0}</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lenaneo le lengwe le swere leina la pipe {0}. Tswalela lenaneo leo.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e gannye pipe {0}, ka gona mananeo a ka se kgokagane.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetogela go profaele {0}</value></data>

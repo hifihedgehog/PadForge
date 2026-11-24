@@ -187,6 +187,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>虚拟控制器已启用</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>虚拟控制器已禁用</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} 已断开连接</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} 已断开连接。{1} 已没有设备。</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} 已连接</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} 已连接，电量 {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} 台设备已断开连接</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} 台设备已连接</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} 反复断开连接</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 台）</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 台）</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo（最多 {0} 台）</value></data>
@@ -3747,7 +3754,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>控制另一台 PC 上的虚拟控制器。</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>向模拟器发送控制器的体感数据。</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>接收来自游戏模组的扳机和灯光效果。</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>在游戏过程中显示菜单、层和配置文件切换。</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>在游戏过程中显示菜单、层、配置文件切换和设备连接。</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>为 PlayStation 触控板游戏提供屏幕触摸表面。</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>在其他窗口上方显示图片、计时器或时钟。</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>在游戏上显示你自己的准星。</value></data>
@@ -3776,6 +3783,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>菜单打开时显示其环形、网格或条形。</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift 层开启时显示该层的名称，时长由该层设定。</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>配置文件切换时显示配置文件的名称。</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>设备断开时显示已映射设备的名称。</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>设备连接时显示已映射设备的名称。</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>复制地址</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>屏幕位置</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>连接手机</value></data>
@@ -4558,6 +4567,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge 在游戏过程中显示的屏幕指示器。关闭任何一项都不会改变行为，只会改变是否显示。</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>切换层浮出控件</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>配置文件切换叠加层</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>设备断开提示</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>设备连接提示</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>已创建屏幕菜单（{0} 个已绑定单元格）</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>已创建屏幕菜单（{0} 个已绑定单元格）</value></data>

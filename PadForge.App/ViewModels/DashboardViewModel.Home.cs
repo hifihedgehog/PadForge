@@ -321,6 +321,8 @@ namespace PadForge.ViewModels
                 case nameof(EnableMenuOverlay):
                 case nameof(EnableShiftLayerFlyout):
                 case nameof(EnableProfileOverlay):
+                case nameof(EnableDeviceDisconnectedNote):
+                case nameof(EnableDeviceConnectedNote):
                 case nameof(EnableTouchpadOverlay):
                 case nameof(ScreenOverlays):
                 case nameof(Crosshairs):

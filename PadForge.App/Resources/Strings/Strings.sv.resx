@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuella handkontroller aktiverade</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuella handkontroller inaktiverade</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>En eller flera handkontroller är offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} kopplades från</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} kopplades från. {1} har ingen enhet kvar.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} anslöts</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} anslöts, batteri {1} %</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} enheter kopplades från</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} enheter anslöts</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kopplas från om och om igen</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Styr de virtuella handkontrollerna på en annan dator.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Skicka handkontrollens rörelser till emulatorer.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ta emot avtryckar- och ljuseffekter från spelmoddar.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Visa menyer, lager och profilbyten medan du spelar.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Visa menyer, lager, profilbyten och enhetsanslutningar medan du spelar.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>En pekyta på skärmen för PlayStation-spel med styrplatta.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>En bild, timer eller klocka ovanpå andra fönster.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ditt eget hårkors över ett spel.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menyns ring, rutnät eller fält medan den är öppen.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagrets namn när ett skiftlager slås på, under den tid som lagret anger.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens namn när profilen byts.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Namnet på en mappad enhet när den kopplas från.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Namnet på en mappad enhet när den ansluts.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiera adress</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placering på skärmen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Anslut en telefon</value></data>
@@ -4614,6 +4623,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikatorer som PadForge visar på skärmen medan du spelar. Att stänga av en ändrar aldrig beteendet, bara om den visas.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Utfällbar ruta för skiftlager</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Överlägg vid profilbyte</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Notis om frånkopplad enhet</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Notis om ansluten enhet</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Visa ringen eller rutnätet på skärmen medan en radiell meny eller pekmeny är aktiv. Menyer utlöses även när överlägget är av.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>skärmmeny skapad ({0} bundna celler)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>skärmmeny skapad ({0} bunden cell)</value></data>

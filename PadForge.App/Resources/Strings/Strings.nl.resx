@@ -187,6 +187,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuele controllers ingeschakeld</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuele controllers uitgeschakeld</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Een of meer controllers offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} verbinding verbroken</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} verbinding verbroken. {1} heeft geen apparaat meer.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} verbonden</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} verbonden, batterij {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} apparaten losgekoppeld</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} apparaten verbonden</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} verliest steeds de verbinding</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max {0})</value></data>
@@ -3767,7 +3774,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Bestuur de virtuele controllers op een andere pc.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Stuur de beweging van controllers naar emulators.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ontvang trigger- en lichteffecten van gamemods.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Toon menu's, lagen en profielwissels tijdens het spelen.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Toon menu's, lagen, profielwissels en apparaatverbindingen tijdens het spelen.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Een touch-oppervlak op het scherm voor PlayStation-touchpadgames.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Een afbeelding, timer of klok boven andere vensters.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Je eigen dradenkruis boven een game.</value></data>
@@ -3796,6 +3803,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De ring, het raster of de balk van een menu zolang het open is.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>De naam van de laag wanneer een shift-laag aangaat, zolang als die laag instelt.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>De naam van het profiel wanneer het profiel wisselt.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>De naam van een gekoppeld apparaat wanneer de verbinding wordt verbroken.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>De naam van een gekoppeld apparaat wanneer het verbinding maakt.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adres kopiëren</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plek op het scherm</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Een telefoon verbinden</value></data>
@@ -4578,6 +4587,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Schermaanduidingen die PadForge tijdens het spelen toont. Uitschakelen verandert nooit het gedrag, alleen of het wordt getoond.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-laag flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profielwissel-overlay</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Melding apparaat losgekoppeld</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Melding apparaat verbonden</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu op het scherm gemaakt ({0} toegewezen cellen)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu op het scherm gemaakt ({0} toegewezen cel)</value></data>

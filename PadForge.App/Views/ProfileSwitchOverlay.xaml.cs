@@ -33,10 +33,35 @@ namespace PadForge.Views
         // Slide travel distance — enough to fully hide the flyout below the clip boundary.
         private const double SlideTravel = 80;
 
+        // The amber of the offline line's glyph, which a device that
+        // disconnects is drawn in too, and the green of the check for the
+        // controllers turned on, which a device that connects takes.
+        // Green, gold and red are the app's colors for health.
+        private static readonly Color OfflineAmber = Color.FromRgb(0xFF, 0xB9, 0x00);
+        private static readonly Color EnabledGreen = Color.FromRgb(0x37, 0xC8, 0x52);
+
         private readonly DispatcherTimer _dismissTimer;
         private readonly DispatcherTimer _initMonitorTimer;
         private readonly TranslateTransform _slideTransform;
         private bool _showingInitializing;
+
+        /// <summary>What the flyout shows, from the call that shows it until
+        /// the window has slid away and is hidden. A profile switch keeps
+        /// its state through Initializing, Forging and the offline
+        /// line.</summary>
+        private enum Showing { Nothing, Profile, VirtualControllers, DeviceNote }
+
+        private Showing _showing;
+
+        // Counts every state shown. A slide away that began under an earlier
+        // state leaves the window to the one shown since.
+        private int _shows;
+
+        /// <summary>Whether the flyout shows anything.</summary>
+        public bool IsUp => _showing != Showing.Nothing;
+
+        /// <summary>Whether what it shows is a device note (#597).</summary>
+        public bool IsShowingDeviceNote => _showing == Showing.DeviceNote;
 
         public Func<(bool anyInitializing, bool allReady)> CheckInitState { get; set; }
         public Func<bool> CheckAnyOffline { get; set; }
@@ -65,7 +90,11 @@ namespace PadForge.Views
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
 
-            ApplyTheme();
+            // No theme here. Every state that shows the window applies the
+            // theme and then colors its own glyph, and the first load arrives
+            // inside that state's ShowFlyout. A theme applied here took the
+            // color away again: the first time the controllers were turned
+            // on or off, and the first device note, drew a plain glyph.
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -149,17 +178,47 @@ namespace PadForge.Views
             _dismissTimer.Stop();
             _initMonitorTimer.Stop();
             _showingInitializing = false;
+            _showing = Showing.VirtualControllers;
 
             ApplyTheme();
             StatusIcon.BeginAnimation(OpacityProperty, null);
             StatusIcon.Opacity = 1;
             StatusIcon.Text = enabled ? VCsEnabledIcon : VCsDisabledIcon;
             StatusIcon.Foreground = enabled
-                ? new SolidColorBrush(Color.FromRgb(0x37, 0xC8, 0x52))  // Fluent success green
+                ? new SolidColorBrush(EnabledGreen)                     // Fluent success green
                 : new SolidColorBrush(Color.FromRgb(0xE8, 0x1B, 0x1C)); // Fluent critical red
             StatusText.Text = enabled
                 ? Strings.Instance.Main_VCsEnabled
                 : Strings.Instance.Main_VCsDisabled;
+
+            ShowFlyout();
+
+            _dismissTimer.Tick -= OnDismissThenClose;
+            _dismissTimer.Tick -= OnDismissThenMonitorInit;
+            _dismissTimer.Tick -= OnDismissThenCheckOffline;
+            _dismissTimer.Tick += OnDismissThenClose;
+            _dismissTimer.Interval = TimeSpan.FromSeconds(2);
+            _dismissTimer.Start();
+        }
+
+        /// <summary>Shows one line about a mapped device (#597) for two
+        /// seconds: a device that disconnects under the offline line's glyph
+        /// in its amber, one that connects under the check in the green of
+        /// Virtual Controllers Enabled. InputService words the line and
+        /// shows one at a time, while the flyout shows nothing else.</summary>
+        public void ShowDeviceNote(string text, bool connected)
+        {
+            _dismissTimer.Stop();
+            _initMonitorTimer.Stop();
+            _showingInitializing = false;
+            _showing = Showing.DeviceNote;
+
+            ApplyTheme();
+            StatusIcon.BeginAnimation(OpacityProperty, null);
+            StatusIcon.Opacity = 1;
+            StatusIcon.Text = connected ? VCsEnabledIcon : OfflineIcon;
+            StatusIcon.Foreground = new SolidColorBrush(connected ? EnabledGreen : OfflineAmber);
+            StatusText.Text = text;
 
             ShowFlyout();
 
@@ -176,6 +235,7 @@ namespace PadForge.Views
             _dismissTimer.Stop();
             _initMonitorTimer.Stop();
             _showingInitializing = false;
+            _showing = Showing.Profile;
 
             ApplyTheme();
             StatusIcon.BeginAnimation(OpacityProperty, null);
@@ -269,13 +329,7 @@ namespace PadForge.Views
             if (CheckAnyOffline?.Invoke() == true)
                 ShowOffline();
             else
-            {
-                SlideOut(() =>
-                {
-                    Hide();
-                    ApplyTheme();
-                });
-            }
+                SlideAway();
         }
 
         private void ShowOffline()
@@ -284,7 +338,7 @@ namespace PadForge.Views
             StatusIcon.Opacity = 1;
             StatusIcon.Text = OfflineIcon;
             StatusText.Text = Strings.Instance.Main_ControllersOffline;
-            StatusIcon.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xB9, 0x00));
+            StatusIcon.Foreground = new SolidColorBrush(OfflineAmber);
 
             ShowFlyout();
 
@@ -300,16 +354,36 @@ namespace PadForge.Views
             _dismissTimer.Stop();
             _dismissTimer.Tick -= OnDismissThenClose;
 
+            SlideAway();
+        }
+
+        /// <summary>Slides the flyout out and hides the window, unless a
+        /// state was shown while it slid. A slide that is taken off its
+        /// property can still report its end: measured 2026-11-23, an
+        /// animation replaced 60 ms in raised Completed at its own 250 ms.
+        /// That end hid whatever had been shown in between.</summary>
+        private void SlideAway()
+        {
+            int shows = _shows;
             SlideOut(() =>
             {
+                if (shows != _shows) return;
                 Hide();
                 ApplyTheme();
+                _showing = Showing.Nothing;
             });
         }
 
         private void ShowFlyout()
         {
             var screen = SystemParameters.WorkArea;
+            _shows++;
+
+            // One line that fits the screen: a long name is cut with an
+            // ellipsis where the flyout would run past the work area. The
+            // panel's margins, the border, the padding and the glyph take 80,
+            // and 16 more keep the flyout off the screen's sides.
+            StatusText.MaxWidth = Math.Max(160, screen.Width - 96);
 
             UpdateLayout();
             Show();

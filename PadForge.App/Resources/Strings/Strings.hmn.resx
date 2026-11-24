@@ -1411,7 +1411,7 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ntawm {1} txog thaum nres</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Yam ntxiv</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Saum lub vijtsam</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Qhia cov menu, cov txheej thiab kev hloov profile thaum koj ua si.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Qhia cov menu, cov txheej, kev hloov profile thiab kev txuas khoom siv thaum koj ua si.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Nrhiav kev teeb tsa, khoom siv thiab profile</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Nrhiav</value></data>
@@ -1628,6 +1628,13 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge nrhiav tsis tau cov ntaub ntawv ntawd.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge nyeem tsis tau Steam daim duab rau game no.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Xa mus ntxiv</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} tsis txuas lawm</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} tsis txuas lawm. {1} tsis muaj khoom siv tshuav lawm.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} txuas lawm</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} txuas lawm, roj teeb {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} lub khoom siv tsis txuas lawm</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} lub khoom siv txuas lawm</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} pheej tu txuas</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lwm qhov program tuav lub npe pipe {0}. Kaw qhov program ntawd.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows tsis kam tsim lub pipe {0}, yog li cov program txuas tsis tau.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hloov mus rau profile {0}</value></data>
@@ -1654,4 +1661,6 @@
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Ib qho mapping tshiab tsuas siv rau ib lub controller uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Kev rov teeb tsa dua tshem txhua qho mapping uas rub tawm lawm.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Hloov tshiab tam sim no</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Tab tom hloov tshiab…</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv tsis txuas</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv txuas</value></data>
 </root>

@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>वर्चुअल कंट्रोलर सक्षम</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>वर्चुअल कंट्रोलर अक्षम</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>एक या अधिक कंट्रोलर ऑफ़लाइन</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} डिस्कनेक्ट हो गया</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} डिस्कनेक्ट हो गया। {1} में अब कोई डिवाइस नहीं बचा।</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} कनेक्ट हो गया</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} कनेक्ट हो गया, बैटरी {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>डिस्कनेक्ट हुए डिवाइस: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>कनेक्ट हुए डिवाइस: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} बार-बार डिस्कनेक्ट हो रहा है</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (अधिकतम {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (अधिकतम {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (अधिकतम {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>वर्चुअल कंट्रोलर को दूसरे PC पर चलाएँ।</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>कंट्रोलर का मोशन एम्यूलेटरों को भेजें।</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>गेम मॉड से ट्रिगर और लाइट इफ़ेक्ट लें।</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेलते समय मेनू, लेयर और प्रोफ़ाइल बदलाव दिखाएँ।</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेलते समय मेनू, लेयर, प्रोफ़ाइल बदलाव और डिवाइस कनेक्शन दिखाएँ।</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचपैड वाले गेम के लिए ऑन-स्क्रीन टच सतह।</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>दूसरी विंडो के ऊपर एक चित्र, टाइमर या घड़ी।</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>गेम के ऊपर आपका अपना क्रॉसहेयर।</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>खुले मेनू का रिंग, ग्रिड या बार।</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ़्ट लेयर चालू होने पर लेयर का नाम, उतनी देर के लिए जितनी वह लेयर तय करती है।</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>प्रोफ़ाइल बदलने पर प्रोफ़ाइल का नाम।</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>मैप किए गए डिवाइस के डिस्कनेक्ट होने पर उसका नाम।</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>मैप किए गए डिवाइस के कनेक्ट होने पर उसका नाम।</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>पता कॉपी करें</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>स्क्रीन पर जगह</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>फ़ोन कनेक्ट करें</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ऑन-स्क्रीन संकेतक, जिन्हें PadForge आपके खेलते समय दिखाता है। किसी को बंद करने से व्यवहार कभी नहीं बदलता, केवल यह बदलता है कि वह स्क्रीन पर दिखे या नहीं।</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>शिफ़्ट लेयर फ़्लाईआउट</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>प्रोफ़ाइल बदलाव ओवरले</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>डिवाइस डिस्कनेक्ट नोट</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>डिवाइस कनेक्ट नोट</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>रेडियल या टच मेनू सक्रिय रहने तक ऑन-स्क्रीन रिंग या ग्रिड दिखाएँ। ओवरले बंद होने पर भी मेनू चलते हैं।</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ऑन-स्क्रीन मेनू बनाया गया ({0} बाइंड किए गए सेल)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ऑन-स्क्रीन मेनू बनाया गया ({0} बाइंड किया गया सेल)</value></data>

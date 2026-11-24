@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuaaliohjaimet käytössä</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuaaliohjaimet pois käytöstä</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Yksi tai useampi ohjain ei ole yhteydessä</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0}: yhteys katkesi</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0}: yhteys katkesi. {1}: ei yhtään laitetta jäljellä.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} yhdistetty</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yhdistetty, akku {1} %</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} laitetta: yhteys katkesi</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} laitetta yhdistetty</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0}: yhteys katkeaa toistuvasti</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (enint. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (enint. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (enint. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ohjaa virtuaaliohjaimia toisella tietokoneella.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Lähetä ohjaimen liike emulaattoreille.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Vastaanota liipaisin- ja valotehosteet pelimodeilta.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näytä valikot, kerrokset ja profiilinvaihdot pelatessasi.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näytä valikot, kerrokset, profiilinvaihdot ja laiteyhteydet pelatessasi.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Näytöllä näkyvä kosketuspinta PlayStation-kosketuslevypeleille.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kuva, ajastin tai kello muiden ikkunoiden päällä.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Oma tähtäin pelin päälle.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Valikon rengas, ruudukko tai palkki sen ollessa auki.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kerroksen nimi, kun vaihtokerros kytkeytyy päälle, sen ajan, jonka kerros määrittää.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiilin nimi, kun profiili vaihtuu.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Määritetyn laitteen nimi, kun sen yhteys katkeaa.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Määritetyn laitteen nimi, kun se yhdistetään.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopioi osoite</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Aseta näytölle</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Yhdistä puhelin</value></data>
@@ -4614,6 +4623,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Näytöllä näkyvät ilmaisimet, joita PadForge näyttää pelatessasi. Ilmaisimen poistaminen käytöstä ei koskaan muuta toimintaa, vain sen, näytetäänkö se.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Vaihtokerroksen ponnahdusikkuna</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profiilinvaihdon peittokuva</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Laitteen yhteyden katkeamisen ilmoitus</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Laitteen yhdistämisen ilmoitus</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Näytä näytöllä rengas tai ruudukko, kun säteittäinen tai kosketusvalikko on aktiivinen. Valikot laukeavat myös peittokuvan ollessa pois päältä.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>näyttövalikko luotu (sidottuja soluja: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>näyttövalikko luotu (sidottuja soluja: {0})</value></data>

@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Εικονικά χειριστήρια ενεργοποιημένα</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Εικονικά χειριστήρια απενεργοποιημένα</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Ένα ή περισσότερα χειριστήρια εκτός σύνδεσης</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Αποσυνδέθηκε: {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Αποσυνδέθηκε: {0}. Το {1} δεν έχει πλέον συσκευή.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Συνδέθηκε: {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Συνδέθηκε: {0}, μπαταρία {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Αποσυνδέθηκαν {0} συσκευές</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Συνδέθηκαν {0} συσκευές</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Συνεχείς αποσυνδέσεις: {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (μέγ. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (μέγ. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (μέγ. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Οδηγήστε τα εικονικά χειριστήρια σε άλλον υπολογιστή.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Στείλτε την κίνηση του χειριστηρίου σε εξομοιωτές.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Δεχτείτε εφέ σκανδάλης και φωτισμού από mod παιχνιδιών.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Εμφανίστε μενού, επίπεδα και αλλαγές προφίλ ενώ παίζετε.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Εμφανίστε μενού, επίπεδα, αλλαγές προφίλ και συνδέσεις συσκευών ενώ παίζετε.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Επιφάνεια αφής στην οθόνη για παιχνίδια με επιφάνεια αφής PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Εικόνα, χρονόμετρο ή ρολόι πάνω από άλλα παράθυρα.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Το δικό σας σταυρόνημα πάνω από ένα παιχνίδι.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ο δακτύλιος, το πλέγμα ή η γραμμή ενός μενού όσο είναι ανοιχτό.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Το όνομα του επιπέδου όταν ενεργοποιείται ένα επίπεδο shift, για τον χρόνο που ορίζει το επίπεδο.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Το όνομα του προφίλ όταν αλλάζει το προφίλ.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Το όνομα μιας αντιστοιχισμένης συσκευής όταν αποσυνδέεται.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Το όνομα μιας αντιστοιχισμένης συσκευής όταν συνδέεται.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Αντιγραφή διεύθυνσης</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Θέση στην οθόνη</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Σύνδεση τηλεφώνου</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Ενδείξεις στην οθόνη που εμφανίζει το PadForge ενώ παίζετε. Η απενεργοποίηση μιας ένδειξης δεν αλλάζει ποτέ τη συμπεριφορά, μόνο το αν εμφανίζεται.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Αναδυόμενο πλαίσιο επιπέδου shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Επικάλυψη αλλαγής προφίλ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Σημείωση αποσύνδεσης συσκευής</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Σημείωση σύνδεσης συσκευής</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Εμφανίζει τον δακτύλιο ή το πλέγμα στην οθόνη όσο είναι ενεργό ένα ακτινικό μενού ή μενού αφής. Τα μενού εκτελούνται ακόμη και με την επικάλυψη απενεργοποιημένη.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>δημιουργήθηκε μενού οθόνης ({0} κελιά με αντιστοίχιση)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>δημιουργήθηκε μενού οθόνης ({0} κελί με αντιστοίχιση)</value></data>

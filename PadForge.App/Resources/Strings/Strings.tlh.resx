@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>SeHjan velqa'mey chu'lu'pu'</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>SeHjan velqa'mey chu'Ha'lu'pu'</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>wa' SeHjan pagh latlh rarbe'</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>rarHa'pu' {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>rarHa'pu' {0}. jan ghajbe'choH {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>rarpu' {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>rarpu' {0}, 'ul 'aplo' {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>rarHa'pu' {0} jan</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>rarpu' {0} jan</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>rarHa'qa'taH {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox ({0} neH)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation ({0} neH)</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo ({0} neH)</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>latlh PC SeHjan velqa'mey yISeH.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>rurwI' nIqHommeyvaD SeHjan vIHtaHghach yIngeH.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Quj DI'wI'meyvo' chu'wI' tamghay wanI'mey je yIlaj.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>bIQujtaHvIS HIDjolevmey, patlhmey, tu'qom choHmey je yI'ang.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>bIQujtaHvIS HIDjolevmey, patlhmey, tu'qom choHmey, jan rar QInmey je yI'ang.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation 'echlet Hab lo'bogh QujmeyvaD jIH Hot 'Ivqong.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>latlh Qorwaghmey Dung, mIllogh, poH ghochwI' pagh tlhaq.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Quj Dung 'uchmeH ghaSwI'lIj.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>poStaHvIS HIDjolev, HIDjolev Qeb ghap tlhat ghap naQ ghap.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>choHwI' patlh chu'DI', patlh pong, qaStaHvIS poH cherbogh patlhvetlh.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>choHDI' tu'qom, tu'qom pong.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>rarHa'DI', neltaHghach jan pong.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>rarDI', neltaHghach jan pong.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>SIr'o' Daq velqa' yIchenmoH</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>jIHDaq yIlan</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>QumwI' yIrar</value></data>
@@ -4635,6 +4644,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>bIQujtaHvIS jIHDaq ghaSwI'mey 'ang PadForge. wa' Dachu'Ha'DI', not choH mIw. 'anglu'chugh neH choH.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>patlh choHwI' HIDjolev</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>tu'qom choHwI' Dung HaSta</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>jan rarHa' QIn</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>jan rar QIn</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Qeb HIDjolev Hot HIDjolev ghap chu'lu'taHvIS, jIHDaq Qeb tlhat ghap yI'ang. Dung HaSta chu'Ha'lu'DI' je baH HIDjolevmey.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>jIH HIDjolev chenmoHlu'pu' ({0} HanDI' nellu'pu'bogh)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>jIH HIDjolev chenmoHlu'pu' ({0} HanDI' nellu'pu'bogh)</value></data>

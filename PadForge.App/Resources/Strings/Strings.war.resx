@@ -1356,7 +1356,7 @@
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadara ha iba nga lugar</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Ha screen</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa an mga epekto han trigger ngan suga tikang ha mga game mod.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita an mga menu, layer ngan pagbalhin hin profile samtang nagdudula ka.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita an mga menu, layer, pagbalhin hin profile ngan koneksyon han device samtang nagdudula ka.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli han DSX.exe</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key ngan mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota ngan control</value></data>
@@ -1627,6 +1627,15 @@
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Litrato: an litrato ha library han Steam para ha {0}.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Diri mabasa han PadForge an litrato han Steam para hini nga dula.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Padayon pagpadara</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Nadiskonek an {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Nadiskonek an {0}. Waray na device nga nabilin ha {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Nakakonek an {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Nakakonek an {0}, baterya {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Nadiskonek an {0} nga mga device</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Nakakonek an {0} nga mga device</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Pirme nadidiskonek an {0}</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>An ngaran han device nga gin-assign kun nadiskonek ini.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>An ngaran han device nga gin-assign kun nakakonek ini.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database han Controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>An I-update Yana nagdadownload han database han controller han komunidad (SDL_GameControllerDB) tikang ha GitHub ngan gintitipig ha file han mga setting an mga mapping nga waray hini nga bersyon han PadForge. Ginagamit la an bag-o nga mapping para ha controller nga waray iba nga nagbabasa sugad nga gamepad, diri gin-assign ngan diri aada ha Force Raw Joystick Mode. Ginwawara han reset an ngatanan nga mapping nga gin-download.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>I-update Yana</value></data>
@@ -1634,4 +1643,6 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Gindiri han PadForge an download kay diri ini an database han controller nga ginlalaoman hini. Waray nagbag-o.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ginagamit an bag-o nga mapping ha sunod nga pagkonek han controller hini.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ginagamit an ginbag-o nga mapping ha sunod nga pagsugod han PadForge.</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibaro han nadiskonek nga device</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibaro han nakakonek nga device</value></data>
 </root>

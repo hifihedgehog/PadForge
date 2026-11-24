@@ -6,8 +6,8 @@ namespace PadForge.ViewModels
     /// <summary>
     /// The Extras catalog's switches for the four extras that have several
     /// switches and no single one (#574): Head Tracking's three inputs, the
-    /// three overlays, the Screen Overlay list and the crosshair list
-    /// (#585).
+    /// three overlays and the two device notes (#597), the Screen Overlay
+    /// list and the crosshair list (#585).
     ///
     /// <para>Each catalog switch reads on while any of its own is on. Turning
     /// it off turns them all off and remembers which were on. Turning it on
@@ -28,12 +28,19 @@ namespace PadForge.ViewModels
         /// opens an OpenXR session, so it waits to be chosen.</summary>
         internal const int HeadTrackingStartingSources = HeadTrackingUdpBit | HeadTrackingFreeTrackBit;
 
-        /// <summary>The overlays as bits: menu, shift layer, profile switch.</summary>
-        internal const int MenuOverlayBit = 1, ShiftLayerFlyoutBit = 2, ProfileOverlayBit = 4;
+        /// <summary>The overlays as bits: menu, shift layer, profile switch,
+        /// and the two device notes (#597).</summary>
+        internal const int MenuOverlayBit = 1, ShiftLayerFlyoutBit = 2, ProfileOverlayBit = 4,
+            DeviceDisconnectedNoteBit = 8, DeviceConnectedNoteBit = 16;
 
-        /// <summary>What the Overlays switch turns on the first time: all
-        /// three, which is how a new settings file starts.</summary>
+        /// <summary>What the Overlays switch turns on the first time: the
+        /// three a new settings file starts with. The device notes ship off
+        /// and wait to be chosen, so they are not in it.</summary>
         internal const int OverlaysStartingSet = MenuOverlayBit | ShiftLayerFlyoutBit | ProfileOverlayBit;
+
+        /// <summary>Every row the Overlays switch can turn off and bring
+        /// back: the starting three and the two device notes.</summary>
+        internal const int OverlaysAllBits = OverlaysStartingSet | DeviceDisconnectedNoteBit | DeviceConnectedNoteBit;
 
         // ─────────────────────────────────────────────
         //  Head Tracking
@@ -104,7 +111,9 @@ namespace PadForge.ViewModels
         private int OverlayMask =>
             (_enableMenuOverlay ? MenuOverlayBit : 0)
             | (_enableShiftLayerFlyout ? ShiftLayerFlyoutBit : 0)
-            | (_enableProfileOverlay ? ProfileOverlayBit : 0);
+            | (_enableProfileOverlay ? ProfileOverlayBit : 0)
+            | (_enableDeviceDisconnectedNote ? DeviceDisconnectedNoteBit : 0)
+            | (_enableDeviceConnectedNote ? DeviceConnectedNoteBit : 0);
 
         private int _overlaysLastShown;
 
@@ -113,11 +122,11 @@ namespace PadForge.ViewModels
         public int OverlaysLastShown
         {
             get => _overlaysLastShown;
-            set => SetProperty(ref _overlaysLastShown, value & OverlaysStartingSet);
+            set => SetProperty(ref _overlaysLastShown, value & OverlaysAllBits);
         }
 
-        /// <summary>The Extras switch of Overlays: on while any of the three
-        /// overlays is on.</summary>
+        /// <summary>The Extras switch of Overlays: on while any of the five
+        /// rows is on.</summary>
         public bool OverlaysAnyEnabled
         {
             get => OverlayMask != 0;
@@ -130,19 +139,24 @@ namespace PadForge.ViewModels
                 EnableMenuOverlay = (mask & MenuOverlayBit) != 0;
                 EnableShiftLayerFlyout = (mask & ShiftLayerFlyoutBit) != 0;
                 EnableProfileOverlay = (mask & ProfileOverlayBit) != 0;
+                EnableDeviceDisconnectedNote = (mask & DeviceDisconnectedNoteBit) != 0;
+                EnableDeviceConnectedNote = (mask & DeviceConnectedNoteBit) != 0;
             }
         }
 
         private RelayCommand _resetOverlaysCommand;
 
-        /// <summary>The reset beside the Overlays switch: each overlay back to
-        /// its default, which is on.</summary>
+        /// <summary>The reset beside the Overlays switch: each row back to
+        /// its default, which is on for the three overlays and off for the
+        /// two device notes.</summary>
         public RelayCommand ResetOverlaysCommand =>
             _resetOverlaysCommand ??= new RelayCommand(() =>
             {
                 ResetSettingCommand.Execute(nameof(EnableMenuOverlay));
                 ResetSettingCommand.Execute(nameof(EnableShiftLayerFlyout));
                 ResetSettingCommand.Execute(nameof(EnableProfileOverlay));
+                ResetSettingCommand.Execute(nameof(EnableDeviceDisconnectedNote));
+                ResetSettingCommand.Execute(nameof(EnableDeviceConnectedNote));
             });
 
         // ─────────────────────────────────────────────
@@ -261,6 +275,8 @@ namespace PadForge.ViewModels
                 case nameof(EnableMenuOverlay):
                 case nameof(EnableShiftLayerFlyout):
                 case nameof(EnableProfileOverlay):
+                case nameof(EnableDeviceDisconnectedNote):
+                case nameof(EnableDeviceConnectedNote):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(OverlaysAnyEnabled)));
                     break;
                 case nameof(ScreenOverlays):

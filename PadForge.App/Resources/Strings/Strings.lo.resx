@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ເປີດໃຊ້ຕົວຄວບຄຸມສະເໝືອນແລ້ວ</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ປິດໃຊ້ຕົວຄວບຄຸມສະເໝືອນແລ້ວ</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ຕົວຄວບຄຸມໜຶ່ງຕົວ ຫຼື ຫຼາຍກວ່ານັ້ນອອບລາຍ</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ຕັດການເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ຕັດການເຊື່ອມຕໍ່ແລ້ວ. {1} ບໍ່ມີອຸປະກອນເຫຼືອແລ້ວ.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ເຊື່ອມຕໍ່ແລ້ວ, ແບັດເຕີຣີ {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>ອຸປະກອນ {0} ເຄື່ອງຕັດການເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>ອຸປະກອນ {0} ເຄື່ອງເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ຕັດການເຊື່ອມຕໍ່ຊ້ຳແລ້ວຊ້ຳອີກ</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (ສູງສຸດ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (ສູງສຸດ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ສູງສຸດ {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ຂັບເຄື່ອນຕົວຄວບຄຸມສະເໝືອນໃນ PC ອື່ນ.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ສົ່ງຂໍ້ມູນການເຄື່ອນໄຫວຂອງຕົວຄວບຄຸມໄປຫາອີມູເລເຕີ.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ຮັບເອັບເຟັກທຣິກເກີ ແລະ ເອັບເຟັກໄຟຈາກມອດເກມ.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ສະແດງເມນູ, ຊັ້ນ ແລະ ການປ່ຽນໂປຣໄຟລ໌ໃນຂະນະທີ່ທ່ານຫຼິ້ນ.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ສະແດງເມນູ, ຊັ້ນ, ການປ່ຽນໂປຣໄຟລ໌ ແລະ ການເຊື່ອມຕໍ່ອຸປະກອນໃນຂະນະທີ່ທ່ານຫຼິ້ນ.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທັດແພດ PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ຮູບພາບ, ຕົວຈັບເວລາ ຫຼື ໂມງ ຢູ່ເທິງໜ້າຕ່າງອື່ນ.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ເປົ້າເລັງຂອງທ່ານເອງເທິງເກມ.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ວົງ, ຕາຕະລາງ ຫຼື ແຖບຂອງເມນູໃນຂະນະທີ່ມັນເປີດຢູ່.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ຊື່ຂອງຊັ້ນເມື່ອປ່ຽນຊັ້ນ, ຕາມໄລຍະເວລາທີ່ຊັ້ນນັ້ນກຳນົດ.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ຊື່ຂອງໂປຣໄຟລ໌ເມື່ອໂປຣໄຟລ໌ປ່ຽນ.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ຊື່ຂອງອຸປະກອນທີ່ແມັບໄວ້ເມື່ອມັນຕັດການເຊື່ອມຕໍ່.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ຊື່ຂອງອຸປະກອນທີ່ແມັບໄວ້ເມື່ອມັນເຊື່ອມຕໍ່.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ສຳເນົາທີ່ຢູ່</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ຕຳແໜ່ງເທິງໜ້າຈໍ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ເຊື່ອມຕໍ່ໂທລະສັບ</value></data>
@@ -4332,6 +4341,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ຕົວບົ່ງຊີ້ເທິງໜ້າຈໍທີ່ PadForge ສະແດງໃນຂະນະທີ່ທ່ານຫຼິ້ນ. ການປິດອັນໃດອັນໜຶ່ງບໍ່ປ່ຽນການເຮັດວຽກ, ພຽງແຕ່ບໍ່ສະແດງມັນເທົ່ານັ້ນ.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ປ້າຍແຈ້ງການປ່ຽນຊັ້ນ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ໂອເວີເລການປ່ຽນໂປຣໄຟລ໌</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ແຈ້ງເຕືອນອຸປະກອນຕັດການເຊື່ອມຕໍ່</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ແຈ້ງເຕືອນອຸປະກອນເຊື່ອມຕໍ່</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ສະແດງວົງ ຫຼື ຕາຕະລາງເທິງໜ້າຈໍ ໃນຂະນະທີ່ເມນູວົງມົນ ຫຼື ເມນູສຳຜັດກຳລັງເຮັດວຽກ. ເມນູຍັງທຳງານເຖິງວ່າຈະປິດໂອເວີເລ.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ສ້າງເມນູເທິງໜ້າຈໍແລ້ວ ({0} ເຊວທີ່ຜູກໄວ້)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ສ້າງເມນູເທິງໜ້າຈໍແລ້ວ ({0} ເຊວທີ່ຜູກໄວ້)</value></data>

@@ -1206,6 +1206,10 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele tsotlhe (*.*)|*.*</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala setshwantsho sa Steam sa motshameko o.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tswelela o romela</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} e kgaoganye. {1} ga e sa na sedirisiwa.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} e golagane</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} e golagane, betri {1}%</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Didirisiwa di le {0} di golagane</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetolela kwa porofaeleng {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela kwa porofaeleng ya tlwaelo</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa gore ke porofaele efe e e dirang</value></data>

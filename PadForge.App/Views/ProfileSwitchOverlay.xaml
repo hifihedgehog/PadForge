@@ -54,9 +54,12 @@
                                    Margin="0,0,10,0"
                                    Foreground="White"/>
 
+                        <!-- One line. The code gives it the screen's width as its
+                             most, and a longer name ends in an ellipsis. -->
                         <TextBlock x:Name="StatusText"
                                    FontSize="14"
                                    VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"
                                    Foreground="White"/>
                     </StackPanel>
                 </Grid>

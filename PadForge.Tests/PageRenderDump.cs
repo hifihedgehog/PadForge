@@ -973,7 +973,9 @@ namespace PadForge.Tests
                 Shot("extras-gamemods.png", 680, () => page.Show("GameMods"));
                 ShotMore("GameMods", "extras-gamemods-more.png", 680);
 
-                Shot("extras-overlays.png", 700, () => page.Show("Overlays"));
+                // Five rows since the two device notes (#597), one of them on.
+                dash.EnableDeviceDisconnectedNote = true;
+                Shot("extras-overlays.png", 830, () => page.Show("Overlays"));
 
                 // The Web Controller serving, with its QR code.
                 const string Url = "https://192.168.1.20:8080";

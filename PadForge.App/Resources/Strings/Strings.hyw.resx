@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Վիրթուալ կառավարիչները միացուած են</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Վիրթուալ կառավարիչները անջատուած են</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Մէկ կամ աւելի կառավարիչներ անցանց են</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} անջատուեցաւ</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} անջատուեցաւ։ {1}՝ սարք չմնաց։</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} միացաւ</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} միացաւ, մարտկոց {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} սարք անջատուեցաւ</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} սարք միացաւ</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} կրկին ու կրկին կ՚անջատուի</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (առաւելագոյնը {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (առաւելագոյնը {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (առաւելագոյնը {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Վարեցէք ուրիշ համակարգիչի մը վիրթուալ կառավարիչները։</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Կառավարիչի շարժումը ղրկեցէք նմանակիչներուն։</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ձգաններու եւ լոյսերու էֆեքթները առէք խաղի յաւելուածներէն։</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Խաղալու ընթացքին ցուցադրեցէք ցանկերը, շերտերը եւ փրոֆիլի փոխումները։</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Խաղալու ընթացքին ցուցադրեցէք ցանկերը, շերտերը, փրոֆիլի փոխումները եւ սարքերու միացումները։</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Պաստառի վրայի հպման մակերես՝ PlayStation-ի հպման վահանակով խաղերու համար։</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Նկար, ժամաչափ կամ ժամացոյց՝ միւս պատուհաններուն վրայ։</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ձեր սեփական նշանացոյցը՝ խաղի մը վրայ։</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ցանկի մը օղակը, ցանցը կամ գօտին, մինչ ան բաց է։</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտին անունը, երբ լրացուցիչ շերտ մը գործօն դառնայ, այն տեւողութեամբ, որ այդ շերտը կը սահմանէ։</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Փրոֆիլին անունը, երբ փրոֆիլը կը փոխուի։</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Համապատասխանեցուած սարքին անունը, երբ ան կ՚անջատուի։</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Համապատասխանեցուած սարքին անունը, երբ ան կը միանայ։</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Պատճէնել հասցէն</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Տեղը պաստառին վրայ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Միացնել հեռախօս մը</value></data>
@@ -4315,6 +4324,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Պաստառի վրայի ցուցիչներ, որոնք PadForge կը ցուցադրէ խաղալու ընթացքին։ Անոնցմէ մէկը անջատելը երբեք չի փոխեր վարքը, միայն այն, թէ արդեօք ան կը ցուցադրուի։</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Շերտի ելնող պատուհան</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Փրոֆիլի փոխման վերադիր</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Սարքի անջատման ծանուցում</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Սարքի միացման ծանուցում</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ցուցադրել պաստառի վրայի օղակը կամ ցանցը, մինչ շրջանաձեւ կամ հպման ցանկ մը գործօն է։ Ցանկերը կը գործեն նաեւ վերադիրը անջատուած ատեն։</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>պաստառի վրայ ցանկ ստեղծուեցաւ ({0} կապուած բջիջ)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>պաստառի վրայ ցանկ ստեղծուեցաւ ({0} կապուած բջիջ)</value></data>

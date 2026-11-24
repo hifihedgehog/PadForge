@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکان چالاکن</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکان ناچالاکن</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>یەک یان زیاتر لە کۆنترۆڵەرەکان دەرهێڵن</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} پەیوەندیی پچڕا</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} پەیوەندیی پچڕا. {1} هیچ ئامێرێکی بۆ نەماوە.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} پەیوەست بوو</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} پەیوەست بوو، پاتری {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} ئامێر پەیوەندییان پچڕا</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} ئامێر پەیوەست بوون</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} بەردەوام پەیوەندیی دەپچڕێت</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (زۆرترین {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (زۆرترین {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (زۆرترین {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکان لەسەر کۆمپیوتەرێکی تر بەڕێوە ببە.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>جووڵەی کۆنترۆڵەر بنێرە بۆ ئیمولەیتەرەکان.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>کاریگەرییەکانی تریگەر و ڕووناکی لە مۆدەکانی یارییەوە وەربگرە.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>لە کاتی یاریکردندا مێنیو، چین و گۆڕینی پرۆفایل پیشان بدە.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>لە کاتی یاریکردندا مێنیو، چین، گۆڕینی پرۆفایل و پەیوەستبوونی ئامێرەکان پیشان بدە.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ڕووکاری دەستلێدان لەسەر شاشە بۆ یارییەکانی تاچپادی PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>وێنە، کاتژمێری پێوانە یان کاتژمێر لەسەرووی پەنجەرەکانی ترەوە.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>نیشانەی تایبەتی خۆت لەسەر یارییەک.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>بازنە، تۆڕ یان شریتی مێنیوێک کاتێک کراوەیە.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ناوی چینەکە کاتێک چینێکی شیفت چالاک دەبێت، بۆ ئەو ماوەیەی ئەو چینە دیاری دەکات.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ناوی پرۆفایلەکە کاتێک پرۆفایل دەگۆڕێت.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ناوی ئامێرێکی بەستراو کاتێک پەیوەندیی دەپچڕێت.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ناوی ئامێرێکی بەستراو کاتێک پەیوەست دەبێت.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>لەبەرگرتنەوەی ناونیشان</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>شوێن لەسەر شاشە</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>پەیوەستکردنی مۆبایلێک</value></data>
@@ -4337,6 +4346,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>نیشانەکانی سەر شاشە کە PadForge لە کاتی یاریکردندا پیشانیان دەدات. کوژاندنەوەی یەکێکیان هەرگیز ڕەفتار ناگۆڕێت، تەنها ئەوە کە ئایا پیشان دەدرێت.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>پەنجەرە بچووکەی چینی شیفت</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ئۆڤەرلەی گۆڕینی پرۆفایل</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>تێبینیی پچڕانی ئامێر</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>تێبینیی پەیوەستبوونی ئامێر</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ئەڵقە یان تۆڕەکەی سەر شاشە پیشان بدە لە کاتێکدا مێنیوێکی بازنەیی یان دەستلێدان چالاکە. مێنیوەکان بە کوژاوەیی ئۆڤەرلەیەکەش هەر جێبەجێ دەبن.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>مێنیوی سەر شاشە دروستکرا ({0} خانەی بەستراو)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>مێنیوی سەر شاشە دروستکرا ({0} خانەی بەستراو)</value></data>

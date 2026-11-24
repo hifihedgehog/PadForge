@@ -2149,6 +2149,15 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ó ń mú àwọ̀ mẹ́rẹ̀ẹ̀rin náà láti inú àwòrán.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Àwọn àwòrán (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Gbogbo fáìlì (*.*)|*.*</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Máa fi ránṣẹ́ lọ</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} kò sopọ̀ mọ́</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} kò sopọ̀ mọ́. {1} kò ní ẹ̀rọ kankan mọ́.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ti sopọ̀</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ti sopọ̀, bátìrì {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ẹ̀rọ tí kò sopọ̀ mọ́: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ẹ̀rọ tí ó ti sopọ̀: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ń já kúrò léraléra</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Orúkọ ẹ̀rọ tí a so pọ̀ nígbà tí kò bá sopọ̀ mọ́.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Orúkọ ẹ̀rọ tí a so pọ̀ nígbà tí ó bá sopọ̀.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ṣe ìmúdójúìwọ̀n báyìí ń gba ibi ìpamọ́ ẹ̀rọ ìdarí ti àwùjọ (SDL_GameControllerDB) wálẹ̀ láti GitHub, ó sì ń pa àwọn ìsopọ̀ tí ẹ̀yà PadForge yìí kò ní mọ́ sínú fáìlì ètò. A máa ń lo ìsopọ̀ tuntun kìkì fún ẹ̀rọ ìdarí tí kò sí ohun míràn tí ó kà á bí gamepad, tí a kò yàn, tí kò sì sí ní Ipò joystick aise. Títún tò ń yọ gbogbo ìsopọ̀ tí a gbà wálẹ̀ kúrò.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}. A ṣe ìmúdójúìwọ̀n ní {2}: tuntun {3}, àyípadà {4}.</value></data>

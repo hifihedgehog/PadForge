@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Navidezni krmilniki so omogočeni</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Navidezni krmilniki so onemogočeni</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Vsaj en krmilnik ni povezan</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0}: odklopljeno</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0}: odklopljeno. {1} nima več nobene naprave.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0}: povezano</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0}: povezano, baterija {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Odklopljenih naprav: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Povezanih naprav: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Naprava {0} se venomer odklaplja</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (največ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (največ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (največ {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Upravljajte navidezne krmilnike na drugem računalniku.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Pošiljajte gibanje krmilnika emulatorjem.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Prevzemite učinke sprožilcev in luči iz modifikacij iger.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Prikažite menije, plasti in zamenjave profilov med igranjem.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Prikažite menije, plasti, zamenjave profilov in povezave naprav med igranjem.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Zaslonska površina na dotik za igre s sledilno ploščico PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Slika, časovnik ali ura nad drugimi okni.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Svoj merilni križ nad igro.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Obroč, mreža ali vrstica menija, medtem ko je odprt.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti ob vklopu preklopne plasti, za čas, ki ga določi ta plast.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ime profila ob zamenjavi profila.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ime preslikane naprave ob prekinitvi povezave.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ime preslikane naprave ob vzpostavitvi povezave.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiraj naslov</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Mesto na zaslonu</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Poveži telefon</value></data>
@@ -4614,6 +4623,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Zaslonski kazalniki, ki jih PadForge prikazuje med igranjem. Izklop kazalnika nikoli ne spremeni delovanja, le to, ali je prikazan.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Pojavno okno preklopne plasti</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Prekrivni prikaz zamenjave profila</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Obvestilo o odklopu naprave</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Obvestilo o povezavi naprave</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Prikaži zaslonski obroč ali mrežo, ko je vklopljen radialni meni ali meni na dotik. Meniji se sprožijo tudi, ko je prekrivni prikaz izklopljen.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ustvarjen zaslonski meni (povezane celice: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ustvarjen zaslonski meni (povezane celice: {0})</value></data>

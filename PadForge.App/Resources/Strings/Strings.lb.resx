@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuell Controller aktivéiert</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuell Controller desaktivéiert</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Een oder méi Controller offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} getrennt</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} getrennt. {1} huet keen Apparat méi.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} verbonnen</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} verbonnen, Batterie {1} %</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} Apparater getrennt</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} Apparater verbonnen</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} trennt sech ëmmer erëm</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max. {0})</value></data>
@@ -412,7 +419,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Déi virtuell Controller op engem anere PC steieren.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Beweegungsdaten vum Controller un Emulatore schécken.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Trigger- a Liichteffekter vu Spill-Mods iwwerhuelen.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menüen, Schichten a Profilwiessele weisen, wärend Dir spillt.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menüen, Schichten, Profilwiessele a Verbindunge vun Apparater weisen, wärend Dir spillt.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Eng Touch-Fläch um Bildschierm fir PlayStation-Touchpad-Spiller.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>E Bild, en Timer oder eng Auer iwwer anere Fënsteren.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Äert eegent Fadekräiz iwwer engem Spill.</value></data>
@@ -441,6 +448,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De Rank, d'Gitter oder d'Leescht vun engem Menü, soulaang en op ass.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Den Numm vun der Schicht, wann eng Shift-Schicht aktiv gëtt, fir d'Zäit, déi dës Schicht festleet.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Den Numm vum Profil, wann d'Profil wiesselt.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Den Numm vun engem zougeuerdenten Apparat, wann e getrennt gëtt.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Den Numm vun engem zougeuerdenten Apparat, wann e verbonne gëtt.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adress kopéieren</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plaz um Bildschierm</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>En Handy verbannen</value></data>
@@ -4318,6 +4327,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikatoren um Bildschierm, déi PadForge weist, wärend Dir spillt. Wann Dir een ausschalt, ännert dat ni d'Verhalen, just ob et ugewise gëtt.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Ëmschaltschicht-Flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilwiessel-Overlay</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Notiz bei Apparattrennung</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Notiz bei Apparatverbindung</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Weist de Rank oder de Raster um Bildschierm, soulaang e Radial- oder Touch-Menü aktiv ass. Menüe léisen och mat ausgeschaltem Overlay aus.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>Menü um Bildschierm erstallt ({0} belegt Zellen)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>Menü um Bildschierm erstallt ({0} belegt Zell)</value></data>

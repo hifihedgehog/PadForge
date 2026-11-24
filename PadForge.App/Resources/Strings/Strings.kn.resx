@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ಒಂದು ಅಥವಾ ಹೆಚ್ಚಿನ ಕಂಟ್ರೋಲರ್‌ಗಳು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿವೆ</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ. {1} ಗೆ ಈಗ ಯಾವುದೇ ಸಾಧನ ಉಳಿದಿಲ್ಲ.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕಗೊಂಡಿದೆ</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕಗೊಂಡಿದೆ, ಬ್ಯಾಟರಿ {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} ಸಾಧನಗಳ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} ಸಾಧನಗಳು ಸಂಪರ್ಕಗೊಂಡಿವೆ</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ಪದೇ ಪದೇ ಸಂಪರ್ಕ ಕಳೆದುಕೊಳ್ಳುತ್ತಿದೆ</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (ಗರಿಷ್ಠ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (ಗರಿಷ್ಠ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ಗರಿಷ್ಠ {0})</value></data>
@@ -412,7 +419,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ಬೇರೊಂದು PC ಯಲ್ಲಿರುವ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ನಡೆಸಿ.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಚಲನೆಯನ್ನು ಎಮ್ಯುಲೇಟರ್‌ಗಳಿಗೆ ಕಳುಹಿಸಿ.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ಗೇಮ್ ಮಾಡ್‌ಗಳಿಂದ ಟ್ರಿಗರ್ ಮತ್ತು ಲೈಟ್ ಪರಿಣಾಮಗಳನ್ನು ಪಡೆಯಿರಿ.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ಆಡುವಾಗ ಮೆನು, ಲೇಯರ್ ಮತ್ತು ಪ್ರೊಫೈಲ್ ಬದಲಾವಣೆಗಳನ್ನು ತೋರಿಸಿ.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ಆಡುವಾಗ ಮೆನು, ಲೇಯರ್, ಪ್ರೊಫೈಲ್ ಬದಲಾವಣೆ ಮತ್ತು ಸಾಧನ ಸಂಪರ್ಕಗಳನ್ನು ತೋರಿಸಿ.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ಟಚ್‌ಪ್ಯಾಡ್ ಆಟಗಳಿಗಾಗಿ ಪರದೆಯ ಮೇಲಿನ ಸ್ಪರ್ಶ ಮೇಲ್ಮೈ.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ಇತರ ವಿಂಡೋಗಳ ಮೇಲೆ ಚಿತ್ರ, ಟೈಮರ್ ಅಥವಾ ಗಡಿಯಾರ.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ಆಟದ ಮೇಲೆ ನಿಮ್ಮದೇ ಕ್ರಾಸ್‌ಹೇರ್.</value></data>
@@ -441,6 +448,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ತೆರೆದಿರುವಾಗ ಮೆನುವಿನ ರಿಂಗ್, ಗ್ರಿಡ್ ಅಥವಾ ಬಾರ್.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಆನ್ ಆದಾಗ, ಆ ಲೇಯರ್ ನಿಗದಿಪಡಿಸಿದ ಅವಧಿಗೆ ಲೇಯರ್‌ನ ಹೆಸರು.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ಬದಲಾದಾಗ ಪ್ರೊಫೈಲ್‌ನ ಹೆಸರು.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ಮ್ಯಾಪ್ ಮಾಡಿದ ಸಾಧನದ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಾಗ ಅದರ ಹೆಸರು.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ಮ್ಯಾಪ್ ಮಾಡಿದ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡಾಗ ಅದರ ಹೆಸರು.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ವಿಳಾಸ ನಕಲಿಸಿ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ಪರದೆಯ ಮೇಲೆ ಸ್ಥಾನ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ಫೋನ್ ಸಂಪರ್ಕಿಸಿ</value></data>
@@ -4328,6 +4337,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ನೀವು ಆಡುವಾಗ PadForge ತೋರಿಸುವ ಪರದೆಯ ಮೇಲಿನ ಸೂಚಕಗಳು. ಒಂದನ್ನು ಆಫ್ ಮಾಡುವುದು ನಡವಳಿಕೆಯನ್ನು ಎಂದಿಗೂ ಬದಲಿಸುವುದಿಲ್ಲ, ಅದು ತೋರಿಸಲ್ಪಡುತ್ತದೆಯೇ ಎಂಬುದನ್ನು ಮಾತ್ರ ಬದಲಿಸುತ್ತದೆ.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಫ್ಲೈಔಟ್</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ಬದಲಾವಣೆ ಓವರ್‌ಲೇ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ಸಾಧನ ಸಂಪರ್ಕ ಕಡಿತದ ಟಿಪ್ಪಣಿ</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ಸಾಧನ ಸಂಪರ್ಕದ ಟಿಪ್ಪಣಿ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ರೇಡಿಯಲ್ ಅಥವಾ ಟಚ್ ಮೆನು ತೊಡಗಿರುವಾಗ ಪರದೆಯ ಮೇಲಿನ ರಿಂಗ್ ಅಥವಾ ಗ್ರಿಡ್ ತೋರಿಸಿ. ಓವರ್‌ಲೇ ಆಫ್ ಆಗಿದ್ದರೂ ಮೆನುಗಳು ನಡೆಯುತ್ತವೆ.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ಪರದೆಯ ಮೇಲಿನ ಮೆನು ರಚಿಸಲಾಗಿದೆ ({0} ಬೈಂಡ್ ಆದ ಕೋಶಗಳು)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ಪರದೆಯ ಮೇಲಿನ ಮೆನು ರಚಿಸಲಾಗಿದೆ ({0} ಬೈಂಡ್ ಆದ ಕೋಶ)</value></data>

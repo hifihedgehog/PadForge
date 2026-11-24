@@ -158,6 +158,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Komandus virtual ativadu</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Komandus virtual dizativadu</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Un o más komandu offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} dizkonektadu</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} dizkonektadu. {1} dja ka ten nenhun dispozitivu.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} konektadu</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} konektadu, bateria {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} dispozitivu dizkonektadu</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} dispozitivu konektadu</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ta kontinua ta dizkonekta</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (máx. {0})</value></data>
@@ -3088,7 +3095,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kontrola komandus virtual na otu PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Manda muvimentu di komandu pa emuladoris.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Toma efeitus di gatilhu i di lus di mods di jogu.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menu, kamadas i mudansa di perfil timenti bu sta ta joga.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menu, kamadas, mudansa di perfil i konekson di dispozitivu timenti bu sta ta joga.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Un superfísi di toki na ekran pa jogus di touchpad di PlayStation.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP simples, kódigu di asesu</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekonekson otomátiku, porta, identidadi di emparelhamentu, konekta pa enderesu</value></data>
@@ -3288,8 +3295,12 @@
   <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imajen: arti di biblioteka di Steam pa {0}.</value></data>
   <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ativa Konfigurason di komunidadi na Definisons pa pega imajen di jogu na Steam.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kontinua manda</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nómi di un dispozitivu mapiadu kantu el ta dizkonekta.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nómi di un dispozitivu mapiadu kantu el ta konekta.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Bazi di dadus di komandus</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualiza gosi ta baxa bazi di dadus di komandus di komunidadi (SDL_GameControllerDB) di GitHub i ta guarda, na fixeru di konfigurason, mapiamentus ki es vérson di PadForge ka ten. Un mapiamentu novu ta uzadu só pa un komandu ki nada más ka ta lé suma gamepad, ki ka sta atribuídu i ki ka sta na Modu joystick brutu forsadu. Ripoi ta rimove tudu mapiamentu baxadu.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualiza gosi</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ta atualiza…</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avizu di dispozitivu dizkonektadu</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avizu di dispozitivu konektadu</value></data>
 </root>

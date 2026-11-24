@@ -686,6 +686,8 @@ namespace PadForge
                      or nameof(DashboardViewModel.EnableMenuOverlay)
                      or nameof(DashboardViewModel.EnableShiftLayerFlyout)
                      or nameof(DashboardViewModel.EnableProfileOverlay)
+                     or nameof(DashboardViewModel.EnableDeviceDisconnectedNote)
+                     or nameof(DashboardViewModel.EnableDeviceConnectedNote)
                      or nameof(DashboardViewModel.HeadTrackingLastSources)
                      or nameof(DashboardViewModel.OverlaysLastShown)
                      or nameof(DashboardViewModel.ScreenOverlaysLastOn)

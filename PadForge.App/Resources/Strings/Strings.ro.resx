@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Controlere virtuale activate</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Controlere virtuale dezactivate</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Unul sau mai multe controlere deconectate</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} s-a deconectat</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} s-a deconectat. {1} nu mai are niciun dispozitiv.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} s-a conectat</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} s-a conectat, baterie {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Dispozitive deconectate: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Dispozitive conectate: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} se deconectează întruna</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Controlați controlerele virtuale de pe alt PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Trimiteți mișcarea controlerului către emulatoare.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Primiți efecte de trăgaci și de lumină de la modificările de joc.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Afișați meniuri, straturi și schimbări de profil în timp ce jucați.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Afișați meniuri, straturi, schimbări de profil și conectări de dispozitive în timp ce jucați.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>O suprafață tactilă pe ecran pentru jocurile cu touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>O imagine, un cronometru sau un ceas deasupra celorlalte ferestre.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Propriul reticul peste un joc.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Inelul, grila sau bara unui meniu cât timp este deschis.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Numele stratului când se activează un strat de comutare, pe durata stabilită de acel strat.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Numele profilului când se schimbă profilul.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Numele unui dispozitiv mapat când se deconectează.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Numele unui dispozitiv mapat când se conectează.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiere adresă</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Poziție pe ecran</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Conectare telefon</value></data>
@@ -4614,6 +4623,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicatoare pe ecran pe care PadForge le afișează în timp ce jucați. Dezactivarea unuia nu schimbă niciodată comportamentul, ci doar dacă acesta este afișat.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Panou flotant strat de comutare</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Suprapunere schimbare profil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Notă deconectare dispozitiv</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Notă conectare dispozitiv</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Afișează inelul sau grila pe ecran cât timp un meniu radial sau tactil este activ. Meniurile se declanșează și cu suprapunerea dezactivată.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>meniu pe ecran creat ({0} celule legate)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>meniu pe ecran creat ({0} celulă legată)</value></data>

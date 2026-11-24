@@ -1186,6 +1186,15 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Picture se milao</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Picture se chaar color leta hai.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Bhejte raho</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} disconnect hoe gais</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} disconnect hoe gais. {1} me koi device nai bachaa.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} connect hoe gais</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} connect hoe gais, battery {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} device disconnect hoe gais</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} device connect hoe gais</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} baar baar disconnect hoe hai</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Mapping wala device ke naam jab uu disconnect hoe.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Mapping wala device ke naam jab uu connect hoe.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Profile {0} pe jaao</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Default profile pe lauto</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Poocho kon profile chalu hai</value></data>

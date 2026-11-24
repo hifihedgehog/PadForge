@@ -49,7 +49,7 @@ namespace PadForge.Tests
         private static readonly HashSet<string> FollowsAName = new(StringComparer.OrdinalIgnoreCase)
         {
             "is", "as", "was", "has", "does", "its", "this", "ms", "needs", "reads", "sets", "reaches",
-            "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches",
+            "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps",
         };
 
         // Strings whose value before a plural is never one, with the reason.
@@ -75,6 +75,8 @@ namespace PadForge.Tests
             ["Import_ExtrasMacro_Format"] = "{0} is an input's label, as in its siblings {0} lightbar and {0} range",
             ["ControllerDatabase_BuiltIn_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount: SDL's own Windows rows and the community's",
             ["ControllerDatabase_BuiltInUpdated_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount, and {3} and {4} stand before no noun",
+            ["Main_DevicesDisconnected_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
+            ["Main_DevicesConnected_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
         };
 
         /// <summary>Every English string that puts a count before a plural
@@ -123,6 +125,14 @@ namespace PadForge.Tests
             Assert.NotEqual(1000, releaseMs);
             foreach (PadForge.Engine.Menus.KeyboardLayout layout in Enum.GetValues(typeof(PadForge.Engine.Menus.KeyboardLayout)))
                 Assert.True(PadForge.Engine.Menus.KeyboardMenuDefaults.Actions(layout).Count > 1, layout + " has one control");
+            // A device note for one device is its name and no count.
+            foreach (var kind in new[] { PadForge.Services.DeviceNoteKind.Disconnected, PadForge.Services.DeviceNoteKind.Connected })
+            {
+                var forOne = new PadForge.Services.DeviceNote(kind, 1, Guid.NewGuid(), -1);
+                string line = PadForge.Services.DeviceNoteDirector.Text(forOne, "Pad", null, -1);
+                Assert.Contains("Pad", line, StringComparison.Ordinal);
+                Assert.DoesNotContain("1", line, StringComparison.Ordinal);
+            }
         }
 
         /// <summary>Both strings of a pair exist, they differ, and the words

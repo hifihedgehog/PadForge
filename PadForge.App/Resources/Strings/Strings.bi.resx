@@ -130,6 +130,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Ol virtual kontrola i on</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Ol virtual kontrola i of</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Wan o moa kontrola i oflaen</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} i no konekt moa</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} i no konekt moa. {1} i no gat divaes i stap.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} i konekt</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} i konekt, bateri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} divaes oli no konekt moa</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} divaes oli konekt</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} i stap lusum konek oltaem</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (kasem {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (kasem {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (kasem {0})</value></data>
@@ -1895,6 +1902,8 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no save faenem fael ia.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge i no save ridim pikja blong Steam blong gem ia.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Gohed blong sendem</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nem blong wan divaes we i mapim, taem hem i no konekt moa.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nem blong wan divaes we i mapim, taem hem i konekt.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdetem Naoia i daonlodem database blong kontrola blong komuniti (SDL_GameControllerDB) long GitHub mo i kipim, long fael blong seting, ol mapping we vesen ia blong PadForge i no gat. PadForge i yusum wan niu mapping nomo blong wan kontrola we i no gat narafala samting i ridim olsem gempad, we i no asaen mo we i no stap long Force Raw Joystick Mode. Putum bak i tekemaot evri mapping we i daonlod.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Apdetem Naoia</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>I stap apdet…</value></data>

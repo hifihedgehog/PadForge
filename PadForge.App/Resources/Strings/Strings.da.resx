@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuelle controllere aktiveret</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuelle controllere deaktiveret</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>En eller flere controllere er offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} frakoblet</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} frakoblet. {1} har ingen enhed tilbage.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} tilsluttet</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tilsluttet, batteri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} enheder frakoblet</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} enheder tilsluttet</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} bliver ved med at miste forbindelsen</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Styr de virtuelle controllere på en anden pc.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Send controllerens bevægelser til emulatorer.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Modtag trigger- og lyseffekter fra spilmods.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Vis menuer, lag og profilskift, mens du spiller.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Vis menuer, lag, profilskift og enhedsforbindelser, mens du spiller.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>En berøringsflade på skærmen til PlayStation-touchpadspil.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Et billede, en timer eller et ur oven på andre vinduer.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Dit eget trådkors oven på et spil.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menuens ring, gitter eller bjælke, mens den er åben.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, når et skiftelag slås til, i den tid laget angiver.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens navn, når profilen skifter.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>En tildelt enheds navn, når den kobles fra.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>En tildelt enheds navn, når den tilsluttes.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopier adresse</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placering på skærmen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Tilslut en telefon</value></data>
@@ -4614,6 +4623,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikatorer på skærmen, som PadForge viser, mens du spiller. At slå en fra ændrer aldrig funktionen, kun om den bliver vist.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Pop op-panel for skiftelag</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay ved profilskift</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Note om frakoblet enhed</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Note om tilsluttet enhed</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Vis ringen eller gitteret på skærmen, mens en radial menu eller berøringsmenu er aktiv. Menuer udløses stadig, når overlayet er slået fra.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu på skærmen oprettet ({0} bundne celler)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu på skærmen oprettet ({0} bundet celle)</value></data>

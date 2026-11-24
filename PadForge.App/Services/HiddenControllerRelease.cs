@@ -189,6 +189,14 @@ namespace PadForge.Services
         private bool _listingWaitRanOut;
         private Task _tail = Task.CompletedTask;
         private bool _disposed;
+        // When a port was last cycled, on the tick clock (Now), -1 for never.
+        private long _lastCycleAt = -1;
+
+        /// <summary>When PadForge last cycled a USB port, on the tick clock
+        /// (<see cref="Now"/>), or -1 when it never has. The controller on
+        /// that port drops and comes back by PadForge's own hand, and the
+        /// device notes say nothing of it (#597).</summary>
+        internal long LastCycleAt => System.Threading.Volatile.Read(ref _lastCycleAt);
 
         /// <summary>Queues the release of the ids a hide just added and
         /// returns at once. The batch reads what it decides on when it
@@ -371,6 +379,7 @@ namespace PadForge.Services
                         continue;
                     }
                     _lastCycle[usb] = now;
+                    System.Threading.Volatile.Write(ref _lastCycleAt, now);
                 }
                 if (cycledOne) Pause(PauseBetweenCyclesMs);
                 cycledOne = true;

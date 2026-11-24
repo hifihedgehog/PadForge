@@ -144,6 +144,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Izilawuli ezibonakalayo zinikwe amandla</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Izilawuli ezibonakalayo zikhutshaziwe</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Isilawuli esisodwa noma ngaphezulu asikho ku-inthanethi</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} inqamukile</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} inqamukile. {1} asisenayo idivayisi.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ixhunyiwe</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ixhunyiwe, ibhethri u-{1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Amadivayisi angu-{0} anqamukile</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Amadivayisi angu-{0} axhunyiwe</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ihlala inqamuka</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (kuze kufike ku-{0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (kuze kufike ku-{0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (kuze kufike ku-{0})</value></data>
@@ -2164,6 +2171,8 @@
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>I-overlay yemenyu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Ama-overlay</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>I-overlay yokushintsha iphrofayela</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Isaziso sedivayisi enqamukile</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Isaziso sedivayisi exhunyiwe</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Okukhiphayo</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Okhiye negundane</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Amanothi nokulawula</value></data>
@@ -2649,7 +2658,7 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Bheka nxazonke ngesilandeleli sekhanda noma ngehedsethi ye-VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mepha isivinini, amaphedali namagiya emidlalweni yokushayela.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Thatha imiphumela ye-trigger neyokukhanya kuma-mod emidlalo.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa amamenyu, izendlalelo nokushintshwa kwamaphrofayela ngenkathi udlala.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa amamenyu, izendlalelo, ukushintshwa kwamaphrofayela nokuxhunywa kwamadivayisi ngenkathi udlala.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Imbobo, i-HTTP evamile, ikhodi yokungena</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Imbobo, i-DSX.exe engumbambeli</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Izimbobo, Isivinini esiphelele, Amafomethi angokwezifiso</value></data>
@@ -2691,6 +2700,8 @@
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Okuboniswayo</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Indandatho, igridi noma ibha yemenyu ngenkathi ivuliwe.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama lephrofayela uma iphrofayela ishintsha.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Igama ledivayisi emephiwe uma inqamuka.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Igama ledivayisi emephiwe uma ixhunywa.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopisha ikheli</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Indawo esikrinini</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Xhuma ifoni</value></data>

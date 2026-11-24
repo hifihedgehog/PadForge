@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtualūs valdikliai įjungti</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtualūs valdikliai išjungti</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Vienas ar keli valdikliai atsijungę</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} atsijungė</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} atsijungė. {1} nebeturi nė vieno įrenginio.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} prisijungė</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} prisijungė, akumuliatorius {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Atsijungė įrenginių: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Prisijungė įrenginių: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} vis atsijungia</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (daugiausia {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (daugiausia {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (daugiausia {0})</value></data>
@@ -412,7 +419,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Valdykite virtualius valdiklius kitame kompiuteryje.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Siųskite valdiklio judesį emuliatoriams.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Priimkite gaidukų ir šviesos efektus iš žaidimų modifikacijų.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rodykite meniu, sluoksnius ir profilių perjungimus žaidžiant.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rodykite meniu, sluoksnius, profilių perjungimus ir įrenginių prisijungimus žaidžiant.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekrane rodomas jutiklinis paviršius „PlayStation“ jutiklinio skydelio žaidimams.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Paveikslėlis, laikmatis ar laikrodis virš kitų langų.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jūsų pačių taikiklis virš žaidimo.</value></data>
@@ -441,6 +448,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Meniu žiedas, tinklelis ar juosta, kol jis atidarytas.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Sluoksnio pavadinimas, kai įjungiamas lygiavertis sluoksnis, tiek laiko, kiek nustato tas sluoksnis.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilio pavadinimas, kai profilis pasikeičia.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Priskirto įrenginio pavadinimas, kai jis atsijungia.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Priskirto įrenginio pavadinimas, kai jis prisijungia.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopijuoti adresą</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vieta ekrane</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Prijunkite telefoną</value></data>
@@ -4342,6 +4351,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Ekrane rodomi indikatoriai, kuriuos „PadForge“ rodo jums žaidžiant. Išjungus kurį nors, veikimas nesikeičia, tik tai, ar jis rodomas.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Perjungimo sluoksnio iššokantis skydelis</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilio perjungimo perdanga</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Įrenginio atsijungimo pranešimas</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Įrenginio prisijungimo pranešimas</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Rodyti ekrane žiedą arba tinklelį, kol įjungtas radialinis ar lietimo meniu. Meniu suveikia ir išjungus perdangą.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>sukurtas ekrano meniu (priskirtų langelių: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>sukurtas ekrano meniu (priskirtas langelis: {0})</value></data>

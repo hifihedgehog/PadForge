@@ -1427,6 +1427,13 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Alaen ti uppat a kolor manipud iti ladawan.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Saan a mabasa ti PadForge ti ladawan ti Steam para iti daytoy nga ay-ayam.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ituloy ti panangipatulod</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Naiddiskonekta ti {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Naiddiskonekta ti {0}. Awanen ti nabati a device ti {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Naikonekta ti {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Naikonekta ti {0}, baterya {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Naiddiskonekta ti {0} a device</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Naikonekta ti {0} a device</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Maulit-ulit a maiddiskonekta ti {0}</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ti Update Now ket mangi-download iti database ti controller ti komunidad (SDL_GameControllerDB) manipud iti GitHub ken idulinna, iti settings file, dagiti mapping nga awan iti daytoy a bersion ti PadForge. Ti baro a mapping ket mausar laeng para iti controller nga awan ti sabali a mangbasa a kas gamepad, saan a naitudingan ken saan nga adda iti Force Raw Joystick Mode. Ikkaten ti reset amin a na-download a mapping.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}. Na-update iti {2}: {3} baro, {4} nabaliwan.</value></data>

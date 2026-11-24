@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>เปิดใช้งานคอนโทรลเลอร์เสมือนแล้ว</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ปิดใช้งานคอนโทรลเลอร์เสมือนแล้ว</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>มีคอนโทรลเลอร์อย่างน้อยหนึ่งตัวออฟไลน์</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ตัดการเชื่อมต่อ</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ตัดการเชื่อมต่อ {1} ไม่เหลืออุปกรณ์แล้ว</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} เชื่อมต่อแล้ว</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} เชื่อมต่อแล้ว แบตเตอรี่ {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>อุปกรณ์ {0} รายการตัดการเชื่อมต่อ</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>อุปกรณ์ {0} รายการเชื่อมต่อแล้ว</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ตัดการเชื่อมต่อซ้ำๆ</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (สูงสุด {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (สูงสุด {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (สูงสุด {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ควบคุมคอนโทรลเลอร์เสมือนบนพีซีอีกเครื่อง</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ส่งการเคลื่อนไหวของคอนโทรลเลอร์ไปยังอีมูเลเตอร์</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>รับเอฟเฟกต์ทริกเกอร์และไฟจากม็อดเกม</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>แสดงเมนู เลเยอร์ และการสลับโปรไฟล์ขณะเล่น</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>แสดงเมนู เลเยอร์ การสลับโปรไฟล์ และการเชื่อมต่ออุปกรณ์ขณะเล่น</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>พื้นผิวสัมผัสบนหน้าจอสำหรับเกมทัชแพดของ PlayStation</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>รูปภาพ ตัวจับเวลา หรือนาฬิกาเหนือหน้าต่างอื่น</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>เป้าเล็งของคุณเองบนเกม</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>วงแหวน ตาราง หรือแถบของเมนูขณะที่เมนูเปิดอยู่</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ชื่อของเลเยอร์เมื่อเลเยอร์ชิฟต์เปิดทำงาน ตามระยะเวลาที่เลเยอร์นั้นกำหนด</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ชื่อของโปรไฟล์เมื่อโปรไฟล์เปลี่ยน</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ชื่อของอุปกรณ์ที่แมปไว้เมื่อตัดการเชื่อมต่อ</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ชื่อของอุปกรณ์ที่แมปไว้เมื่อเชื่อมต่อ</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>คัดลอกที่อยู่</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ตำแหน่งบนหน้าจอ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>เชื่อมต่อโทรศัพท์</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ตัวบ่งชี้บนหน้าจอที่ PadForge แสดงขณะคุณเล่น การปิดตัวใดตัวหนึ่งไม่เปลี่ยนการทำงาน เปลี่ยนเพียงว่าจะแสดงหรือไม่</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>หน้าต่างลอยเลเยอร์ชิฟต์</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>โอเวอร์เลย์การสลับโปรไฟล์</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ข้อความอุปกรณ์ตัดการเชื่อมต่อ</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ข้อความอุปกรณ์เชื่อมต่อ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>แสดงวงแหวนหรือตารางบนหน้าจอขณะที่เมนูวงแหวนหรือเมนูสัมผัสทำงานอยู่ เมนูยังคงทำงานแม้ปิดโอเวอร์เลย์</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>สร้างเมนูบนหน้าจอแล้ว (เซลล์ที่ผูกไว้ {0} เซลล์)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>สร้างเมนูบนหน้าจอแล้ว (เซลล์ที่ผูกไว้ {0} เซลล์)</value></data>

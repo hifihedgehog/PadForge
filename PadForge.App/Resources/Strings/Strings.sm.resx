@@ -1150,7 +1150,7 @@
   <data name="Extras_Group_Send" xml:space="preserve"><value>Auina atu i se isi mea</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>I luga o le lau</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ave aafiaga o trigger ma moli mai mod o taʻaloga.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Faʻaali menu, layer ma suiga o profile a o e taʻalo.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Faʻaali menu, layer, suiga o profile ma fesoʻotaʻiga o masini a o e taʻalo.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sui mo DSX.exe</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Faʻaaogā</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick ma Trigger</value></data>
@@ -1321,10 +1321,21 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ata (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faila uma (*.*)|*.*</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>E le mafai e PadForge ona faitau le ata a Steam mo lenei taʻaloga.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Faʻaauau le Auina Atu</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Ua motusia {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Ua motusia {0}. Ua leai se masini o totoe i le {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Ua fesoʻotaʻi {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Ua fesoʻotaʻi {0}, maa {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ua motusia masini e {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ua fesoʻotaʻi masini e {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>O loʻo motusia pea {0}</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Le igoa o se masini ua tofia pe a motusia.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Le igoa o se masini ua tofia pe a fesoʻotaʻi.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>E sii mai e le Update Now le faʻamaumauga o masini taʻalo a le nuʻu (SDL_GameControllerDB) mai GitHub ma teu ai i le faila o faʻatulagaga faʻafanua e le o i ai i lenei lomiga o PadForge. E faʻaaogā se faʻafanua fou naʻo mo se masini e leai se isi mea e faitau o se gamepad, e le o tofia ma e le o i le Force Raw Joystick Mode. E aveese e le toe setiina faʻafanua uma na sii mai.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}. Faʻafouina {2}: fou {3}, suia {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>E leʻi suia le faʻamaumauga a le nuʻu talu mai le faʻafouga mulimuli.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>E faʻaaogā se faʻafanua fou i le isi taimi e fesoʻotaʻi ai lona masini.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>E faʻaaogā se faʻafanua ua suia i le isi taimi e amata ai PadForge.</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Faʻailo o le Motusia o se Masini</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Faʻailo o le Fesoʻotaʻi o se Masini</value></data>
 </root>

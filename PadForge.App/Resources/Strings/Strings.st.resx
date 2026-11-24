@@ -1260,4 +1260,11 @@
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Setshwantsho sa thimi: USS Enterprise-D</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge e ke ke ya bala setshwantsho sa Steam sa papadi ena.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tswela pele ho Romela</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} e kgaotswe</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} e kgaotswe. {1} ha e sa na sesebediswa.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} e hokahantswe</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} e hokahantswe, betri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Disebediswa tse {0} di kgaotswe</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Disebediswa tse {0} di hokahantswe</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} e ntse e kgaoha kgafetsa</value></data>
 </root>

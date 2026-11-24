@@ -2701,6 +2701,8 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableMenuOverlay = appSettings.EnableMenuOverlay;
             _mainVm.Dashboard.EnableShiftLayerFlyout = appSettings.EnableShiftLayerFlyout;
             _mainVm.Dashboard.EnableProfileOverlay = appSettings.EnableProfileOverlay;
+            _mainVm.Dashboard.EnableDeviceDisconnectedNote = appSettings.EnableDeviceDisconnectedNote;
+            _mainVm.Dashboard.EnableDeviceConnectedNote = appSettings.EnableDeviceConnectedNote;
             _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
@@ -4509,6 +4511,8 @@ namespace PadForge.Services
                 _mainVm.Dashboard.EnableMenuOverlay = active.EnableMenuOverlay;
                 _mainVm.Dashboard.EnableShiftLayerFlyout = active.EnableShiftLayerFlyout;
                 _mainVm.Dashboard.EnableProfileOverlay = active.EnableProfileOverlay;
+                _mainVm.Dashboard.EnableDeviceDisconnectedNote = active.EnableDeviceDisconnectedNote;
+                _mainVm.Dashboard.EnableDeviceConnectedNote = active.EnableDeviceConnectedNote;
                 _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity;
                 _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
                 _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
@@ -4692,6 +4696,8 @@ namespace PadForge.Services
             profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
             profile.EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout;
             profile.EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay;
+            profile.EnableDeviceDisconnectedNote = _mainVm.Dashboard.EnableDeviceDisconnectedNote;
+            profile.EnableDeviceConnectedNote = _mainVm.Dashboard.EnableDeviceConnectedNote;
             // The service toggles are AUTHORED nullable legs (see
             // ProfileData.EnableHeadTracking): refresh a recorded opinion
             // from the live value, never invent one here. The live value
@@ -5251,6 +5257,8 @@ namespace PadForge.Services
                 EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay,
                 EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout,
                 EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay,
+                EnableDeviceDisconnectedNote = _mainVm.Dashboard.EnableDeviceDisconnectedNote,
+                EnableDeviceConnectedNote = _mainVm.Dashboard.EnableDeviceConnectedNote,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -7708,6 +7716,17 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableProfileOverlay { get; set; } = true;
 
+        /// <summary>Whether the flyout names a mapped device when it
+        /// disconnects (#597). Default off, so a file from before it reads
+        /// off.</summary>
+        [XmlElement]
+        public bool EnableDeviceDisconnectedNote { get; set; }
+
+        /// <summary>Whether the flyout names a mapped device when it connects
+        /// (#597). Default off.</summary>
+        [XmlElement]
+        public bool EnableDeviceConnectedNote { get; set; }
+
         /// <summary>Default profile's custom touchpad gestures.
         /// Named profiles store theirs under each profile's
         /// <c>ProfileData.TouchpadGestures</c>; when the default profile
@@ -8842,6 +8861,17 @@ namespace PadForge.Services
         /// change. Default on. The switch still happens when off.</summary>
         [XmlElement]
         public bool EnableProfileOverlay { get; set; } = true;
+
+        /// <summary>Whether the flyout names a mapped device when it
+        /// disconnects (#597), the profile's own copy. Default off, so a
+        /// profile saved before it reads off.</summary>
+        [XmlElement]
+        public bool EnableDeviceDisconnectedNote { get; set; }
+
+        /// <summary>Whether the flyout names a mapped device when it connects
+        /// (#597), the profile's own copy. Default off.</summary>
+        [XmlElement]
+        public bool EnableDeviceConnectedNote { get; set; }
 
         /// <summary>The profile's Razer Chroma lightbar mirror opinion (#373)
         /// as files before #494 saved it. Read once by

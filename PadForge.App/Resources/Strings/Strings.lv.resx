@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuālie kontrolleri iespējoti</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuālie kontrolleri atspējoti</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Viens vai vairāki kontrolleri ir bezsaistē</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Atvienota ierīce {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Atvienota ierīce {0}. {1} vairs nav ierīces.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Pievienota ierīce {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Pievienota ierīce {0}, akumulators {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Atvienotās ierīces: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Pievienotās ierīces: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} atkārtoti atvienojas</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Vadiet virtuālos kontrollerus citā datorā.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Sūtiet kontrollera kustības datus emulatoriem.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Saņemiet mēlīšu un gaismas efektus no spēļu modifikācijām.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rādiet izvēlnes, slāņus un profilu pārslēgšanu spēles laikā.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rādiet izvēlnes, slāņus, profilu pārslēgšanu un ierīču savienojumus spēles laikā.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekrāna skārienvirsma PlayStation skārienpaliktņa spēlēm.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Attēls, taimeris vai pulkstenis virs citiem logiem.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jūsu pašu krustiņš virs spēles.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Izvēlnes gredzens, režģis vai josla, kamēr tā ir atvērta.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Slāņa nosaukums, kad ieslēdzas maiņas slānis, uz laiku, ko nosaka šis slānis.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profila nosaukums, kad profils mainās.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Piesaistītas ierīces nosaukums, kad tā atvienojas.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Piesaistītas ierīces nosaukums, kad tā pievienojas.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopēt adresi</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Novietojums ekrānā</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Pievienot tālruni</value></data>
@@ -4614,6 +4623,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Ekrāna indikatori, ko PadForge rāda spēles laikā. Izslēdzot kādu no tiem, darbība nemainās, mainās tikai tas, vai tas tiek rādīts.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Slāņa uznirstošais panelis</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profila pārslēgšanas pārklājums</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ierīces atvienošanas paziņojums</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ierīces pievienošanas paziņojums</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Rādīt ekrāna apli vai režģi, kamēr ir aktīva radiālā vai skāriena izvēlne. Izvēlnes darbojas arī tad, ja pārklājums ir izslēgts.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>izveidota ekrāna izvēlne (piesaistītās šūnas: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>izveidota ekrāna izvēlne (piesaistītās šūnas: {0})</value></data>

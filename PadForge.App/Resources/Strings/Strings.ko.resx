@@ -187,6 +187,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>가상 컨트롤러 활성화</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>가상 컨트롤러 비활성화</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} 연결 끊김</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} 연결 끊김. {1}에 남은 장치가 없습니다.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} 연결됨</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} 연결됨, 배터리 {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>장치 {0}개 연결 끊김</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>장치 {0}개 연결됨</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0}의 연결이 계속 끊어집니다</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0}개)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0}개)</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (최대 {0}개)</value></data>
@@ -3747,7 +3754,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>다른 PC의 가상 컨트롤러를 구동합니다.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>컨트롤러의 모션을 에뮬레이터로 보냅니다.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>게임 모드의 트리거 효과와 조명 효과를 받아들입니다.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>플레이 중 메뉴, 레이어, 프로필 전환을 표시합니다.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>플레이 중 메뉴, 레이어, 프로필 전환, 장치 연결을 표시합니다.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation 터치패드 게임을 위한 화면 터치 표면입니다.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>다른 창 위에 표시되는 그림, 타이머 또는 시계입니다.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>게임 위에 나만의 조준선을 표시합니다.</value></data>
@@ -3776,6 +3783,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>메뉴가 열려 있는 동안의 링, 격자 또는 바.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>시프트 레이어가 켜질 때 레이어 이름, 해당 레이어가 정한 시간 동안.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>프로필이 바뀔 때 프로필 이름.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>연결이 끊어질 때 매핑된 장치의 이름.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>연결될 때 매핑된 장치의 이름.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>주소 복사</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>화면 위치</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>휴대폰 연결</value></data>
@@ -4558,6 +4567,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>플레이 중 PadForge가 표시하는 화면 표시기입니다. 끄더라도 동작은 바뀌지 않고 화면에 나타나는지만 달라집니다.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>시프트 레이어 플라이아웃</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>프로필 전환 오버레이</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>장치 연결 끊김 알림</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>장치 연결 알림</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>방사형 또는 터치 메뉴가 활성화된 동안 화면에 링 또는 그리드를 표시합니다. 오버레이가 꺼져 있어도 메뉴는 실행됩니다.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>화면 메뉴 생성됨({0}개 할당된 셀)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>화면 메뉴 생성됨({0}개 할당된 셀)</value></data>

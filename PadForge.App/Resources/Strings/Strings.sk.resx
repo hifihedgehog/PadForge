@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuálne ovládače povolené</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuálne ovládače zakázané</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Jeden alebo viac ovládačov je offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Zariadenie {0} je odpojené</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Zariadenie {0} je odpojené. {1} nemá žiadne zariadenie.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Zariadenie {0} je pripojené</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Zariadenie {0} je pripojené, batéria {1} %</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Odpojené zariadenia: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Pripojené zariadenia: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Zariadenie {0} sa neustále odpája</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ovládajte virtuálne ovládače na inom počítači.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Posielajte pohyb ovládača do emulátorov.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Preberajte efekty spúští a svetiel z herných módov.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zobrazuje ponuky, vrstvy a prepnutia profilu počas hrania.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zobrazuje ponuky, vrstvy, prepnutia profilu a pripojenia zariadení počas hrania.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Dotyková plocha na obrazovke pre hry s touchpadom PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obrázok, časovač alebo hodiny nad ostatnými oknami.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Vlastný zameriavač nad hrou.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Prstenec, mriežka alebo lišta ponuky, kým je otvorená.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Názov vrstvy pri zapnutí vrstvy Shift na čas, ktorý si vrstva nastaví.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Názov profilu pri zmene profilu.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Názov namapovaného zariadenia pri jeho odpojení.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Názov namapovaného zariadenia pri jeho pripojení.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopírovať adresu</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Umiestnenie na obrazovke</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Pripojenie telefónu</value></data>
@@ -4614,6 +4623,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikátory na obrazovke, ktoré PadForge zobrazuje počas hrania. Vypnutie niektorého z nich nikdy nemení správanie, iba to, či sa zobrazí.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Panel vrstvy Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Prekrytie prepnutia profilu</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Oznámenie o odpojení zariadenia</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Oznámenie o pripojení zariadenia</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zobrazuje kruh alebo mriežku na obrazovke, kým je aktívna kruhová alebo dotyková ponuka. Ponuky sa spúšťajú aj pri vypnutom prekrytí.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ponuka na obrazovke vytvorená (priradené bunky: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ponuka na obrazovke vytvorená (priradené bunky: {0})</value></data>

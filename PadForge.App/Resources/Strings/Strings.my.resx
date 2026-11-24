@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများ ဖွင့်ထားသည်</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာများ ပိတ်ထားသည်</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ကွန်ထရိုလာ တစ်ခု သို့မဟုတ် တစ်ခုထက်ပို၍ အော့ဖ်လိုင်းဖြစ်နေသည်</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်မှု ပြတ်သွားသည်</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်မှု ပြတ်သွားသည်။ {1} တွင် စက်ပစ္စည်း မကျန်တော့ပါ။</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်လာသည်</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်လာသည်၊ ဘက်ထရီ {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခု ချိတ်ဆက်မှု ပြတ်သွားသည်</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခု ချိတ်ဆက်လာသည်</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်မှု ထပ်ခါထပ်ခါ ပြတ်နေသည်</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (အများဆုံး {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (အများဆုံး {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (အများဆုံး {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>အခြား PC ပေါ်ရှိ ဗာချွယ်ကွန်ထရိုလာများကို မောင်းနှင်ပါ။</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ကွန်ထရိုလာ လှုပ်ရှားမှုကို အီမြူလေတာများသို့ ပို့ပါ။</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ဂိမ်းမော့ဒ်များမှ ထရီဂါနှင့် အလင်း အကျိုးသက်ရောက်မှုများကို ယူပါ။</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>သင် ကစားနေစဉ် မီနူးများ၊ အလွှာများနှင့် ပရိုဖိုင် ပြောင်းခြင်းများကို ပြပါ။</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>သင် ကစားနေစဉ် မီနူးများ၊ အလွှာများ၊ ပရိုဖိုင် ပြောင်းခြင်းများနှင့် စက်ပစ္စည်း ချိတ်ဆက်မှုများကို ပြပါ။</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation တာ့ချ်ပက် ဂိမ်းများအတွက် မျက်နှာပြင်ပေါ်ရှိ ထိတွေ့မျက်နှာပြင်။</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>အခြားဝင်းဒိုးများ၏ အပေါ်တွင် ပုံ၊ အချိန်တိုင်းကိရိယာ သို့မဟုတ် နာရီ။</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ဂိမ်းတစ်ခု၏ အပေါ်တွင် သင့်ကိုယ်ပိုင် ချိန်ရွယ်အမှတ်။</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>မီနူးဖွင့်ထားစဉ် ၎င်း၏ အဝိုင်း၊ ဇယားကွက် သို့မဟုတ် ဘား။</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift အလွှာ ဖွင့်လာသည့်အခါ ထိုအလွှာ သတ်မှတ်ထားသည့် ကြာချိန်အတွင်း ထိုအလွှာ၏ အမည်။</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းသည့်အခါ ပရိုဖိုင်၏ အမည်။</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>မက်ပင်းလုပ်ထားသော စက်ပစ္စည်း ချိတ်ဆက်မှု ပြတ်သွားသည့်အခါ ၎င်း၏ အမည်။</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>မက်ပင်းလုပ်ထားသော စက်ပစ္စည်း ချိတ်ဆက်လာသည့်အခါ ၎င်း၏ အမည်။</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>လိပ်စာ ကူးယူရန်</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>မျက်နှာပြင်ပေါ်ရှိ နေရာ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ဖုန်းတစ်လုံး ချိတ်ဆက်ရန်</value></data>
@@ -4346,6 +4355,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>သင် ကစားနေစဉ် PadForge ပြသော ဖန်သားပြင်ပေါ်ရှိ ညွှန်ပြချက်များ။ တစ်ခုကို ပိတ်ခြင်းသည် အပြုအမူကို ဘယ်တော့မှ မပြောင်းဘဲ ပြသခြင်း ရှိမရှိကိုသာ ပြောင်းသည်။</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ရှစ်ဖ် အလွှာ ပေါ်လာကွက်</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းခြင်း အုပ်ထပ်ပြကွက်</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>စက်ပစ္စည်း ချိတ်ဆက်မှု ပြတ်ကြောင်း မှတ်စု</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>စက်ပစ္စည်း ချိတ်ဆက်ကြောင်း မှတ်စု</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>စက်ဝိုင်း သို့မဟုတ် ထိ မီနူး အသက်ဝင်နေစဉ် ဖန်သားပြင်ပေါ်ရှိ ကွင်း သို့မဟုတ် ဇယားကွက်ကို ပြပါ။ အုပ်ထပ်ပြကွက် ပိတ်ထားလည်း မီနူးများ အလုပ်လုပ်ဆဲ ဖြစ်သည်။</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ဖန်သားပြင်ပေါ် မီနူး ဖန်တီးပြီး (ဘိုင်းဒင်းပါ အကွက် {0} ခု)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ဖန်သားပြင်ပေါ် မီနူး ဖန်တီးပြီး (ဘိုင်းဒင်းပါ အကွက် {0} ခု)</value></data>

@@ -1545,6 +1545,13 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Zithunzi (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafayilo onse (*.*)|*.*</value></data>
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge sikutha kuwerenga fayiloyo.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge sikupeza fayiloyo.</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} yachotsedwa</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} yachotsedwa. {1} ilibenso chipangizo.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} yalumikizidwa</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yalumikizidwa, batire {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Zipangizo {0} zachotsedwa</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Zipangizo {0} zalumikizidwa</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ikuchotsedwa mobwerezabwereza</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sinthani kupita ku mbiri {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bwererani ku mbiri yokhazikika</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Funsani mbiri yomwe ikugwira ntchito</value></data>

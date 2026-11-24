@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Maethais nem echuiannen</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Maethais nem lorthannen</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Maethas min egor am ú-iannannen</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} dannodannen</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} dannodannen. {1} ú-gar carf iannannen.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} iannannen</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} iannannen, tund {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} cerf dannodannen</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} cerf iannannen</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} dannoda laew</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (taeg {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (taeg {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (taeg {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Maetho i maethais nem bo PC egel.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Menno mîn maethas na curu lammad.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Gedo tas a celias o gwistad telias.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tano narth, talan a gwistad panu ir maethal i delias.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tano narth, talan, gwistad panu a iannad cerf lo i delias cuia.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Plad aphas bo cenedril an telias PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Em, nediad lû egor oreth bo henneth egel.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Till tirith lín bo i delias.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>I gor, i raew egor i rib narth, lo i narth edrannen.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Eneth i dalan ir talan gwistad echuida, an i lû sesta i talan hen.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Eneth i banu ir gwista i banu.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Eneth carf sestannen ir dannoda.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Eneth carf sestannen ir ianna.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Lammo i sad</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Panno na genedril</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ianno carf palan</value></data>
@@ -4635,6 +4644,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Taith bo cenedril i tana PadForge lo i telias lín. Lorthad min ú gwista carthas, ero i tanad.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Esgal gwistad talan</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Esgal gwistad panu</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Têw carf dannodannen</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Têw carf iannannen</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Tano i rind egor raew bo cenedril lo narth cui. Narth echuidar eno ir i esgal lorn.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>narth bo cenedril carnen ({0} sad sestannen)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>narth bo cenedril carnen ({0} sad sestannen)</value></data>

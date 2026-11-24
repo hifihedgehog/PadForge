@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិតបានបើក</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិតបានបិទ</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ឧបករណ៍បញ្ជាមួយ ឬច្រើននៅក្រៅបណ្ដាញ</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} បានផ្ដាច់</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} បានផ្ដាច់។ {1} លែងមានឧបករណ៍ទៀតហើយ។</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} បានភ្ជាប់</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} បានភ្ជាប់ ថ្ម {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>ឧបករណ៍ {0} បានផ្ដាច់</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>ឧបករណ៍ {0} បានភ្ជាប់</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ផ្ដាច់ម្ដងហើយម្ដងទៀត</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (អតិបរមា {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (អតិបរមា {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (អតិបរមា {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>បញ្ជាឧបករណ៍បញ្ជានិម្មិតនៅលើកុំព្យូទ័រផ្សេង។</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>បញ្ជូនចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាម។</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ទទួលបែបផែនទ្រីហ្គឺ និងភ្លើងពីម៉ូដហ្គេម។</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>បង្ហាញម៉ឺនុយ ស្រទាប់ និងការប្ដូរប្រូហ្វាល់ខណៈអ្នកលេង។</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>បង្ហាញម៉ឺនុយ ស្រទាប់ ការប្ដូរប្រូហ្វាល់ និងការភ្ជាប់ឧបករណ៍ខណៈអ្នកលេង។</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមផ្ទាំងប៉ះ PlayStation។</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>រូបភាព កម្មវិធីកំណត់ម៉ោង ឬនាឡិកា នៅពីលើបង្អួចផ្សេងទៀត។</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>សញ្ញាតម្រង់ផ្ទាល់ខ្លួនរបស់អ្នកពីលើហ្គេម។</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>រង្វង់ ក្រឡា ឬរបាររបស់ម៉ឺនុយ ខណៈវាកំពុងបើក។</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ឈ្មោះស្រទាប់ នៅពេលស្រទាប់ប្ដូរបើក សម្រាប់រយៈពេលដែលស្រទាប់នោះកំណត់។</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់ នៅពេលប្រូហ្វាល់ផ្លាស់ប្ដូរ។</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ឈ្មោះឧបករណ៍ដែលបានម៉ាប នៅពេលវាផ្ដាច់។</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ឈ្មោះឧបករណ៍ដែលបានម៉ាប នៅពេលវាភ្ជាប់។</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ចម្លងអាសយដ្ឋាន</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ទីតាំងលើអេក្រង់</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ភ្ជាប់ទូរសព្ទ</value></data>
@@ -4348,6 +4357,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>សូចនាករលើអេក្រង់ដែល PadForge បង្ហាញខណៈអ្នកលេង។ ការបិទមួយមិនដែលផ្លាស់ប្ដូរឥរិយាបថទេ គ្រាន់តែថាតើវាត្រូវបានបង្ហាញឬអត់ប៉ុណ្ណោះ។</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ផ្ទាំងលេចឡើងស្រទាប់ប្ដូរ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតការប្ដូរប្រូហ្វាល់</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>សារឧបករណ៍បានផ្ដាច់</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>សារឧបករណ៍បានភ្ជាប់</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>បង្ហាញរង្វង់ ឬក្រឡាចត្រង្គលើអេក្រង់ ខណៈម៉ឺនុយរង្វង់ ឬម៉ឺនុយប៉ះកំពុងសកម្ម។ ម៉ឺនុយនៅតែដំណើរការពេលបិទផ្ទាំងត្រួត។</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>បានបង្កើតម៉ឺនុយលើអេក្រង់ (ក្រឡាដែលបានភ្ជាប់ {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>បានបង្កើតម៉ឺនុយលើអេក្រង់ (ក្រឡាដែលបានភ្ជាប់ {0})</value></data>

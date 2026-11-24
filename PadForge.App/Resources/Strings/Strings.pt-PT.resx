@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Comandos virtuais ativados</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Comandos virtuais desativados</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Um ou mais comandos offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} desligado</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} desligado. {1} ficou sem dispositivo.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ligado</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ligado, bateria {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} dispositivos desligados</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} dispositivos ligados</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} continua a desligar-se</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (máx. {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Controle os comandos virtuais noutro PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Envie o movimento do comando para emuladores.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Receba efeitos de gatilhos e de luzes dos mods de jogos.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostre menus, camadas e mudanças de perfil enquanto joga.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostre menus, camadas, mudanças de perfil e ligações de dispositivos enquanto joga.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Uma superfície tátil no ecrã para jogos com painel tátil da PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Uma imagem, um temporizador ou um relógio por cima das outras janelas.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>A sua própria mira sobre um jogo.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>O anel, a grelha ou a barra de um menu enquanto está aberto.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>O nome da camada quando uma camada de shift é ativada, durante o tempo que essa camada define.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>O nome do perfil quando o perfil muda.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>O nome de um dispositivo mapeado quando se desliga.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>O nome de um dispositivo mapeado quando se liga.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiar endereço</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posição no ecrã</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ligar um telemóvel</value></data>
@@ -4353,6 +4362,8 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicadores no ecrã que o PadForge mostra enquanto joga. Desligar um deles nunca altera o comportamento, apenas se este é mostrado.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Painel flutuante da camada de shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sobreposição de mudança de perfil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nota de dispositivo desligado</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nota de dispositivo ligado</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grelha no ecrã enquanto um menu radial ou tátil está ativo. Os menus continuam a disparar com a sobreposição desligada.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu no ecrã criado ({0} células associadas)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu no ecrã criado ({0} célula associada)</value></data>

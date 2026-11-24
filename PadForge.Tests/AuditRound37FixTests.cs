@@ -408,7 +408,11 @@ namespace PadForge.Tests
         /// <para>EnableMenuOverlay is the established member, so its footprint
         /// is the spec. This diffs the newer two against it per file rather
         /// than per line, which is what catches a missed snapshot, apply, save,
-        /// load, dirty-marker or XAML binding.</para></summary>
+        /// load, dirty-marker or XAML binding.</para>
+        ///
+        /// <para>The two device notes (#597) are rows of the same card and
+        /// joined the family, so they cross the same legs: the view model's
+        /// catalog switch, Home's count and the reset commands too.</para></summary>
         [Fact]
         public void EveryOverlayToggle_CrossesTheSameLegsAsItsSibling()
         {
@@ -420,6 +424,9 @@ namespace PadForge.Tests
                 "PadForge.App/MainWindow.xaml.cs",
                 // The Overlays card moved to the Extras page (#574).
                 "PadForge.App/Views/ExtrasPage.xaml",
+                "PadForge.App/ViewModels/DashboardViewModel.Extras.cs",
+                "PadForge.App/ViewModels/DashboardViewModel.Home.cs",
+                "PadForge.App/ViewModels/SettingResetCommands.cs",
             };
 
             int Count(string file, string key) =>
@@ -436,6 +443,8 @@ namespace PadForge.Tests
 
                 Assert.Equal(spec, Count(file, "EnableShiftLayerFlyout"));
                 Assert.Equal(spec, Count(file, "EnableProfileOverlay"));
+                Assert.Equal(spec, Count(file, "EnableDeviceDisconnectedNote"));
+                Assert.Equal(spec, Count(file, "EnableDeviceConnectedNote"));
             }
         }
 

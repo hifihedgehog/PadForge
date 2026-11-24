@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Đã bật tay cầm ảo</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Đã tắt tay cầm ảo</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Một hoặc nhiều tay cầm đang ngoại tuyến</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} đã ngắt kết nối</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} đã ngắt kết nối. {1} không còn thiết bị nào.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} đã kết nối</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} đã kết nối, pin {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} thiết bị đã ngắt kết nối</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} thiết bị đã kết nối</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} liên tục ngắt kết nối</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (tối đa {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (tối đa {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (tối đa {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Điều khiển các tay cầm ảo trên PC khác.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Gửi chuyển động của tay cầm đến các trình giả lập.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nhận hiệu ứng cò và đèn từ các mod trò chơi.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Hiện menu, lớp và việc chuyển hồ sơ trong lúc bạn chơi.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Hiện menu, lớp, việc chuyển hồ sơ và kết nối thiết bị trong lúc bạn chơi.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Bề mặt cảm ứng trên màn hình cho trò chơi bàn cảm ứng PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Một hình, bộ đếm giờ hoặc đồng hồ phía trên các cửa sổ khác.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Tâm ngắm của riêng bạn phía trên trò chơi.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Vòng tròn, lưới hoặc thanh của một menu khi nó đang mở.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Tên của lớp khi một lớp chuyển bật lên, trong khoảng thời gian mà lớp đó đặt.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Tên của hồ sơ khi hồ sơ thay đổi.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Tên thiết bị đã ánh xạ khi nó ngắt kết nối.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Tên thiết bị đã ánh xạ khi nó kết nối.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Sao chép địa chỉ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vị trí trên màn hình</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Kết nối điện thoại</value></data>
@@ -4614,6 +4623,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Các chỉ báo trên màn hình mà PadForge hiển thị trong lúc bạn chơi. Tắt một chỉ báo không bao giờ thay đổi cách hoạt động, chỉ thay đổi việc nó có được hiển thị hay không.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Cửa sổ bật lên của lớp shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Lớp phủ chuyển hồ sơ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ghi chú thiết bị ngắt kết nối</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ghi chú thiết bị kết nối</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Hiện vòng tròn hoặc lưới trên màn hình khi một menu vòng tròn hoặc menu cảm ứng đang hoạt động. Menu vẫn kích hoạt khi lớp phủ tắt.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>đã tạo menu trên màn hình ({0} ô đã gán)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>đã tạo menu trên màn hình ({0} ô đã gán)</value></data>

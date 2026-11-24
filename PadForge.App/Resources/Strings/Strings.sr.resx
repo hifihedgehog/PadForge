@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Виртуелни контролери су омогућени</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Виртуелни контролери су онемогућени</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Бар један контролер је ван мреже</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Прекинута веза: {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Прекинута веза: {0}. {1} нема ниједан уређај.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Повезано: {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Повезано: {0}, батерија {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Прекинута веза за уређаје: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Повезани уређаји: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Стално се прекида веза: {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Управљајте виртуелним контролерима на другом рачунару.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Шаље покрете контролера емулаторима.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Прихвата ефекте окидача и светла из модова за игре.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Приказује меније, слојеве и промене профила док играте.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Приказује меније, слојеве, промене профила и везе уређаја док играте.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Додирна површина на екрану за PlayStation игре са тачпедом.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Слика, тајмер или сат изнад осталих прозора.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ваш сопствени нишан преко игре.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Прстен, мрежа или трака менија док је отворен.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назив слоја када се шифт слој укључи, на време које тај слој зада.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назив профила када се профил промени.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Назив мапираног уређаја када се веза прекине.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Назив мапираног уређаја када се повеже.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирај адресу</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Положај на екрану</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Повежите телефон</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Индикатори на екрану које PadForge приказује док играте. Искључивање неког од њих никада не мења понашање, већ само да ли се приказује.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Искачући панел слоја</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Оверлеј промене профила</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Обавештење о прекиду везе уређаја</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Обавештење о повезивању уређаја</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Приказује прстен или мрежу на екрану док је радијални мени или мени на додир активан. Менији раде и када је оверлеј искључен.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>направљен је мени на екрану (повезаних ћелија: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>направљен је мени на екрану (повезаних ћелија: {0})</value></data>

@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లు ప్రారంభించబడ్డాయి</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్లు నిలిపివేయబడ్డాయి</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ఒకటి లేదా అంతకంటే ఎక్కువ కంట్రోలర్లు ఆఫ్‌లైన్‌లో ఉన్నాయి</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} డిస్కనెక్ట్ అయింది</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} డిస్కనెక్ట్ అయింది. {1} లో ఇక పరికరం ఏదీ లేదు.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} కనెక్ట్ అయింది</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} కనెక్ట్ అయింది, బ్యాటరీ {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} పరికరాలు డిస్కనెక్ట్ అయ్యాయి</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} పరికరాలు కనెక్ట్ అయ్యాయి</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} పదే పదే డిస్కనెక్ట్ అవుతోంది</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (గరిష్ఠం {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (గరిష్ఠం {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (గరిష్ఠం {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>మరొక PCలోని వర్చువల్ కంట్రోలర్లను నడపండి.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>కంట్రోలర్ మోషన్‌ను ఎమ్యులేటర్లకు పంపండి.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>గేమ్ మోడ్ల నుండి ట్రిగ్గర్, లైట్ ఎఫెక్ట్‌లను స్వీకరించండి.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>మీరు ఆడుతున్నప్పుడు మెనూలు, లేయర్లు, ప్రొఫైల్ మార్పులను చూపండి.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>మీరు ఆడుతున్నప్పుడు మెనూలు, లేయర్లు, ప్రొఫైల్ మార్పులు, పరికర కనెక్షన్లను చూపండి.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation టచ్ ప్యాడ్ గేమ్‌ల కోసం తెరపై టచ్ ఉపరితలం.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ఇతర విండోల పైన ఒక చిత్రం, టైమర్ లేదా గడియారం.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ఆటపై మీ స్వంత క్రాస్‌హెయిర్.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>మెనూ తెరిచి ఉన్నప్పుడు దాని రింగ్, గ్రిడ్ లేదా బార్.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఆన్ అయినప్పుడు, ఆ లేయర్ సెట్ చేసిన సమయం పాటు లేయర్ పేరు.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ప్రొఫైల్ మారినప్పుడు ప్రొఫైల్ పేరు.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>మ్యాప్ చేసిన పరికరం డిస్కనెక్ట్ అయినప్పుడు దాని పేరు.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>మ్యాప్ చేసిన పరికరం కనెక్ట్ అయినప్పుడు దాని పేరు.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>చిరునామా కాపీ చేయి</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>తెరపై స్థానం</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ఫోన్‌ను కనెక్ట్ చేయండి</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>మీరు ఆడుతున్నప్పుడు PadForge చూపే స్క్రీన్పై సూచికలు. ఒకదాన్ని ఆఫ్ చేయడం ప్రవర్తనను ఎప్పుడూ మార్చదు, అది చూపబడుతుందా లేదా అన్నది మాత్రమే.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఫ్లైఅవుట్</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ప్రొఫైల్ మార్పు ఓవర్లే</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>పరికరం డిస్కనెక్ట్ నోట్</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>పరికరం కనెక్ట్ నోట్</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>రేడియల్ లేదా టచ్ మెను ఎంగేజ్ అయినప్పుడు స్క్రీన్పై రింగ్ లేదా గ్రిడ్ను చూపుతుంది. ఓవర్లే ఆఫ్లో ఉన్నా మెనూలు అమలవుతాయి.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>స్క్రీన్పై మెను సృష్టించబడింది ({0} బైండ్ చేసిన సెల్లు)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>స్క్రీన్పై మెను సృష్టించబడింది ({0} బైండ్ చేసిన సెల్)</value></data>

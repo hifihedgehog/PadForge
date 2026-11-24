@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகள் இயக்கப்பட்டன</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகள் முடக்கப்பட்டன</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ஒன்று அல்லது அதற்கு மேற்பட்ட கட்டுப்படுத்திகள் ஆஃப்லைனில் உள்ளன</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} துண்டிக்கப்பட்டது</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} துண்டிக்கப்பட்டது. {1}-இல் சாதனம் எதுவும் இல்லை.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} இணைக்கப்பட்டது</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} இணைக்கப்பட்டது, பேட்டரி {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>சாதனங்கள் துண்டிக்கப்பட்டவை: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>சாதனங்கள் இணைக்கப்பட்டவை: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} மீண்டும் மீண்டும் துண்டிக்கப்படுகிறது</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (அதிகபட்சம் {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (அதிகபட்சம் {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (அதிகபட்சம் {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>வேறொரு PC-யில் உள்ள மெய்நிகர் கட்டுப்படுத்திகளை இயக்கவும்.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>கட்டுப்படுத்தியின் அசைவை எமுலேட்டர்களுக்கு அனுப்பவும்.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>கேம் மோட்களிலிருந்து டிரிகர் மற்றும் ஒளி விளைவுகளைப் பெறவும்.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>விளையாடும்போது மெனுக்கள், அடுக்குகள், சுயவிவர மாற்றங்களைக் காட்டவும்.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>விளையாடும்போது மெனுக்கள், அடுக்குகள், சுயவிவர மாற்றங்கள், சாதன இணைப்புகளைக் காட்டவும்.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation டச்பேட் கேம்களுக்கான திரைமேல் தொடு பரப்பு.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>மற்ற சாளரங்களுக்கு மேலே ஒரு படம், டைமர் அல்லது கடிகாரம்.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ஒரு விளையாட்டின் மேல் உங்கள் சொந்தக் குறுக்குக்கோடு.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>திறந்திருக்கும் போது மெனுவின் வளையம், கட்டம் அல்லது பட்டை.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஆன் ஆகும்போது அடுக்கின் பெயர், அந்த அடுக்கு அமைக்கும் நேரத்திற்கு.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>சுயவிவரம் மாறும்போது அதன் பெயர்.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>மேப் செய்யப்பட்ட சாதனம் துண்டிக்கப்படும்போது அதன் பெயர்.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>மேப் செய்யப்பட்ட சாதனம் இணைக்கப்படும்போது அதன் பெயர்.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>முகவரியை நகலெடு</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>திரையில் இடம்</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ஃபோனை இணை</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>நீங்கள் விளையாடும்போது PadForge காட்டும் திரைக் குறிகாட்டிகள். ஒன்றை ஆஃப் செய்வது நடத்தையை ஒருபோதும் மாற்றாது, அது காட்டப்படுகிறதா என்பதை மட்டுமே மாற்றும்.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஃப்ளைஅவுட்</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>சுயவிவர மாற்ற மேலடுக்கு</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>சாதனம் துண்டிப்புக் குறிப்பு</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>சாதனம் இணைப்புக் குறிப்பு</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ஆரவழி அல்லது தொடு மெனு செயலில் இருக்கும்போது திரையில் வளையத்தை அல்லது கட்டத்தைக் காட்டும். மேலடுக்கு ஆஃப் ஆக இருந்தாலும் மெனுக்கள் தொடர்ந்து தூண்டப்படும்.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>திரை மெனு உருவாக்கப்பட்டது ({0} பிணைக்கப்பட்ட கலங்கள்)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>திரை மெனு உருவாக்கப்பட்டது ({0} பிணைக்கப்பட்ட கலம்)</value></data>

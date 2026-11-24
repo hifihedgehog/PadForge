@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtuaalsed kontrollerid lubatud</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtuaalsed kontrollerid keelatud</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Üks või mitu kontrollerit on ühenduseta</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ühendus katkes</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ühendus katkes. {1}: seadet pole enam.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ühendati</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ühendati, aku {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Seadmete ühendus katkes: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Seadmeid ühendati: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kaotab pidevalt ühenduse</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (kuni {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (kuni {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (kuni {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Juhtige virtuaalseid kontrollereid teises arvutis.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Saatke kontrolleri liikumisandmed emulaatoritele.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Võtke päästiku- ja valgusefekte mängumodidelt.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näidake mängimise ajal menüüsid, kihte ja profiilivahetusi.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näidake mängimise ajal menüüsid, kihte, profiilivahetusi ja seadmete ühendusi.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekraanil kuvatav puutepind PlayStation-puuteplaadi mängudele.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Pilt, taimer või kell teiste akende kohal.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Teie oma sihik mängu kohal.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menüü ring, ruudustik või riba, kui see on avatud.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kihi nimi, kui Shift-kiht sisse lülitub, selleks ajaks, mille see kiht määrab.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiili nimi, kui profiil vahetub.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Vastendatud seadme nimi, kui selle ühendus katkeb.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Vastendatud seadme nimi, kui see ühendatakse.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopeeri aadress</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Asukoht ekraanil</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ühendage telefon</value></data>
@@ -4352,6 +4361,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Ekraanil kuvatavad näidikud, mida PadForge mängimise ajal näitab. Ühe väljalülitamine ei muuda kunagi käitumist, vaid ainult seda, kas seda näidatakse.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-kihi hüpikpaan</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profiilivahetuse ülekate</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Seadme ühenduse katkemise märge</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Seadme ühendamise märge</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Kuvab ekraanil ringi või ruudustiku, kui radiaal- või puutemenüü on aktiivne. Menüüd käivituvad ka siis, kui ülekate on väljas.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>loodi ekraanimenüü (seotud lahtreid: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>loodi ekraanimenüü (seotud lahtreid: {0})</value></data>

@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎች ነቅተዋል</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎች ተሰናክለዋል</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>አንድ ወይም ከዚያ በላይ መቆጣጠሪያዎች ከመስመር ውጭ ናቸው</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ግንኙነቱ ተቋርጧል</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ግንኙነቱ ተቋርጧል። {1} ምንም መሣሪያ አልቀረውም።</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ተገናኝቷል</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ተገናኝቷል፣ ባትሪ {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} መሣሪያዎች ግንኙነታቸው ተቋርጧል</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} መሣሪያዎች ተገናኝተዋል</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ግንኙነቱ በተደጋጋሚ እየተቋረጠ ነው</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (ቢበዛ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (ቢበዛ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ቢበዛ {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>በሌላ ፒሲ ላይ ያሉትን ምናባዊ መቆጣጠሪያዎች ይቆጣጠሩ።</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>የመቆጣጠሪያ እንቅስቃሴን ወደ ኢሙሌተሮች ይላኩ።</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>የትሪገር እና የብርሃን ውጤቶችን ከጨዋታ ሞዶች ይቀበሉ።</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>በሚጫወቱበት ጊዜ ምናሌዎችን፣ ንብርብሮችን እና የመገለጫ መቀየሪያዎችን ያሳዩ።</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>በሚጫወቱበት ጊዜ ምናሌዎችን፣ ንብርብሮችን፣ የመገለጫ መቀየሪያዎችን እና የመሣሪያ ግንኙነቶችን ያሳዩ።</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ለPlayStation መዳሰሻ ሰሌዳ ጨዋታዎች በማያ ገጽ ላይ የሚታይ የንክኪ ገጽ።</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ከሌሎች መስኮቶች በላይ የሚታይ ምስል፣ ሰዓት ቆጣሪ ወይም ሰዓት።</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>በጨዋታ ላይ የሚታይ የራስዎ ማነጣጠሪያ።</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ምናሌ ክፍት ሆኖ ሳለ ቀለበቱ፣ ፍርግርጉ ወይም አሞሌው።</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ሲበራ፣ ያ ንብርብር ለወሰነው ጊዜ የንብርብሩ ስም።</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>መገለጫው ሲቀየር የመገለጫው ስም።</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>የተዛመደ መሣሪያ ግንኙነቱ ሲቋረጥ የመሣሪያው ስም።</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>የተዛመደ መሣሪያ ሲገናኝ የመሣሪያው ስም።</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>አድራሻ ቅዳ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>በማያ ገጽ ላይ ያለ ቦታ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ስልክ አገናኝ</value></data>
@@ -4315,6 +4324,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>በሚጫወቱበት ጊዜ PadForge የሚያሳያቸው የማያ ላይ አመልካቾች። አንዱን ማጥፋት ባህሪን በፍጹም አይቀይርም፣ የሚቀይረው መታየት አለመታየቱን ብቻ ነው።</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>የሺፍት ንብርብር ብቅ-ባይ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>የመገለጫ መቀየሪያ ተደራቢ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>የመሣሪያ ግንኙነት መቋረጥ ማስታወሻ</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>የመሣሪያ መገናኘት ማስታወሻ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ክብ ወይም የመንካት ምናሌ ሲነቃ የማያ ላይ ቀለበቱን ወይም ፍርግርጉን አሳይ። ተደራቢው ጠፍቶም ምናሌዎች ይፈጸማሉ።</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>የማያ ላይ ምናሌ ተፈጥሯል ({0} የተያያዙ ሕዋሶች)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>የማያ ላይ ምናሌ ተፈጥሯል ({0} የተያያዘ ሕዋስ)</value></data>

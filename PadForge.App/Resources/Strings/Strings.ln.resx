@@ -2074,6 +2074,15 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kokokanisa na elili</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ekozwa langi minei uta na elili.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Ba fichier nyonso (*.*)|*.*</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ekatani</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ekatani. {1} etikali na appareil moko te.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ekangani</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ekangani, batterie {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ba appareil {0} ekatani</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ba appareil {0} ekangani</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ezali kokatana mbala na mbala</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nkombo ya appareil oyo ezali na assignation ntango ekatani.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nkombo ya appareil oyo ezali na assignation ntango ekangani.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kosala mise à jour sikoyo ekitisaka base ya ba manette ya communauté (SDL_GameControllerDB) uta na GitHub mpe ebombaka, na fichier ya ba paramètre, ba assignation oyo version oyo ya PadForge ezangi. Assignation ya sika esalelamaka kaka mpo na manette oyo eloko mosusu te etangaka lokola gamepad, oyo ezali na assignation te mpe oyo ezali na Mode joystick brut te. Kozongisa elongolaka ba assignation nyonso oyo ekitisami.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Kosala mise à jour sikoyo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Mise à jour…</value></data>

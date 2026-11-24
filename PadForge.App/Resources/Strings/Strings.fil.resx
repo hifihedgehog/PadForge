@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Naka-enable ang mga virtual controller</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Naka-disable ang mga virtual controller</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>May isa o higit pang controller na offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Nadiskonekta ang {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Nadiskonekta ang {0}. Wala nang natitirang device ang {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Nakakonekta ang {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Nakakonekta ang {0}, baterya {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} device ang nadiskonekta</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} device ang nakakonekta</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Paulit-ulit na nadidiskonekta ang {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (hanggang {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (hanggang {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (hanggang {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Patakbuhin ang mga virtual controller sa ibang PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Magpadala ng motion ng controller sa mga emulator.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tumanggap ng mga epekto ng trigger at ilaw mula sa mga game mod.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer at pagpapalit ng profile habang naglalaro ka.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer, pagpapalit ng profile at pagkakakonekta ng device habang naglalaro ka.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Touch surface sa screen para sa mga larong touchpad ng PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Isang larawan, timer o orasan sa ibabaw ng ibang mga window.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Sarili mong crosshair sa ibabaw ng laro.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar ng isang menu habang bukas ito.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ang pangalan ng layer kapag nag-on ang isang shift layer, sa haba ng oras na itinakda ng layer na iyon.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang pangalan ng profile kapag nagbago ang profile.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ang pangalan ng naka-map na device kapag nadiskonekta ito.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ang pangalan ng naka-map na device kapag kumonekta ito.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyahin ang Address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Ilagay sa Screen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ikonekta ang Telepono</value></data>
@@ -4146,6 +4155,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga on-screen na indicator na ipinapakita ng PadForge habang naglalaro ka. Ang pag-off sa isa ay hindi kailanman nagbabago ng behavior, kung ipinapakita lang ito.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift Layer Flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile Switch Overlay</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Abiso sa Pag-disconnect ng Device</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Abiso sa Pagkonekta ng Device</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ipakita ang on-screen ring o grid habang naka-engage ang radial o touch menu. Gumagana pa rin ang mga menu kahit naka-off ang overlay.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>nagawa ang on-screen menu ({0} naka-bind na cell)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>nagawa ang on-screen menu ({0} naka-bind na cell)</value></data>

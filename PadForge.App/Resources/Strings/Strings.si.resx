@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>අතථ්‍ය පාලක සබලයි</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>අතථ්‍ය පාලක අබලයි</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>පාලක එකක් හෝ කිහිපයක් නොබැඳියි</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} විසන්ධි විය</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} විසන්ධි විය. {1} හට තවත් උපාංගයක් නැත.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} සම්බන්ධ විය</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} සම්බන්ධ විය, බැටරිය {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>උපාංග {0}ක් විසන්ධි විය</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>උපාංග {0}ක් සම්බන්ධ විය</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} නැවත නැවතත් විසන්ධි වේ</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (උපරිම {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (උපරිම {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (උපරිම {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>වෙනත් පරිගණකයක ඇති අතථ්‍ය පාලක හසුරුවන්න.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>පාලක චලනය ඉමියුලේටරවලට යවන්න.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ක්‍රීඩා මොඩ්වලින් ට්‍රිගර සහ ආලෝක ප්‍රයෝග ලබා ගන්න.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර මෙනු, ස්ථර සහ පැතිකඩ මාරු කිරීම් පෙන්වන්න.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර මෙනු, ස්ථර, පැතිකඩ මාරු කිරීම් සහ උපාංග සම්බන්ධතා පෙන්වන්න.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ටච්පෑඩ් ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>වෙනත් කවුළුවලට ඉහළින් පින්තූරයක්, ටයිමරයක් හෝ ඔරලෝසුවක්.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ක්‍රීඩාවක් මත ඔබේම ක්‍රොස්හෙයාර් එකක්.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>මෙනුවක් විවෘතව ඇති අතරතුර එහි වළල්ල, ජාලකය හෝ තීරුව.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>මාරු ස්ථරයක් ක්‍රියාත්මක වන විට, එම ස්ථරය සකසන කාලය සඳහා එම ස්ථරයේ නම.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>පැතිකඩ මාරු වන විට පැතිකඩෙහි නම.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>සිතියම්ගත උපාංගයක් විසන්ධි වන විට එහි නම.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>සිතියම්ගත උපාංගයක් සම්බන්ධ වන විට එහි නම.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ලිපිනය පිටපත් කරන්න</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>තිරය මත ස්ථානය</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>දුරකථනයක් සම්බන්ධ කරන්න</value></data>
@@ -4311,6 +4320,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර PadForge තිරය මත පෙන්වන දර්ශක. එකක් අක්‍රිය කිරීම කිසිවිටෙක හැසිරීම වෙනස් නොකරයි, එය පෙන්වනවාද යන්න පමණි.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>මාරු ස්ථර උත්පතනය</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>පැතිකඩ මාරු ඕවර්ලේ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>උපාංගය විසන්ධි වීමේ සටහන</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>උපාංගය සම්බන්ධ වීමේ සටහන</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>රේඩියල් හෝ ස්පර්ශ මෙනුවක් සක්‍රිය අතරතුර තිරයේ වළල්ල හෝ ජාලකය පෙන්වන්න. ඕවර්ලේ අක්‍රිය වුවද මෙනු ක්‍රියාත්මක වේ.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>තිරය මත මෙනුවක් සාදන ලදී (බැඳි කොටු {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>තිරය මත මෙනුවක් සාදන ලදී (බැඳි කොටු {0})</value></data>

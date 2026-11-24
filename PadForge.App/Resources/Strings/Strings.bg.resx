@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Виртуалните контролери са включени</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Виртуалните контролери са изключени</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Един или повече контролери са офлайн</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} се разкачи</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} се разкачи. {1} няма останало устройство.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} се свърза</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} се свърза, батерия {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Разкачени устройства: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Свързани устройства: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} непрекъснато се разкачва</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Управлявайте виртуалните контролери на друг компютър.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Изпращайте движението на контролера към емулатори.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Приемайте ефекти за спусъците и светлините от игрови модове.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показвайте менюта, слоеве и смени на профил, докато играете.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показвайте менюта, слоеве, смени на профил и свързвания на устройства, докато играете.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Сензорна повърхност на екрана за игри с тъчпада на PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Картинка, таймер или часовник над другите прозорци.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Собствен мерник върху играта.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Пръстенът, мрежата или лентата на менюто, докато е отворено.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слоя, когато слоят се включи, за времето, което слоят задава.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Името на профила, когато профилът се смени.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Името на съпоставено устройство, когато се разкачи.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Името на съпоставено устройство, когато се свърже.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирай адреса</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Място на екрана</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Свържете телефон</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Екранни индикатори, които PadForge показва, докато играете. Изключването на някой от тях никога не променя поведението, а само дали се показва.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Изскачащ панел за слоя</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Наслагване при смяна на профила</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Бележка за разкачено устройство</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Бележка за свързано устройство</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Показва екранния пръстен или мрежа, докато радиално или сензорно меню е активно. Менютата работят и при изключено наслагване.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>създадено е екранно меню (клетки с присвояване: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>създадено е екранно меню (клетки с присвояване: {0})</value></data>

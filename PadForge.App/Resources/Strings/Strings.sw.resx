@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Vidhibiti pepe vimewashwa</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Vidhibiti pepe vimezimwa</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Kidhibiti kimoja au zaidi kiko nje ya mtandao</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} imetenganishwa</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} imetenganishwa. {1} haina kifaa tena.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} imeunganishwa</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} imeunganishwa, betri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Vifaa {0} vimetenganishwa</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Vifaa {0} vimeunganishwa</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} inatenganishwa tena na tena</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (upeo {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (upeo {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (upeo {0})</value></data>
@@ -412,7 +419,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Endesha vidhibiti pepe kwenye kompyuta nyingine.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Tuma mwendo wa kidhibiti kwa vigezo vya michezo.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Pokea athari za vichochezi na taa kutoka kwa mod za michezo.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Onyesha menyu, tabaka na ubadilishaji wa wasifu unapocheza.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Onyesha menyu, tabaka, ubadilishaji wa wasifu na miunganisho ya vifaa unapocheza.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa michezo ya touchpad ya PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Picha, kipima muda au saa juu ya madirisha mengine.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Shabaha yako mwenyewe juu ya mchezo.</value></data>
@@ -441,6 +448,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Duara, gridi au upau wa menyu ikiwa wazi.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Jina la tabaka linapowashwa tabaka la shift, kwa muda ambao tabaka hilo huweka.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Jina la wasifu unapobadilika.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Jina la kifaa kilichoramaniwa kinapotenganishwa.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Jina la kifaa kilichoramaniwa kinapounganishwa.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Nakili Anwani</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Weka Skrinini</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Unganisha Simu</value></data>
@@ -4288,6 +4297,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Viashiria vya skrini ambavyo PadForge huonyesha unapocheza. Kuzima kimoja hakubadilishi tabia kamwe, ila tu kama kinaonyeshwa au la.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Dirisha la Tabaka la Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay ya Kubadilisha Wasifu</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Arifa ya Kifaa Kutenganishwa</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Arifa ya Kifaa Kuunganishwa</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Onyesha pete au gridi kwenye skrini wakati menyu ya mviringo au ya mguso inatumika. Menyu bado hutekelezwa ikiwa overlay imezimwa.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menyu ya skrini imeundwa (seli {0} zenye ramani)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menyu ya skrini imeundwa (seli {0} yenye ramani)</value></data>

@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Kontrolagailu birtualak gaituta</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Kontrolagailu birtualak desgaituta</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Kontrolagailu bat edo gehiago lineaz kanpo</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} deskonektatu da</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} deskonektatu da. {1} gailurik gabe geratu da.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} konektatu da</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} konektatu da, bateria %{1}</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} gailu deskonektatu dira</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} gailu konektatu dira</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} behin eta berriz deskonektatzen da</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (gehienez {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (gehienez {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (gehienez {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kontrolatu beste PC bateko kontrolagailu birtualak.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Bidali kontrolagailuaren mugimendua emuladoreei.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Jaso katu- eta argi-efektuak joko-modetatik.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Erakutsi menuak, geruzak eta profil-aldaketak jokatzen duzun bitartean.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Erakutsi menuak, geruzak, profil-aldaketak eta gailu-konexioak jokatzen duzun bitartean.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Pantailako ukipen-azalera, PlayStation-eko ukipen-paneleko jokoetarako.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Irudi, tenporizadore edo erloju bat beste leihoen gainean.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Zure ikusmira propioa jokoaren gainean.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menu baten eraztuna, sareta edo barra irekita dagoen bitartean.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bat aktibatzen denean, geruza horrek ezartzen duen denboran zehar.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilaren izena, profila aldatzen denean.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Esleitutako gailu baten izena, deskonektatzen denean.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Esleitutako gailu baten izena, konektatzen denean.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiatu helbidea</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Kokatu pantailan</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konektatu telefono bat</value></data>
@@ -4343,6 +4352,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge-k jokatzen duzun bitartean pantailan erakusten dituen adierazleak. Bat desaktibatzeak ez du inoiz portaera aldatzen, pantailan erakusten den ala ez baizik.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Aldaketa-geruzaren oharra</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profil-aldaketaren gainjartzea</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Gailu deskonektatuaren oharra</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Gailu konektatuaren oharra</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Erakutsi pantailako eraztuna edo sareta menu erradial edo ukitu bidezko bat aktibo dagoenean. Menuek gainjartzea desaktibatuta ere jarraitzen dute funtzionatzen.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>pantailako menua sortu da ({0} gelaxka esleituta)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>pantailako menua sortu da ({0} gelaxka esleituta)</value></data>

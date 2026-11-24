@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Виртуал контроллерүүд идэвхтэй</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Виртуал контроллерүүд идэвхгүй</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Нэг буюу хэд хэдэн контроллер офлайн байна</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} салгагдсан</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} салгагдсан. {1}: төхөөрөмж үлдээгүй.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} холбогдсон</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} холбогдсон, батерей {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} төхөөрөмж салгагдсан</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} төхөөрөмж холбогдсон</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} дахин дахин салгагдаж байна</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (дээд тал нь {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (дээд тал нь {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (дээд тал нь {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Өөр компьютер дээрх виртуал контроллеруудыг удирдана.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Контроллерын хөдөлгөөнийг эмуляторууд руу илгээнэ.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Тоглоомын модуудаас гох болон гэрлийн эффектийг авна.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Тоглож байхад цэс, давхарга, профайл солилтыг харуулна.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Тоглож байхад цэс, давхарга, профайл солилт болон төхөөрөмжийн холболтыг харуулна.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Бусад цонхны дээр харагдах зураг, хугацаа хэмжигч эсвэл цаг.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Тоглоом дээр харагдах өөрийн онилгоо.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Цэс нээлттэй үед түүний цагираг, тор эсвэл зурвас.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхарга идэвхжихэд тухайн давхаргын тохируулсан хугацаанд түүний нэр.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профайл солигдоход профайлын нэр.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Оноосон төхөөрөмж салгагдахад түүний нэр.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Оноосон төхөөрөмж холбогдоход түүний нэр.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Хаягийг хуулах</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Дэлгэц дээрх байрлал</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Утас холбох</value></data>
@@ -4353,6 +4362,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Таныг тоглож байхад PadForge-ийн харуулах дэлгэц дээрх заагчууд. Аль нэгийг унтраах нь ажиллагааг өөрчлөхгүй, зөвхөн харагдах эсэхийг өөрчилнө.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Давхарга сэлгэх гарч ирэх цонх</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профайл солих оверлей</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Төхөөрөмж салгагдсан тухай мэдэгдэл</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Төхөөрөмж холбогдсон тухай мэдэгдэл</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиал эсвэл мэдрэгч цэс идэвхтэй үед дэлгэц дээрх цагираг эсвэл торыг харуулна. Оверлей унтраалттай байсан ч цэс ажилласаар байна.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>дэлгэц дээрх цэс үүсгэсэн ({0} холбоостой нүд)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>дэлгэц дээрх цэс үүсгэсэн ({0} холбоостой нүд)</value></data>

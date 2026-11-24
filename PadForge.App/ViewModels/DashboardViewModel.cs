@@ -1635,6 +1635,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableProfileOverlay, value);
         }
 
+        private bool _enableDeviceDisconnectedNote;
+
+        /// <summary>Whether the flyout names a mapped device when it
+        /// disconnects (#597). Default off, as every new notice is. Display
+        /// only: the device and its mappings are read the same either
+        /// way.</summary>
+        public bool EnableDeviceDisconnectedNote
+        {
+            get => _enableDeviceDisconnectedNote;
+            set => SetProperty(ref _enableDeviceDisconnectedNote, value);
+        }
+
+        private bool _enableDeviceConnectedNote;
+
+        /// <summary>Whether the flyout names a mapped device when it connects
+        /// (#597). Default off.</summary>
+        public bool EnableDeviceConnectedNote
+        {
+            get => _enableDeviceConnectedNote;
+            set => SetProperty(ref _enableDeviceConnectedNote, value);
+        }
+
         private double _touchpadOverlayOpacity = 0.25;
 
         /// <summary>Surface opacity of the touchpad overlay (0.0–1.0).</summary>

@@ -1497,7 +1497,7 @@
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Pantallapi</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Carro pukllaykunamanta velocidadta, pedalkunata, cambiokunatapas asignay.</value></data>
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Huk PC-pi virtual controlkunata kamachiy.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pukllachkaspa menúkunata, capakunata, perfil t'ikraykunatapas rikuchiy.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pukllachkaspa menúkunata, capakunata, perfil t'ikraykunata, dispositivo tinkiykunatapas rikuchiy.</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Kikillanmanta watiqmanta tinkiy, puerto, emparejaypa identidadnin, direcciónwan tinkiy</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Puertokuna, Hunt'a velocidad, Kikinchasqa formatokuna</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
@@ -1678,6 +1678,15 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Rikch'aywan tupachiy</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Tawa llimp'ikunata rikch'aymanta hap'in.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kachachkallay</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} t'aqakurqan</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} t'aqakurqan. {1} manaña dispositivoyuqchu.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} tinkikurqan</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tinkikurqan, batería {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Dispositivokuna t'aqakurqan: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Dispositivokuna tinkikurqan: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kuti kuti t'aqakuchkan</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Asignasqa dispositivop sutin, t'aqakuqtin.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Asignasqa dispositivop sutin, tinkikuqtin.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Huk programa {0} pipe sutita hap'in. Chay programata wisq'ay.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows mana {0} pipeta munarqanchu, chayrayku programakuna mana tinkikuyta atinkuchu.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} perfilman t'ikray</value></data>
@@ -1706,4 +1715,6 @@
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Comunidadpa base de datosninqa qhipa musuqyachiymanta mana t'ikrakunchu.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Musuq asignaciónqa controlnin hamuq kutipi tinkikuqtin llamk'achikun.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>T'ikrasqa asignaciónqa PadForge hamuq kutipi qallariqtin llamk'achikun.</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Dispositivo t'aqakusqa willakuy</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Dispositivo tinkikusqa willakuy</value></data>
 </root>

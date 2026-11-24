@@ -786,6 +786,7 @@
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Sasingen theme: USS Enterprise-D</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ese tongeni álleani ewe sasing seni Steam ren ei urumwot.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Sópwelo le Tiinnóó</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} a mwúchútiw. Esor device a chuen nom ren {1}.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Siwil ngeni ewe profile {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Liwin ngeni ewe profile default</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Eis ifa ewe profile mi angang</value></data>

@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Віртуальні контролери ввімкнено</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Віртуальні контролери вимкнено</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Один або кілька контролерів офлайн</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} відключено</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} відключено. Для {1} не лишилося пристроїв.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} підключено</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} підключено, заряд {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Відключено пристроїв: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Підключено пристроїв: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} постійно відключається</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Керуйте віртуальними контролерами на іншому ПК.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Передає рух контролера до емуляторів.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Приймайте ефекти тригерів і світла від ігрових модів.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показуйте меню, шари та перемикання профілів під час гри.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показуйте меню, шари, перемикання профілів і підключення пристроїв під час гри.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор із сенсорною панеллю PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Зображення, таймер або годинник поверх інших вікон.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ваш власний приціл поверх гри.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Кільце, сітка або смуга меню, поки воно відкрите.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назва шару, коли шар зсуву вмикається, протягом часу, який задає цей шар.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назва профілю, коли профіль змінюється.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Назва прив'язаного пристрою, коли він відключається.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Назва прив'язаного пристрою, коли він підключається.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копіювати адресу</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Місце на екрані</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Підключити телефон</value></data>
@@ -4348,6 +4357,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Екранні індикатори, які PadForge показує під час гри. Вимкнення індикатора ніколи не змінює поведінку, а лише те, чи його показано.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Спливне вікно шару</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Оверлей перемикання профілю</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Примітка про відключення пристрою</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Примітка про підключення пристрою</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Показувати екранне кільце або сітку, поки задіяно радіальне чи сенсорне меню. Меню спрацьовують і з вимкненим оверлеєм.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>створено екранне меню (комірок із прив'язкою: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>створено екранне меню (комірок із прив'язкою: {0})</value></data>

@@ -1313,7 +1313,7 @@
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Na ihuenyo</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Kenye ọsọ, pedal na gear sitere na egwuregwu ịkwọ ụgbọala.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nata mmetụta trigger na ọkụ sitere na mod egwuregwu.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Gosi menu, layer na mgbanwe profile mgbe ị na-egwu egwu.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Gosi menu, layer, mgbanwe profile na njikọ ngwaọrụ mgbe ị na-egwu egwu.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, ihe nnọchi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Ọsọ zuru ezu, Usoro nke gị</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} jikọrọ, mana a naghị eji ya.</value></data>
@@ -1536,6 +1536,15 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Foto (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faịlụ niile (*.*)|*.*</value></data>
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge enweghị ike ịgụ faịlụ ahụ.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ahụghị faịlụ ahụ.</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} akwụsịla njikọ</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} akwụsịla njikọ. {1} enweghịzi ngwaọrụ ọ bụla.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ejikọla</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ejikọla, batrị {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ngwaọrụ {0} akwụsịla njikọ</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ngwaọrụ {0} ejikọla</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} na-akwụsị njikọ ugboro ugboro</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Aha ngwaọrụ e kenyere mgbe ọ kwụsịrị njikọ.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Aha ngwaọrụ e kenyere mgbe ọ jikọrọ.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ntọgharị ahụ na-ewepụ mapping niile e budatara.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>
@@ -1546,4 +1555,6 @@
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge jụrụ ihe e budatara n'ihi na ọ bụghị ọdụ data controller ọ na-atụ anya ya. Ọ dịghị ihe gbanwere.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A ga-eji mapping ọhụrụ oge ọzọ controller ya jikọrọ.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A ga-eji mapping gbanwere agbanwe oge ọzọ PadForge malitere.</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ kwụsịrị njikọ</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ jikọrọ</value></data>
 </root>

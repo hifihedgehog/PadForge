@@ -344,6 +344,13 @@ public class Strings : INotifyPropertyChanged
     public string Main_VCsEnabled => Get("Main_VCsEnabled");
     public string Main_VCsDisabled => Get("Main_VCsDisabled");
     public string Main_ControllersOffline => Get("Main_ControllersOffline");
+    public string Main_DeviceDisconnected_Format => Get("Main_DeviceDisconnected_Format");
+    public string Main_DeviceDisconnectedLast_Format => Get("Main_DeviceDisconnectedLast_Format");
+    public string Main_DeviceConnected_Format => Get("Main_DeviceConnected_Format");
+    public string Main_DeviceConnectedBattery_Format => Get("Main_DeviceConnectedBattery_Format");
+    public string Main_DevicesDisconnected_Format => Get("Main_DevicesDisconnected_Format");
+    public string Main_DevicesConnected_Format => Get("Main_DevicesConnected_Format");
+    public string Main_DeviceKeepsDisconnecting_Format => Get("Main_DeviceKeepsDisconnecting_Format");
     public string Main_Xbox_Max_Format => Get("Main_Xbox_Max_Format");
     public string Main_PlayStation_Max_Format => Get("Main_PlayStation_Max_Format");
     public string Main_Nintendo_Max_Format => Get("Main_Nintendo_Max_Format");
@@ -615,6 +622,8 @@ public class Strings : INotifyPropertyChanged
     public string Extras_Overlays_MenuHint => Get("Extras_Overlays_MenuHint");
     public string Extras_Overlays_ShiftLayerHint => Get("Extras_Overlays_ShiftLayerHint");
     public string Extras_Overlays_ProfileHint => Get("Extras_Overlays_ProfileHint");
+    public string Extras_Overlays_DeviceDisconnectedHint => Get("Extras_Overlays_DeviceDisconnectedHint");
+    public string Extras_Overlays_DeviceConnectedHint => Get("Extras_Overlays_DeviceConnectedHint");
     public string Extras_CopyAddress => Get("Extras_CopyAddress");
     public string Extras_PlaceOnScreen => Get("Extras_PlaceOnScreen");
     public string Extras_WebController_ConnectTitle => Get("Extras_WebController_ConnectTitle");
@@ -4915,6 +4924,8 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_OverlaysDescription => Get("Dashboard_OverlaysDescription");
     public string Dashboard_ShiftLayerFlyout => Get("Dashboard_ShiftLayerFlyout");
     public string Dashboard_ProfileOverlay => Get("Dashboard_ProfileOverlay");
+    public string Dashboard_DeviceDisconnectedNote => Get("Dashboard_DeviceDisconnectedNote");
+    public string Dashboard_DeviceConnectedNote => Get("Dashboard_DeviceConnectedNote");
     public string Workshop_Tr_MenuEmitted => Get("Workshop_Tr_MenuEmitted");
     public string Workshop_Tr_MenuEmitted_One => Get("Workshop_Tr_MenuEmitted_One");
     public string Workshop_Tr_MenuEmpty => Get("Workshop_Tr_MenuEmpty");

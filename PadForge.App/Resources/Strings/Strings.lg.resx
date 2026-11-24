@@ -859,6 +859,13 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kwataganya n’ekifaananyi</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Eggya langi ennya mu kifaananyi.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Weyongere okusindika</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} kisaliddwako</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} kisaliddwako. {1} tekikyalina kyuma.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} kiyungiddwa</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} kiyungiddwa, bbaatule {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ebyuma {0} bisaliddwako</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ebyuma {0} biyungiddwa</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kyeyongera okusalibwako</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kyusa ogende ku pulofayiro {0}</value></data>
   <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ddayo ku pulofayiro ey'olubeerera</value></data>
   <data name="Automation_Asked_Query" xml:space="preserve"><value>Buuza pulofayiro ekola</value></data>

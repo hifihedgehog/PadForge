@@ -1560,7 +1560,7 @@
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa screen</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang tulin, pedal kag gear gikan sa mga dula sang pagdrayb.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa ang mga epekto sang trigger kag suga gikan sa mga game mod.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer kag pagbaylo sang profile samtang nagadula ka.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer, pagbaylo sang profile kag pag-connect sang device samtang nagadula ka.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pulili sang DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga Port, Bug-os nga Tulin, Custom nga mga Format</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Naka-connect ang {0} kag wala ginagamit.</value></data>
@@ -1812,10 +1812,21 @@
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Indi magamit sang {0} ang iya kustom nga identidad kag layout, gani ginagamit niya ang kaugalingon sang iya profile.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Indi mabasa sang PadForge ang litrato sang Steam para sa sini nga game.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Padayon nga ipadala</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Nag-disconnect ang {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Nag-disconnect ang {0}. Wala na sing device ang {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Nag-connect ang {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Nag-connect ang {0}, baterya {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Nag-disconnect ang {0} ka device</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Nag-connect ang {0} ka device</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Pirme lang nagadisconnect ang {0}</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ang ngalan sang device nga may mapping kon mag-disconnect ini.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ang ngalan sang device nga may mapping kon mag-connect ini.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ang bag-o nga mapping ginagamit lang para sa controller nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Ang reset nagakuha sang tanan nga na-download nga mapping.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}. Na-update {2}: bag-o {3}, ginbaylo {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Wala nagbaylo ang community database kutob sang katapusan nga update.</value></data>
   <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ang bag-o nga mapping gamiton sa masunod nga pag-connect sang iya controller.</value></data>
   <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ang ginbaylo nga mapping gamiton sa masunod nga pagsugod sang PadForge.</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibalo sang nag-disconnect nga device</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibalo sang nag-connect nga device</value></data>
 </root>

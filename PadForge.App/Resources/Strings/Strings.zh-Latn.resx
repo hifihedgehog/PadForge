@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Xūnǐ kòngzhìqì yǐ qǐyòng</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Xūnǐ kòngzhìqì yǐ jìnyòng</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Yí gè huò duō gè kòngzhìqì líxiàn</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} yǐ duànkāi liánjiē</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} yǐ duànkāi liánjiē. {1} yǐ méiyǒu shèbèi.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} yǐ liánjiē</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yǐ liánjiē, diànliàng {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} gè shèbèi yǐ duànkāi liánjiē</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} gè shèbèi yǐ liánjiē</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} fǎnfù duànkāi liánjiē</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (zuìduō {0} tái)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (zuìduō {0} tái)</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (zuìduō {0} tái)</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kòngzhì lìng yì tái diànnǎo shàng de xūnǐ kòngzhìqì.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Jiāng kòngzhìqì tǐgǎn shùjù fāsòng dào mónǐqì.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Cóng yóuxì mózǔ jiēshōu bānjī hé dēngguāng xiàoguǒ.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zài yóuxì shí xiǎnshì càidān, qiēhuàn céng hé pèizhì wénjiàn qiēhuàn tíshì.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zài yóuxì shí xiǎnshì càidān, qiēhuàn céng, pèizhì wénjiàn qiēhuàn hé shèbèi liánjiē tíshì.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Wèi PlayStation chùkòngbǎn yóuxì tígōng píngmù chùmō biǎomiàn.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Zài qítā chuāngkǒu shàngfāng xiǎnshì túpiàn, jìshíqì huò shízhōng.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Zài yóuxì shàngfāng xiǎnshì nǐ zìjǐ de zhǔnxīng.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Càidān dǎkāi shí de huánxíng, wǎnggé huò tiáo.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Qiēhuàn céng jīhuó shí xiǎnshì gāi céng de míngchēng, chíxù shíjiān yóu gāi céng shèdìng.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Pèizhì wénjiàn gēnghuàn shí xiǎnshì qí míngchēng.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Yìngshè shèbèi duànkāi liánjiē shí xiǎnshì qí míngchēng.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Yìngshè shèbèi liánjiē shí xiǎnshì qí míngchēng.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Fùzhì dìzhǐ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Píngmù wèizhì</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Liánjiē shǒujī</value></data>
@@ -4324,6 +4333,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge zài yóuxì guòchéng zhōng xiǎnshì de píngmù zhǐshìqì. Guānbì rènhé yí xiàng dōu bú huì gǎibiàn xíngwéi, zhǐ huì gǎibiàn tā shìfǒu xiǎnshì.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Qiēhuàn céng fúchū kòngjiàn</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Pèizhì wénjiàn qiēhuàn diéjiācéng</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Shèbèi duànkāi tíshì</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Shèbèi liánjiē tíshì</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zài jìngxiàng huò chùmō càidān jīhuó qījiān xiǎnshì píngmù shàng de huánxíng huò wǎnggé. Jíshǐ guānbì diéjiācéng, càidān réng huì chùfā.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>yǐ chuàngjiàn píngmù càidān ({0} gè yǐ yìngshè de dānyuángé)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>yǐ chuàngjiàn píngmù càidān ({0} gè yǐ yìngshè de dānyuángé)</value></data>

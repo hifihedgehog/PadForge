@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtual Controllers Enabled</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Virtual Controllers Disabled</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>One or more controllers offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} disconnected</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} disconnected. {1} has no device left.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} connected</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} connected, battery {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} devices disconnected</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} devices connected</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} keeps disconnecting</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Drive the virtual controllers on another PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Send controller motion to emulators.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Take trigger and light effects from game mods.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Show menus, layers and profile switches while you play.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Show menus, layers, profile switches and device connections while you play.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>An on-screen touch surface for PlayStation touchpad games.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>A picture, timer or clock above other windows.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Your own crosshair over a game.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>The ring, grid or bar of a menu while it is open.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>The layer’s name when a shift layer turns on, for the time that layer sets.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>The profile’s name when the profile changes.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>A mapped device’s name when it disconnects.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>A mapped device’s name when it connects.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copy Address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Place on Screen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Connect a Phone</value></data>
@@ -4635,6 +4644,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>On-screen indicators PadForge shows while you play. Turning one off never changes behavior, only whether it is shown.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift Layer Flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile Switch Overlay</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Device Disconnected Note</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Device Connected Note</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>on-screen menu created ({0} bound cells)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>on-screen menu created ({0} bound cell)</value></data>

@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Rheolyddion Rhithwir wedi'u Galluogi</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Rheolyddion Rhithwir wedi'u Hanalluogi</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Mae un rheolydd neu fwy all-lein</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} wedi datgysylltu</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} wedi datgysylltu. Nid oes dyfais ar ôl gan {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} wedi cysylltu</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} wedi cysylltu, batri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} dyfais wedi datgysylltu</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} dyfais wedi cysylltu</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} yn datgysylltu dro ar ôl tro</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (uchafswm {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (uchafswm {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (uchafswm {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Rheolwch y rheolyddion rhithwir ar PC arall.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Anfonwch symudiad rheolydd i efelychwyr.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Derbyniwch effeithiau sbardun a golau gan fodiau gêm.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Dangoswch ddewislenni, haenau a newidiadau proffil wrth i chi chwarae.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Dangoswch ddewislenni, haenau, newidiadau proffil a chysylltiadau dyfeisiau wrth i chi chwarae.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Arwyneb cyffwrdd ar y sgrin ar gyfer gemau pad cyffwrdd PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Llun, amserydd neu gloc uwchben ffenestri eraill.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Eich croesflew eich hun dros gêm.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cylch, grid neu far dewislen tra bydd ar agor.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Enw'r haen pan fydd haen shift yn troi ymlaen, am yr amser y mae'r haen honno'n ei osod.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Enw'r proffil pan fydd y proffil yn newid.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Enw dyfais fapio pan fydd yn datgysylltu.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Enw dyfais fapio pan fydd yn cysylltu.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copïo'r Cyfeiriad</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Gosod ar y Sgrin</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Cysylltu Ffôn</value></data>
@@ -4345,6 +4354,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Dangosyddion ar y sgrin y mae PadForge yn eu dangos wrth i chi chwarae. Nid yw diffodd un byth yn newid ymddygiad, dim ond a yw'n cael ei ddangos.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Naidlen haen symud</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Troshaen newid proffil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nodyn Dyfais wedi Datgysylltu</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nodyn Dyfais wedi Cysylltu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Dangos y fodrwy neu'r grid ar y sgrin tra bo dewislen radial neu gyffwrdd wedi'i hymgysylltu. Mae dewislenni'n dal i danio gyda'r troshaen i ffwrdd.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>crëwyd dewislen ar y sgrin ({0} cell rwymedig)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>crëwyd dewislen ar y sgrin ({0} cell rwymedig)</value></data>

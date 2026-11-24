@@ -103,6 +103,18 @@
   },
   {
     "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableDeviceDisconnectedNote_2032",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableDeviceDisconnectedNote"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableDeviceConnectedNote_2035",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableDeviceConnectedNote"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableTouchpadOverlay_2045",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableTouchpadOverlay"

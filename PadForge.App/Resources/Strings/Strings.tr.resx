@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Sanal kontrolcüler etkin</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Sanal kontrolcüler devre dışı</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Bir veya daha fazla kontrolcü çevrimdışı</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} bağlantısı kesildi</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} bağlantısı kesildi. {1} için cihaz kalmadı.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} bağlandı</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} bağlandı, pil %{1}</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} cihazın bağlantısı kesildi</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} cihaz bağlandı</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} sürekli bağlantısını kaybediyor</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (en fazla {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (en fazla {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (en fazla {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Sanal kontrolcüleri başka bir bilgisayarda yönetin.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Kontrolcü hareketini emülatörlere gönderin.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Oyun modlarından tetik ve ışık efektlerini alın.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Oynarken menüleri, katmanları ve profil geçişlerini gösterin.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Oynarken menüleri, katmanları, profil geçişlerini ve cihaz bağlantılarını gösterin.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation dokunmatik yüzeyli oyunlar için ekran üstü dokunma yüzeyi.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Diğer pencerelerin üstünde bir resim, zamanlayıcı veya saat.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Oyunun üstünde kendi nişangahınız.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Açıkken bir menünün halkası, ızgarası veya çubuğu.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Bir shift katmanı açıldığında katmanın adı, o katmanın belirlediği süre boyunca.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profil değiştiğinde profilin adı.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Eşlenmiş bir cihazın bağlantısı kesildiğinde adı.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Eşlenmiş bir cihaz bağlandığında adı.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adresi kopyala</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Ekrandaki yer</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Telefon bağla</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Oynarken PadForge'un gösterdiği ekran göstergeleri. Birini kapatmak davranışı asla değiştirmez, yalnızca gösterilip gösterilmeyeceğini değiştirir.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift katmanı açılır bildirimi</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profil değiştirme kaplaması</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Cihaz bağlantısı kesildi notu</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Cihaz bağlandı notu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Dairesel veya dokunmatik bir menü devredeyken ekrandaki halkayı veya ızgarayı gösterir. Kaplama kapalıyken de menüler tetiklenir.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ekran menüsü oluşturuldu ({0} atanmış hücre)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ekran menüsü oluşturuldu ({0} atanmış hücre)</value></data>

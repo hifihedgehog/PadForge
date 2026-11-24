@@ -2310,6 +2310,13 @@
   <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Tsy azo nalamina ny HIDMaestro. Ao amin'ny rakitra diagnostika ny antony.</value></data>
   <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Tsy hita ny profil HIDMaestro an'ny contrôleur virtoaly iray. Ny rakitra diagnostika no milaza hoe iza izy.</value></data>
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Tsy nahazo ny maha-izy azy sy ny fandaminana namboarina ho azy ny {0}, ka ireo an'ny profiliny ihany no ampiasainy.</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} tsy mifandray intsony</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} tsy mifandray intsony. Tsy manana fitaovana intsony ny {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} mifandray</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} mifandray, bateria {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Fitaovana {0} tsy mifandray intsony</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Fitaovana {0} mifandray</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Tapaka matetika ny fifandraisan'ny {0}</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programa hafa no mitazona ny anaran'ny pipe {0}. Akatony io programa io.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Nolavin'ny Windows ny pipe {0}, ka tsy afaka mifandray ny programa.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Mifindrà amin'ny profil {0}</value></data>

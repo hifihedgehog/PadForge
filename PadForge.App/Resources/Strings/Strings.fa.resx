@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>کنترلرهای مجازی فعال‌اند</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>کنترلرهای مجازی غیرفعال‌اند</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>یک یا چند کنترلر آفلاین است</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} قطع شد</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} قطع شد. {1} دیگر دستگاهی ندارد.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} وصل شد</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} وصل شد، باتری {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} دستگاه قطع شد</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} دستگاه وصل شد</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} مدام قطع می‌شود</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (حداکثر {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (حداکثر {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (حداکثر {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>کنترلرهای مجازی را روی رایانه‌ای دیگر هدایت کنید.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>حرکت کنترلر را به شبیه‌سازها ارسال کنید.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>جلوه‌های ماشه و نور را از مودهای بازی دریافت کنید.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>منوها، لایه‌ها و تعویض پروفایل را هنگام بازی نشان دهید.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>منوها، لایه‌ها، تعویض پروفایل و اتصال دستگاه‌ها را هنگام بازی نشان دهید.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمسی روی صفحه برای بازی‌های تاچ‌پد PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>تصویر، زمان‌سنج یا ساعت بالای پنجره‌های دیگر.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>نشانه‌گیر دلخواه شما روی بازی.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقه، جدول یا نوار یک منو تا وقتی باز است.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>نام لایه هنگام روشن شدن یک لایه شیفت، به مدتی که آن لایه تعیین می‌کند.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>نام پروفایل وقتی پروفایل عوض می‌شود.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>نام دستگاه نگاشت‌شده وقتی قطع می‌شود.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>نام دستگاه نگاشت‌شده وقتی وصل می‌شود.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>کپی نشانی</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>جای روی صفحه</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>اتصال یک گوشی</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>نشان‌دهنده‌های روی صفحه که PadForge هنگام بازی نمایش می‌دهد. خاموش کردن هر یک هرگز رفتار را تغییر نمی‌دهد، فقط تعیین می‌کند نمایش داده شود یا نه.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>پنجره شناور لایه شیفت</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>اورلی تعویض پروفایل</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>یادداشت قطع دستگاه</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>یادداشت وصل دستگاه</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>تا وقتی یک منوی شعاعی یا لمسی فعال است، حلقه یا شبکه روی صفحه را نمایش می‌دهد. با خاموش بودن اورلی هم منوها همچنان اجرا می‌شوند.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>منوی روی صفحه ساخته شد ({0} خانه دارای نگاشت)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>منوی روی صفحه ساخته شد ({0} خانه دارای نگاشت)</value></data>

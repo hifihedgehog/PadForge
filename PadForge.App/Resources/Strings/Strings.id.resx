@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Kontroler virtual aktif</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Kontroler virtual nonaktif</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Satu atau beberapa kontroler offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} terputus</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} terputus. {1} tidak punya perangkat lagi.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} tersambung</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tersambung, baterai {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} perangkat terputus</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} perangkat tersambung</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} terus terputus</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kendalikan kontroler virtual di PC lain.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Kirim gerakan kontroler ke emulator.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Terima efek pelatuk dan lampu dari mod game.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tampilkan menu, lapisan, dan pergantian profil selagi Anda bermain.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tampilkan menu, lapisan, pergantian profil, dan sambungan perangkat selagi Anda bermain.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Permukaan sentuh di layar untuk game panel sentuh PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Gambar, timer, atau jam di atas jendela lain.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Crosshair Anda sendiri di atas game.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, kisi, atau bilah menu saat terbuka.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan saat lapisan shift aktif, selama waktu yang diatur lapisan itu.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil saat profil berganti.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nama perangkat yang dipetakan saat terputus.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nama perangkat yang dipetakan saat tersambung.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Salin alamat</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posisi di layar</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Sambungkan ponsel</value></data>
@@ -4614,6 +4623,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikator di layar yang ditampilkan PadForge selagi Anda bermain. Mematikan salah satunya tidak pernah mengubah perilaku, hanya menentukan apakah indikator itu muncul.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Flyout lapisan shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay pergantian profil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Catatan perangkat terputus</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Catatan perangkat tersambung</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Tampilkan cincin atau kisi di layar selama menu radial atau menu sentuh aktif. Menu tetap berfungsi saat overlay nonaktif.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu di layar dibuat ({0} sel terikat)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu di layar dibuat ({0} sel terikat)</value></data>

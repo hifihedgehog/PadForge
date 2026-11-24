@@ -870,4 +870,7 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Vakatautauvatataka kei na iyaloyalo</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E taura na roka e va mai na iyaloyalo.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tomana na Vakau</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} sa semati</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} sa semati, bateri {1}%</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Sa semati e {0} na iyaya</value></data>
 </root>

@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার সক্ষম</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার অক্ষম</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>এক বা একাধিক কন্ট্রোলার অফলাইন</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} সংযোগ বিচ্ছিন্ন হয়েছে</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} সংযোগ বিচ্ছিন্ন হয়েছে। {1}-এ আর কোনো ডিভাইস নেই।</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} সংযুক্ত হয়েছে</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} সংযুক্ত হয়েছে, ব্যাটারি {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0}টি ডিভাইসের সংযোগ বিচ্ছিন্ন হয়েছে</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0}টি ডিভাইস সংযুক্ত হয়েছে</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} বারবার সংযোগ হারাচ্ছে</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (সর্বোচ্চ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (সর্বোচ্চ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (সর্বোচ্চ {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>অন্য পিসির ভার্চুয়াল কন্ট্রোলার চালান।</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>কন্ট্রোলারের মোশন ইমুলেটরে পাঠান।</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>গেম মড থেকে ট্রিগার ও লাইটের এফেক্ট নিন।</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>খেলার সময় মেনু, লেয়ার ও প্রোফাইল বদল দেখান।</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>খেলার সময় মেনু, লেয়ার, প্রোফাইল বদল ও ডিভাইসের সংযোগ দেখান।</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation টাচপ্যাড গেমের জন্য অন-স্ক্রিন টাচ সারফেস।</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>অন্য উইন্ডোর ওপরে ছবি, টাইমার বা ঘড়ি।</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>গেমের ওপরে আপনার নিজের ক্রসহেয়ার।</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>মেনু খোলা থাকাকালীন তার রিং, গ্রিড বা বার।</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>শিফট লেয়ার চালু হলে লেয়ারের নাম, সেই লেয়ারের ঠিক করা সময় ধরে।</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>প্রোফাইল বদলালে প্রোফাইলের নাম।</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ম্যাপ করা কোনো ডিভাইসের সংযোগ বিচ্ছিন্ন হলে তার নাম।</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ম্যাপ করা কোনো ডিভাইস সংযুক্ত হলে তার নাম।</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ঠিকানা কপি করুন</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>স্ক্রিনে অবস্থান</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ফোন সংযুক্ত করুন</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>খেলার সময় PadForge যেসব অন-স্ক্রিন সংকেত দেখায়। কোনোটি বন্ধ করলে আচরণ কখনো বদলায় না, কেবল সেটি দেখানো হবে কি না তা বদলায়।</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>শিফট লেয়ার ফ্লাইআউট</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>প্রোফাইল বদলের ওভারলে</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ডিভাইস সংযোগ বিচ্ছিন্ন হওয়ার নোট</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ডিভাইস সংযুক্ত হওয়ার নোট</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>রেডিয়াল বা টাচ মেনু সক্রিয় থাকা অবস্থায় অন-স্ক্রিন রিং বা গ্রিড দেখায়। ওভারলে বন্ধ থাকলেও মেনু কাজ করে।</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>অন-স্ক্রিন মেনু তৈরি হয়েছে ({0}টি বাইন্ড করা সেল)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>অন-স্ক্রিন মেনু তৈরি হয়েছে ({0}টি বাইন্ড করা সেল)</value></data>

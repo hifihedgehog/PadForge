@@ -1518,6 +1518,13 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mifananidzo (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafaira ese (*.*)|*.*</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge haigone kuverenga mufananidzo weSteam wemutambo uyu.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ramba Uchitumira</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} yabviswa</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} yabviswa. {1} haichina mudziyo.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} yabatanidzwa</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yabatanidzwa, bhatiri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Midziyo {0} yabviswa</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Midziyo {0} yabatanidzwa</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} inoramba ichibva</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Chimwe chirongwa chakabata zita repaipi {0}. Vhara chirongwa ichocho.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows yaramba paipi {0}, saka zvirongwa hazvigone kubatana.</value></data>
   <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chinja kuenda kupurofaira {0}</value></data>

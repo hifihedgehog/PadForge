@@ -1313,6 +1313,41 @@ namespace PadForge.Tests
             Assert.Equal(new[] { HiddenControllerRelease.PauseBetweenCyclesMs }, h.Pauses);
         }
 
+        /// <summary>The release says when it last cycled a port, on its tick
+        /// clock. The device notes (#597) read it, so a controller that
+        /// PadForge's own cycle drops and brings back raises no note. A
+        /// controller that is skipped, or held back by the cooldown, moves
+        /// nothing.</summary>
+        [Fact]
+        public void TheReleaseSaysWhenItLastCycledAPort()
+        {
+            var h = new Harness();
+            h.Map[@"HID\A\1"] = (@"USB\A\1", null);
+            h.Map[@"HID\BT\1"] = (null, "Bluetooth");
+            Assert.Equal(-1, h.Release.LastCycleAt);
+
+            h.Run(@"HID\BT\1");
+            Assert.Empty(h.Cycled);
+            Assert.Equal(-1, h.Release.LastCycleAt);
+
+            h.Clock = 2_000_000;
+            h.Run(@"HID\A\1");
+            Assert.Equal(new[] { @"USB\A\1" }, h.Cycled);
+            Assert.Equal(2_000_000, h.Release.LastCycleAt);
+
+            // Inside the cooldown the cycle is held, and nothing was cycled.
+            h.Clock += HiddenControllerRelease.CooldownMs - 1;
+            h.Run(@"HID\A\1");
+            Assert.Single(h.Cycled);
+            Assert.Equal(2_000_000, h.Release.LastCycleAt);
+
+            // The held cycle runs once the cooldown ends, and is the last.
+            h.Clock += 1;
+            h.RunDue(0);
+            Assert.Equal(2, h.Cycled.Count);
+            Assert.Equal(2_000_000 + HiddenControllerRelease.CooldownMs, h.Release.LastCycleAt);
+        }
+
         /// <summary>A release asked for after Dispose queues nothing.</summary>
         [Fact]
         public void NothingRunsAfterDispose()

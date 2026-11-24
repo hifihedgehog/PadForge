@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Виртуалды контроллерлер қосулы</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Виртуалды контроллерлер өшірулі</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Бір немесе бірнеше контроллер желіден тыс</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ажыратылды</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ажыратылды. {1} үшін құрылғы қалмады.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} қосылды</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} қосылды, батарея {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ажыратылған құрылғылар: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Қосылған құрылғылар: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} жиі ажырап тұр</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (ең көбі {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (ең көбі {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ең көбі {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Басқа компьютердегі виртуалды контроллерлерді басқарыңыз.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын эмуляторларға жіберіңіз.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ойын модтарынан триггер және жарық эффектілерін қабылдаңыз.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ойын кезінде мәзірлерді, қабаттарды және профиль ауысуларын көрсетіңіз.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ойын кезінде мәзірлерді, қабаттарды, профиль ауысуларын және құрылғы қосылымдарын көрсетіңіз.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Басқа терезелердің үстінде сурет, таймер немесе сағат.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ойындағы өзіңіздің прицеліңіз.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Мәзір ашық кезіндегі оның сақинасы, торы немесе жолағы.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ауыстыру қабаты қосылғанда қабаттың аты, сол қабат белгілеген уақыт бойы.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профиль ауысқанда профильдің аты.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Тағайындалған құрылғының аты, ол ажыратылғанда.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Тағайындалған құрылғының аты, ол қосылғанда.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Мекенжайды көшіру</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Экрандағы орны</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Телефонды қосу</value></data>
@@ -4348,6 +4357,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge ойын кезінде көрсететін экрандағы көрсеткіштер. Біреуін өшіру жұмысты өзгертпейді, тек ол көрсетілетінін ғана өзгертеді.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Қабатты ауыстырудың қалқымалы терезесі</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профильді ауыстыру оверлейі</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Құрылғы ажыратылды хабары</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Құрылғы қосылды хабары</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиалды немесе сенсорлық мәзір белсенді болғанда экрандағы сақинаны немесе торды көрсету. Оверлей өшірулі болса да мәзірлер жұмыс істейді.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>экрандағы мәзір жасалды (байланған ұяшықтар: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>экрандағы мәзір жасалды (байланған ұяшықтар: {0})</value></data>

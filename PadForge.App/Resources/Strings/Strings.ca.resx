@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Comandaments virtuals activats</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Comandaments virtuals desactivats</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Un o més comandaments fora de línia</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>S'ha desconnectat {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>S'ha desconnectat {0}. {1} ja no té cap dispositiu.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>S'ha connectat {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>S'ha connectat {0}, bateria al {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} dispositius desconnectats</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} dispositius connectats</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} no para de desconnectar-se</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (màx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (màx. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (màx. {0})</value></data>
@@ -412,7 +419,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Controla els comandaments virtuals d'un altre PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Envia el moviment del comandament als emuladors.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Rep efectes de gallets i de llum dels mods de joc.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menús, capes i canvis de perfil mentre jugues.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menús, capes, canvis de perfil i connexions de dispositius mentre jugues.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Una superfície tàctil en pantalla per als jocs amb panell tàctil de PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Una imatge, un temporitzador o un rellotge per sobre d'altres finestres.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>El teu propi punt de mira sobre un joc.</value></data>
@@ -441,6 +448,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anell, la quadrícula o la barra d'un menú mentre és obert.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nom de la capa quan s'activa una capa, durant el temps que aquesta capa estableix.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>El nom del perfil quan canvia el perfil.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>El nom d'un dispositiu assignat quan es desconnecta.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>El nom d'un dispositiu assignat quan es connecta.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copia l'adreça</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posició a la pantalla</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Connecta un telèfon</value></data>
@@ -4347,6 +4356,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicadors en pantalla que PadForge mostra mentre jugues. Desactivar-ne un no canvia mai el comportament, només si es mostra.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Avís emergent de canvi de capa</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Superposició de canvi de perfil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avís de dispositiu desconnectat</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avís de dispositiu connectat</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anell o la graella en pantalla mentre hi ha actiu un menú radial o tàctil. Els menús continuen funcionant amb la superposició desactivada.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menú en pantalla creat ({0} cel·les vinculades)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menú en pantalla creat ({0} cel·la vinculada)</value></data>

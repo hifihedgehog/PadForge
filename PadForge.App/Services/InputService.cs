@@ -571,6 +571,7 @@ namespace PadForge.Services
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
             _dispatcher = Dispatcher.CurrentDispatcher;
             _controllerRelease.RowsPending = EngineIsListing;
+            _deviceNotes.Silenced = LogDeviceNoteSilence;
 
             // Refresh server status strings when language changes.
             Strings.CultureChanged += OnCultureChanged;
@@ -936,6 +937,9 @@ namespace PadForge.Services
             // restart re-baselines instead of offering every pad at once.
             _assignOfferBaselinePending = true;
             _assignOfferBaselineKnown.Clear();
+            // The device notes (#597) start over too, so the devices a run
+            // finds connected raise none.
+            StartDeviceNotes();
 
             // NFC tag registry (issue #150): when a tag is registered/removed,
             // rebuild every pad's input picker so the named tag appears/disappears
@@ -2638,6 +2642,8 @@ namespace PadForge.Services
                     _switchOverlay.Close();
                     _switchOverlay = null;
                 }
+                // The device notes (#597) end with the window they show on.
+                StopDeviceNotes();
                 if (_shiftLayerFlyout != null)
                 {
                     _shiftLayerFlyout.Close();
@@ -3386,6 +3392,12 @@ namespace PadForge.Services
                 _lastGatedDashboardTick = Environment.TickCount64;
                 UpdateDashboard();
             }
+
+            // ── Device notes (#597): a mapped device that disconnects or
+            //    connects, each behind its own switch. Ahead of the layer
+            //    flyout, which stands in the same place and gives a note
+            //    its two seconds.
+            UpdateDeviceNotes(_mainVm.Dashboard.EnableDeviceDisconnectedNote, _mainVm.Dashboard.EnableDeviceConnectedNote);
 
             // ── Drive the v3 shift-layer flyout. Polls the engine's
             //    engagement state for the currently-selected pad and
@@ -14353,7 +14365,14 @@ namespace PadForge.Services
             // and skipping the call would strand it there. The same goes for
             // having no mapping sets. Display only, so the engaged layer and
             // every row that resolves against it are unaffected.
-            if (!_mainVm.Dashboard.EnableShiftLayerFlyout || sets == null)
+            //
+            // A device note (#597) takes the flyout down the same way for
+            // as long as it is up. The two windows stand in one place, and
+            // the one shown last would lie over the other (seen 2026-11-23
+            // with two topmost windows that take no focus). The director
+            // forgets, so a layer still on when the note has left reads as
+            // one that just turned on and shows again.
+            if (!_mainVm.Dashboard.EnableShiftLayerFlyout || sets == null || DeviceNoteIsUp)
             {
                 if (_layerFlyoutDirector.Reset()) _shiftLayerFlyout?.HideFlyout();
                 return;
@@ -14542,32 +14561,31 @@ namespace PadForge.Services
 
         private Views.ProfileSwitchOverlay _switchOverlay;
 
+        /// <summary>The flyout's window, made the first time anything
+        /// shows on it: a profile switch, the controllers turned on or off,
+        /// or a device note (#597).</summary>
+        private Views.ProfileSwitchOverlay SwitchOverlay()
+        {
+            if (_switchOverlay == null)
+            {
+                _switchOverlay = new Views.ProfileSwitchOverlay();
+                _switchOverlay.CheckInitState = CheckAllSlotsInitState;
+                _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
+            }
+            return _switchOverlay;
+        }
+
         private void ShowProfileSwitchOverlay(string profileId)
         {
             string name = profileId != null
                 ? SettingsManager.Profiles.Find(p => p.Id == profileId)?.Name
                 : Strings.Instance.Profile_Default;
 
-            if (_switchOverlay == null)
-            {
-                _switchOverlay = new Views.ProfileSwitchOverlay();
-                _switchOverlay.CheckInitState = CheckAllSlotsInitState;
-                _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
-            }
-
-            _switchOverlay.ShowProfileName(name ?? Strings.Instance.Profile_Default);
+            SwitchOverlay().ShowProfileName(name ?? Strings.Instance.Profile_Default);
         }
 
         private void ShowVCsToggleOverlay(bool enabled)
-        {
-            if (_switchOverlay == null)
-            {
-                _switchOverlay = new Views.ProfileSwitchOverlay();
-                _switchOverlay.CheckInitState = CheckAllSlotsInitState;
-                _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
-            }
-            _switchOverlay.ShowVCsToggle(enabled);
-        }
+            => SwitchOverlay().ShowVCsToggle(enabled);
 
         private (bool anyInitializing, bool allReady) CheckAllSlotsInitState()
         {
@@ -20427,6 +20445,8 @@ namespace PadForge.Services
                 EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay,
                 EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout,
                 EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay,
+                EnableDeviceDisconnectedNote = _mainVm.Dashboard.EnableDeviceDisconnectedNote,
+                EnableDeviceConnectedNote = _mainVm.Dashboard.EnableDeviceConnectedNote,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -21009,6 +21029,11 @@ namespace PadForge.Services
 
             _settingsService?.InvalidateAssignmentSnapshot();
 
+            // A profile changes which devices are mapped, so the device
+            // notes (#597) read each one as for the first time and say
+            // nothing of the switch.
+            _deviceNotes.Reset();
+
             // Clear shift-activator runtime state (toggle latches, was-down
             // markers, engagement stack, custom-layer state) so the new
             // profile starts every activator un-engaged. Without this a
@@ -21473,6 +21498,8 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableMenuOverlay = profile.EnableMenuOverlay;
             _mainVm.Dashboard.EnableShiftLayerFlyout = profile.EnableShiftLayerFlyout;
             _mainVm.Dashboard.EnableProfileOverlay = profile.EnableProfileOverlay;
+            _mainVm.Dashboard.EnableDeviceDisconnectedNote = profile.EnableDeviceDisconnectedNote;
+            _mainVm.Dashboard.EnableDeviceConnectedNote = profile.EnableDeviceConnectedNote;
             _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
@@ -21844,6 +21871,8 @@ namespace PadForge.Services
                     profile.EnableMenuOverlay = snapshot.EnableMenuOverlay;
                     profile.EnableShiftLayerFlyout = snapshot.EnableShiftLayerFlyout;
                     profile.EnableProfileOverlay = snapshot.EnableProfileOverlay;
+                    profile.EnableDeviceDisconnectedNote = snapshot.EnableDeviceDisconnectedNote;
+                    profile.EnableDeviceConnectedNote = snapshot.EnableDeviceConnectedNote;
                     profile.TouchpadOverlayOpacity = snapshot.TouchpadOverlayOpacity;
                     profile.TouchpadOverlayMonitor = snapshot.TouchpadOverlayMonitor;
                     profile.TouchpadOverlayLeft = snapshot.TouchpadOverlayLeft;

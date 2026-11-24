@@ -314,7 +314,9 @@ namespace PadForge.ViewModels
             nameof(EnableShiftLayerFlyout) or
             nameof(EnableProfileOverlay) or
             nameof(EnableAutomation) or
-            nameof(AutomationLevel);
+            nameof(AutomationLevel) or
+            nameof(EnableDeviceDisconnectedNote) or
+            nameof(EnableDeviceConnectedNote);
 
         private void ResetSetting(string name)
         {
@@ -406,6 +408,16 @@ namespace PadForge.ViewModels
                 {
                     // The lowest level, which is what a launcher needs.
                     AutomationLevel = PadForge.Services.Automation.AutomationLevel.Commands;
+                    break;
+                }
+                case nameof(EnableDeviceDisconnectedNote):
+                {
+                    EnableDeviceDisconnectedNote = false;
+                    break;
+                }
+                case nameof(EnableDeviceConnectedNote):
+                {
+                    EnableDeviceConnectedNote = false;
                     break;
                 }
                 default: return;

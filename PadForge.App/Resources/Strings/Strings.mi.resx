@@ -2169,6 +2169,13 @@
   <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Kei te ngaro te kōtaha HIDMaestro o tētahi controller mariko. Kei te rangitaki tātari tōna ingoa.</value></data>
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Kāore i taea e {0} te tango i tōna tuakiri me tōna tahora kua whakaritea, nō reira ka whakamahia ko ō tōna kōtaha ake.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>Kāore e taea e PadForge te pānui i te pikitia a Steam mō tēnei kēmu.</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Kua momotu a {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Kua momotu a {0}. Kāore he pūrere e toe ana ki a {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Kua hono a {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Kua hono a {0}, pūhiko {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>E {0} ngā pūrere kua momotu</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>E {0} ngā pūrere kua hono</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Ka momotu tonu a {0}</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Pātengi raraunga controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ka tikiake a Whakahōu ināianei i te pātengi raraunga controller a te hapori (SDL_GameControllerDB) mai i GitHub, ā, ka puritia ki te kōnae tautuhinga ngā mahere kāore i tēnei putanga o PadForge. Ka whakamahia he mahere hou mō tētahi controller anake e kore e pānuitia hei gamepad e tētahi atu mea, kāore i tautapatia, ā, kāore i te Aratau Joystick Mata. Ka tangohia e Tautuhi anō ngā mahere katoa i tikiakehia.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Whakahōu ināianei</value></data>

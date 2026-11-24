@@ -187,6 +187,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>仮想コントローラーを有効化</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>仮想コントローラーを無効化</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>1 台以上のコントローラーがオフライン</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} が切断されました</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} が切断されました。{1} に使えるデバイスがなくなりました。</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} が接続されました</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} が接続されました、バッテリー {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} 台のデバイスが切断されました</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} 台のデバイスが接続されました</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} が何度も切断されています</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (最大 {0} 台)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (最大 {0} 台)</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (最大 {0} 台)</value></data>
@@ -3747,7 +3754,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>別の PC の仮想コントローラーを操作します。</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>コントローラーのモーションをエミュレーターに送ります。</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ゲーム MOD からトリガーとライトのエフェクトを受け取ります。</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>プレイ中にメニュー、レイヤー、プロファイルの切り替えを表示します。</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>プレイ中にメニュー、レイヤー、プロファイルの切り替え、デバイスの接続を表示します。</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation のタッチパッドゲーム向けの画面上タッチサーフェスです。</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>他のウィンドウの前面に画像、タイマー、時計を表示します。</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ゲーム画面にオリジナルのクロスヘアを表示します。</value></data>
@@ -3776,6 +3783,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>メニューを開いている間のリング、グリッド、バー</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>シフトレイヤーがオンになったときのレイヤー名、表示時間はレイヤーごとの設定に従います</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>プロファイルが切り替わったときのプロファイル名</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>マッピングされたデバイスが切断されたときのデバイス名</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>マッピングされたデバイスが接続されたときのデバイス名</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>アドレスをコピー</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>画面上の位置</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>スマートフォンを接続</value></data>
@@ -4558,6 +4567,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>プレイ中に PadForge が表示する画面インジケーター。オフにしても動作は変わらず、画面に表示されるかどうかだけが変わります。</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>シフト レイヤー フライアウト</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>プロファイル切り替えオーバーレイ</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>デバイス切断通知</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>デバイス接続通知</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>

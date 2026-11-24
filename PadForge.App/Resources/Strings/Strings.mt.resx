@@ -178,6 +178,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Kontrolluri virtwali attivati</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Kontrolluri virtwali diżattivati</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Kontrollur wieħed jew aktar offline</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} ma baqax imqabbad</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ma baqax imqabbad. {1} m'għandux aktar apparat.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} tqabbad</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tqabbad, batterija {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Apparati li ma baqgħux imqabbdin: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Apparati mqabbdin: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} jibqa' jitlef il-konnessjoni</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (massimu {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (massimu {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (massimu {0})</value></data>
@@ -418,7 +425,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ikkontrolla l-kontrolluri virtwali fuq PC ieħor.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Ibgħat il-moviment tal-kontrollur lill-emulaturi.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ieħu effetti tat-triggers u tad-dwal mill-mods tal-logħob.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Uri menus, saffi u bidliet tal-profil waqt li tilgħab.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Uri menus, saffi, bidliet tal-profil u konnessjonijiet tal-apparati waqt li tilgħab.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Wiċċ tal-mess fuq l-iskrin għal logħob tat-touchpad tal-PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Stampa, timer jew arloġġ fuq it-twieqi l-oħra.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Il-mira tiegħek stess fuq logħba.</value></data>
@@ -447,6 +454,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L-anell, il-griglja jew il-bar ta' menu waqt li jkun miftuħ.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>L-isem tas-saff meta saff shift jinxtegħel, għall-ħin li jistabbilixxi dak is-saff.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>L-isem tal-profil meta l-profil jinbidel.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>L-isem ta' apparat immappjat meta ma jibqax imqabbad.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>L-isem ta' apparat immappjat meta jitqabbad.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Ikkopja l-indirizz</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Poġġi fuq l-iskrin</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Qabbad telefon</value></data>
@@ -4288,6 +4297,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikaturi fuq l-iskrin li PadForge juri waqt li tilgħab. It-tifi ta' wieħed minnhom qatt ma jbiddel kif jaħdem il-programm, biss jekk l-indikatur jintwera.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Avviż tas-saff tax-shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay tal-bidla tal-profil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nota tal-apparat mhux imqabbad</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nota tal-apparat imqabbad</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Uri ċ-ċirku jew il-grilja fuq l-iskrin waqt li menu radjali jew tal-mess ikun attiv. Il-menus jibqgħu jattivaw bl-overlay mitfi.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu fuq l-iskrin maħluq ({0} ċelloli marbuta)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu fuq l-iskrin maħluq ({0} ċellola marbuta)</value></data>

@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Виртуальные контроллеры включены</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Виртуальные контроллеры отключены</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Один или несколько контроллеров не в сети</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} отключено</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} отключено. У {1} не осталось устройств.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} подключено</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} подключено, заряд {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Отключено устройств: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Подключено устройств: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} постоянно отключается</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Управляйте виртуальными контроллерами на другом ПК.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Передавайте движение контроллера в эмуляторы.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Принимайте эффекты триггеров и подсветки от игровых модов.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показывайте меню, слои и смену профиля во время игры.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показывайте меню, слои, смену профиля и подключения устройств во время игры.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Экранная сенсорная область для игр с тачпадом PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Картинка, таймер или часы поверх других окон.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Собственный прицел поверх игры.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Кольцо, сетка или полоса меню, пока оно открыто.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Название слоя, когда включается слой переключения, на время, которое задает этот слой.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Название профиля при его смене.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Название назначенного устройства, когда оно отключается.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Название назначенного устройства, когда оно подключается.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копировать адрес</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Положение на экране</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Подключите телефон</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Экранные индикаторы, которые PadForge показывает во время игры. Отключение индикатора никогда не меняет поведение, только то, показывается ли он.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Всплывающая панель слоя</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Оверлей переключения профиля</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Заметка об отключении устройства</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Заметка о подключении устройства</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Показывать экранное кольцо или сетку, пока активно радиальное или сенсорное меню. С выключенным оверлеем меню все равно срабатывают.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>создано экранное меню (ячеек с привязкой: {0})</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>создано экранное меню ({0} ячейка с привязкой)</value></data>

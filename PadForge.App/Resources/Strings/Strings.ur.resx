@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>ورچوئل کنٹرولرز فعال ہیں</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>ورچوئل کنٹرولرز غیر فعال ہیں</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>ایک یا زیادہ کنٹرولر آف لائن ہیں</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} منقطع ہو گیا</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} منقطع ہو گیا۔ {1} کے پاس اب کوئی آلہ نہیں رہا۔</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} منسلک ہو گیا</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} منسلک ہو گیا، بیٹری {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>آلات منقطع ہوئے: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>آلات منسلک ہوئے: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} بار بار منقطع ہو رہا ہے</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (زیادہ سے زیادہ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (زیادہ سے زیادہ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (زیادہ سے زیادہ {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>دوسرے PC پر ورچوئل کنٹرولرز چلائیں۔</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>کنٹرولر کی موشن ایمولیٹرز کو بھیجیں۔</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>گیم موڈز سے ٹرگر اور لائٹ ایفیکٹس وصول کریں۔</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>کھیلتے وقت مینوز، لیئرز اور پروفائل کی تبدیلیاں دکھائیں۔</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>کھیلتے وقت مینوز، لیئرز، پروفائل کی تبدیلیاں اور آلات کے کنکشن دکھائیں۔</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ٹچ پیڈ گیمز کے لیے اسکرین پر ٹچ سطح۔</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>دوسری ونڈوز کے اوپر تصویر، ٹائمر یا گھڑی۔</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>گیم پر آپ کا اپنا کراس ہیئر۔</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>کھلے ہونے کے دوران مینیو کا رِنگ، گرڈ یا بار۔</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>شفٹ لیئر آن ہونے پر لیئر کا نام، اتنی دیر کے لیے جتنی وہ لیئر طے کرتی ہے۔</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>پروفائل بدلنے پر پروفائل کا نام۔</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>میپ شدہ آلے کا نام جب وہ منقطع ہو۔</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>میپ شدہ آلے کا نام جب وہ منسلک ہو۔</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>پتہ کاپی کریں</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>اسکرین پر جگہ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>فون منسلک کریں</value></data>
@@ -4614,6 +4623,8 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>اسکرین پر نظر آنے والے اشارے جو PadForge کھیلنے کے دوران دکھاتا ہے۔ کسی کو آف کرنے سے طرز عمل کبھی نہیں بدلتا، صرف یہ بدلتا ہے کہ وہ دکھایا جائے یا نہیں۔</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>شفٹ لیئر فلائی آؤٹ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>پروفائل تبدیلی اوورلے</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>آلہ منقطع ہونے کا نوٹ</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>آلہ منسلک ہونے کا نوٹ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>جب ریڈیل یا ٹچ مینو فعال ہو تو اسکرین پر حلقہ یا گرڈ دکھائیں۔ اوورلے آف ہونے پر بھی مینوز چلتے ہیں۔</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>اسکرین مینو بنایا گیا ({0} بندھے ہوئے خانے)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>اسکرین مینو بنایا گیا ({0} بندھا ہوا خانہ)</value></data>

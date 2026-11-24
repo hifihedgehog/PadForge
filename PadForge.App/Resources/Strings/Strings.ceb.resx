@@ -150,6 +150,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Gi-enable ang mga virtual nga controller</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Gi-disable ang mga virtual nga controller</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Usa o labaw pa nga controller ang dili konektado</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>Nadiskonektar ang {0}</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Nadiskonektar ang {0}. Wala nay device nga nahabilin sa {1}.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Nakakonektar ang {0}</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Nakakonektar ang {0}, baterya {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} ka device ang nadiskonektar</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} ka device ang nakakonektar</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Kanunay nga nadiskonektar ang {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (labing daghan {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (labing daghan {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (labing daghan {0})</value></data>
@@ -3039,6 +3046,8 @@
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Mga overlay</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga timailhan sa screen nga gipakita sa PadForge samtang nagdula ka. Ang pag-off sa usa dili gayud mousab sa pamatasan, kung gipakita lang kini o dili.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay sa pagbalhin og profile</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Pahibalo sa nadiskonektar nga device</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Pahibalo sa nakakonektar nga device</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Device sa output, mga channel, gain, tono alang sa matag motor</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>I-reset ang Rumble ngadto sa audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Ipadala ang rumble ngadto sa audio output</value></data>
@@ -3916,7 +3925,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Palihoka ang mga virtual nga controller sa laing PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Ipadala ang motion sa controller ngadto sa mga emulator.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa ang mga epekto sa trigger ug suga gikan sa mga game mod.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer ug pagbalhin og profile samtang nagdula ka.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer, pagbalhin og profile ug koneksyon sa device samtang nagdula ka.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Usa ka touch surface sa screen para sa mga dula nga adunay PlayStation touchpad.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Usa ka hulagway, timer o orasan ibabaw sa ubang mga window.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Imong kaugalingong crosshair ibabaw sa usa ka dula.</value></data>
@@ -4045,6 +4054,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Unsay makita</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar sa usa ka menu samtang abli kini.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang ngalan sa profile kung mausab ang profile.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ang ngalan sa device nga gi-mapping kung madiskonektar kini.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ang ngalan sa device nga gi-mapping kung makonektar kini.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha ang address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Dapit sa screen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ikonektar ang telepono</value></data>

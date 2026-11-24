@@ -880,6 +880,31 @@ namespace PadForge.Common.Input
                 System.Threading.Volatile.Write(ref _enumeratedRun, run);
         }
 
+        // When the enumeration the rows come from began, on the tick clock
+        // (Environment.TickCount64).
+        private long _enumerationBegan;
+
+        /// <summary>
+        /// When the last enumeration this run's poll thread finished had
+        /// begun, on the tick clock, or -1 while
+        /// <see cref="DevicesEnumerated"/> is false. A reader that knows a
+        /// moment before which the rows were old (an engine start, a wake
+        /// from sleep) learns from it that the rows were read after that
+        /// moment. The device notes wait on it (#597).
+        /// </summary>
+        public long DevicesEnumeratedSince
+            => DevicesEnumerated ? System.Threading.Volatile.Read(ref _enumerationBegan) : -1;
+
+        /// <summary>Step 1's note of when the enumeration it is about to
+        /// report began, written before <see cref="NoteDevicesEnumerated"/>
+        /// so a reader never pairs a new enumeration with an old start. Only
+        /// the current run's loop counts, as there.</summary>
+        internal void NoteEnumerationBegan(int run, long beganTick)
+        {
+            if (run != 0 && run == System.Threading.Volatile.Read(ref _runGeneration))
+                System.Threading.Volatile.Write(ref _enumerationBegan, beganTick);
+        }
+
         /// <summary>
         /// When true, the polling loop skips the expensive pipeline steps and sleeps
         /// at a low rate (~20Hz) to minimize CPU usage. Device enumeration continues

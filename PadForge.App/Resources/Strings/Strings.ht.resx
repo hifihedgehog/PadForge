@@ -176,6 +176,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Kontwolè vityèl aktive</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Kontwolè vityèl dezaktive</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Youn oswa plizyè kontwolè dekonekte</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} dekonekte</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} dekonekte. {1} pa gen okenn aparèy ki rete.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} konekte</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} konekte, batri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} aparèy dekonekte</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} aparèy konekte</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} pa sispann dekonekte</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks {0})</value></data>
@@ -404,7 +411,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kontwole kontwolè vityèl yo sou yon lòt PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Voye mouvman kontwolè a bay emilatè yo.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Pran efè gachèt ak limyè nan mod jwèt yo.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Montre meni, kouch ak chanjman pwofil pandan w ap jwe.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Montre meni, kouch, chanjman pwofil ak koneksyon aparèy pandan w ap jwe.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Yon sifas manyen sou ekran pou jwèt touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Yon imaj, yon kwonomèt oswa yon revèy anlè lòt fenèt yo.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Pwòp viz ou anlè yon jwèt.</value></data>
@@ -3562,6 +3569,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Sipèpozisyon</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Endikatè sou ekran PadForge montre pandan w ap jwe. Lè ou etenn youn, sa pa janm chanje fonksyònman an, se sèlman si li parèt.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sipèpozisyon chanjman pwofil</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nòt aparèy dekonekte</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nòt aparèy konekte</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Montre bag oswa griy sou ekran an pandan yon meni aktif. Meni yo toujou mache menm lè sipèpozisyon an etenn.</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sòti</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Touch ak sourit</value></data>
@@ -4482,6 +4491,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tout kontwolè a</value></data>
   <data name="Pad_BothSticks_Header" xml:space="preserve"><value>De stick yo</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Non pwofil la lè pwofil la chanje.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Non yon aparèy asiyen lè li dekonekte.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Non yon aparèy asiyen lè li konekte.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopye adrès la</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plas sou ekran an</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konekte yon telefòn</value></data>

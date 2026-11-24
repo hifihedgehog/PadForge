@@ -1424,6 +1424,8 @@
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>I-overlay yemenyu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Ii-overlay</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>I-overlay yokutshintsha iprofayile</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Isaziso sesixhobo esinqanyuliweyo</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Isaziso sesixhobo esiqhagamshelweyo</value></data>
   <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>Kudlalwa ku-{0}.</value></data>
   <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>I-trigger yasekhohlo</value></data>
   <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>I-trigger yasekunene</value></data>
@@ -1756,7 +1758,7 @@
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Esikrinini</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mepha isantya, iipedali neegiya ezivela kwimidlalo yokuqhuba.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Fumana iziphumo zezitrigger nezezibane kwii-mod zemidlalo.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa iimenyu, umaleko notshintsho lweprofayile ngoxa udlala.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa iimenyu, umaleko, utshintsho lweprofayile noqhagamshelo lwezixhobo ngoxa udlala.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Izibuko, endaweni ye DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Amazibuko, Isantya esipheleleyo, Iifomathi zakho</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Iprofayile</value></data>
@@ -1821,6 +1823,8 @@
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Okubonakalayo</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Isangqa, igridi okanye ibha yemenyu xa ivuliwe.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama leprofayile xa iprofayile itshintsha.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Igama lesixhobo esinemephu xa sinqanyuka.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Igama lesixhobo esinemephu xa siqhagamshela.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopa idilesi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ifowuni eqhagamshelayo ibonakala apha nakwiphepha leZixhobo, apho uyabela khona kwisilawuli.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Khangela izixhobo</value></data>
@@ -1968,6 +1972,13 @@
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ithatha imibala emine kumfanekiso.</value></data>
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imifanekiso (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Zonke iifayile (*.*)|*.*</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Qhubeka uthumela</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} inqanyuliwe</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} inqanyuliwe. {1} asisenaso isixhobo.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} iqhagamshelwe</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} iqhagamshelwe, ibhetri {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Izixhobo ezinqanyuliweyo: {0}</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Izixhobo eziqhagamshelweyo: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} isoloko inqanyuka</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Isiseko sedatha sezilawuli</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hlaziya ngoku ikhuphela isiseko sedatha sezilawuli soluntu (SDL_GameControllerDB) kwi-GitHub, kwaye igcina kwifayile yeesetingi iimephu le nguqulelo ye-PadForge engenazo. Imephu entsha isetyenziswa kuphela kwisilawuli esingafundwa njenge-gamepad yenye into, esingabelwanga, nesingekho kwi-Force Raw Joystick Mode. Ukuseta kwakhona kususa zonke iimephu ezikhutshelweyo.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ezakhelwe ngaphakathi: {0} iimephu, ikopi yoluntu yomhla {1}.</value></data>

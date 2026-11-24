@@ -191,6 +191,13 @@
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Sýndarstýringar virkar</value></data>
   <data name="Main_VCsDisabled" xml:space="preserve"><value>Sýndarstýringar óvirkar</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Ein eða fleiri leikjastýringar ótengdar</value></data>
+  <data name="Main_DeviceDisconnected_Format" xml:space="preserve"><value>{0} aftengt</value></data>
+  <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} aftengt. {1} á ekkert tæki eftir.</value></data>
+  <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} tengt</value></data>
+  <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tengt, rafhlaða {1}%</value></data>
+  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} tæki aftengd</value></data>
+  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} tæki tengd</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} aftengist í sífellu</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (hám. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (hám. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (hám. {0})</value></data>
@@ -431,7 +438,7 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Stjórnaðu sýndarstýringunum á annarri tölvu.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Sendu hreyfingu stýringa til hermira.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Taktu við gikk og ljósabrellum frá leikjabreytingum.</value></data>
-  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Sýndu valmyndir, lög og sniðaskipti á meðan þú spilar.</value></data>
+  <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Sýndu valmyndir, lög, sniðaskipti og tengingar tækja á meðan þú spilar.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Snertiflötur á skjánum fyrir snertiflatarleiki PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Mynd, tímamælir eða klukka ofan á öðrum gluggum.</value></data>
   <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Þinn eigin miðunarkross yfir leik.</value></data>
@@ -460,6 +467,8 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Hringur, rist eða stika valmyndar á meðan hún er opin.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Heiti lagsins þegar skiptilag verður virkt, í þann tíma sem lagið ákveður.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Heiti sniðsins þegar sniðið breytist.</value></data>
+  <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Heiti tækis sem varpað er á þegar það aftengist.</value></data>
+  <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Heiti tækis sem varpað er á þegar það tengist.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Afrita vistfang</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Staðsetning á skjá</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Tengdu síma</value></data>
@@ -4614,6 +4623,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Vísar á skjánum sem PadForge sýnir á meðan þú spilar. Þótt slökkt sé á einum breytir það aldrei virkni, aðeins því hvort hún er sýnd.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Sprettigluggi lags</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Yfirlag við sniðaskipti</value></data>
+  <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Tilkynning um aftengt tæki</value></data>
+  <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Tilkynning um tengt tæki</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Sýna hringinn eða hnitanetið á skjánum á meðan hring- eða snertivalmynd er virk. Valmyndir virkjast samt þótt slökkt sé á yfirlaginu.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>valmynd á skjá búin til ({0} bundnir reitir)</value></data>
   <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>valmynd á skjá búin til ({0} bundinn reitur)</value></data>

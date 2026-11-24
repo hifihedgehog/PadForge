@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge हलले नाही: {0} मध्ये PadForge च्या नसलेल्या फाइल आहेत.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge हलले नाही: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>लॉगिनवर सुरू करा बंद केले, कारण ते PadForge इतर फाइल असलेल्या फोल्डरमधून चालवत होते.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge त्याचे संरक्षित फोल्डर {0} बनवू शकले नाही. PadForge प्रशासक अधिकारांसह चालणारी लायब्ररी तिथे ठेवते, आणि त्याशिवाय ते सुरक्षितपणे सुरू होऊ शकत नाही.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge स्वतःला त्याच्या संरक्षित फोल्डरमधून, {0}, पुन्हा सुरू करू शकले नाही. PadForge प्रशासक अधिकारांसह फक्त तिथूनच चालते, म्हणून ते सुरू झाले नाही.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge प्रशासक अधिकारांसह {0} मधून चालते, जे इतर प्रोग्राम बदलू शकतात असे फोल्डर आहे. ते तिथे PadForge ची सेटिंग्ज बदलू शकतात, आणि PadForge त्यांवर स्वतःच्या अधिकारांसह कृती करते.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>नेहमी सिस्टम ट्रेमध्ये दाखवा</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>विंडो उघडी असताना ट्रे आयकॉन दिसत ठेवा, म्हणजे त्याच्या मेनूमधील बाहेर पडा नेहमी एका क्लिकवर असेल.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>अद्यतने</value></data>

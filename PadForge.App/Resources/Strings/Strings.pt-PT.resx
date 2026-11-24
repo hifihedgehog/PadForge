@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>O PadForge não se moveu: {0} contém ficheiros que não são do PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>O PadForge não se moveu: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Iniciar com o Windows foi desativado, porque executava o PadForge a partir de uma pasta com outros ficheiros.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>O PadForge não conseguiu criar a sua pasta protegida, {0}. O PadForge guarda aí as bibliotecas que carrega com direitos de administrador e não consegue iniciar em segurança sem ela.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>O PadForge não conseguiu reiniciar-se a partir da sua pasta protegida, {0}. O PadForge só é executado com direitos de administrador a partir daí, por isso não iniciou.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>O PadForge é executado com direitos de administrador a partir de {0}, uma pasta que outros programas podem alterar. Podem alterar aí as definições do PadForge, e o PadForge atua sobre elas com os seus direitos.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostrar sempre na área de notificação</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantém o ícone da área de notificação visível enquanto a janela está aberta, para que a opção Sair do respetivo menu esteja sempre à distância de um clique.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>

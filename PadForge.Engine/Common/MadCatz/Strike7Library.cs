@@ -22,6 +22,17 @@ namespace PadForge.Engine.Common.MadCatz
     /// <summary>One event, as the library's thread delivered it.</summary>
     public readonly record struct Strike7Event(Strike7EventKind Kind, ushort AppletId, ushort EndpointId, int X, int Y, bool Pressed);
 
+    /// <summary>The applet library as the Strike 7 screen uses it: the
+    /// library itself in the library host (<see cref="Strike7Library"/>),
+    /// and PadForge's side of it over the host's channel (#597).</summary>
+    public interface IStrike7Library
+    {
+        string Path { get; }
+        ushort Open(string name, int iconWidth, int iconHeight, byte[] iconBgra, Action<Strike7Event> subscriber);
+        void Close(ushort appletId);
+        void DrawScreen(ushort appletId, ushort endpointId, byte[] bgra);
+    }
+
     /// <summary>
     /// Mad Catz's S.T.R.I.K.E. 7 applet library, <c>Strike7API.dll</c>
     /// (issue #519), the C surface its SDK's <c>strike7api.h</c> declares and
@@ -38,7 +49,7 @@ namespace PadForge.Engine.Common.MadCatz
     /// per object and the object is never dropped, and the subscriber only
     /// queues. The module is never freed.</para>
     /// </summary>
-    public sealed class Strike7Library
+    public sealed class Strike7Library : IStrike7Library
     {
         public const string LibraryName = "Strike7API.dll";
 

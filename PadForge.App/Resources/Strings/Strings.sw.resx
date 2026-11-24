@@ -942,6 +942,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge haikuhamia: {0} ina faili ambazo si za PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge haikuhamia: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa iliendesha PadForge kutoka folda yenye faili nyingine.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge haikuweza kutengeneza folda yake iliyolindwa, {0}. PadForge huweka humo maktaba inazoendesha kwa haki za msimamizi, na haiwezi kuanza kwa usalama bila hiyo.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge haikuweza kujianzisha tena kutoka folda yake iliyolindwa, {0}. PadForge huendesha kwa haki za msimamizi kutoka humo tu, kwa hiyo haikuanza.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge inaendesha kwa haki za msimamizi kutoka {0}, folda ambayo programu nyingine zinaweza kubadilisha. Zinaweza kubadilisha mipangilio ya PadForge huko, na PadForge hutenda kwa ajili yake kwa haki zake.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Onyesha kila wakati kwenye trei ya mfumo</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Weka ikoni ya trei ionekane dirisha likiwa wazi, ili Toka kwenye menyu yake iwe umbali wa kubofya mara moja.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Masasisho</value></data>

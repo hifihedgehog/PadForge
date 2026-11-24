@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge منتقل نہیں ہوا: {0} میں ایسی فائلیں ہیں جو PadForge کی نہیں۔</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge منتقل نہیں ہوا: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>لاگ ان پر شروع کریں بند کر دیا گیا، کیونکہ وہ PadForge کو ایسے فولڈر سے چلاتا تھا جس میں دوسری فائلیں ہیں۔</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge اپنا محفوظ فولڈر {0} نہیں بنا سکا۔ PadForge منتظم کے حقوق کے ساتھ چلنے والی لائبریریاں وہیں رکھتا ہے، اور اس کے بغیر محفوظ طریقے سے شروع نہیں ہو سکتا۔</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge اپنے محفوظ فولڈر {0} سے خود کو دوبارہ شروع نہیں کر سکا۔ PadForge منتظم کے حقوق کے ساتھ صرف وہیں سے چلتا ہے، اس لیے شروع نہیں ہوا۔</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge منتظم کے حقوق کے ساتھ {0} سے چل رہا ہے، جو ایسا فولڈر ہے جسے دوسرے پروگرام بدل سکتے ہیں۔ وہ وہاں PadForge کی ترتیبات بدل سکتے ہیں، اور PadForge اپنے حقوق کے ساتھ ان پر عمل کرتا ہے۔</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ہمیشہ سسٹم ٹرے میں دکھائیں</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ونڈو کھلی ہونے پر بھی ٹرے آئیکن نظر آتا رہے، تاکہ اس کے مینو میں "باہر نکلیں" ہمیشہ ایک کلک کی دوری پر ہو۔</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>اپ ڈیٹس</value></data>

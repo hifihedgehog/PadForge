@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: {0} bevat lêers wat nie PadForge s'n is nie.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat dit PadForge vanaf 'n vouer laat loop het wat ander lêers bevat.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge kon nie sy beskermde vouer, {0}, maak nie. PadForge hou die biblioteke waarmee dit met administrateurregte loop daar, en dit kan nie veilig begin sonder die vouer nie.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge kon homself nie weer vanaf sy beskermde vouer, {0}, begin nie. PadForge loop slegs van daar af met administrateurregte, so dit het nie begin nie.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge loop met administrateurregte vanaf {0}, 'n vouer wat ander programme kan verander. Hulle kan PadForge se instellings daar verander, en PadForge tree daarop op met sy regte.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Wys altyd in stelselbalk</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hou die balkikoon sigbaar terwyl die venster oop is, sodat Verlaat in sy kieslys altyd een klik weg is.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdaterings</value></data>

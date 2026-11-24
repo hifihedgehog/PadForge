@@ -154,7 +154,8 @@ namespace PadForge.Tests
         {
             string start = OffLimitsSource.Member(service, "internal static Process StartProcess(ProcessStartInfo psi)");
             OffLimitsSource.BeginsWith(start, "if (OffLimitsForTest)");
-            Assert.True(InMember(service, start, Assert.Single(OffLimitsSource.Calls(service, "Process.Start("))));
+            Assert.True(InMember(service, start, Assert.Single(OffLimitsSource.Calls(service, "RightsVariables.Start("))));
+            Assert.Empty(OffLimitsSource.Calls(service, "Process.Start("));
             Assert.Empty(OffLimitsSource.Calls(service, "new Process("));
             Assert.Equal(2, OffLimitsSource.Calls(service, "StartProcess(psi)").Count);
 

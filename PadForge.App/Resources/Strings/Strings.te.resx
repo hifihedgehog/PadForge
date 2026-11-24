@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge తరలించలేదు: {0} లో PadForge కానివి ఫైళ్లు ఉన్నాయి.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge తరలించలేదు: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>లాగిన్ వద్ద ప్రారంభించు ఆఫ్ చేయబడింది, ఎందుకంటే అది PadForge ను ఇతర ఫైళ్లు ఉన్న ఫోల్డర్ నుండి నడిపింది.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge తన రక్షిత ఫోల్డర్ {0} ను తయారు చేయలేకపోయింది. అడ్మినిస్ట్రేటర్ హక్కులతో నడిచే లైబ్రరీలను PadForge అక్కడ ఉంచుతుంది, అది లేకుండా సురక్షితంగా ప్రారంభం కాదు.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge తన రక్షిత ఫోల్డర్ {0} నుండి మళ్లీ ప్రారంభం కాలేకపోయింది. PadForge అడ్మినిస్ట్రేటర్ హక్కులతో అక్కడి నుండి మాత్రమే నడుస్తుంది, కాబట్టి అది ప్రారంభం కాలేదు.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge అడ్మినిస్ట్రేటర్ హక్కులతో {0} నుండి నడుస్తోంది, ఇది ఇతర ప్రోగ్రామ్లు మార్చగల ఫోల్డర్. అవి అక్కడ PadForge సెట్టింగులను మార్చగలవు, PadForge వాటిపై తన హక్కులతో పనిచేస్తుంది.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ఎల్లప్పుడూ సిస్టమ్ ట్రేలో చూపించు</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>విండో తెరిచి ఉన్నప్పుడు ట్రే ఐకాన్ కనిపించేలా ఉంచండి, తద్వారా దాని మెనూలోని నిష్క్రమించు ఎప్పుడూ ఒక క్లిక్ దూరంలో ఉంటుంది.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>అప్డేట్లు</value></data>

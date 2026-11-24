@@ -128,6 +128,24 @@ namespace PadForge.Engine.Common.OpenXr
         /// runtime here.</summary>
         internal LinkOpener OpenLink { get; set; } = OpenXrSession.TryCreate;
 
+        /// <summary>The name the library host serves OpenXR under
+        /// (#597).</summary>
+        public const string LibraryHostService = PadForge.Engine.Common.NativeHost.OpenXrHostService.Name;
+
+        /// <summary>The library host's side of OpenXR, for the host's own
+        /// run: the runtime's library loaded there, with the user's
+        /// rights.</summary>
+        public static PadForge.Engine.Common.NativeHost.IHostService NewLibraryHostService()
+            => new PadForge.Engine.Common.NativeHost.OpenXrHostService();
+
+        /// <summary>Opens the runtime in the library host (#597): the
+        /// manifest names a library in the runtime's own folder, which
+        /// accounts other than the administrators' can change, so the app
+        /// with its rights never loads it. Called before
+        /// <see cref="Start"/>.</summary>
+        public void UseLibraryHost(PadForge.Engine.Common.NativeHost.HostOpener open)
+            => OpenLink = PadForge.Engine.Common.NativeHost.RemoteOpenXrLink.Opener(open);
+
         /// <param name="runtimeChoice">Manifest path to use, or null for the
         /// machine's default. Read once, when the source starts.</param>
         /// <param name="publish">Receives a pose in <see cref="HeadPose"/>'s

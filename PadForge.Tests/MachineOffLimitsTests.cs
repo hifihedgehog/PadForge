@@ -398,10 +398,12 @@ namespace PadForge.Tests
             string source = OffLimitsSource.Read(Installer);
             string start = OffLimitsSource.Member(source, "internal static Process StartProcess(ProcessStartInfo psi)");
             OffLimitsSource.BeginsWith(start, "if (OffLimitsForTest)");
-            int only = Assert.Single(OffLimitsSource.Calls(source, "Process.Start("));
+            int only = Assert.Single(OffLimitsSource.Calls(source, "RightsVariables.Start("));
+            Assert.Empty(OffLimitsSource.Calls(source, "Process.Start("));
             Assert.True(InMember(source, start, only));
             Assert.Empty(OffLimitsSource.Calls(source, "new Process("));
-            Assert.Equal(6, OffLimitsSource.Calls(source, "StartProcess(psi)").Count);
+            Assert.Equal(5, OffLimitsSource.Calls(source, "StartProcess(psi)").Count);
+            Assert.Single(OffLimitsSource.Calls(source, "StartProcess(ElevatedStart(fileName, arguments, Environment.IsPrivilegedProcess))"));
 
             EveryFlag_IsSetInTheTestHost();
             var refused = Assert.Throws<System.ComponentModel.Win32Exception>(() => DriverInstaller.StartProcess(

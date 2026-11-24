@@ -530,6 +530,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: {0} inamafayela angewona awe-PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba bekuqala i-PadForge efolda enamanye amafayela.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukudala ifolda yayo evikelekile, {0}. I-PadForge igcina lapho imitapo eyisebenzisa ngamalungelo omlawuli, futhi ayikwazi ukuqala ngokuphephile ngaphandle kwayo.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukuziqala futhi isuka efolda yayo evikelekile, {0}. I-PadForge isebenza ngamalungelo omlawuli kuphela isuka lapho, ngakho ayizange iqale.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>I-PadForge isebenza ngamalungelo omlawuli isuka ku-{0}, ifolda ezinye izinhlelo ezingayishintsha. Zingashintsha izilungiselelo ze-PadForge lapho, futhi i-PadForge yenza ngazo ngamalungelo ayo.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Izibuyekezo</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Hlola izibuyekezo ngokuzenzakalelayo</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Faka izibuyekezo ngokuzenzakalelayo</value></data>

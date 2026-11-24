@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge wurde nicht verschoben: {0} enthält Dateien, die nicht zu PadForge gehören.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge wurde nicht verschoben: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Bei Anmeldung starten wurde ausgeschaltet, weil es PadForge aus einem Ordner gestartet hat, der andere Dateien enthält.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge konnte seinen geschützten Ordner {0} nicht erstellen. PadForge legt dort die Bibliotheken ab, die es mit Administratorrechten ausführt, und kann ohne ihn nicht sicher starten.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge konnte sich nicht erneut aus seinem geschützten Ordner {0} starten. PadForge läuft mit Administratorrechten nur von dort, deshalb wurde es nicht gestartet.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge läuft mit Administratorrechten aus {0}, einem Ordner, den andere Programme ändern können. Sie können dort die Einstellungen von PadForge ändern, und PadForge handelt danach mit seinen Rechten.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Immer im Infobereich anzeigen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Zeigt das Symbol im Infobereich auch bei geöffnetem Fenster, sodass Beenden in seinem Menü jederzeit erreichbar ist.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

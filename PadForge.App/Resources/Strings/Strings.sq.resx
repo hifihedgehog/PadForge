@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: {0} përmban skedarë që nuk janë të PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Nisja me hyrjen në Windows u çaktivizua, sepse e niste PadForge nga një dosje që përmban skedarë të tjerë.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nuk mundi të krijojë dosjen e vet të mbrojtur, {0}. PadForge mban atje librarit që ekzekuton me të drejta administratori dhe nuk mund të niset i sigurt pa të.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge nuk mundi të niset sërish nga dosja e vet e mbrojtur, {0}. PadForge punon me të drejta administratori vetëm nga atje, ndaj nuk u nis.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge punon me të drejta administratori nga {0}, një dosje që programet e tjera mund ta ndryshojnë. Ato mund të ndryshojnë cilësimet e PadForge atje, dhe PadForge vepron mbi to me të drejtat e veta.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shfaq gjithmonë në tabakanë e sistemit</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mbaje ikonën e tabakasë të dukshme sa kohë dritarja është e hapur, që Dil në menynë e saj të jetë gjithmonë një klik larg.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Përditësimet</value></data>

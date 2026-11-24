@@ -603,7 +603,7 @@ namespace PadForge.Services
             if (OffLimitsForTest) return null;
             try
             {
-                using var process = Process.Start(new ProcessStartInfo
+                using var process = RightsVariables.Start(new ProcessStartInfo
                 {
                     FileName = Path.Combine(System32, "schtasks.exe"),
                     Arguments = arguments,
@@ -640,7 +640,7 @@ namespace PadForge.Services
             if (OffLimitsForTest) return -1;
             try
             {
-                using var process = Process.Start(new ProcessStartInfo
+                using var process = RightsVariables.Start(new ProcessStartInfo
                 {
                     FileName = Path.Combine(System32, "schtasks.exe"),
                     Arguments = arguments,

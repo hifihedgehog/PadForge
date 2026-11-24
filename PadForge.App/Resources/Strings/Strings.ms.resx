@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge tidak berpindah: {0} mengandungi fail yang bukan milik PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge tidak berpindah: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana ia menjalankan PadForge dari folder yang mengandungi fail lain.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge tidak dapat membuat folder terlindungnya, {0}. PadForge menyimpan pustaka yang dijalankannya dengan hak pentadbir di sana, dan ia tidak dapat bermula dengan selamat tanpanya.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge tidak dapat memulakan dirinya semula dari folder terlindungnya, {0}. PadForge berjalan dengan hak pentadbir hanya dari sana, jadi ia tidak bermula.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge berjalan dengan hak pentadbir dari {0}, folder yang boleh diubah oleh program lain. Program itu boleh mengubah tetapan PadForge di sana, dan PadForge bertindak ke atasnya dengan haknya.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sentiasa Tunjuk dalam Dulang Sistem</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pastikan ikon dulang kelihatan semasa tetingkap dibuka, supaya Keluar dalam menunya sentiasa satu klik sahaja.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Kemas Kini</value></data>

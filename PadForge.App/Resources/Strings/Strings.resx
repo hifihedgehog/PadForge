@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge did not move: {0} holds files that are not PadForge’s.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge did not move: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start at Login was turned off, since it ran PadForge from a folder that holds other files.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge could not make its protected folder, {0}. PadForge keeps the libraries it runs with administrator rights there, and it cannot start safely without it.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge could not start itself again from its protected folder, {0}. PadForge runs with administrator rights only from there, so it did not start.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge runs with administrator rights from {0}, a folder other programs can change. They can change PadForge’s settings there, and PadForge acts on them with its rights.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Always Show in System Tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Keep the tray icon visible while the window is open, so Exit in its menu is always one click away.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0} zhōng yǒu bù shǔyú PadForge de wénjiàn.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi tā cóng hán yǒu qítā wénjiàn de wénjiànjiā yùnxíng PadForge.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge wúfǎ chuàngjiàn qí shòu bǎohù de wénjiànjiā {0}. PadForge zài cǐ cúnfàng yǐ guǎnlǐyuán quánxiàn yùnxíng de kù, méiyǒu tā jiù wúfǎ ānquán qǐdòng.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge wúfǎ cóng qí shòu bǎohù de wénjiànjiā {0} chóngxīn qǐdòng zìshēn. PadForge zhǐ cóng nàlǐ yǐ guǎnlǐyuán quánxiàn yùnxíng, yīncǐ wèi qǐdòng.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge zhèng yǐ guǎnlǐyuán quánxiàn cóng {0} yùnxíng, qítā chéngxù kěyǐ gēnggǎi gāi wénjiànjiā. Tāmen kěyǐ gēnggǎi nàlǐ de PadForge shèzhì, ér PadForge huì yǐ qí quánxiàn zhíxíng zhèxiē shèzhì.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shǐzhōng xiǎnshì zài xìtǒng tuōpán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Chuāngkǒu dǎkāi shí yě bǎochí xiǎnshì xìtǒng tuōpán túbiāo, suíshí kěyǐ zài qí càidān zhōng xuǎnzé “Tuìchū”.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Gēngxīn</value></data>

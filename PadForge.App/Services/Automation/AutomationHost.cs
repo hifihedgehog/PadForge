@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using PadForge.Engine.Common;
 
 namespace PadForge.Services.Automation
 {

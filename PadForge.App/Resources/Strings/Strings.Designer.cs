@@ -1258,6 +1258,9 @@ public class Strings : INotifyPropertyChanged
     public string ExeFolder_TargetTaken_Format => Get("ExeFolder_TargetTaken_Format");
     public string ExeFolder_MoveFailed_Format => Get("ExeFolder_MoveFailed_Format");
     public string ExeFolder_StartAtLoginTurnedOff => Get("ExeFolder_StartAtLoginTurnedOff");
+    public string Start_NoProtectedFolder_Format => Get("Start_NoProtectedFolder_Format");
+    public string Start_NoProtectedRestart_Format => Get("Start_NoProtectedRestart_Format");
+    public string Home_SharedFolder_Format => Get("Home_SharedFolder_Format");
     public string Settings_AlwaysShowTrayIcon => Get("Settings_AlwaysShowTrayIcon");
     public string Settings_AlwaysShowTrayIconTip => Get("Settings_AlwaysShowTrayIconTip");
     public string Settings_Updates => Get("Settings_Updates");

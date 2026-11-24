@@ -8,7 +8,7 @@ namespace PadForge.Services.Plugins
 {
     /// <summary>
     /// What PadForge reads of a plugin's file (#597): its SHA-256, its
-    /// Authenticode signer (Automation.AuthenticodeSigner, the one reader of
+    /// Authenticode signer (Engine.Common.AuthenticodeSigner, the one reader of
     /// a program's signer the request card and Activity use too), and how
     /// Windows runs it.
     /// </summary>

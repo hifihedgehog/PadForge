@@ -112,7 +112,16 @@ namespace PadForge.Engine.Common.Logitech
             foreach (string candidate in LogitechServerCatalog.ArxCandidates())
             {
                 reason = "load";
-                if (!NativeLibrary.TryLoad(candidate, out IntPtr module)) continue;
+                // Loaded into PadForge only when only administrators could have put it
+                // in place and Logitech signed it, held open from the check
+                // through the load (#597, TrustedLibrary).
+                IntPtr module = TrustedLibrary.Load(candidate, TrustedLibrary.Logitech,
+                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
+                if (module == IntPtr.Zero)
+                {
+                    if (why != "load" && why != "missing") SdlDiagLog.WriteLine("LOGITECH ARX " + candidate + " not loaded: " + why);
+                    continue;
+                }
                 var lib = new LogitechArxLibrary { Path = candidate };
                 if (lib.Resolve(module)) return lib;
                 reason = "exports";

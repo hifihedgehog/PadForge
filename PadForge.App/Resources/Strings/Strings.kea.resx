@@ -3472,6 +3472,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>i más {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} di {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sen resposta en {0} e konsideradu nãu.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ta funsiona ku direitus di administrador di {0}, un pasta ki otus programa podi muda. Es podi muda konfigurason di PadForge la, i PadForge ta atua sobri el ku se direitus.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Bazi di dadus di komandus</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualiza gosi ta baxa bazi di dadus di komandus di komunidadi (SDL_GameControllerDB) di GitHub i ta guarda, na fixeru di konfigurason, mapiamentus ki es vérson di PadForge ka ten. Un mapiamentu novu ta uzadu só pa un komandu ki nada más ka ta lé suma gamepad, ki ka sta atribuídu i ki ka sta na Modu joystick brutu forsadu. Ripoi ta rimove tudu mapiamentu baxadu.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualiza gosi</value></data>

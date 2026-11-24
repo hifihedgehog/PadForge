@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0} માં PadForge ની ન હોય તેવી ફાઇલો છે.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કરાયું, કારણ કે તે PadForge ને બીજી ફાઇલો ધરાવતા ફોલ્ડરમાંથી ચલાવતું હતું.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge તેનું સુરક્ષિત ફોલ્ડર {0} બનાવી શક્યું નહીં. PadForge એડમિનિસ્ટ્રેટર અધિકારોથી ચાલતી લાઇબ્રેરીઓ ત્યાં રાખે છે, અને તેના વિના તે સુરક્ષિત રીતે શરૂ થઈ શકતું નથી.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge તેના સુરક્ષિત ફોલ્ડર {0} માંથી પોતાને ફરી શરૂ કરી શક્યું નહીં. PadForge એડમિનિસ્ટ્રેટર અધિકારો સાથે ફક્ત ત્યાંથી જ ચાલે છે, તેથી તે શરૂ થયું નહીં.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge એડમિનિસ્ટ્રેટર અધિકારો સાથે {0} માંથી ચાલે છે, જે એવું ફોલ્ડર છે જેમાં બીજા પ્રોગ્રામ ફેરફાર કરી શકે. તેઓ ત્યાં PadForge ના સેટિંગ્સ બદલી શકે, અને PadForge તેના પર પોતાના અધિકારોથી કામ કરે છે.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>હંમેશા સિસ્ટમ ટ્રેમાં બતાવો</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>વિન્ડો ખુલ્લી હોય ત્યારે પણ ટ્રે આઇકન દેખાતું રાખો, જેથી તેના મેનૂમાં Exit હંમેશા એક ક્લિક દૂર હોય.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>અપડેટ</value></data>

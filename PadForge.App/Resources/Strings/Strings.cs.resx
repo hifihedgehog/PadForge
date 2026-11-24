@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se nepřesunul: {0} obsahuje soubory, které nepatří programu PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se nepřesunul: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Spouštění při přihlášení bylo vypnuto, protože spouštělo PadForge ze složky, která obsahuje jiné soubory.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nemohl vytvořit svou chráněnou složku {0}. PadForge v ní uchovává knihovny, které spouští s právy správce, a bez ní se nemůže bezpečně spustit.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge se nemohl znovu spustit ze své chráněné složky {0}. PadForge běží s právy správce jen odtud, a proto se nespustil.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge běží s právy správce z {0}, složky, kterou mohou měnit jiné programy. Mohou tam měnit nastavení programu PadForge a PadForge podle něj jedná se svými právy.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vždy zobrazovat v oznamovací oblasti</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v oznamovací oblasti zůstane viditelná, i když je okno otevřené, takže příkaz Ukončit v její nabídce je vždy na jedno kliknutí.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizace</value></data>

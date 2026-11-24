@@ -1716,6 +1716,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>na {0} ọzọ</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} n'ime {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ọ bụrụ na azaghị n'ime {0}, ọ bụ mba.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda mmemme ndị ọzọ nwere ike ịgbanwe. Ha nwere ike ịgbanwe ntọala PadForge n'ebe ahụ, PadForge ga-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ntọgharị ahụ na-ewepụ mapping niile e budatara.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>

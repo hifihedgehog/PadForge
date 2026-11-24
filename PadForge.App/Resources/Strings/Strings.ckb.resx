@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge نەگوازرایەوە: {0} فایلی تێدایە کە هی PadForge نین.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge نەگوازرایەوە: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«دەستپێکردن لە کاتی چوونەژوورەوە» کوژێنرایەوە، چونکە PadForge ی لە بوخچەیەکەوە کار پێدەکرد کە فایلی تری تێدایە.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge نەیتوانی بوخچە پارێزراوەکەی خۆی دروست بکات، {0}. PadForge ئەو کتێبخانانەی بە مافی بەڕێوەبەر کاریان پێدەکات لەوێ هەڵدەگرێت، و بەبێ ئەو ناتوانێت بە سەلامەتی دەست پێبکات.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge نەیتوانی لە بوخچە پارێزراوەکەی خۆیەوە دووبارە خۆی دەست پێبکاتەوە، {0}. PadForge تەنها لەوێوە بە مافی بەڕێوەبەر کار دەکات، بۆیە دەستی پێنەکرد.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge بە مافی بەڕێوەبەر لە {0} ەوە کار دەکات، بوخچەیەک کە بەرنامەکانی تر دەتوانن بیگۆڕن. دەتوانن ڕێکخستنەکانی PadForge لەوێ بگۆڕن، و PadForge بە مافەکانی خۆی کاریان لەسەر دەکات.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>هەمیشە لە سینی سیستەمدا پیشان بدە</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ئایکۆنی سینی سیستەم دیار بهێڵەوە کاتێک پەنجەرەکە کراوەیە، بۆ ئەوەی «دەرچوون» لە مێنیوەکەیدا هەمیشە یەک کلیک دوور بێت.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>نوێکارییەکان</value></data>

@@ -495,6 +495,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: ang {0} adunay mga file nga dili iya sa PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Gi-off ang Sugdi inig login, kay gipadagan niini ang PadForge gikan sa folder nga adunay laing mga file.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Dili mahimo sa PadForge ang protektado niini nga folder, {0}. Didto gitipigan sa PadForge ang mga library nga gipadagan niini gamit ang mga katungod sa administrator, ug dili kini makasugod nga luwas kung wala kini.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Dili masugdan pag-usab sa PadForge ang kaugalingon gikan sa protektado niini nga folder, {0}. Didto lang modagan ang PadForge gamit ang mga katungod sa administrator, busa wala kini nagsugod.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Nagdagan ang PadForge gamit ang mga katungod sa administrator gikan sa {0}, usa ka folder nga mausab sa ubang mga programa. Mausab nila didto ang mga setting sa PadForge, ug molihok ang PadForge sumala niini gamit ang mga katungod niini.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Awtomatikong susiha ang mga update</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Mosusi inig sugod sa PadForge ug matag 12 ka oras pagkahuman niana.</value></data>

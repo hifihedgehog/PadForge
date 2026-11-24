@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace PadForge.Services.Automation
+namespace PadForge.Engine.Common
 {
     /// <summary>
     /// Who signed a program's file, as the request card and Activity name it
@@ -31,8 +31,13 @@ namespace PadForge.Services.Automation
     /// <para>An answer is kept for the file's path, size and time of last
     /// write, so a program that connects again costs no second check, and a
     /// file put in its place is checked anew.</para>
+    ///
+    /// <para>A vendor library PadForge loads into its own process is checked
+    /// the same way, on the handle <see cref="TrustedLibrary"/> holds from
+    /// the check through the load (<see cref="OfHeld"/>), with nothing
+    /// kept. There the signer decides whether the library loads.</para>
     /// </summary>
-    internal static class AuthenticodeSigner
+    public static class AuthenticodeSigner
     {
         private const int MostKept = 64;
 
@@ -42,11 +47,11 @@ namespace PadForge.Services.Automation
 
         /// <summary>Test seam: stands in for the check. Null in the
         /// app.</summary>
-        internal static Func<string, string> Seam;
+        public static Func<string, string> Seam;
 
         /// <summary>The signer's name for the file at
         /// <paramref name="path"/>, or null.</summary>
-        internal static string Of(string path)
+        public static string Of(string path)
         {
             if (string.IsNullOrEmpty(path)) return null;
             var seam = Seam;
@@ -87,7 +92,36 @@ namespace PadForge.Services.Automation
         private static string Read(string path)
         {
             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
-            IntPtr handle = stream.SafeFileHandle.DangerousGetHandle();
+            return Read(path, stream.SafeFileHandle.DangerousGetHandle());
+        }
+
+        /// <summary>The signer of the file the caller holds open at
+        /// <paramref name="path"/> through <paramref name="held"/>, read
+        /// on that handle, so the file checked is the file held. Null when
+        /// it is not signed, its signature does not hold, or it cannot be
+        /// read. Nothing is kept, and the test seam does not apply.</summary>
+        public static string OfHeld(string path, Microsoft.Win32.SafeHandles.SafeFileHandle held)
+        {
+            if (string.IsNullOrEmpty(path) || held == null || held.IsInvalid || held.IsClosed) return null;
+            bool added = false;
+            try
+            {
+                held.DangerousAddRef(ref added);
+                return Read(path, held.DangerousGetHandle());
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or ExternalException
+                                           or ObjectDisposedException)
+            {
+                return null;
+            }
+            finally
+            {
+                if (added) held.DangerousRelease();
+            }
+        }
+
+        private static string Read(string path, IntPtr handle)
+        {
             string embedded = VerifyFile(path, handle, out bool noSignature);
             if (embedded != null || !noSignature) return embedded;
             return VerifyCatalogMember(path, handle);

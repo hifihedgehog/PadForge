@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0} թղթապանակում կան ֆայլեր, որոնք PadForge-ինը չեն։</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ» անջատվեց, քանի որ այն PadForge-ը աշխատեցնում էր այլ ֆայլեր պարունակող թղթապանակից։</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստեղծել իր պաշտպանված թղթապանակը՝ {0}։ PadForge-ը ադմինիստրատորի իրավունքներով աշխատող իր գրադարանները պահում է այնտեղ և առանց դրա չի կարող անվտանգ մեկնարկել։</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ նորից մեկնարկել իրեն իր պաշտպանված թղթապանակից՝ {0}։ PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է միայն այնտեղից, ուստի չմեկնարկեց։</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որը այլ ծրագրեր կարող են փոխել։ Նրանք կարող են փոխել PadForge-ի կարգավորումներն այնտեղ, և PadForge-ը դրանց համաձայն գործում է իր իրավունքներով։</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցույց տալ համակարգային սկուտեղում</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Սկուտեղի պատկերակը տեսանելի է պատուհանը բաց ժամանակ, որպեսզի ընտրացանկի Ելքը միշտ մեկ սեղմումի հեռավորության վրա լինի։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>

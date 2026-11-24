@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}에 PadForge의 것이 아닌 파일이 있습니다.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>PadForge를 다른 파일이 있는 폴더에서 실행했기 때문에 로그인 시 자동 시작이 꺼졌습니다.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge가 보호 폴더 {0}을(를) 만들 수 없습니다. PadForge는 관리자 권한으로 실행하는 라이브러리를 그곳에 보관하며, 그 폴더가 없으면 안전하게 시작할 수 없습니다.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge가 보호 폴더 {0}에서 자신을 다시 시작하지 못했습니다. PadForge는 관리자 권한으로 그곳에서만 실행되므로 시작하지 않았습니다.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge가 다른 프로그램이 바꿀 수 있는 폴더 {0}에서 관리자 권한으로 실행 중입니다. 그 프로그램이 그곳의 PadForge 설정을 바꿀 수 있고, PadForge는 자신의 권한으로 그 변경에 따라 동작합니다.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>항상 시스템 트레이에 표시</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>창이 열려 있는 동안에도 시스템 트레이 아이콘을 표시하여 언제든지 해당 메뉴에서 종료를 선택할 수 있습니다.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>업데이트</value></data>

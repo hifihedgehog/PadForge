@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge 没有移动：{0} 中有不属于 PadForge 的文件。</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge 没有移动：{0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>登录时启动已关闭，因为它会从一个存有其他文件的文件夹运行 PadForge。</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge 无法创建它的受保护文件夹 {0}。PadForge 把以管理员权限运行时用到的库放在那里，没有它就无法安全启动。</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge 无法从它的受保护文件夹 {0} 重新启动自身。PadForge 只会从那里以管理员权限运行，因此没有启动。</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge 以管理员权限从 {0} 运行，而其他程序可以更改该文件夹。它们可以更改 PadForge 在那里的设置，而 PadForge 会以自己的权限执行这些更改。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>始终显示在系统托盘</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>窗口打开时也保持显示系统托盘图标，随时可以在其菜单中选择“退出”。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>更新</value></data>

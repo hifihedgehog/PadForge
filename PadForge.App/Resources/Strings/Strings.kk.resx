@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge жылжымады: {0} қалтасында PadForge-қа жатпайтын файлдар бар.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge жылжымады: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, себебі ол PadForge-ты басқа файлдар бар қалтадан іске қосатын.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge өзінің қорғалған қалтасын жасай алмады: {0}. PadForge әкімші құқықтарымен жұмыс істейтін кітапханаларын сонда сақтайды, онсыз қауіпсіз іске қосыла алмайды.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge өзін қорғалған қалтасынан қайта іске қоса алмады: {0}. PadForge әкімші құқықтарымен тек сол жерден жұмыс істейді, сондықтан іске қосылмады.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge әкімші құқықтарымен {0} қалтасынан жұмыс істейді, оны басқа бағдарламалар өзгерте алады. Олар сондағы PadForge параметрлерін өзгерте алады, ал PadForge олар бойынша өз құқықтарымен әрекет етеді.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Хабарландыру аймағында әрқашан көрсету</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Терезе ашық тұрғанда да хабарландыру аймағындағы белгіше көрінеді, сондықтан оның мәзіріндегі «Шығу» әрқашан бір басу қашықтықта болады.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Жаңартулар</value></data>

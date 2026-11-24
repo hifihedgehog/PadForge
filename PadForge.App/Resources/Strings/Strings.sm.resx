@@ -1439,6 +1439,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ma isi e {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o le {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Afai e leai se tali i le {0}, o le a faitaulia o le leai.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>O loʻo galue PadForge ma aia tatau a le pule mai {0}, o se pusa faila e mafai e isi polokalame ona sui. E mafai ona latou suia faʻatulagaga o PadForge iina, ma e gaoioi PadForge i ai ma ona aia tatau.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>E sii mai e le Update Now le faʻamaumauga o masini taʻalo a le nuʻu (SDL_GameControllerDB) mai GitHub ma teu ai i le faila o faʻatulagaga faʻafanua e le o i ai i lenei lomiga o PadForge. E faʻaaogā se faʻafanua fou naʻo mo se masini e leai se isi mea e faitau o se gamepad, e le o tofia ma e le o i le Force Raw Joystick Mode. E aveese e le toe setiina faʻafanua uma na sii mai.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}. Faʻafouina {2}: fou {3}, suia {4}.</value></data>

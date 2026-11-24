@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0} に PadForge 以外のファイルがあります。</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>他のファイルがあるフォルダーから PadForge を実行していたため、ログイン時に起動する設定をオフにしました。</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge は保護されたフォルダー {0} を作成できませんでした。PadForge は管理者権限で実行するライブラリをそこに保存するため、これがないと安全に起動できません。</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge は保護されたフォルダー {0} から自身を再起動できませんでした。PadForge は管理者権限ではそこからのみ実行されるため、起動しませんでした。</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge は、他のプログラムが変更できるフォルダー {0} から管理者権限で実行されています。他のプログラムがそこにある PadForge の設定を変更でき、PadForge はその権限で動作してしまいます。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>常にシステムトレイに表示する</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ウィンドウを開いている間もシステムトレイのアイコンを表示し、いつでもそのメニューから「終了」を選択できるようにします。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>アップデート</value></data>

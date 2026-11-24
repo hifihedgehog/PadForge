@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge नहीं हटा: {0} में ऐसी फ़ाइलें हैं जो PadForge की नहीं हैं।</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge नहीं हटा: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>लॉगिन पर शुरू करना बंद कर दिया गया, क्योंकि वह PadForge को ऐसे फ़ोल्डर से चलाता था जिसमें दूसरी फ़ाइलें हैं।</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge अपना सुरक्षित फ़ोल्डर {0} नहीं बना सका। PadForge एडमिनिस्ट्रेटर अधिकारों से चलने वाली लाइब्रेरी वहीं रखता है, और उसके बिना सुरक्षित रूप से शुरू नहीं हो सकता।</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge खुद को अपने सुरक्षित फ़ोल्डर {0} से दोबारा शुरू नहीं कर सका। PadForge एडमिनिस्ट्रेटर अधिकारों से केवल वहीं से चलता है, इसलिए वह शुरू नहीं हुआ।</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge एडमिनिस्ट्रेटर अधिकारों से {0} से चल रहा है, जो ऐसा फ़ोल्डर है जिसे दूसरे प्रोग्राम बदल सकते हैं। वे वहाँ PadForge की सेटिंग्स बदल सकते हैं, और PadForge अपने अधिकारों से उन पर अमल करता है।</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>सिस्टम ट्रे में हमेशा दिखाएँ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>विंडो खुली होने पर भी ट्रे आइकन दिखता रहे, ताकि उसके मेनू का “बाहर निकलें” हमेशा एक क्लिक दूर रहे।</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>अपडेट</value></data>

@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge sa nepresunul: {0} obsahuje súbory, ktoré nepatria programu PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge sa nepresunul: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Spúšťanie po prihlásení bolo vypnuté, pretože spúšťalo PadForge z priečinka, ktorý obsahuje iné súbory.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nemohol vytvoriť svoj chránený priečinok {0}. PadForge v ňom uchováva knižnice, ktoré spúšťa s právami správcu, a bez neho sa nemôže bezpečne spustiť.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge sa nemohol znova spustiť zo svojho chráneného priečinka {0}. PadForge beží s právami správcu iba odtiaľ, preto sa nespustil.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge beží s právami správcu z priečinka {0}, ktorý môžu meniť iné programy. Môžu tam meniť nastavenia programu PadForge a PadForge ich vykonáva so svojimi právami.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vždy zobrazovať v oblasti oznámení</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v oblasti oznámení zostane viditeľná aj pri otvorenom okne, takže Ukončiť v jej ponuke je vždy na jedno kliknutie.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizácie</value></data>

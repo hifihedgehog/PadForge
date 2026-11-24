@@ -1994,6 +1994,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>kag {0} pa</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kon wala sing sabat sa sulod sang {0}, maisip ini nga indi.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Nagadalagan ang PadForge nga may administrator rights halin sa {0}, isa ka folder nga mabaylo sang iban nga programa. Mabaylo nila didto ang mga setting sang PadForge, kag ginasunod ini sang PadForge gamit ang iya rights.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ang bag-o nga mapping ginagamit lang para sa controller nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Ang reset nagakuha sang tanan nga na-download nga mapping.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}. Na-update {2}: bag-o {3}, ginbaylo {4}.</value></data>

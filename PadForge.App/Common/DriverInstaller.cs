@@ -1943,16 +1943,7 @@ namespace PadForge.Common
         private static int? RunElevated(string fileName, string arguments, out bool notTracked)
         {
             notTracked = false;
-            var psi = new ProcessStartInfo
-            {
-                FileName = fileName,
-                Arguments = arguments,
-                Verb = "runas",
-                UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            using var proc = StartProcess(psi);
+            using var proc = StartProcess(ElevatedStart(fileName, arguments, Environment.IsPrivilegedProcess));
             // ShellExecute can start the work without handing a process back.
             // Nothing can be waited on then, and nothing is known.
             if (proc == null)
@@ -1962,6 +1953,35 @@ namespace PadForge.Common
             }
             return proc.WaitForExit(180_000) ? proc.ExitCode : (int?)null;
         }
+
+        /// <summary>
+        /// How <see cref="RunElevated"/> starts a tool (#597). A process with
+        /// rights starts it itself, hidden, with the variables every start
+        /// with rights gets (<see cref="PadForge.Services.RightsVariables"/>):
+        /// the shell's runas verb would hand the tool a copy of PadForge's
+        /// own, and the cleanup script runs Windows PowerShell, which loads
+        /// the library COR_PROFILER_PATH names. A process without rights asks
+        /// Windows through the shell's runas verb, and Windows builds the
+        /// tool's variables after its prompt.
+        /// </summary>
+        internal static ProcessStartInfo ElevatedStart(string fileName, string arguments, bool privileged)
+            => privileged
+                ? new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                }
+                : new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    Arguments = arguments,
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                };
 
         /// <summary>
         /// Clean up a temp directory, ignoring errors.
@@ -2276,7 +2296,7 @@ namespace PadForge.Common
             if (OffLimitsForTest)
                 throw new System.ComponentModel.Win32Exception(ERROR_ACCESS_DENIED,
                     "The test host starts no process: " + psi.FileName);
-            return Process.Start(psi);
+            return PadForge.Services.RightsVariables.Start(psi);
         }
 
         /// <summary>Fails a download before it begins in the test

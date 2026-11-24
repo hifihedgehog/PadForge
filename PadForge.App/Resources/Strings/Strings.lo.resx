@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: {0} ມີໄຟລ໌ທີ່ບໍ່ແມ່ນຂອງ PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະມັນເຮັດວຽກ PadForge ຈາກໂຟນເດີທີ່ມີໄຟລ໌ອື່ນ.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດສ້າງໂຟນເດີທີ່ປ້ອງກັນຂອງມັນ, {0}. PadForge ເກັບໄລບຣາຣີທີ່ມັນໃຊ້ດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບໄວ້ທີ່ນັ້ນ, ແລະ ມັນບໍ່ສາມາດເລີ່ມຢ່າງປອດໄພໄດ້ຖ້າບໍ່ມີໂຟນເດີນີ້.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດເລີ່ມຕົວເອງໃໝ່ຈາກໂຟນເດີທີ່ປ້ອງກັນຂອງມັນ, {0}. PadForge ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບຈາກທີ່ນັ້ນເທົ່ານັ້ນ, ສະນັ້ນມັນຈຶ່ງບໍ່ໄດ້ເລີ່ມ.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບຈາກ {0}, ເຊິ່ງເປັນໂຟນເດີທີ່ໂປຣແກຣມອື່ນປ່ຽນໄດ້. ພວກມັນສາມາດປ່ຽນການຕັ້ງຄ່າຂອງ PadForge ຢູ່ທີ່ນັ້ນ, ແລະ PadForge ຈະເຮັດຕາມດ້ວຍສິດຂອງມັນ.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ສະແດງໃນຖາດລະບົບສະເໝີ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ສະແດງໄອຄອນໃນຖາດໄວ້ໃນຂະນະທີ່ໜ້າຕ່າງເປີດຢູ່, ເພື່ອໃຫ້ ອອກ ໃນເມນູຂອງມັນຢູ່ຫ່າງພຽງຄລິກດຽວສະເໝີ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ອັບເດດ</value></data>

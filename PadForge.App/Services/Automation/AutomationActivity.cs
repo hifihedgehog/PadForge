@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using PadForge.Resources.Strings;
+using PadForge.Engine.Common;
 
 namespace PadForge.Services.Automation
 {

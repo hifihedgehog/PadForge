@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:PadForge.ViewModels"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:services="clr-namespace:PadForge.Services"
              xmlns:views="clr-namespace:PadForge.Views">
 
     <UserControl.Resources>
@@ -828,6 +829,44 @@
                                    AutomationProperties.AutomationId="HomeOfferDismiss"/>
                     </StackPanel>
                 </controls:FlexLinePanel>
+            </Border>
+
+            <!-- ═══ The shared folder ═══
+                 PadForge runs with administrator rights from a folder other
+                 programs can change (#597, Services/ExeFolderState.cs), so
+                 they can change PadForge.xml there, and PadForge acts on it
+                 with its rights. The card stands until the move, or until the
+                 folder is PadForge's own. It is the offer's band, with the
+                 shield in the danger ink and the danger edge, since the state
+                 is a risk and not a wait. The move is its one action, the
+                 same one Settings and Devices offer. -->
+            <Border x:Name="HomeSharedFolder" Margin="0,12,0,0" Padding="18,12,14,12" CornerRadius="12"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource DangerEdgeBrush}" BorderThickness="1"
+                    Visibility="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"
+                    AutomationProperties.AutomationId="HomeSharedFolder">
+                <StackPanel>
+                    <controls:FlexLinePanel Gap="14" LineGap="10">
+                        <controls:DecorativeStrokeIcon Data="{StaticResource ShieldLineGeometry}" Size="20" StrokeWidth="1.7"
+                                                       Foreground="{DynamicResource DangerInkBrush}" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="HomeSharedFolderLine" common:LiveText.Polite="True"
+                                   controls:FlexLinePanel.Basis="320" controls:FlexLinePanel.Grow="1"
+                                   VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                   Text="{Binding HomeCardText, Source={x:Static services:ExeFolderState.Instance}}"/>
+                        <ui:Button x:Name="HomeSharedFolderMove" Padding="14,0" VerticalAlignment="Center"
+                                   Style="{StaticResource EmberPrimaryButton}"
+                                   Click="SharedFolderMove_Click"
+                                   IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
+                                   Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}"
+                                   ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
+                                   AutomationProperties.AutomationId="HomeSharedFolderMove"/>
+                    </controls:FlexLinePanel>
+                    <TextBlock Margin="34,8,0,0" TextWrapping="Wrap" FontSize="13" common:LiveText.Polite="True"
+                               Foreground="{DynamicResource DangerInkBrush}"
+                               Text="{Binding MoveError, Source={x:Static services:ExeFolderState.Instance}}"
+                               Visibility="{Binding HasMoveError, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </StackPanel>
             </Border>
 
             <!-- ═══ The virtual controllers ═══

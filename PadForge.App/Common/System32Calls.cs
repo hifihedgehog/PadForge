@@ -239,17 +239,64 @@ namespace PadForge.Common
             if (block == null) return null;
             try
             {
-                int count = 0;
-                for (char* p = block; *p != '\0'; p += Length(p) + 1) count++;
-                var lines = new string[count];
-                int i = 0;
-                for (char* p = block; *p != '\0'; p += Length(p) + 1) lines[i++] = new string(p);
-                return lines;
+                return Lines(block);
             }
             finally
             {
                 ((delegate* unmanaged<char*, int>)pFreeEnvironmentStringsW)(block);
             }
+        }
+
+        /// <summary>userenv.dll by System32's full path, loaded at the first
+        /// read of the machine's variables.</summary>
+        private static IntPtr s_userenv;
+
+        /// <summary>
+        /// The machine's own variables as <c>name=value</c> lines: the block
+        /// CreateEnvironmentBlock builds with no token, which holds the
+        /// system's variables only (Microsoft, CreateEnvironmentBlock), read
+        /// from the machine's part of the registry, so no value a user set
+        /// replaces one of them. Null when Windows refused. A process with
+        /// rights builds the variables of every process it starts from these
+        /// (<see cref="PadForge.Services.RightsVariables"/>).
+        /// </summary>
+        internal static string[] MachineVariables() => VariablesOf(IntPtr.Zero);
+
+        /// <summary>
+        /// The variables Windows builds for the user of
+        /// <paramref name="token"/> from that user's profile, with the
+        /// machine's under them (CreateEnvironmentBlock, not inheriting this
+        /// process's), as <c>name=value</c> lines, or the machine's alone
+        /// with no token. Null when Windows refused.
+        /// </summary>
+        internal static string[] VariablesOf(IntPtr token)
+        {
+            if (s_userenv == IntPtr.Zero) s_userenv = Load("userenv.dll");
+            IntPtr create = Find(s_userenv, "CreateEnvironmentBlock");
+            IntPtr destroy = Find(s_userenv, "DestroyEnvironmentBlock");
+            if (create == IntPtr.Zero || destroy == IntPtr.Zero) return null;
+            void* block = null;
+            if (((delegate* unmanaged<void**, IntPtr, int, int>)create)(&block, token, 0) == 0 || block == null) return null;
+            try
+            {
+                return Lines((char*)block);
+            }
+            finally
+            {
+                ((delegate* unmanaged<void*, int>)destroy)(block);
+            }
+        }
+
+        /// <summary>The lines of a block Windows keeps: each ends in a null
+        /// character, and the block in one more.</summary>
+        private static string[] Lines(char* block)
+        {
+            int count = 0;
+            for (char* p = block; *p != '\0'; p += Length(p) + 1) count++;
+            var lines = new string[count];
+            int i = 0;
+            for (char* p = block; *p != '\0'; p += Length(p) + 1) lines[i++] = new string(p);
+            return lines;
         }
 
         private static int Length(char* text)
@@ -428,13 +475,141 @@ namespace PadForge.Common
         private const uint TokenQuery = 0x0008;
         private const uint TokenRead = 0x00020008;
         private const int TokenElevation = 20;
+        internal const uint HighIntegrityRid = 0x3000;
+        internal const uint MediumIntegrityRid = 0x2000;
+
+        // ── A copy without rights, for the failed start's message ──
+
+        /// <summary>
+        /// Starts <paramref name="exe"/> without this process's rights: with a
+        /// restricted copy of its token whose Administrators membership is
+        /// for denying only, with every privilege but the one to traverse
+        /// folders taken out (CreateRestrictedToken, DISABLE_MAX_PRIVILEGE),
+        /// at medium integrity. A restricted copy of the caller's own token
+        /// needs no right to assign a token (Microsoft, CreateProcessAsUserW).
+        /// What the copy loads from a folder others can change then runs with
+        /// no more rights than those others have. The process handle, or zero
+        /// when Windows refused.
+        /// </summary>
+        internal static IntPtr StartWithoutRights(string exe, string commandLine, string environmentBlock, string folder)
+        {
+            IntPtr pCreateRestrictedToken = Find(Advapi32, "CreateRestrictedToken");
+            IntPtr pSetTokenInformation = Find(Advapi32, "SetTokenInformation");
+            IntPtr pCreateProcessAsUserW = Find(Advapi32, "CreateProcessAsUserW");
+            IntPtr pConvertStringSidToSidW = Find(Advapi32, "ConvertStringSidToSidW");
+            IntPtr pGetLengthSid = Find(Advapi32, "GetLengthSid");
+            if (pGetLengthSid == IntPtr.Zero || pCreateRestrictedToken == IntPtr.Zero || pSetTokenInformation == IntPtr.Zero || pCreateProcessAsUserW == IntPtr.Zero
+                || pConvertStringSidToSidW == IntPtr.Zero || pOpenProcessToken == IntPtr.Zero || pLocalFree == IntPtr.Zero) return IntPtr.Zero;
+            const uint TokenDuplicate = 0x0002, TokenAssignPrimary = 0x0001, TokenAdjustDefault = 0x0080;
+            IntPtr own = IntPtr.Zero, restricted = IntPtr.Zero, administrators = IntPtr.Zero, localAdmin = IntPtr.Zero, medium = IntPtr.Zero;
+            try
+            {
+                if (((delegate* unmanaged<IntPtr, uint, IntPtr*, int>)pOpenProcessToken)(
+                        CurrentProcess, TokenDuplicate | TokenAssignPrimary | TokenQuery | TokenAdjustDefault, &own) == 0) return IntPtr.Zero;
+                var toSid = (delegate* unmanaged<char*, IntPtr*, int>)pConvertStringSidToSidW;
+                fixed (char* a = "S-1-5-32-544")
+                fixed (char* l = "S-1-5-114")
+                fixed (char* m = "S-1-16-8192")
+                {
+                    if (toSid(a, &administrators) == 0 || toSid(l, &localAdmin) == 0 || toSid(m, &medium) == 0) return IntPtr.Zero;
+                }
+                // SID_AND_ATTRIBUTES: the SID, then the attributes, 16 bytes
+                // on x64 and ARM64.
+                IntPtr* disable = stackalloc IntPtr[4];
+                disable[0] = administrators;
+                disable[1] = IntPtr.Zero;
+                disable[2] = localAdmin;
+                disable[3] = IntPtr.Zero;
+                const uint DisableMaxPrivilege = 0x1;
+                if (((delegate* unmanaged<IntPtr, uint, uint, IntPtr*, uint, void*, uint, void*, IntPtr*, int>)pCreateRestrictedToken)(
+                        own, DisableMaxPrivilege, 2, disable, 0, null, 0, null, &restricted) == 0) return IntPtr.Zero;
+                // TOKEN_MANDATORY_LABEL: the medium label's SID, then
+                // SE_GROUP_INTEGRITY.
+                const int TokenIntegrityLevel = 25;
+                const uint GroupIntegrity = 0x20;
+                IntPtr* label = stackalloc IntPtr[2];
+                label[0] = medium;
+                label[1] = (IntPtr)GroupIntegrity;
+                uint labelSize = (uint)(2 * IntPtr.Size) + ((delegate* unmanaged<IntPtr, uint>)pGetLengthSid)(medium);
+                if (((delegate* unmanaged<IntPtr, int, void*, uint, int>)pSetTokenInformation)(restricted, TokenIntegrityLevel, label, labelSize) == 0)
+                    return IntPtr.Zero;
+
+                GetStartupInfo(out var startup);
+                startup.lpReserved = IntPtr.Zero;
+                startup.cbReserved2 = 0;
+                startup.lpReserved2 = IntPtr.Zero;
+                char[] line = new char[commandLine.Length + 1];
+                commandLine.CopyTo(0, line, 0, commandLine.Length);
+                ProcessInformation process;
+                fixed (char* e = exe)
+                fixed (char* c = line)
+                fixed (char* env = environmentBlock)
+                fixed (char* f = folder)
+                {
+                    if (((delegate* unmanaged<IntPtr, char*, char*, void*, void*, int, uint, void*, char*, StartupInfo*, ProcessInformation*, int>)pCreateProcessAsUserW)(
+                            restricted, e, c, null, null, 0, CreateUnicodeEnvironment, env, f, &startup, &process) == 0) return IntPtr.Zero;
+                }
+                Close(process.hThread);
+                return process.hProcess;
+            }
+            finally
+            {
+                Close(restricted);
+                Close(own);
+                var free = (delegate* unmanaged<IntPtr, IntPtr>)pLocalFree;
+                if (administrators != IntPtr.Zero) free(administrators);
+                if (localAdmin != IntPtr.Zero) free(localAdmin);
+                if (medium != IntPtr.Zero) free(medium);
+            }
+        }
+
+        /// <summary>Waits for a process to end.</summary>
+        internal static void WaitFor(IntPtr process)
+        {
+            IntPtr p = Find(Kernel32, "WaitForSingleObject");
+            if (p != IntPtr.Zero && process != IntPtr.Zero) ((delegate* unmanaged<IntPtr, uint, uint>)p)(process, Infinite);
+        }
 
         /// <summary>Whether this process runs with administrator rights or as
         /// SYSTEM: its token is elevated, as Environment.IsPrivilegedProcess
         /// reads it (Environment.Windows.cs, IsPrivilegedProcessCore), or its
         /// user is SYSTEM. False when the token cannot be read.</summary>
-        internal static bool IsPrivileged()
+        internal static bool IsPrivileged() => ReadToken(out bool elevated, out bool system) && (elevated || system);
+
+        /// <summary>The integrity level's RID of this process's token, such
+        /// as 0x2000 for medium and 0x3000 for high, or 0 when it cannot be
+        /// read.</summary>
+        internal static uint IntegrityRid()
         {
+            if (pOpenProcessToken == IntPtr.Zero || pGetTokenInformation == IntPtr.Zero) return 0;
+            IntPtr token = IntPtr.Zero;
+            if (((delegate* unmanaged<IntPtr, uint, IntPtr*, int>)pOpenProcessToken)(CurrentProcess, TokenQuery, &token) == 0) return 0;
+            try
+            {
+                const int TokenIntegrityLevel = 25;
+                byte* label = stackalloc byte[128];
+                uint returned = 0;
+                if (((delegate* unmanaged<IntPtr, int, void*, uint, uint*, int>)pGetTokenInformation)(token, TokenIntegrityLevel, label, 128, &returned) == 0)
+                    return 0;
+                // TOKEN_MANDATORY_LABEL: a SID_AND_ATTRIBUTES whose SID is
+                // S-1-16-<RID>, one subauthority after the 8-byte header.
+                byte* sid = *(byte**)label;
+                if (sid == null || sid[1] < 1) return 0;
+                return *(uint*)(sid + 8 + 4 * (sid[1] - 1));
+            }
+            finally
+            {
+                Close(token);
+            }
+        }
+
+        /// <summary>Whether this process runs as SYSTEM (S-1-5-18). False when
+        /// the token cannot be read.</summary>
+        internal static bool IsSystem() => ReadToken(out _, out bool system) && system;
+
+        private static bool ReadToken(out bool elevated, out bool system)
+        {
+            elevated = system = false;
             if (pOpenProcessToken == IntPtr.Zero || pGetTokenInformation == IntPtr.Zero) return false;
             IntPtr token = IntPtr.Zero;
             if (((delegate* unmanaged<IntPtr, uint, IntPtr*, int>)pOpenProcessToken)(CurrentProcess, TokenRead | TokenQuery, &token) == 0)
@@ -442,21 +617,50 @@ namespace PadForge.Common
             try
             {
                 var query = (delegate* unmanaged<IntPtr, int, void*, uint, uint*, int>)pGetTokenInformation;
-                uint elevated = 0, returned = 0;
-                if (query(token, TokenElevation, &elevated, sizeof(uint), &returned) != 0 && elevated != 0) return true;
+                uint value = 0, returned = 0;
+                elevated = query(token, TokenElevation, &value, sizeof(uint), &returned) != 0 && value != 0
+                           && IntegrityRid() >= HighIntegrityRid;
                 // SYSTEM, as a give-back task runs, counts whatever its token
                 // says of elevation: its SID is S-1-5-18.
                 const int TokenUser = 1;
                 byte* user = stackalloc byte[256];
-                if (query(token, TokenUser, user, 256, &returned) == 0) return false;
+                if (query(token, TokenUser, user, 256, &returned) == 0) return elevated;
                 byte* sid = *(byte**)user;
-                return sid != null && sid[0] == 1 && sid[1] == 1 && sid[2] == 0 && sid[3] == 0 && sid[4] == 0 && sid[5] == 0
-                       && sid[6] == 0 && sid[7] == 5 && sid[8] == 18 && sid[9] == 0 && sid[10] == 0 && sid[11] == 0;
+                system = sid != null && sid[0] == 1 && sid[1] == 1 && sid[2] == 0 && sid[3] == 0 && sid[4] == 0 && sid[5] == 0
+                         && sid[6] == 0 && sid[7] == 5 && sid[8] == 18 && sid[9] == 0 && sid[10] == 0 && sid[11] == 0;
+                return true;
             }
             finally
             {
                 Close(token);
             }
+        }
+
+        // ── The failed start's message ──
+
+        /// <summary>This process's Windows session, or uint.MaxValue when it
+        /// cannot be read.</summary>
+        internal static uint SessionId()
+        {
+            IntPtr p = Find(Kernel32, "ProcessIdToSessionId");
+            if (p == IntPtr.Zero) return uint.MaxValue;
+            uint session = 0;
+            return ((delegate* unmanaged<uint, uint*, int>)p)(ProcessId(), &session) != 0 ? session : uint.MaxValue;
+        }
+
+        /// <summary>Shows an error message box with one OK button, through
+        /// System32's user32.dll loaded by its full path, and returns once it
+        /// is closed. False when user32 or MessageBoxW could not be
+        /// found.</summary>
+        internal static bool ErrorBox(string text, string title)
+        {
+            if (System32.Length == 0 || !NativeLibrary.TryLoad(System32 + "user32.dll", out IntPtr user32)) return false;
+            IntPtr p = Find(user32, "MessageBoxW");
+            if (p == IntPtr.Zero) return false;
+            const uint MbOk = 0x0, MbIconError = 0x10, MbSetForeground = 0x10000;
+            fixed (char* t = text)
+            fixed (char* c = title)
+                return ((delegate* unmanaged<IntPtr, char*, char*, uint, int>)p)(IntPtr.Zero, t, c, MbOk | MbIconError | MbSetForeground) != 0;
         }
 
         // ── Files and folders ──

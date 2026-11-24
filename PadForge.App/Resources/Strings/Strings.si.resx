@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ගෙන ගියේ නැත: {0} හි PadForge ට අයත් නොවන ගොනු ඇත.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ගෙන ගියේ නැත: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>“පුරනය වන විට ආරම්භ කරන්න” අක්‍රිය කරන ලදී, මන්ද එය වෙනත් ගොනු ඇති ෆෝල්ඩරයකින් PadForge ධාවනය කළ බැවිනි.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge හට එහි ආරක්ෂිත ෆෝල්ඩරය, {0}, සෑදිය නොහැකි විය. PadForge පරිපාලක අයිතිවාසිකම් සමඟ ධාවනය කරන පුස්තකාල එහි තබා ගන්නා අතර, එය නොමැතිව ආරක්ෂිතව ආරම්භ විය නොහැක.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge හට එහි ආරක්ෂිත ෆෝල්ඩරය, {0}, වෙතින් නැවත ආරම්භ විය නොහැකි විය. PadForge පරිපාලක අයිතිවාසිකම් සමඟ ධාවනය වන්නේ එතැනින් පමණක් බැවින්, එය ආරම්භ නොවීය.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge පරිපාලක අයිතිවාසිකම් සමඟ ධාවනය වන්නේ වෙනත් වැඩසටහන්වලට වෙනස් කළ හැකි ෆෝල්ඩරයක් වන {0} සිටය. ඒවාට එහි ඇති PadForge හි සැකසීම් වෙනස් කළ හැකි අතර, PadForge එහි අයිතිවාසිකම් සමඟ ඒවා අනුව ක්‍රියා කරයි.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>සැමවිටම පද්ධති තැටියේ පෙන්වන්න</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>කවුළුව විවෘතව ඇති අතරතුර තැටි නිරූපකය දෘශ්‍යමානව තබා ගන්න, එවිට එහි මෙනුවේ පිටවන්න සැමවිටම එක් ක්ලික් කිරීමකින් ළඟා විය හැක.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>යාවත්කාලීන</value></data>

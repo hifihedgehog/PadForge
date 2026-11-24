@@ -14,6 +14,7 @@ using PadForge.Services.Plugins;
 using PadForge.ViewModels;
 using PadForge.Views;
 using Xunit;
+using PadForge.Engine.Common;
 
 namespace PadForge.Tests
 {

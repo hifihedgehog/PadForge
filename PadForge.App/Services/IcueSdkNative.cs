@@ -188,10 +188,20 @@ namespace PadForge.Services
             {
                 path = FindLibrary();
                 if (path == null) { detail = LibraryName + " not found"; return false; }
-                module = LoadLibraryExW(path, IntPtr.Zero, LoadWithAlteredSearchPath);
+                // iCUE's own copy loads into PadForge only when only
+                // administrators could have put it in place and Corsair
+                // signed it, held open from the check through the load
+                // (#597, TrustedLibrary).
+                int error = 0;
+                module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.Corsair, p =>
+                {
+                    IntPtr loaded = LoadLibraryExW(p, IntPtr.Zero, LoadWithAlteredSearchPath);
+                    if (loaded == IntPtr.Zero) error = Marshal.GetLastWin32Error();
+                    return loaded;
+                }, out string why);
                 if (module == IntPtr.Zero)
                 {
-                    detail = $"LoadLibrary failed ({Marshal.GetLastWin32Error()}) for {path}";
+                    detail = why == "load" ? $"LoadLibrary failed ({error}) for {path}" : $"{LibraryName} not loaded ({why}): {path}";
                     return false;
                 }
             }

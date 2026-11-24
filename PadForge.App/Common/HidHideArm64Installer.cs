@@ -646,7 +646,7 @@ namespace PadForge.Common
                         UseShellExecute = false,
                         CreateNoWindow = true,
                     };
-                    using var proc = Process.Start(psi);
+                    using var proc = PadForge.Services.RightsVariables.Start(psi);
                     if (proc == null) return null;
                     // Three minutes, the wait the x64 installer gets and the
                     // one Status_InstallerTimedOut states to the user.

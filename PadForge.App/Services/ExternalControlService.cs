@@ -372,7 +372,7 @@ namespace PadForge.Services
             // Who the client is, from its token, now that a read is done.
             string refusal = Judge(server);
             Answer answer;
-            try { answer = _executor(new Request(line, ClientProcessId(server), token, refusal)); }
+            try { answer = _executor(new Request(line, Automation.AutomationClientProcess.IdOf(server), token, refusal)); }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
             catch { answer = new Answer("error internal"); }
             using (var writing = CancellationTokenSource.CreateLinkedTokenSource(token))
@@ -386,21 +386,6 @@ namespace PadForge.Services
             try { answer.AfterWritten?.Invoke(); } catch { }
         }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetNamedPipeClientProcessId(SafePipeHandle pipe, out uint clientProcessId);
-
-        private static int ClientProcessId(NamedPipeServerStream server)
-        {
-            try
-            {
-                return GetNamedPipeClientProcessId(server.SafePipeHandle, out uint id) ? unchecked((int)id) : 0;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
 
         /// <summary>
         /// Who may open the pipe. The user whose desktop this is reads and

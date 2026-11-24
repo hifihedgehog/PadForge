@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using PadForge.Engine;
+using PadForge.Engine.Common;
 
 namespace PadForge.Services.Automation
 {

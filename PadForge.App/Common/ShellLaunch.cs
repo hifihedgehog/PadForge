@@ -90,7 +90,7 @@ namespace PadForge.Common
         /// rights, as the DSX stand-in is. Never a program a person or a
         /// setting names. The test host starts nothing.</summary>
         internal static Process StartOwnHelper(ProcessStartInfo psi)
-            => OffLimitsForTest ? null : Process.Start(psi);
+            => OffLimitsForTest ? null : PadForge.Services.RightsVariables.Start(psi);
 
         /// <summary>Explorer by its full path in Windows' folder.</summary>
         internal static string Explorer => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");

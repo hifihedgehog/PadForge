@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge-ը չփոխադրուեցաւ: {0} կը պարունակէ ֆայլեր, որոնք PadForge-ինը չեն։</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge-ը չփոխադրուեցաւ: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«Գործարկել մուտք գործելու ատեն» անջատուեցաւ, քանի որ ան PadForge-ը կը գործարկէր թղթապանակէ մը, որ ուրիշ ֆայլեր ալ կը պարունակէ։</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-ը չկրցաւ ստեղծել իր պաշտպանուած թղթապանակը՝ {0}։ PadForge-ը հոն կը պահէ վարիչի իրաւունքներով գործածած գրադարանները, եւ առանց անոր չի կրնար ապահով գործարկուիլ։</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-ը չկրցաւ ինքզինք վերագործարկել իր պաշտպանուած թղթապանակէն՝ {0}։ PadForge-ը վարիչի իրաւունքներով կ՚աշխատի միայն հոնկէ, ուստի չգործարկուեցաւ։</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge-ը վարիչի իրաւունքներով կ՚աշխատի {0} թղթապանակէն, որ ուրիշ ծրագիրներ կրնան փոխել։ Անոնք կրնան հոն փոխել PadForge-ի կարգաւորումները, եւ PadForge-ը իր իրաւունքներով կը գործէ անոնց համաձայն։</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցուցադրել ծանուցումներու գօտիին մէջ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ծանուցումներու գօտիի պատկերակը տեսանելի պահել, մինչ պատուհանը բաց է, որպէսզի անոր ցանկին «Ելք»-ը միշտ մէկ սեղմում հեռու ըլլայ։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>

@@ -590,6 +590,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no a move: {0} tin archivo ku no ta di PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no a move: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>A paga Start at Login, pasobra e tabata kore PadForge for di un mapa ku tin otro archivo.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge no por a krea su mapa protehá, {0}. PadForge ta warda einan e bibliotekanan ku e ta kore ku derechi di atministradó, i e no por kuminsá sigur sin e mapa ei.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge no por a kuminsá su mes di nobo for di su mapa protehá, {0}. PadForge ta kore ku derechi di atministradó solamente for di einan, p'esei e no a kuminsá.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku otro programa por kambia. Nan por kambia e konfigurashon di PadForge einan, i PadForge ta aktua riba nan ku su derechinan.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mustra semper den área di notifikashon</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualisashon</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Buska aktualisashon outomátikamente</value></data>

@@ -36,6 +36,19 @@ namespace PadForge.Common.Input
         public bool Start()
         {
             if (OffLimitsForTest) return false;
+            // The runtime loads into PadForge only from a folder only
+            // administrators can change, held from the check through its
+            // load (#597). COM finds it through the machine's registration
+            // alone, since an elevated process reads no class a user
+            // registered (Microsoft, per-user COM for elevated token
+            // processes). Microsoft ships the runtime unsigned, so its place
+            // decides alone.
+            using var runtime = HoldRuntime(out string why);
+            if (runtime == null)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine("MIDI App SDK runtime not used: " + why);
+                return false;
+            }
             _initializer = Microsoft.Windows.Devices.Midi2.Initialization.MidiDesktopAppSdkInitializer.Create();
             if (!_initializer.InitializeSdkRuntime())
             {
@@ -61,6 +74,42 @@ namespace PadForge.Common.Input
         /// <paramref name="skipDispose"/> drops the initializer without
         /// calling Dispose. No production caller passes it.
         /// </summary>
+        /// <summary>The class the runtime's initializer makes, whose
+        /// machine registration names the runtime's library
+        /// (Initialization.hpp).</summary>
+        internal const string RuntimeClass = @"SOFTWARE\Classes\CLSID\{c3263827-c3b0-bdbd-2500-ce63a3f3f2c3}\InprocServer32";
+
+        /// <summary>Test seam: the registration's library path in place of
+        /// the registry's. Null in production.</summary>
+        internal static Func<string> RuntimePathSeam;
+
+        /// <summary>The runtime's library, as the machine's registration
+        /// names it, held against change, or null with why.</summary>
+        internal static IDisposable HoldRuntime(out string why)
+        {
+            string path = RuntimePathSeam != null ? RuntimePathSeam() : RegisteredRuntime();
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                why = "the runtime is not registered for this machine";
+                return null;
+            }
+            return PadForge.Engine.Common.TrustedLibrary.Hold(PadForge.Engine.Common.MachineEnvironment.Expand(path), null, out why);
+        }
+
+        private static string RegisteredRuntime()
+        {
+            try
+            {
+                using var root = Microsoft.Win32.RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, Microsoft.Win32.RegistryView.Registry64);
+                using var key = root.OpenSubKey(RuntimeClass);
+                return (key?.GetValue(null) as string)?.Trim('"');
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public void Stop(bool skipDispose)
         {
             if (_initializer != null)

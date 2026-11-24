@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ble ikke flyttet: {0} inneholder filer som ikke hører til PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ble ikke flyttet: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start ved pålogging ble slått av, siden det kjørte PadForge fra en mappe som inneholder andre filer.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge kunne ikke lage den beskyttede mappen sin, {0}. PadForge oppbevarer bibliotekene det kjører med administratorrettigheter der, og kan ikke starte trygt uten den.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge kunne ikke starte seg selv på nytt fra den beskyttede mappen sin, {0}. PadForge kjører med administratorrettigheter bare derfra, så det startet ikke.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge kjører med administratorrettigheter fra {0}, en mappe andre programmer kan endre. De kan endre innstillingene til PadForge der, og PadForge handler på dem med sine rettigheter.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vis alltid i systemstatusfeltet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hold ikonet i systemstatusfeltet synlig mens vinduet er åpent, slik at Avslutt i menyen alltid er ett klikk unna.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Oppdateringer</value></data>

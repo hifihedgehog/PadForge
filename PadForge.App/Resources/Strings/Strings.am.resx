@@ -947,6 +947,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0} የPadForge ያልሆኑ ፋይሎችን ይዟል።</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ሌሎች ፋይሎችን ከያዘ አቃፊ ያስጀምር ነበር።</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge የተጠበቀ አቃፊውን {0} መፍጠር አልቻለም። PadForge በአስተዳዳሪ መብቶች የሚያሄዳቸውን ቤተ መጻሕፍት እዚያ ያስቀምጣል፣ ያለ እሱም በደህንነት መጀመር አይችልም።</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ከተጠበቀ አቃፊው {0} ራሱን እንደገና ማስጀመር አልቻለም። PadForge በአስተዳዳሪ መብቶች የሚሄደው ከዚያ ብቻ ስለሆነ አልጀመረም።</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሌሎች ፕሮግራሞች ሊቀይሩት ከሚችሉት አቃፊ {0} ይሄዳል። እዚያ የPadForge ቅንብሮችን ሊቀይሩ ይችላሉ፣ PadForge ደግሞ በመብቶቹ በእነሱ ላይ ይሠራል።</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ሁልጊዜ በስርዓት መሣቢያ ውስጥ አሳይ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>መስኮቱ ክፍት ሆኖ ሳለ የመሣቢያው አዶ እንዲታይ ያደርጋል፣ ስለዚህ በምናሌው ውስጥ ያለው «ውጣ» ሁልጊዜ አንድ ጠቅታ ብቻ ይርቃል።</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ዝማኔዎች</value></data>

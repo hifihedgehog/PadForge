@@ -7,6 +7,7 @@ using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services.Automation;
 using PadForge.ViewModels;
+using PadForge.Engine.Common;
 
 namespace PadForge.Services.Plugins
 {

@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ne s'est pas déplacé : {0} contient des fichiers qui ne sont pas ceux de PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ne s'est pas déplacé : {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Démarrer à l'ouverture de session a été désactivé, car il lançait PadForge depuis un dossier qui contient d'autres fichiers.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge n'a pas pu créer son dossier protégé, {0}. PadForge y garde les bibliothèques qu'il exécute avec les droits d'administrateur, et il ne peut pas démarrer en sécurité sans lui.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge n'a pas pu se relancer depuis son dossier protégé, {0}. PadForge ne s'exécute avec les droits d'administrateur que depuis cet emplacement, il n'a donc pas démarré.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge s'exécute avec les droits d'administrateur depuis {0}, un dossier que d'autres programmes peuvent modifier. Ils peuvent y modifier les paramètres de PadForge, et PadForge agit sur eux avec ses droits.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Toujours afficher dans la zone de notification</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Garde l'icône de la zone de notification visible pendant que la fenêtre est ouverte, pour que Quitter dans son menu soit toujours à un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mises à jour</value></data>

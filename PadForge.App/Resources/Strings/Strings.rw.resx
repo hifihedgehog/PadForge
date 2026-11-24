@@ -375,6 +375,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ntiyimutse: {0} irimo dosiye zitari iza PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ntiyimutse: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Gutangira iyo winjiye byazimijwe, kuko byatangizaga PadForge iturutse mu bubiko burimo izindi dosiye.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ntiyashoboye gukora ububiko bwayo burinzwe, {0}. PadForge ibika aho amasomero ikoresha ifite uburenganzira bw'umuyobozi, kandi ntishobora gutangira mu mutekano itabufite.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ntiyashoboye kongera kwitangiza iturutse mu bubiko bwayo burinzwe, {0}. PadForge ikoresha uburenganzira bw'umuyobozi iturutse aho gusa, bityo ntiyatangiye.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ikora ifite uburenganzira bw'umuyobozi iturutse muri {0}, ububiko izindi porogaramu zishobora guhindura. Zishobora guhindura igenamiterere rya PadForge aho, kandi PadForge irikurikiza ifite ubwo burenganzira.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ivugurura</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Shakisha ivugurura mu buryo bwikora</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Shyiramo ivugurura mu buryo bwikora</value></data>

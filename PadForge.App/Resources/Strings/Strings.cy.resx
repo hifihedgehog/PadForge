@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Ni symudodd PadForge: mae {0} yn cynnwys ffeiliau nad ydynt yn eiddo PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Ni symudodd PadForge: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan ei fod yn rhedeg PadForge o ffolder sy'n cynnwys ffeiliau eraill.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Nid oedd PadForge yn gallu gwneud ei ffolder warchodedig, {0}. Mae PadForge yn cadw'r llyfrgelloedd y mae'n eu rhedeg gyda hawliau gweinyddwr yno, ac ni all gychwyn yn ddiogel hebddi.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Nid oedd PadForge yn gallu cychwyn ei hun eto o'i ffolder warchodedig, {0}. Dim ond oddi yno y mae PadForge yn rhedeg gyda hawliau gweinyddwr, felly ni chychwynnodd.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg gyda hawliau gweinyddwr o {0}, ffolder y gall rhaglenni eraill ei newid. Gallant newid gosodiadau PadForge yno, ac mae PadForge yn gweithredu arnynt gyda'i hawliau.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dangos yn yr Hambwrdd System Bob Amser</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Cadwch eicon yr hambwrdd yn weladwy tra bydd y ffenestr ar agor, fel bod Gadael yn ei ddewislen bob amser un clic i ffwrdd.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Diweddariadau</value></data>

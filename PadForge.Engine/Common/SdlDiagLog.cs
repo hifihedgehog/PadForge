@@ -155,9 +155,35 @@ namespace PadForge.Engine
             try
             {
                 string p = Environment.GetEnvironmentVariable("PADFORGE_DIAG");
-                return string.IsNullOrWhiteSpace(p) ? null : p;
+                if (string.IsNullOrWhiteSpace(p)) return null;
+                return Environment.IsPrivilegedProcess ? MirrorPathWithRights(p, Environment.ProcessPath) : p;
             }
             catch { return null; }
+        }
+
+        /// <summary>
+        /// PADFORGE_DIAG in a process with administrator rights (#597): taken
+        /// only when it names a file directly in the exe's own folder, as the
+        /// diagnostics' diag.log beside PadForge.exe. Every program of the
+        /// user can set the variable (HKCU\Environment), and a log written
+        /// with rights to a path it chose would let it write into folders
+        /// only administrators may change. Null otherwise.
+        /// </summary>
+        internal static string MirrorPathWithRights(string path, string exe)
+        {
+            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(exe)) return null;
+            try
+            {
+                string full = System.IO.Path.GetFullPath(path);
+                string folder = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(exe));
+                string parent = System.IO.Path.GetDirectoryName(full);
+                if (folder == null || parent == null || System.IO.Path.GetFileName(full).Length == 0) return null;
+                return string.Equals(parent.TrimEnd('\\'), folder.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase) ? full : null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>Routes SDL's log output into the ring at DEBUG

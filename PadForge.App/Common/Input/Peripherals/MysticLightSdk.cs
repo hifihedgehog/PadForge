@@ -122,7 +122,9 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The folder an ImagePath's executable sits in: the
         /// quoted path, or the text up to ".exe", with environment
-        /// variables expanded.</summary>
+        /// variables expanded from the machine's own values (#597): a user
+        /// variable of the same name would otherwise point the path at a
+        /// folder of the user's.</summary>
         internal static string FolderOfImagePath(string imagePath)
         {
             if (string.IsNullOrWhiteSpace(imagePath)) return null;
@@ -139,7 +141,7 @@ namespace PadForge.Common.Input.Peripherals
                 int end = text.IndexOf(".exe", StringComparison.OrdinalIgnoreCase);
                 exe = end < 0 ? text : text.Substring(0, end + 4);
             }
-            exe = Environment.ExpandEnvironmentVariables(exe);
+            exe = PadForge.Engine.Common.MachineEnvironment.Expand(exe);
             try { return Path.GetDirectoryName(exe); }
             catch { return null; }
         }
@@ -188,9 +190,15 @@ namespace PadForge.Common.Input.Peripherals
             {
                 path = FindLibrary();
                 if (path == null) { detail = "MysticLight_SDK not found"; return false; }
-                if (!NativeLibrary.TryLoad(path, out module))
+                // MSI's own copy loads into PadForge only when only
+                // administrators could have put it in place and Micro-Star
+                // signed it, held open from the check through the load
+                // (#597, TrustedLibrary).
+                module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.MicroStar,
+                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
+                if (module == IntPtr.Zero)
                 {
-                    detail = "LoadLibrary failed for " + path;
+                    detail = why == "load" ? "LoadLibrary failed for " + path : "MysticLight_SDK not loaded (" + why + "): " + path;
                     return false;
                 }
             }

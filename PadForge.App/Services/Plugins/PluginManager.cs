@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using PadForge.Services.Automation;
+using PadForge.Engine.Common;
 
 namespace PadForge.Services.Plugins
 {

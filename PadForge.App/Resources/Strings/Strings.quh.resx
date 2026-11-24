@@ -1876,6 +1876,7 @@
   <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows mana sutichasqan programamanta</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>astawan: {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, huk programakuna t'ikrayta atinku chay carpetata. Chaypi PadForge nisqap configuraciónninta t'ikrayta atinku, PadForgetaq derechonkunawan chaykunata ruwan.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now nisqa comunidadpa control base de datosninta (SDL_GameControllerDB) GitHub nisqamanta uraykachin, configuración archivopitaq kay PadForge versiónpa mana kapuqnin asignaciónkunata waqaychan. Musuq asignaciónqa mana imapas gamepad hina ñawinchasqan, mana asignasqa, mana Force Raw Joystick Mode nisqapi kaq controlpaqlla llamk'achikun. Ñawpaqman kutichiyqa tukuy uraykachisqa asignaciónkunata qichun.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian. {2} musuqyachisqa: musuq {3}, t'ikrasqa {4}.</value></data>

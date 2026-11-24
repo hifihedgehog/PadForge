@@ -38,14 +38,14 @@ namespace PadForge.Common.Input.KeyboardScreens
 
         /// <summary>Libraries by the path they were loaded from. A library is
         /// never freed, so one loaded once is used again.</summary>
-        private static readonly Dictionary<string, Strike7Library> s_libraries = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, IStrike7Library> s_libraries = new(StringComparer.OrdinalIgnoreCase);
         private static readonly object s_lock = new();
 
         private readonly byte[] _icon;
         private readonly int _iconWidth, _iconHeight;
         private readonly ConcurrentQueue<Strike7Event> _events = new();
         private readonly ConcurrentQueue<(int Dx, int Dy)> _drags = new();
-        private Strike7Library _library;
+        private IStrike7Library _library;
         private string _path;
         private ushort _applet;
         private ushort _endpoint;
@@ -53,7 +53,7 @@ namespace PadForge.Common.Input.KeyboardScreens
         private long _drawn = -1, _nextOpen, _nextDraw, _idleSince = -1;
         private bool _pressed;
         private int _lastX, _lastY;
-        private readonly Func<string, (Strike7Library Library, string Reason)> _tryLoad;
+        private readonly Func<string, (IStrike7Library Library, string Reason)> _tryLoad;
         private readonly Func<bool> _runtimeInstalled;
         private readonly Func<long> _runtimeFound;
         private bool _waitingForRuntime;
@@ -71,7 +71,11 @@ namespace PadForge.Common.Input.KeyboardScreens
 
         public Strike7Screen(byte[] iconBgra, int iconWidth, int iconHeight)
             : this(iconBgra, iconWidth, iconHeight,
-                path => (Strike7Library.TryLoad(path, out string reason), reason),
+                // Mad Catz's library loads in the library host, with the
+                // user's rights (#597): the user can pick a copy in any
+                // folder, and the library then loads its own runtime from
+                // beside it.
+                path => PadForge.Services.NativeHost.RemoteStrike7Library.Load(PadForge.Services.NativeHost.NativeHost.Shared, path),
                 Strike7Library.IsVc2008RuntimeInstalled, () => Strike7Library.RuntimeFoundCount)
         {
         }
@@ -79,7 +83,7 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// <summary>Test seam: the library's load, the runtime check and the
         /// count of checks that found the runtime.</summary>
         internal Strike7Screen(byte[] iconBgra, int iconWidth, int iconHeight,
-            Func<string, (Strike7Library Library, string Reason)> tryLoad, Func<bool> runtimeInstalled, Func<long> runtimeFound)
+            Func<string, (IStrike7Library Library, string Reason)> tryLoad, Func<bool> runtimeInstalled, Func<long> runtimeFound)
         {
             _icon = iconBgra;
             _iconWidth = iconWidth;
@@ -196,8 +200,8 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// copy PadForge downloaded is checked against the SDK's own hash
         /// before it loads, so a damaged copy is reported and never
         /// loaded.</summary>
-        private static Strike7Library Load(string path, string expectedSha256,
-            Func<string, (Strike7Library Library, string Reason)> tryLoad, out string reason)
+        private static IStrike7Library Load(string path, string expectedSha256,
+            Func<string, (IStrike7Library Library, string Reason)> tryLoad, out string reason)
         {
             reason = "missing";
             if (string.IsNullOrWhiteSpace(path)) return null;

@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using Microsoft.Win32.SafeHandles;
+using PadForge.Engine.Common;
 
 namespace PadForge.Services.Automation
 {
@@ -97,7 +98,12 @@ namespace PadForge.Services.Automation
             }
         }
 
-        private static string ReadUser(SafeAccessTokenHandle token)
+        private static string ReadUser(SafeAccessTokenHandle token) => OnHandle(token, ReadUser);
+
+        /// <summary>The user of a token, as a SID string, or null. The one
+        /// reader of a token's user: a pipe client's here, and each session's
+        /// user in the logon start (#597).</summary>
+        internal static string ReadUser(IntPtr token)
         {
             GetTokenInformation(token, TokenUser, IntPtr.Zero, 0, out int size);
             if (size <= 0) return null;
@@ -112,7 +118,11 @@ namespace PadForge.Services.Automation
             finally { Marshal.FreeHGlobal(buffer); }
         }
 
-        internal static int? ReadInt(SafeAccessTokenHandle token, int what)
+        internal static int? ReadInt(SafeAccessTokenHandle token, int what) => OnHandle(token, t => ReadInt(t, what));
+
+        /// <summary>A 32-bit value of a token, such as its session or its
+        /// elevation type, or null.</summary>
+        internal static int? ReadInt(IntPtr token, int what)
         {
             IntPtr buffer = Marshal.AllocHGlobal(4);
             try
@@ -120,6 +130,23 @@ namespace PadForge.Services.Automation
                 return GetTokenInformation(token, what, buffer, 4, out _) ? Marshal.ReadInt32(buffer) : null;
             }
             finally { Marshal.FreeHGlobal(buffer); }
+        }
+
+        /// <summary>Reads through the raw handle while the safe handle is
+        /// held from closing.</summary>
+        private static T OnHandle<T>(SafeAccessTokenHandle token, Func<IntPtr, T> read)
+        {
+            bool added = false;
+            try
+            {
+                token.DangerousAddRef(ref added);
+                return read(token.DangerousGetHandle());
+            }
+            catch (ObjectDisposedException) { return default; }
+            finally
+            {
+                if (added) token.DangerousRelease();
+            }
         }
 
         /// <summary>The integrity level's RID: the last sub-authority of the
@@ -159,6 +186,11 @@ namespace PadForge.Services.Automation
         [DllImport("advapi32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetTokenInformation(SafeAccessTokenHandle token, int infoClass,
+            IntPtr info, int length, out int returned);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetTokenInformation(IntPtr token, int infoClass,
             IntPtr info, int length, out int returned);
 
         [DllImport("advapi32.dll")]
@@ -232,16 +264,19 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>Opens the pipe's client process to hold it.</summary>
-        internal static AutomationClientProcess Of(NamedPipeServerStream server)
+        internal static AutomationClientProcess Of(NamedPipeServerStream server) => Of(IdOf(server));
+
+        /// <summary>The process ID of the pipe's client, or 0 when it cannot
+        /// be read. The one reader of it: the Automation pipe, the control
+        /// pipe and the library host's channels (#597).</summary>
+        internal static int IdOf(NamedPipeServerStream server)
         {
-            uint pid = 0;
             try
             {
-                if (!GetNamedPipeClientProcessId(server.SafePipeHandle, out pid)) pid = 0;
+                return server != null && GetNamedPipeClientProcessId(server.SafePipeHandle, out uint pid) ? unchecked((int)pid) : 0;
             }
-            catch (ObjectDisposedException) { pid = 0; }
-            catch (InvalidOperationException) { pid = 0; }
-            return Of(unchecked((int)pid));
+            catch (ObjectDisposedException) { return 0; }
+            catch (InvalidOperationException) { return 0; }
         }
 
         /// <summary>Opens process <paramref name="pid"/> to hold it. A

@@ -330,8 +330,9 @@ namespace PadForge.Tests
         public void EveryStartForTheUser_GoesThroughTheShell_AndNoneWithPadForgesRights()
         {
             string shell = AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "ShellLaunch.cs");
-            Assert.Single(System.Text.RegularExpressions.Regex.Matches(shell, @"\bProcess\.Start\("));
-            Assert.Contains("internal static Process StartOwnHelper(ProcessStartInfo psi)\r\n            => OffLimitsForTest ? null : Process.Start(psi);", shell.Replace("\r\n", "\n").Replace("\n", "\r\n"), StringComparison.Ordinal);
+            Assert.Empty(System.Text.RegularExpressions.Regex.Matches(shell, @"\bProcess\.Start\("));
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(shell, @"\bRightsVariables\.Start\("));
+            Assert.Contains("internal static Process StartOwnHelper(ProcessStartInfo psi)\r\n            => OffLimitsForTest ? null : PadForge.Services.RightsVariables.Start(psi);", shell.Replace("\r\n", "\n").Replace("\n", "\r\n"), StringComparison.Ordinal);
             string macros = AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs");
             Assert.Contains("if (!PadForge.Common.ShellLaunch.AsTheUser(psi, out string why))", macros, StringComparison.Ordinal);
             // Only PadForge's own helpers start with its rights.

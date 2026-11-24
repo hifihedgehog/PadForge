@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0} đang chứa các tệp không phải của PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì nó chạy PadForge từ một thư mục chứa các tệp khác.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge không tạo được thư mục bảo vệ của nó, {0}. PadForge giữ các thư viện nó chạy với quyền quản trị ở đó, và không thể khởi động an toàn nếu thiếu nó.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge không tự khởi động lại được từ thư mục bảo vệ của nó, {0}. PadForge chỉ chạy với quyền quản trị từ đó, nên nó đã không khởi động.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục mà các chương trình khác có thể thay đổi. Chúng có thể đổi thiết lập của PadForge ở đó, và PadForge hành động theo chúng bằng quyền của mình.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Luôn hiện trong khay hệ thống</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Giữ biểu tượng khay luôn hiển thị khi cửa sổ đang mở, để lệnh Thoát trong menu của nó luôn chỉ cách một cú nhấp.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cập nhật</value></data>

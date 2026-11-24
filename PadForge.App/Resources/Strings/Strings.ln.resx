@@ -2254,6 +2254,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>mpe {0} mosusu</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} na {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Soki eyano te na {0}, ezali te.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ba programme mosusu bakoki kobongola. Bakoki kobongola ba paramètre ya PadForge kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kosala mise à jour sikoyo ekitisaka base ya ba manette ya communauté (SDL_GameControllerDB) uta na GitHub mpe ebombaka, na fichier ya ba paramètre, ba assignation oyo version oyo ya PadForge ezangi. Assignation ya sika esalelamaka kaka mpo na manette oyo eloko mosusu te etangaka lokola gamepad, oyo ezali na assignation te mpe oyo ezali na Mode joystick brut te. Kozongisa elongolaka ba assignation nyonso oyo ekitisami.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Kosala mise à jour sikoyo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Mise à jour…</value></data>

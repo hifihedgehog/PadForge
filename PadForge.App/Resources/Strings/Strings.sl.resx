@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se ni premaknil: {0} vsebuje datoteke, ki niso del programa PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se ni premaknil: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Zagon ob vpisu je bil izklopljen, ker je zaganjal PadForge iz mape, v kateri so druge datoteke.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ni mogel ustvariti svoje zaščitene mape {0}. PadForge v njej hrani knjižnice, ki jih zaganja s skrbniškimi pravicami, brez nje pa se ne more varno zagnati.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge se ni mogel znova zagnati iz svoje zaščitene mape {0}. PadForge se s skrbniškimi pravicami izvaja samo od tam, zato se ni zagnal.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge se s skrbniškimi pravicami izvaja iz mape {0}, ki jo lahko spreminjajo drugi programi. Ti lahko tam spremenijo nastavitve programa PadForge, PadForge pa jih izvaja s svojimi pravicami.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vedno pokaži v območju za obvestila</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v območju za obvestila ostane vidna tudi, ko je okno odprto, tako da je ukaz „Izhod“ v njenem meniju vedno oddaljen le en klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Posodobitve</value></data>

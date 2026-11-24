@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>لم ينتقل PadForge: المجلد {0} يحوي ملفات ليست من PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>لم ينتقل PadForge: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>أُوقف «التشغيل عند تسجيل الدخول» لأنه كان يشغّل PadForge من مجلد يحوي ملفات أخرى.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>تعذر على PadForge إنشاء مجلده المحمي {0}. يحتفظ PadForge هناك بالمكتبات التي يشغّلها بصلاحيات المسؤول، ولا يمكنه البدء بأمان من دونه.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>تعذر على PadForge إعادة تشغيل نفسه من مجلده المحمي {0}. يعمل PadForge بصلاحيات المسؤول من هناك فقط، لذا لم يبدأ.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>يعمل PadForge بصلاحيات المسؤول من {0}، وهو مجلد يمكن لبرامج أخرى تغييره. يمكنها تغيير إعدادات PadForge هناك، ويتصرف PadForge بناء عليها بصلاحياته.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>الإظهار دائما في علبة النظام</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>يبقي أيقونة علبة النظام ظاهرة والنافذة مفتوحة، فيكون «خروج» في قائمتها على بعد نقرة واحدة دائما.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>التحديثات</value></data>

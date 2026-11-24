@@ -26,6 +26,7 @@ using PadForge.Services;
 using PadForge.Services.Automation;
 using PadForge.ViewModels;
 using Xunit;
+using PadForge.Engine.Common;
 
 namespace PadForge.Tests
 {

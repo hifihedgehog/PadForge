@@ -2142,7 +2142,7 @@ namespace PadForge.Services
             if (OffLimitsForTest)
                 throw new System.ComponentModel.Win32Exception(ERROR_ACCESS_DENIED,
                     "The test host starts no process: " + psi.FileName);
-            return Process.Start(psi);
+            return RightsVariables.Start(psi);
         }
 
         /// <summary>Fails a request to GitHub, a check's question or the

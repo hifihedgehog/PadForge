@@ -2609,7 +2609,7 @@ namespace PadForge.Services
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-            using var proc = Process.Start(psi);
+            using var proc = RightsVariables.Start(psi);
             if (proc == null) return string.Empty;
 
             // Start the read BEFORE waiting, and do not block on it. ReadToEnd

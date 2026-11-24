@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge is niet verplaatst: {0} bevat bestanden die niet van PadForge zijn.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge is niet verplaatst: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Starten bij aanmelding is uitgezet, omdat het PadForge vanuit een map met andere bestanden startte.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge kon zijn beveiligde map {0} niet maken. PadForge bewaart daar de bibliotheken die het als beheerder gebruikt en kan zonder die map niet veilig starten.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge kon zichzelf niet opnieuw starten vanuit zijn beveiligde map {0}. PadForge draait alleen vanaf die plek als beheerder, dus het is niet gestart.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge draait als beheerder vanuit {0}, een map die andere programma's kunnen wijzigen. Zij kunnen daar de instellingen van PadForge wijzigen, en PadForge voert ze uit met zijn rechten.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Altijd in systeemvak tonen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Houdt het pictogram in het systeemvak zichtbaar terwijl het venster open is, zodat Afsluiten in het menu altijd één klik verwijderd is.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>

@@ -666,6 +666,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge non è stato spostato: {0} contiene file che non sono di PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge non è stato spostato: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Avvia all'accesso è stato disattivato, perché avviava PadForge da una cartella che contiene altri file.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge non è riuscito a creare la sua cartella protetta, {0}. PadForge vi conserva le librerie che esegue con diritti di amministratore e senza di essa non può avviarsi in sicurezza.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge non è riuscito a riavviarsi dalla sua cartella protetta, {0}. PadForge viene eseguito con diritti di amministratore solo da lì, quindi non si è avviato.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge viene eseguito con diritti di amministratore da {0}, una cartella che altri programmi possono modificare. Possono cambiare lì le impostazioni di PadForge, e PadForge agisce su di esse con i propri diritti.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostra sempre nell'area di notifica</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantiene visibile l'icona nell'area di notifica mentre la finestra è aperta, così Esci nel suo menu è sempre a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aggiornamenti</value></data>

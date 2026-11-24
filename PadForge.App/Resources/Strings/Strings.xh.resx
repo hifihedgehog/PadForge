@@ -2150,6 +2150,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>nezinye: {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kwe-{1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ukungaphenduli kwisithuba se-{0} kubalwa njengokuthi hayi.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>I-PadForge isebenza namalungelo omlawuli isuka ku-{0}, ifolda ezinye iinkqubo ezinokuyitshintsha. Zinokutshintsha iisetingi ze-PadForge apho, kwaye i-PadForge yenza ngazo ngamalungelo ayo.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Isiseko sedatha sezilawuli</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hlaziya ngoku ikhuphela isiseko sedatha sezilawuli soluntu (SDL_GameControllerDB) kwi-GitHub, kwaye igcina kwifayile yeesetingi iimephu le nguqulelo ye-PadForge engenazo. Imephu entsha isetyenziswa kuphela kwisilawuli esingafundwa njenge-gamepad yenye into, esingabelwanga, nesingekho kwi-Force Raw Joystick Mode. Ukuseta kwakhona kususa zonke iimephu ezikhutshelweyo.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ezakhelwe ngaphakathi: {0} iimephu, ikopi yoluntu yomhla {1}.</value></data>

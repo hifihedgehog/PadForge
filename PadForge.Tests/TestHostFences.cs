@@ -129,6 +129,15 @@ namespace PadForge.Tests
         internal static void Set() => GiveBackTask.OffLimitsForTest = true;
     }
 
+    /// <summary>No library host is started: a test opens a channel only to
+    /// an in-process fake it hands in (NativeHost.OpenSeam), so no vendor
+    /// library this PC has is loaded anywhere (#597).</summary>
+    internal static class NativeHostOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.NativeHost.NativeHost.OffLimitsForTest = true;
+    }
+
     /// <summary>No driver is installed, removed, signed or forced onto a
     /// device, no certificate added or removed, no radio cycled or
     /// switched, no setup's uninstaller run, and no pairing record

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services.Automation;
+using PadForge.Engine.Common;
 
 namespace PadForge.ViewModels
 {

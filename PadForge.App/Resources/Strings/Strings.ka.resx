@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge არ გადავიდა: {0} შეიცავს ფაილებს, რომლებიც PadForge-ის არ არის.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge არ გადავიდა: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>სისტემაში შესვლისას გაშვება გამოირთო, რადგან PadForge-ს ისეთი საქაღალდიდან უშვებდა, რომელიც სხვა ფაილებსაც შეიცავს.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-მა ვერ შექმნა თავისი დაცული საქაღალდე, {0}. PadForge იქ ინახავს ბიბლიოთეკებს, რომლებთანაც ადმინისტრატორის უფლებებით მუშაობს, და მის გარეშე უსაფრთხოდ ვერ ირთვება.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-მა ვერ გაუშვა თავი თავისი დაცული საქაღალდიდან, {0}. PadForge ადმინისტრატორის უფლებებით მხოლოდ იქიდან მუშაობს, ამიტომ არ ჩაირთო.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ადმინისტრატორის უფლებებით მუშაობს საქაღალდიდან {0}, რომელსაც სხვა პროგრამები ცვლიან. მათ იქ PadForge-ის პარამეტრების შეცვლა შეუძლიათ და PadForge მათ თავისი უფლებებით ასრულებს.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ყოველთვის ჩვენება სისტემურ უჯრაში</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ხატულის სისტემურ უჯრაში ხილულად დატოვება ფანჯრის გახსნილობისას, რომ „გასვლა“ მის მენიუში ყოველთვის ერთი დაწკაპუნებით იყოს.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>განახლებები</value></data>

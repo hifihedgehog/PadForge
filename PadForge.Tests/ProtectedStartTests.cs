@@ -368,12 +368,16 @@ namespace PadForge.Tests
                 "PADFORGE_HANDOVER_EVENT=dead",
                 "TEMP=C:\\Users\\someone\\AppData\\Local\\Temp",
             };
-            string block = ProtectedStart.EnvironmentBlock(variables, Natives, "1f4", Same);
+            // The machine's block names the system's variables. The user's
+            // own Path and a variable on no list are not handed on, nor the
+            // drive lines, which a copy started in the exe's own folder
+            // does not read.
+            var machine = new[] { "ALLUSERSPROFILE=C:\\ProgramData", "Path=C:\\WINDOWS\\system32" };
+            string block = ProtectedStart.CopyBlock(machine, variables.Concat(new[] { "Path=C:\\Users\\someone\\bin", "VR_OVERRIDE=x" }).ToArray(), Natives, "1f4");
             Assert.EndsWith("\0\0", block, StringComparison.Ordinal);
             var lines = block.TrimEnd('\0').Split('\0');
             Assert.Equal(new[]
             {
-                "=C:=C:\\Users\\someone",
                 "ALLUSERSPROFILE=C:\\ProgramData",
                 "DOTNET_BUNDLE_EXTRACT_BASE_DIR=" + Natives,
                 "PADFORGE_HANDOVER_EVENT=1f4",
@@ -436,6 +440,7 @@ namespace PadForge.Tests
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "ProtectedStart.cs"),
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "ProtectedFolder.cs"),
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "System32Calls.cs"),
+                AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "RightsVariables.cs"),
             })
             {
                 string code = string.Join("\n", file.Split('\n').Where(l => !l.TrimStart().StartsWith("//", StringComparison.Ordinal)));

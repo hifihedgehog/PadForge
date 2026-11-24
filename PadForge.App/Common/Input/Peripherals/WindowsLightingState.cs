@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using Microsoft.Win32;
 
 namespace PadForge.Common.Input.Peripherals
@@ -198,20 +197,7 @@ namespace PadForge.Common.Input.Peripherals
                     if (!OpenProcessToken(process, TOKEN_QUERY, out IntPtr token)) return null;
                     try
                     {
-                        GetTokenInformation(token, TokenUser, IntPtr.Zero, 0, out uint needed);
-                        if (needed == 0 || needed > 1024) return null;
-                        IntPtr buffer = Marshal.AllocHGlobal((int)needed);
-                        try
-                        {
-                            if (!GetTokenInformation(token, TokenUser, buffer, needed, out _)) return null;
-                            // TOKEN_USER begins with the pointer to the SID,
-                            // which lies in the same buffer.
-                            return new SecurityIdentifier(Marshal.ReadIntPtr(buffer)).Value;
-                        }
-                        finally
-                        {
-                            Marshal.FreeHGlobal(buffer);
-                        }
+                        return PadForge.Services.Automation.AutomationClientIdentity.ReadUser(token);
                     }
                     finally
                     {
@@ -230,11 +216,9 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         // winnt.h (Windows SDK 10.0.26100.0): the right to ask a process
-        // for its token and no more, the right to read a token, and the
-        // class of the token's user.
+        // for its token and no more, and the right to read a token.
         private const uint PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
         private const uint TOKEN_QUERY = 0x0008;
-        private const int TokenUser = 1;
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetShellWindow();
@@ -247,10 +231,6 @@ namespace PadForge.Common.Input.Peripherals
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool OpenProcessToken(IntPtr process, uint access, out IntPtr token);
-
-        [DllImport("advapi32.dll", SetLastError = true)]
-        private static extern bool GetTokenInformation(IntPtr token, int informationClass, IntPtr information,
-            uint length, out uint returnedLength);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CloseHandle(IntPtr handle);

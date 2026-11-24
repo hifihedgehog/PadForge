@@ -1472,8 +1472,10 @@ namespace PadForge.Tests
             At(page, "Visibility=\"{Binding HasHomeOffer, Converter={StaticResource BoolToVisibilityConverter}}\"");
             At(page, "<TextBlock x:Name=\"HomeOfferLine\" common:LiveText.Polite=\"True\"");
             // The sentence wraps, and the two buttons go under it together.
-            At(page, "<Border x:Name=\"HomeOffer\" Margin=\"0,12,0,0\" Padding=\"18,12,14,12\" CornerRadius=\"12\"");
-            At(page, "controls:FlexLinePanel.Basis=\"320\" controls:FlexLinePanel.Grow=\"1\"");
+            int offerAt = At(page, "<Border x:Name=\"HomeOffer\" Margin=\"0,12,0,0\" Padding=\"18,12,14,12\" CornerRadius=\"12\"");
+            // The shared folder's card under it is the same band (#597).
+            string offerBand = page.Substring(offerAt, At(page, "<Border x:Name=\"HomeSharedFolder\"") - offerAt);
+            At(offerBand, "controls:FlexLinePanel.Basis=\"320\" controls:FlexLinePanel.Grow=\"1\"");
             int use = At(page, "<ui:Button x:Name=\"HomeOfferUse\"");
             int dismiss = At(page, "<ui:Button x:Name=\"HomeOfferDismiss\"");
             Assert.DoesNotContain("</StackPanel>", page.Substring(use, dismiss - use));

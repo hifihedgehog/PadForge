@@ -502,7 +502,7 @@ namespace PadForge.Services
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
-            using var p = System.Diagnostics.Process.Start(psi);
+            using var p = RightsVariables.Start(psi);
             var sb = new System.Text.StringBuilder();
             p.OutputDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
             p.ErrorDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };

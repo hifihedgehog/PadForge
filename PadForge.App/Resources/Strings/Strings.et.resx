@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ei teisaldunud: kaustas {0} on faile, mis pole programmi PadForge omad.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ei teisaldunud: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest see käivitas programmi PadForge kaustast, kus on teisi faile.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ei saanud luua oma kaitstud kausta {0}. PadForge hoiab seal teeke, mida ta administraatoriõigustega kasutab, ning ilma selleta ei saa see turvaliselt käivituda.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ei saanud end uuesti käivitada oma kaitstud kaustast {0}. PadForge töötab administraatoriõigustega ainult sealt, seega see ei käivitunud.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, mida teised programmid saavad muuta. Nad saavad seal muuta programmi PadForge sätteid ja PadForge tegutseb nende järgi oma õigustega.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Kuva alati teavitusalal</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Teavitusala ikoon jääb nähtavaks ka siis, kui aken on avatud, nii et menüükäsk Välju on alati ühe klõpsu kaugusel.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Värskendused</value></data>

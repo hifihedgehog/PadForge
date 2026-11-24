@@ -2364,6 +2364,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>fi {0} dabalataa</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kan {1} keessaa</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Deebiin {0} keessatti hin kennamne akka lakkii lakkaa'ama.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge mirga bulchaatiin {0} irraa hojjeta, kunis kuusaa sagantaaleen biroo jijjiiruu danda'anidha. Isaan achitti qindaa'ina PadForge jijjiiruu danda'u, PadForge immoo mirga isaatiin irratti hojjeta.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kuusa odeeffannoo kontirolaa</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Amma haaromsi kuusa odeeffannoo kontirolaa hawaasaa (SDL_GameControllerDB) GitHub irraa buufata, walqabsiisa veershiniin PadForge kun hin qabne immoo faayilii qindaa'inaa keessatti kuusa. Walqabsiisni haaraan kan fayyadamu kontirolaa wanti biraa akka gamepad hin dubbisne, hin ramadamne fi Haala joystick dheedhii dirqisiisi keessa hin jirreef qofa. Deebisuun walqabsiisa buufatame hunda haqa.</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Haaromsaa jira…</value></data>

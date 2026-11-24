@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se nije premjestio: {0} sadrži datoteke koje nisu od programa PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se nije premjestio: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Pokreni pri prijavi isključeno je jer je pokretalo PadForge iz mape koja sadrži druge datoteke.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nije mogao stvoriti svoju zaštićenu mapu, {0}. PadForge u njoj drži biblioteke koje pokreće s administratorskim pravima i bez nje se ne može sigurno pokrenuti.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge se nije mogao ponovno pokrenuti iz svoje zaštićene mape, {0}. PadForge radi s administratorskim pravima samo odande, pa se nije pokrenuo.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge radi s administratorskim pravima iz mape {0}, koju drugi programi mogu mijenjati. Oni tamo mogu mijenjati postavke programa PadForge, a PadForge postupa prema njima sa svojim pravima.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Uvijek prikaži u području obavijesti</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona u području obavijesti ostaje vidljiva dok je prozor otvoren pa je Izlaz u njezinu izborniku uvijek udaljen samo jedan klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ažuriranja</value></data>

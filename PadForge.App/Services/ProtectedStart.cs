@@ -27,10 +27,11 @@ namespace PadForge.Services
     /// EventSource off (PadForge.App.csproj), and this step runs first in
     /// Main and makes every Windows call through <see cref="System32Calls"/>.
     /// The restart is CreateProcess, which takes no prompt and keeps the
-    /// rights, with the exe's own folder as its working folder and
-    /// DOTNET_BUNDLE_EXTRACT_BASE_DIR set to <see cref="ProtectedFolder.Natives"/>,
-    /// which the host honors from the environment (extractor.cpp,
-    /// pal::getenv).</para>
+    /// rights, with the exe's own folder as its working folder and the
+    /// variables of the allow list every start with rights gets
+    /// (<see cref="RightsVariables"/>), DOTNET_BUNDLE_EXTRACT_BASE_DIR set to
+    /// <see cref="ProtectedFolder.Natives"/> among them, which the host honors
+    /// from the environment (extractor.cpp, pal::getenv).</para>
     ///
     /// <para>The copy started this way answers for the start: it gets the
     /// same window state, the same standard handles and the parent's console,
@@ -61,9 +62,23 @@ namespace PadForge.Services
         internal const int HandedOver = 0x50460001;
 
         /// <summary>The exit code of a start with rights that found no sound
-        /// folder to unpack into and could not make one. It does not go
-        /// on.</summary>
+        /// folder to unpack into and could not make one, or could not start
+        /// itself again from one. It does not go on, and says why in a
+        /// message box first (<see cref="StartFailure"/>).</summary>
         internal const int NoSoundFolder = 0x50460002;
+
+        /// <summary>
+        /// The variables that name a library SDL loads into the process:
+        /// SDL3_DYNAMIC_API, which SDL loads at its first call
+        /// (SDL_dynapi.c, SDL_InitDynamicAPI), and the OpenGL, Vulkan and EGL
+        /// libraries its hints name (SDL_windowsopengl.c, SDL_windowsvulkan.c,
+        /// SDL_egl.c), which SDL reads from the environment when no hint is
+        /// set (SDL_GetHint). Every program of the user can set them
+        /// (HKCU\Environment), so a process with rights removes them from its
+        /// own variables first, and a copy it starts never has them.
+        /// </summary>
+        internal static readonly string[] LibraryVariables =
+            { "SDL3_DYNAMIC_API", "SDL_OPENGL_LIBRARY", "SDL_VULKAN_LIBRARY", "SDL_EGL_LIBRARY" };
 
         /// <summary>The handover event this process was handed, or
         /// zero.</summary>
@@ -109,13 +124,18 @@ namespace PadForge.Services
             // rights loses nothing by going on.
             if (!System32Calls.Ready) return;
             if (!System32Calls.IsPrivileged()) return;
+            foreach (string name in LibraryVariables) System32Calls.SetVariable(name, null);
 
             string natives = ProtectedFolder.Natives;
             string variable = System32Calls.GetVariable(BaseVariable);
             string full = string.IsNullOrEmpty(variable) ? null : System32Calls.FullPath(variable);
             if (Decide(true, full, natives, System32Calls.SameName, ProtectedFolder.NativesAreSound) == Decision.GoOn) return;
 
-            if (!ProtectedFolder.MakeNativesSound()) System32Calls.ExitNow(NoSoundFolder);
+            if (!ProtectedFolder.MakeNativesSound())
+            {
+                StartFailure.Show(StartFailure.Kind.NoFolder);
+                System32Calls.ExitNow(NoSoundFolder);
+            }
             System32Calls.ExitNow(Restart(natives));
         }
 
@@ -146,9 +166,18 @@ namespace PadForge.Services
         }
 
         /// <summary>Starts this exe again from the sound folder and answers
-        /// with the exit code this process leaves with.</summary>
+        /// with the exit code this process leaves with. A copy that could not
+        /// be started is said in a message box.</summary>
         private static int Restart(string natives)
         {
+            int code = StartCopy(natives, out bool started);
+            if (!started) StartFailure.Show(StartFailure.Kind.NoRestart);
+            return code;
+        }
+
+        private static int StartCopy(string natives, out bool started)
+        {
+            started = false;
             string exe = System32Calls.OwnExe();
             string commandLine = System32Calls.CommandLine();
             string[] variables = System32Calls.Variables();
@@ -162,7 +191,7 @@ namespace PadForge.Services
             IntPtr job = IntPtr.Zero;
             try
             {
-                string block = EnvironmentBlock(variables, natives, ProtectedFolder.Hex(unchecked((ulong)(long)handover)), System32Calls.SameName);
+                string block = CopyBlock(System32Calls.MachineVariables(), variables, natives, ProtectedFolder.Hex(unchecked((ulong)(long)handover)));
 
                 // A client run writes to the console of the process that
                 // started it, and the copy's parent is this process.
@@ -190,6 +219,7 @@ namespace PadForge.Services
                     System32Calls.Close(child.hProcess);
                     return NoSoundFolder;
                 }
+                started = true;
                 System32Calls.Close(child.hThread);
                 try
                 {
@@ -215,29 +245,18 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// The restarted copy's variables: this process's, in their order,
-        /// without either variable this step sets, and with both set, each at
-        /// its place in the order Windows keeps (Microsoft, CreateProcessW:
-        /// sorted by name, upper and lower case alike). The block ends in two
-        /// null characters.
+        /// The restarted copy's variables: those every start with rights gets
+        /// (<see cref="RightsVariables.Build"/>), the system's from
+        /// <paramref name="machine"/> and the user's and PadForge's from
+        /// <paramref name="own"/>, this process's, with
+        /// DOTNET_BUNDLE_EXTRACT_BASE_DIR set to <paramref name="natives"/>
+        /// and the handover event's handle in <see cref="HandoverVariable"/>.
+        /// No variable that loads code into the copy is handed on, whatever
+        /// this process was started with. The block ends in two null
+        /// characters.
         /// </summary>
-        internal static string EnvironmentBlock(IReadOnlyList<string> variables, string natives, string handoverHex,
-            Func<string, string, bool> sameName)
-        {
-            var lines = new List<string>(variables.Count + 2);
-            foreach (string line in variables)
-            {
-                string name = NameOf(line);
-                if (sameName(name, BaseVariable) || sameName(name, HandoverVariable)) continue;
-                lines.Add(line);
-            }
-            Insert(lines, BaseVariable + "=" + natives);
-            Insert(lines, HandoverVariable + "=" + handoverHex);
-            var block = new System.Text.StringBuilder();
-            foreach (string line in lines) block.Append(line).Append('\0');
-            block.Append('\0');
-            return block.ToString();
-        }
+        internal static string CopyBlock(IReadOnlyList<string> machine, IReadOnlyList<string> own, string natives, string handoverHex)
+            => RightsVariables.ToBlock(RightsVariables.Build(machine, own, natives, HandoverVariable + "=" + handoverHex));
 
         /// <summary>A line's name. The drive lines Windows keeps start with
         /// '=' (<c>=C:=C:\</c>), whose name runs to the second '='.</summary>
@@ -245,16 +264,6 @@ namespace PadForge.Services
         {
             int equals = line.IndexOf('=', line.StartsWith('=') ? 1 : 0);
             return equals < 0 ? line : line.Substring(0, equals);
-        }
-
-        /// <summary>Puts a line before the first whose name sorts after its
-        /// own, upper and lower case alike, past the drive lines.</summary>
-        private static void Insert(List<string> lines, string line)
-        {
-            string name = NameOf(line);
-            int at = 0;
-            while (at < lines.Count && (lines[at].StartsWith('=') || CompareNames(NameOf(lines[at]), name) <= 0)) at++;
-            lines.Insert(at, line);
         }
 
         /// <summary>Names compared by their characters, ASCII letters as

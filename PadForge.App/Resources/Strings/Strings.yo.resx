@@ -2330,6 +2330,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>àti {0} míràn</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} nínú {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Àìdáhùn láàárín {0} túmọ̀ sí bẹ́ẹ̀ kọ́.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ń ṣiṣẹ́ pẹ̀lú ẹ̀tọ́ alábòójútó láti {0}, fódà tí àwọn ìṣàfilọ́lẹ̀ míràn lè yí padà. Wọ́n lè yí àwọn ètò PadForge padà níbẹ̀, PadForge yóò sì ṣiṣẹ́ lé wọn lórí pẹ̀lú ẹ̀tọ́ rẹ̀.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ṣe ìmúdójúìwọ̀n báyìí ń gba ibi ìpamọ́ ẹ̀rọ ìdarí ti àwùjọ (SDL_GameControllerDB) wálẹ̀ láti GitHub, ó sì ń pa àwọn ìsopọ̀ tí ẹ̀yà PadForge yìí kò ní mọ́ sínú fáìlì ètò. A máa ń lo ìsopọ̀ tuntun kìkì fún ẹ̀rọ ìdarí tí kò sí ohun míràn tí ó kà á bí gamepad, tí a kò yàn, tí kò sì sí ní Ipò joystick aise. Títún tò ń yọ gbogbo ìsopọ̀ tí a gbà wálẹ̀ kúrò.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}. A ṣe ìmúdójúìwọ̀n ní {2}: tuntun {3}, àyípadà {4}.</value></data>

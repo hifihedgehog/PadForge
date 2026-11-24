@@ -44,6 +44,13 @@ namespace PadForge.Services
         /// one is the app (<see cref="ProtectedStart"/>). A <c>--wait</c> then
         /// waits on the app itself. The copy works in the exe's own folder,
         /// never in the caller's, which the caller chose.</para>
+        ///
+        /// <para>This is the one start of a process with rights that hands
+        /// on no variables of PadForge's built by
+        /// <see cref="RightsVariables"/>: it asks Windows through the shell's
+        /// runas verb, and Windows builds the copy's variables from the
+        /// user's profile after its prompt. The copy's own start from the
+        /// protected folder then gets the built ones.</para>
         /// </summary>
         internal static int Run(IReadOnlyList<string> args)
         {

@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0} တွင် PadForge ၏ မဟုတ်သော ဖိုင်များ ရှိသည်။</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>“ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်၊ အဘယ်ကြောင့်ဆိုသော် ၎င်းသည် အခြားဖိုင်များ ရှိသော ဖိုင်တွဲမှ PadForge ကို လည်ပတ်ခဲ့သောကြောင့် ဖြစ်သည်။</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge သည် ၎င်း၏ ကာကွယ်ထားသော ဖိုင်တွဲ {0} ကို ပြုလုပ်၍ မရပါ။ PadForge သည် စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် လည်ပတ်သော စာကြည့်တိုက်များကို ထိုနေရာတွင် ထားပြီး ၎င်းမရှိဘဲ ဘေးကင်းစွာ မစတင်နိုင်ပါ။</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge သည် ၎င်း၏ ကာကွယ်ထားသော ဖိုင်တွဲ {0} မှ ၎င်းကိုယ်ကို ပြန်မစတင်နိုင်ပါ။ PadForge သည် စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် ထိုနေရာမှသာ လည်ပတ်သဖြင့် မစတင်ခဲ့ပါ။</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge သည် အခြားပရိုဂရမ်များ ပြောင်းလဲနိုင်သော ဖိုင်တွဲ {0} မှ စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် လည်ပတ်နေသည်။ ၎င်းတို့သည် ထိုနေရာရှိ PadForge ၏ ဆက်တင်များကို ပြောင်းနိုင်ပြီး PadForge က ၎င်း၏ အခွင့်အရေးဖြင့် ၎င်းတို့အတိုင်း လုပ်ဆောင်သည်။</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>စနစ်ထရေးတွင် အမြဲပြရန်</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ဝင်းဒိုး ဖွင့်ထားစဉ် ထရေးအိုင်ကွန်ကို မြင်ရအောင် ထားပါ။ သို့မှသာ ၎င်း၏မီနူးရှိ ထွက်ရန် ကို တစ်ချက်နှိပ်ရုံဖြင့် အမြဲ ရောက်နိုင်မည်။</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>အပ်ဒိတ်များ</value></data>

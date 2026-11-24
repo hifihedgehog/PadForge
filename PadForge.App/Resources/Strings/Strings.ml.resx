@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge മാറിയില്ല: {0}-ൽ PadForge-ന്റേതല്ലാത്ത ഫയലുകളുണ്ട്.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge മാറിയില്ല: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>മറ്റ് ഫയലുകളുള്ള ഒരു ഫോൾഡറിൽ നിന്ന് PadForge പ്രവർത്തിപ്പിച്ചതിനാൽ ലോഗിൻ ചെയ്യുമ്പോൾ ആരംഭിക്കുക ഓഫാക്കി.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-ന് അതിന്റെ സംരക്ഷിത ഫോൾഡർ {0} ഉണ്ടാക്കാനായില്ല. അഡ്മിനിസ്ട്രേറ്റർ അവകാശങ്ങളോടെ പ്രവർത്തിപ്പിക്കുന്ന ലൈബ്രറികൾ PadForge അവിടെയാണ് സൂക്ഷിക്കുന്നത്, അതില്ലാതെ സുരക്ഷിതമായി ആരംഭിക്കാനാവില്ല.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-ന് അതിന്റെ സംരക്ഷിത ഫോൾഡർ {0}-ൽ നിന്ന് വീണ്ടും ആരംഭിക്കാനായില്ല. PadForge അഡ്മിനിസ്ട്രേറ്റർ അവകാശങ്ങളോടെ പ്രവർത്തിക്കുന്നത് അവിടെ നിന്ന് മാത്രമാണ്, അതിനാൽ ആരംഭിച്ചില്ല.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge അഡ്മിനിസ്ട്രേറ്റർ അവകാശങ്ങളോടെ പ്രവർത്തിക്കുന്നത് മറ്റ് പ്രോഗ്രാമുകൾക്ക് മാറ്റാവുന്ന ഫോൾഡറായ {0}-ൽ നിന്നാണ്. അവയ്ക്ക് അവിടെ PadForge-ന്റെ ക്രമീകരണങ്ങൾ മാറ്റാനാകും, PadForge അതിന്റെ അവകാശങ്ങളോടെ അതനുസരിച്ച് പ്രവർത്തിക്കും.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>എപ്പോഴും സിസ്റ്റം ട്രേയിൽ കാണിക്കുക</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>വിൻഡോ തുറന്നിരിക്കുമ്പോൾ ട്രേ ഐക്കൺ ദൃശ്യമാക്കുക, അങ്ങനെ അതിന്റെ മെനുവിലെ പുറത്തുകടക്കുക എപ്പോഴും ഒരു ക്ലിക്ക് അകലെയാകും.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ</value></data>

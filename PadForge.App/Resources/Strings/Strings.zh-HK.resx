@@ -999,6 +999,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge 沒有移動：{0} 內有不屬於 PadForge 的檔案。</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge 沒有移動：{0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>「登入時啟動」已關閉，因為它從有其他檔案的資料夾執行 PadForge。</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge 無法建立它的保護資料夾 {0}。PadForge 把以系統管理員權限執行的程式庫存放在該處，沒有它便無法安全啟動。</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge 無法從它的保護資料夾 {0} 再次啟動自己。PadForge 只會從該處以系統管理員權限執行，因此沒有啟動。</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge 以系統管理員權限從 {0} 執行，其他程式可以更改該資料夾。它們可以更改 PadForge 在那裡的設定，而 PadForge 會以它的權限執行這些更改。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>一律在系統匣顯示</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>視窗開啟時亦保持顯示系統匣圖示，讓你隨時可以在其選單中按「結束」。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>更新</value></data>

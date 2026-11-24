@@ -369,6 +369,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kei {0} ētahi kōnae ehara nō PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Kāore a PadForge i neke: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Kua whakawetongia te Tīmata i te takiuru, nā te mea i whakarewaina e ia a PadForge mai i tētahi kōpaki kei reira ētahi atu kōnae.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Kāore i taea e PadForge te hanga i tōna kōpaki tiaki, {0}. Ka puritia e PadForge ki reira ngā puna e whakahaerehia ana e ia me ngā mana kaiwhakahaere, ā, kāore e taea e ia te tīmata haumaru ki te kore.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tīmata anō i a ia mai i tōna kōpaki tiaki, {0}. Ka rere a PadForge me ngā mana kaiwhakahaere mai i reira anake, nō reira kāore ia i tīmata.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>E rere ana a PadForge me ngā mana kaiwhakahaere mai i {0}, he kōpaki ka taea e ētahi atu hōtaka te huri. Ka taea e rātou te huri i ngā tautuhinga o PadForge ki reira, ā, ka mahi a PadForge i runga i aua tautuhinga me ōna mana.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Whakahōunga</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Tāuta aunoa i ngā whakahōunga</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Tirohia ināianei</value></data>

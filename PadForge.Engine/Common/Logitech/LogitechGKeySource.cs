@@ -96,7 +96,16 @@ namespace PadForge.Engine.Common.Logitech
             string path = null;
             foreach (string candidate in candidates)
             {
-                if (!NativeLibrary.TryLoad(candidate, out _module)) continue;
+                // Loaded into PadForge only when only administrators could have put it
+                // in place and Logitech signed it, held open from the check
+                // through the load (#597, TrustedLibrary).
+                _module = TrustedLibrary.Load(candidate, TrustedLibrary.Logitech,
+                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
+                if (_module == IntPtr.Zero)
+                {
+                    if (why != "load" && why != "missing") SdlDiagLog.WriteLine("LOGITECH G-KEY " + candidate + " not loaded: " + why);
+                    continue;
+                }
                 path = candidate;
                 break;
             }

@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: may mga file ang {0} na hindi sa PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>In-off ang Magsimula sa pag-login, dahil pinatatakbo nito ang PadForge mula sa folder na may iba pang file.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Hindi magawa ng PadForge ang protektadong folder nito, ang {0}. Doon itinatago ng PadForge ang mga library na pinatatakbo nito nang may karapatan ng administrator, at hindi ito makakapagsimula nang ligtas kung wala ito.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Hindi muling masimulan ng PadForge ang sarili nito mula sa protektadong folder nito, ang {0}. Tumatakbo lang ang PadForge nang may karapatan ng administrator mula roon, kaya hindi ito nagsimula.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na maaaring baguhin ng ibang program. Maaari nilang baguhin doon ang mga setting ng PadForge, at kumikilos ang PadForge sa mga ito gamit ang mga karapatan nito.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Laging ipakita sa system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Panatilihing nakikita ang tray icon habang bukas ang window, kaya isang click lang ang layo ng Lumabas sa menu nito.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>

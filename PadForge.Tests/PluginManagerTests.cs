@@ -9,6 +9,7 @@ using PadForge.Services;
 using PadForge.Services.Automation;
 using PadForge.Services.Plugins;
 using Xunit;
+using PadForge.Engine.Common;
 
 namespace PadForge.Tests
 {

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace PadForge.Services.Automation
+namespace PadForge.Engine.Common
 {
     /// <summary>
     /// Text a program supplied, or a file's name, made fit to show the user
@@ -18,9 +18,12 @@ namespace PadForge.Services.Automation
     /// <para>The one helper every name a program supplies and every file
     /// name shown goes through: hello names, device and control names,
     /// profile names a program sends, what Activity writes and what the
-    /// request card shows.</para>
+    /// request card shows. Text the library host sends from the vendor
+    /// libraries it loads goes through it too, before PadForge logs or shows
+    /// it. It sits in the Engine so the Engine's own side of the host
+    /// (OpenXrHost) reads it as well.</para>
     /// </summary>
-    internal static class ShownText
+    public static class ShownText
     {
         /// <summary>The text with every format and control character out,
         /// or the text itself when it has none. Null stays null. Characters
@@ -28,7 +31,7 @@ namespace PadForge.Services.Automation
         /// Basic Multilingual Plane (the tag characters U+E0000 to U+E007F)
         /// goes as well, and a lone surrogate, which shows as no character,
         /// goes too.</summary>
-        internal static string Clean(string text)
+        public static string Clean(string text)
         {
             if (string.IsNullOrEmpty(text)) return text;
             int i = 0;

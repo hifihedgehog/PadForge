@@ -221,7 +221,7 @@ namespace PadForge.Services
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-            using var proc = Process.Start(psi);
+            using var proc = RightsVariables.Start(psi);
             if (proc == null) return string.Empty;
             var read = proc.StandardOutput.ReadToEndAsync();
             if (!proc.WaitForExit(5_000)) { try { proc.Kill(); } catch { } }

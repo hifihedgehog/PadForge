@@ -948,6 +948,9 @@
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0} хавтсанд PadForge-ийнх биш файлууд байна.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоо PadForge-ийг өөр файлууд агуулсан хавтаснаас ажиллуулж байсан тул унтраагдсан.</value></data>
+  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge өөрийн хамгаалагдсан хавтсыг үүсгэж чадсангүй: {0}. PadForge администраторын эрхээр ажиллуулдаг сангаа тэнд хадгалдаг бөгөөд үүнгүйгээр аюулгүй эхэлж чадахгүй.</value></data>
+  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge өөрийн хамгаалагдсан хавтаснаас өөрийгөө дахин эхлүүлж чадсангүй: {0}. PadForge администраторын эрхээр зөвхөн тэндээс ажилладаг тул эхэлсэнгүй.</value></data>
+  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge администраторын эрхээр бусад програмын өөрчилж болох хавтаснаас ажиллаж байна: {0}. Тэдгээр нь тэнд байгаа PadForge-ийн тохиргоог өөрчилж чадах бөгөөд PadForge тэдгээрийг өөрийн эрхээр гүйцэтгэнэ.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Мэдэгдлийн хэсэгт үргэлж харуулах</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Цонх нээлттэй үед мэдэгдлийн хэсгийн дүрс тэмдгийг харагдуулна. Ингэснээр түүний цэсний “Гарах” үргэлж нэг товшилтын зайд байна.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Шинэчлэлт</value></data>

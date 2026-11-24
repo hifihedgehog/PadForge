@@ -753,7 +753,7 @@ namespace PadForge.Common
         /// it. When this PC's Visual C++ runtime is missing or older than
         /// <see cref="MidiRuntimeVcMinimum"/>, Microsoft's redistributable
         /// goes in first, and only once its Microsoft signature checks out.
-        /// Runs on a worker thread. PadForge is always elevated, so neither
+        /// Runs on a worker thread. The app is always elevated, so neither
         /// installer prompts.
         /// </summary>
         public static void InstallMidiRuntime()

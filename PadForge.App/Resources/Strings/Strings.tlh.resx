@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>vergh :{0} 'IjtaH. SeHjan mI' {2}Daq De' ngeHtaH {1}, 'ach mI'vetlh ghajbogh SeHjan velqa', DualSense ghap DualShock 4 ghajbogh, tu'lu'be'.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>vergh {0} lo'taH latlh nIqHom, DSX rur. yISoQmoH ghap latlh vergh yIwIv.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Quj DI'wI'</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>'och pong {0} ghaj latlh nIqHom. nIqHomvetlh yISoQmoH.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>'och {0} lajQo' Windows, vaj rarlaHbe' nIqHommey.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>tu'qom {0} yIchu'</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>motlh tu'qomDaq yIchegh</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>chu'lu'bogh tu'qom yIyu'</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Qorwagh yI'ang</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>vep yoSDaq Qorwagh yIngeH</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Qorwagh yImachmoH</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge yISoQmoH</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>QuQ yItagh</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>QuQ yImevmoH</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Hoch SeHjan velqa' yIchu'</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Hoch SeHjan velqa' yIchu'Ha'</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>SeHjan velqa' {0} yIchu'</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>SeHjan velqa' {0} yIchu'Ha'</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Qagh nejmeH DaH Dotlh yIpol</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Qagh ta yItagh</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>ta yImevmoH</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ta yIghaS</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nIqHom mI' yItlhob</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>QaptaHbogh Dochmey yIyu'</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge Sovbe'bogh tlhegh yIngeH: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack lo'laH, UDP mejmoHghach ngeHbogh ghap FreeTrack 2.0 qawHaq lInlu'bogh ghItlhbogh ghochwI' lo'laH je, De'wI'vamDaq OpenXR Qapbogh nIqHom lo'laH je, HurDaq poH QapmoHlaHchugh.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G leQmey yIlaD</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK lo'taHvIS G-key leQmey laD. Logitech Gaming Software, 8.55 ghap chu'qu'bogh, QaptaH 'e' poQ. nIqHomvetlhDaq, PadForge tu'qomDaq Hoch nItlh leQDaq G-key ra' yIHoq. tu'qomvetlh reH yItaHmoH. pagh, tlhopDaq Qorwagh tu'lu'taHvIS neH PadForge lughoS nItlh leQmey. G600 'eQway' ghap G300 'eQway' ghap lo'lu'chugh, qawHaq lo'Daj chu'Ha'nISlu' je.</value></data>
@@ -2923,9 +2945,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>DaH tlhopDaq: {0}, tu'qom cherlu'be'</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>DaH tlhopDaq: {0}, {1} poSmoH</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>DaH tlhopDaq: {0}, 'ej wej tu'qommeyDaq Quj cherlu'pu'be'</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>tagh nIqHommey ghItlhmey je Hur SeH yIchaw'</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>De'wI'vamDaq 'och pong ghajbogh, PadForge.Control, poSmoH, vaj tu'qommey chu'laH chu'Ha'laH je Playnite, LaunchBox, ghItlh ghap. mIwvam lo'lu'DI' tu'qom chu'lu'bogh, chu'taH, ghItlh 'uyHa'pa' ghap tu'qom DachoHpa'. De'wI'vam neH.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Hur SeH</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>nIqHom SeH lo'taHvIS tu'qommey choHlaH tagh nIqHom ghap ghItlh ghap. mIwvam lo'lu'DI' chu'lu'bogh tu'qom ratlh, nIqHom 'oH chu'Ha'pa' ghap SoH tu'qom DachoHpa'.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>chu'Ha'lu' nIqHom SeH</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>chu'lu' nIqHom SeH: tu'qommey luchoHlaH nIqHommey</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>chu'lu' nIqHom SeH: tu'qommey luchoHlaH, janmey DuHmey je lulaDlaH nIqHommey</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>chu'lu' nIqHom SeH: tu'qommey luchoHlaH, janmey DuHmey je lulaDlaH, 'elmoHghach lungeHlaH je nIqHommey</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>chu'lu' nIqHom SeH: tu'qommey luchoHlaH, 'elmoHghach lungeHlaH, DuHmey luchoHlaH je nIqHommey</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>nIqHom SeH yIpoSmoH</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>tu'qom chu':</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>SeHjan tu'lu'be'</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>tu'qom DaqemmeH yIchagh</value></data>
@@ -2996,7 +3023,6 @@
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge nItlh leQ wovmoHwI'mey (*.json)|*.json</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>wejHa' Qap PadForge.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Qagh HeghmoHbogh</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Qagh</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Qagh pIHbe'lu'bogh qaS:

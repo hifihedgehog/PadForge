@@ -555,6 +555,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lauschtert op :{0}. {1} schéckt un de Controller-Index {2}, an et gëtt kee virtuelle Controller mat engem DualSense oder DualShock 4 drop, deen dësen Index huet.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} gëtt vun engem anere Programm benotzt, wéi zum Beispill DSX. Maacht en zou oder wielt en anere Port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>E Spill-Mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>En anere Programm huet de Pipe-Numm {0}. Maacht dee Programm zou.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows huet d'Pipe {0} refuséiert, dofir kënne Programmer sech net verbannen.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Op de Profil {0} wiesselen</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Op de Standardprofil zréckgoen</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Froen, wéi e Profil aktiv ass</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>D'Fënster weisen</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>D'Fënster an d'Systemleescht schécken</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>D'Fënster minimiséieren</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge zoumaachen</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>D'Engine starten</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>D'Engine stoppen</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>All virtuell Controller uschalten</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>All virtuell Controller ausschalten</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Virtuelle Controller {0} uschalten</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Virtuelle Controller {0} ausschalten</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Eng Diagnose-Momentopnam späicheren</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Eng Problemopnam starten</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>D'Opnam stoppen</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>D'Opnam markéieren</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>No der Versioun vu PadForge froen</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Froen, wat leeft</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Eng Zeil schécken, déi PadForge net kennt: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funktionéiert mat OpenTrack an all Tracker, deen seng UDP-Ausgab schéckt oder an de gemeinsame Späicher vu FreeTrack 2.0 schreift, a mat enger OpenXR-Runtime op dësem Computer, déi eng Sessioun am Hannergrond lafe loosse kann.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Taste liesen</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Liest G-Tasten iwwer d'Logitech G-key SDK. Brauch eng lafend Logitech Gaming Software 8.55 oder méi nei. Zitt an där Software de Befeel „G-key“ op all Tast am PadForge-Profil. Maacht dëse Profil persistent, soss kommen d'Tasten nëmme bei PadForge un, wann seng Fënster am Virdergrond ass. Eng G600- oder G300-Maus däerf ausserdeem net am Onboard-Späichermodus sinn.</value></data>
@@ -2677,9 +2699,14 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Elo am Virdergrond: {0}, kee Profil dofir festgeluecht</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Elo am Virdergrond: {0}, dat {1} lued</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Elo am Virdergrond: {0}, a kee Profil huet nach e Spill</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Extern Steierung duerch Launcher a Skripter erlaben</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Stellt eng lokal Named Pipe, PadForge.Control, zur Verfügung, sou datt Playnite, LaunchBox oder e Skript Profiller aktivéieren an desaktivéiere kann. E Profil, dat esou aktivéiert gouf, bleift aktiv, bis de Skript et fräigëtt oder Dir selwer d'Profil wiesselt. Nëmmen um lokale Computer.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Extern Steierung</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>E Launcher oder e Script kann iwwer d'Automatiséierung Profiler wiesselen. E Profil, deen esou gewiesselt gouf, bleift, bis de Programm e fräigëtt oder Dir selwer de Profil wiesselt.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatiséierung ass aus</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatiséierung ass un: Programmer kënne Profiler wiesselen</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatiséierung ass un: Programmer kënne Profiler wiesselen an Apparater an Astellunge liesen</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatiséierung ass un: Programmer kënne Profiler wiesselen, Apparater an Astellunge liesen an Agabe schécken</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatiséierung ass un: Programmer kënne Profiler wiesselen, Agabe schécken an Astellungen änneren</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Automatiséierung opmaachen</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktivt Profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Keng Controller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Ofleeën, fir d'Profil z'importéieren</value></data>
@@ -2729,7 +2756,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Ausféierbar Dateien (*.exe)|*.exe|All Dateien (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge leeft schonn.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Fatale Feeler</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Feeler</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>En onerwaarte Feeler ass opgetrueden:

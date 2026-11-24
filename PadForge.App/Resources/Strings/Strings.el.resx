@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ακρόαση στο :{0}. {1} στέλνει στον δείκτη χειριστηρίου {2}, και κανένα εικονικό χειριστήριο με DualSense ή DualShock 4 δεν έχει αυτόν τον δείκτη.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Η θύρα {0} χρησιμοποιείται από άλλο πρόγραμμα, όπως το DSX. Κλείστε το ή επιλέξτε άλλη θύρα.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ένα mod παιχνιδιού</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Άλλο πρόγραμμα κρατά το όνομα σωλήνα {0}. Κλείστε αυτό το πρόγραμμα.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Τα Windows αρνήθηκαν τον σωλήνα {0}, επομένως τα προγράμματα δεν μπορούν να συνδεθούν.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Αλλαγή στο προφίλ {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Επιστροφή στο προεπιλεγμένο προφίλ</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Ερώτηση για το ενεργό προφίλ</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Εμφάνιση του παραθύρου</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Αποστολή του παραθύρου στην περιοχή ειδοποιήσεων</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Ελαχιστοποίηση του παραθύρου</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Κλείσιμο του PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Εκκίνηση της μηχανής</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Διακοπή της μηχανής</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Ενεργοποίηση όλων των εικονικών χειριστηρίων</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Απενεργοποίηση όλων των εικονικών χειριστηρίων</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Ενεργοποίηση του εικονικού χειριστηρίου {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Απενεργοποίηση του εικονικού χειριστηρίου {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Αποθήκευση στιγμιότυπου διαγνωστικών</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Έναρξη εγγραφής προβλήματος</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Διακοπή εγγραφής</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Σήμανση της εγγραφής</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Ερώτηση για την έκδοση του PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Ερώτηση για το τι εκτελείται</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Αποστολή γραμμής που το PadForge δεν γνωρίζει: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Λειτουργεί με το OpenTrack και με κάθε ανιχνευτή που στέλνει την έξοδό του μέσω UDP ή γράφει στην κοινόχρηστη μνήμη FreeTrack 2.0, καθώς και με ένα περιβάλλον εκτέλεσης OpenXR σε αυτόν τον υπολογιστή που μπορεί να εκτελεί μια συνεδρία στο παρασκήνιο.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Ανάγνωση πλήκτρων G της Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Διαβάζει τα πλήκτρα G μέσω του Logitech G-key SDK. Απαιτεί να εκτελείται το Logitech Gaming Software 8.55 ή νεότερο. Σε αυτό το λογισμικό, σύρετε την εντολή «G-key» σε κάθε πλήκτρο του προφίλ PadForge. Ορίστε αυτό το προφίλ ως μόνιμο, αλλιώς τα πλήκτρα φτάνουν στο PadForge μόνο όσο το παράθυρό του είναι σε πρώτο πλάνο. Ένα ποντίκι G600 ή G300 πρέπει επίσης να μην είναι σε λειτουργία ενσωματωμένης μνήμης.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Σε πρώτο πλάνο τώρα: {0}, χωρίς προφίλ για αυτό</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Σε πρώτο πλάνο τώρα: {0}, που φορτώνει το {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Σε πρώτο πλάνο τώρα: {0}, και κανένα προφίλ δεν έχει ορίσει ακόμη παιχνίδι</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Να επιτρέπεται ο εξωτερικός έλεγχος από προγράμματα εκκίνησης και σενάρια</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Παρέχει μια τοπική επώνυμη διοχέτευση (named pipe), την PadForge.Control, ώστε το Playnite, το LaunchBox ή ένα σενάριο να μπορεί να ενεργοποιεί και να απενεργοποιεί προφίλ. Ένα προφίλ που ενεργοποιείται έτσι παραμένει ενεργό μέχρι να το αποδεσμεύσει το σενάριο ή να αλλάξετε εσείς προφίλ. Μόνο στον τοπικό υπολογιστή.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Εξωτερικός έλεγχος</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Ένας εκκινητής ή ένα σενάριο μπορεί να αλλάζει προφίλ μέσω του Αυτοματισμού. Ένα προφίλ που άλλαξε με αυτόν τον τρόπο παραμένει μέχρι να το αποδεσμεύσει το πρόγραμμα ή να αλλάξετε εσείς προφίλ.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Ο Αυτοματισμός είναι απενεργοποιημένος</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Ο Αυτοματισμός είναι ενεργός: τα προγράμματα μπορούν να αλλάζουν προφίλ</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Ο Αυτοματισμός είναι ενεργός: τα προγράμματα μπορούν να αλλάζουν προφίλ και να διαβάζουν συσκευές και ρυθμίσεις</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Ο Αυτοματισμός είναι ενεργός: τα προγράμματα μπορούν να αλλάζουν προφίλ, να διαβάζουν συσκευές και ρυθμίσεις και να στέλνουν εισόδους</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Ο Αυτοματισμός είναι ενεργός: τα προγράμματα μπορούν να αλλάζουν προφίλ, να στέλνουν εισόδους και να αλλάζουν ρυθμίσεις</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Άνοιγμα του Αυτοματισμού</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Ενεργό προφίλ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Κανένα χειριστήριο</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Αφήστε εδώ για εισαγωγή προφίλ</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Εκτελέσιμα (*.exe)|*.exe|Όλα τα αρχεία (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Το PadForge εκτελείται ήδη.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Κρίσιμο σφάλμα</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Σφάλμα</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Παρουσιάστηκε μη αναμενόμενο σφάλμα:

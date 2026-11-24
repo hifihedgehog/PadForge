@@ -112,6 +112,28 @@
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port ya di-mod tsa dipapadi</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} e sebediswa ke lenaneo le leng, le kang DSX. Le kwale kapa o kgethe port e nngwe.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ya papadi</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lenaneo le leng le tshwere lebitso la pipe {0}. Kwala lenaneo leo.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e hanne pipe {0}, kahoo mananeo a ke ke a hokahana.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetohela profaeleng {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kgutlela profaeleng ya kamehla</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa hore na ke profaele efe e sebetsang</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Bontsha fensetere</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Romela fensetere ho tray ya sistimi</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Nyenyefatsa fensetere</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Kwala PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Qala enjene</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Emisa enjene</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Bulela taolo e nngwe le e nngwe ya sebele</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Tima taolo e nngwe le e nngwe ya sebele</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Bulela Taolo ya Sebele {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Tima Taolo ya Sebele {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Boloka setshwantsho sa tlhahlobo</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Qala ho rekota bothata</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Emisa ho rekota</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Tshwaya rekoto</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Botsa mofuta wa PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Botsa hore na ho sebetsa eng</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mola oo PadForge e sa o tsebeng: {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Hokela</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E hoketswe</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hana</value></data>
@@ -559,7 +581,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge e se e ntse e sebetsa.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Phoso</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ho bile le phoso e sa lebellwang:
 

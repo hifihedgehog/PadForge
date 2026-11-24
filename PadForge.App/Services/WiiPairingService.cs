@@ -31,7 +31,7 @@ namespace PadForge.Services
     ///    any button press after a disconnect.
     ///  - 1+2 hold (temporary). PIN is the controller's own address.
     ///
-    /// Requires the process to be elevated. PadForge always runs elevated.
+    /// Requires the process to be elevated. The app always runs elevated.
     ///
     /// This service does the OS-level pairing only. Once paired, SDL's
     /// hidapi_wii driver enumerates and drives the controller (Wii Remote,

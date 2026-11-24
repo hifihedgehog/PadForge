@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kuulab pordil :{0}. {1} saadab kontrolleri indeksile {2} ja ühelgi virtuaalsel kontrolleril, millel on DualSense või DualShock 4, pole seda indeksit.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} on kasutusel teises programmis, näiteks DSX-is. Sulgege see või valige teine port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mängumod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Toru nime {0} hoiab teine programm. Sulgege see programm.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows keeldus torust {0}, seega programmid ei saa ühendust luua.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaheta profiilile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Naase vaikeprofiilile</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Küsi, milline profiil on aktiivne</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Näita akent</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Saada aken süsteemisalve</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimeeri aken</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Sulge PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Käivita mootor</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Peata mootor</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Lülita kõik virtuaalsed kontrollerid sisse</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Lülita kõik virtuaalsed kontrollerid välja</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Lülita virtuaalne kontroller {0} sisse</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Lülita virtuaalne kontroller {0} välja</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Salvesta diagnostika hetktõmmis</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Alusta probleemi salvestamist</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Peata salvestamine</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Märgi salvestis</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Küsi programmi PadForge versiooni</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Küsi, mis töötab</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Saada rida, mida PadForge ei tunne: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Töötab programmiga OpenTrack ja iga jälgijaga, mis saadab oma väljundi UDP kaudu või kirjutab FreeTrack 2.0 ühismällu, ning selles arvutis oleva OpenXR-i käituskeskkonnaga, mis suudab seanssi taustal käitada.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Loe Logitechi G-klahve</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Loeb G-klahve Logitechi G-key SDK kaudu. Vajab töötavat Logitech Gaming Software'i versiooni 8.55 või uuemat. Lohistage selles tarkvaras käsk „G-key“ PadForge'i profiilis igale klahvile. Muutke see profiil püsivaks, muidu jõuavad klahvid PadForge'i ainult siis, kui selle aken on esiplaanil. G600- või G300-hiir peab olema ka sisemälu režiimist väljas.</value></data>
@@ -2694,9 +2716,14 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Ees on {0}, sellele pole profiili määratud</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Ees on {0}, mis laadib profiili {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Ees on {0} ja ühelegi profiilile pole veel mängu määratud</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Luba välist juhtimist käivitajatel ja skriptidel</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Pakub kohalikku nimega toru PadForge.Control, et Playnite, LaunchBox või skript saaks profiile aktiveerida ja inaktiveerida. Nii aktiveeritud profiil jääb aktiivseks, kuni skript selle vabastab või vahetate profiili ise. Ainult kohalik arvuti.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Väline juhtimine</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Käivitaja või skript saab profiile vahetada Automatiseerimise kaudu. Nii vahetatud profiil jääb, kuni programm selle vabastab või te ise profiili vahetate.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatiseerimine on väljas</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatiseerimine on sees: programmid saavad profiile vahetada</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatiseerimine on sees: programmid saavad profiile vahetada ning seadmeid ja sätteid lugeda</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatiseerimine on sees: programmid saavad profiile vahetada, seadmeid ja sätteid lugeda ning sisendeid saata</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatiseerimine on sees: programmid saavad profiile vahetada, sisendeid saata ja sätteid muuta</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Ava Automatiseerimine</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktiivne profiil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Kontrollereid pole</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Profiili importimiseks lohistage siia</value></data>
@@ -2753,7 +2780,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Käivitusfailid (*.exe)|*.exe|Kõik failid (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge juba töötab.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: kriitiline viga</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: viga</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ilmnes ootamatu viga:

@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} {2}. kontrolagailu-indizera bidaltzen ari da, eta DualSense edo DualShock 4 bat duen kontrolagailu birtualik ez dago indize horrekin.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} ataka beste programa batek erabiltzen du, DSX adibidez. Itxi programa hori edo aukeratu beste ataka bat.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Joko-mod bat</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Beste programa batek {0} hodi-izena du. Itxi programa hori.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-ek {0} hodia ukatu du, beraz programak ezin dira konektatu.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Aldatu {0} profilera</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Itzuli profil lehenetsira</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Galdetu zein profil dagoen aktibo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Erakutsi leihoa</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Bidali leihoa sistema-erretilura</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizatu leihoa</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Itxi PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Abiarazi motorra</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Gelditu motorra</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Gaitu kontrolagailu birtual guztiak</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Desgaitu kontrolagailu birtual guztiak</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Gaitu {0}. kontrolagailu birtuala</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Desgaitu {0}. kontrolagailu birtuala</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Gorde diagnostiko-argazki bat</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Hasi arazo bat grabatzen</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Gelditu grabaketa</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markatu grabaketa</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Eskatu PadForge-ren bertsioa</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Galdetu zer dabilen</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Bidali PadForge-k ezagutzen ez duen lerro bat: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-ekin funtzionatzen du, baita UDP irteera bidaltzen duen edo FreeTrack 2.0 memoria partekatuan idazten duen edozein jarraitzailerekin ere, eta ordenagailu honetan saio bat atzeko planoan exekuta dezakeen OpenXR exekuzio-ingurune batekin.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Irakurri Logitech G teklak</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G teklak Logitech G-key SDK-aren bidez irakurtzen ditu. Logitech Gaming Software 8.55 edo berriagoa exekutatzen egon behar da. Programa horretan, arrastatu G-key komandoa PadForge profileko tekla bakoitzera. Ezarri profil hori iraunkor gisa. Bestela, teklak PadForge-ra iritsiko dira haren leihoa aurrean dagoen bitartean soilik. Gainera, G600 edo G300 sagu batek barneko memoriaren modutik kanpo egon behar du.</value></data>
@@ -2689,9 +2711,14 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Aurrealdean orain: {0}, ez dago profilik ezarrita</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Aurrealdean orain: {0}, honek {1} kargatzen du</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Aurrealdean orain: {0}, eta oraindik ez dago jokorik ezarrita duen profilik</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Baimendu abiarazleen eta scripten kanpo-kontrola</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Izendun kanalizazio lokal bat zerbitzatzen du, PadForge.Control, Playnite-k, LaunchBox-ek edo script batek profilak aktibatu eta desaktibatu ditzaten. Modu horretan aktibatutako profilak aktibo jarraitzen du scriptak askatu arte edo zuk zeuk profilez aldatu arte. Makina lokalean soilik.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Kanpo-kontrola</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Abiarazle batek edo script batek profilak alda ditzake Automatizazioaren bidez. Horrela aldatutako profil bat geratzen da programak askatu arte edo zuk profilak aldatu arte.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatizazioa desaktibatuta dago</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatizazioa aktibatuta dago: programek profilak alda ditzakete</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatizazioa aktibatuta dago: programek profilak alda ditzakete eta gailuak eta ezarpenak irakurri</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatizazioa aktibatuta dago: programek profilak alda ditzakete, gailuak eta ezarpenak irakurri, eta sarrerak bidali</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatizazioa aktibatuta dago: programek profilak alda ditzakete, sarrerak bidali eta ezarpenak aldatu</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Ireki automatizazioa</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil aktiboa:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Kontrolagailurik ez</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Jaregin profila inportatzeko</value></data>
@@ -2748,7 +2775,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Exekutagarriak (*.exe)|*.exe|Fitxategi guztiak (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge exekutatzen ari da dagoeneko.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: errore larria</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: errorea</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ustekabeko errore bat gertatu da:

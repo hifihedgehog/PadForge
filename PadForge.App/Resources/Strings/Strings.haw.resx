@@ -542,7 +542,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Ke holo nei ʻo PadForge.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Hewa</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
@@ -1180,4 +1179,26 @@
   <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Nalowale ka profile HIDMaestro o kekahi controller virtual. Aia kona inoa ma ka moʻolelo nānā pilikia.</value></data>
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>ʻAʻole i hiki iā {0} ke lawe i kona ʻano a me kona hoʻonohonoho pihi i hoʻopilikino ʻia, a hoʻohana ʻo ia i ko kona profile ponoʻī.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Hoʻomau i ka hoʻouna</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Paʻa ka inoa pipe {0} i kekahi polokalamu ʻē aʻe. E pani i kēlā polokalamu.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Ua hōʻole ʻo Windows i ka pipe {0}, no laila ʻaʻole hiki i nā polokalamu ke hoʻopili.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hoʻololi i ka profile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoʻi i ka profile paʻamau</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Nīnau i ka profile e hana nei</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Hōʻike i ka puka aniani</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Hoʻouna i ka puka aniani i ka pahu ʻōnaehana</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Hoʻoliʻiliʻi i ka puka aniani</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Pani iā PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Hoʻomaka i ka ʻenekini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Hoʻōki i ka ʻenekini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Hoʻā i nā controller kikohoʻe a pau</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Hoʻopio i nā controller kikohoʻe a pau</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Hoʻā i ka controller kikohoʻe {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Hoʻopio i ka controller kikohoʻe {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Mālama i kekahi kiʻi nānā pilikia</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Hoʻomaka i ka hoʻopaʻa ʻana i kekahi pilikia</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Hoʻōki i ka hoʻopaʻa ʻana</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Kaha i ka hoʻopaʻa ʻana</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Nīnau i ka mana o PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Nīnau i nā mea e holo nei</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Hoʻouna i kekahi laina ʻike ʻole ʻia e PadForge: {0}</value></data>
 </root>

@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Yn gwrando ar :{0}. Mae {1} yn anfon at fynegai rheolydd {2}, ac nid oes gan unrhyw reolydd rhithwir gyda DualSense neu DualShock 4 arno y mynegai hwnnw.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Mae porth {0} yn cael ei ddefnyddio gan raglen arall, fel DSX. Caewch hi neu dewiswch borth arall.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod gêm</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Mae rhaglen arall yn dal enw'r bibell {0}. Caewch y rhaglen honno.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Gwrthododd Windows y bibell {0}, felly ni all rhaglenni gysylltu.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Newid i'r proffil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dychwelyd i'r proffil rhagosodedig</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Holi pa broffil sy'n weithredol</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Dangos y ffenestr</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Anfon y ffenestr i hambwrdd y system</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Lleihau'r ffenestr</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Cau PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Cychwyn yr injan</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stopio'r injan</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Troi pob rheolydd rhithwir ymlaen</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Troi pob rheolydd rhithwir i ffwrdd</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Troi Rheolydd Rhithwir {0} ymlaen</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Troi Rheolydd Rhithwir {0} i ffwrdd</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Cadw ciplun diagnosteg</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Dechrau recordio problem</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Stopio recordio</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Nodi'r recordiad</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Holi am fersiwn PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Holi beth sy'n rhedeg</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Anfon llinell nad yw PadForge yn ei hadnabod: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Yn gweithio gydag OpenTrack ac unrhyw draciwr sy'n anfon ei allbwn UDP neu'n ysgrifennu cof a rennir FreeTrack 2.0, a chydag amser rhedeg OpenXR ar y peiriant hwn a all redeg sesiwn yn y cefndir.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Darllen Logitech G-Keys</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Yn darllen G-keys drwy Logitech G-key SDK. Mae angen i Logitech Gaming Software 8.55 neu ddiweddarach fod yn rhedeg. Yn y meddalwedd hwnnw, llusgwch y gorchymyn G-key ar bob bysell ym mhroffil PadForge. Gwnewch y proffil hwnnw'n barhaus, neu dim ond pan fydd ei ffenestr o'r blaen y bydd y bysellau'n cyrraedd PadForge. Rhaid i lygoden G600 neu G300 hefyd fod allan o'r modd cof mewnol.</value></data>
@@ -2690,9 +2712,14 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>O'ch blaen nawr: {0}, dim proffil wedi'i osod ar ei gyfer</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>O'ch blaen nawr: {0}, sy'n llwytho {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>O'ch blaen nawr: {0}, ac nid oes gan unrhyw broffil gêm wedi'i gosod eto</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Caniatáu Rheolaeth Allanol gan Lanswyr a Sgriptiau</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Mae'n gwasanaethu pibell enwedig leol, PadForge.Control, fel y gall Playnite, LaunchBox, neu sgript weithredu a dadweithredu proffiliau. Mae proffil a weithredir fel hyn yn aros yn weithredol nes bod y sgript yn ei ryddhau neu nes i chi newid proffiliau eich hun. Y peiriant lleol yn unig.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Rheolaeth Allanol</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Gall lansiwr neu sgript newid proffiliau drwy Awtomeiddio. Mae proffil a newidiwyd fel hyn yn aros nes i'r rhaglen ei ryddhau neu i chi newid proffiliau eich hun.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Mae Awtomeiddio i ffwrdd</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Mae Awtomeiddio ymlaen: gall rhaglenni newid proffiliau</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Mae Awtomeiddio ymlaen: gall rhaglenni newid proffiliau a darllen dyfeisiau a gosodiadau</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Mae Awtomeiddio ymlaen: gall rhaglenni newid proffiliau, darllen dyfeisiau a gosodiadau, ac anfon mewnbynnau</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Mae Awtomeiddio ymlaen: gall rhaglenni newid proffiliau, anfon mewnbynnau a newid gosodiadau</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Agor Awtomeiddio</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Proffil gweithredol:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Dim rheolyddion</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Gollyngwch i Fewnforio Proffil</value></data>
@@ -2749,7 +2776,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Gweithredadwyon (*.exe)|*.exe|Pob Ffeil (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Mae PadForge eisoes yn rhedeg.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Gwall Angheuol</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Gwall</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Digwyddodd gwall annisgwyl:

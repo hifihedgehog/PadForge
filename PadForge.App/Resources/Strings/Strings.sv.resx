@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lyssnar på :{0}. {1} skickar till handkontrollsindex {2}, och ingen virtuell handkontroll med en DualSense eller DualShock 4 har det indexet.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} används av ett annat program, till exempel DSX. Stäng det eller välj en annan port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>En spelmodd</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Ett annat program håller rörnamnet {0}. Stäng det programmet.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows nekade röret {0}, så program kan inte ansluta.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Byt till profilen {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gå tillbaka till standardprofilen</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Fråga vilken profil som är aktiv</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Visa fönstret</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Skicka fönstret till systemfältet</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimera fönstret</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Stäng PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Starta motorn</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stoppa motorn</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Slå på alla virtuella handkontroller</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Slå av alla virtuella handkontroller</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Slå på virtuell handkontroll {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Slå av virtuell handkontroll {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Spara en diagnostikögonblicksbild</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Börja spela in ett problem</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Sluta spela in</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markera inspelningen</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Fråga efter versionen av PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Fråga vad som körs</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Skicka en rad som PadForge inte känner till: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Fungerar med OpenTrack och alla spårare som skickar sin UDP-utdata eller skriver till delat minne enligt FreeTrack 2.0, och med en OpenXR-körmiljö på den här datorn som kan köra en session i bakgrunden.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Läs av Logitech G-tangenter</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Läser av G-tangenter via Logitech G-key SDK. Kräver att Logitech Gaming Software 8.55 eller senare körs. Dra i det programmet kommandot ”G-key” till varje tangent i PadForge-profilen. Gör profilen beständig, annars når tangenterna bara PadForge medan dess fönster ligger överst. En G600- eller G300-mus får dessutom inte vara i läget för inbyggt minne.</value></data>
@@ -2922,9 +2944,14 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Överst nu: {0}, ingen profil inställd för det</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Överst nu: {0}, som läser in {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Överst nu: {0}, och ingen profil har något spel inställt ännu</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Tillåt extern styrning från spelstartare och skript</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Tillhandahåller en lokal namngiven pipe, PadForge.Control, så att Playnite, LaunchBox eller ett skript kan aktivera och inaktivera profiler. En profil som aktiveras på det sättet förblir aktiv tills skriptet släpper den eller du själv byter profil. Endast den lokala datorn.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Extern styrning</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Ett startprogram eller ett skript kan byta profil via Automatisering. En profil som byts på det sättet ligger kvar tills programmet släpper den eller du själv byter profil.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatisering är av</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatisering är på: program kan byta profil</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatisering är på: program kan byta profil och läsa enheter och inställningar</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatisering är på: program kan byta profil, läsa enheter och inställningar och skicka inmatning</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatisering är på: program kan byta profil, skicka inmatning och ändra inställningar</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Öppna Automatisering</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktiv profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Inga handkontroller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Släpp för att importera profil</value></data>
@@ -2982,7 +3009,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Körbara filer (*.exe)|*.exe|Alla filer (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge körs redan.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Allvarligt fel</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Fel</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ett oväntat fel inträffade:

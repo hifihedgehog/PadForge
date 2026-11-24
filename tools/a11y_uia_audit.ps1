@@ -44,7 +44,7 @@
   walked in compiled C#. After the first view only the visible page is
   read, since the sidebar does not change.
 
-  Run it elevated. PadForge runs as administrator, and UI Automation does not
+  Run it elevated. The app runs as administrator, and UI Automation does not
   reach into an elevated process from a lower one. Start PadForge first with
   the deploy recipe, since a PadForge started from inside an elevated script
   exits when that script's process tree ends. The window is brought forward

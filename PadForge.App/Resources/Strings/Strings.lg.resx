@@ -859,4 +859,24 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kwataganya n’ekifaananyi</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Eggya langi ennya mu kifaananyi.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Weyongere okusindika</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kyusa ogende ku pulofayiro {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ddayo ku pulofayiro ey'olubeerera</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Buuza pulofayiro ekola</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Laga eddirisa</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Sindika eddirisa mu tray ya sisitemu</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Kendeeza eddirisa</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Ggalawo PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Tandika yingini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Yimiriza yingini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Ko buli kifuga kya virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Ggyako buli kifuga kya virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Ko Ekifuga kya Virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Ggyako Ekifuga kya Virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Tereka ekifaananyi ky'okwekebejja</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Tandika okukwata obuzibu</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Yimiriza okukwata</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Teeka akabonero mu kukwata</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Buuza enkyusa ya PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Buuza ekikola</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sindika olunyiriri PadForge lw'etamanyi: {0}</value></data>
 </root>

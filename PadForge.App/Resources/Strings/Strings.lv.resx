@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Klausās :{0}. {1} sūta uz kontrollera indeksu {2}, un nevienam virtuālajam kontrolleram ar DualSense vai DualShock 4 nav šāda indeksa.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Portu {0} izmanto cita programma, piemēram, DSX. Aizveriet to vai izvēlieties citu portu.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Spēles modifikācija</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Cita programma jau izmanto cauruļvada nosaukumu {0}. Aizveriet to programmu.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows noraidīja cauruļvadu {0}, tāpēc programmas nevar pievienoties.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Pārslēgties uz profilu {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Atgriezties pie noklusējuma profila</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Pajautāt, kurš profils ir aktīvs</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Parādīt logu</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Aizsūtīt logu uz sistēmas teknes apgabalu</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizēt logu</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Aizvērt PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Startēt dzinēju</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Apturēt dzinēju</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Ieslēgt visus virtuālos kontrollerus</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Izslēgt visus virtuālos kontrollerus</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Ieslēgt virtuālo kontrolleri {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Izslēgt virtuālo kontrolleri {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Saglabāt diagnostikas momentuzņēmumu</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Sākt problēmas ierakstīšanu</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Apturēt ierakstīšanu</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Atzīmēt ierakstu</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Pieprasīt PadForge versiju</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Pajautāt, kas darbojas</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Nosūtīt rindu, ko PadForge nepazīst: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Darbojas ar OpenTrack un jebkuru izsekotāju, kas sūta savu UDP izvadi vai raksta FreeTrack 2.0 koplietojamajā atmiņā, kā arī ar šī datora OpenXR izpildlaiku, kas spēj darbināt sesiju fonā.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lasīt Logitech G taustiņus</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lasa G taustiņus, izmantojot Logitech G-key SDK. Jādarbojas Logitech Gaming Software 8.55 vai jaunākai versijai. Šajā programmatūrā velciet G-key komandu uz katru taustiņu PadForge profilā. Padariet šo profilu pastāvīgu, citādi taustiņi sasniegs PadForge tikai tad, kad tā logs ir priekšplānā. Pelei G600 vai G300 arī jābūt ārpus iebūvētās atmiņas režīma.</value></data>
@@ -2922,9 +2944,14 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Priekšplānā tagad: {0}, tam nav iestatīts profils</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Priekšplānā tagad: {0}, kas ielādē {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Priekšplānā tagad: {0}, un nevienam profilam vēl nav iestatīta spēle</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Atļaut ārēju vadību no palaidējiem un skriptiem</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Nodrošina lokālu nosauktu kanālu PadForge.Control, lai Playnite, LaunchBox vai skripts varētu aktivizēt un deaktivizēt profilus. Šādi aktivizēts profils paliek aktīvs, līdz skripts to atbrīvo vai profils tiek pārslēgts manuāli. Tikai lokālajā datorā.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Ārēja vadība</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Palaidējs vai skripts var pārslēgt profilus, izmantojot Automatizāciju. Šādi pārslēgts profils paliek, kamēr programma to atbrīvo vai jūs paši pārslēdzat profilus.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatizācija ir izslēgta</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatizācija ir ieslēgta: programmas var pārslēgt profilus</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatizācija ir ieslēgta: programmas var pārslēgt profilus un lasīt ierīces un iestatījumus</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatizācija ir ieslēgta: programmas var pārslēgt profilus, lasīt ierīces un iestatījumus un sūtīt ievades</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatizācija ir ieslēgta: programmas var pārslēgt profilus, sūtīt ievades un mainīt iestatījumus</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Atvērt automatizāciju</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktīvais profils:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Nav kontrolleru</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Nometiet, lai importētu profilu</value></data>
@@ -2982,7 +3009,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Izpildāmie faili (*.exe)|*.exe|Visi faili (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge jau darbojas.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: kritiska kļūda</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: kļūda</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Radās neparedzēta kļūda:

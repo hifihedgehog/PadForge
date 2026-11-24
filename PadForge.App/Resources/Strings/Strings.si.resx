@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්. {1} පාලක අංකය {2} වෙත යවමින් සිටින නමුත්, DualSense හෝ DualShock 4 එකක් සහිත කිසිදු අතථ්‍ය පාලකයකට එම අංකය නොමැත.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>තොට {0} DSX වැනි වෙනත් වැඩසටහනක් භාවිත කරයි. එය වසන්න හෝ වෙනත් තොටක් තෝරන්න.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ක්‍රීඩා මොඩ් එකක්</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>වෙනත් වැඩසටහනක් {0} පයිප්ප නාමය දරයි. එම වැඩසටහන වසන්න.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} පයිප්පය ප්‍රතික්ෂේප කළ බැවින් වැඩසටහන්වලට සම්බන්ධ විය නොහැක.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} පැතිකඩට මාරු වන්න</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>පෙරනිමි පැතිකඩට ආපසු යන්න</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>සක්‍රිය පැතිකඩ කුමක්දැයි විමසන්න</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>කවුළුව පෙන්වන්න</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>කවුළුව පද්ධති තැටියට යවන්න</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>කවුළුව අවම කරන්න</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge වසන්න</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>එන්ජිම ආරම්භ කරන්න</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>එන්ජිම නවත්වන්න</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>සියලු අතථ්‍ය පාලක ක්‍රියාත්මක කරන්න</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>සියලු අතථ්‍ය පාලක අක්‍රිය කරන්න</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>අතථ්‍ය පාලකය {0} ක්‍රියාත්මක කරන්න</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>අතථ්‍ය පාලකය {0} අක්‍රිය කරන්න</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>දෝෂ නිර්ණය ස්නැප්ෂොට් එකක් සුරකින්න</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ගැටලුවක් පටිගත කිරීම අරඹන්න</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>පටිගත කිරීම නවත්වන්න</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>පටිගත කිරීම සලකුණු කරන්න</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge හි අනුවාදය විමසන්න</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ධාවනය වන්නේ කුමක්දැයි විමසන්න</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge නොදන්නා පේළියක් යවන්න: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack සමඟ සහ එහි UDP ප්‍රතිදානය යවන හෝ FreeTrack 2.0 හවුල් මතකයට ලියන ඕනෑම ට්‍රැකරයක් සමඟ ද, පසුබිමේ සැසියක් ධාවනය කළ හැකි මෙම පරිගණකයේ OpenXR ධාවන කාලයක් සමඟ ද ක්‍රියා කරයි.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Keys කියවන්න</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK හරහා G-keys කියවයි. Logitech Gaming Software 8.55 හෝ ඊට පසු අනුවාදයක් ධාවනය විය යුතුය. එම මෘදුකාංගයේ, PadForge පැතිකඩෙහි සෑම යතුරකටම G-key විධානය ඇදගෙන යන්න. එම පැතිකඩ ස්ථිර කරන්න, නැතහොත් යතුරු PadForge වෙත ළඟා වන්නේ එහි කවුළුව ඉදිරියෙන් ඇති විට පමණි. G600 හෝ G300 මූසිකයක් ද ඔන්බෝඩ් මතක ප්‍රකාරයෙන් පිටත තිබිය යුතුය.</value></data>
@@ -2689,9 +2711,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>දැන් ඉදිරියෙන්: {0}, ඒ සඳහා පැතිකඩක් සකසා නැත</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>දැන් ඉදිරියෙන්: {0}, එය {1} පූරණය කරයි</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>දැන් ඉදිරියෙන්: {0}, තවම කිසිදු පැතිකඩකට ක්‍රීඩාවක් සකසා නැත</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>දියත්කරන සහ ස්ක්‍රිප්ට් මගින් බාහිර පාලනයට ඉඩ දෙන්න</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control නම් දේශීය නාමික පයිප්පයක් සපයයි, එවිට Playnite, LaunchBox, හෝ ස්ක්‍රිප්ට් එකකට පැතිකඩ සක්‍රිය සහ අක්‍රිය කළ හැක. මේ ආකාරයෙන් සක්‍රිය කළ පැතිකඩක් ස්ක්‍රිප්ට් එක එය මුදා හරින තුරු හෝ ඔබ විසින්ම පැතිකඩ මාරු කරන තුරු සක්‍රියව පවතී. දේශීය පරිගණකයට පමණි.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>බාහිර පාලනය</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>දියත්කරුවෙකුට හෝ ස්ක්‍රිප්ට් එකකට ස්වයංක්‍රීයකරණය හරහා පැතිකඩ මාරු කළ හැක. මේ ආකාරයෙන් මාරු කළ පැතිකඩක් වැඩසටහන එය නිදහස් කරන තුරු හෝ ඔබම පැතිකඩ මාරු කරන තුරු පවතී.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය අක්‍රියයි</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය සක්‍රියයි: වැඩසටහන්වලට පැතිකඩ මාරු කළ හැක</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය සක්‍රියයි: වැඩසටහන්වලට පැතිකඩ මාරු කිරීමට සහ උපාංග සහ සැකසීම් කියවීමට හැක</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය සක්‍රියයි: වැඩසටහන්වලට පැතිකඩ මාරු කිරීමට, උපාංග සහ සැකසීම් කියවීමට සහ ආදාන යැවීමට හැක</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය සක්‍රියයි: වැඩසටහන්වලට පැතිකඩ මාරු කිරීමට, ආදාන යැවීමට සහ සැකසීම් වෙනස් කිරීමට හැක</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ස්වයංක්‍රීයකරණය විවෘත කරන්න</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>සක්‍රිය පැතිකඩ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>පාලක නැත</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>පැතිකඩ ආයාත කිරීමට මෙහි දමන්න</value></data>
@@ -2748,7 +2775,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ක්‍රියාත්මක ගොනු (*.exe)|*.exe|සියලු ගොනු (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge දැනටමත් ක්‍රියාත්මක වේ.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: බරපතළ දෝෂය</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: දෝෂය</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>අනපේක්ෂිත දෝෂයක් ඇති විය:

@@ -195,6 +195,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Irimo kumviriza kuri :{0}. {1} irimo kohereza kuri kontorola ya nimero {2}, kandi nta kontorola y'ikoranabuhanga iriho DualSense cyangwa DualShock 4 ifite iyo nimero.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} irimo gukoreshwa n'indi porogaramu, nka DSX. Yifunge cyangwa uhitemo indi port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod y'umukino</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Indi porogaramu ifite izina ry'umuyoboro {0}. Funga iyo porogaramu.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows yanze umuyoboro {0}, bityo porogaramu ntizishobora guhuza.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hindurira kuri profili {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Subira kuri profili isanzwe</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Baza profili ikora</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Erekana idirishya</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ohereza idirishya mu gace ka sisitemu</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Gabanya idirishya</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Funga PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Tangiza moteri</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Hagarika moteri</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Fungura kontorola zose z'ikoranabuhanga</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Funga kontorola zose z'ikoranabuhanga</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Fungura Kontorola y'ikoranabuhanga {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Funga Kontorola y'ikoranabuhanga {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Bika ifoto y'isuzuma</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Tangira gufata ikibazo</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Hagarika gufata</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Shyira ikimenyetso ku byafashwe</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Baza verisiyo ya PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Baza ibirimo gukora</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ohereza umurongo PadForge itazi: {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Huza</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Bihujwe</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Nta gikoresho</value></data>
@@ -976,7 +998,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge isanzwe ikora.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Ikosa rikomeye</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Ikosa</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Habaye ikosa ritunguranye:

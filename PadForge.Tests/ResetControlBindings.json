@@ -1290,12 +1290,6 @@
     "Property": "TriggerDeviceGuid"
   },
   {
-    "File": "PadForge.App/Views/ProfilesPage.xaml",
-    "Id": "Reset_SettingsViewModel_EnableExternalControl_133",
-    "Owner": "PadForge.ViewModels.SettingsViewModel",
-    "Property": "EnableExternalControl"
-  },
-  {
     "File": "PadForge.App/Views/SettingsPage.xaml",
     "Id": "Reset_SettingsViewModel_SelectedLanguage_80",
     "Owner": "PadForge.ViewModels.SettingsViewModel",

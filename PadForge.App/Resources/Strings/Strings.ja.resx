@@ -375,6 +375,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} でリッスン中。{1} がコントローラー インデックス {2} に送信していますが、DualSense または DualShock 4 が接続された仮想コントローラーにそのインデックスはありません。</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ポート {0} は DSX などの別のプログラムが使用中です。そのプログラムを閉じるか、別のポートを選んでください。</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ゲーム MOD</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>別のプログラムがパイプ名 {0} を使用しています。そのプログラムを閉じてください。</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows がパイプ {0} を拒否したため、プログラムは接続できません。</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>プロファイル {0} に切り替える</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>既定のプロファイルに戻す</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>有効なプロファイルを問い合わせる</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>ウィンドウを表示する</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ウィンドウをシステムトレイに送る</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ウィンドウを最小化する</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge を閉じる</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>エンジンを開始する</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>エンジンを停止する</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>すべての仮想コントローラーをオンにする</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>すべての仮想コントローラーをオフにする</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>仮想コントローラー {0} をオンにする</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>仮想コントローラー {0} をオフにする</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>診断スナップショットを保存する</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>問題の記録を開始する</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>記録を停止する</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>記録にマークを付ける</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge のバージョンを問い合わせる</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>実行中の内容を問い合わせる</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge が認識しない行を送る: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack や、UDP 出力を送信するまたは FreeTrack 2.0 の共有メモリに書き込むあらゆるトラッカー、およびこのマシンにインストールされた、バックグラウンドでセッションを実行できる OpenXR ランタイムで動作します。</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G キーを読み取る</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK で G キーを読み取ります。Logitech Gaming Software 8.55 以降が実行されている必要があります。そのソフトで、PadForge プロファイルの各キーに G-key コマンドをドラッグしてください。そのプロファイルを常設に設定しない場合、キーは PadForge のウィンドウが前面にあるときだけ届きます。また、G600 または G300 マウスはオンボードモードを解除しておく必要があります。</value></data>
@@ -1369,9 +1391,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>前面のアプリ: {0}、プロファイル未設定</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>前面のアプリ: {0}、読み込むプロファイル: {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>前面のアプリ: {0}、ゲームを設定したプロファイルはまだありません</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ランチャーやスクリプトによる外部制御を許可</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>ローカルの名前付きパイプ PadForge.Control を公開し、Playnite、LaunchBox、スクリプトからプロファイルを有効・無効にできます。この方法で有効にしたプロファイルは、スクリプトが解除するか自分で切り替えるまで有効のままです。ローカル専用。</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>外部制御</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ランチャーやスクリプトは、オートメーション経由でプロファイルを切り替えられます。この方法で切り替えたプロファイルは、プログラムが解除するか、あなたがプロファイルを切り替えるまで続きます。</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>オートメーションはオフです</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>オートメーションはオンです: プログラムはプロファイルを切り替えられます</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>オートメーションはオンです: プログラムはプロファイルの切り替え、デバイスと設定の読み取りができます</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>オートメーションはオンです: プログラムはプロファイルの切り替え、デバイスと設定の読み取り、入力の送信ができます</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>オートメーションはオンです: プログラムはプロファイルの切り替え、入力の送信、設定の変更ができます</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>オートメーションを開く</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>アクティブなプロファイル:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>コントローラーなし</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ドロップしてプロファイルをインポート</value></data>
@@ -1429,7 +1456,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge は既に実行されています。</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: 致命的なエラー</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: エラー</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>予期しないエラーが発生しました:

@@ -68,11 +68,14 @@ namespace PadForge.Views
                 FocusWhenShown(() => tile.FocusOpen());
         }
 
+        /// <summary>Whether an extra of that key has a page here.</summary>
+        public bool HasPage(string key) => key != null && FindName(key + "Page") is FrameworkElement;
+
         /// <summary>Shows one extra's page, or the catalog for null. An
         /// unknown key changes nothing and returns false.</summary>
         public bool Show(string key)
         {
-            if (key != null && !(FindName(key + "Page") is FrameworkElement)) return false;
+            if (key != null && !HasPage(key)) return false;
             CatalogView.Visibility = key == null ? Visibility.Visible : Visibility.Collapsed;
             foreach (string k in Keys)
                 if (FindName(k + "Page") is FrameworkElement page)

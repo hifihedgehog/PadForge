@@ -375,6 +375,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Luistert op :{0}. {1} verzendt naar controllerindex {2}, en geen enkele virtuele controller met een DualSense of DualShock 4 heeft die index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Poort {0} wordt gebruikt door een ander programma, zoals DSX. Sluit het af of kies een andere poort.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Een gamemod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Een ander programma gebruikt de pijpnaam {0}. Sluit dat programma af.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows weigerde de pijp {0}, dus programma's kunnen geen verbinding maken.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Overschakelen naar het profiel {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Terugkeren naar het standaardprofiel</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Vragen welk profiel actief is</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Het venster tonen</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Het venster naar het systeemvak sturen</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Het venster minimaliseren</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge afsluiten</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>De engine starten</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>De engine stoppen</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Elke virtuele controller inschakelen</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Elke virtuele controller uitschakelen</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Virtuele Controller {0} inschakelen</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Virtuele Controller {0} uitschakelen</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Een diagnostische momentopname opslaan</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Een probleem beginnen op te nemen</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>De opname stoppen</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>De opname markeren</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Vragen naar de versie van PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Vragen wat er draait</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Een regel sturen die PadForge niet kent: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Werkt met OpenTrack en met elke tracker die zijn UDP-uitvoer verstuurt of naar het gedeelde geheugen van FreeTrack 2.0 schrijft, en met een OpenXR-runtime op deze machine die een sessie op de achtergrond kan uitvoeren.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-toetsen lezen</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Leest G-toetsen via de Logitech G-key SDK. Vereist dat Logitech Gaming Software 8.55 of nieuwer draait. Sleep daarin de opdracht G-key naar elke toets in het PadForge-profiel. Maak dat profiel permanent, anders bereiken de toetsen PadForge alleen terwijl het venster op de voorgrond is. Een G600- of G300-muis mag bovendien niet in de onboardmodus staan.</value></data>
@@ -1369,9 +1391,14 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Nu vooraan: {0}, geen profiel ingesteld</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Nu vooraan: {0}, dat {1} laadt</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Nu vooraan: {0}, en nog geen profiel heeft een game ingesteld</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Externe besturing door launchers en scripts toestaan</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Biedt een lokale named pipe, PadForge.Control, zodat Playnite, LaunchBox of een script profielen kan activeren en deactiveren. Een zo geactiveerd profiel blijft actief tot het script het vrijgeeft of u zelf van profiel wisselt. Alleen lokaal.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Externe besturing</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Een launcher of een script kan via Automatisering van profiel wisselen. Een profiel dat zo is gewisseld, blijft actief tot het programma het loslaat of je zelf van profiel wisselt.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatisering staat uit</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatisering staat aan: programma's kunnen van profiel wisselen</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatisering staat aan: programma's kunnen van profiel wisselen en apparaten en instellingen lezen</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatisering staat aan: programma's kunnen van profiel wisselen, apparaten en instellingen lezen en invoer verzenden</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatisering staat aan: programma's kunnen van profiel wisselen, invoer verzenden en instellingen wijzigen</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Automatisering openen</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Actief profiel:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Geen controllers</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Neerzetten om profiel te importeren</value></data>
@@ -1429,7 +1456,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Uitvoerbare bestanden (*.exe)|*.exe|Alle bestanden (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge is al actief.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Fatale fout</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Fout</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Er is een onverwachte fout opgetreden:

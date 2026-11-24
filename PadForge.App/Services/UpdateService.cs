@@ -1338,11 +1338,15 @@ namespace PadForge.Services
         /// <summary>
         /// Whether the arguments carry the marker the helper adds when it
         /// starts the updated copy. They are read the way
-        /// <see cref="App.ParseProfileCommand"/> reads them: --profile takes
-        /// the next argument as its value when there is one, and every
-        /// --updated that is not such a value is the marker. A profile named
-        /// "--updated" stays a profile. The helper puts the marker first, so a
-        /// --profile left without a value at the end stays without one.
+        /// <see cref="PadForge.Common.CommandLineSwitches.Parse"/> reads
+        /// them: --profile takes the next argument as its value when there
+        /// is one, whatever it says, and every --updated that is not such a
+        /// value is the marker. A profile named "--updated" stays a profile.
+        /// No other switch takes a word that could be the marker: the others
+        /// take on, off, a number or a record verb, and a marker's text ends
+        /// at the next word that begins with a dash. The helper puts the
+        /// marker first, so a --profile left without a value at the end stays
+        /// without one.
         /// </summary>
         internal static bool HasUpdatedMarker(IReadOnlyList<string> args) => MarkerPositions(args).Count > 0;
 

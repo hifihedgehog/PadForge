@@ -451,6 +451,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ap koute sou :{0}. {1} ap voye bay kontwolè nimewo {2}, men okenn kontwolè vityèl ki gen yon DualSense oswa yon DualShock 4 sou li pa gen nimewo sa a.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Yon lòt pwogram, tankou DSX, ap itilize pò {0}. Fèmen l oswa chwazi yon lòt pò.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Yon mod jwèt</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Yon lòt pwogram kenbe non tiyo {0} la. Fèmen pwogram sa a.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows refize tiyo {0} la, kidonk pwogram yo pa ka konekte.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chanje pou pwofil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Retounen nan pwofil pa defo a</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Mande ki pwofil ki aktif</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Montre fenèt la</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Voye fenèt la nan zòn notifikasyon an</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimize fenèt la</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Fèmen PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Demare motè a</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Kanpe motè a</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Aktive tout kontwolè vityèl yo</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Dezaktive tout kontwolè vityèl yo</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Aktive Kontwolè vityèl {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Dezaktive Kontwolè vityèl {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Anrejistre yon kopi dyagnostik</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Kòmanse anrejistre yon pwoblèm</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Kanpe anrejistreman an</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Make anrejistreman an</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Mande vèsyon PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Mande sa k ap mache</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Voye yon liy PadForge pa konnen: {0}</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
   <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Li klavye analòg yo</value></data>
@@ -2322,7 +2344,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Egzekitab (*.exe)|*.exe|Tout fichye (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ap mache deja.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Erè fatal</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Erè</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Yon erè ou pa t atann rive:

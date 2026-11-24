@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Dëgjon te :{0}. {1} po dërgon te indeksi {2} i kontrolluesit, dhe asnjë kontrollues virtual me një DualSense ose DualShock 4 nuk e ka atë indeks.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Porta {0} është në përdorim nga një program tjetër, si DSX. Mbylle ose zgjidh një portë tjetër.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Një mod loje</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Një program tjetër mban emrin e kanalit {0}. Mbylle atë program.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e refuzoi kanalin {0}, ndaj programet nuk mund të lidhen.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ndërro te profili {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kthehu te profili i parazgjedhur</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Pyet cili profil është aktiv</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Shfaq dritaren</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Dërgo dritaren te shiriti i sistemit</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizo dritaren</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Mbyll PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Nis motorin</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ndalo motorin</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Ndiz çdo kontrollues virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Fik çdo kontrollues virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Ndiz kontrolluesin virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Fik kontrolluesin virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Ruaj një pamje çasti të diagnostikimit</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Nis regjistrimin e një problemi</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Ndalo regjistrimin</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Shëno regjistrimin</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Pyet për versionin e PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Pyet çfarë është në punë</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Dërgo një rresht që PadForge nuk e njeh: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funksionon me OpenTrack dhe çdo gjurmues që dërgon daljen e vet UDP ose shkruan memorie të përbashkët FreeTrack 2.0, dhe me një runtime OpenXR në këtë kompjuter që mund të ekzekutojë një seancë në sfond.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lexo G-keys të Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lexon G-keys përmes Logitech G-key SDK. Kërkon që Logitech Gaming Software 8.55 ose më i ri të jetë në punë. Në atë softuer, tërhiq komandën G-key mbi çdo tast në profilin PadForge. Bëje atë profil të përhershëm, përndryshe tastet arrijnë te PadForge vetëm kur dritarja e tij është përpara. Një maus G600 ose G300 duhet gjithashtu të jetë jashtë modalitetit të memories së brendshme.</value></data>
@@ -2682,9 +2704,14 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Përpara tani: {0}, nuk ka profil për të</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Përpara tani: {0}, që ngarkon {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Përpara tani: {0}, dhe asnjë profil nuk ka ende një lojë</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Lejo kontrollin e jashtëm nga nisësit dhe skriptet</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Ofron një pipe të emërtuar lokale, PadForge.Control, që Playnite, LaunchBox ose një skript të mund të aktivizojnë dhe çaktivizojnë profile. Një profil i aktivizuar në këtë mënyrë mbetet aktiv derisa skripti ta lëshojë ose ti të ndërrosh vetë profilin. Vetëm në kompjuterin lokal.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Kontrolli i jashtëm</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Një nisës ose një skript mund të ndërrojë profilet përmes Automatizimit. Një profil i ndërruar kështu qëndron derisa programi ta lëshojë ose ti të ndërrosh vetë profilet.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatizimi është i fikur</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatizimi është i ndezur: programet mund të ndërrojnë profilet</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatizimi është i ndezur: programet mund të ndërrojnë profilet dhe të lexojnë pajisjet e cilësimet</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatizimi është i ndezur: programet mund të ndërrojnë profilet, të lexojnë pajisjet e cilësimet dhe të dërgojnë hyrje</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatizimi është i ndezur: programet mund të ndërrojnë profilet, të dërgojnë hyrje dhe të ndryshojnë cilësimet</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Hap Automatizimin</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profili aktiv:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Pa kontrollues</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Lësho për të importuar profilin</value></data>
@@ -2741,7 +2768,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Skedarë ekzekutues (*.exe)|*.exe|Të gjithë skedarët (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge po ekzekutohet tashmë.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Gabim fatal</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Gabim</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ndodhi një gabim i papritur:

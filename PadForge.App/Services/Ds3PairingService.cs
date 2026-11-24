@@ -447,7 +447,7 @@ namespace PadForge.Services
                 // so a radio toggle or a retry finishes the job; failing
                 // honestly beats reporting success into a pad that can only
                 // flash. NOTE the probe layer: this check runs elevated
-                // (PadForge always is). An UNELEVATED open of this control
+                // (the app always is). An UNELEVATED open of this control
                 // device returns FILE_NOT_FOUND, not ACCESS_DENIED, and
                 // that lie once built a whole false reboot-required theory
                 // on the bench (2026-08-07).

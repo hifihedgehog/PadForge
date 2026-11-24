@@ -380,6 +380,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ta skucha riba :{0}. {1} ta manda na kontrol number {2}, i no tin ningun kontrol virtual ku un DualSense òf DualShock 4 riba dje ku tin e number ei.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pòrt {0} ta na uso dor di otro programa, manera DSX. Sera e programa òf skohe otro pòrt.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod di wega</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Otro programa tin e nòmber di pipe {0}. Sera e programa ei.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows a nenga e pipe {0}, p'esei programanan no por konektá.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kambia na e perfil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bolbe na e perfil standard</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Puntra ki perfil ta aktivo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Mustra e bentana</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Manda e bentana na e bandeha di sistema</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimisá e bentana</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Sera PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Kuminsá e motor</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Para e motor</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Sende tur kontrol virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Paga tur kontrol virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Sende Kontrol virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Paga Kontrol virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Warda un snapshot di diagnóstiko</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Kuminsá graba un problema</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Para di graba</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Marka e grabashon</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Puntra pa e vershon di PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Puntra kiko ta kore</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Manda un liña ku PadForge no konosé: {0}</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa teklanan G di Logitech</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
   <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
@@ -1475,7 +1497,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ta kore kaba.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Eròr fatal</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Eròr</value></data>
 

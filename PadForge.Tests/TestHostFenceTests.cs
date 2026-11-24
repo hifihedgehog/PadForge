@@ -124,7 +124,7 @@ namespace PadForge.Tests
     /// The test process leaves the PC it runs on as it found it: its desktop,
     /// its clipboard, its devices, its radio, its drivers, its certificate
     /// stores, its logon task, its sound, the programs other vendors run on
-    /// it, and the network beyond it. Thirty-two fences hold that
+    /// it, and the network beyond it. Thirty-five fences hold that
     /// (TestHostFences.cs), beside the ones MachineOffLimitsTests,
     /// HidHideOffLimitsTests and their neighbors pin. The listener gate's
     /// tests are in TestHostListenerTests.cs, and the workshop library's own
@@ -190,6 +190,10 @@ namespace PadForge.Tests
         private const string SteamClientFile = "PadForge.SteamWorkshop/Api/SteamWorkshopClient.cs";
         private const string WorkshopPanel = "PadForge.App/Views/CommunityConfigsPanel.xaml.cs";
         private const string ControlPipe = Services + "ExternalControlService.cs";
+        private const string RunningCopyFile = Services + "RunningCopy.cs";
+        private const string InstanceSignalFile = Services + "InstanceSignal.cs";
+        private const string ClientRunFile = Services + "ClientRun.cs";
+        private const string StartWithRightsFile = Services + "StartWithRights.cs";
         private const string Dsu = Services + "DsuMotionServer.cs";
         private const string GameMods = Services + "GameModServer.cs";
         private const string GameModFiles = Services + "GameModPortFiles.cs";
@@ -232,6 +236,9 @@ namespace PadForge.Tests
             (Outbound, "OutboundNetworkGate"),
             (SteamHttpFile, "SteamHttp"),
             (ControlPipe, "ExternalControlService"),
+            (RunningCopyFile, "RunningCopy"),
+            (ClientRunFile, "CallerConsole"),
+            (StartWithRightsFile, "StartWithRights"),
             (Dsu, "DsuMotionServer"),
             (GameMods, "GameModServer"),
             (GameModFiles, "GameModPortFiles"),
@@ -280,6 +287,9 @@ namespace PadForge.Tests
             Assert.True(OutboundNetworkGate.OffLimitsForTest);
             Assert.True(SteamHttp.OffLimitsForTest);
             Assert.True(ExternalControlService.OffLimitsForTest);
+            Assert.True(RunningCopy.OffLimitsForTest);
+            Assert.True(CallerConsole.OffLimitsForTest);
+            Assert.True(StartWithRights.OffLimitsForTest);
             Assert.True(DsuMotionServer.OffLimitsForTest);
             Assert.True(GameModServer.OffLimitsForTest);
             Assert.True(GameModPortFiles.OffLimitsForTest);
@@ -479,8 +489,25 @@ namespace PadForge.Tests
             new object[] { Outbound, "public static bool RefusesHost(string host)", "OffLimitsForTest && !IsLoopbackHost(host);" },
             new object[] { Outbound, "public static HttpClient NewHttpClient()", "OffLimitsForTest ? new HttpClient(new LoopbackOnly()) : new HttpClient();" },
 
-            // The pipe a running PadForge serves.
-            new object[] { ControlPipe, "public void Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return;" },
+            // The pipe a running PadForge serves, and its client end (#597).
+            new object[] { ControlPipe, "public PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return PipeState.Stopped;" },
+            new object[] { ClientRunFile, "internal static bool Stands(string pipeName)", "if (ExternalControlService.OffLimitsForTest && IsTheAppsOwn(pipeName)) return false;" },
+            new object[] { ClientRunFile, "internal static string Exchange(string pipeName, string line, int connectMs, int answerMs = AnswerMs)", "if (ExternalControlService.OffLimitsForTest && IsTheAppsOwn(pipeName)) return null;" },
+
+            // A PadForge that runs on this PC, as a second copy of the exe
+            // meets it, and the windows that copy looks for (#597).
+            new object[] { RunningCopyFile, "private static IntPtr Find(string windowName)", "OffLimitsForTest ? IntPtr.Zero : FindWindowExW(HWND_MESSAGE, IntPtr.Zero, null, windowName);" },
+            new object[] { RunningCopyFile, "internal static bool Exists()", "if (OffLimitsForTest) return false;" },
+            new object[] { RunningCopyFile, "internal static Settled WaitUntilSettled(int startingMs = 15000, int lockOnlyMs = 2000)", "if (OffLimitsForTest) return Settled.Gone;" },
+            new object[] { RunningCopyFile, "internal static bool Show(int waitMs = 10000)", "if (OffLimitsForTest) return false;" },
+            new object[] { RunningCopyFile, "internal static Func<int?> Watch(int waitMs = 10000)", "if (OffLimitsForTest) return null;" },
+            new object[] { InstanceSignalFile, "public bool Open()", "if (RunningCopy.OffLimitsForTest && UsesTheAppsOwnNames) return false;" },
+
+            // The caller's console, and the box that stands in for it.
+            new object[] { ClientRunFile, "private static void Write(string text, bool error, bool mustBeSeen)", "if (OffLimitsForTest) return;" },
+
+            // The start of the exe with administrator rights.
+            new object[] { StartWithRightsFile, "internal static int Run(IReadOnlyList<string> args)", "if (OffLimitsForTest) return NotStarted;" },
 
             // A laptop's lighting through its firmware, and a keyboard's
             // serial port (#557).
@@ -591,10 +618,11 @@ namespace PadForge.Tests
             return map;
         }
 
-        /// <summary>A program is started in eight places, each behind a
-        /// fence: the shell's two, schtasks, the installers' tools and netsh
-        /// here, and the driver installer's and the updater's under
-        /// MachineOffLimitsTests and UpdateServiceOffLimitsTests.</summary>
+        /// <summary>A program is started in nine places, each behind a
+        /// fence: the shell's two, schtasks, the installers' tools, netsh
+        /// and the exe's own restart with rights here, and the driver
+        /// installer's and the updater's under MachineOffLimitsTests and
+        /// UpdateServiceOffLimitsTests.</summary>
         [Fact]
         public void EveryProcessStart_IsOnTheList()
         {
@@ -605,6 +633,7 @@ namespace PadForge.Tests
                 (Startup, 1),
                 (GiveBack, 1),
                 (Ds3Driver, 1),
+                (StartWithRightsFile, 1),
                 (Services + "UpdateService.cs", 1),
                 (Services + "WebControllerServer.cs", 1),
                 (WebTls, 1)), FenceSource.Census(@"\bProcess\.Start\("));
@@ -616,6 +645,8 @@ namespace PadForge.Tests
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Ds3Driver), "private static (int Code, string Output) RunTool(string exe, string args, string workingDir, int timeoutMs = 120000)"), StringComparison.Ordinal);
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(WebTls), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
             Assert.Contains("Process.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Services + "WebControllerServer.cs"), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
+            // And the restart with rights (#597).
+            Assert.Contains("Process.Start(start)", FenceSource.Body(OffLimitsSource.Read(StartWithRightsFile), "internal static int Run(IReadOnlyList<string> args)"), StringComparison.Ordinal);
         }
 
         [Fact]
@@ -646,10 +677,12 @@ namespace PadForge.Tests
         }
 
         /// <summary>A pipe is served in three places and connected to in two.
-        /// The app's own startup forwards a command to the instance that
-        /// already runs, which no test runs. The control service asks its
-        /// fence as it starts, and both its server and the nudge its Stop
-        /// sends exist only once it has started. A give-back task's pipe stands
+        /// The client run's end, where a second copy of the exe sends a
+        /// command to the one that runs, asks the control pipe's fence before
+        /// it looks for the pipe or connects (#597). The control service asks
+        /// its fence as it starts: its first instance is made after that, its
+        /// later ones only by the loop the start began, and the nudge its
+        /// Stop sends only once it has started. A give-back task's pipe stands
         /// only behind its registration's fence.</summary>
         [Fact]
         public void EveryPipe_IsOnTheList()
@@ -660,16 +693,30 @@ namespace PadForge.Tests
             Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
                 FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log)"), StringComparison.Ordinal);
             Assert.Single(OffLimitsSource.Calls(task, "HoldPipe(name)"));
-            Assert.Equal(Map(("PadForge.App/App.xaml.cs", 1), (ControlPipe, 1)), FenceSource.Census(Creates("NamedPipeClientStream")));
+            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1)), FenceSource.Census(Creates("NamedPipeClientStream")));
+
+            // The client end's one connection is in the member that asks first.
+            string client = OffLimitsSource.Read(ClientRunFile);
+            Assert.Contains("new NamedPipeClientStream(",
+                FenceSource.Body(client, "internal static string Exchange(string pipeName, string line, int connectMs, int answerMs = AnswerMs)"), StringComparison.Ordinal);
+            Assert.Single(Regex.Matches(client, @"\bWaitNamedPipeW\(@"));
+            Assert.Contains("WaitNamedPipeW(@", FenceSource.Body(client, "internal static bool Stands(string pipeName)"), StringComparison.Ordinal);
 
             string service = OffLimitsSource.Read(ControlPipe);
-            Assert.StartsWith("if (_cts == null) return;", FenceSource.FirstStatement(service, "public void Stop()"), StringComparison.Ordinal);
+            Assert.StartsWith("if (_cts == null)", FenceSource.FirstStatement(service, "public void Stop()"), StringComparison.Ordinal);
+            string stop = FenceSource.Body(service, "public void Stop()");
+            Assert.True(stop.IndexOf("return;", StringComparison.Ordinal) < stop.IndexOf("new NamedPipeClientStream(", StringComparison.Ordinal));
             Assert.Single(Regex.Matches(service, @"\b_cts = new CancellationTokenSource\(\);"));
-            Assert.Contains("_cts = new CancellationTokenSource();", FenceSource.Body(service, "public void Start()"), StringComparison.Ordinal);
-            Assert.Single(OffLimitsSource.Calls(service, "CreateServer(_pipeName)"));
-            Assert.Contains("CreateServer(_pipeName)", FenceSource.Body(service, "private async Task AcceptLoop(CancellationToken token)"), StringComparison.Ordinal);
-            Assert.Single(OffLimitsSource.Calls(service, "AcceptLoop(token)"));
-            Assert.Contains("AcceptLoop(token)", FenceSource.Body(service, "public void Start()"), StringComparison.Ordinal);
+            string start = FenceSource.Body(service, "public PipeState Start()");
+            Assert.Contains("_cts = new CancellationTokenSource();", start, StringComparison.Ordinal);
+            // Three instances are made: the first by the start, after its
+            // fence, and the next two by the loop.
+            Assert.Equal(3, OffLimitsSource.Calls(service, "CreateServer(_pipeName,").Count);
+            Assert.Single(OffLimitsSource.Calls(start, "CreateServer(_pipeName,"));
+            FenceSource.AsksBefore(ControlPipe, "public PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return PipeState.Stopped;", "CreateServer(_pipeName,");
+            Assert.Equal(2, OffLimitsSource.Calls(FenceSource.Body(service, "private async Task AcceptLoop(NamedPipeServerStream first, CancellationToken token)"), "CreateServer(_pipeName,").Count);
+            Assert.Single(OffLimitsSource.Calls(service, "AcceptLoop(first, token)"));
+            Assert.Contains("AcceptLoop(first, token)", start, StringComparison.Ordinal);
         }
 
         /// <summary>The files that import CreateFile. A new one opens
@@ -983,7 +1030,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheAppsOwnControlPipe_IsNeitherServedNorWrittenTo()
         {
-            FenceSource.AsksFirst(ControlPipe, "public void Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return;");
+            FenceSource.AsksFirst(ControlPipe, "public PipeState Start()", "if (OffLimitsForTest && ServesTheAppsOwnPipe) return PipeState.Stopped;");
             Assert.Contains("private bool ServesTheAppsOwnPipe => string.Equals(_pipeName, PipeName, StringComparison.OrdinalIgnoreCase);",
                 OffLimitsSource.Read(ControlPipe), StringComparison.Ordinal);
             Assert.Equal("PadForge.Control", ExternalControlService.PipeName);
@@ -992,13 +1039,13 @@ namespace PadForge.Tests
             foreach (string name in new[] { null, "", ExternalControlService.PipeName, "padforge.control" })
             {
                 using var theApps = new ExternalControlService(_ => "ok", name);
-                theApps.Start();
+                Assert.Equal(ExternalControlService.PipeState.Stopped, theApps.Start());
                 Assert.False(theApps.IsRunning);
                 theApps.Stop();
             }
 
             using var aTests = new ExternalControlService(_ => "ok", "PadForge.Tests.Fence." + Guid.NewGuid().ToString("N"));
-            aTests.Start();
+            Assert.Equal(ExternalControlService.PipeState.Serving, aTests.Start());
             Assert.True(aTests.IsRunning);
             aTests.Stop();
             Assert.False(aTests.IsRunning);

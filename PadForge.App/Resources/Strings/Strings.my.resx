@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} တွင် နားထောင်နေသည်။ {1} သည် ကွန်ထရိုလာ နံပါတ် {2} သို့ ပို့နေသော်လည်း DualSense သို့မဟုတ် DualShock 4 ပါသော ဗာချွယ်ကွန်ထရိုလာများတွင် ထိုနံပါတ် မရှိပါ။</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ပေါ့တ် {0} ကို DSX ကဲ့သို့သော အခြားပရိုဂရမ်တစ်ခုက အသုံးပြုနေသည်။ ၎င်းကို ပိတ်ပါ သို့မဟုတ် အခြားပေါ့တ်တစ်ခု ရွေးပါ။</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ဂိမ်းမော့ဒ်တစ်ခု</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>အခြားပရိုဂရမ်တစ်ခုက ပိုက်လိုင်းအမည် {0} ကို ယူထားသည်။ ထိုပရိုဂရမ်ကို ပိတ်ပါ။</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows က ပိုက်လိုင်း {0} ကို ငြင်းပယ်သဖြင့် ပရိုဂရမ်များ ချိတ်ဆက်၍ မရပါ။</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ပရိုဖိုင် {0} သို့ ပြောင်းရန်</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>မူလ ပရိုဖိုင်သို့ ပြန်သွားရန်</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>မည်သည့်ပရိုဖိုင် အသက်ဝင်နေသည်ကို မေးရန်</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>ဝင်းဒိုးကို ပြရန်</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ဝင်းဒိုးကို စနစ်ဗန်းသို့ ပို့ရန်</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ဝင်းဒိုးကို ချုံ့ရန်</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge ကို ပိတ်ရန်</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>အင်ဂျင်ကို စတင်ရန်</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>အင်ဂျင်ကို ရပ်ရန်</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ အားလုံးကို ဖွင့်ရန်</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ အားလုံးကို ပိတ်ရန်</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ {0} ကို ဖွင့်ရန်</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ {0} ကို ပိတ်ရန်</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>ချို့ယွင်းချက်ရှာဖွေရေး ခဏတာမှတ်တမ်း သိမ်းရန်</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ပြဿနာကို စတင် မှတ်တမ်းတင်ရန်</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>မှတ်တမ်းတင်ခြင်းကို ရပ်ရန်</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>မှတ်တမ်းတင်ချက်တွင် အမှတ်အသားပြုရန်</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ၏ ဗားရှင်းကို မေးရန်</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ဘာလည်ပတ်နေသည်ကို မေးရန်</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge မသိသော စာကြောင်းကို ပို့ရန်: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack နှင့်လည်းကောင်း၊ ၎င်း၏ UDP အထွက်ကို ပို့သော သို့မဟုတ် FreeTrack 2.0 မျှဝေမှတ်ဉာဏ်သို့ ရေးသော မည်သည့်ခြေရာခံကိရိယာနှင့်မဆိုလည်းကောင်း အလုပ်လုပ်သည်။ နောက်ခံတွင် ဆက်ရှင်တစ်ခု လည်ပတ်နိုင်သော ဤစက်ရှိ OpenXR ရန်တိုင်းနှင့်လည်း အလုပ်လုပ်သည်။</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Keys ကို ဖတ်ရန်</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK မှတစ်ဆင့် G-keys ကို ဖတ်သည်။ Logitech Gaming Software 8.55 သို့မဟုတ် နောက်ပိုင်းဗားရှင်း လည်ပတ်နေရန် လိုအပ်သည်။ ထိုဆော့ဖ်ဝဲတွင် G-key ကွန်မန်းကို PadForge ပရိုဖိုင်ရှိ ကီးတစ်ခုစီပေါ်သို့ ဆွဲထည့်ပါ။ ထိုပရိုဖိုင်ကို အမြဲတမ်း (persistent) ဖြစ်အောင် သတ်မှတ်ပါ၊ မဟုတ်ပါက PadForge ၏ဝင်းဒိုး ရှေ့ဆုံးတွင် ရှိနေချိန်၌သာ ကီးများ PadForge သို့ ရောက်မည်။ G600 သို့မဟုတ် G300 မောက်စ်ကိုလည်း on-board memory မုဒ်မှ ထွက်ထားရမည်။</value></data>
@@ -2691,9 +2713,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ယခု ရှေ့တွင်: {0}၊ ၎င်းအတွက် ပရိုဖိုင် မသတ်မှတ်ရသေးပါ</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ယခု ရှေ့တွင်: {0}၊ {1} ကို ဖွင့်သည်</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ယခု ရှေ့တွင်: {0}၊ မည်သည့်ပရိုဖိုင်တွင်မျှ ဂိမ်း မသတ်မှတ်ရသေးပါ</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>စတင်ဖွင့်ပေးသည့် ပရိုဂရမ်များနှင့် စခရစ်များမှ ပြင်ပထိန်းချုပ်မှုကို ခွင့်ပြုရန်</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control အမည်ရှိ ဤစက်တွင်းသုံး named pipe တစ်ခုကို ဖွင့်ပေးထားသဖြင့် Playnite၊ LaunchBox သို့မဟုတ် စခရစ်တစ်ခုက ပရိုဖိုင်များကို အသက်သွင်းခြင်းနှင့် ပိတ်ခြင်း ပြုလုပ်နိုင်သည်။ ဤနည်းဖြင့် အသက်သွင်းထားသော ပရိုဖိုင်သည် စခရစ်က လွှတ်ပေးသည်အထိ သို့မဟုတ် သင်ကိုယ်တိုင် ပရိုဖိုင်ပြောင်းသည်အထိ အသက်ဝင်နေမည်။ ဤစက်တွင်သာ။</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ပြင်ပထိန်းချုပ်မှု</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>လွှင့်တင်ပရိုဂရမ် သို့မဟုတ် စခရစ်တစ်ခုသည် “အလိုအလျောက်လုပ်ဆောင်ခြင်း” မှတစ်ဆင့် ပရိုဖိုင်များကို ပြောင်းနိုင်သည်။ ဤနည်းဖြင့် ပြောင်းထားသော ပရိုဖိုင်သည် ပရိုဂရမ်က လွှတ်ပေးသည်အထိ သို့မဟုတ် သင်ကိုယ်တိုင် ပရိုဖိုင် ပြောင်းသည်အထိ ဆက်ရှိနေသည်။</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း ပိတ်ထားသည်</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း ဖွင့်ထားသည်: ပရိုဂရမ်များသည် ပရိုဖိုင်များကို ပြောင်းနိုင်သည်</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း ဖွင့်ထားသည်: ပရိုဂရမ်များသည် ပရိုဖိုင်များကို ပြောင်းနိုင်ပြီး စက်ပစ္စည်းများနှင့် ဆက်တင်များကို ဖတ်နိုင်သည်</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း ဖွင့်ထားသည်: ပရိုဂရမ်များသည် ပရိုဖိုင်များကို ပြောင်းနိုင်၊ စက်ပစ္စည်းများနှင့် ဆက်တင်များကို ဖတ်နိုင်ပြီး အဝင်များ ပို့နိုင်သည်</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း ဖွင့်ထားသည်: ပရိုဂရမ်များသည် ပရိုဖိုင်များကို ပြောင်းနိုင်၊ အဝင်များ ပို့နိုင်ပြီး ဆက်တင်များကို ပြောင်းနိုင်သည်</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>အလိုအလျောက်လုပ်ဆောင်ခြင်း ဖွင့်ရန်</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>အသက်ဝင်နေသော ပရိုဖိုင်:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>ကွန်ထရိုလာ မရှိပါ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ပရိုဖိုင် တင်သွင်းရန် ဤနေရာတွင် ချပါ</value></data>
@@ -2750,7 +2777,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>လုပ်ဆောင်နိုင်သောဖိုင်များ (*.exe)|*.exe|ဖိုင်အားလုံး (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge သည် လည်ပတ်နေပြီး ဖြစ်သည်။</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ပြင်းထန်သော အမှား</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: အမှား</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>မမျှော်လင့်သော အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့သည်:

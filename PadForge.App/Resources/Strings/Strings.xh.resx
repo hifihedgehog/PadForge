@@ -142,6 +142,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Imamele kwizibuko :{0}. {1} ithumela kwisilawuli esinenombolo {2}, kwaye akukho silawuli sibonakalayo esine-DualSense okanye i-DualShock 4 esinaloo nombolo.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Izibuko {0} lisetyenziswa yenye inkqubo, njenge-DSX. Yivale okanye ukhethe elinye izibuko.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>I-mod yomdlalo</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Enye inkqubo ibambe igama lombhobho {0}. Vala loo nkqubo.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>I-Windows ilale umbhobho {0}, ngoko iinkqubo azikwazi ukuqhagamshela.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Tshintshela kwiprofayile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kwiprofayile engagqibekanga</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuba yeyiphi iprofayile esebenzayo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Bonisa ifestile</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Thumela ifestile kwi-tray yenkqubo</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Nciphisa ifestile</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Vala i-PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Qalisa injini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Misa injini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Vula zonke izilawuli ezibonakalayo</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Cima zonke izilawuli ezibonakalayo</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Vula isilawuli esibonakalayo {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Cima isilawuli esibonakalayo {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Gcina i-snapshot yokuxilonga</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Qalisa ukurekhoda ingxaki</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Misa ukurekhoda</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Faka uphawu kurekhodo</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Buza inguqulelo ye-PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Buza ukuba yintoni esebenzayo</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Thumela umgca i-PadForge engawaziyo: {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Qhagamshela</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Yala</value></data>
 
@@ -869,7 +891,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>I-PadForge sele isebenza.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Impazamo</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->

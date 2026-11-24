@@ -124,6 +124,28 @@
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port mod egwuregwu</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Mmemme ọzọ, dịka DSX, na-eji port {0}. Mechie ya ma ọ bụ họrọ port ọzọ.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Otu mod egwuregwu</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Mmemme ọzọ jidere aha pipe {0}. Mechie mmemme ahụ.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows jụrụ pipe {0}, ya mere mmemme enweghị ike ijikọ.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gbanwee gaa na profile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Laghachi na profile ndabara</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Jụọ profile na-arụ ọrụ</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Gosi windo</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Zipu windo na tray sistemụ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Belata windo</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Mechie PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Malite engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Kwụsị engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Gbanye virtual controller niile</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Gbanyụọ virtual controller niile</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Gbanye virtual controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Gbanyụọ virtual controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Chekwaa snapshot nyocha</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Malite idekọ nsogbu</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Kwụsị idekọ</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Tinye akara na ndekọ</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Jụọ ụdị PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Jụọ ihe na-agba</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Zipu ahịrị PadForge amaghị: {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Jikọọ</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Enweghị ngwaọrụ</value></data>
 
@@ -593,7 +615,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge na-arụ ọrụ ugbu a.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Njehie</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Njehie a na-atụghị anya mere:
 

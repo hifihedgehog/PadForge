@@ -76,7 +76,6 @@ namespace PadForge.ViewModels
             nameof(ShowLegacyWorkshopConfigs) or
             nameof(DiagnosticsLoggingEnabled) or
             nameof(EnableAutoProfileSwitching) or
-            nameof(EnableExternalControl) or
             nameof(IdentityProtectionModeIndex);
 
         private void ResetSetting(string name)
@@ -271,11 +270,6 @@ namespace PadForge.ViewModels
                     EnableAutoProfileSwitching = false;
                     break;
                 }
-                case nameof(EnableExternalControl):
-                {
-                    EnableExternalControl = false;
-                    break;
-                }
                 case nameof(IdentityProtectionModeIndex):
                 {
                     IdentityProtectionModeIndex = 0;
@@ -309,7 +303,9 @@ namespace PadForge.ViewModels
             nameof(EnableTouchpadOverlay) or
             nameof(EnableMenuOverlay) or
             nameof(EnableShiftLayerFlyout) or
-            nameof(EnableProfileOverlay);
+            nameof(EnableProfileOverlay) or
+            nameof(EnableAutomation) or
+            nameof(AutomationLevel);
 
         private void ResetSetting(string name)
         {
@@ -388,6 +384,19 @@ namespace PadForge.ViewModels
                 case nameof(EnableProfileOverlay):
                 {
                     EnableProfileOverlay = true;
+                    break;
+                }
+                case nameof(EnableAutomation):
+                {
+                    // Off is the default: no program reaches PadForge until
+                    // the user asks.
+                    EnableAutomation = false;
+                    break;
+                }
+                case nameof(AutomationLevel):
+                {
+                    // The lowest level, which is what a launcher needs.
+                    AutomationLevel = PadForge.Services.Automation.AutomationLevel.Commands;
                     break;
                 }
                 default: return;

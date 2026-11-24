@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>ისმენს :{0}. {1} აგზავნის კონტროლერის ინდექსზე {2}, ხოლო DualSense-ის ან DualShock 4-ის მქონე არცერთ ვირტუალურ კონტროლერს ეს ინდექსი არ აქვს.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>პორტი {0} დაკავებულია სხვა პროგრამით, მაგალითად DSX-ით. დახურეთ ის ან აირჩიეთ სხვა პორტი.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>თამაშის მოდი</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>სხვა პროგრამას უკავია მილის სახელი {0}. დახურეთ ეს პროგრამა.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-მა უარყო მილი {0}, ამიტომ პროგრამები ვერ უკავშირდებიან.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>გადართვა პროფილზე {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>დაბრუნება ნაგულისხმევ პროფილზე</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>კითხვა, რომელი პროფილია აქტიური</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>ფანჯრის ჩვენება</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ფანჯრის გადაყვანა სისტემურ პანელში</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ფანჯრის ჩაკეცვა</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ის დახურვა</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ძრავის გაშვება</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ძრავის გაჩერება</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ყველა ვირტუალური კონტროლერის ჩართვა</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ყველა ვირტუალური კონტროლერის გამორთვა</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>ვირტუალური კონტროლერის {0} ჩართვა</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>ვირტუალური კონტროლერის {0} გამორთვა</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>დიაგნოსტიკის სნეპშოტის შენახვა</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>პრობლემის ჩაწერის დაწყება</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>ჩაწერის შეჩერება</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ჩანაწერზე ნიშნულის დასმა</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ის ვერსიის მოთხოვნა</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>კითხვა, რა მუშაობს</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ისთვის უცნობი ხაზის გაგზავნა: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>მუშაობს OpenTrack-თან და ნებისმიერ ტრეკერთან, რომელიც UDP გამოსვლას აგზავნის ან FreeTrack 2.0 გაზიარებულ მეხსიერებაში წერს, ასევე OpenXR გაშვების გარემოსთან ამ კომპიუტერზე, რომელსაც სესიის ფონზე გაშვება შეუძლია.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key-ების წაკითხვა</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>კითხულობს G-key-ებს Logitech-ის G-key SDK-ს მეშვეობით. საჭიროა გაშვებული Logitech Gaming Software 8.55 ან უფრო ახალი. ამ პროგრამაში გადაათრიეთ G-key ბრძანება PadForge-ის პროფილის თითოეულ კლავიშზე. ეს პროფილი გახადეთ მუდმივი, თორემ კლავიშები PadForge-ს მხოლოდ მაშინ აღწევს, როცა მისი ფანჯარა წინა პლანზეა. G600 ან G300 მაუსიც უნდა იყოს ჩაშენებული მეხსიერების რეჟიმიდან გამოსული.</value></data>
@@ -2694,9 +2716,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ახლა წინა პლანზეა: {0}, მისთვის პროფილი არ არის მითითებული</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ახლა წინა პლანზეა: {0}, იტვირთება პროფილი {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ახლა წინა პლანზეა: {0}, და არც ერთ პროფილს ჯერ თამაში არ აქვს მითითებული</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ლანჩერებისა და სკრიპტებისთვის გარე მართვის დაშვება</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>აწვდის ლოკალურ დასახელებულ არხს, PadForge.Control, რათა Playnite-მ, LaunchBox-მა ან სკრიპტმა შეძლოს პროფილების გააქტიურება და გამორთვა. ასე გააქტიურებული პროფილი აქტიური რჩება, სანამ სკრიპტი არ გაათავისუფლებს ან თქვენ თვითონ არ გადართავთ პროფილს. მხოლოდ ამ კომპიუტერზე.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>გარე მართვა</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ლაუნჩერს ან სკრიპტს შეუძლია პროფილების გადართვა ავტომატიზაციის მეშვეობით. ასე გადართული პროფილი რჩება, სანამ პროგრამა არ გაათავისუფლებს ან თავად არ გადართავთ პროფილს.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ავტომატიზაცია გამორთულია</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ავტომატიზაცია ჩართულია: პროგრამებს შეუძლიათ პროფილების გადართვა</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ავტომატიზაცია ჩართულია: პროგრამებს შეუძლიათ პროფილების გადართვა და მოწყობილობებისა და პარამეტრების წაკითხვა</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ავტომატიზაცია ჩართულია: პროგრამებს შეუძლიათ პროფილების გადართვა, მოწყობილობებისა და პარამეტრების წაკითხვა და შეყვანების გაგზავნა</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ავტომატიზაცია ჩართულია: პროგრამებს შეუძლიათ პროფილების გადართვა, შეყვანების გაგზავნა და პარამეტრების შეცვლა</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ავტომატიზაციის გახსნა</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>აქტიური პროფილი:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>კონტროლერების გარეშე</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ჩააგდეთ პროფილის იმპორტისთვის</value></data>
@@ -2753,7 +2780,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>შესრულებადი ფაილები (*.exe)|*.exe|ყველა ფაილი (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge უკვე გაშვებულია.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ფატალური შეცდომა</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: შეცდომა</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>მოხდა მოულოდნელი შეცდომა:

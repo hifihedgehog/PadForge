@@ -346,6 +346,28 @@
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Aseta mods di jogu pa DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Porta di mods di jogu</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod di jogu</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Otu programa ten nómi di pipe {0}. Fitxa es programa.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows rekuza pipe {0}, pur isu programas ka podi konekta.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Troka pa perfil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Volta pa Perfil Padron</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Pergunta kal perfil ki sta ativu</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Mostra janela</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Manda janela pa bandeja di sistema</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimiza janela</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Fitxa PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Inisia motor</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Para motor</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Liga tudu komandu virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Disliga tudu komandu virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Liga Komandu virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Disliga Komandu virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Guarda un kaptura di diagnóstiku</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Kumesa grava un prubléma</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Para gravason</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Marka gravason</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Pergunta vérson di PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Pergunta kuzé ki sta ta funsiona</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Manda un linha ki PadForge ka kunxi: {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Komandu web</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativa servidor di komandu web</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Só es PC</value></data>
@@ -1761,7 +1783,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge dja sta abertu.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Eru fatal</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Eru</value></data>
 

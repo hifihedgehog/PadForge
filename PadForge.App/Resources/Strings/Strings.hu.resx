@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Figyel a :{0} porton. {1} a(z) {2}. indexű kontrollerre küld, és egyetlen DualSense vagy DualShock 4 kontrollerrel rendelkező virtuális kontrollernek sincs ilyen indexe.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>A(z) {0} portot egy másik program használja, például a DSX. Zárja be, vagy válasszon másik portot.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Egy játékmod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Egy másik program használja a(z) {0} csőnevet. Zárja be azt a programot.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>A Windows elutasította a(z) {0} csövet, ezért a programok nem tudnak csatlakozni.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Váltás erre a profilra: {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Visszatérés az alapértelmezett profilra</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>A mostani profil lekérdezése</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Az ablak megjelenítése</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Az ablak küldése az értesítési területre</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Az ablak minimalizálása</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>A PadForge bezárása</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>A motor elindítása</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>A motor leállítása</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Minden virtuális kontroller bekapcsolása</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Minden virtuális kontroller kikapcsolása</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>A(z) {0}. virtuális kontroller bekapcsolása</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>A(z) {0}. virtuális kontroller kikapcsolása</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Diagnosztikai pillanatkép mentése</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Problémafelvétel indítása</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>A felvétel leállítása</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>A felvétel megjelölése</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>A PadForge verziójának lekérdezése</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Annak lekérdezése, mi fut</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Egy, a PadForge által nem ismert sor küldése: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Együttműködik az OpenTrack programmal és minden olyan követővel, amely elküldi az UDP-kimenetét vagy FreeTrack 2.0 megosztott memóriába ír, valamint a gépen lévő olyan OpenXR-futtatókörnyezettel, amely a háttérben is tud munkamenetet futtatni.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-billentyűk olvasása</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>A G-billentyűket a Logitech G-key SDK-n keresztül olvassa. Ehhez futnia kell a Logitech Gaming Software 8.55-ös vagy újabb verziójának. Abban a programban húzza a „G-key” parancsot a PadForge-profil minden billentyűjére. Állítsa a profilt állandóra, különben a billentyűk csak akkor jutnak el a PadForge-hoz, amikor annak ablaka van előtérben. A G600 és a G300 egeret emellett ki kell venni a beépített memóriás módból.</value></data>
@@ -2922,9 +2944,14 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Előtérben most: {0}, nincs hozzá profil beállítva</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Előtérben most: {0}, amely ezt tölti be: {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Előtérben most: {0}, és még egyik profilhoz sincs játék beállítva</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Külső vezérlés engedélyezése indítók és szkriptek számára</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Helyi nevesített csövet (PadForge.Control) szolgál ki, így a Playnite, a LaunchBox vagy egy szkript aktiválhat és inaktiválhat profilokat. Az így aktivált profil addig marad aktív, amíg a szkript el nem engedi, vagy Ön maga nem vált profilt. Csak a helyi gépen.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Külső vezérlés</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Egy indítóprogram vagy szkript profilt válthat az Automatizálás extrán keresztül. Az így váltott profil addig marad, amíg a program el nem engedi, vagy Ön nem vált profilt.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Az Automatizálás ki van kapcsolva</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Az Automatizálás be van kapcsolva: a programok válthatnak profilt</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Az Automatizálás be van kapcsolva: a programok válthatnak profilt, és olvashatják az eszközöket és a beállításokat</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Az Automatizálás be van kapcsolva: a programok válthatnak profilt, olvashatják az eszközöket és a beállításokat, és küldhetnek bemeneteket</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Az Automatizálás be van kapcsolva: a programok válthatnak profilt, küldhetnek bemeneteket és módosíthatják a beállításokat</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Az Automatizálás megnyitása</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktív profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Nincs kontroller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Ejtse ide a profil importálásához</value></data>
@@ -2982,7 +3009,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Futtatható fájlok (*.exe)|*.exe|Minden fájl (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>A PadForge már fut.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: végzetes hiba</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: hiba</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Váratlan hiba történt:

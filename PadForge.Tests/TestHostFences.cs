@@ -204,6 +204,32 @@ namespace PadForge.Tests
         internal static void Set() => ExternalControlService.OffLimitsForTest = true;
     }
 
+    /// <summary>A PadForge that runs on the PC is left alone and never
+    /// stood in for: no window of it is looked up, nothing is posted to it,
+    /// its lock is not opened, its exit is not waited for, and no window is
+    /// made under the names its second copy looks for (#597).</summary>
+    internal static class RunningCopyOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => RunningCopy.OffLimitsForTest = true;
+    }
+
+    /// <summary>The console of whatever started the tests is not attached
+    /// to, nothing is written to it, and no box is shown (#597).</summary>
+    internal static class CallerConsoleOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => CallerConsole.OffLimitsForTest = true;
+    }
+
+    /// <summary>No copy of the exe is started with administrator rights
+    /// (#597).</summary>
+    internal static class StartWithRightsOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => StartWithRights.OffLimitsForTest = true;
+    }
+
     /// <summary>No DSU server is started on the port every DSU client on
     /// the PC polls.</summary>
     internal static class DsuPortOffLimits

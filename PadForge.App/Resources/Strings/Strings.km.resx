@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>កំពុងស្ដាប់នៅ :{0}។ {1} កំពុងផ្ញើទៅលេខរៀងឧបករណ៍បញ្ជា {2} ប៉ុន្តែគ្មានឧបករណ៍បញ្ជានិម្មិតណាដែលមាន DualSense ឬ DualShock 4 នៅលើវា មានលេខរៀងនោះទេ។</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ច្រក {0} កំពុងត្រូវបានប្រើដោយកម្មវិធីផ្សេង ដូចជា DSX។ បិទវា ឬជ្រើសរើសច្រកផ្សេង។</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ម៉ូដហ្គេមមួយ</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>កម្មវិធីផ្សេងកំពុងកាន់ឈ្មោះបំពង់ {0}។ បិទកម្មវិធីនោះ។</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows បានបដិសេធបំពង់ {0} ដូច្នេះកម្មវិធីមិនអាចភ្ជាប់បានទេ។</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ប្ដូរទៅប្រូហ្វាល់ {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ត្រឡប់ទៅប្រូហ្វាល់លំនាំដើម</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>សួរថាប្រូហ្វាល់ណាសកម្ម</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>បង្ហាញបង្អួច</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>បញ្ជូនបង្អួចទៅថាសប្រព័ន្ធ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>បង្រួមបង្អួច</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>បិទ PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ចាប់ផ្ដើមម៉ាស៊ីន</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>បញ្ឈប់ម៉ាស៊ីន</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>បើកឧបករណ៍បញ្ជានិម្មិតទាំងអស់</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>បិទឧបករណ៍បញ្ជានិម្មិតទាំងអស់</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>បើកឧបករណ៍បញ្ជានិម្មិត {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>បិទឧបករណ៍បញ្ជានិម្មិត {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>រក្សាទុករូបថតស្ថានភាពរោគវិនិច្ឆ័យ</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ចាប់ផ្ដើមថតបញ្ហា</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>បញ្ឈប់ការថត</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ដាក់សញ្ញាលើការថត</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>សួររកកំណែរបស់ PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>សួរថាអ្វីកំពុងដំណើរការ</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ផ្ញើបន្ទាត់ដែល PadForge មិនស្គាល់៖ {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ដំណើរការជាមួយ OpenTrack និងកម្មវិធីតាមដានណាមួយដែលផ្ញើលទ្ធផល UDP របស់វា ឬសរសេរអង្គចងចាំរួម FreeTrack 2.0 ហើយជាមួយកម្មវិធីដំណើរការ OpenXR នៅលើម៉ាស៊ីននេះ ដែលអាចដំណើរការវគ្គមួយនៅផ្ទៃខាងក្រោយ។</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>អានគ្រាប់ចុច G របស់ Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>អានគ្រាប់ចុច G តាមរយៈ Logitech G-key SDK។ ត្រូវការ Logitech Gaming Software 8.55 ឬថ្មីជាងនេះកំពុងដំណើរការ។ នៅក្នុងកម្មវិធីនោះ សូមអូសពាក្យបញ្ជា G-key ទៅលើគ្រាប់ចុចនីមួយៗក្នុងប្រូហ្វាល់ PadForge។ សូមកំណត់ប្រូហ្វាល់នោះឲ្យជាប់លាប់ បើមិនដូច្នោះទេ គ្រាប់ចុចនឹងទៅដល់ PadForge តែពេលបង្អួចរបស់វានៅខាងមុខប៉ុណ្ណោះ។ កណ្ដុរ G600 ឬ G300 ក៏ត្រូវតែចេញពីរបៀបអង្គចងចាំក្នុងឧបករណ៍ដែរ។</value></data>
@@ -2691,9 +2713,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>នៅខាងមុខឥឡូវ៖ {0} មិនមានប្រូហ្វាល់កំណត់សម្រាប់វាទេ</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>នៅខាងមុខឥឡូវ៖ {0} ដែលផ្ទុក {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>នៅខាងមុខឥឡូវ៖ {0} ហើយមិនទាន់មានប្រូហ្វាល់ណាកំណត់ហ្គេមនៅឡើយទេ</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>អនុញ្ញាតឱ្យកម្មវិធីបើកហ្គេម និងស្គ្រីប គ្រប់គ្រងពីខាងក្រៅ</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>បើកបំពង់មានឈ្មោះក្នុងម៉ាស៊ីន PadForge.Control ដើម្បីឱ្យ Playnite, LaunchBox ឬស្គ្រីប អាចបើក និងបិទប្រូហ្វាល់។ ប្រូហ្វាល់ដែលបើកតាមវិធីនេះ នៅតែសកម្មរហូតដល់ស្គ្រីបលែងវា ឬអ្នកប្ដូរប្រូហ្វាល់ដោយខ្លួនឯង។ សម្រាប់តែម៉ាស៊ីននេះប៉ុណ្ណោះ។</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ការគ្រប់គ្រងពីខាងក្រៅ</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>កម្មវិធីបើកហ្គេម ឬស្គ្រីបអាចប្ដូរប្រូហ្វាល់តាមរយៈ «ស្វ័យប្រវត្តិកម្ម»។ ប្រូហ្វាល់ដែលបានប្ដូរតាមរបៀបនេះ នៅដដែលរហូតដល់កម្មវិធីលែងវា ឬអ្នកប្ដូរប្រូហ្វាល់ដោយខ្លួនឯង។</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ស្វ័យប្រវត្តិកម្មបានបិទ</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ស្វ័យប្រវត្តិកម្មបានបើក៖ កម្មវិធីអាចប្ដូរប្រូហ្វាល់</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ស្វ័យប្រវត្តិកម្មបានបើក៖ កម្មវិធីអាចប្ដូរប្រូហ្វាល់ និងអានឧបករណ៍ និងការកំណត់</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ស្វ័យប្រវត្តិកម្មបានបើក៖ កម្មវិធីអាចប្ដូរប្រូហ្វាល់ អានឧបករណ៍ និងការកំណត់ ហើយផ្ញើការបញ្ចូល</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ស្វ័យប្រវត្តិកម្មបានបើក៖ កម្មវិធីអាចប្ដូរប្រូហ្វាល់ ផ្ញើការបញ្ចូល និងប្ដូរការកំណត់</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>បើកស្វ័យប្រវត្តិកម្ម</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ប្រូហ្វាល់សកម្ម៖</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>គ្មានឧបករណ៍បញ្ជា</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ទម្លាក់ដើម្បីនាំចូលប្រូហ្វាល់</value></data>
@@ -2750,7 +2777,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ឯកសារប្រតិបត្តិ (*.exe)|*.exe|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge កំពុងដំណើរការរួចហើយ។</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge៖ កំហុសធ្ងន់ធ្ងរ</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge៖ កំហុស</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>មានកំហុសដែលមិនបានរំពឹងទុកបានកើតឡើង៖

@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lastad na :{0}. {1} menna na noth maethas {2}, a maethas nem gu DualSense egor DualShock 4 ú gar i noth hen.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Curu egel, sui DSX, maetha Fen {0}. Holo hon egor cilo fen egel.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Tavn telias</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Curu egel gar eneth i rod {0}. Holo i curu hen.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows bodant i rod {0}, a curu ú-pol ianna.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gwisto na banu {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dammeno na banu senu</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Mabedo men panu echuidannen</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Tano i henneth</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Menno i henneth na dast</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Nítho i henneth</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Holo PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Iesto i naur</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Posto i naur</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Echuido maethais nem pân</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Lortho maethais nem pân</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Echuido Maethas Nem {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Lortho Maethas Nem {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Haudho em tastaith</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Iesto teithad press</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Posto teithad</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Teitho têw vi teithad</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Mabedo noth PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Mabedo men cuia</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Menno lîr ú-sinnen na PadForge: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Ianna gu OpenTrack a pân tirith dol i menna etholad UDP egor teitha haudhad govannen FreeTrack 2.0, a gu curu OpenXR vi garf nediad hen i pol northa carthas toblannen.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Henno G-Keys Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Henna G-keys adh Logitech G-key SDK. Baura Logitech Gaming Software 8.55 egor cŷr, norol. Vi curu hen, logo i hesta G-key na pân ledil vi panu PadForge. Caro i panu hen thand, egor i ledil tolar na PadForge ero lo i henneth în cuin. Nigol G600 egor G300 boe eithro haena i men haudhad în.</value></data>
@@ -2923,9 +2945,14 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Ben nîf sí: {0}, ú-panu an hen</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Ben nîf sí: {0}, i edra {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Ben nîf sí: {0}, a ú-panu gar telias sestannen eno</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Davo maeth o curu eth</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Edra lang ivil, PadForge.Control, an Playnite, LaunchBox egor curu egel pol echuida a lortha panui. Panu echuidannen sui sen reth cui naden i guru leithia hen egor ce gwista panu. Carf nediad sen ero.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Maeth o curu eth</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Curu iestad egor teithas pol gwista panu ben Maethad Curu. Panu gwistannen sui hen dartha naden i curu leithia hon egor le gwista panu.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Maethad Curu lorn</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Maethad Curu cui: curu pol gwista panu</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Maethad Curu cui: curu pol gwista panu a henna cerf a cilith</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Maethad Curu cui: curu pol gwista panu, henna cerf a cilith, a menna minnad</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Maethad Curu cui: curu pol gwista panu, menna minnad a gwista cilith</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Edro Maethad Curu</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Panu cui:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Ú-maethas</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Leithio an ged panu</value></data>
@@ -2996,7 +3023,6 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Celias ledil PadForge (*.json)|*.json</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge carweg hí.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: dŷl beleg</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: dŷl</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Dŷl ú-genant:

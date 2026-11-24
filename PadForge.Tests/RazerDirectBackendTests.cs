@@ -5388,7 +5388,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The mutex is made so that every user may open it with
-        /// every right, since PadForge runs elevated and OpenRGB, which
+        /// every right, since the app runs elevated and OpenRGB, which
         /// asks for every right on a mutex that exists, may not.</summary>
         [Fact]
         public void EveryoneMayOpenTheLock_WithEveryRight()

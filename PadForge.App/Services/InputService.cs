@@ -150,7 +150,6 @@ namespace PadForge.Services
         private readonly object _balanceLock = new();
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
-        private ExternalControlService _externalControl;
         private PadForge.Common.Input.Peripherals.PeripheralOutputHost _peripheralHost;
         private ProfileData _defaultProfileSnapshot;
 
@@ -2434,9 +2433,6 @@ namespace PadForge.Services
             _foregroundMonitor = new ForegroundMonitorService();
             _foregroundMonitor.ProfileSwitchRequired += OnAutoProfileSwitchRequired;
 
-            // Serve the external-control pipe (#366) if the user opted in.
-            StartExternalControlIfEnabled();
-
             // Haptic and RGB peripherals (#494): the host links mice,
             // keyboards and vendor rows to their outputs and runs the
             // backends, which reach a vendor only while something assigned
@@ -2543,17 +2539,25 @@ namespace PadForge.Services
             // Enter idle immediately if no slots are created.
             UpdateIdleState();
 
-            // A profile passed on the command line (#366) applies now that the
-            // engine is up. This is a direct in-process apply, so it works even
-            // when the external-control pipe is off (the pipe is for a launcher
-            // driving an ALREADY-running instance; this is the cold-start form).
-            string pending = App.PendingProfileCommand;
-            if (!string.IsNullOrEmpty(pending))
+            // What this copy's own command line asked for once the engine is
+            // up (#366, #597): a profile, a recording. They run in process,
+            // so they work with Automation off (the control pipe is for a
+            // program driving a copy that already runs, and this is the
+            // start itself). Taken before they run, so a later engine start
+            // does not run them again.
+            var afterStart = StepsForTheFirstStart;
+            if (afterStart != null)
             {
-                App.ClearPendingProfileCommand();
-                try { ExecuteExternalControlCommand(pending); } catch { }
+                StepsForTheFirstStart = null;
+                try { afterStart(); } catch { }
             }
         }
+
+        /// <summary>The steps of this copy's own command line that wait for
+        /// the engine, set by the main window before the start they wait for
+        /// and run once at the tail of <see cref="Start"/>. A start that
+        /// fails leaves them for the next one.</summary>
+        internal Action StepsForTheFirstStart { get; set; }
 
         /// <summary>
         /// Stops the UI timer and engine, releases resources.
@@ -2661,7 +2665,6 @@ namespace PadForge.Services
                 _foregroundMonitor.ProfileSwitchRequired -= OnAutoProfileSwitchRequired;
                 _foregroundMonitor = null;
             }
-            StopExternalControl();
             StopPeripheralOutputs();
             StopDsuServer();
             StopGameModServer();
@@ -11758,16 +11761,6 @@ namespace PadForge.Services
                 // profile deactivates.
                 ApplyEffectivePollingRate();
             }
-            else if (e.PropertyName == nameof(SettingsViewModel.EnableExternalControl))
-            {
-                // Live start/stop of the external-control pipe (#366),
-                // mirroring the DSU / web server toggles below.
-                SettingsManager.EnableExternalControl = _mainVm.Settings.EnableExternalControl;
-                if (_mainVm.Settings.EnableExternalControl)
-                    StartExternalControlIfEnabled();
-                else
-                    StopExternalControl();
-            }
             else if (e.PropertyName == nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds) && _inputManager != null)
             {
                 _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
@@ -11894,80 +11887,88 @@ namespace PadForge.Services
         //  DSU Motion Server lifecycle
         // ─────────────────────────────────────────────
 
-        // ── External control pipe (#366) ──
+        // ── External control (#366, #597) ──
+        //
+        // The three profile verbs of the command set, whose answers have
+        // been a contract since #366. The command set reads the line and
+        // comes here on the UI thread (Services/Automation/AutomationCommands.cs),
+        // and the control pipe that carries the lines is Automation's, served
+        // for as long as the app runs and whether or not the engine does.
+        // The interface switches profiles with the engine stopped, and so do
+        // these.
 
-        private void StartExternalControlIfEnabled()
+        /// <summary>Lets go of a profile a program held, when no program can
+        /// release it any more: Automation was turned off. Runs on the UI
+        /// thread.</summary>
+        internal void ReleaseExternalPin()
         {
-            // Engine-gated like StartDsuServerIfEnabled: the pipe serves
-            // "while the engine is running" (the docs' contract), so a
-            // checkbox toggle with the engine stopped arms nothing and the
-            // next engine start brings the pipe up.
-            if (!SettingsManager.EnableExternalControl || _inputManager == null) return;
-            if (_externalControl != null) return; // already serving
-            _externalControl = new ExternalControlService(ExecuteExternalControlCommand);
-            _externalControl.Start();
-        }
-
-        private void StopExternalControl()
-        {
-            if (_externalControl == null) return;
-            _externalControl.Dispose();
-            _externalControl = null;
             SettingsManager.ExternalProfilePinActive = false;
             // Same release rule as ExternalDeactivate: a pin dropped here
             // leaves the monitor dedup cache pre-pin, so it re-evaluates.
             _foregroundMonitor?.InvalidateCache();
         }
 
-        /// <summary>Runs one external-control command line and returns the
-        /// response line (#366). Called off the UI thread by the pipe server,
-        /// so every state touch marshals onto the dispatcher. Verbs and
-        /// responses are fixed ASCII, never localized: this is a machine
-        /// interface. Grammar:
-        /// <list type="bullet">
-        /// <item><c>activate &lt;profile name or id&gt;</c> -> <c>ok &lt;name&gt;</c> | <c>error unknown-profile</c></item>
-        /// <item><c>deactivate</c> -> <c>ok default</c></item>
-        /// <item><c>query</c> -> <c>ok &lt;name|default&gt; pinned|unpinned</c></item>
-        /// </list></summary>
-        internal string ExecuteExternalControlCommand(string line)
+        /// <summary><c>query</c>: <c>ok &lt;name|default&gt; pinned|unpinned</c>.
+        /// Runs on the UI thread.</summary>
+        internal string ExternalQuery()
         {
-            if (string.IsNullOrWhiteSpace(line)) return "error empty";
-
-            // Split into verb and the rest (the profile name may contain
-            // spaces, so only the first token is the verb).
-            line = line.Trim();
-            int sp = line.IndexOf(' ');
-            string verb = (sp < 0 ? line : line.Substring(0, sp)).ToLowerInvariant();
-            string arg = sp < 0 ? string.Empty : line.Substring(sp + 1).Trim();
-
-            switch (verb)
-            {
-                case "activate":
-                    if (string.IsNullOrEmpty(arg)) return "error empty";
-                    return _dispatcher.Invoke(() => ExternalActivate(arg));
-
-                case "deactivate":
-                    return _dispatcher.Invoke(() => ExternalDeactivate());
-
-                case "query":
-                    return _dispatcher.Invoke(() =>
-                    {
-                        string id = SettingsManager.ActiveProfileId;
-                        string name = id == null
-                            ? "default"
-                            : (FindProfileById(id)?.Name ?? "default");
-                        string pin = SettingsManager.ExternalProfilePinActive ? "pinned" : "unpinned";
-                        return "ok " + name + " " + pin;
-                    });
-
-                default:
-                    return "error unknown-command";
-            }
+            string id = SettingsManager.ActiveProfileId;
+            string name = id == null
+                ? "default"
+                : (FindProfileById(id)?.Name ?? "default");
+            string pin = SettingsManager.ExternalProfilePinActive ? "pinned" : "unpinned";
+            return "ok " + name + " " + pin;
         }
 
-        /// <summary>Activate a profile by id first, then case-insensitive name,
-        /// and pin it against the foreground monitor. Runs on the UI thread.</summary>
-        private string ExternalActivate(string idOrName)
+        /// <summary>The active profile's name and ID for the state line, both
+        /// null on the default profile. Runs on the UI thread.</summary>
+        internal (string Name, string Id) ActiveProfileForState()
+        {
+            string id = SettingsManager.ActiveProfileId;
+            var profile = id == null ? null : FindProfileById(id);
+            return profile == null ? (null, null) : (profile.Name, profile.Id);
+        }
+
+        /// <summary>The engine's state as it is now, read from the engine and
+        /// not from the dashboard, which is drawn less often while the window
+        /// is hidden. A stop under way reads as stopping from the moment it
+        /// begins until the engine is gone.</summary>
+        internal Automation.AutomationEngineState ReadEngineState()
+        {
+            var manager = _inputManager;
+            if (manager == null) return Automation.AutomationEngineState.Stopped;
+            if (System.Threading.Volatile.Read(ref _stopped) != 0) return Automation.AutomationEngineState.Stopping;
+            if (!manager.IsRunning) return Automation.AutomationEngineState.Stopped;
+            return manager.IsIdle ? Automation.AutomationEngineState.Idle : Automation.AutomationEngineState.Running;
+        }
+
+        /// <summary>How many devices a slot has assigned and how many of them
+        /// are connected, by the rule its Home card counts by
+        /// (RefreshSlotSummaryProperties), read from the engine's own records.
+        /// The devices' lock is let go before the settings' is taken.</summary>
+        internal static (int Assigned, int Online) CountSlotDevices(int padIndex)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return (0, 0);
+            UserDevice[] rows = null;
+            var devices = SettingsManager.UserDevices;
+            if (devices != null)
+            {
+                lock (devices.SyncRoot)
+                    rows = devices.Items.ToArray();
+            }
+            var mapped = settings.FindByPadIndex(padIndex);
+            int online = 0;
+            foreach (var setting in mapped)
+                if (AnyOnlineMatch(rows, setting.InstanceGuid)) online++;
+            return (mapped.Count, online);
+        }
+
+        /// <summary><c>activate</c>: a profile by id first, then
+        /// case-insensitive name, pinned against the foreground monitor.
+        /// Answers <c>ok &lt;name&gt;</c> or <c>error unknown-profile</c>.
+        /// Runs on the UI thread.</summary>
+        internal string ExternalActivate(string idOrName)
         {
             ProfDiag("ExternalActivate:enter");
             var profiles = SettingsManager.Profiles;
@@ -11992,9 +11993,10 @@ namespace PadForge.Services
             return "ok " + target.Name;
         }
 
-        /// <summary>Release the pin and revert to the default profile. Runs on
-        /// the UI thread.</summary>
-        private string ExternalDeactivate()
+        /// <summary><c>deactivate</c>: releases the pin and reverts to the
+        /// default profile. Answers <c>ok default</c>. Runs on the UI
+        /// thread.</summary>
+        internal string ExternalDeactivate()
         {
             ProfDiag("ExternalDeactivate:enter");
             SettingsManager.ExternalProfilePinActive = false;

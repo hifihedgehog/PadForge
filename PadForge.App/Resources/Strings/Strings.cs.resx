@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Naslouchá na :{0}. {1} posílá na index ovladače {2} a žádný virtuální ovladač s ovladačem DualSense nebo DualShock 4 nemá tento index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} používá jiný program, například DSX. Zavřete ho nebo zvolte jiný port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Herní mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Jiný program drží název kanálu {0}. Zavřete ho.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows odmítl kanál {0}, takže se programy nemohou připojit.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Přepnout na profil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vrátit se k výchozímu profilu</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Zjistit, který profil je aktivní</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Zobrazit okno</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Odeslat okno do oznamovací oblasti</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimalizovat okno</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Zavřít PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Spustit jádro</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Zastavit jádro</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Zapnout všechny virtuální ovladače</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Vypnout všechny virtuální ovladače</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Zapnout virtuální ovladač {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Vypnout virtuální ovladač {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Uložit diagnostický snímek</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Začít nahrávat problém</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Zastavit nahrávání</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Označit záznam</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Zjistit verzi programu PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Zjistit, co běží</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Poslat řádek, který PadForge nezná: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funguje s programem OpenTrack a s každým sledovačem, který odesílá výstup přes UDP nebo zapisuje do sdílené paměti FreeTrack 2.0, a také s běhovým prostředím OpenXR na tomto počítači, které umí spustit relaci na pozadí.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Číst G-klávesy Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Čte G-klávesy přes Logitech G-key SDK. Vyžaduje spuštěný Logitech Gaming Software 8.55 nebo novější. V tomto softwaru přetáhněte v profilu PadForge příkaz G-key na každou klávesu. Nastavte tento profil jako trvalý, jinak se klávesy do programu PadForge dostanou jen tehdy, když je jeho okno v popředí. Myš G600 nebo G300 navíc nesmí být v režimu vestavěné paměti.</value></data>
@@ -2922,9 +2944,14 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Vpředu je {0}, bez nastaveného profilu</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Vpředu je {0}, načte {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Vpředu je {0}, žádný profil zatím nemá nastavenou hru</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Povolit externí ovládání spouštěči a skripty</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Poskytuje místní pojmenovaný kanál PadForge.Control, takže Playnite, LaunchBox nebo skript mohou profily aktivovat a deaktivovat. Takto aktivovaný profil zůstane aktivní, dokud ho skript neuvolní nebo dokud profil nepřepnete sami. Jen na místním počítači.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Externí ovládání</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Spouštěč nebo skript může přepínat profily přes Automatizaci. Takto přepnutý profil zůstane, dokud ho program neuvolní nebo dokud profil nepřepnete sami.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatizace je vypnutá</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatizace je zapnutá: programy mohou přepínat profily</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatizace je zapnutá: programy mohou přepínat profily a číst zařízení a nastavení</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatizace je zapnutá: programy mohou přepínat profily, číst zařízení a nastavení a posílat vstupy</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatizace je zapnutá: programy mohou přepínat profily, posílat vstupy a měnit nastavení</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Otevřít Automatizaci</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktivní profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Žádné ovladače</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Přetažením sem importujete profil</value></data>
@@ -2982,7 +3009,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Spustitelné soubory (*.exe)|*.exe|Všechny soubory (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge je už spuštěný.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: závažná chyba</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: chyba</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Došlo k neočekávané chybě:

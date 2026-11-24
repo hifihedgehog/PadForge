@@ -708,7 +708,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ña llamk'achkan.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Pantay</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Mana suyasqa pantay rikhurirqa:
 
@@ -1679,4 +1678,26 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Rikch'aywan tupachiy</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Tawa llimp'ikunata rikch'aymanta hap'in.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kachachkallay</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Huk programa {0} pipe sutita hap'in. Chay programata wisq'ay.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows mana {0} pipeta munarqanchu, chayrayku programakuna mana tinkikuyta atinkuchu.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} perfilman t'ikray</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ñawpaq kaq perfilman kutiy</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Mayqin perfil llamk'achkasqanta tapuy</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ventanata rikuchiy</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ventanata sistemap bandejanman kachay</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Ventanata huch'uyachiy</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge nisqata wisq'ay</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Motorta qallarichiy</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Motorta sayachiy</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Tukuy control virtualkunata hap'ichiy</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Tukuy control virtualkunata wañuchiy</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Control virtual {0} hap'ichiy</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Control virtual {0} wañuchiy</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Diagnóstico capturata waqaychay</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Huk sasachakuyta grabayta qallariy</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Grabayta sayachiy</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Grabacionta marcay</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge nisqap versiónninta tapuy</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Ima llamk'achkasqanta tapuy</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge mana riqsisqan siq'ita kachay: {0}</value></data>
 </root>

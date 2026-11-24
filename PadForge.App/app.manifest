@@ -4,12 +4,14 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <!-- HIDMaestro driver install + virtual device node management
-             require admin. PadForge is unusable without elevation, so we
-             require it at launch via the manifest instead of relaunching
-             at runtime. Windows shows the UAC shield on the exe icon and
-             prompts on launch. -->
-        <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+        <!-- The exe starts with its caller's rights. A copy that hands
+             switches to the running PadForge, or serves an assistant, has
+             to answer on its caller's console, which a copy Windows raised
+             through its prompt cannot reach. The one start that is the app
+             needs administrator rights for HIDMaestro's driver and device
+             nodes, and asks for them itself (Services/StartWithRights.cs,
+             #597). -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
       </requestedPrivileges>
     </security>
   </trustInfo>

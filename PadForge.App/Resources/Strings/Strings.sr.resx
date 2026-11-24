@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Слуша на :{0}. {1} шаље на индекс контролера {2}, а ниједан виртуелни контролер са DualSense или DualShock 4 контролером нема тај индекс.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Порт {0} користи други програм, као што је DSX. Затворите га или изаберите други порт.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Мод за игру</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Други програм држи име цеви {0}. Затворите тај програм.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows је одбио цев {0}, па се програми не могу повезати.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Пређи на профил {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Врати се на подразумевани профил</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Питај који је профил активан</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Прикажи прозор</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Пошаљи прозор у системску палету</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Умањи прозор</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Затвори PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Покрени механизам</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Заустави механизам</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Укључи сваки виртуелни контролер</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Искључи сваки виртуелни контролер</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Укључи Виртуелни контролер {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Искључи Виртуелни контролер {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Сачувај снимак дијагностике</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Почни снимање проблема</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Заустави снимање</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Означи снимак</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Питај за верзију програма PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Питај шта ради</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Пошаљи ред који PadForge не познаје: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Ради са програмом OpenTrack и сваким програмом за праћење који шаље свој UDP излаз или уписује у дељену меморију FreeTrack 2.0, као и са OpenXR извршним окружењем на овом рачунару које може да покрене сесију у позадини.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Очитавање Logitech G-тастера</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Очитава G-тастере преко пакета Logitech G-key SDK. Потребан је покренут Logitech Gaming Software 8.55 или новији. У том програму превуците команду G-key на сваки тастер у профилу PadForge. Подесите тај профил као трајни, иначе тастери стижу до програма PadForge само док је његов прозор у првом плану. Миш G600 или G300 такође мора бити изван режима уграђене меморије.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>У првом плану: {0}, за њега није постављен профил</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>У првом плану: {0}, који учитава {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>У првом плану: {0}, а ниједан профил још нема постављену игру</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Дозволи спољну контролу из програма за покретање игара и скрипти</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Пружа локалну именовану цев PadForge.Control, тако да Playnite, LaunchBox или скрипта могу да активирају и деактивирају профиле. Профил активиран на овај начин остаје активан док га скрипта не ослободи или док сами не промените профил. Само на локалном рачунару.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Спољна контрола</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Покретач или скрипта могу да мењају профиле преко Аутоматизације. Профил промењен на овај начин остаје док га програм не отпусти или док сами не промените профил.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Аутоматизација је искључена</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Аутоматизација је укључена: програми могу да мењају профиле</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Аутоматизација је укључена: програми могу да мењају профиле и читају уређаје и подешавања</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Аутоматизација је укључена: програми могу да мењају профиле, читају уређаје и подешавања и шаљу улазе</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Аутоматизација је укључена: програми могу да мењају профиле, шаљу улазе и мењају подешавања</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Отвори Аутоматизацију</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Активни профил:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Нема контролера</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Отпустите да бисте увезли профил</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Извршне датотеке (*.exe)|*.exe|Све датотеке (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge је већ покренут.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: кобна грешка</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: грешка</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Дошло је до неочекиване грешке:

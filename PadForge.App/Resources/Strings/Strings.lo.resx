@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}. {1} ກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມໝາຍເລກ {2} ແຕ່ບໍ່ມີຕົວຄວບຄຸມສະເໝືອນທີ່ມີ DualSense ຫຼື DualShock 4 ໃດມີໝາຍເລກນັ້ນ.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ພອດ {0} ຖືກໃຊ້ຢູ່ໂດຍໂປຣແກຣມອື່ນ ເຊັ່ນ DSX. ປິດໂປຣແກຣມນັ້ນ ຫຼື ເລືອກພອດອື່ນ.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ມອດເກມໜຶ່ງ</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>ໂປຣແກຣມອື່ນຖືຊື່ໄປປ໌ {0} ຢູ່. ປິດໂປຣແກຣມນັ້ນ.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ປະຕິເສດໄປປ໌ {0}, ສະນັ້ນໂປຣແກຣມຈຶ່ງເຊື່ອມຕໍ່ບໍ່ໄດ້.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ປ່ຽນໄປໂປຣໄຟລ໌ {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ກັບໄປໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>ຖາມວ່າໂປຣໄຟລ໌ໃດເປີດໃຊ້ຢູ່</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>ສະແດງໜ້າຕ່າງ</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ສົ່ງໜ້າຕ່າງໄປຖາດລະບົບ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ຫຍໍ້ໜ້າຕ່າງ</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>ປິດ PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ເລີ່ມເອັນຈິນ</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ຢຸດເອັນຈິນ</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ເປີດຕົວຄວບຄຸມສະເໝືອນທຸກຕົວ</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ປິດຕົວຄວບຄຸມສະເໝືອນທຸກຕົວ</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>ເປີດຕົວຄວບຄຸມສະເໝືອນ {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>ປິດຕົວຄວບຄຸມສະເໝືອນ {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>ບັນທຶກສະແນັບຊັອດການວິນິດໄສ</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ເລີ່ມບັນທຶກບັນຫາ</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>ຢຸດການບັນທຶກ</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ໝາຍການບັນທຶກ</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>ຖາມເວີຊັນຂອງ PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ຖາມວ່າມີຫຍັງກຳລັງເຮັດວຽກ</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ສົ່ງແຖວທີ່ PadForge ບໍ່ຮູ້ຈັກ: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບ OpenTrack ແລະ ຕົວຕິດຕາມໃດໆທີ່ສົ່ງເອົາພຸດ UDP ຫຼື ຂຽນໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack 2.0, ແລະ ກັບຣັນທາມ OpenXR ໃນເຄື່ອງນີ້ທີ່ສາມາດແລ່ນເຊດຊັນໃນພື້ນຫຼັງໄດ້.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>ອ່ານປຸ່ມ G-Key ຂອງ Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>ອ່ານປຸ່ມ G-key ຜ່ານ Logitech G-key SDK. ຕ້ອງມີ Logitech Gaming Software 8.55 ຫຼື ໃໝ່ກວ່າເຮັດວຽກຢູ່. ໃນຊອບແວນັ້ນ, ລາກຄຳສັ່ງ G-key ໄປໃສ່ແຕ່ລະປຸ່ມໃນໂປຣໄຟລ໌ PadForge. ຕັ້ງໂປຣໄຟລ໌ນັ້ນໃຫ້ຖາວອນ, ບໍ່ດັ່ງນັ້ນປຸ່ມຈະສົ່ງເຖິງ PadForge ສະເພາະຕອນທີ່ໜ້າຕ່າງຂອງມັນຢູ່ດ້ານໜ້າ. ເມົ້າ G600 ຫຼື G300 ຍັງຕ້ອງອອກຈາກໂໝດໜ່ວຍຄວາມຈຳໃນຕົວນຳ.</value></data>
@@ -2687,9 +2709,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ຢູ່ດ້ານໜ້າຕອນນີ້: {0}, ບໍ່ມີໂປຣໄຟລ໌ຕັ້ງໄວ້ສຳລັບມັນ</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ຢູ່ດ້ານໜ້າຕອນນີ້: {0}, ເຊິ່ງໂຫຼດ {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ຢູ່ດ້ານໜ້າຕອນນີ້: {0}, ແລະ ຍັງບໍ່ມີໂປຣໄຟລ໌ໃດຕັ້ງເກມໄວ້</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ອະນຸຍາດໃຫ້ຕົວເປີດເກມ ແລະ ສະຄຣິບຄວບຄຸມຈາກພາຍນອກ</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>ເປີດທໍ່ສົ່ງຂໍ້ມູນ (named pipe) ພາຍໃນເຄື່ອງຊື່ PadForge.Control ເພື່ອໃຫ້ Playnite, LaunchBox ຫຼື ສະຄຣິບ ສາມາດເປີດໃຊ້ ແລະ ປິດໃຊ້ໂປຣໄຟລ໌ໄດ້. ໂປຣໄຟລ໌ທີ່ເປີດໃຊ້ດ້ວຍວິທີນີ້ຈະເຮັດວຽກຢູ່ຈົນກວ່າສະຄຣິບຈະປ່ອຍມັນ ຫຼື ທ່ານສະຫຼັບໂປຣໄຟລ໌ເອງ. ສະເພາະເຄື່ອງນີ້ເທົ່ານັ້ນ.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ການຄວບຄຸມຈາກພາຍນອກ</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ຕົວເປີດເກມ ຫຼື ສະຄຣິບສາມາດປ່ຽນໂປຣໄຟລ໌ຜ່ານ ລະບົບອັດຕະໂນມັດ. ໂປຣໄຟລ໌ທີ່ປ່ຽນດ້ວຍວິທີນີ້ຈະຢູ່ຈົນກວ່າໂປຣແກຣມຈະປ່ອຍມັນ ຫຼື ທ່ານປ່ຽນໂປຣໄຟລ໌ເອງ.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດປິດຢູ່</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດເປີດຢູ່: ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດເປີດຢູ່: ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌ ແລະ ອ່ານອຸປະກອນ ແລະ ການຕັ້ງຄ່າ</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດເປີດຢູ່: ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌, ອ່ານອຸປະກອນ ແລະ ການຕັ້ງຄ່າ, ແລະ ສົ່ງອິນພຸດ</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດເປີດຢູ່: ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌, ສົ່ງອິນພຸດ ແລະ ປ່ຽນການຕັ້ງຄ່າ</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ເປີດລະບົບອັດຕະໂນມັດ</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>ບໍ່ມີຕົວຄວບຄຸມ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ວາງເພື່ອນຳເຂົ້າໂປຣໄຟລ໌</value></data>
@@ -2746,7 +2773,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ໄຟລ໌ໂປຣແກຣມ (*.exe)|*.exe|ໄຟລ໌ທັງໝົດ (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ກຳລັງເຮັດວຽກຢູ່ແລ້ວ.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ຂໍ້ຜິດພາດຮ້າຍແຮງ</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: ຂໍ້ຜິດພາດ</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຄາດຄິດ:

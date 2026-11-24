@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}. {1} به شماره کنترلر {2} می‌فرستد، و هیچ کنترلر مجازی دارای DualSense یا DualShock 4 این شماره را ندارد.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>پورت {0} توسط برنامه دیگری مانند DSX در حال استفاده است. آن را ببندید یا پورت دیگری انتخاب کنید.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>یک مود بازی</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>برنامه دیگری نام لوله {0} را در اختیار دارد. آن برنامه را ببندید.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows لوله {0} را رد کرد، بنابراین برنامه‌ها نمی‌توانند وصل شوند.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>رفتن به پروفایل {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>بازگشت به پروفایل پیش‌فرض</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسیدن اینکه کدام پروفایل فعال است</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>نمایش پنجره</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>فرستادن پنجره به سینی سیستم</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>کوچک کردن پنجره</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>بستن PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>راه‌اندازی موتور</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>توقف موتور</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>روشن کردن همه کنترلرهای مجازی</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>خاموش کردن همه کنترلرهای مجازی</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>روشن کردن کنترلر مجازی {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>خاموش کردن کنترلر مجازی {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>ذخیره تصویر لحظه‌ای عیب‌یابی</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>شروع ضبط یک مشکل</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>توقف ضبط</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>نشانه‌گذاری ضبط</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>پرسیدن نسخه PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>پرسیدن اینکه چه چیزی در حال اجراست</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ارسال خطی که PadForge نمی‌شناسد: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>با OpenTrack و هر ردیابی که خروجی UDP آن را می‌فرستد یا در حافظه مشترک FreeTrack 2.0 می‌نویسد کار می‌کند، و نیز با یک محیط اجرای OpenXR روی همین رایانه که بتواند نشستی را در پس‌زمینه اجرا کند.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>خواندن کلیدهای G از Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>کلیدهای G را از طریق Logitech G-key SDK می‌خواند. باید Logitech Gaming Software نسخه 8.55 یا جدیدتر در حال اجرا باشد. در آن نرم‌افزار، فرمان G-key را در پروفایل PadForge روی هر کلید بکشید. آن پروفایل را ماندگار کنید، وگرنه کلیدها فقط وقتی به PadForge می‌رسند که پنجره آن جلو باشد. ماوس G600 یا G300 همچنین باید از حالت حافظه داخلی خارج باشد.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>اکنون در جلو: {0}، پروفایلی برایش تنظیم نشده</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>اکنون در جلو: {0}، که {1} را بارگذاری می‌کند</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>اکنون در جلو: {0}، و هنوز هیچ پروفایلی بازی ندارد</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>اجازه کنترل بیرونی به لانچرها و اسکریپت‌ها</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>یک لوله نام‌دار محلی (named pipe) به نام PadForge.Control ارائه می‌کند تا Playnite، LaunchBox یا یک اسکریپت بتواند پروفایل‌ها را فعال و غیرفعال کند. پروفایلی که به این روش فعال شده، تا وقتی اسکریپت آن را آزاد نکند یا خودتان پروفایل را عوض نکنید فعال می‌ماند. فقط روی همین رایانه.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>کنترل بیرونی</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>یک لانچر یا اسکریپت می‌تواند از راه «خودکارسازی» پروفایل‌ها را عوض کند. پروفایلی که این‌طور عوض شود می‌ماند تا برنامه آن را رها کند یا خودتان پروفایل را عوض کنید.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>خودکارسازی خاموش است</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>خودکارسازی روشن است: برنامه‌ها می‌توانند پروفایل‌ها را عوض کنند</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>خودکارسازی روشن است: برنامه‌ها می‌توانند پروفایل‌ها را عوض کنند و دستگاه‌ها و تنظیمات را بخوانند</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>خودکارسازی روشن است: برنامه‌ها می‌توانند پروفایل‌ها را عوض کنند، دستگاه‌ها و تنظیمات را بخوانند و ورودی بفرستند</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>خودکارسازی روشن است: برنامه‌ها می‌توانند پروفایل‌ها را عوض کنند، ورودی بفرستند و تنظیمات را تغییر دهند</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>باز کردن خودکارسازی</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>پروفایل فعال:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>بدون کنترلر</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>برای وارد کردن پروفایل اینجا رها کنید</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>فایل‌های اجرایی (*.exe)|*.exe|همه فایل‌ها (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge از قبل در حال اجراست.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: خطای مهلک</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: خطا</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>خطای غیرمنتظره‌ای رخ داد:

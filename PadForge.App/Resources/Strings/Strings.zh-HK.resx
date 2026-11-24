@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>正在監聽 :{0}。{1} 正在傳送至控制器索引 {2}，但沒有任何接有 DualSense 或 DualShock 4 的虛擬控制器使用該索引。</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>連接埠 {0} 已被另一個程式（例如 DSX）佔用。請關閉該程式或選擇其他連接埠。</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>某個遊戲模組</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>另一個程式已佔用管道名稱 {0}。請關閉該程式。</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows 拒絕建立管道 {0}，因此程式無法連接。</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>切換到設定檔 {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>返回預設設定檔</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>查詢使用中的設定檔</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>顯示視窗</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>把視窗送到系統匣</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>最小化視窗</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>關閉 PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>啟動引擎</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>停止引擎</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>開啟所有虛擬控制器</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>關閉所有虛擬控制器</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>開啟虛擬控制器 {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>關閉虛擬控制器 {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>儲存診斷快照</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>開始錄製問題</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>停止錄製</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>標記錄製內容</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>查詢 PadForge 的版本</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>查詢目前的執行狀況</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>傳送 PadForge 不認識的一行：{0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>適用於 OpenTrack 以及任何能傳送其 UDP 輸出或寫入 FreeTrack 2.0 共用記憶體的追蹤器，亦適用於這部電腦上能在背景執行工作階段的 OpenXR 執行階段。</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>讀取 Logitech G 鍵</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>透過 Logitech G-key SDK 讀取 G 鍵。需要執行 Logitech Gaming Software 8.55 或更新版本。請在該軟件中，把 G-key 指令拖曳到 PadForge 設定檔的每個按鍵上。請將該設定檔設為常駐，否則只有當 PadForge 視窗位於最前時，這些按鍵才會傳到 PadForge。此外，G600 或 G300 滑鼠必須離開內置記憶體模式。</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>目前在前台：{0}，未為它設定設定檔</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>目前在前台：{0}，會載入 {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>目前在前台：{0}，而且還沒有任何設定檔設定了遊戲</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>允許啟動器和指令碼進行外部控制</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>提供本機具名管道 PadForge.Control，讓 Playnite、LaunchBox 或指令碼可以啟用和停用設定檔。以這種方式啟用的設定檔會一直生效，直至指令碼將它釋放，或你自行切換設定檔為止。只限本機。</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>外部控制</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>啟動器或指令碼可以透過自動化切換設定檔。以這種方式切換的設定檔會保持，直至程式釋放它或你自己切換設定檔。</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>自動化已關閉</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>自動化已開啟：程式可以切換設定檔</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>自動化已開啟：程式可以切換設定檔，以及讀取裝置和設定</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>自動化已開啟：程式可以切換設定檔、讀取裝置和設定，以及傳送輸入</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>自動化已開啟：程式可以切換設定檔、傳送輸入和變更設定</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>開啟自動化</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>使用中的設定檔：</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>沒有控制器</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>放下以匯入設定檔</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>執行檔 (*.exe)|*.exe|所有檔案 (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge 已在執行。</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge：嚴重錯誤</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge：錯誤</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>發生未預期的錯誤：

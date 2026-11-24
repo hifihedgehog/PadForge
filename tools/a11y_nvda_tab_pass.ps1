@@ -12,7 +12,7 @@
   them, and only Tab is sent, so the pass changes no setting. Read the log
   with tools/a11y_nvda_speech_parse.py.
 
-  Run it elevated. PadForge runs as administrator, and a portable NVDA reads
+  Run it elevated. The app runs as administrator, and a portable NVDA reads
   an elevated app only when it runs elevated too (NVDA user guide, portable
   copy restrictions). Start PadForge first with the deploy recipe, since a
   PadForge started from inside an elevated script exits when that script's

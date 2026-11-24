@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}-ൽ കേൾക്കുന്നു. {1} കൺട്രോളർ ഇൻഡക്സ് {2}-ലേക്ക് അയയ്ക്കുന്നു, DualSense അല്ലെങ്കിൽ DualShock 4 ഉള്ള ഒരു വെർച്വൽ കൺട്രോളറിനും ആ ഇൻഡക്സ് ഇല്ല.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>പോർട്ട് {0} DSX പോലുള്ള മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുന്നു. അത് അടയ്ക്കുക അല്ലെങ്കിൽ മറ്റൊരു പോർട്ട് തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ഒരു ഗെയിം മോഡ്</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>മറ്റൊരു പ്രോഗ്രാം പൈപ്പ് പേര് {0} കൈവശം വച്ചിരിക്കുന്നു. ആ പ്രോഗ്രാം അടയ്ക്കുക.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows പൈപ്പ് {0} നിരസിച്ചു, അതിനാൽ പ്രോഗ്രാമുകൾക്ക് കണക്റ്റ് ചെയ്യാനാവില്ല.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>പ്രൊഫൈൽ {0} ലേക്ക് മാറുക</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>സ്ഥിരസ്ഥിതി പ്രൊഫൈലിലേക്ക് മടങ്ങുക</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>ഏത് പ്രൊഫൈലാണ് സജീവമെന്ന് ചോദിക്കുക</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>വിൻഡോ കാണിക്കുക</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>വിൻഡോ സിസ്റ്റം ട്രേയിലേക്ക് അയയ്ക്കുക</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>വിൻഡോ ചുരുക്കുക</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge അടയ്ക്കുക</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>എഞ്ചിൻ ആരംഭിക്കുക</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>എഞ്ചിൻ നിർത്തുക</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>എല്ലാ വെർച്വൽ കൺട്രോളറുകളും ഓണാക്കുക</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>എല്ലാ വെർച്വൽ കൺട്രോളറുകളും ഓഫാക്കുക</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളർ {0} ഓണാക്കുക</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളർ {0} ഓഫാക്കുക</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>ഡയഗ്നോസ്റ്റിക്സ് സ്നാപ്ഷോട്ട് സേവ് ചെയ്യുക</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ഒരു പ്രശ്നം റെക്കോർഡ് ചെയ്യാൻ തുടങ്ങുക</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>റെക്കോർഡിംഗ് നിർത്തുക</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>റെക്കോർഡിംഗിൽ അടയാളമിടുക</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ന്റെ പതിപ്പ് ചോദിക്കുക</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>എന്താണ് പ്രവർത്തിക്കുന്നതെന്ന് ചോദിക്കുക</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ന് അറിയാത്ത ഒരു വരി അയയ്ക്കുക: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-നോടും, UDP ഔട്ട്പുട്ട് അയയ്ക്കുകയോ FreeTrack 2.0 ഷെയേർഡ് മെമ്മറിയിലേക്ക് എഴുതുകയോ ചെയ്യുന്ന ഏത് ട്രാക്കറിനോടും, പശ്ചാത്തലത്തിൽ സെഷൻ പ്രവർത്തിപ്പിക്കാൻ കഴിയുന്ന, ഈ മെഷീനിലെ OpenXR റൺടൈമിനോടും പ്രവർത്തിക്കുന്നു.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key-കൾ വായിക്കുക</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK വഴി G-key-കൾ വായിക്കുന്നു. Logitech Gaming Software 8.55 അല്ലെങ്കിൽ പുതിയത് പ്രവർത്തിക്കുന്നുണ്ടായിരിക്കണം. ആ സോഫ്റ്റ്വെയറിൽ, PadForge പ്രൊഫൈലിലെ ഓരോ കീയിലേക്കും G-key കമാൻഡ് വലിച്ചിടുക. ആ പ്രൊഫൈൽ സ്ഥിരമാക്കുക, അല്ലെങ്കിൽ PadForge വിൻഡോ മുന്നിലുള്ളപ്പോൾ മാത്രമേ കീകൾ PadForge-ൽ എത്തൂ. G600 അല്ലെങ്കിൽ G300 മൗസും ഓൺ-ബോർഡ് മെമ്മറി മോഡിൽ നിന്ന് പുറത്തായിരിക്കണം.</value></data>
@@ -2687,9 +2709,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ഇപ്പോൾ മുന്നിൽ: {0}, ഇതിന് പ്രൊഫൈൽ സജ്ജമാക്കിയിട്ടില്ല</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ഇപ്പോൾ മുന്നിൽ: {0}, ഇത് {1} ലോഡ് ചെയ്യുന്നു</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ഇപ്പോൾ മുന്നിൽ: {0}, ഒരു പ്രൊഫൈലിനും ഇതുവരെ ഗെയിം സജ്ജമാക്കിയിട്ടില്ല</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ലോഞ്ചറുകൾക്കും സ്ക്രിപ്റ്റുകൾക്കും ബാഹ്യ നിയന്ത്രണം അനുവദിക്കുക</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control എന്ന ലോക്കൽ നെയിംഡ് പൈപ്പ് നൽകുന്നു, അതുവഴി Playnite, LaunchBox അല്ലെങ്കിൽ ഒരു സ്ക്രിപ്റ്റിന് പ്രൊഫൈലുകൾ സജീവമാക്കാനും നിർജീവമാക്കാനും കഴിയും. ഇങ്ങനെ സജീവമാക്കിയ പ്രൊഫൈൽ, സ്ക്രിപ്റ്റ് അത് വിടുന്നതുവരെയോ നിങ്ങൾ സ്വയം പ്രൊഫൈൽ മാറ്റുന്നതുവരെയോ സജീവമായി തുടരും. ഈ കമ്പ്യൂട്ടറിൽ മാത്രം.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ബാഹ്യ നിയന്ത്രണം</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ഒരു ലോഞ്ചറിനോ സ്ക്രിപ്റ്റിനോ ഓട്ടോമേഷൻ വഴി പ്രൊഫൈലുകൾ മാറ്റാം. ഇങ്ങനെ മാറ്റിയ പ്രൊഫൈൽ, പ്രോഗ്രാം അത് വിടുന്നതുവരെ അല്ലെങ്കിൽ നിങ്ങൾ തന്നെ പ്രൊഫൈൽ മാറ്റുന്നതുവരെ തുടരും.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ഓട്ടോമേഷൻ ഓഫാണ്</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ഓട്ടോമേഷൻ ഓണാണ്: പ്രോഗ്രാമുകൾക്ക് പ്രൊഫൈലുകൾ മാറ്റാം</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ഓട്ടോമേഷൻ ഓണാണ്: പ്രോഗ്രാമുകൾക്ക് പ്രൊഫൈലുകൾ മാറ്റാനും ഉപകരണങ്ങളും ക്രമീകരണങ്ങളും വായിക്കാനും കഴിയും</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ഓട്ടോമേഷൻ ഓണാണ്: പ്രോഗ്രാമുകൾക്ക് പ്രൊഫൈലുകൾ മാറ്റാനും ഉപകരണങ്ങളും ക്രമീകരണങ്ങളും വായിക്കാനും ഇൻപുട്ടുകൾ അയയ്ക്കാനും കഴിയും</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ഓട്ടോമേഷൻ ഓണാണ്: പ്രോഗ്രാമുകൾക്ക് പ്രൊഫൈലുകൾ മാറ്റാനും ഇൻപുട്ടുകൾ അയയ്ക്കാനും ക്രമീകരണങ്ങൾ മാറ്റാനും കഴിയും</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ഓട്ടോമേഷൻ തുറക്കുക</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>സജീവ പ്രൊഫൈൽ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>കൺട്രോളറുകളില്ല</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>പ്രൊഫൈൽ ഇറക്കുമതി ചെയ്യാൻ ഇവിടെ ഇടുക</value></data>
@@ -2746,7 +2773,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>എക്സിക്യൂട്ടബിളുകൾ (*.exe)|*.exe|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ഇതിനകം പ്രവർത്തിക്കുന്നുണ്ട്.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ഗുരുതരമായ പിശക്</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: പിശക്</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>അപ്രതീക്ഷിതമായ ഒരു പിശക് സംഭവിച്ചു:

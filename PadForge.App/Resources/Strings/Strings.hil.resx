@@ -172,6 +172,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Nagapamati sa :{0}. Nagapadala ang {1} sa controller index {2}, kag wala sing virtual controller nga may DualSense ukon DualShock 4 nga may amo nga index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ginagamit ang port {0} sang iban nga programa, pareho sang DSX. Sirhi ini ukon magpili sang iban nga port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isa ka game mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>May iban nga programa nga nagagamit sang pipe nga {0}. Sirhi ina nga programa.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Gin-indi sang Windows ang pipe nga {0}, gani indi makaconnect ang mga programa.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Bayluhan sa profile nga {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Balik sa default nga profile</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Pamangkuton kon diin nga profile ang aktibo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ipakita ang window</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ipadala ang window sa system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>I-minimize ang window</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Sirhan ang PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Sugdan ang engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Untaton ang engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>I-on ang tanan nga virtual controller</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>I-off ang tanan nga virtual controller</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>I-on ang Virtual controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>I-off ang Virtual controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Tipigan ang diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Sugdan ang pag-record sang problema</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Untaton ang pag-record</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markahan ang recording</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Pamangkuton ang bersyon sang PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Pamangkuton kon ano ang nagadalagan</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Magpadala sang linya nga wala nakilala sang PadForge: {0}</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Konektado</value></data>
 
   <!-- ═══ Settings ═══ -->
@@ -699,7 +721,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Nagadalagan na ang PadForge.</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>

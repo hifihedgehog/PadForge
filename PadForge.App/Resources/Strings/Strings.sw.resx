@@ -555,6 +555,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}. {1} inatuma kwa faharasa ya kidhibiti {2}, na hakuna kidhibiti pepe chenye DualSense au DualShock 4 juu yake kinachotumia faharasa hiyo.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Mlango {0} unatumiwa na programu nyingine, kama DSX. Ifunge au chagua mlango mwingine.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ya mchezo</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programu nyingine inashikilia jina la bomba {0}. Ifunge programu hiyo.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ilikataa bomba {0}, kwa hiyo programu haziwezi kuunganishwa.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Badilisha kwenda wasifu {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rudi kwenye wasifu chaguomsingi</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Uliza ni wasifu upi unaotumika</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Onyesha dirisha</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Tuma dirisha kwenye trei ya mfumo</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Punguza dirisha</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Funga PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Anzisha injini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Simamisha injini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Washa kila kidhibiti pepe</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Zima kila kidhibiti pepe</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Washa Kidhibiti pepe {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Zima Kidhibiti pepe {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Hifadhi picha ya hali ya uchunguzi</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Anza kurekodi tatizo</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Acha kurekodi</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Weka alama kwenye rekodi</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Uliza toleo la PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Uliza kinachoendesha</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tuma mstari ambao PadForge haujui: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Inafanya kazi na OpenTrack na kifuatiliaji chochote kinachotuma towe lake la UDP au kuandika kumbukumbu ya pamoja ya FreeTrack 2.0, na pia na runtime ya OpenXR kwenye kompyuta hii inayoweza kuendesha kipindi chinichini.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Soma vitufe vya G vya Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Husoma vitufe vya G kupitia Logitech G-key SDK. Inahitaji Logitech Gaming Software 8.55 au mpya zaidi iwe inaendesha. Kwenye programu hiyo, buruta amri ya G-key hadi kila kitufe kwenye wasifu wa PadForge. Fanya wasifu huo uwe wa kudumu, la sivyo vitufe vinafika PadForge tu wakati dirisha lake liko mbele. Kipanya cha G600 au G300 pia lazima kiwe nje ya hali ya kumbukumbu ya ndani.</value></data>
@@ -2671,9 +2693,14 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Mbele sasa: {0}, hakuna wasifu uliowekwa kwa ajili yake</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Mbele sasa: {0}, ambao hupakia {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Mbele sasa: {0}, na hakuna wasifu wenye mchezo uliowekwa bado</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Ruhusu Udhibiti wa Nje na Vizinduzi na Hati</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Hutoa bomba lenye jina la ndani, PadForge.Control, ili Playnite, LaunchBox, au hati iweze kuwasha na kuzima wasifu. Wasifu ulioamilishwa kwa njia hii unabaki hai hadi hati iuachilie au ubadilishe wasifu mwenyewe. Kompyuta hii pekee.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Udhibiti wa Nje</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Kizindua au hati inaweza kubadilisha wasifu kupitia Uendeshaji otomatiki. Wasifu uliobadilishwa kwa njia hii hubaki hadi programu iuachilie au ubadilishe wasifu mwenyewe.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Uendeshaji otomatiki umezimwa</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Uendeshaji otomatiki umewashwa: programu zinaweza kubadilisha wasifu</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Uendeshaji otomatiki umewashwa: programu zinaweza kubadilisha wasifu na kusoma vifaa na mipangilio</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Uendeshaji otomatiki umewashwa: programu zinaweza kubadilisha wasifu, kusoma vifaa na mipangilio, na kutuma maingizo</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Uendeshaji otomatiki umewashwa: programu zinaweza kubadilisha wasifu, kutuma maingizo na kubadilisha mipangilio</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Fungua Uendeshaji otomatiki</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Wasifu unaotumika:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Hakuna vidhibiti</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Dondosha ili Kuleta Wasifu</value></data>
@@ -2730,7 +2757,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Faili za programu (*.exe)|*.exe|Faili Zote (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge tayari inaendeshwa.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Hitilafu Kubwa</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Hitilafu</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Hitilafu isiyotarajiwa imetokea:

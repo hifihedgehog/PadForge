@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Lytter på :{0}. {1} sender til controllerindeks {2}, og ingen virtuel controller med en DualSense eller DualShock 4 har det indeks.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} er i brug af et andet program, f.eks. DSX. Luk det, eller vælg en anden port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Et spilmod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Et andet program holder pipenavnet {0}. Luk det program.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows afviste pipen {0}, så programmer kan ikke oprette forbindelse.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skift til profilen {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Vend tilbage til standardprofilen</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Spørg, hvilken profil der er aktiv</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Vis vinduet</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Send vinduet til proceslinjens meddelelsesområde</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimer vinduet</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Luk PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Start motoren</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stop motoren</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Slå alle virtuelle controllere til</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Slå alle virtuelle controllere fra</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Slå virtuel controller {0} til</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Slå virtuel controller {0} fra</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Gem et diagnosticeringsøjebliksbillede</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Start optagelse af et problem</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Stop optagelsen</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markér optagelsen</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Spørg efter versionen af PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Spørg, hvad der kører</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Send en linje, PadForge ikke kender: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Fungerer med OpenTrack og ethvert sporingsprogram, der sender sit UDP-output eller skriver til delt hukommelse i FreeTrack 2.0-formatet, og med et OpenXR-kørselsmiljø på denne maskine, der kan køre en session i baggrunden.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Læs Logitech G-taster</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Læser G-taster via Logitech G-key SDK. Kræver, at Logitech Gaming Software 8.55 eller nyere kører. I det program skal du trække G-key-kommandoen hen på hver tast i PadForge-profilen. Gør profilen vedvarende, ellers når tasterne kun frem til PadForge, mens PadForge-vinduet er forrest. En G600- eller G300-mus skal også være ude af tilstanden med indbygget hukommelse.</value></data>
@@ -2922,9 +2944,14 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Forrest nu: {0}, ingen profil sat til det</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Forrest nu: {0}, som indlæser {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Forrest nu: {0}, og ingen profil har endnu et spil sat</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Tillad ekstern styring fra startprogrammer og scripts</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Stiller en lokal navngivet pipe, PadForge.Control, til rådighed, så Playnite, LaunchBox eller et script kan aktivere og deaktivere profiler. En profil, der aktiveres på denne måde, forbliver aktiv, indtil scriptet frigiver den, eller du selv skifter profil. Kun på den lokale maskine.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Ekstern styring</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>En launcher eller et script kan skifte profiler via Automatisering. En profil, der skiftes på den måde, bliver, indtil programmet frigiver den, eller du selv skifter profil.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatisering er slået fra</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatisering er slået til: programmer kan skifte profiler</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatisering er slået til: programmer kan skifte profiler og læse enheder og indstillinger</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatisering er slået til: programmer kan skifte profiler, læse enheder og indstillinger og sende input</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatisering er slået til: programmer kan skifte profiler, sende input og ændre indstillinger</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Åbn Automatisering</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktiv profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Ingen controllere</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Slip for at importere profil</value></data>
@@ -2982,7 +3009,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Programfiler (*.exe)|*.exe|Alle filer (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge kører allerede.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Alvorlig fejl</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Fejl</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Der opstod en uventet fejl:

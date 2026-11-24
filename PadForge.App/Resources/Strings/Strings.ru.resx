@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Прослушивание :{0}. {1} отправляет данные на контроллер с индексом {2}, а у виртуального контроллера с DualSense или DualShock 4 такого индекса нет.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Порт {0} занят другой программой, например DSX. Закройте ее или выберите другой порт.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Игровой мод</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Другая программа занимает имя канала {0}. Закройте эту программу.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows отказала в создании канала {0}, поэтому программы не могут подключиться.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Переключиться на профиль {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Вернуться к профилю по умолчанию</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Узнать, какой профиль активен</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Показать окно</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Убрать окно в системный трей</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Свернуть окно</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Закрыть PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Запустить движок</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Остановить движок</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Включить все виртуальные контроллеры</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Выключить все виртуальные контроллеры</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Включить виртуальный контроллер {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Выключить виртуальный контроллер {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Сохранить снимок диагностики</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Начать запись проблемы</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Остановить запись</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Отметить запись</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Узнать версию PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Узнать, что сейчас работает</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Отправить строку, которую PadForge не знает: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Работает с OpenTrack и любым трекером, который отправляет данные по UDP или пишет в общую память FreeTrack 2.0, а также со средой выполнения OpenXR на этом компьютере, если она умеет вести сеанс в фоновом режиме.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Считывать G-клавиши Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Считывает G-клавиши через Logitech G-key SDK. Должна быть запущена программа Logitech Gaming Software версии 8.55 или новее. В ней перетащите команду «G-key» на каждую клавишу в профиле PadForge. Сделайте этот профиль постоянным, иначе нажатия доходят до PadForge, только пока его окно на переднем плане. Мышь G600 или G300 также нужно вывести из режима встроенной памяти.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Сейчас на переднем плане: {0}, профиль для него не задан</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Сейчас на переднем плане: {0}, загружается профиль {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Сейчас на переднем плане: {0}, но ни у одного профиля нет заданной игры</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Разрешить внешнее управление из лаунчеров и скриптов</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Открывает локальный именованный канал PadForge.Control, через который Playnite, LaunchBox или скрипт могут включать и отключать профили. Профиль, включенный таким способом, остается активным, пока скрипт его не освободит или пока вы сами не переключите профиль. Только на этом компьютере.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Внешнее управление</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Лаунчер или скрипт может переключать профили через Автоматизацию. Профиль, переключенный так, остается, пока программа его не отпустит или вы сами не переключите профиль.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Автоматизация выключена</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Автоматизация включена: программы могут переключать профили</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Автоматизация включена: программы могут переключать профили и читать устройства и настройки</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Автоматизация включена: программы могут переключать профили, читать устройства и настройки и отправлять ввод</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Автоматизация включена: программы могут переключать профили, отправлять ввод и менять настройки</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Открыть Автоматизацию</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Активный профиль:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Нет контроллеров</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Отпустите, чтобы импортировать профиль</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Исполняемые файлы (*.exe)|*.exe|Все файлы (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge уже запущен.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: критическая ошибка</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: ошибка</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Произошла непредвиденная ошибка:

@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} дээр сонсож байна. {1} {2}-р контроллер руу илгээж байгаа боловч DualSense эсвэл DualShock 4-тэй виртуал контроллеруудын аль нь ч ийм дугааргүй байна.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} портыг DSX зэрэг өөр програм ашиглаж байна. Тэр програмыг хаах эсвэл өөр порт сонгоно уу.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Тоглоомын мод</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>{0} нэртэй хоолойг өөр програм эзэмшиж байна. Тэр програмыг хаана уу.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} хоолойг үүсгэхээс татгалзсан тул програмууд холбогдож чадахгүй.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профайл руу шилжих</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Үндсэн профайл руу буцах</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Аль профайл идэвхтэйг асуух</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Цонхыг харуулах</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Цонхыг системийн тавиур руу илгээх</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Цонхыг багасгах</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ийг хаах</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Хөдөлгүүрийг эхлүүлэх</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Хөдөлгүүрийг зогсоох</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Бүх виртуал контроллерыг асаах</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Бүх виртуал контроллерыг унтраах</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>{0} дугаар виртуал контроллерыг асаах</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>{0} дугаар виртуал контроллерыг унтраах</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Оношилгооны агшин зураг хадгалах</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Асуудлын бичлэг эхлүүлэх</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Бичлэгийг зогсоох</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Бичлэгт тэмдэг тавих</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-ийн хувилбарыг асуух</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Юу ажиллаж байгааг асуух</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-ийн мэдэхгүй мөр илгээх: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack болон UDP гаралтаа илгээдэг эсвэл FreeTrack 2.0 хуваалцсан санах ойд бичдэг аливаа хянагчтай, мөн энэ компьютер дээрх арын горимд сесс ажиллуулж чадах OpenXR ажиллах орчинтой ажиллана.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key товчлууруудыг унших</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G товчлууруудыг Logitech G-key SDK-ээр уншина. Logitech Gaming Software 8.55 буюу түүнээс хойшх хувилбар ажиллаж байх шаардлагатай. Тэр програмд PadForge профайлын товчлуур бүр дээр G-key командыг чирж тавина уу. Тэр профайлыг байнгын болгоно уу, эс бөгөөс PadForge-ийн цонх урд байх үед л товчлуурын дохио түүнд хүрнэ. G600 эсвэл G300 хулгана мөн дотоод санах ойн горимоос гарсан байх ёстой.</value></data>
@@ -2694,9 +2716,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Одоо урд байгаа: {0}, түүнд профайл тохируулаагүй</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Одоо урд байгаа: {0}, {1} профайлыг ачаална</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Одоо урд байгаа: {0}, мөн ямар ч профайлд тоглоом тохируулаагүй байна</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Эхлүүлэгч болон скриптүүдээр гаднаас удирдахыг зөвшөөрөх</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Playnite, LaunchBox эсвэл скрипт профайлыг идэвхжүүлж, идэвхгүй болгож чадахын тулд PadForge.Control нэртэй дотоод нэрлэсэн суваг (named pipe) нээнэ. Ийм байдлаар идэвхжүүлсэн профайл скрипт суллах эсвэл та өөрөө профайл солих хүртэл идэвхтэй хэвээр байна. Зөвхөн дотоод компьютерт.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Гадны удирдлага</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Лаунчер эсвэл скрипт Автоматжуулалтаар дамжуулан профайл сольж чадна. Ийм байдлаар солигдсон профайл програм түүнийг чөлөөлөх эсвэл та өөрөө профайл солих хүртэл хэвээр байна.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Автоматжуулалт унтраалттай</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Автоматжуулалт асаалттай: програмууд профайл сольж чадна</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Автоматжуулалт асаалттай: програмууд профайл сольж, төхөөрөмж болон тохиргоог уншиж чадна</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Автоматжуулалт асаалттай: програмууд профайл сольж, төхөөрөмж болон тохиргоог уншиж, оролт илгээж чадна</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Автоматжуулалт асаалттай: програмууд профайл сольж, оролт илгээж, тохиргоо өөрчилж чадна</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Автоматжуулалтыг нээх</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Идэвхтэй профайл:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Контроллер алга</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Профайл импортлохын тулд энд тавина уу</value></data>
@@ -2753,7 +2780,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Гүйцэтгэх файлууд (*.exe)|*.exe|Бүх файл (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge аль хэдийн ажиллаж байна.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Ноцтой алдаа</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Алдаа</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Гэнэтийн алдаа гарлаа:

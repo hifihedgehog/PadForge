@@ -18,6 +18,12 @@ namespace PadForge.Tests
     /// carries a fixed ASCII grammar, never localized, and an externally
     /// activated profile is PINNED so the foreground monitor cannot clobber
     /// a scripted choice.</para>
+    ///
+    /// <para>Since #597 the pipe is Automation's: its switch is the
+    /// Automation extra's, it is served for as long as PadForge runs, and it
+    /// carries the whole command set (AutomationCommandsTests,
+    /// AutomationHostTests). What is here is the wire and the profile
+    /// hold.</para>
     /// </summary>
     public class ExternalControlTests
     {
@@ -115,48 +121,33 @@ namespace PadForge.Tests
         }
 
         /// <summary>The read is bounded: a client that never sends a newline
-        /// cannot grow the server's buffer without limit.</summary>
+        /// cannot grow the server's buffer without limit. A line keeps its
+        /// first 1,024 bytes, and what is read past them is dropped.</summary>
         [Fact]
         public void TheRequestReadIsCapped()
         {
             string src = RepoText("PadForge.App", "Services", "ExternalControlService.cs");
-            Assert.Contains("line.Length < 1024", src);
+            Assert.Contains("internal const int LongestRequest = 1024;", src);
+            Assert.Contains("var line = new byte[LongestRequest];", src);
+            Assert.Contains("if (kept < LongestRequest) line[kept++] = chunk[i];", src);
+            Assert.Contains("while (!ended && read < LongestRequest + LongestDrained)", src);
         }
 
-        /// <summary>Authenticated Users get read-write on the pipe, which is
-        /// what lets an UNELEVATED launcher drive an elevated PadForge
-        /// (app.manifest requires administrator). Without this rule the whole
-        /// feature is unreachable from Playnite or LaunchBox running normally.
-        /// Follows the design of Lenovo Legion Toolkit's IpcServer.</summary>
+        /// <summary>The user whose desktop this is reads and writes the
+        /// pipe, which is what lets a launcher WITHOUT administrator rights
+        /// drive a PadForge that has them. Without that rule the whole
+        /// feature is unreachable from Playnite or LaunchBox running
+        /// normally. Follows the design of Lenovo Legion Toolkit's IpcServer.
+        /// Every account on the PC could before #597 (Authenticated Users).
+        /// The list itself is read back in AutomationHostTests.</summary>
         [Fact]
-        public void ThePipeGrantsAuthenticatedUsers()
+        public void ThePipeAdmitsTheDesktopsUser_AndNoLongerEveryAccount()
         {
             string src = RepoText("PadForge.App", "Services", "ExternalControlService.cs");
-            Assert.Contains("WellKnownSidType.AuthenticatedUserSid", src);
-            Assert.Contains("PipeAccessRights.ReadWrite", src);
+            Assert.Contains("new PipeAccessRule(desktopUser, PipeAccessRights.ReadWrite, AccessControlType.Allow)", src);
+            Assert.Contains("WellKnownSidType.NetworkSid", src);
             Assert.Contains("NamedPipeServerStreamAcl.Create", src);
-        }
-
-        /// <summary>The command grammar is fixed ASCII. Localizing a machine
-        /// interface would break every script the moment the user changes
-        /// language, so the verbs and responses must not read from Strings.</summary>
-        [Fact]
-        public void TheGrammarIsNeverLocalized()
-        {
-            string svc = RepoText("PadForge.App", "Services", "InputService.cs");
-            int at = svc.IndexOf("internal string ExecuteExternalControlCommand", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            int end = svc.IndexOf("private void StartDsuServerIfEnabled", at, StringComparison.Ordinal);
-            Assert.True(end > at);
-            string body = svc.Substring(at, end - at);
-
-            Assert.Contains("case \"activate\":", body);
-            Assert.Contains("case \"deactivate\":", body);
-            Assert.Contains("case \"query\":", body);
-            Assert.Contains("error unknown-command", body);
-            Assert.Contains("error unknown-profile", body);
-            // Status text is localized (it is UI), but no RESPONSE may be.
-            Assert.DoesNotContain("return Strings.Instance", body);
+            Assert.DoesNotContain("WellKnownSidType.AuthenticatedUserSid", src);
         }
 
         /// <summary>The pin is the point (#363's use case): the same exe is
@@ -256,7 +247,7 @@ namespace PadForge.Tests
         public void ThePinIsNeverPersisted()
         {
             string settings = RepoText("PadForge.App", "Services", "SettingsService.cs");
-            int at = settings.IndexOf("public bool EnableExternalControl { get; set; }", StringComparison.Ordinal);
+            int at = settings.IndexOf("public bool EnableAutomation { get; set; }", StringComparison.Ordinal);
             Assert.True(at > 0);   // the OPT-IN persists
             Assert.DoesNotContain("public bool ExternalProfilePinActive { get; set; }", settings);
             Assert.DoesNotContain("ExternalProfilePinActive =", settings.Substring(
@@ -267,44 +258,57 @@ namespace PadForge.Tests
         /// EnableAutoProfileSwitching rides: load (both mirrors), the
         /// static sync on save, the saved record, and reset-to-defaults.
         /// A missing site is how a global toggle silently fails to
-        /// round-trip.</summary>
+        /// round-trip. Its level rides the same four.</summary>
         [Fact]
         public void TheOptInRidesEverySiblingSite()
         {
             string src = RepoText("PadForge.App", "Services", "SettingsService.cs");
-            Assert.Contains("vm.EnableExternalControl = appSettings.EnableExternalControl;", src);
-            Assert.Contains("SettingsManager.EnableExternalControl = appSettings.EnableExternalControl;", src);
-            Assert.Contains("SettingsManager.EnableExternalControl = vm.EnableExternalControl;", src);
-            Assert.Contains("EnableExternalControl = vm.EnableExternalControl,", src);
-            Assert.Contains("SettingsManager.EnableExternalControl = false;", src);
+            Assert.Contains("_mainVm.Dashboard.EnableAutomation = appSettings.EnableAutomation;", src);
+            Assert.Contains("SettingsManager.EnableAutomation = appSettings.EnableAutomation;", src);
+            Assert.Contains("SettingsManager.EnableAutomation = _mainVm.Dashboard.EnableAutomation;", src);
+            Assert.Contains("EnableAutomation = _mainVm.Dashboard.EnableAutomation,", src);
+            Assert.Contains("SettingsManager.EnableAutomation = false;", src);
+
+            Assert.Contains("_mainVm.Dashboard.AutomationLevel = automationLevel;", src);
+            Assert.Contains("SettingsManager.AutomationLevel = automationLevel;", src);
+            Assert.Contains("SettingsManager.AutomationLevel = _mainVm.Dashboard.AutomationLevel;", src);
+            Assert.Contains("AutomationLevel = (int)_mainVm.Dashboard.AutomationLevel,", src);
+            Assert.Contains("SettingsManager.AutomationLevel = Automation.AutomationLevel.Commands;", src);
         }
 
         /// <summary>Default OFF. The pipe is an attack surface the user did
-        /// not ask for until they check the box, and every pre-#366 settings
-        /// file must deserialize to off.</summary>
+        /// not ask for until they turn the switch on, and every settings
+        /// file from before it must deserialize to off.</summary>
         [Fact]
         public void ExternalControlIsOffUntilAsked()
         {
             var data = new PadForge.Services.AppSettingsData();
-            Assert.False(data.EnableExternalControl);
+            Assert.False(data.EnableAutomation);
+            Assert.Equal(0, data.AutomationLevel);
+            Assert.False(data.LegacyEnableExternalControl);
         }
 
+        /// <summary>The two profile switches keep the lines they have had
+        /// since #366, read now by the one reader of the command line.</summary>
         [Theory]
         [InlineData(new[] { "--profile", "Racing" }, "activate Racing")]
         [InlineData(new[] { "--default-profile" }, "deactivate")]
         [InlineData(new[] { "--PROFILE", "Mixed Case Name" }, "activate Mixed Case Name")]
-        [InlineData(new[] { "--minimized" }, null)]
-        [InlineData(new[] { "--profile" }, null)]          // missing value
-        [InlineData(new string[0], null)]
         public void TheCommandLineMapsOntoTheSameGrammar(string[] args, string expected)
         {
-            Assert.Equal(expected, PadForge.App.ParseProfileCommand(args));
+            var request = PadForge.Common.CommandLineSwitches.Parse(args);
+            Assert.Null(request.Error);
+            Assert.Equal(expected, Assert.Single(request.Steps).Line);
         }
 
-        /// <summary>A second instance carrying a profile argument forwards it
-        /// and exits, instead of showing the "already running" box. A launcher
+        /// <summary>A second copy carrying a profile argument hands it to the
+        /// running one and exits, and one that carries nothing shows the
+        /// running window. Neither shows an "already running" box: a launcher
         /// calling PadForge.exe repeatedly must never stack modal dialogs on
-        /// the user's screen.</summary>
+        /// the user's screen. The hand-over is made before the app loads
+        /// (Program.Main, ClientRun), and the app's own start, where two
+        /// copies were started in one moment, asks the other for its window
+        /// and leaves.</summary>
         [Fact]
         public void ASecondInstanceForwardsInsteadOfNagging()
         {
@@ -312,12 +316,16 @@ namespace PadForge.Tests
             int at = app.IndexOf("out bool isNewInstance", StringComparison.Ordinal);
             Assert.True(at > 0);
             string body = app.Substring(at, 900);
-            Assert.Contains("ParseProfileCommand(e.Args)", body);
-            Assert.Contains("TryForwardExternalCommand", body);
-            // The forward path shuts down BEFORE the message box.
-            int forward = body.IndexOf("TryForwardExternalCommand", StringComparison.Ordinal);
-            int box = body.IndexOf("MessageBox.Show", StringComparison.Ordinal);
-            Assert.True(forward < box);
+            int show = body.IndexOf("Services.RunningCopy.Show();", StringComparison.Ordinal);
+            int leave = body.IndexOf("Shutdown();", StringComparison.Ordinal);
+            Assert.True(show > 0 && leave > show);
+            Assert.DoesNotContain("MessageBox.Show", body);
+            // The old forward and its three helpers are gone with the box.
+            foreach (string gone in new[] { "TryForwardExternalCommand", "ParseProfileCommand", "PendingProfileCommand", "App_AlreadyRunning" })
+                Assert.DoesNotContain(gone, app);
+
+            string main = RepoText("PadForge.App", "Program.cs");
+            Assert.Contains("if (ClientRun.TryRun(args, out int clientExit))", main);
         }
 
         /// <summary>A pipe name is machine-global, so every wire test serves
@@ -353,18 +361,26 @@ namespace PadForge.Tests
             return Encoding.UTF8.GetString(reply.GetBuffer(), 0, (int)reply.Length);
         }
 
-        /// <summary>The pipe starter is engine-gated like its DSU sibling:
-        /// the docs promise the pipe "while the engine is running", and an
-        /// un-gated starter let a checkbox toggle arm it engine-stopped
-        /// while an engine stop always killed it (audit C4).</summary>
+        /// <summary>The pipe is served for as long as PadForge runs (#597).
+        /// It was engine-gated before, like its DSU sibling, so a line that
+        /// starts the engine could never arrive. The engine's service holds
+        /// no pipe now: Automation's host does, made before the engine's
+        /// first start and stopped by nothing the engine does.</summary>
         [Fact]
-        public void ThePipeStarterIsEngineGated()
+        public void ThePipeIsServedWhetherOrNotTheEngineRuns()
         {
             string svc = RepoText("PadForge.App", "Services", "InputService.cs");
-            int at = svc.IndexOf("private void StartExternalControlIfEnabled()", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            string body = svc.Substring(at, 700);
-            Assert.Contains("_inputManager == null", body);
+            foreach (string gone in new[] { "ExternalControlService", "StartExternalControlIfEnabled", "StopExternalControl(", "ExecuteExternalControlCommand" })
+                Assert.DoesNotContain(gone, svc);
+
+            string window = RepoText("PadForge.App", "MainWindow.xaml.cs");
+            int host = window.IndexOf("StartAutomationHost();", StringComparison.Ordinal);
+            int engine = window.IndexOf("_inputService.StepsForTheFirstStart = ", StringComparison.Ordinal);
+            Assert.True(host > 0 && engine > host);
+
+            string automation = RepoText("PadForge.App", "Services", "Automation", "AutomationHost.cs");
+            Assert.DoesNotContain("InputService", automation);
+            Assert.DoesNotContain("InputManager", automation);
         }
 
         /// <summary>Releasing the pin drops the foreground monitor's dedup
@@ -387,15 +403,20 @@ namespace PadForge.Tests
             Assert.Null(mon.LastForegroundExePath);
             Assert.Null(mon.LastMatchedProfileId);
 
-            // Both pin-release sites call it: the external deactivate and
-            // the pipe teardown.
+            // Both pin-release sites call it: the external deactivate, and
+            // the release when Automation is turned off, after which no
+            // program could release the profile.
             string svc = RepoText("PadForge.App", "Services", "InputService.cs");
-            int deact = svc.IndexOf("private string ExternalDeactivate()", StringComparison.Ordinal);
+            int deact = svc.IndexOf("internal string ExternalDeactivate()", StringComparison.Ordinal);
             Assert.True(deact > 0);
             Assert.Contains("InvalidateCache", svc.Substring(deact, 900));
-            int stop = svc.IndexOf("private void StopExternalControl()", StringComparison.Ordinal);
+            int stop = svc.IndexOf("internal void ReleaseExternalPin()", StringComparison.Ordinal);
             Assert.True(stop > 0);
-            Assert.Contains("InvalidateCache", svc.Substring(stop, 700));
+            string release = svc.Substring(stop, 500);
+            Assert.Contains("SettingsManager.ExternalProfilePinActive = false;", release);
+            Assert.Contains("InvalidateCache", release);
+            string window = RepoText("PadForge.App", "MainWindow.Automation.cs");
+            Assert.Contains("_automation.TurnedOff += (s, e) => _inputService?.ReleaseExternalPin();", window);
         }
     }
 }

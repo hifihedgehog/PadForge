@@ -1186,4 +1186,24 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Picture se milao</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Picture se chaar color leta hai.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Bhejte raho</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Profile {0} pe jaao</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Default profile pe lauto</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Poocho kon profile chalu hai</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Window dikhaao</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Window ke system tray me bhejo</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Window ke minimize karo</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge band karo</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Engine chalu karo</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Engine roko</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Sab virtual controller On karo</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Sab virtual controller Off karo</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Virtual Controller {0} On karo</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Virtual Controller {0} Off karo</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Diagnostics snapshot save karo</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Problem ke recording chalu karo</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Recording roko</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Recording me nishaan lagaao</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ke version poocho</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Poocho kya chale hai</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Aisan line bhejo jon PadForge nai jaane: {0}</value></data>
 </root>

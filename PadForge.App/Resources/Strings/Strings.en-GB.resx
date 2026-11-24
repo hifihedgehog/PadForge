@@ -333,7 +333,6 @@
   <data name="Key_Period" xml:space="preserve"><value>Full Stop</value></data>
 
   <!-- ═══ Profiles ═══ -->
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Serves a local named pipe, PadForge.Control, so Playnite, LaunchBox or a script can activate and deactivate profiles. A profile activated this way stays active until the script releases it or you switch profiles yourself. Local machine only.</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
 
@@ -644,4 +643,6 @@
   <data name="Workshop_Macro_RecenterGyro_Format" xml:space="preserve"><value>Recentre gyro ({0})</value></data>
   <data name="Workshop_Command_SetLed" xml:space="preserve"><value>Set light colour</value></data>
   <data name="Workshop_Command_CameraReset" xml:space="preserve"><value>Recentre camera</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimise the window</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automation is on: programs can switch profiles, read devices and settings and send inputs</value></data>
 </root>

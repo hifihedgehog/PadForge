@@ -122,6 +122,28 @@
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port ti game mod</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ti port {0} ket us-usaren ti sabali a programa, kas iti DSX. Irikep daytoy wenno mangpili iti sabali a port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Maysa a game mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sabali a programa ti mangig-iggem iti pipe a nagan {0}. Irikep dayta a programa.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Inlaksid ti Windows ti pipe {0}, isu a saan a makakonekta dagiti programa.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Umakar iti profile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Agsubli iti default a profile</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Damagen no ania a profile ti aktibo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ipakita ti window</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ipan ti window iti system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>I-minimize ti window</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Irikep ti PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Rugian ti engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Isardeng ti engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Isindi amin a virtual controller</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Iddep amin a virtual controller</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Isindi ti Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Iddep ti Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Idulin ti diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Rugian ti panangirekord iti parikut</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Isardeng ti panangirekord</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markaan ti rekording</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Damagen ti bersion ti PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Damagen no ania ti agtartaray</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Mangipatulod iti linia a saan nga ammo ti PadForge: {0}</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ilaksid</value></data>
 
   <!-- ═══ Settings ═══ -->

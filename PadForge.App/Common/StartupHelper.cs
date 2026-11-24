@@ -6,12 +6,14 @@ namespace PadForge.Common
 {
     /// <summary>
     /// Manages PadForge's launch-at-logon entry via a Task Scheduler task.
-    /// PadForge requires elevation (app.manifest declares
-    /// <c>level="requireAdministrator"</c>), and Windows can't show the UAC
-    /// prompt at the login screen, so the older HKCU\Run mechanism silently
-    /// no-ops for elevated apps. A scheduled task with <c>/SC ONLOGON</c>
-    /// + <c>/RL HIGHEST</c> is the documented Microsoft path that bypasses
-    /// UAC at logon for trusted launchers.
+    /// The app needs administrator rights. A start without them asks Windows
+    /// for them (Program.Main, Services/StartWithRights.cs), so an entry in
+    /// HKCU\Run would raise the UAC prompt at every logon. While the
+    /// manifest required the rights, before #597, Windows passed over that
+    /// entry without a word and PadForge never started from it. A scheduled
+    /// task with <c>/SC ONLOGON</c> + <c>/RL HIGHEST</c> is the documented
+    /// Microsoft path that starts a trusted program at logon with its rights
+    /// and no prompt, and a start that has them is the app at once.
     ///
     /// <para>schtasks output is locale-dependent, so this helper drives it by
     /// exit code only (0 = task exists / created / deleted; non-zero = not
@@ -48,8 +50,9 @@ namespace PadForge.Common
 
         /// <summary>
         /// Creates or removes the launch-at-logon entry. Always purges the
-        /// legacy HKCU\Run entry as well — that mechanism never worked for
-        /// elevated PadForge, so leaving it around just confuses future
+        /// legacy HKCU\Run entry as well. It never started PadForge while
+        /// the manifest required administrator rights, it would raise the UAC
+        /// prompt at every logon now, and left around it confuses future
         /// IsStartupEnabled() probes.
         /// </summary>
         public static void SetStartupEnabled(bool enabled)

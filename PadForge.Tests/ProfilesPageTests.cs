@@ -612,72 +612,59 @@ namespace PadForge.Tests
             Assert.Equal("8,0", (string)add.Attribute("Padding"));
         }
 
+        /// <summary>External Control is the third way a profile activates
+        /// and holds no setting: Automation is the one switch for every
+        /// outside program (#597), and it is an extra. The card says in one
+        /// line what Automation allows now and opens Automation's page.</summary>
         [Fact]
-        public void ExternalControl_FoldsToOneLine()
+        public void ExternalControl_SaysWhatAutomationAllows_AndOpensIt()
         {
             var page = Page();
             var card = Named(page, "ExternalControlCard");
             var lines = Assert.Single(card.Elements()).Elements().ToList();
-            Assert.Equal(new[] { "TextBlock", "FoldCard" }, lines.Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "TextBlock", "Grid" }, lines.Select(e => e.Name.LocalName));
             Assert.Equal("{Binding Profiles_ExternalControlTitle" + S, (string)lines[0].Attribute("Text"));
             Assert.Equal("{StaticResource CardTitle}", (string)lines[0].Attribute("Style"));
+            // What it is, on the title, as the Shortcuts card says what it is.
+            Assert.Equal("{Binding Profiles_ExternalControlDescription" + S, (string)lines[0].Attribute("ToolTip"));
 
-            // Under the title, a fold that is the card's one row: what it
-            // allows in words, and its value and the chevron at its end.
-            var fold = Named(page, "ExternalControlFold");
-            Assert.Same(lines[1], fold);
-            Assert.Equal("{StaticResource CardFoldRow}", (string)fold.Attribute("Style"));
-            Assert.Equal("0,12,0,0", (string)fold.Attribute("Margin"));
-            Assert.Equal("Profiles.ExternalControl", (string)fold.Attribute("StateKey"));
-            Assert.Equal("{Binding Profiles_ExternalControlTitle" + S, (string)fold.Attribute("Header"));
-            Assert.Equal("{Binding Profiles_ExternalControl" + S, (string)fold.Attribute("Hint"));
-            Assert.Equal("{Binding Profiles_ExternalControlTooltip" + S, (string)fold.Attribute("Description"));
-            Assert.Equal("{StaticResource OnOffTextConverter}",
-                (string)Assert.Single(fold.Descendants(), e => e.Name.LocalName == "FoldCard.Summary").Elements().Single().Attribute("Converter"));
-            // One setting, one reset: the row's. The head has no Reset All,
-            // as neither board draws one (2026-11-13).
-            Assert.DoesNotContain(fold.Descendants(), e => e.Name.LocalName == "FoldCard.HeaderAction");
-            // The setting is laid out as the row is: its name, its switch, its reset.
-            var setting = Assert.Single(fold.Elements(), e => e.Name.LocalName == "Grid");
-            var parts = setting.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList();
-            Assert.Equal(new[] { "TextBlock", "CheckBox", "SettingResetButton" }, parts.Select(e => e.Name.LocalName));
-            Assert.Equal("{Binding Profiles_ExternalControl" + S, (string)parts[0].Attribute("Text"));
-            var check = ById(fold, "Profiles_ExternalControl");
-            Assert.Same(parts[1], check);
-            Assert.Equal("{Binding EnableExternalControl}", (string)check.Attribute("IsChecked"));
-            var reset = Assert.Single(fold.Descendants(), e => (string)e.Attribute("CommandParameter") == "EnableExternalControl");
-            Assert.Equal("Reset_SettingsViewModel_EnableExternalControl_133", (string)reset.Attribute(reset.Attributes().Single(a => a.Name.LocalName == "AutomationProperties.AutomationId").Name));
+            // The row, laid out as the Automatic Switching card's row is:
+            // the words at its start and what acts at its end.
+            var row = Named(page, "AutomationStateHost");
+            Assert.Same(lines[1], row);
+            Assert.Equal("36", (string)row.Attribute("MinHeight"));
+            Assert.Equal("0,12,0,0", (string)row.Attribute("Margin"));
+            var parts = row.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList();
+            Assert.Equal(new[] { "TextBlock", "Button" }, parts.Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { null, "1" }, parts.Select(e => (string)e.Attribute("Grid.Column")));
 
-            // The row opens in place: one button under everything, with the
-            // words, the value and the chevron, and the open setting over
-            // it. Open, the words give their place to the setting's name,
-            // so the same words are not written twice and nothing moves.
-            var style = Assert.Single(page.Root.Elements().Single(e => e.Name.LocalName == "UserControl.Resources").Elements(),
-                e => (string)e.Attribute(X + "Key") == "CardFoldRow");
-            Assert.Equal("{StaticResource {x:Type controls:FoldCard}}", (string)style.Attribute("BasedOn"));
-            Assert.Contains(style.Elements(), s => (string)s.Attribute("Property") == "HeaderMinHeight" && (string)s.Attribute("Value") == "36");
-            var template = Assert.Single(style.Descendants(), e => e.Name.LocalName == "ControlTemplate");
-            var root = Assert.Single(template.Elements(), e => e.Name.LocalName == "Grid");
-            var under = root.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList();
-            Assert.Equal(new[] { "ToggleButton", "Border" }, under.Select(e => e.Name.LocalName));
-            Assert.Equal("HeaderSite", (string)under[0].Attribute(X + "Name"));
-            Assert.Equal("2", (string)under[0].Attribute("Grid.ColumnSpan"));
-            Assert.Equal("{StaticResource FoldHeaderToggle}", (string)under[0].Attribute("Style"));
-            Assert.Equal("{TemplateBinding Hint}", (string)under[0].Attribute("AutomationProperties.HelpText"));
-            Assert.Equal("{TemplateBinding Summary}", (string)under[0].Attribute("AutomationProperties.ItemStatus"));
-            Assert.Equal("{TemplateBinding Hint}", (string)Named(under[0], "HintText").Attribute("Text"));
-            Assert.Equal("{TemplateBinding Summary}", (string)Named(under[0], "SummaryText").Attribute("Text"));
-            Assert.Equal("LeftToRight", (string)Named(under[0], "Chevron").Attribute("FlowDirection"));
-            Assert.Equal("ExpandSite", (string)under[1].Attribute(X + "Name"));
-            Assert.Equal("Collapsed", (string)under[1].Attribute("Visibility"));
-            Assert.Null(under[1].Attribute("Grid.Column"));
-            // The setting ends where the chevron's room begins.
-            Assert.Equal(new[] { "*", "34" }, root.Elements().Single(e => e.Name.LocalName == "Grid.ColumnDefinitions").Elements().Select(c => (string)c.Attribute("Width")));
-            var opened = Assert.Single(template.Elements().Single(e => e.Name.LocalName == "ControlTemplate.Triggers").Elements());
-            Assert.Equal("IsExpanded", (string)opened.Attribute("Property"));
-            Assert.Equal(new[] { ("ExpandSite", "Visibility", "Visible"), ("HintText", "Visibility", "Hidden"), ("SummaryText", "Visibility", "Collapsed") },
-                opened.Elements().Where(s => (string)s.Attribute("Property") == "Visibility")
-                    .Select(s => ((string)s.Attribute("TargetName"), (string)s.Attribute("Property"), (string)s.Attribute("Value"))));
+            var words = ById(row, "Profiles_AutomationAllows");
+            Assert.Same(parts[0], words);
+            Assert.Equal("{Binding AutomationAllowsLine}", (string)words.Attribute("Text"));
+            Assert.Equal("14", (string)words.Attribute("FontSize"));
+            Assert.Equal("Wrap", (string)words.Attribute("TextWrapping"));
+
+            var open = ById(row, "Profiles_OpenAutomation");
+            Assert.Same(parts[1], open);
+            Assert.Equal("{Binding Profiles_OpenAutomation" + S, (string)open.Attribute("Content"));
+            Assert.Equal("OpenAutomation_Click", (string)open.Attribute("Click"));
+
+            // One function keeps one switch: the card has none, and no reset.
+            Assert.DoesNotContain(card.Descendants(), e => e.Name.LocalName is "CheckBox" or "SettingResetButton" or "FoldCard");
+            string text = Text();
+            foreach (string gone in new[] { "EnableExternalControl", "ExternalControlFold", "CardFoldRow", "Profiles.ExternalControl",
+                         "Profiles_ExternalControlTooltip", "\"{Binding Profiles_ExternalControl," })
+                Assert.DoesNotContain(gone, text, StringComparison.Ordinal);
+
+            // The row reads the Extras view model, which the window hands the
+            // page, and the button asks the window for Automation's page.
+            string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ProfilesPage.xaml.cs");
+            Assert.Contains("public void BindAutomationState(DashboardViewModel dashboard)", code, StringComparison.Ordinal);
+            Assert.Contains("AutomationStateHost.DataContext = dashboard;", code, StringComparison.Ordinal);
+            Assert.Contains("=> OpenAutomationRequested?.Invoke(this, EventArgs.Empty);", code, StringComparison.Ordinal);
+            string main = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs");
+            Assert.Contains("ProfilesPageView.BindAutomationState(_viewModel.Dashboard);", main, StringComparison.Ordinal);
+            Assert.Contains("ProfilesPageView.OpenAutomationRequested += (s, e) => OpenExtra(\"Automation\");", main, StringComparison.Ordinal);
         }
 
         [Fact]

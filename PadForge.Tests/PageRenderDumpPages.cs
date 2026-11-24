@@ -110,6 +110,10 @@ namespace PadForge.Tests
                 vm.ProfileShortcuts.Add(next);
 
                 var page = new ProfilesPage { DataContext = vm };
+                // The External Control card reads the Extras view model,
+                // which the window hands the page.
+                var extras = new DashboardViewModel();
+                page.BindAutomationState(extras);
                 var ground = drawing.Ground(page);
                 drawing.Step("the page is made");
 
@@ -203,11 +207,14 @@ namespace PadForge.Tests
                 drawing.Picture(ground, "profiles-no-shortcuts.png", width, height, () => vm.ProfileShortcuts.Clear());
                 vm.ProfileShortcuts.Add(next);
 
-                // External Control open. The fold is closed again after, since
-                // its state is the app's and outlives the page.
-                var external = (Expander)page.FindName("ExternalControlFold");
-                drawing.Picture(ground, "profiles-external-control-open.png", width, height, () => external.IsExpanded = true);
-                external.IsExpanded = false;
+                // External Control with Automation on: at its lowest level,
+                // and at Send Inputs, whose line is the longest.
+                drawing.Picture(ground, "profiles-external-control-on.png", width, height, () => extras.EnableAutomation = true);
+                drawing.Picture(ground, "profiles-external-control-send-inputs.png", width, height,
+                    () => extras.AutomationLevel = PadForge.Services.Automation.AutomationLevel.SendInputs);
+                drawing.Picture(ground, "profiles-external-control-send-inputs-900.png", Least, 1500);
+                extras.AutomationLevel = PadForge.Services.Automation.AutomationLevel.Commands;
+                extras.EnableAutomation = false;
             });
         }
 

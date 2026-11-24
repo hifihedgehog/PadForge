@@ -369,7 +369,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Sa dolavi tu na PadForge.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Cala bibi</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Cala</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>E yaco e dua na cala e sega ni namaki:

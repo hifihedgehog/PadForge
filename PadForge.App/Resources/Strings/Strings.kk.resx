@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр. {1} {2} контроллер индексіне жіберіп тұр, бірақ DualSense немесе DualShock 4 бар виртуалды контроллерлердің ешқайсысында мұндай индекс жоқ.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} портын DSX сияқты басқа бағдарлама пайдаланып тұр. Оны жабыңыз немесе басқа порт таңдаңыз.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Ойын моды</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Басқа бағдарлама {0} құбыр атын ұстап тұр. Сол бағдарламаны жабыңыз.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} құбырын қабылдамады, сондықтан бағдарламалар қосыла алмайды.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} профиліне ауысу</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Әдепкі профильге оралу</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Қай профиль белсенді екенін сұрау</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Терезені көрсету</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Терезені жүйелік трейге жіберу</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Терезені жию</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ты жабу</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Қозғалтқышты іске қосу</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Қозғалтқышты тоқтату</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Барлық виртуалды контроллерді қосу</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Барлық виртуалды контроллерді өшіру</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Виртуалды контроллер {0} қосу</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Виртуалды контроллер {0} өшіру</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Диагностика үзіндісін сақтау</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Ақауды жазуды бастау</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Жазуды тоқтату</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Жазбаға белгі қою</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge нұсқасын сұрау</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Не жұмыс істеп тұрғанын сұрау</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge танымайтын жолды жіберу: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack-пен, UDP шығысын жіберетін немесе FreeTrack 2.0 ортақ жадына жазатын кез келген трекермен, сондай-ақ осы компьютердегі сеансты фондық режимде іске қоса алатын OpenXR орындау ортасымен жұмыс істейді.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-Keys пернелерін оқу</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G пернелерін Logitech G-key SDK арқылы оқиды. Logitech Gaming Software 8.55 немесе одан кейінгі нұсқасы іске қосулы болуы керек. Сол бағдарламада G-key командасын PadForge профиліндегі әр пернеге сүйреп апарыңыз. Ол профильді тұрақты етіңіз, әйтпесе пернелер PadForge бағдарламасына тек оның терезесі алдыңғы жоспарда тұрғанда ғана жетеді. G600 не G300 тінтуірін де кірістірілген жад режимінен шығару керек.</value></data>
@@ -2694,9 +2716,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Қазір алдыңғы қатарда: {0}, ол үшін профиль орнатылмаған</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Қазір алдыңғы қатарда: {0}, ол {1} профилін жүктейді</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Қазір алдыңғы қатарда: {0}, әзірге ешбір профильге ойын орнатылмаған</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Лаунчерлер мен скрипттерге сыртқы басқаруға рұқсат беру</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control атты жергілікті аталған арнаны (named pipe) ұсынады, сонда Playnite, LaunchBox немесе скрипт профильдерді белсендіріп, өшіре алады. Осылай белсендірілген профиль скрипт оны босатқанша немесе профильді өзіңіз ауыстырғанша белсенді қалады. Тек жергілікті компьютер үшін.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Сыртқы басқару</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Лаунчер немесе скрипт профильдерді Автоматтандыру арқылы ауыстыра алады. Осылай ауыстырылған профиль бағдарлама оны босатқанша немесе өзіңіз профильді ауыстырғанша қалады.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Автоматтандыру өшірулі</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Автоматтандыру қосулы: бағдарламалар профильдерді ауыстыра алады</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Автоматтандыру қосулы: бағдарламалар профильдерді ауыстыра алады, құрылғылар мен параметрлерді оқи алады</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Автоматтандыру қосулы: бағдарламалар профильдерді ауыстыра алады, құрылғылар мен параметрлерді оқи алады және кірістер жібере алады</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Автоматтандыру қосулы: бағдарламалар профильдерді ауыстыра алады, кірістер жібере алады және параметрлерді өзгерте алады</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Автоматтандыруды ашу</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Белсенді профиль:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Контроллерлер жоқ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Профильді импорттау үшін осында тастаңыз</value></data>
@@ -2753,7 +2780,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Орындалатын файлдар (*.exe)|*.exe|Барлық файлдар (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge қазірдің өзінде іске қосылған.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ауыр қате</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: қате</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Күтпеген қате орын алды:

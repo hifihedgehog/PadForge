@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}. {1} qed jibgħat lill-indiċi tal-kontrollur {2}, u l-ebda kontrollur virtwali b'DualSense jew DualShock 4 fuqu m'għandu dak l-indiċi.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Il-port {0} qed jintuża minn programm ieħor, bħal DSX. Agħlqu jew agħżel port ieħor.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ta' logħba</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programm ieħor qed iżomm l-isem tal-pipe {0}. Agħlaq dak il-programm.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows irrifjuta l-pipe {0}, għalhekk il-programmi ma jistgħux jikkonnettjaw.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibdel għall-profil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Erġa' lura għall-profil awtomatiku</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Staqsi liema profil huwa attiv</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Uri t-tieqa</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ibgħat it-tieqa fis-system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Imminimizza t-tieqa</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Agħlaq PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Ibda l-engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Waqqaf l-engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Ixgħel kull kontrollur virtwali</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Itfi kull kontrollur virtwali</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Ixgħel il-Kontrollur virtwali {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Itfi l-Kontrollur virtwali {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Salva snapshot tad-dijanjostika</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Ibda ħu reġistrazzjoni ta' problema</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Waqqaf ir-reġistrazzjoni</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Immarka r-reġistrazzjoni</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Staqsi għall-verżjoni ta' PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Staqsi x'qed jaħdem</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ibgħat linja li PadForge ma jafx: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Jaħdem ma' OpenTrack u ma' kull tracker li jibgħat l-output UDP tiegħu jew jikteb fil-memorja kondiviża FreeTrack 2.0, u ma' runtime OpenXR fuq din il-magna li jista' jħaddem sessjoni fl-isfond.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Aqra l-G-keys ta' Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Jaqra l-G-keys permezz tas-SDK G-key ta' Logitech. Jeħtieġ Logitech Gaming Software 8.55 jew aktar recenti jaħdem. F'dak is-software, kaxkar il-kmand G-key fuq kull tast fil-profil ta' PadForge. Agħmel dak il-profil persistenti, inkella t-tasti jaslu f'PadForge biss waqt li t-tieqa tiegħu tkun quddiem. Maws G600 jew G300 irid ukoll ikun barra mill-modalità tal-memorja interna.</value></data>
@@ -2669,9 +2691,14 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Quddiem issa: {0}, l-ebda profil mhu issettjat għalih</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Quddiem issa: {0}, li jgħabbi {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Quddiem issa: {0}, u l-ebda profil m'għandu logħba issettjata s'issa</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Ippermetti kontroll estern minn launchers u scripts</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Jipprovdi named pipe lokali, PadForge.Control, biex Playnite, LaunchBox jew script ikunu jistgħu jattivaw u jiddiżattivaw il-profili. Profil attivat b'dan il-mod jibqa' attiv sakemm l-iscript jeħilsu jew sakemm int stess tibdel il-profil. Fuq dan il-kompjuter biss.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Kontroll estern</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Launcher jew skript jista' jibdel il-profili permezz tal-Awtomazzjoni. Profil mibdul b'dan il-mod jibqa' sakemm il-programm iħallih jew sakemm tibdel il-profili int.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>L-Awtomazzjoni hija mitfija</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>L-Awtomazzjoni hija mixgħula: il-programmi jistgħu jibdlu l-profili</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>L-Awtomazzjoni hija mixgħula: il-programmi jistgħu jibdlu l-profili u jaqraw l-apparati u s-settings</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>L-Awtomazzjoni hija mixgħula: il-programmi jistgħu jibdlu l-profili, jaqraw l-apparati u s-settings, u jibagħtu inputs</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>L-Awtomazzjoni hija mixgħula: il-programmi jistgħu jibdlu l-profili, jibagħtu inputs u jibdlu s-settings</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Iftaħ l-Awtomazzjoni</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil attiv:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>L-ebda kontrollur</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Itlaq hawn biex timporta profil</value></data>
@@ -2728,7 +2755,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Fajls eżekwibbli (*.exe)|*.exe|Il-fajls kollha (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge diġà qed jaħdem.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Żball fatali</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Żball</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Seħħ żball mhux mistenni:

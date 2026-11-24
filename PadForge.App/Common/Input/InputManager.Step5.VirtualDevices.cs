@@ -2656,8 +2656,8 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Lazily initialize the shared HMContext, load embedded profiles, and
         /// install the HIDMaestro driver if needed. Idempotent — safe to call
-        /// every Start(). The caller must already be elevated; PadForge
-        /// auto-elevates on launch when virtual device drivers are present.
+        /// every Start(). The caller must already be elevated, which the app
+        /// always is (Program.Main).
         /// </summary>
         private void EnsureHMaestroContext()
         {

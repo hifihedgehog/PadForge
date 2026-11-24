@@ -80,7 +80,18 @@ namespace PadForge.Services
         internal Func<StagedUpdate, string, IReadOnlyList<string>, CancellationToken, UpdateService.IHelperHandle> StartHelper =
             UpdateService.StartHelper;
         internal Func<Task> Cleanup = UpdateService.CleanupStagingAsync;
+        /// <summary>The arguments this copy was started with. The marker of
+        /// an update is read from them as they are, and an install hands on
+        /// the start options among them (<see cref="RelaunchArgs"/>).</summary>
         internal Func<IReadOnlyList<string>> LaunchArgs = () => App.StartupArgs;
+
+        /// <summary>What the updated copy is started with: how this copy was
+        /// started, and nothing it was told to do once, which it has done
+        /// (#597). A profile, the engine's and the controllers' state and
+        /// where the window is come back. A recording asked for on the
+        /// command line is not started a second time.</summary>
+        internal IReadOnlyList<string> RelaunchArgs()
+            => PadForge.Common.CommandLineSwitches.StartOptionsOnly(LaunchArgs());
 
         private sealed class Operation
         {
@@ -570,7 +581,7 @@ namespace PadForge.Services
                 // launch against the updated build, so a failure here is not
                 // reported.
                 TryDeletePending(out _);
-                var args = LaunchArgs();
+                var args = RelaunchArgs();
                 var token = op.Cts.Token;
                 // Off the UI thread: the exe is hashed again (about 290 MB),
                 // and the helper gets up to a minute to report ready.

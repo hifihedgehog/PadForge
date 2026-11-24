@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Hlustar á :{0}. {1} sendir á stýringarnúmer {2} og engin sýndarstýring með DualSense eða DualShock 4 er með það númer.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Gátt {0} er í notkun hjá öðru forriti, eins og DSX. Lokaðu því eða veldu aðra gátt.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Leikjabreyting</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Annað forrit heldur pípunafninu {0}. Lokaðu því forriti.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows hafnaði pípunni {0}, svo forrit geta ekki tengst.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Skipta yfir í sniðið {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fara aftur í sjálfgefna sniðið</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Spyrja hvaða snið er virkt</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Sýna gluggann</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Senda gluggann í kerfisbakkann</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Lágmarka gluggann</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Loka PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Ræsa vélina</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stöðva vélina</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Kveikja á öllum sýndarstýringum</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Slökkva á öllum sýndarstýringum</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Kveikja á sýndarstýringu {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Slökkva á sýndarstýringu {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Vista greiningarskyndimynd</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Hefja upptöku vandamáls</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Stöðva upptöku</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Merkja upptökuna</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Spyrja um útgáfu PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Spyrja hvað er í gangi</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Senda línu sem PadForge þekkir ekki: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Virkar með OpenTrack og hverjum þeim rakningarbúnaði sem sendir UDP-úttak sitt eða skrifar í sameiginlegt minni FreeTrack 2.0, og með OpenXR-keyrsluumhverfi á þessari vél sem getur keyrt lotu í bakgrunni.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa Logitech G-lykla</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Les G-lykla í gegnum Logitech G-key SDK. Logitech Gaming Software 8.55 eða nýrra þarf að vera í gangi. Í því forriti skaltu draga skipunina „G-key“ á hvern lykil í PadForge-sniðinu. Gerðu sniðið varanlegt, annars berast lyklarnir aðeins til PadForge á meðan gluggi þess er fremstur. Einnig þarf að taka G600- eða G300-mús úr ham innbyggðs minnis.</value></data>
@@ -2922,9 +2944,14 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Fremst núna: {0}, ekkert snið valið fyrir það</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Fremst núna: {0}, sem hleður {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Fremst núna: {0}, og ekkert snið hefur enn leik valinn</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Leyfa ytri stýringu frá ræsiforritum og skriftum</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Opnar staðbundna nefnda pípu, PadForge.Control, svo Playnite, LaunchBox eða skrifta geti virkjað og afvirkjað snið. Snið sem er virkjað á þennan hátt helst virkt þar til skriftan sleppir því eða þú skiptir um snið. Aðeins á þessari vél.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Ytri stýring</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Ræsiforrit eða skrifta getur skipt um snið í gegnum Sjálfvirkni. Snið sem skipt er um á þennan hátt helst þar til forritið sleppir því eða þú skiptir sjálf um snið.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Slökkt er á Sjálfvirkni</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Kveikt er á Sjálfvirkni: forrit geta skipt um snið</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Kveikt er á Sjálfvirkni: forrit geta skipt um snið og lesið tæki og stillingar</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Kveikt er á Sjálfvirkni: forrit geta skipt um snið, lesið tæki og stillingar og sent inntök</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Kveikt er á Sjálfvirkni: forrit geta skipt um snið, sent inntök og breytt stillingum</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Opna Sjálfvirkni</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Virkt snið:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Engar stýringar</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Slepptu hér til að flytja inn snið</value></data>
@@ -2982,7 +3009,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Keyrsluskrár (*.exe)|*.exe|Allar skrár (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge er þegar í gangi.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: alvarleg villa</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: villa</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Óvænt villa kom upp:

@@ -43,7 +43,7 @@ namespace PadForge.Common.Input.Peripherals
     /// (LibreHardwareMonitorLib/Hardware/Mutexes.cs:24) and is not taken.</para>
     ///
     /// <para>The mutex is created with a rule that gives everyone full
-    /// control. PadForge runs elevated, and a mutex an elevated process
+    /// control. The app runs elevated, and a mutex an elevated process
     /// creates with its default security shuts out an unelevated OpenRGB,
     /// whose CreateMutex asks for every right on a mutex that exists
     /// already and whose wait loop has no way out once that fails

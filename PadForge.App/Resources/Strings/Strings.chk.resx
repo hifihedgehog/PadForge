@@ -316,7 +316,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Executables (*.exe)|*.exe|File meinisin (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge a fen angang.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Osukosuk</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>A fis eú osukosuk:
 
@@ -787,4 +786,24 @@
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Sasingen theme: USS Enterprise-D</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ese tongeni álleani ewe sasing seni Steam ren ei urumwot.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Sópwelo le Tiinnóó</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Siwil ngeni ewe profile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Liwin ngeni ewe profile default</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Eis ifa ewe profile mi angang</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Pwáraeló ewe window</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Isóni ewe window non ewe system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Akúkkúnú ewe window</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Kúnú PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Poputá ewe engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Aúkú ewe engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Kawora iteiten virtual controller</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Aúkú iteiten virtual controller</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Kawora Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Aúkú Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Isóni eu diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Poputá ne rekoti eu osukosuk</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Aúkú ewe rekot</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Esina ewe rekot</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Eis ren version an PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Eis met a angang</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tinala eu line PadForge ese silei: {0}</value></data>
 </root>

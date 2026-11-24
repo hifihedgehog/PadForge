@@ -306,6 +306,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kulalelwa embobeni :{0}. {1} ithumela kunombolo yesilawuli {2}, futhi asikho isilawuli esibonakalayo esine-DualSense noma i-DualShock 4 esinaleyo nombolo.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Imbobo {0} isetshenziswa ngolunye uhlelo, njenge-DSX. Luvale noma ukhethe enye imbobo.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>I-mod yomdlalo</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Olunye uhlelo lubambe igama lepayipi elithi {0}. Vala lolo hlelo.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>I-Windows yenqabe ipayipi elithi {0}, ngakho izinhlelo azikwazi ukuxhuma.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Shintshela kuphrofayela ethi {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Buyela kuphrofayela ezenzakalelayo</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Buza ukuthi iyiphi iphrofayela esebenzayo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Bonisa iwindi</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Thumela iwindi ethreyini yesistimu</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Nciphisa iwindi</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Vala i-PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Qala injini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Misa injini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Vula zonke izilawuli ezibonakalayo</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Vala zonke izilawuli ezibonakalayo</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Vula isilawuli esibonakalayo {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Vala isilawuli esibonakalayo {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Londoloza isithombe sokuxilonga</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Qala ukuqopha inkinga</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Misa ukuqopha</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Maka okuqoshiwe</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Buza inguqulo ye-PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Buza ukuthi yini esebenzayo</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Thumela umugqa i-PadForge engawazi: {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Isilawuli sewebhu</value></data>
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Ikhodi yokungena</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Ikhodi entsha</value></data>
@@ -1402,9 +1424,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Okuphambili manje: {0}, ayikho iphrofayela esethelwe khona</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Okuphambili manje: {0}, okulayisha {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Okuphambili manje: {0}, futhi ayikho iphrofayela esinomdlalo osethiwe</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Vumela ukulawulwa kwangaphandle ngama-launcher nangama-script</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Ivula ipayipi elinegama lendawo, PadForge.Control, ukuze i-Playnite, i-LaunchBox, noma i-script ikwazi ukwenza amaphrofayela asebenze nokuwamisa. Iphrofayela eyenziwe yasebenza ngale ndlela ihlala isebenza kuze kube yilapho i-script iyidedela noma ushintsha amaphrofayela ngokwakho. Kukhompyutha yendawo kuphela.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Ukulawulwa kwangaphandle</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Isiqalisi noma umbhalo ungashintsha amaphrofayela ngokuthi Ukuzenzakalela. Iphrofayela eshintshwe ngale ndlela ihlala kuze kube uhlelo luyayidedela noma ushintsha amaphrofayela ngokwakho.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Ukuzenzakalela kuvaliwe</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Ukuzenzakalela kuvuliwe: izinhlelo zingashintsha amaphrofayela</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Ukuzenzakalela kuvuliwe: izinhlelo zingashintsha amaphrofayela futhi zifunde amadivayisi nezilungiselelo</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Ukuzenzakalela kuvuliwe: izinhlelo zingashintsha amaphrofayela, zifunde amadivayisi nezilungiselelo, futhi zithumele okufakwayo</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Ukuzenzakalela kuvuliwe: izinhlelo zingashintsha amaphrofayela, zithumele okufakwayo futhi zishintshe izilungiselelo</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Vula ukuzenzakalela</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Iphrofayela esebenzayo:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Azikho izilawuli</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Iphrofayela entsha</value></data>
@@ -1448,7 +1475,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>I-PadForge isivele isebenza.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Iphutha elibulalayo</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Iphutha</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Kuvele iphutha obekungalindelekile:

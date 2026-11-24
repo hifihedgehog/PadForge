@@ -1070,7 +1070,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Efa mandeha ny PadForge.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Hadisoana</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Nisy hadisoana tsy nampoizina:
 
@@ -2308,4 +2307,26 @@
   <data name="Status_HidMaestroSetupFailed" xml:space="preserve"><value>Tsy azo nalamina ny HIDMaestro. Ao amin'ny rakitra diagnostika ny antony.</value></data>
   <data name="Status_HidMaestroProfileMissing" xml:space="preserve"><value>Tsy hita ny profil HIDMaestro an'ny contrôleur virtoaly iray. Ny rakitra diagnostika no milaza hoe iza izy.</value></data>
   <data name="Status_CustomLayoutFailed_Format" xml:space="preserve"><value>Tsy nahazo ny maha-izy azy sy ny fandaminana namboarina ho azy ny {0}, ka ireo an'ny profiliny ihany no ampiasainy.</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programa hafa no mitazona ny anaran'ny pipe {0}. Akatony io programa io.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Nolavin'ny Windows ny pipe {0}, ka tsy afaka mifandray ny programa.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Mifindrà amin'ny profil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Miverena amin'ny profil par défaut</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Anontanio hoe iza ny profil mavitrika</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Asehoy ny varavarankely</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Afeno ao amin'ny tray ny varavarankely</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Akelezo ny varavarankely</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Akatony ny PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Atombohy ny motera</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ajanony ny motera</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Velomy ny contrôleur virtoaly rehetra</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Vonoy ny contrôleur virtoaly rehetra</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Velomy ny Contrôleur virtoaly {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Vonoy ny Contrôleur virtoaly {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Tehirizo snapshot diagnostika</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Atombohy ny firaketana olana</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Ajanony ny firaketana</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Asio marika ny firaketana</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Anontanio ny version an'ny PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Anontanio izay mandeha</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Alefaso andalana tsy fantatry ny PadForge: {0}</value></data>
 </root>

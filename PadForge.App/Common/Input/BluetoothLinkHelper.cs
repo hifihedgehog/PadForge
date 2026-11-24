@@ -195,7 +195,7 @@ namespace PadForge.Common.Input
         /// <summary>Disables every cached BTHLEDEVICE node for the device,
         /// forcing the Bluetooth LE link down, and re-enables them in the
         /// background after <see cref="DevNodeReEnableMs"/>. Requires
-        /// elevation, which PadForge always runs with. Nodes of other paired
+        /// elevation, which the app always runs with. Nodes of other paired
         /// pads in the cache go down for the same window; the cache cannot
         /// distinguish the connected pairing. Returns true when at least one
         /// node was disabled.</summary>

@@ -156,79 +156,6 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <!-- A fold that is a card's one row (the approved "keep the frame"
-             canvas): what it holds in words at its start, and its value and
-             the chevron at its end. It opens in place: its setting stands
-             where the words and the value stood, with the setting's own
-             name where the words were, so nothing is written twice and
-             nothing moves. The row is one button, and the open setting lies
-             over it, so a click beside the setting still closes the row.
-             The card's title stands over the row, so the row draws no title
-             of its own, and the title is still the row's name for a screen
-             reader. The chevron points along the row closed and down open,
-             and is pinned left-to-right like every drawing in the app. -->
-        <Style x:Key="CardFoldRow" TargetType="{x:Type controls:FoldCard}" BasedOn="{StaticResource {x:Type controls:FoldCard}}">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HeaderMinHeight" Value="36"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type controls:FoldCard}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <!-- The chevron's room: 14 before it, its 10
-                                     and 10 after it. -->
-                                <ColumnDefinition Width="34"/>
-                            </Grid.ColumnDefinitions>
-                            <ToggleButton x:Name="HeaderSite" Grid.ColumnSpan="2" Style="{StaticResource FoldHeaderToggle}"
-                                          MinHeight="{TemplateBinding HeaderMinHeight}" Padding="{TemplateBinding Padding}"
-                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                          ToolTip="{TemplateBinding Description}"
-                                          AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
-                                          AutomationProperties.HelpText="{TemplateBinding Hint}"
-                                          AutomationProperties.ItemStatus="{TemplateBinding Summary}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="34"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock x:Name="HintText" Text="{TemplateBinding Hint}"
-                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="14" TextWrapping="Wrap"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock x:Name="SummaryText" Grid.Column="1" Text="{TemplateBinding Summary}"
-                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="14" Margin="12,0,0,0"
-                                               Foreground="{TemplateBinding SummaryForeground}"
-                                               VerticalAlignment="Center"/>
-                                    <Path x:Name="Chevron" Grid.Column="2" FlowDirection="LeftToRight" Data="M 3,1 L 7,5 L 3,9"
-                                          Width="10" Height="10" Margin="14,0,10,0"
-                                          Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
-                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
-                                          RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center"/>
-                                </Grid>
-                            </ToggleButton>
-                            <Border x:Name="ExpandSite" Visibility="Collapsed" VerticalAlignment="Center">
-                                <ContentPresenter/>
-                            </Border>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsExpanded" Value="True">
-                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="HintText" Property="Visibility" Value="Hidden"/>
-                                <Setter TargetName="SummaryText" Property="Visibility" Value="Collapsed"/>
-                                <Setter TargetName="Chevron" Property="RenderTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="90"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <!-- A starter profile's tile: the band's fill inside the card's
              hairline with corners of 12, lifting one step under the pointer.
              The whole tile is one button. -->
@@ -885,50 +812,39 @@
 
                 <!-- External Control: the third way a profile can activate,
                      beside the shortcut combo and the program in front
-                     (#366). A launcher or script activates profiles through
-                     a named pipe. Rarely used, so under the card's title it
-                     folds to one row, what it allows in words and its value
-                     at the row's end. It holds one setting, whose row has
-                     the reset, so the card has no Reset All: the board draws
-                     none. -->
+                     (#366). A launcher or a script switches profiles
+                     through Automation, the one switch for every outside
+                     program (#597), which is an extra and has its page
+                     there. So the card holds no setting: under its title
+                     one row says what Automation allows now, and the
+                     button at the row's end opens Automation's page. The
+                     row reads the Extras view model, which the window
+                     hands it (BindAutomationState). -->
                 <Border x:Name="ExternalControlCard" Style="{StaticResource CardBorder}" Padding="20,16,12,16" Margin="0">
                     <StackPanel>
                         <TextBlock Text="{Binding Profiles_ExternalControlTitle, Source={x:Static strings:Strings.Instance}}"
                                    Style="{StaticResource CardTitle}" HorizontalAlignment="Left"
-                                   AutomationProperties.HeadingLevel="Level2"/>
-                        <controls:FoldCard x:Name="ExternalControlFold" Style="{StaticResource CardFoldRow}" Margin="0,12,0,0"
-                                           StateKey="Profiles.ExternalControl"
-                                           Header="{Binding Profiles_ExternalControlTitle, Source={x:Static strings:Strings.Instance}}"
-                                           Hint="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                           Description="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}">
-                            <controls:FoldCard.Summary>
-                                <MultiBinding Converter="{StaticResource OnOffTextConverter}">
-                                    <Binding Path="EnableExternalControl"/>
-                                    <Binding Path="Common_On" Source="{x:Static strings:Strings.Instance}"/>
-                                    <Binding Path="Common_Off" Source="{x:Static strings:Strings.Instance}"/>
-                                </MultiBinding>
-                            </controls:FoldCard.Summary>
-                            <!-- The setting, laid out as the row is: its
-                                 name where the row's words were, then its
-                                 switch and its reset. -->
-                            <Grid MinHeight="36">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                           FontSize="14" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                <CheckBox Grid.Column="1" Style="{StaticResource SwitchCheckBox}" IsChecked="{Binding EnableExternalControl}" VerticalAlignment="Center"
-                                          Content="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                          ToolTip="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}"
-                                          AutomationProperties.AutomationId="Profiles_ExternalControl"/>
-                                <controls:SettingResetButton Grid.Column="2" Margin="10,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="EnableExternalControl"
-                                                             SettingLabel="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                                             AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableExternalControl_133"/>
-                            </Grid>
-                        </controls:FoldCard>
+                                   AutomationProperties.HeadingLevel="Level2"
+                                   ToolTip="{Binding Profiles_ExternalControlDescription, Source={x:Static strings:Strings.Instance}}"/>
+                        <!-- Laid out as its neighbors' rows are: the words at
+                             the row's start, 36 tall, and what acts at its
+                             end. The button keeps 8 to the card's edge, so
+                             it ends where the card's text begins on the
+                             other side. -->
+                        <Grid x:Name="AutomationStateHost" MinHeight="36" Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="AutomationAllowsText" Text="{Binding AutomationAllowsLine}"
+                                       FontSize="14" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                       AutomationProperties.AutomationId="Profiles_AutomationAllows"/>
+                            <ui:Button Grid.Column="1" Margin="0,0,8,0" Padding="14,0" MinHeight="32" VerticalAlignment="Center"
+                                       Click="OpenAutomation_Click"
+                                       Content="{Binding Profiles_OpenAutomation, Source={x:Static strings:Strings.Instance}}"
+                                       AutomationProperties.AutomationId="Profiles_OpenAutomation"/>
+                        </Grid>
                     </StackPanel>
                 </Border>
             </controls:TileGridPanel>

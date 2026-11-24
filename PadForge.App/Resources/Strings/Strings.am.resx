@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ። {1} ወደ መቆጣጠሪያ ቁጥር {2} እየላከ ነው፣ ነገር ግን DualSense ወይም DualShock 4 ያለበት ምንም ምናባዊ መቆጣጠሪያ ያንን ቁጥር የለውም።</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ወደብ {0} በሌላ ፕሮግራም፣ ለምሳሌ በDSX፣ በጥቅም ላይ ነው። ያንን ፕሮግራም ዝጋ ወይም ሌላ ወደብ ምረጥ።</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>አንድ የጨዋታ ሞድ</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>ሌላ ፕሮግራም የቧንቧ ስሙን {0} ይዞታል። ያንን ፕሮግራም ይዝጉ።</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ቧንቧውን {0} ስላልፈቀደ ፕሮግራሞች መገናኘት አይችሉም።</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ወደ መገለጫው {0} ቀይር</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ወደ ነባሪው መገለጫ ተመለስ</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>የትኛው መገለጫ ንቁ እንደሆነ ጠይቅ</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>መስኮቱን አሳይ</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>መስኮቱን ወደ ሲስተም ትሪ ላክ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>መስኮቱን አሳንስ</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge ዝጋ</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ሞተሩን አስጀምር</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ሞተሩን አቁም</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ሁሉንም ምናባዊ መቆጣጠሪያዎች አብራ</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ሁሉንም ምናባዊ መቆጣጠሪያዎች አጥፋ</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ {0} አብራ</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ {0} አጥፋ</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>የምርመራ ቅጽበታዊ ቅጂ አስቀምጥ</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ችግር መቅዳት ጀምር</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>መቅዳት አቁም</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ቀረጻውን ምልክት አድርግ</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>የPadForge ስሪትን ጠይቅ</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ምን እየሄደ እንደሆነ ጠይቅ</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge የማያውቀውን መስመር ላክ፦ {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ከOpenTrack እና የUDP ውጽዓቱን ከሚልክ ወይም የFreeTrack 2.0 የጋራ ማህደረ ትውስታ ከሚጽፍ ማንኛውም መከታተያ ጋር ይሠራል፣ እንዲሁም በዚህ ኮምፒውተር ላይ ክፍለ ጊዜን ከበስተጀርባ ማስኬድ ከሚችል የOpenXR ራንታይም ጋር ይሠራል።</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>የLogitech G ቁልፎችን አንብብ</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>የG-key ቁልፎችን በLogitech G-key SDK በኩል ያነባል። Logitech Gaming Software 8.55 ወይም ከዚያ በኋላ ያለው እየሄደ መሆን አለበት። በዚያ ሶፍትዌር ውስጥ የG-key ትዕዛዙን በPadForge መገለጫ ውስጥ ባለው በእያንዳንዱ ቁልፍ ላይ ይጎትቱ። ያንን መገለጫ ቋሚ ያድርጉት፣ አለበለዚያ ቁልፎቹ PadForge የሚደርሱት መስኮቱ ፊት ለፊት ሲሆን ብቻ ነው። G600 ወይም G300 መዳፊት ደግሞ ከውስጠ-መሣሪያ ማህደረ ትውስታ ሁነታ መውጣት አለበት።</value></data>
@@ -2687,9 +2709,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>አሁን ፊት ለፊት: {0}፣ ለእሱ መገለጫ አልተዘጋጀም</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>አሁን ፊት ለፊት: {0}፣ የሚጭነው መገለጫ: {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>አሁን ፊት ለፊት: {0}፣ እስካሁን ለየትኛውም መገለጫ ጨዋታ አልተዘጋጀም</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>በማስጀመሪያዎችና በስክሪፕቶች የውጭ ቁጥጥርን ፍቀድ</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control የተባለ አካባቢያዊ named pipe ያቀርባል፣ ስለዚህ Playnite፣ LaunchBox ወይም ስክሪፕት መገለጫዎችን ማንቃትና ማቦዘን ይችላሉ። በዚህ መንገድ የነቃ መገለጫ ስክሪፕቱ እስኪለቀው ወይም አንተ ራስህ መገለጫ እስክትቀይር ድረስ ገባሪ ሆኖ ይቆያል። በአካባቢያዊ ኮምፒውተር ላይ ብቻ።</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>የውጭ ቁጥጥር</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ማስጀመሪያ ወይም ስክሪፕት በአውቶሜሽን በኩል መገለጫዎችን መቀየር ይችላል። በዚህ መንገድ የተቀየረ መገለጫ ፕሮግራሙ እስኪለቀው ወይም እርስዎ ራስዎ መገለጫ እስኪቀይሩ ድረስ ይቆያል።</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>አውቶሜሽን ጠፍቷል</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>አውቶሜሽን በርቷል፦ ፕሮግራሞች መገለጫዎችን መቀየር ይችላሉ</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>አውቶሜሽን በርቷል፦ ፕሮግራሞች መገለጫዎችን መቀየር እና መሣሪያዎችን እና ቅንብሮችን ማንበብ ይችላሉ</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>አውቶሜሽን በርቷል፦ ፕሮግራሞች መገለጫዎችን መቀየር፣ መሣሪያዎችን እና ቅንብሮችን ማንበብ እና ግብዓቶችን መላክ ይችላሉ</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>አውቶሜሽን በርቷል፦ ፕሮግራሞች መገለጫዎችን መቀየር፣ ግብዓቶችን መላክ እና ቅንብሮችን መቀየር ይችላሉ</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>አውቶሜሽንን ክፈት</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ገባሪ መገለጫ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>መቆጣጠሪያ የለም</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>መገለጫ ለማስመጣት እዚህ ጣል</value></data>
@@ -2746,7 +2773,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ተፈጻሚ ፋይሎች (*.exe)|*.exe|ሁሉም ፋይሎች (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge አስቀድሞ እየሰራ ነው።</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ከባድ ስህተት</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: ስህተት</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>ያልተጠበቀ ስህተት ተከስቷል:

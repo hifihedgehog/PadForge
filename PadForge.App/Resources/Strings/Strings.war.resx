@@ -181,6 +181,8 @@
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port han game mod</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Namamati ha :{0}. Nagpapadara an {1} ha controller index {2}, ngan waray virtual nga controller nga may DualSense o DualShock 4 nga may-ada hito nga index.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Usa nga game mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>May iba nga programa nga naggugunit han pipe nga {0}. Sirhi ito nga programa.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Gindiri han Windows an pipe nga {0}, salit diri makakonek an mga programa.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Waray nakita nga suportado nga analog keyboard.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Waray nakita nga Bliss-Box port.</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>waray controller</value></data>

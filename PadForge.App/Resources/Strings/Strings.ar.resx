@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>يستمع على :{0}. يرسل {1} إلى فهرس وحدة التحكم {2}، ولا توجد وحدة تحكم ظاهرية عليها وحدة DualSense أو DualShock 4 بهذا الفهرس.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>المنفذ {0} قيد الاستخدام من برنامج آخر، مثل DSX. أغلقه أو اختر منفذا آخر.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>تعديل لعبة</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>برنامج آخر يحجز اسم القناة {0}. أغلق ذلك البرنامج.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>رفض Windows القناة {0}، لذا لا تستطيع البرامج الاتصال.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>التبديل إلى ملف التعريف {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>العودة إلى ملف التعريف الافتراضي</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>السؤال عن ملف التعريف النشط</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>إظهار النافذة</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>إرسال النافذة إلى علبة النظام</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>تصغير النافذة</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>إغلاق PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>بدء المحرك</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>إيقاف المحرك</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>تشغيل كل وحدات التحكم الظاهرية</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>إيقاف كل وحدات التحكم الظاهرية</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>تشغيل وحدة التحكم الظاهرية {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>إيقاف وحدة التحكم الظاهرية {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>حفظ لقطة تشخيص</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>بدء تسجيل مشكلة</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>إيقاف التسجيل</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>وضع علامة في التسجيل</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>السؤال عن إصدار PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>السؤال عما يعمل</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>إرسال سطر لا يعرفه PadForge: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>يعمل مع OpenTrack وأي متتبع يرسل مخرجاته عبر UDP أو يكتب في الذاكرة المشتركة FreeTrack 2.0، ومع وقت تشغيل OpenXR على هذا الجهاز يستطيع تشغيل جلسة في الخلفية.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>قراءة مفاتيح G من Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>يقرأ مفاتيح G عبر Logitech G-key SDK. يتطلب تشغيل Logitech Gaming Software 8.55 أو أحدث. في ذلك البرنامج، اسحب أمر G-key إلى كل مفتاح في ملف تعريف PadForge. اجعل ملف التعريف هذا دائما، وإلا فلن تصل المفاتيح إلى PadForge إلا ونافذته في المقدمة. ويجب كذلك إخراج ماوس G600 أو G300 من وضع الذاكرة المدمجة.</value></data>
@@ -2693,9 +2715,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>في المقدمة الآن: {0}، لا يوجد ملف تعريف له</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>في المقدمة الآن: {0}، وهو يحمّل {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>في المقدمة الآن: {0}، ولم تُحدَّد لعبة لأي ملف تعريف بعد</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>السماح بالتحكم الخارجي من مشغلات الألعاب والبرامج النصية</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>يوفر ممرا مسمى محليا (named pipe) باسم PadForge.Control، ليتمكن Playnite أو LaunchBox أو برنامج نصي من تفعيل ملفات التعريف وإلغاء تفعيلها. ملف التعريف المفعل بهذه الطريقة يبقى نشطا إلى أن يحرره البرنامج النصي أو تبدّل ملفات التعريف بنفسك. على الجهاز المحلي فقط.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>التحكم الخارجي</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>يمكن لمشغّل أو نص برمجي تبديل ملفات التعريف عبر الأتمتة. يبقى ملف التعريف المبدّل بهذه الطريقة حتى يحرره البرنامج أو تبدّل أنت ملفات التعريف بنفسك.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>الأتمتة متوقفة</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>الأتمتة تعمل: يمكن للبرامج تبديل ملفات التعريف</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>الأتمتة تعمل: يمكن للبرامج تبديل ملفات التعريف وقراءة الأجهزة والإعدادات</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>الأتمتة تعمل: يمكن للبرامج تبديل ملفات التعريف وقراءة الأجهزة والإعدادات وإرسال المدخلات</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>الأتمتة تعمل: يمكن للبرامج تبديل ملفات التعريف وإرسال المدخلات وتغيير الإعدادات</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>فتح الأتمتة</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ملف التعريف النشط:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>لا توجد وحدات تحكم</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>أفلت لاستيراد ملف تعريف</value></data>
@@ -2752,7 +2779,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>الملفات التنفيذية (*.exe)|*.exe|كل الملفات (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge قيد التشغيل بالفعل.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: خطأ فادح</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: خطأ</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>حدث خطأ غير متوقع:

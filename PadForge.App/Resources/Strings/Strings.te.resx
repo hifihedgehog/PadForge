@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} పై వింటోంది. {1} కంట్రోలర్ ఇండెక్స్ {2}కు పంపుతోంది, DualSense లేదా DualShock 4 ఉన్న ఏ వర్చువల్ కంట్రోలర్ ఆ ఇండెక్స్ కలిగి లేదు.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>పోర్ట్ {0} DSX వంటి మరొక ప్రోగ్రామ్ వాడుకలో ఉంది. దాన్ని మూసివేయండి లేదా మరొక పోర్ట్ ఎంచుకోండి.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ఒక గేమ్ మోడ్</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>మరొక ప్రోగ్రామ్ పైప్ పేరు {0} ను వాడుతోంది. ఆ ప్రోగ్రామ్‌ను మూసివేయండి.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows పైప్ {0} ను నిరాకరించింది, కాబట్టి ప్రోగ్రామ్లు కనెక్ట్ కాలేవు.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ప్రొఫైల్ {0} కు మారు</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>డిఫాల్ట్ ప్రొఫైల్‌కు తిరిగి వెళ్లు</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>ఏ ప్రొఫైల్ ఆన్‌లో ఉందో అడుగు</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>విండోను చూపు</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>విండోను సిస్టమ్ ట్రేకు పంపు</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>విండోను కుదించు</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge ను మూసివేయి</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ఇంజిన్‌ను ప్రారంభించు</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ఇంజిన్‌ను ఆపు</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ప్రతి వర్చువల్ కంట్రోలర్‌ను ఆన్ చేయి</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ప్రతి వర్చువల్ కంట్రోలర్‌ను ఆఫ్ చేయి</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} ను ఆన్ చేయి</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} ను ఆఫ్ చేయి</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>డయాగ్నోస్టిక్స్ స్నాప్‌షాట్‌ను సేవ్ చేయి</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>సమస్య రికార్డింగ్ ప్రారంభించు</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>రికార్డింగ్ ఆపు</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>రికార్డింగ్‌పై గుర్తు పెట్టు</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge వెర్షన్ అడుగు</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ఏది నడుస్తోందో అడుగు</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge కు తెలియని లైన్ పంపు: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack తోనూ, UDP అవుట్పుట్ పంపే లేదా FreeTrack 2.0 షేర్డ్ మెమరీకి రాసే ఏ ట్రాకర్‌తోనూ, బ్యాక్‌గ్రౌండ్‌లో సెషన్ నడపగల ఈ మెషీన్‌లోని OpenXR రన్టైమ్‌తోనూ పనిచేస్తుంది.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-key లను చదువు</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK ద్వారా G-key లను చదువుతుంది. Logitech Gaming Software 8.55 లేదా ఆ తరువాతిది నడుస్తూ ఉండాలి. ఆ సాఫ్ట్‌వేర్‌లో PadForge ప్రొఫైల్‌లోని ప్రతి కీపైకి G-key కమాండ్‌ను లాగండి. ఆ ప్రొఫైల్‌ను శాశ్వతంగా చేయండి, లేకపోతే PadForge విండో ముందు ఉన్నప్పుడు మాత్రమే కీలు PadForgeకు చేరతాయి. G600 లేదా G300 మౌస్ ఆన్-బోర్డ్ మెమరీ మోడ్ నుండి కూడా బయట ఉండాలి.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ఇప్పుడు ముందున్నది: {0}, దానికి ప్రొఫైల్ సెట్ చేయలేదు</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ఇప్పుడు ముందున్నది: {0}, ఇది {1} ను లోడ్ చేస్తుంది</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ఇప్పుడు ముందున్నది: {0}, ఏ ప్రొఫైల్‌కూ ఇంకా గేమ్ సెట్ కాలేదు</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>లాంచర్లు, స్క్రిప్ట్‌ల బాహ్య నియంత్రణను అనుమతించు</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control అనే స్థానిక నేమ్డ్ పైప్‌ను అందిస్తుంది, తద్వారా Playnite, LaunchBox లేదా ఒక స్క్రిప్ట్ ప్రొఫైళ్లను యాక్టివేట్, డీయాక్టివేట్ చేయగలవు. ఇలా యాక్టివేట్ చేసిన ప్రొఫైల్ స్క్రిప్ట్ దాన్ని విడుదల చేసే వరకు లేదా మీరే ప్రొఫైల్ మార్చే వరకు యాక్టివ్‌గా ఉంటుంది. స్థానిక మెషీన్‌లో మాత్రమే.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>బాహ్య నియంత్రణ</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>లాంచర్ లేదా స్క్రిప్ట్ ఆటోమేషన్ ద్వారా ప్రొఫైల్లను మార్చగలదు. ఇలా మార్చిన ప్రొఫైల్ ప్రోగ్రామ్ దాన్ని విడుదల చేసే వరకు లేదా మీరే ప్రొఫైల్లను మార్చే వరకు ఉంటుంది.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ఆటోమేషన్ ఆఫ్‌లో ఉంది</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ఆటోమేషన్ ఆన్‌లో ఉంది: ప్రోగ్రామ్లు ప్రొఫైల్లను మార్చగలవు</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ఆటోమేషన్ ఆన్‌లో ఉంది: ప్రోగ్రామ్లు ప్రొఫైల్లను మార్చగలవు, పరికరాలను, సెట్టింగులను చదవగలవు</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ఆటోమేషన్ ఆన్‌లో ఉంది: ప్రోగ్రామ్లు ప్రొఫైల్లను మార్చగలవు, పరికరాలను, సెట్టింగులను చదవగలవు, ఇన్‌పుట్లను పంపగలవు</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ఆటోమేషన్ ఆన్‌లో ఉంది: ప్రోగ్రామ్లు ప్రొఫైల్లను మార్చగలవు, ఇన్‌పుట్లను పంపగలవు, సెట్టింగులను మార్చగలవు</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ఆటోమేషన్ తెరువు</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>యాక్టివ్ ప్రొఫైల్:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>కంట్రోలర్లు లేవు</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ప్రొఫైల్ దిగుమతి చేయడానికి డ్రాప్ చేయండి</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ఎగ్జిక్యూటబుల్స్ (*.exe)|*.exe|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ఇప్పటికే నడుస్తోంది.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: తీవ్రమైన లోపం</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: లోపం</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>ఊహించని లోపం సంభవించింది:

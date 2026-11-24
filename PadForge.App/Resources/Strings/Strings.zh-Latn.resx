@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Jiāntīng :{0}. {1} zhèngzài xiàng kòngzhìqì suǒyǐn {2} fāsòng, ér méiyǒu dài DualSense huò DualShock 4 de xūnǐ kòngzhìqì shǐyòng gāi suǒyǐn.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Duānkǒu {0} yǐ bèi qítā chéngxù (lìrú DSX) zhànyòng. Qǐng guānbì gāi chéngxù huò xuǎnzé qítā duānkǒu.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mǒu gè yóuxì mózǔ</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lìng yí gè chéngxù zhànyòng le guǎndào míngchēng {0}. Qǐng guānbì gāi chéngxù.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows jùjué le guǎndào {0}, yīncǐ chéngxù wúfǎ liánjiē.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Qiēhuàn dào pèizhì wénjiàn {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Fǎnhuí mòrèn pèizhì wénjiàn</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Xúnwèn dāngqián huódòng de pèizhì wénjiàn</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Xiǎnshì chuāngkǒu</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Jiāng chuāngkǒu shōu dào xìtǒng tuōpán</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Zuìxiǎohuà chuāngkǒu</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Guānbì PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Qǐdòng yǐnqíng</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Tíngzhǐ yǐnqíng</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Kāiqǐ suǒyǒu xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Guānbì suǒyǒu xūnǐ kòngzhìqì</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Kāiqǐ xūnǐ kòngzhìqì {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Guānbì xūnǐ kòngzhìqì {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Bǎocún zhěnduàn kuàizhào</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Kāishǐ lùzhì wèntí</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Tíngzhǐ lùzhì</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Zài lùzhì zhōng zuò biāojì</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Xúnwèn PadForge de bǎnběn</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Xúnwèn zhèngzài yùnxíng de nèiróng</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Fāsòng PadForge bù rènshí de xíng: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Shìyòng yú OpenTrack, rènhé fāsòng qí UDP shūchū huò xiěrù FreeTrack 2.0 gòngxiǎng nèicún de zhuīzōngqì, yǐjí běn jī shàng néng zài hòutái yùnxíng huìhuà de OpenXR yùnxíngshí.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Dúqǔ Logitech G jiàn</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Tōngguò Logitech G-key SDK dúqǔ G jiàn. Xūyào yùnxíng Logitech Gaming Software 8.55 huò gèng gāo bǎnběn. Qǐng zài gāi ruǎnjiàn zhōng, jiāng G-key mìnglìng tuō dào PadForge pèizhì wénjiàn de měi gè jiàn shàng. Qǐng jiāng gāi pèizhì wénjiàn shèwéi chángzhù, fǒuzé zhèxiē jiàn jǐn zài PadForge chuāngkǒu wèiyú qiántái shí cái huì sòngdá. Cǐwài, G600 huò G300 shǔbiāo bù néng chǔyú bǎnzài nèicún móshì.</value></data>
@@ -2691,9 +2713,14 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Dāngqián qiántái: {0}, méiyǒu duìyìng de pèizhì wénjiàn</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Dāngqián qiántái: {0}, jiāng jiāzài {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Dāngqián qiántái: {0}, qiě shàngwèi yǒu pèizhì wénjiàn shèzhì yóuxì</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Yǔnxǔ qǐdòngqì hé jiǎoběn jìnxíng wàibù kòngzhì</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Tígōng běndì mìngmíng guǎndào PadForge.Control, shǐ Playnite, LaunchBox huò jiǎoběn kěyǐ qǐyòng hé tíngyòng pèizhì wénjiàn. Yǐ cǐ fāngshì qǐyòng de pèizhì wénjiàn huì yīzhí shēngxiào, zhídào jiǎoběn shìfàng tā huò nǐ zìjǐ qiēhuàn pèizhì wénjiàn. Jǐn xiàn běnjī.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Wàibù kòngzhì</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Qǐdòngqì huò jiǎoběn kěyǐ tōngguò Zìdònghuà qiēhuàn pèizhì wénjiàn. Yǐ cǐ fāngshì qiēhuàn de pèizhì wénjiàn huì bǎochí, zhídào gāi chéngxù shìfàng tā huò nín zìjǐ qiēhuàn pèizhì wénjiàn.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Zìdònghuà yǐ guānbì</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Zìdònghuà yǐ kāiqǐ: chéngxù kěyǐ qiēhuàn pèizhì wénjiàn</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Zìdònghuà yǐ kāiqǐ: chéngxù kěyǐ qiēhuàn pèizhì wénjiàn, bìng dúqǔ shèbèi hé shèzhì</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Zìdònghuà yǐ kāiqǐ: chéngxù kěyǐ qiēhuàn pèizhì wénjiàn, dúqǔ shèbèi hé shèzhì, bìng fāsòng shūrù</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Zìdònghuà yǐ kāiqǐ: chéngxù kěyǐ qiēhuàn pèizhì wénjiàn, fāsòng shūrù bìng gēnggǎi shèzhì</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Dǎkāi Zìdònghuà</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Dāngqián pèizhì wénjiàn:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Wú kòngzhìqì</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Tuōfàng yǐ dǎorù pèizhì wénjiàn</value></data>
@@ -2750,7 +2777,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Kězhíxíng wénjiàn (*.exe)|*.exe|Suǒyǒu wénjiàn (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge yǐ zài yùnxíng.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Zhìmìng cuòwù</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Cuòwù</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Fāshēng yìwài cuòwù:

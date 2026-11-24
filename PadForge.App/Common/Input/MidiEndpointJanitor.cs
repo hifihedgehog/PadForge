@@ -19,7 +19,7 @@ namespace PadForge.Common.Input
     /// corpses so they stop appearing in Device Manager and stop feeding
     /// the input scanner.
     ///
-    /// Elevation: PadForge always runs elevated, which devnode removal
+    /// Elevation: the app always runs elevated, which devnode removal
     /// requires. Corpses are identified by the PADFORGE_MIDI id family
     /// under the MIDISRV software-device enumerator and are skipped when
     /// a live MidiVirtualController in this process claims them.

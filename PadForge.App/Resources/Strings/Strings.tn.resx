@@ -514,7 +514,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge e setse e dira.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Phoso</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Go nnile le phoso e e sa solofelwang:
 
@@ -1207,4 +1206,24 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele tsotlhe (*.*)|*.*</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala setshwantsho sa Steam sa motshameko o.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tswelela o romela</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetolela kwa porofaeleng {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela kwa porofaeleng ya tlwaelo</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Botsa gore ke porofaele efe e e dirang</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Bontsha fensetere</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Romela fensetere kwa trayeng ya tsamaiso</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Fokotsa fensetere</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Tswala PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Simolola enjine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Emisa enjine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Bulela controller nngwe le nngwe ya virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Tima controller nngwe le nngwe ya virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Bulela Controller ya virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Tima Controller ya virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Boloka setshwantsho sa tlhatlhobo</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Simolola go gatisa bothata</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Emisa go gatisa</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Tshwaya kgatiso</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Botsa phetolelo ya PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Botsa gore ke eng se se dirang</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mola o PadForge e sa o itseng: {0}</value></data>
 </root>

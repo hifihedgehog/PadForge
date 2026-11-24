@@ -654,7 +654,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge iri kutoshanda.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Kukanganisa kukuru</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Kukanganisa</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Kukanganisa kusingatarisirwi kwaitika:
@@ -1519,4 +1518,26 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mifananidzo (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafaira ese (*.*)|*.*</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge haigone kuverenga mufananidzo weSteam wemutambo uyu.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Ramba Uchitumira</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Chimwe chirongwa chakabata zita repaipi {0}. Vhara chirongwa ichocho.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows yaramba paipi {0}, saka zvirongwa hazvigone kubatana.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chinja kuenda kupurofaira {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Dzokera kupurofaira yekutanga</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Bvunza kuti ndeipi purofaira iri kushanda</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ratidza hwindo</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Tumira hwindo kusystem tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Deredza hwindo</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Vhara PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Tanga injini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Misa injini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Batidza kontiroura dzenhema dzese</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Dzima kontiroura dzenhema dzese</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Batidza kontiroura yenhema {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Dzima kontiroura yenhema {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Chengetedza mufananidzo wekuongorora</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Tanga kurekodha dambudziko</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Misa kurekodha</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Isa chiratidzo murekodhingi</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Bvunza shanduro ye-PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Bvunza kuti chii chiri kushanda</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumira mutsara usingazivikanwe ne-PadForge: {0}</value></data>
 </root>

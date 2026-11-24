@@ -260,6 +260,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Naminaw sa :{0}. {1} ang nagpadala ngadto sa controller index {2}, apan walay virtual nga controller nga may DualSense o DualShock 4 ang adunay maong index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Gigamit na ang port {0} sa laing programa, sama sa DSX. Isira kini o pagpili og laing port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Usa ka game mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Laing programa ang naggunit sa pipe nga ginganlan og {0}. Isira kana nga programa.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Gibalibaran sa Windows ang pipe nga {0}, busa dili makakonektar ang mga programa.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Ibalhin sa profile nga {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ibalik sa default nga profile</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Pangutan-a kung unsang profile ang aktibo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ipakita ang window</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ipadala ang window sa system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>I-minimize ang window</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Isira ang PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Sugdi ang engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Hunonga ang engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>I-on ang matag virtual nga controller</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>I-off ang matag virtual nga controller</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>I-on ang Virtual nga controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>I-off ang Virtual nga controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>I-save ang diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Sugdi ang pag-record og problema</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Hunonga ang pag-record</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markahi ang recording</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Pangutan-a ang bersyon sa PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Pangutan-a kung unsay nagdagan</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Pagpadala og linya nga wala mailhi sa PadForge: {0}</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Walay nakit-an nga suportado nga analog keyboard.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Sugdi ang Razer Synapse aron mabasa ang {0}.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Walay nakit-an nga Bliss-Box port.</value></data>
@@ -1760,9 +1782,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Anaa sa unahan karon: {0}, walay profile nga gitakda para niini</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Anaa sa unahan karon: {0}, nga mo-load sa {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Anaa sa unahan karon: {0}, ug wala pay profile nga adunay gitakda nga dula</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Tugoti ang gawas nga pagkontrol sa mga launcher ug script</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Nag-serve og lokal nga named pipe, PadForge.Control, aron ang Playnite, LaunchBox, o usa ka script makapaaktibo ug makapaundang sa mga profile. Ang profile nga gipaaktibo niining paagiha magpabilin nga aktibo hangtod buhian kini sa script o ikaw mismo ang mobalhin og profile. Alang lang sa lokal nga makina.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Gawas nga pagkontrol</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Ang launcher o script makabalhin og mga profile pinaagi sa Awtomasyon. Ang profile nga gibalhin niini nga paagi magpabilin hangtod buhian kini sa programa o ikaw mismo ang mobalhin og profile.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Naka-off ang Awtomasyon</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Naka-on ang Awtomasyon: ang mga programa makabalhin og mga profile</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Naka-on ang Awtomasyon: ang mga programa makabalhin og mga profile ug makabasa sa mga device ug setting</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Naka-on ang Awtomasyon: ang mga programa makabalhin og mga profile, makabasa sa mga device ug setting, ug makapadala og mga input</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Naka-on ang Awtomasyon: ang mga programa makabalhin og mga profile, makapadala og mga input ug makausab sa mga setting</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Ablihi ang Awtomasyon</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktibong profile:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Walay controller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Ihulog aron i-import ang profile</value></data>
@@ -1804,7 +1831,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Mga executable (*.exe)|*.exe|Tanang file (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Nagdagan na ang PadForge.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Grabeng sayop</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Sayop</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Adunay wala damha nga sayop nga nahitabo:

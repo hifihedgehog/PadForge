@@ -16,7 +16,7 @@ namespace PadForge.Engine.Common.OpenXr
     /// costs about a hundred lines and buys two things the loader cannot
     /// give this app.</para>
     ///
-    /// <para>First, runtime selection. PadForge runs elevated, and the
+    /// <para>First, runtime selection. The app runs elevated, and the
     /// Khronos loader deliberately ignores <c>XR_RUNTIME_JSON</c> from a
     /// high-integrity process (OpenXR-SDK src/common/platform_utils.hpp,
     /// PlatformUtilsGetSecureEnv). Picking the manifest ourselves makes the

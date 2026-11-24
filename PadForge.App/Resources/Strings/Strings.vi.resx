@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}. {1} đang gửi tới chỉ số tay cầm {2}, và không có tay cầm ảo nào có DualSense hoặc DualShock 4 mang chỉ số đó.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Cổng {0} đang được một chương trình khác sử dụng, chẳng hạn DSX. Hãy đóng nó hoặc chọn cổng khác.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Một mod trò chơi</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Một chương trình khác đang giữ tên đường ống {0}. Hãy đóng chương trình đó.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows đã từ chối đường ống {0}, nên chương trình không kết nối được.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Chuyển sang hồ sơ {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Quay về hồ sơ mặc định</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Hỏi hồ sơ nào đang hoạt động</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Hiện cửa sổ</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Đưa cửa sổ xuống khay hệ thống</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Thu nhỏ cửa sổ</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Đóng PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Khởi động bộ máy</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Dừng bộ máy</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Bật mọi tay cầm ảo</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Tắt mọi tay cầm ảo</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Bật Tay cầm ảo {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Tắt Tay cầm ảo {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Lưu ảnh chụp nhanh chẩn đoán</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Bắt đầu ghi một sự cố</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Dừng ghi</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Đánh dấu bản ghi</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Hỏi phiên bản của PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Hỏi đang chạy gì</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Gửi một dòng PadForge không biết: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Hoạt động với OpenTrack và mọi bộ theo dõi gửi đầu ra UDP hoặc ghi vào bộ nhớ dùng chung FreeTrack 2.0, cũng như với một runtime OpenXR trên máy này có thể chạy phiên ở chế độ nền.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Đọc phím G của Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Đọc phím G thông qua Logitech G-key SDK. Cần Logitech Gaming Software 8.55 trở lên đang chạy. Trong phần mềm đó, hãy kéo lệnh G-key vào từng phím trong hồ sơ PadForge. Hãy đặt hồ sơ đó ở chế độ cố định (persistent), nếu không các phím chỉ đến được PadForge khi cửa sổ của nó ở phía trước. Chuột G600 hoặc G300 còn phải thoát khỏi chế độ bộ nhớ tích hợp.</value></data>
@@ -2922,9 +2944,14 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Đang ở phía trước: {0}, chưa đặt hồ sơ cho nó</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Đang ở phía trước: {0}, sẽ tải {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Đang ở phía trước: {0}, và chưa có hồ sơ nào đặt trò chơi</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Cho phép trình khởi chạy và tập lệnh điều khiển từ bên ngoài</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Cung cấp một named pipe cục bộ, PadForge.Control, để Playnite, LaunchBox hoặc một tập lệnh có thể kích hoạt và hủy kích hoạt hồ sơ. Hồ sơ được kích hoạt theo cách này vẫn hoạt động cho đến khi tập lệnh giải phóng nó hoặc bạn tự chuyển hồ sơ. Chỉ trên máy cục bộ.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Điều khiển từ bên ngoài</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Trình khởi chạy hoặc tập lệnh có thể chuyển hồ sơ thông qua Tự động hóa. Hồ sơ được chuyển theo cách này giữ nguyên cho đến khi chương trình thả nó ra hoặc bạn tự chuyển hồ sơ.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Tự động hóa đang tắt</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Tự động hóa đang bật: chương trình có thể chuyển hồ sơ</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Tự động hóa đang bật: chương trình có thể chuyển hồ sơ và đọc thiết bị cùng thiết lập</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Tự động hóa đang bật: chương trình có thể chuyển hồ sơ, đọc thiết bị cùng thiết lập, và gửi đầu vào</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Tự động hóa đang bật: chương trình có thể chuyển hồ sơ, gửi đầu vào và đổi thiết lập</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Mở Tự động hóa</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Hồ sơ đang hoạt động:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Không có tay cầm</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Thả để nhập hồ sơ</value></data>
@@ -2982,7 +3009,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Tệp thực thi (*.exe)|*.exe|Tất cả tệp (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge đang chạy rồi.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Lỗi nghiêm trọng</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Lỗi</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Đã xảy ra lỗi không mong đợi:

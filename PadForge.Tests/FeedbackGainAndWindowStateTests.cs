@@ -155,7 +155,8 @@ namespace PadForge.Tests
         /// control, and nothing marked the file dirty when it changed, so an
         /// isolated edit in a clean session was lost on close.</summary>
         [Theory]
-        [InlineData("nameof(SettingsViewModel.EnableExternalControl)")]
+        [InlineData("nameof(DashboardViewModel.EnableAutomation)")]
+        [InlineData("nameof(DashboardViewModel.AutomationLevel)")]
         [InlineData("nameof(PadViewModel.FlickRotationOffset)")]
         [InlineData("nameof(MappingItem.InvertOutput)")]
         [InlineData("nameof(MappingItem.ParamAccel)")]

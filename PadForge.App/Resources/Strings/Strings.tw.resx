@@ -357,7 +357,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge reyɛ adwuma dedaw.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Mfomso</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
@@ -847,4 +846,24 @@
   <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ma ɛne mfonini no nhyia</value></data>
   <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ɛfa ahosu anan no fi mfonini no mu.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Kɔ so soma</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sesa kɔ profile {0} so</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>San kɔ profile a edi kan no so</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Bisa profile a ɛreyɛ adwuma</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Kyerɛ window no</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Fa window no kɔ system tray mu</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Tew window no so</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>To PadForge mu</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Fi engine no ase</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Gyae engine no</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Sɔ virtual controller biara</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Dum virtual controller biara</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Sɔ Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Dum Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Kora diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Fi ase kyere ɔhaw bi</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Gyae kyere</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Hyɛ nea wɔrekyere no agyiraehyɛde</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Bisa PadForge version</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Bisa nea ɛreyɛ adwuma</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Mane line bi a PadForge nnim: {0}</value></data>
 </root>

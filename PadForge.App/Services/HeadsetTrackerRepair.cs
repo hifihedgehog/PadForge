@@ -12,7 +12,7 @@ namespace PadForge.Services
     /// the cold-boot state where Windows pairs the headset but never
     /// creates the head-tracker HID child as the NORMAL first-run state,
     /// and ships two fixes, both ported here to run in-process since
-    /// PadForge is always elevated:
+    /// the app is always elevated:
     ///
     ///  1. rebindBluetoothHid: request the HID service (GUID 0x1124) for
     ///     the paired device by address. When the Bluetooth database says

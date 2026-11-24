@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} dinleniyor. {1}, {2} dizinli kontrolcüye gönderiyor ve üzerinde DualSense veya DualShock 4 bulunan hiçbir sanal kontrolcünün bu dizini yok.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0}, DSX gibi başka bir program tarafından kullanılıyor. Onu kapatın veya başka bir port seçin.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Bir oyun modu</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Başka bir program {0} adlı kanalı tutuyor. O programı kapatın.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} kanalını reddetti, bu yüzden programlar bağlanamıyor.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>{0} profiline geç</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Varsayılan profile dön</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Hangi profilin etkin olduğunu sor</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Pencereyi göster</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Pencereyi sistem tepsisine gönder</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Pencereyi küçült</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge'u kapat</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Motoru başlat</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Motoru durdur</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Her sanal kontrolcüyü aç</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Her sanal kontrolcüyü kapat</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>{0} numaralı sanal kontrolcüyü aç</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>{0} numaralı sanal kontrolcüyü kapat</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Tanılama anlık görüntüsü kaydet</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Bir sorunu kaydetmeye başla</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Kaydı durdur</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Kaydı işaretle</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge'un sürümünü sor</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Nelerin çalıştığını sor</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge'un tanımadığı bir satır gönder: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack ile, OpenTrack'in UDP çıkışını gönderen veya FreeTrack 2.0 paylaşılan belleğine yazan her izleyiciyle ve bu makinede arka planda oturum çalıştırabilen bir OpenXR çalışma zamanıyla çalışır.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G tuşlarını oku</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>G tuşlarını Logitech G-key SDK üzerinden okur. Logitech Gaming Software 8.55 veya sonraki bir sürümünün çalışıyor olması gerekir. O yazılımda, PadForge profilindeki her tuşa G-key komutunu sürükleyin. Bu profili kalıcı yapın, yoksa tuşlar PadForge'a yalnızca penceresi öndeyken ulaşır. Ayrıca G600 veya G300 farenin dahili bellek modundan çıkarılmış olması gerekir.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Şu an önde: {0}, bunun için profil ayarlanmamış</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Şu an önde: {0}, bu {1} profilini yükler</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Şu an önde: {0}, henüz hiçbir profilde oyun ayarlı değil</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Başlatıcıların ve betiklerin dış denetimine izin ver</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Playnite, LaunchBox veya bir betiğin profilleri etkinleştirip devre dışı bırakabilmesi için PadForge.Control adlı yerel bir adlandırılmış kanal sunar. Bu yolla etkinleştirilen bir profil, betik onu bırakana veya siz profili kendiniz değiştirene kadar etkin kalır. Yalnızca yerel makine.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Dış denetim</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Bir başlatıcı veya bir betik, Otomasyon üzerinden profil değiştirebilir. Bu şekilde değiştirilen bir profil, program onu bırakana veya siz profil değiştirene kadar kalır.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Otomasyon kapalı</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Otomasyon açık: programlar profil değiştirebilir</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Otomasyon açık: programlar profil değiştirebilir, cihazları ve ayarları okuyabilir</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Otomasyon açık: programlar profil değiştirebilir, cihazları ve ayarları okuyabilir ve giriş gönderebilir</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Otomasyon açık: programlar profil değiştirebilir, giriş gönderebilir ve ayarları değiştirebilir</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Otomasyonu aç</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Etkin profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Kontrolcü yok</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Profili içe aktarmak için bırakın</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Yürütülebilir dosyalar (*.exe)|*.exe|Tüm dosyalar (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge zaten çalışıyor.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Kritik hata</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Hata</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Beklenmeyen bir hata oluştu:

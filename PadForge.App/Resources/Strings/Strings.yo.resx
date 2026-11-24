@@ -187,6 +187,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ń gbọ́ lórí :{0}. {1} ń fi ránṣẹ́ sí nọ́mbà ẹ̀rọ ìdarí {2}, kò sì sí ẹ̀rọ ìdarí àfarawé tí DualSense tàbí DualShock 4 wà lórí rẹ̀ tí ó ní nọ́mbà yẹn.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pọ́ọ̀tì {0} ti wà ní lílò lọ́wọ́ ìṣàfilọ́lẹ̀ mìíràn, bíi DSX. Pa á tàbí yan pọ́ọ̀tì mìíràn.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod eré kan</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ míràn ti gba orúkọ páìpù {0}. Pa ìṣàfilọ́lẹ̀ náà dé.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows kọ páìpù {0}, nítorí náà àwọn ìṣàfilọ́lẹ̀ kò lè sopọ̀.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Yí padà sí profaili {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Padà sí profaili àìyípadà</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Béèrè profaili tí ń ṣiṣẹ́</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Fi fèrèsé hàn</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Rán fèrèsé lọ sí àgbègbè ìfitónilétí</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Sọ fèrèsé di kékeré</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Pa PadForge dé</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Bẹ̀rẹ̀ ẹ́ńjìnnì</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Dá ẹ́ńjìnnì dúró</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Tan gbogbo ẹ̀rọ ìdarí àfarawé</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Pa gbogbo ẹ̀rọ ìdarí àfarawé</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Tan Ẹ̀rọ ìdarí àfarawé {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Pa Ẹ̀rọ ìdarí àfarawé {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Fi àwòrán àyẹ̀wò pamọ́</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Bẹ̀rẹ̀ sí í gba ìṣòro sílẹ̀</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Dá gbígbà sílẹ̀ dúró</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Fi àmì sí àgbàsílẹ̀ náà</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Béèrè ẹ̀yà PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Béèrè ohun tí ń ṣiṣẹ́</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Fi ìlà tí PadForge kò mọ̀ ránṣẹ́: {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Sopọ̀</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Ti sopọ̀</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kọ̀ ọ́</value></data>
@@ -948,7 +970,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ti ń ṣiṣẹ́ tẹ́lẹ̀.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Àṣìṣe</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Àṣìṣe àìròtẹ́lẹ̀ kan ṣẹlẹ̀:
 

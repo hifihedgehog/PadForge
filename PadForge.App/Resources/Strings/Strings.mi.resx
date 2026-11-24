@@ -179,6 +179,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kei te whakarongo ki :{0}. Kei te tuku a {1} ki te tau controller {2}, engari kāore he controller mariko e whai ana i taua tau me tētahi DualSense, DualShock 4 rānei kei runga.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Kei te whakamahia te port {0} e tētahi atu hōtaka, pērā i a DSX. Katia, kōwhiria rānei tētahi atu port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>He mod kēmu</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Kei tētahi atu hōtaka te ingoa paipa {0}. Katia taua hōtaka.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>I whakakāhoretia e Windows te paipa {0}, nō reira kāore e taea e ngā hōtaka te hono.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Huri ki te kōtaha {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Hoki ki te kōtaha taunoa</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Pātai ko tēhea kōtaha e hohe ana</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Whakaaturia te matapihi</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Tukuna te matapihi ki te pae pūnaha</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Whakaitia te matapihi</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Katia a PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Tīmatahia te pūkaha</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Whakamutua te pūkaha</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Whakakāngia ngā controller mariko katoa</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Whakawetongia ngā controller mariko katoa</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Whakakāngia te Controller mariko {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Whakawetongia te Controller mariko {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Tiakina he hopukanga tātari</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Tīmatahia te hopu i tētahi raruraru</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Whakamutua te hopu</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Tohua te hopukanga</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Pātai mō te putanga o PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Pātai he aha e rere ana</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tukuna he rārangi kāore a PadForge e mōhio: {0}</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Tūhono</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Kua tūhono</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Whakakāhore</value></data>
@@ -1037,7 +1059,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Kei te rere kē a PadForge.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Hapa</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>I puta tētahi hapa ohorere:
 

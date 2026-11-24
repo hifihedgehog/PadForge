@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} પર સાંભળી રહ્યું છે. {1} કંટ્રોલર ઇન્ડેક્સ {2} પર મોકલી રહ્યું છે, અને DualSense અથવા DualShock 4 વાળા કોઈ વર્ચ્યુઅલ કંટ્રોલરનો તે ઇન્ડેક્સ નથી.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>પોર્ટ {0} DSX જેવા અન્ય પ્રોગ્રામ દ્વારા ઉપયોગમાં છે. તેને બંધ કરો અથવા બીજો પોર્ટ પસંદ કરો.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>એક ગેમ મોડ</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>બીજો પ્રોગ્રામ પાઇપ નામ {0} પકડી રાખે છે. એ પ્રોગ્રામ બંધ કરો.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows એ પાઇપ {0} નકાર્યો, તેથી પ્રોગ્રામ જોડાઈ શકતા નથી.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>પ્રોફાઇલ {0} પર બદલો</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ડિફોલ્ટ પ્રોફાઇલ પર પાછા જાઓ</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>પૂછો કઈ પ્રોફાઇલ સક્રિય છે</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>વિન્ડો બતાવો</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>વિન્ડોને સિસ્ટમ ટ્રેમાં મોકલો</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>વિન્ડો નાની કરો</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge બંધ કરો</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>એન્જિન શરૂ કરો</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>એન્જિન બંધ કરો</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>દરેક વર્ચ્યુઅલ કંટ્રોલર ચાલુ કરો</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>દરેક વર્ચ્યુઅલ કંટ્રોલર બંધ કરો</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર {0} ચાલુ કરો</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર {0} બંધ કરો</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>ડાયગ્નોસ્ટિક્સ સ્નૅપશૉટ સાચવો</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>સમસ્યાનું રેકોર્ડિંગ શરૂ કરો</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>રેકોર્ડિંગ રોકો</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>રેકોર્ડિંગ પર નિશાન કરો</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge નું સંસ્કરણ પૂછો</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>પૂછો શું ચાલી રહ્યું છે</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge ન ઓળખે તેવી લાઇન મોકલો: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack સાથે અને UDP આઉટપુટ મોકલતા અથવા FreeTrack 2.0 શેર્ડ મેમરી લખતા કોઈપણ ટ્રૅકર સાથે કામ કરે છે, તેમજ આ મશીન પર બૅકગ્રાઉન્ડમાં સેશન ચલાવી શકતા OpenXR રનટાઇમ સાથે.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-keys વાંચો</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK દ્વારા G-keys વાંચે છે. Logitech Gaming Software 8.55 કે પછીનું ચાલતું હોવું જરૂરી છે. તે સોફ્ટવેરમાં, PadForge પ્રોફાઇલમાં દરેક કી પર G-key કમાન્ડ ખેંચો. તે પ્રોફાઇલને સ્થાયી બનાવો, નહીંતર PadForge ની વિન્ડો આગળ હોય ત્યારે જ કી PadForge સુધી પહોંચે છે. G600 કે G300 માઉસને ઓન-બોર્ડ મેમરી મોડમાંથી પણ બહાર રાખવો પડે છે.</value></data>
@@ -2691,9 +2713,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>હમણાં આગળ: {0}, તેના માટે કોઈ પ્રોફાઇલ સેટ નથી</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>હમણાં આગળ: {0}, જે {1} લોડ કરે છે</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>હમણાં આગળ: {0}, અને હજી કોઈ પ્રોફાઇલમાં ગેમ સેટ નથી</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>લૉન્ચર અને સ્ક્રિપ્ટને બાહ્ય નિયંત્રણની મંજૂરી આપો</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>સ્થાનિક નેમ્ડ પાઇપ PadForge.Control ચલાવે છે, જેથી Playnite, LaunchBox અથવા સ્ક્રિપ્ટ પ્રોફાઇલ સક્રિય અને નિષ્ક્રિય કરી શકે. આ રીતે સક્રિય કરેલી પ્રોફાઇલ સ્ક્રિપ્ટ તેને મુક્ત કરે અથવા તમે જાતે પ્રોફાઇલ બદલો ત્યાં સુધી સક્રિય રહે છે. ફક્ત સ્થાનિક મશીન.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>બાહ્ય નિયંત્રણ</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>લૉન્ચર અથવા સ્ક્રિપ્ટ ઓટોમેશન દ્વારા પ્રોફાઇલ બદલી શકે. આ રીતે બદલાયેલી પ્રોફાઇલ પ્રોગ્રામ તેને છોડે અથવા તમે જાતે પ્રોફાઇલ બદલો ત્યાં સુધી રહે છે.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ઓટોમેશન બંધ છે</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ઓટોમેશન ચાલુ છે: પ્રોગ્રામ પ્રોફાઇલ બદલી શકે</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ઓટોમેશન ચાલુ છે: પ્રોગ્રામ પ્રોફાઇલ બદલી શકે અને ઉપકરણો તથા સેટિંગ્સ વાંચી શકે</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ઓટોમેશન ચાલુ છે: પ્રોગ્રામ પ્રોફાઇલ બદલી શકે, ઉપકરણો તથા સેટિંગ્સ વાંચી શકે અને ઇનપુટ મોકલી શકે</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ઓટોમેશન ચાલુ છે: પ્રોગ્રામ પ્રોફાઇલ બદલી શકે, ઇનપુટ મોકલી શકે અને સેટિંગ્સ બદલી શકે</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ઓટોમેશન ખોલો</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>સક્રિય પ્રોફાઇલ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>કોઈ કંટ્રોલર નથી</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>પ્રોફાઇલ આયાત કરવા માટે છોડો</value></data>
@@ -2750,7 +2777,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>એક્ઝિક્યુટેબલ (*.exe)|*.exe|બધી ફાઇલો (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge પહેલેથી ચાલી રહ્યું છે.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ગંભીર ભૂલ</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: ભૂલ</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>અણધારી ભૂલ આવી:

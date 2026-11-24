@@ -39,9 +39,10 @@ while ((Get-Process PadForge -ErrorAction SilentlyContinue) -and $n -lt 20) {
 Write-Host "Log: $Log"
 Write-Host "Launching PadForge with the trace armed (elevated)..."
 
-# PadForge always runs elevated. Start-Process -Verb RunAs does not carry the
-# parent environment, so the variable is set inside the elevated shell that
-# launches the exe.
+# The app always runs elevated. Neither Start-Process -Verb RunAs nor the
+# exe's own restart with rights carries the parent environment, so the
+# variable is set inside the elevated shell that launches the exe. Started
+# there, the exe has its rights and is the app at once.
 $cmd = "`$env:PADFORGE_DIAG = '$Log'; Start-Process '$Exe'"
 Start-Process powershell -Verb RunAs -ArgumentList '-NoProfile', '-WindowStyle', 'Hidden', '-Command', $cmd
 

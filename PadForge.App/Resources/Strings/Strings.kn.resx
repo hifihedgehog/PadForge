@@ -555,6 +555,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0} ನಲ್ಲಿ ಆಲಿಸಲಾಗುತ್ತಿದೆ. {1} ಕಂಟ್ರೋಲರ್ ಸೂಚ್ಯಂಕ {2} ಗೆ ಕಳುಹಿಸುತ್ತಿದೆ, ಮತ್ತು DualSense ಅಥವಾ DualShock 4 ಇರುವ ಯಾವ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗೂ ಆ ಸೂಚ್ಯಂಕ ಇಲ್ಲ.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>ಪೋರ್ಟ್ {0} ಅನ್ನು DSX ನಂತಹ ಬೇರೊಂದು ಪ್ರೋಗ್ರಾಂ ಬಳಸುತ್ತಿದೆ. ಅದನ್ನು ಮುಚ್ಚಿ ಅಥವಾ ಬೇರೆ ಪೋರ್ಟ್ ಆಯ್ಕೆಮಾಡಿ.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ಒಂದು ಗೇಮ್ ಮಾಡ್</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>ಬೇರೊಂದು ಪ್ರೋಗ್ರಾಂ ಪೈಪ್ ಹೆಸರು {0} ಅನ್ನು ಹಿಡಿದಿದೆ. ಆ ಪ್ರೋಗ್ರಾಂ ಅನ್ನು ಮುಚ್ಚಿ.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ಪೈಪ್ {0} ಅನ್ನು ನಿರಾಕರಿಸಿತು, ಆದ್ದರಿಂದ ಪ್ರೋಗ್ರಾಂಗಳು ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ {0} ಗೆ ಬದಲಿಸಿ</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>ಡೀಫಾಲ್ಟ್ ಪ್ರೊಫೈಲ್‌ಗೆ ಮರಳಿ</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>ಯಾವ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿದೆ ಎಂದು ಕೇಳಿ</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>ವಿಂಡೋವನ್ನು ತೋರಿಸಿ</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ವಿಂಡೋವನ್ನು ಸಿಸ್ಟಮ್ ಟ್ರೇಗೆ ಕಳುಹಿಸಿ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ವಿಂಡೋವನ್ನು ಕಿರಿದಾಗಿಸಿ</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge ಅನ್ನು ಮುಚ್ಚಿ</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ಎಂಜಿನ್ ಪ್ರಾರಂಭಿಸಿ</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ಎಂಜಿನ್ ನಿಲ್ಲಿಸಿ</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ಪ್ರತಿ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಆನ್ ಮಾಡಿ</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ಪ್ರತಿ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಆಫ್ ಮಾಡಿ</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ {0} ಅನ್ನು ಆನ್ ಮಾಡಿ</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ {0} ಅನ್ನು ಆಫ್ ಮಾಡಿ</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>ಡಯಾಗ್ನೋಸ್ಟಿಕ್ಸ್ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಉಳಿಸಿ</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ಸಮಸ್ಯೆಯ ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್‌ಗೆ ಗುರುತು ಹಾಕಿ</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge ನ ಆವೃತ್ತಿ ಕೇಳಿ</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ಏನು ಚಾಲನೆಯಲ್ಲಿದೆ ಎಂದು ಕೇಳಿ</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge ಗೆ ತಿಳಿಯದ ಸಾಲನ್ನು ಕಳುಹಿಸಿ: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack ಜೊತೆಗೆ ಮತ್ತು ತನ್ನ UDP ಔಟ್‌ಪುಟ್ ಕಳುಹಿಸುವ ಅಥವಾ FreeTrack 2.0 ಹಂಚಿದ ಮೆಮೊರಿಗೆ ಬರೆಯುವ ಯಾವುದೇ ಟ್ರ್ಯಾಕರ್ ಜೊತೆಗೆ, ಮತ್ತು ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಸೆಷನ್ ಚಲಾಯಿಸಬಲ್ಲ ಈ ಯಂತ್ರದ OpenXR ರನ್‌ಟೈಮ್ ಜೊತೆಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-ಕೀಗಳನ್ನು ಓದಿ</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK ಮೂಲಕ G-ಕೀಗಳನ್ನು ಓದುತ್ತದೆ. Logitech Gaming Software 8.55 ಅಥವಾ ಹೊಸದು ಚಾಲನೆಯಲ್ಲಿರಬೇಕು. ಆ ಸಾಫ್ಟ್‌ವೇರ್‌ನಲ್ಲಿ, PadForge ಪ್ರೊಫೈಲ್‌ನ ಪ್ರತಿ ಕೀಗೆ G-key command ಅನ್ನು ಎಳೆದು ಬಿಡಿ. ಆ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಶಾಶ್ವತಗೊಳಿಸಿ, ಇಲ್ಲದಿದ್ದರೆ ಅದರ ವಿಂಡೋ ಮುಂದಿರುವಾಗ ಮಾತ್ರ ಕೀಗಳು PadForge ಅನ್ನು ತಲುಪುತ್ತವೆ. G600 ಅಥವಾ G300 ಮೌಸ್ ಸಹ ಆನ್-ಬೋರ್ಡ್ ಮೆಮೊರಿ ಮೋಡ್‌ನಿಂದ ಹೊರಗಿರಬೇಕು.</value></data>
@@ -2682,9 +2704,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ಈಗ ಮುಂದಿರುವುದು: {0}, ಇದಕ್ಕೆ ಪ್ರೊಫೈಲ್ ಹೊಂದಿಸಿಲ್ಲ</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ಈಗ ಮುಂದಿರುವುದು: {0}, ಇದು {1} ಅನ್ನು ಲೋಡ್ ಮಾಡುತ್ತದೆ</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ಈಗ ಮುಂದಿರುವುದು: {0}, ಮತ್ತು ಯಾವ ಪ್ರೊಫೈಲ್‌ಗೂ ಇನ್ನೂ ಆಟ ಹೊಂದಿಸಿಲ್ಲ</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ಲಾಂಚರ್‌ಗಳು ಮತ್ತು ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳಿಂದ ಬಾಹ್ಯ ನಿಯಂತ್ರಣಕ್ಕೆ ಅನುಮತಿಸಿ</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control ಎಂಬ ಸ್ಥಳೀಯ ನೇಮ್ಡ್ ಪೈಪ್ ಅನ್ನು ಒದಗಿಸುತ್ತದೆ, ಇದರಿಂದ Playnite, LaunchBox ಅಥವಾ ಸ್ಕ್ರಿಪ್ಟ್ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು ಮತ್ತು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು. ಹೀಗೆ ಸಕ್ರಿಯಗೊಳಿಸಿದ ಪ್ರೊಫೈಲ್, ಸ್ಕ್ರಿಪ್ಟ್ ಅದನ್ನು ಬಿಡುಗಡೆ ಮಾಡುವವರೆಗೆ ಅಥವಾ ನೀವೇ ಪ್ರೊಫೈಲ್ ಬದಲಿಸುವವರೆಗೆ ಸಕ್ರಿಯವಾಗಿರುತ್ತದೆ. ಸ್ಥಳೀಯ ಕಂಪ್ಯೂಟರ್ ಮಾತ್ರ.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ಬಾಹ್ಯ ನಿಯಂತ್ರಣ</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ಲಾಂಚರ್ ಅಥವಾ ಸ್ಕ್ರಿಪ್ಟ್ ಸ್ವಯಂಚಾಲನೆಯ ಮೂಲಕ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬದಲಿಸಬಹುದು. ಹೀಗೆ ಬದಲಿಸಿದ ಪ್ರೊಫೈಲ್, ಪ್ರೋಗ್ರಾಂ ಅದನ್ನು ಬಿಡುಗಡೆ ಮಾಡುವವರೆಗೆ ಅಥವಾ ನೀವೇ ಪ್ರೊಫೈಲ್ ಬದಲಿಸುವವರೆಗೆ ಉಳಿಯುತ್ತದೆ.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ಸ್ವಯಂಚಾಲನೆ ಆಫ್ ಆಗಿದೆ</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ಸ್ವಯಂಚಾಲನೆ ಆನ್ ಆಗಿದೆ: ಪ್ರೋಗ್ರಾಂಗಳು ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬದಲಿಸಬಹುದು</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ಸ್ವಯಂಚಾಲನೆ ಆನ್ ಆಗಿದೆ: ಪ್ರೋಗ್ರಾಂಗಳು ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬದಲಿಸಬಹುದು ಮತ್ತು ಸಾಧನಗಳು ಹಾಗೂ ಸೆಟ್ಟಿಂಗ್ಸ್ ಓದಬಹುದು</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ಸ್ವಯಂಚಾಲನೆ ಆನ್ ಆಗಿದೆ: ಪ್ರೋಗ್ರಾಂಗಳು ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬದಲಿಸಬಹುದು, ಸಾಧನಗಳು ಹಾಗೂ ಸೆಟ್ಟಿಂಗ್ಸ್ ಓದಬಹುದು ಮತ್ತು ಇನ್‌ಪುಟ್ ಕಳುಹಿಸಬಹುದು</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ಸ್ವಯಂಚಾಲನೆ ಆನ್ ಆಗಿದೆ: ಪ್ರೋಗ್ರಾಂಗಳು ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬದಲಿಸಬಹುದು, ಇನ್‌ಪುಟ್ ಕಳುಹಿಸಬಹುದು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್ಸ್ ಬದಲಿಸಬಹುದು</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>ಸ್ವಯಂಚಾಲನೆ ತೆರೆಯಿರಿ</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ಸಕ್ರಿಯ ಪ್ರೊಫೈಲ್:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ಗಳಿಲ್ಲ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ಆಮದು ಮಾಡಲು ಬಿಡಿ</value></data>
@@ -2741,7 +2768,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ಎಕ್ಸಿಕ್ಯೂಟಬಲ್‌ಗಳು (*.exe)|*.exe|ಎಲ್ಲಾ ಫೈಲ್‌ಗಳು (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ಈಗಾಗಲೇ ಚಾಲನೆಯಲ್ಲಿದೆ.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ಗಂಭೀರ ದೋಷ</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: ದೋಷ</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>ಅನಿರೀಕ್ಷಿತ ದೋಷ ಸಂಭವಿಸಿದೆ:

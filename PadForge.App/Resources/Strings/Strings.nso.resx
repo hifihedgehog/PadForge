@@ -550,7 +550,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge e šetše e šoma.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Phošo</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Go hlagile phošo yeo e sa letelwago:
 
@@ -1374,4 +1373,26 @@
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala faele yeo.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ga e kgone go hwetša faele yeo.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge ga e kgone go bala seswantšho sa Steam sa papadi ye.</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lenaneo le lengwe le swere leina la pipe {0}. Tswalela lenaneo leo.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e gannye pipe {0}, ka gona mananeo a ka se kgokagane.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Fetogela go profaele {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Boela go profaele ya tlwaelo</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Botšiša gore ke profaele efe yeo e šomago</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Bontšha lefesetere</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Romela lefesetere go system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Fokotša lefesetere</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Tswalela PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Thoma enjene</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Emiša enjene</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Bula khontroulara ye nngwe le ye nngwe ya virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Tima khontroulara ye nngwe le ye nngwe ya virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Bula khontroulara ya virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Tima khontroulara ya virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Boloka seswantšho sa tlhahlobo</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Thoma go rekhota bothata</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Emiša go rekhota</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Swaya rekhoto</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Kgopela phetolelo ya PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Botšiša seo se šomago</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Romela mothaladi wo PadForge e sa o tsebego: {0}</value></data>
 </root>

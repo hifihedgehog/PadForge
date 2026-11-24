@@ -615,7 +615,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge omba'apóma.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Jejavy</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
@@ -1345,4 +1344,24 @@
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge ndaikatúi olee upe marandurenda.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge ndojuhúi upe marandurenda.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Emondo meme</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Emoambue perfil {0} peve</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Ejevy perfil ypykuépe</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Eporandu mba'e perfilpa oĩ hína</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ehechauka ovetã</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Emondo ovetã bandeja del sistema peve</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Emomichĩ ovetã</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Emboty PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Emoñepyrũ motor</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Emombyta motor</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Emyendy opaite mando virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Embogue opaite mando virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Emyendy mando virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Embogue mando virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Eñongatu peteĩ diagnóstico ra'ãnga</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Eñepyrũ emongarai peteĩ apañuãi</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Emombyta grabación</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Emoñandu grabación</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Eporandu PadForge versión</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Eporandu mba'épa omba'apo hína</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Emondo peteĩ línea PadForge ndoikuaáiva: {0}</value></data>
 </root>

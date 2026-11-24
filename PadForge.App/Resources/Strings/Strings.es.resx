@@ -375,6 +375,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Escuchando en :{0}. {1} está enviando al índice de mando {2}, y ningún mando virtual con un DualSense o DualShock 4 tiene ese índice.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>El puerto {0} está en uso por otro programa, como DSX. Ciérralo o elige otro puerto.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod de juego</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Otro programa tiene el nombre de canalización {0}. Cierra ese programa.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows rechazó la canalización {0}, así que los programas no pueden conectarse.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Cambiar al perfil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Volver al perfil predeterminado</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Preguntar qué perfil está activo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Mostrar la ventana</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Enviar la ventana a la bandeja del sistema</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizar la ventana</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Cerrar PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Iniciar el motor</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Detener el motor</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Encender todos los controles virtuales</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Apagar todos los controles virtuales</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Encender el control virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Apagar el control virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Guardar una instantánea de diagnóstico</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Iniciar la grabación de un problema</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Detener la grabación</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Marcar la grabación</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Preguntar la versión de PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Preguntar qué está en ejecución</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Enviar una línea que PadForge no conoce: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funciona con OpenTrack y con cualquier rastreador que envíe su salida UDP o escriba en la memoria compartida de FreeTrack 2.0, y con un tiempo de ejecución OpenXR instalado en este equipo que pueda ejecutar una sesión en segundo plano.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Leer las teclas G de Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lee las teclas G mediante el SDK G-key de Logitech. Requiere Logitech Gaming Software 8.55 o posterior en ejecución. En ese programa, arrastra el comando G-key a cada tecla del perfil de PadForge. Haz que ese perfil sea persistente o las teclas solo llegarán a PadForge mientras su ventana esté en primer plano. Además, un ratón G600 o G300 no debe estar en el modo de memoria integrada.</value></data>
@@ -1369,9 +1391,14 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Al frente ahora: {0}, sin perfil asignado</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Al frente ahora: {0}, que carga {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Al frente ahora: {0}, y ningún perfil tiene un juego asignado aún</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Permitir control externo por lanzadores y scripts</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Sirve una canalización local con nombre, PadForge.Control, para que Playnite, LaunchBox o un script activen y desactiven perfiles. Un perfil activado así sigue activo hasta que el script lo libere o usted cambie de perfil. Solo en este equipo.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Control externo</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Un lanzador o un script puede cambiar de perfil mediante Automatización. Un perfil cambiado así permanece hasta que el programa lo libera o tú cambias de perfil.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatización está desactivada</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatización está activada: los programas pueden cambiar de perfil</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatización está activada: los programas pueden cambiar de perfil y leer dispositivos y configuración</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatización está activada: los programas pueden cambiar de perfil, leer dispositivos y configuración, y enviar entradas</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatización está activada: los programas pueden cambiar de perfil, enviar entradas y cambiar configuración</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Abrir Automatización</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Perfil activo:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Sin controles</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Soltar para importar el perfil</value></data>
@@ -1429,7 +1456,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Ejecutables (*.exe)|*.exe|Todos los archivos (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ya se está ejecutando.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Error fatal</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Error</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ocurrió un error inesperado:

@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Կ՚ունկնդրէ՝ :{0}։ {1} կը ղրկէ {2} համարով կառավարիչին, բայց DualSense կամ DualShock 4 ունեցող վիրթուալ կառավարիչներէն ոչ մէկը այդ համարը չունի։</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} փորթը կը գործածուի ուրիշ ծրագրի մը կողմէ, օրինակ՝ DSX-ի։ Գոցեցէք զայն կամ ուրիշ փորթ մը ընտրեցէք։</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Խաղի յաւելուած մը</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Ուրիշ ծրագիր մը կը գործածէ {0} խողովակի անունը։ Գոցեցէք այդ ծրագիրը։</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-ը մերժեց {0} խողովակը, ուստի ծրագիրները չեն կրնար միանալ։</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Անցնիլ {0} փրոֆիլին</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Վերադառնալ լռելեայն փրոֆիլին</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Հարցնել, թէ որ փրոֆիլը գործօն է</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ցուցադրել պատուհանը</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Պատուհանը ղրկել համակարգային սկուտեղ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Նուազեցնել պատուհանը</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Գոցել PadForge-ը</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Գործարկել շարժիչը</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Կեցնել շարժիչը</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Միացնել բոլոր վիրթուալ կառավարիչները</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Անջատել բոլոր վիրթուալ կառավարիչները</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Միացնել վիրթուալ կառավարիչ {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Անջատել վիրթուալ կառավարիչ {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Պահել ախտորոշման ակնթարթ մը</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Սկսիլ խնդրի մը արձանագրումը</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Կեցնել արձանագրումը</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Նշել արձանագրումը</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Հարցնել PadForge-ի տարբերակը</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Հարցնել, թէ ինչ կ՚աշխատի</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Ղրկել տող մը, որ PadForge-ը չի ճանչնար: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Կ՚աշխատի OpenTrack-ի եւ որեւէ հետեւիչի հետ, որ իր UDP ելքը կը ղրկէ կամ FreeTrack 2.0 համատեղ յիշողութեան մէջ կը գրէ, ինչպէս նաեւ այս համակարգիչին վրայ OpenXR գործարկման միջավայրի մը հետ, որ կրնայ նիստ մը գործարկել խորքին մէջ։</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Կարդալ Logitech-ի G ստեղները</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Կը կարդայ G ստեղները Logitech G-key SDK-ի միջոցով։ Պէտք է աշխատի Logitech Gaming Software 8.55 կամ աւելի նոր տարբերակը։ Այդ ծրագրին մէջ քաշեցէք G-key հրամանը PadForge-ի փրոֆիլին իւրաքանչիւր ստեղնին վրայ։ Այդ փրոֆիլը մնայուն դարձուցէք, այլապէս ստեղները PadForge-ին կը հասնին միայն երբ անոր պատուհանը առջեւն է։ G600 կամ G300 մուկը նաեւ պէտք է դուրս ըլլայ ներկառուցուած յիշողութեան ռեժիմէն։</value></data>
@@ -2685,9 +2707,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Հիմա առջեւն է՝ {0}, անոր համար փրոֆիլ չկայ</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Հիմա առջեւն է՝ {0}, որ կը բեռնէ {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Հիմա առջեւն է՝ {0}, եւ դեռ ոչ մէկ փրոֆիլ խաղ ունի</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Թոյլատրել արտաքին կառավարում՝ մեկնարկիչ ծրագիրներու եւ սքրիփթներու կողմէ</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Տեղական անուանեալ խողովակ մը (PadForge.Control) կը բանայ, որպէսզի Playnite-ը, LaunchBox-ը կամ սքրիփթ մը կարենան փրոֆիլներ գործօն դարձնել եւ անջատել։ Այս ձեւով գործօն դարձած փրոֆիլը գործօն կը մնայ, մինչեւ որ սքրիփթը զայն ազատէ կամ դուք ինքներդ փրոֆիլ փոխէք։ Միայն տեղական համակարգիչին վրայ։</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Արտաքին կառավարում</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Գործարկիչ մը կամ սքրիփթ մը կրնայ փրոֆիլներ փոխել Ինքնաշխատացման միջոցով։ Այսպէս փոխուած փրոֆիլը կը մնայ, մինչեւ որ ծրագիրը զայն ազատէ կամ դուք անձամբ փրոֆիլ փոխէք։</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Ինքնաշխատացումը անջատուած է</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Ինքնաշխատացումը միացած է՝ ծրագիրները կրնան փրոֆիլներ փոխել</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Ինքնաշխատացումը միացած է՝ ծրագիրները կրնան փրոֆիլներ փոխել եւ սարքեր ու կարգաւորումներ կարդալ</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Ինքնաշխատացումը միացած է՝ ծրագիրները կրնան փրոֆիլներ փոխել, սարքեր ու կարգաւորումներ կարդալ եւ մուտքեր ղրկել</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Ինքնաշխատացումը միացած է՝ ծրագիրները կրնան փրոֆիլներ փոխել, մուտքեր ղրկել եւ կարգաւորումներ փոխել</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Բանալ Ինքնաշխատացումը</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Գործօն փրոֆիլ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Կառավարիչ չկայ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Բաց թողէք՝ փրոֆիլը ներածելու համար</value></data>
@@ -2744,7 +2771,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Գործադրելի ֆայլեր (*.exe)|*.exe|Բոլոր ֆայլերը (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge-ը արդէն կը գործէ։</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ճակատագրական սխալ</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: սխալ</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Անսպասելի սխալ մը պատահեցաւ:

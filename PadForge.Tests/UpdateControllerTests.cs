@@ -354,6 +354,32 @@ public class UpdateControllerTests
         Assert.False(h.Helper.Aborted);
     });
 
+    /// <summary>The updated copy comes back the way this one was started,
+    /// and does nothing again that it was told to do once: a second
+    /// recording, a snapshot, a close (#597).</summary>
+    [Fact]
+    public void TheInstallHandsTheHelperTheStartOptionsAlone() => OnDispatcher(async () =>
+    {
+        using var h = new Harness();
+        IReadOnlyList<string> handed = null;
+        h.Controller.LaunchArgs = () => new[]
+        {
+            "--profile", "--snapshot", "--record", "start", "--tray", "--snapshot",
+            "--engine=off", "--slot", "2", "off", "--wait", "--record", "mark", "lap", "two",
+        };
+        h.Controller.StartHelper = (staged, expected, args, ct) =>
+        {
+            handed = args;
+            return h.Helper;
+        };
+        h.Controller.Check = (pre, ct) => Answer(UpdateCheckOutcome.Available, Offer('a'));
+        await h.Controller.CheckAsync(userInitiated: true);
+        var install = h.Controller.InstallAsync();
+        h.DownloadGate.SetResult(h.Staged());
+        await install;
+        Assert.Equal(new[] { "--profile", "--snapshot", "--tray", "--engine=off", "--slot", "2", "off" }, handed);
+    });
+
     [Fact]
     public void AHelperThatFailsLeavesPadForgeRunningAndSaysWhy() => OnDispatcher(async () =>
     {

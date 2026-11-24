@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}. {1} กำลังส่งไปยังดัชนีคอนโทรลเลอร์ {2} และไม่มีคอนโทรลเลอร์เสมือนที่มี DualSense หรือ DualShock 4 ใช้ดัชนีนั้น</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>พอร์ต {0} ถูกโปรแกรมอื่นใช้งานอยู่ เช่น DSX ให้ปิดโปรแกรมนั้นหรือเลือกพอร์ตอื่น</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ม็อดเกม</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>โปรแกรมอื่นถือชื่อไปป์ {0} อยู่ ให้ปิดโปรแกรมนั้น</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ปฏิเสธไปป์ {0} โปรแกรมจึงเชื่อมต่อไม่ได้</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>สลับไปที่โปรไฟล์ {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>กลับไปที่โปรไฟล์เริ่มต้น</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>ถามว่าโปรไฟล์ใดทำงานอยู่</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>แสดงหน้าต่าง</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ส่งหน้าต่างไปที่ถาดระบบ</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ย่อหน้าต่าง</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>ปิด PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>เริ่มเอนจิน</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>หยุดเอนจิน</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>เปิดคอนโทรลเลอร์เสมือนทุกตัว</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ปิดคอนโทรลเลอร์เสมือนทุกตัว</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>เปิดคอนโทรลเลอร์เสมือน {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>ปิดคอนโทรลเลอร์เสมือน {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>บันทึกสแนปช็อตการวินิจฉัย</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>เริ่มบันทึกปัญหา</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>หยุดบันทึก</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>ทำเครื่องหมายในการบันทึก</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>ถามเวอร์ชันของ PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>ถามว่าอะไรกำลังทำงานอยู่</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ส่งบรรทัดที่ PadForge ไม่รู้จัก: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>ใช้งานได้กับ OpenTrack และตัวติดตามใดก็ตามที่ส่งเอาต์พุต UDP หรือเขียนหน่วยความจำที่ใช้ร่วมกันแบบ FreeTrack 2.0 รวมถึงรันไทม์ OpenXR บนเครื่องนี้ที่รันเซสชันในเบื้องหลังได้</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>อ่าน G-Keys ของ Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>อ่าน G-key ผ่าน Logitech G-key SDK ต้องเปิด Logitech Gaming Software 8.55 ขึ้นไปไว้ ในซอฟต์แวร์นั้น ให้ลากคำสั่ง G-key ไปวางบนแต่ละคีย์ในโปรไฟล์ PadForge และตั้งโปรไฟล์นั้นเป็นแบบถาวร (Persistent) ไม่เช่นนั้นคีย์จะส่งถึง PadForge เฉพาะตอนที่หน้าต่างของ PadForge อยู่ด้านหน้าเท่านั้น เมาส์ G600 หรือ G300 ยังต้องออกจากโหมดหน่วยความจำในตัว (On-Board Memory) ด้วย</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ที่อยู่ด้านหน้าตอนนี้: {0} ไม่ได้ตั้งโปรไฟล์ไว้สำหรับโปรแกรมนี้</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ที่อยู่ด้านหน้าตอนนี้: {0} ซึ่งโหลด {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ที่อยู่ด้านหน้าตอนนี้: {0} และยังไม่มีโปรไฟล์ใดตั้งเกมไว้</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>อนุญาตให้ตัวเปิดเกมและสคริปต์ควบคุมจากภายนอก</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>ให้บริการ named pipe ภายในเครื่องชื่อ PadForge.Control เพื่อให้ Playnite, LaunchBox หรือสคริปต์เปิดและปิดการใช้งานโปรไฟล์ได้ โปรไฟล์ที่เปิดใช้ด้วยวิธีนี้จะทำงานอยู่จนกว่าสคริปต์จะปล่อย หรือคุณสลับโปรไฟล์เอง ใช้ได้เฉพาะในเครื่องนี้เท่านั้น</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>การควบคุมจากภายนอก</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>ตัวเปิดเกมหรือสคริปต์สลับโปรไฟล์ผ่านระบบอัตโนมัติได้ โปรไฟล์ที่สลับด้วยวิธีนี้จะคงอยู่จนกว่าโปรแกรมจะปล่อย หรือคุณสลับโปรไฟล์เอง</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>ระบบอัตโนมัติปิดอยู่</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>ระบบอัตโนมัติเปิดอยู่: โปรแกรมสลับโปรไฟล์ได้</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>ระบบอัตโนมัติเปิดอยู่: โปรแกรมสลับโปรไฟล์ และอ่านอุปกรณ์และการตั้งค่าได้</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>ระบบอัตโนมัติเปิดอยู่: โปรแกรมสลับโปรไฟล์ อ่านอุปกรณ์และการตั้งค่า และส่งอินพุตได้</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>ระบบอัตโนมัติเปิดอยู่: โปรแกรมสลับโปรไฟล์ ส่งอินพุต และเปลี่ยนการตั้งค่าได้</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>เปิดระบบอัตโนมัติ</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>โปรไฟล์ที่ใช้งานอยู่:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>ไม่มีคอนโทรลเลอร์</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>วางเพื่อนำเข้าโปรไฟล์</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>ไฟล์ปฏิบัติการ (*.exe)|*.exe|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge กำลังทำงานอยู่แล้ว</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: ข้อผิดพลาดร้ายแรง</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: ข้อผิดพลาด</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>เกิดข้อผิดพลาดที่ไม่คาดคิด:

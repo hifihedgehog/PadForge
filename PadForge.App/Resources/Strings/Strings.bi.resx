@@ -228,6 +228,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>I stap lisin long :{0}. {1} i stap sendem i go long kontrola namba {2}, be i no gat wan virtual kontrola wetem wan DualSense o DualShock 4 long hem we i gat namba ia.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Narafala program, olsem DSX, i yusum pot {0} finis. Klosem hem o jusum narafala pot.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Wan mod blong gem</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Narafala program i holem nem blong paep {0}. Klosem program ia.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows i no letem paep {0}, ale ol program oli no save konekt.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Jenis i go long profael {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gobak long profael we i stanap fastaem</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Askem wanem profael i stap wok</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Soem windo</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Sendem windo i go long sistem tre</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Mekem windo i smol</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Klosem PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Statem enjin</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stopem enjin</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Tanem evri virtual kontrola i on</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Tanem evri virtual kontrola i of</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Tanem Virtual kontrola {0} i on</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Tanem Virtual kontrola {0} i of</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Seivem wan snapsot blong daeagnostik</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Statem blong rekodem wan problem</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Stopem rekod</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Putum mak long rekod</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Askem vesen blong PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Askem wanem i stap wok</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sendem wan laen we PadForge i no save: {0}</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>I no faenem wan analog kiboad we PadForge i save ridim.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Statem Razer Synapse blong ridim {0}.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>I no faenem wan pot blong Bliss-Box.</value></data>
@@ -860,7 +882,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge i stap wok finis.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Mistek</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->

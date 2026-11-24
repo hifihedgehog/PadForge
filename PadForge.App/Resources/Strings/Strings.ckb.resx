@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>گوێگرتن لەسەر :{0}. {1} بۆ ژمارەی کۆنترۆڵەری {2} دەنێرێت، و هیچ کۆنترۆڵەرێکی مەجازی کە DualSense یان DualShock 4 ی لەسەرە ئەو ژمارەیەی نییە.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>پۆرتی {0} لەلایەن بەرنامەیەکی ترەوە بەکاردێت، وەک DSX. دایبخە یان پۆرتێکی تر هەڵبژێرە.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>مۆدێکی یاری</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>بەرنامەیەکی تر ناوی پایپی {0} ی گرتووە. ئەو بەرنامەیە دابخە.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows پایپی {0} ی ڕەت کردەوە، بۆیە بەرنامەکان ناتوانن پەیوەست بن.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>گۆڕین بۆ پرۆفایلی {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>گەڕانەوە بۆ پرۆفایلی بنەڕەت</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>پرسین کە کام پرۆفایل چالاکە</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>پیشاندانی پەنجەرەکە</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>ناردنی پەنجەرەکە بۆ سینیی سیستەم</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>بچووککردنەوەی پەنجەرەکە</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>داخستنی PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>دەستپێکردنی بزوێنەر</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>وەستاندنی بزوێنەر</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>هەڵکردنی هەموو کۆنترۆڵەرە مەجازییەکان</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>کوژاندنەوەی هەموو کۆنترۆڵەرە مەجازییەکان</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>هەڵکردنی کۆنترۆڵەری مەجازی {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>کوژاندنەوەی کۆنترۆڵەری مەجازی {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستای دەستنیشانکردن</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>دەستپێکردنی تۆمارکردنی کێشەیەک</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>وەستاندنی تۆمارکردن</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>نیشانەکردنی تۆمارەکە</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>پرسین بۆ وەشانی PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>پرسین کە چی کاردەکات</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>ناردنی دێڕێک کە PadForge نایناسێت: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>لەگەڵ OpenTrack و هەر شوێنپێهەڵگرێک کار دەکات کە دەرچوونی UDP دەنێرێت یان بیرگەی هاوبەشی FreeTrack 2.0 دەنووسێت، و لەگەڵ ڕەنتایمێکی OpenXR لەسەر ئەم کۆمپیوتەرە کە بتوانێت دانیشتنێک لە پاشبنەمادا بەڕێوە ببات.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>خوێندنەوەی کلیلەکانی G ی Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>کلیلەکانی G لە ڕێگەی Logitech G-key SDK دەخوێنێتەوە. پێویستی بە کارکردنی Logitech Gaming Software 8.55 یان نوێتر هەیە. لەو نەرمەکاڵایەدا، فەرمانی G-key ڕابکێشە سەر هەر کلیلێک لە پرۆفایلی PadForge دا. ئەو پرۆفایلە بکە بە بەردەوام، ئەگینا کلیلەکان تەنها کاتێک دەگەنە PadForge کە پەنجەرەکەی لە پێشەوەیە. ماوسی G600 یان G300 دەبێت لە دۆخی بیرگەی ناوخۆیی دەربهێنرێت.</value></data>
@@ -2687,9 +2709,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ئێستا لە پێشەوە: {0}، هیچ پرۆفایلێکی بۆ دانەنراوە</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ئێستا لە پێشەوە: {0}، کە {1} بار دەکات</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ئێستا لە پێشەوە: {0}، و هێشتا هیچ پرۆفایلێک یارییەکی بۆ دانەنراوە</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ڕێگەدان بە کۆنترۆڵی دەرەکی لەلایەن لانچەر و سکریپتەکانەوە</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>بۆڕییەکی ناودراوی ناوخۆیی، PadForge.Control، دەخاتە کار بۆ ئەوەی Playnite، LaunchBox یان سکریپتێک بتوانن پرۆفایلەکان چالاک و ناچالاک بکەن. پرۆفایلێک کە بەم شێوەیە چالاک کرابێت چالاک دەمێنێتەوە تا سکریپتەکە بەری دەدات یان خۆت پرۆفایل دەگۆڕیت. تەنها بۆ ئەم کۆمپیوتەرە.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>کۆنترۆڵی دەرەکی</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>لانچەرێک یان سکریپتێک دەتوانێت لە ڕێگەی خۆکارکردنەوە پرۆفایل بگۆڕێت. پرۆفایلێک کە بەم شێوەیە گۆڕدرابێت دەمێنێتەوە تا بەرنامەکە بەری دەدات یان خۆت پرۆفایل دەگۆڕیت.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>خۆکارکردن کوژاوەیە</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>خۆکارکردن چالاکە: بەرنامەکان دەتوانن پرۆفایل بگۆڕن</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>خۆکارکردن چالاکە: بەرنامەکان دەتوانن پرۆفایل بگۆڕن و ئامێر و ڕێکخستنەکان بخوێننەوە</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>خۆکارکردن چالاکە: بەرنامەکان دەتوانن پرۆفایل بگۆڕن، ئامێر و ڕێکخستنەکان بخوێننەوە، و تێخەر بنێرن</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>خۆکارکردن چالاکە: بەرنامەکان دەتوانن پرۆفایل بگۆڕن، تێخەر بنێرن و ڕێکخستنەکان بگۆڕن</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>کردنەوەی خۆکارکردن</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>پرۆفایلی چالاک:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>هیچ کۆنترۆڵەرێک</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>لێرە دایبنێ بۆ هاوردەکردنی پرۆفایل</value></data>
@@ -2746,7 +2773,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>فایلە جێبەجێکراوەکان (*.exe)|*.exe|هەموو فایلەکان (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge پێشتر کار دەکات.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: هەڵەی کوشندە</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: هەڵە</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>هەڵەیەکی چاوەڕواننەکراو ڕوویدا:

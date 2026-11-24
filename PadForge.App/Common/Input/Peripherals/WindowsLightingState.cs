@@ -33,7 +33,7 @@ namespace PadForge.Common.Input.Peripherals
     /// the background nothing does, and the path is open: before build
     /// 22621, or with no SettingsHandlers_Lighting.dll.</para>
     ///
-    /// <para>PadForge runs elevated. When a standard user elevates with
+    /// <para>The app runs elevated. When a standard user elevates with
     /// another account's credentials, HKEY_CURRENT_USER is that account's
     /// hive and holds the wrong switches. The switches that count are the
     /// ones of the user whose desktop this is, so the user is taken from

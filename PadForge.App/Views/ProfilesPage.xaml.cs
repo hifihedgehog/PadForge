@@ -38,6 +38,26 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  External Control (#366, #597)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Hands the External Control card the view model that
+        /// holds Automation's switch and level (#597), whose one line the
+        /// card prints. The page's own view model is the Settings one, and
+        /// Automation is an extra. MainWindow calls it once at startup.</summary>
+        public void BindAutomationState(DashboardViewModel dashboard)
+        {
+            AutomationStateHost.DataContext = dashboard;
+        }
+
+        /// <summary>Raised by the External Control card's button, which opens
+        /// the Automation extra's page.</summary>
+        public event EventHandler OpenAutomationRequested;
+
+        private void OpenAutomation_Click(object sender, RoutedEventArgs e)
+            => OpenAutomationRequested?.Invoke(this, EventArgs.Empty);
+
+        // ─────────────────────────────────────────────
         //  Starter profiles (#574)
         // ─────────────────────────────────────────────
 

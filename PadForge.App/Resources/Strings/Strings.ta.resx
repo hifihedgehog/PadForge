@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>:{0}-இல் செவிமடுக்கிறது. {1} கட்டுப்படுத்தி குறியீட்டெண் {2}-க்கு அனுப்புகிறது, DualSense அல்லது DualShock 4 உள்ள எந்த மெய்நிகர் கட்டுப்படுத்திக்கும் அந்தக் குறியீட்டெண் இல்லை.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>போர்ட் {0}-ஐ DSX போன்ற வேறொரு நிரல் பயன்படுத்துகிறது. அதை மூடவும் அல்லது வேறு போர்ட்டைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ஒரு கேம் மோட்</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>வேறொரு நிரல் {0} என்ற குழாய்ப் பெயரை வைத்திருக்கிறது. அந்த நிரலை மூடவும்.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} குழாயை மறுத்துவிட்டது, எனவே நிரல்களால் இணைய முடியாது.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>சுயவிவரத்தை மாற்று: {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>இயல்புநிலை சுயவிவரத்துக்குத் திரும்பு</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>எந்தச் சுயவிவரம் செயலில் உள்ளது என்று கேள்</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>சாளரத்தைக் காட்டு</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>சாளரத்தை சிஸ்டம் ட்ரேக்கு அனுப்பு</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>சாளரத்தைச் சிறிதாக்கு</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ஐ மூடு</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>இன்ஜினைத் தொடங்கு</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>இன்ஜினை நிறுத்து</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>ஒவ்வொரு மெய்நிகர் கட்டுப்படுத்தியையும் இயக்கு</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>ஒவ்வொரு மெய்நிகர் கட்டுப்படுத்தியையும் அணை</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0}-ஐ இயக்கு</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0}-ஐ அணை</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமி</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>ஒரு சிக்கலைப் பதிவுசெய்யத் தொடங்கு</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>பதிவை நிறுத்து</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>பதிவில் குறியிடு</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>PadForge-இன் பதிப்பைக் கேள்</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>என்ன இயங்குகிறது என்று கேள்</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>PadForge-க்குத் தெரியாத ஒரு வரியை அனுப்பு: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack உடனும், தன் UDP வெளியீட்டை அனுப்பும் அல்லது FreeTrack 2.0 பகிர்ந்த நினைவகத்தில் எழுதும் எந்த டிராக்கருடனும், பின்னணியில் ஓர் அமர்வை இயக்கக்கூடிய இந்தக் கணினியிலுள்ள OpenXR ரன்டைமுடனும் வேலை செய்யும்.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Logitech G-விசைகளைப் படி</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Logitech G-key SDK வழியாக G-விசைகளைப் படிக்கிறது. Logitech Gaming Software 8.55 அல்லது அதற்குப் பிந்தைய பதிப்பு இயங்கிக்கொண்டிருக்க வேண்டும். அந்த மென்பொருளில், PadForge சுயவிவரத்தில் உள்ள ஒவ்வொரு விசையின் மீதும் G-key கட்டளையை இழுத்து விடவும். அந்தச் சுயவிவரத்தை நிலையானதாக (Persistent) அமைக்கவும், இல்லையெனில் PadForge சாளரம் முன்னால் இருக்கும்போது மட்டுமே விசைகள் PadForge-ஐ வந்தடையும். G600 அல்லது G300 சுட்டியாக இருந்தால், அது ஆன்-போர்டு நினைவகப் பயன்முறையிலிருந்தும் வெளியே இருக்க வேண்டும்.</value></data>
@@ -2922,9 +2944,14 @@
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>இப்போது முன்னணியில்: {0}, அதற்குச் சுயவிவரம் அமைக்கப்படவில்லை</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>இப்போது முன்னணியில்: {0}, இது {1}-ஐ ஏற்றும்</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>இப்போது முன்னணியில்: {0}, எந்தச் சுயவிவரத்துக்கும் இன்னும் கேம் அமைக்கப்படவில்லை</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>லாஞ்சர்கள் மற்றும் ஸ்கிரிப்ட்களின் வெளிப்புறக் கட்டுப்பாட்டை அனுமதி</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control என்ற உள்ளக நேம்டு பைப்பை வழங்கும், அதன் மூலம் Playnite, LaunchBox அல்லது ஒரு ஸ்கிரிப்ட் சுயவிவரங்களைச் செயல்படுத்தவும் செயல்நீக்கவும் முடியும். இவ்வாறு செயல்படுத்தப்பட்ட சுயவிவரம், ஸ்கிரிப்ட் அதை விடுவிக்கும் வரை அல்லது நீங்களே சுயவிவரத்தை மாற்றும் வரை செயலில் இருக்கும். இந்தக் கணினிக்கு மட்டும்.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>வெளிப்புறக் கட்டுப்பாடு</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>லாஞ்சரோ ஸ்கிரிப்டோ தானியக்கம் மூலம் சுயவிவரங்களை மாற்ற முடியும். இப்படி மாற்றிய சுயவிவரம், நிரல் அதை விடுவிக்கும் வரை அல்லது நீங்களே சுயவிவரங்களை மாற்றும் வரை இருக்கும்.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>தானியக்கம் அணைந்துள்ளது</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>தானியக்கம் இயக்கத்தில் உள்ளது: நிரல்கள் சுயவிவரங்களை மாற்றலாம்</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>தானியக்கம் இயக்கத்தில் உள்ளது: நிரல்கள் சுயவிவரங்களை மாற்றலாம், சாதனங்களையும் அமைப்புகளையும் படிக்கலாம்</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>தானியக்கம் இயக்கத்தில் உள்ளது: நிரல்கள் சுயவிவரங்களை மாற்றலாம், சாதனங்களையும் அமைப்புகளையும் படிக்கலாம், உள்ளீடுகளை அனுப்பலாம்</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>தானியக்கம் இயக்கத்தில் உள்ளது: நிரல்கள் சுயவிவரங்களை மாற்றலாம், உள்ளீடுகளை அனுப்பலாம், அமைப்புகளை மாற்றலாம்</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>தானியக்கத்தைத் திற</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>செயலிலுள்ள சுயவிவரம்:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>கட்டுப்படுத்திகள் இல்லை</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>சுயவிவரத்தை இறக்குமதி செய்ய இங்கே விடவும்</value></data>
@@ -2982,7 +3009,6 @@
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>இயங்குகோப்புகள் (*.exe)|*.exe|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ஏற்கெனவே இயங்குகிறது.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: கடுமையான பிழை</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: பிழை</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>எதிர்பாராத பிழை ஏற்பட்டது:

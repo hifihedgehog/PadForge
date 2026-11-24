@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ascultă pe :{0}. {1} trimite către indexul de controler {2}, iar niciun controler virtual cu un DualSense sau DualShock 4 nu are acel index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Portul {0} este folosit de alt program, de exemplu DSX. Închideți-l sau alegeți alt port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>O modificare de joc</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Alt program deține numele de canal {0}. Închideți acel program.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows a refuzat canalul {0}, deci programele nu se pot conecta.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Trecere la profilul {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Revenire la profilul implicit</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Întrebare despre profilul activ</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Afișare fereastră</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Trimitere fereastră în zona de notificare</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizare fereastră</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Închidere PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Pornire motor</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Oprire motor</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Activare toate controlerele virtuale</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Dezactivare toate controlerele virtuale</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Activare controler virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Dezactivare controler virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Salvare instantaneu de diagnosticare</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Pornire înregistrare problemă</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Oprire înregistrare</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Marcare înregistrare</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Întrebare despre versiunea PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Întrebare despre ce rulează</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Trimitere unei linii necunoscute pentru PadForge: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funcționează cu OpenTrack și cu orice dispozitiv de urmărire care își trimite ieșirea prin UDP sau scrie în memoria partajată FreeTrack 2.0, precum și cu un mediu de execuție OpenXR de pe acest computer care poate rula o sesiune în fundal.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Citire taste G Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Citește tastele G prin Logitech G-key SDK. Necesită să ruleze Logitech Gaming Software 8.55 sau o versiune ulterioară. În acel program, trageți comanda G-key pe fiecare tastă din profilul PadForge. Setați acel profil ca persistent, altfel tastele ajung la PadForge doar când fereastra sa este în prim-plan. Un mouse G600 sau G300 trebuie, de asemenea, scos din modul de memorie integrată.</value></data>
@@ -2922,9 +2944,14 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>În prim-plan acum: {0}, niciun profil setat pentru el</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>În prim-plan acum: {0}, care încarcă {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>În prim-plan acum: {0}, și niciun profil nu are încă un joc setat</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Permitere control extern de către lansatoare și scripturi</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Oferă un canal local cu nume (named pipe), PadForge.Control, astfel încât Playnite, LaunchBox sau un script să poată activa și dezactiva profiluri. Un profil activat astfel rămâne activ până când scriptul îl eliberează sau până când schimbați singur profilul. Doar pe computerul local.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Control extern</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Un lansator sau un script poate comuta profiluri prin Automatizare. Un profil comutat astfel rămâne până când programul îl eliberează sau comutați dumneavoastră profilul.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatizarea este dezactivată</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatizarea este activată: programele pot comuta profiluri</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatizarea este activată: programele pot comuta profiluri și citi dispozitive și setări</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatizarea este activată: programele pot comuta profiluri, citi dispozitive și setări și trimite intrări</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatizarea este activată: programele pot comuta profiluri, trimite intrări și modifica setări</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Deschidere Automatizare</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil activ:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Niciun controler</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Plasați aici pentru a importa profilul</value></data>
@@ -2982,7 +3009,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Executabile (*.exe)|*.exe|Toate fișierele (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge rulează deja.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: eroare fatală</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: eroare</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>A apărut o eroare neașteptată:

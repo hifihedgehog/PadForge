@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mendengarkan di :{0}. {1} mengirim ke indeks kontroler {2}, dan tidak ada kontroler virtual dengan DualSense atau DualShock 4 yang memiliki indeks itu.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} dipakai program lain, seperti DSX. Tutup program itu atau pilih port lain.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Sebuah mod game</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Program lain memakai nama pipe {0}. Tutup program itu.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows menolak pipe {0}, sehingga program tidak dapat tersambung.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Beralih ke profil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kembali ke profil bawaan</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Tanyakan profil mana yang aktif</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Tampilkan jendela</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Kirim jendela ke baki sistem</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimalkan jendela</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Tutup PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Mulai mesin</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Hentikan mesin</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Nyalakan setiap kontroler virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Matikan setiap kontroler virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Nyalakan Kontroler Virtual {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Matikan Kontroler Virtual {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Simpan cuplikan diagnostik</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Mulai merekam masalah</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Berhenti merekam</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Tandai rekaman</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Tanyakan versi PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Tanyakan apa yang sedang berjalan</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Kirim baris yang tidak dikenal PadForge: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Berfungsi dengan OpenTrack dan pelacak apa pun yang mengirim output UDP-nya atau menulis memori bersama FreeTrack 2.0, serta dengan runtime OpenXR di komputer ini yang dapat menjalankan sesi di latar belakang.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Baca tombol G-key Logitech</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Membaca tombol G-key melalui SDK G-key Logitech. Logitech Gaming Software 8.55 atau yang lebih baru harus berjalan. Di perangkat lunak itu, seret perintah G-key ke setiap tombol dalam profil PadForge. Jadikan profil itu persisten, atau tombol-tombol tersebut hanya sampai ke PadForge selama jendelanya berada di depan. Mouse G600 atau G300 juga harus keluar dari mode memori on-board.</value></data>
@@ -2922,9 +2944,14 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Di depan sekarang: {0}, belum ada profil untuknya</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Di depan sekarang: {0}, yang memuat {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Di depan sekarang: {0}, dan belum ada profil yang diberi game</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Izinkan kendali eksternal oleh launcher dan skrip</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Menyediakan named pipe lokal, PadForge.Control, sehingga Playnite, LaunchBox, atau sebuah skrip dapat mengaktifkan dan menonaktifkan profil. Profil yang diaktifkan dengan cara ini tetap aktif sampai skrip melepasnya atau Anda sendiri berganti profil. Hanya untuk komputer lokal.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Kendali eksternal</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Peluncur atau skrip dapat mengganti profil melalui Otomatisasi. Profil yang diganti dengan cara ini bertahan sampai program melepasnya atau Anda sendiri mengganti profil.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Otomatisasi nonaktif</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Otomatisasi aktif: program dapat mengganti profil</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Otomatisasi aktif: program dapat mengganti profil dan membaca perangkat serta pengaturan</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Otomatisasi aktif: program dapat mengganti profil, membaca perangkat dan pengaturan, serta mengirim input</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Otomatisasi aktif: program dapat mengganti profil, mengirim input, dan mengubah pengaturan</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Buka Otomatisasi</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil aktif:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Tidak ada kontroler</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Jatuhkan untuk mengimpor profil</value></data>
@@ -2982,7 +3009,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>File executable (*.exe)|*.exe|Semua file (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge sudah berjalan.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: kesalahan fatal</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: kesalahan</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Terjadi kesalahan tak terduga:

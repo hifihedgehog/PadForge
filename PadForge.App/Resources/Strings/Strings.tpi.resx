@@ -237,6 +237,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>I harim long :{0}. {1} i salim long kontrola namba {2}, tasol dispela namba i no bilong wanpela virtual kontrola i gat DualSense o DualShock 4 long en.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Narapela program, olsem DSX, i usim pot {0}. Pasim em o makim narapela pot.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Wanpela mod bilong gem</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Narapela program i holim nem bilong paip {0}. Pasim dispela program.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows i no orait long paip {0}, olsem na ol program i no inap konek.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Senis i go long profail {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Go bek long namba wan profail</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Askim wanem profail i wok</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Soim windo</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Salim windo i go long system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Mekim windo i liklik</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Pasim PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Statim injin</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stopim injin</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Onim olgeta virtual kontrola</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Ofim olgeta virtual kontrola</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Onim virtual kontrola {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Ofim virtual kontrola {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Seivim snapshot bilong diagnostics</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Statim rekodim wanpela hevi</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Stopim rekodim</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Makim rekoding</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Askim vesen bilong PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Askim wanem samting i ran</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Salim lain PadForge i no save long en: {0}</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>nogat kontrola</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Kain {0}</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Dispela PC tasol</value></data>
@@ -862,7 +884,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge i wok i stap pinis.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Bikpela rong</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Rong</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Wanpela rong i kamap nating:

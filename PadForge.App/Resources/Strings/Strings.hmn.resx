@@ -686,7 +686,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge twb tab tom khiav lawm.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Yuam kev</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Muaj ib qho yuam kev uas tsis tau xav txog tshwm sim:
 
@@ -1622,4 +1621,26 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge nrhiav tsis tau cov ntaub ntawv ntawd.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge nyeem tsis tau Steam daim duab rau game no.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Xa mus ntxiv</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Lwm qhov program tuav lub npe pipe {0}. Kaw qhov program ntawd.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows tsis kam tsim lub pipe {0}, yog li cov program txuas tsis tau.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Hloov mus rau profile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Rov qab mus rau profile neej ntawd</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Nug saib profile twg siv</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Qhia lub qhov rais</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Xa lub qhov rais mus rau system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Txo lub qhov rais</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Kaw PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Pib lub engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Nres lub engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Qhib txhua lub controller virtual</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Kaw txhua lub controller virtual</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Qhib Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Kaw Virtual Controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Khaws ib daim snapshot kuaj mob</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Pib kaw ib qho teeb meem</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Nres kev kaw</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Cim rau qhov kaw</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Nug txog PadForge tus version</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Nug saib dab tsi tab tom khiav</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Xa ib kab uas PadForge tsis paub: {0}</value></data>
 </root>

@@ -2502,8 +2502,13 @@ namespace PadForge.Services
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
-            vm.EnableExternalControl = appSettings.EnableExternalControl;
-            SettingsManager.EnableExternalControl = appSettings.EnableExternalControl;
+            // Automation (#597): the level first, so the switch turns the
+            // host on at the level the file holds.
+            var automationLevel = Automation.AutomationLevels.FromSaved(appSettings.AutomationLevel);
+            _mainVm.Dashboard.AutomationLevel = automationLevel;
+            SettingsManager.AutomationLevel = automationLevel;
+            _mainVm.Dashboard.EnableAutomation = appSettings.EnableAutomation;
+            SettingsManager.EnableAutomation = appSettings.EnableAutomation;
             vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
             vm.ShowLegacyWorkshopConfigs = appSettings.ShowLegacyWorkshopConfigs;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -4992,7 +4997,8 @@ namespace PadForge.Services
                 .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
-            SettingsManager.EnableExternalControl = vm.EnableExternalControl;
+            SettingsManager.EnableAutomation = _mainVm.Dashboard.EnableAutomation;
+            SettingsManager.AutomationLevel = _mainVm.Dashboard.AutomationLevel;
 
             // Collect per-slot controller types and HIDMaestro profile slugs.
             var slotTypes = new int[_mainVm.Pads.Count];
@@ -5139,7 +5145,8 @@ namespace PadForge.Services
                 ThemeFiles = themeFiles.Length > 0 ? themeFiles : null,
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
-                EnableExternalControl = vm.EnableExternalControl,
+                EnableAutomation = _mainVm.Dashboard.EnableAutomation,
+                AutomationLevel = (int)_mainVm.Dashboard.AutomationLevel,
                 EnableCommunityConfigLookup = vm.EnableCommunityConfigLookup,
                 ShowLegacyWorkshopConfigs = vm.ShowLegacyWorkshopConfigs,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
@@ -6194,7 +6201,8 @@ namespace PadForge.Services
             // 4. Profiles: back to the single built-in Default entry.
             var settingsVm = _mainVm.Settings;
             SettingsManager.EnableAutoProfileSwitching = false;
-            SettingsManager.EnableExternalControl = false;
+            SettingsManager.EnableAutomation = false;
+            SettingsManager.AutomationLevel = Automation.AutomationLevel.Commands;
             SettingsManager.ExternalProfilePinActive = false;
             SettingsManager.ActiveProfileId = null;
             // Every game look's picture goes with the profiles: no profile
@@ -7321,12 +7329,33 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableAutoProfileSwitching { get; set; }
 
-        /// <summary>Opt-in for the external-control named pipe (#366): a
-        /// launcher or script can activate and deactivate profiles from
-        /// outside PadForge. Default false. Every pre-#366 settings file
-        /// deserializes to false, so the pipe stays off until the user asks.</summary>
+        /// <summary>Automation's switch (#597): outside programs reach
+        /// PadForge through its pipes. Default false. A file from before it
+        /// deserializes to false unless it held the old External Control
+        /// switch on (<see cref="LegacyEnableExternalControl"/>), so nothing
+        /// answers a program until the user asks.</summary>
         [XmlElement]
-        public bool EnableExternalControl { get; set; }
+        public bool EnableAutomation { get; set; }
+
+        /// <summary>What a program may do while Automation is on, as the
+        /// number of its <see cref="Automation.AutomationLevel"/>: 0 Commands,
+        /// 1 Read, 2 Send Inputs, 3 Change Settings. 0 in a file that holds
+        /// none. A number no level has reads as 0.</summary>
+        [XmlElement]
+        public int AutomationLevel { get; set; }
+
+        /// <summary>The External Control switch of #366 as files before #597
+        /// saved it: a launcher or script could switch profiles over the
+        /// control pipe. Read, turned into Automation at Commands, which
+        /// allows what the old switch allowed
+        /// (<see cref="MigrateLegacySchema"/>), and never written again.</summary>
+        [XmlElement("EnableExternalControl")]
+        public bool LegacyEnableExternalControl { get; set; }
+        public bool ShouldSerializeLegacyEnableExternalControl() => false;
+
+        /// <summary>The <see cref="OpenCards"/> key of the External Control
+        /// card's fold, which the Profiles page had from 6.0 until #597.</summary>
+        internal const string RetiredExternalControlFoldKey = "Profiles.ExternalControl";
 
         /// <summary>
         /// Master opt-in for the Steam Workshop community-config feature
@@ -7819,6 +7848,21 @@ namespace PadForge.Services
             if (PollingRateHz <= 0 && LegacyPollingIntervalMs > 0)
                 PollingRateHz = PollingRates.FromIntervalMs(LegacyPollingIntervalMs);
             LegacyPollingIntervalMs = 0;
+            // A file that holds the old switch holds no Automation: only a
+            // build from before Automation writes the old one, and such a
+            // build writes nothing else of it. On there is Automation on at
+            // Commands, whatever level a hand put beside it, so the move
+            // widens nothing.
+            if (LegacyEnableExternalControl && !EnableAutomation)
+            {
+                EnableAutomation = true;
+                AutomationLevel = (int)Automation.AutomationLevel.Commands;
+            }
+            LegacyEnableExternalControl = false;
+            // The External Control card on the Profiles page folded until
+            // #597 and holds no setting now, so the key a file kept for the
+            // open fold names nothing and goes at the next save.
+            OpenCards?.Remove(RetiredExternalControlFoldKey);
             DefaultProfileSnapshot?.MigrateLegacySchema();
         }
 

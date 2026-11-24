@@ -665,7 +665,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ikugwira kale ntchito.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Vuto lalikulu</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Cholakwika</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Pachitika vuto losayembekezereka:
@@ -1546,4 +1545,24 @@
   <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Zithunzi (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafayilo onse (*.*)|*.*</value></data>
   <data name="Settings_ThemeAddUnreadable" xml:space="preserve"><value>PadForge sikutha kuwerenga fayiloyo.</value></data>
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge sikupeza fayiloyo.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Sinthani kupita ku mbiri {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bwererani ku mbiri yokhazikika</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Funsani mbiri yomwe ikugwira ntchito</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Onetsani zenera</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Tumizani zenera ku thireyi ya dongosolo</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Chepetsani zenera</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Tsekani PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Yambitsani injini</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Imitsani injini</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Yatsani kontrola iliyonse ya pakompyuta</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Zimitsani kontrola iliyonse ya pakompyuta</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Yatsani Kontrola ya pakompyuta {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Zimitsani Kontrola ya pakompyuta {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Sungani chithunzithunzi cha matenda</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Yambani kujambula vuto</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Imitsani kujambula</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Ikani chizindikiro pa kujambula</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Funsani mtundu wa PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Funsani zomwe zikuyenda</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Tumizani mzere womwe PadForge sikudziwa: {0}</value></data>
 </root>

@@ -8,7 +8,7 @@
     3. Kills and restarts PadForge
     4. Runs full UIA-based capture (~30 screenshots)
     5. Restores PadForge.xml backup and removes the marker
-    Must run elevated (PadForge runs elevated for HIDMaestro and HidHide).
+    Must run elevated (the app runs elevated for HIDMaestro and HidHide).
 
     Before the run overwrites or deletes a settings file it copies the file to
     %TEMP%\PadForge_Capture under a name that carries the UTC time. Twenty copies
@@ -8068,30 +8068,28 @@ function Restore-DefaultProfile {
     return $false
 }
 
-# External Control (#366, #574): its card folds to one line at the page's
-# foot. The card is opened through its ExpandCollapse pattern, the switch is
-# found by its AutomationId and checked to be in the frame, the shot is
-# taken, and the card folds again, so the run leaves its state as it found it.
+# External Control (#366, #597): its card at the page's foot says in one
+# line what Automation allows and has the button that opens Automation's
+# page. The button is found by its AutomationId and checked to be in the
+# frame, and the shot is taken. Nothing is clicked, so the run leaves the
+# page as it found it.
 function Capture-ExternalControl {
-    $fold = Find-UIARetry -Name "External Control" -CT ([System.Windows.Automation.ControlType]::Group)
-    if (-not $fold) { $fold = Find-UIARetry -Name "External Control" }
-    if (-not $fold) { Refuse-Shots @("profiles-external-control") "External Control card not found"; return }
-    $ec = $null
-    try { $ec = $fold.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern) } catch {}
-    if (-not $ec) { Refuse-Shots @("profiles-external-control") "External Control card does not open"; return }
-    $wasOpen = $ec.Current.ExpandCollapseState -eq [System.Windows.Automation.ExpandCollapseState]::Expanded
-    if (-not $wasOpen) { $ec.Expand(); Start-Sleep -Milliseconds 500 }
     ScrollContent -Clicks -40
     Start-Sleep -Milliseconds 400
-    $extR = Get-Rect (Find-UIA -Aid "Profiles_ExternalControl")
+    $open = Find-UIARetry -Aid "Profiles_OpenAutomation"
+    if (-not $open) {
+        Refuse-Shots @("profiles-external-control") "External Control card not found"
+        ScrollContent -Clicks 40
+        return
+    }
+    $extR = Get-Rect $open
     $wrEx = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrEx) | Out-Null
     if ($null -ne $extR -and $extR.Y -ge ($wrEx.Top + 60) -and ($extR.Y + $extR.Height) -le ($wrEx.Bottom - 60)) {
         Cap "profiles-external-control"
     } else {
-        Refuse-Shots @("profiles-external-control") "External Control switch not in frame"
+        Refuse-Shots @("profiles-external-control") "External Control card not in frame"
     }
-    if (-not $wasOpen) { try { $ec.Collapse() } catch {} }
     ScrollContent -Clicks 40
 }
 
@@ -9123,7 +9121,7 @@ if ($Only.Count -gt 0) {
 
     # ── Profiles page, and the modal that hangs off it ──
     if (Want "profiles-external-control") {
-        Write-Host "[focused] Profiles: external control switch"
+        Write-Host "[focused] Profiles: external control card"
         Nav "Profiles"; Start-Sleep -Milliseconds 900
         Capture-ExternalControl
     }
@@ -9521,9 +9519,8 @@ Cap "dashboard-slot-card"
 Write-Host "[$(Next)/$total] Profiles"
 Nav "Profiles"; Cap "profiles"
 
-# External control (#366): the switch sits in the External Control card at
-# the page's foot (#574), which folds to one line, so the card is opened for
-# the shot and folded again after.
+# External control (#366): the External Control card at the page's foot
+# (#574), which says what Automation allows and opens its page (#597).
 Capture-ExternalControl
 # The In front now line (#574), through the recipe the focused pass uses.
 Capture-ForegroundReadout

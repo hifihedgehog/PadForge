@@ -968,7 +968,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge duraanuu hojjechaa jira.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Dogoggora cimaa</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Dogoggora</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Dogoggorri hin eegamne uumame:
@@ -2160,4 +2159,26 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge faayila sana argachuu hin danda'u.</value></data>
   <data name="ThemeBuilder_ArtUnreadable" xml:space="preserve"><value>PadForge suuraa Steam tapha kanaa dubbisuu hin danda'u.</value></data>
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Erguu itti fufi</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sagantaan biraa maqaa paayippii {0} qabateera. Sagantaa sana cufi.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows paayippii {0} dideera, kanaaf sagantaaleen wal qunnamuu hin danda'an.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Gara piroofaayilii {0} jijjiiri</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Gara piroofaayilii durtii deebi'i</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Piroofaayiliin kam akka hojii irra jiru gaafadhu</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Foddaa agarsiisi</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Foddaa gara naannoo beeksisaa sirnaa ergi</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Foddaa xiqqeessi</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge cufi</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Injinii jalqabi</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Injinii dhaabi</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Kontirolaa fakkeessaa hunda bani</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Kontirolaa fakkeessaa hunda cufi</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Kontirolaa fakkeessaa {0} bani</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Kontirolaa fakkeessaa {0} cufi</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Suuraa qorannoo rakkoo olkaa'i</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Rakkoo galmeessuu jalqabi</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Galmeessuu dhaabi</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Galmee mallatteessi</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Veershinii PadForge gaafadhu</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Maaltu akka hojjechaa jiru gaafadhu</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Sarara PadForge hin beekne ergi: {0}</value></data>
 </root>

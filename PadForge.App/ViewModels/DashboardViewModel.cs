@@ -35,6 +35,7 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Home_Title;
             RefreshHomeText();
+            RefreshAutomationText();
             OnPropertyChanged(nameof(PollingFrequencyText));
             RaisePollingRateParts();
             OnPropertyChanged(nameof(TouchpadOverlayStatus));

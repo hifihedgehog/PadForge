@@ -393,6 +393,11 @@ namespace PadForge
             Views.SettingsPage.InputService = _inputService;
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
+            // The External Control card says what Automation allows, which
+            // the Extras view model holds, and its button opens Automation's
+            // page (#597).
+            ProfilesPageView.BindAutomationState(_viewModel.Dashboard);
+            ProfilesPageView.OpenAutomationRequested += (s, e) => OpenExtra("Automation");
             // Drop-zone import (#175): dropped profile files run the same
             // consumer as Get Profiles' Import a File.
             ProfilesPageView.ImportProfileFile = ImportProfileFromFile;
@@ -435,33 +440,10 @@ namespace PadForge
                 }
             });
 
-            // #91 — bulk VC enable/disable from a profile-shortcut combo.
-            // Rule: if any created slot is currently enabled, disable all
-            // created slots; else (all already disabled) enable all. Uncreated
-            // slots are not touched. DeviceService.SetSlotEnabled is the
-            // canonical setter — calling it per-slot keeps SettingsManager,
-            // SettingsService.MarkDirty, and the Step5 dispatcher reconciliation
-            // path all wired up the same way the per-slot sidebar power toggle uses.
-            _inputService.ToggleVCsDisabled = () => Dispatcher.Invoke(() =>
-            {
-                bool anyEnabled = false;
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                {
-                    if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
-                    {
-                        anyEnabled = true;
-                        break;
-                    }
-                }
-                bool target = !anyEnabled;
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                {
-                    if (!SettingsManager.SlotCreated[i]) continue;
-                    if (SettingsManager.SlotEnabled[i] == target) continue;
-                    _deviceService.SetSlotEnabled(i, target);
-                }
-                RefreshSlotPowerViews();
-            });
+            // Bulk VC enable/disable from a profile-shortcut combo (#91). The
+            // rule and the setter are in ToggleAllControllersEnabled, beside
+            // the command that turns them all one way (MainWindow.Automation.cs).
+            _inputService.ToggleVCsDisabled = () => Dispatcher.Invoke(ToggleAllControllersEnabled);
 
             // Wire driver uninstall guards. Both read the PERSISTED slot
             // topology (SlotCreated plus the per-type order lists), the same
@@ -633,8 +615,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching)
                      or nameof(SettingsViewModel.EnableCommunityConfigLookup)
-                     or nameof(SettingsViewModel.ShowLegacyWorkshopConfigs)
-                     or nameof(SettingsViewModel.EnableExternalControl))
+                     or nameof(SettingsViewModel.ShowLegacyWorkshopConfigs))
                     _settingsService.MarkDirty();
                 // The Home cards and the Devices page's panel show a
                 // controller as its page does, so a switch between the 3D
@@ -709,7 +690,9 @@ namespace PadForge
                      or nameof(DashboardViewModel.OverlaysLastShown)
                      or nameof(DashboardViewModel.ScreenOverlaysLastOn)
                      or nameof(DashboardViewModel.CrosshairsLastOn)
-                     or nameof(DashboardViewModel.HomeCards))
+                     or nameof(DashboardViewModel.HomeCards)
+                     or nameof(DashboardViewModel.EnableAutomation)
+                     or nameof(DashboardViewModel.AutomationLevel))
                     _settingsService.MarkDirty();
             };
 
@@ -2455,31 +2438,9 @@ namespace PadForge
             };
             PadPageView.AddDeviceRequested += (s, e) => SelectNavItemByTag("Devices");
 
-            HomePageView.EngineToggleRequested += (s, e) =>
-            {
-                if (_viewModel.IsEngineRunning)
-                {
-                    // Show "Stopping" state immediately, then run the heavy
-                    // engine teardown on a thread-pool task so the UI stays
-                    // responsive while AwaitPendingLifecycleTasks +
-                    // DestroyAllVirtualControllers + HMContext.Dispose
-                    // grind through (multi-second per Microsoft xinputhid
-                    // VC).  Sidebar rebuild fires when the teardown
-                    // completes. The task is kept so a removal of
-                    // HIDMaestro can wait out a teardown still in flight.
-                    ShowEngineStopping();
-                    _engineStopTask = System.Threading.Tasks.Task.Run(() => _inputService.Stop());
-                    _engineStopTask.ContinueWith(_ => RebuildControllerSection(),
-                        System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
-                }
-                else
-                {
-                    _inputService.Start();
-                    // Force full sidebar card rebuild — engine state affects power icon colors
-                    // but isn't a NavControllerItemViewModel property, so in-place updates miss it.
-                    RebuildControllerSection();
-                }
-            };
+            // The engine commands of Automation start and stop the engine
+            // through the same two methods (MainWindow.Automation.cs).
+            HomePageView.EngineToggleRequested += (s, e) => ToggleEngine();
 
             // A Home card's type chip opens the type bar under its card
             // (discussion #543), and the bar runs ChangeSlotType.
@@ -2568,10 +2529,13 @@ namespace PadForge
 
             SetupNotifyIcon();
 
-            // Expose start-minimized state for App.OnStartup.
-            ShouldStartMinimized = _viewModel.Settings.StartMinimized;
-            ShouldStartMinimizedToTray = _viewModel.Settings.StartMinimized
-                && _viewModel.Settings.MinimizeToTray;
+            // Expose where the window first is for App.OnStartup: what this
+            // copy's command line says (--show, --minimized, --tray), and the
+            // Start Minimized settings where it says nothing (#597).
+            var firstWindow = FirstWindowState(App.StartupRequest.Window,
+                _viewModel.Settings.StartMinimized, _viewModel.Settings.MinimizeToTray);
+            ShouldStartMinimized = firstWindow == CommandLineSwitches.WindowStart.Minimized;
+            ShouldStartMinimizedToTray = firstWindow == CommandLineSwitches.WindowStart.Tray;
 
             // If starting minimized to tray, make the tray icon visible now.
             // With Always Show in System Tray on the icon stays up from the
@@ -2653,11 +2617,34 @@ namespace PadForge
             // Virtual controllers are created on demand by the engine
             // (CreateHMaestroController) when slots become active. No
             // pre-creation needed at startup.
-            // Before any engine takes a touchpad nobody kept again.
-            _inputService.GiveBackTouchpadsNobodyKept(_viewModel.Settings.AutoStartEngine);
+            // Automation (#597). The host is made here, with the settings
+            // loaded and before the engine: its pipe is served for as long
+            // as the app runs, engine or no engine, and the steps of this
+            // copy's own command line run through its command set.
+            StartAutomationHost();
 
-            if (_viewModel.Settings.AutoStartEngine)
+            // --engine on or off decides whether the engine starts, whatever
+            // Start Engine Automatically says.
+            bool startEngine = App.StartupRequest.Engine ?? _viewModel.Settings.AutoStartEngine;
+
+            // A controller turned off on the command line never appears.
+            RunStartSteps(CommandLineSwitches.StartPhase.BeforeEngine);
+
+            // Before any engine takes a touchpad nobody kept again.
+            _inputService.GiveBackTouchpadsNobodyKept(startEngine);
+
+            if (startEngine)
+            {
+                // A profile and a recording wait for the engine: they run at
+                // the tail of its start.
+                _inputService.StepsForTheFirstStart = () => RunStartSteps(CommandLineSwitches.StartPhase.AfterEngine);
                 _inputService.Start();
+            }
+            else
+            {
+                // The engine is not to start, so they run at once.
+                RunStartSteps(CommandLineSwitches.StartPhase.AfterEngine);
+            }
 
             CheckOptedInDrivers();
 
@@ -3528,12 +3515,7 @@ namespace PadForge
 
             if (!_exitRequested && _notifyIcon?.Icon != null && _viewModel.Settings.CloseToTray)
             {
-                // Preserve a pending text edit while keeping the engine and timers alive.
-                if (System.Windows.Input.Keyboard.FocusedElement is TextBox trayTextBox)
-                    trayTextBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-                if (_settingsService.IsDirty) _settingsService.Save();
-                _notifyIcon.Visible = true;
-                Hide();
+                HideToTray();
                 return;
             }
 
@@ -3541,6 +3523,12 @@ namespace PadForge
 
             try
             {
+                // This copy is closing. A second copy that finds no control
+                // pipe from here waits for the exit and takes it for what it
+                // is, and no program's command runs into the teardown (#597).
+                App.InstanceSignal?.MarkClosing();
+                _automation?.Dispose();
+
                 // Stop HID arrival notifications first. Shutdown tears down the
                 // virtual controllers, which is itself a burst of device removals
                 // and arrivals, and re-applying the cloak partway through that is
@@ -7882,12 +7870,7 @@ namespace PadForge
             {
                 Header = Strings.Instance.Tray_Exit,
             };
-            exitItem.Click += (s, e) =>
-            {
-                PrepareForExit();
-                if (_notifyIcon != null) _notifyIcon.Visible = false;
-                Close();
-            };
+            exitItem.Click += (s, e) => ExitFromTray();
             menu.Items.Add(exitItem);
 
             menu.IsOpen = true;

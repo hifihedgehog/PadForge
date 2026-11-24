@@ -609,7 +609,7 @@ namespace PadForge.Tests
             At(settings, "_mainVm.Dashboard.HomeCards = HomeCardSizes.FromStored(appSettings.HomeCards);");
             At(settings, "HomeCards = (int)_mainVm.Dashboard.HomeCards,");
             At(settings, "public int HomeCards { get; set; }");
-            At(WindowCode(), "or nameof(DashboardViewModel.HomeCards))");
+            At(WindowCode(), "or nameof(DashboardViewModel.HomeCards)");
         }
 
         /// <summary>One device's row on a controller's card: a light that

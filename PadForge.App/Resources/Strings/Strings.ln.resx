@@ -159,6 +159,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ezali koyoka na :{0}. {1} ezali kotinda na manette nimero {2}, kasi ezali na manette virtuelle moko te ya DualSense to DualShock 4 oyo ezali na nimero yango.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Programme mosusu, lokola DSX, ezali kosalela port {0}. Kanga yango to pona port mosusu.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod moko ya lisano</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programme mosusu esimbi nkombo ya pipe {0}. Kanga programme wana.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows eboyi pipe {0}, yango wana ba programme bakoki kokangana te.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Kokende na profil {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Kozonga na profil ya liboso</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Kotuna profil nini ezali kosala</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Kolakisa fenêtre</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Kotinda fenêtre na zone ya notification</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Kokitisa fenêtre</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Kokanga PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Kobandisa moteur</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Kotelemisa moteur</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Kopelisa ba manette virtuelle nyonso</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Kozimisa ba manette virtuelle nyonso</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Kopelisa Manette virtuelle {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Kozimisa Manette virtuelle {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Kobomba snapshot ya diagnostic</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Kobanda kokanga mokakatano</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Kotelemisa enregistrement</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Kotia elembo na enregistrement</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Kotuna version ya PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Kotuna nini ezali kotambola</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Kotinda molongo oyo PadForge eyebi te: {0}</value></data>
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Window" xml:space="preserve"><value>Lininisa</value></data>
@@ -871,7 +893,6 @@
   <!-- ═══ File Dialogs ═══ -->
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge ezali kosala kala.</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Libunga</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Libunga moko ebimi oyo tozelaki te:
 

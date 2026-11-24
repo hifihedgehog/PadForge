@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Kuuntelee porttia :{0}. {1} lähettää ohjainindeksiin {2}, eikä yhdelläkään virtuaaliohjaimella, jolla on DualSense- tai DualShock 4 -ohjain, ole sitä indeksiä.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Portti {0} on toisen ohjelman käytössä, esimerkiksi DSX-ohjelman. Sulje se tai valitse toinen portti.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Pelimodi</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Toinen ohjelma on varannut putken nimen {0}. Sulje se ohjelma.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows hylkäsi putken {0}, joten ohjelmat eivät voi muodostaa yhteyttä.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Vaihda profiiliin {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Palaa oletusprofiiliin</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Kysy, mikä profiili on käytössä</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Näytä ikkuna</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Lähetä ikkuna ilmaisinalueelle</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Pienennä ikkuna</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Sulje PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Käynnistä moottori</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Pysäytä moottori</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Kytke jokainen virtuaaliohjain päälle</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Kytke jokainen virtuaaliohjain pois päältä</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Kytke virtuaaliohjain {0} päälle</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Kytke virtuaaliohjain {0} pois päältä</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Tallenna diagnostiikan tilannevedos</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Aloita ongelman tallennus</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Lopeta tallennus</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Merkitse tallenne</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Kysy PadForge-sovelluksen versiota</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Kysy, mikä on käynnissä</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Lähetä rivi, jota PadForge ei tunne: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Toimii OpenTrack-ohjelman ja minkä tahansa sellaisen seurantaohjelman kanssa, joka lähettää tulosteensa UDP:nä tai kirjoittaa FreeTrack 2.0 -muotoiseen jaettuun muistiin, sekä tämän koneen OpenXR-ajoympäristön kanssa, joka pystyy suorittamaan istunnon taustalla.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lue Logitechin G-näppäimet</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Lukee G-näppäimet Logitechin G-key SDK:n kautta. Vaatii, että Logitech Gaming Software 8.55 tai uudempi on käynnissä. Vedä ohjelmassa G-key-komento PadForge-profiilin jokaiselle näppäimelle. Tee profiilista pysyvä, muuten näppäimet tavoittavat PadForge-sovelluksen vain, kun sen ikkuna on edessä. G600- tai G300-hiiren on myös oltava poissa sisäisen muistin tilasta.</value></data>
@@ -2922,9 +2944,14 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Etualalla nyt: {0}, sille ei ole asetettu profiilia</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Etualalla nyt: {0}, joka lataa profiilin {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Etualalla nyt: {0}, eikä millään profiililla ole vielä peliä</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Salli käynnistysohjelmien ja komentosarjojen ulkoinen ohjaus</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Tarjoaa paikallisen nimetyn putken PadForge.Control, jotta Playnite, LaunchBox tai komentosarja voi ottaa profiileja käyttöön ja poistaa niitä käytöstä. Näin aktivoitu profiili pysyy aktiivisena, kunnes komentosarja vapauttaa sen tai vaihdat profiilia itse. Vain paikallinen kone.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Ulkoinen ohjaus</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Käynnistin tai skripti voi vaihtaa profiileja Automaation kautta. Tällä tavalla vaihdettu profiili pysyy, kunnes ohjelma vapauttaa sen tai vaihdat profiilia itse.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automaatio on pois päältä</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automaatio on päällä: ohjelmat voivat vaihtaa profiileja</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automaatio on päällä: ohjelmat voivat vaihtaa profiileja ja lukea laitteita ja asetuksia</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automaatio on päällä: ohjelmat voivat vaihtaa profiileja, lukea laitteita ja asetuksia ja lähettää syötteitä</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automaatio on päällä: ohjelmat voivat vaihtaa profiileja, lähettää syötteitä ja muuttaa asetuksia</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Avaa Automaatio</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktiivinen profiili:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Ei ohjaimia</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Tuo profiili pudottamalla</value></data>
@@ -2982,7 +3009,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Suoritettavat tiedostot (*.exe)|*.exe|Kaikki tiedostot (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge on jo käynnissä.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: vakava virhe</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: virhe</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Tapahtui odottamaton virhe:

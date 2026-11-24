@@ -574,6 +574,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Listening on :{0}. {1} is sending to controller index {2}, and no virtual controller with a DualSense or DualShock 4 on it has that index.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} is in use by another program, such as DSX. Close it or choose another port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>A game mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Another program holds the pipe name {0}. Close that program.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows refused the pipe {0}, so programs cannot connect.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Switch to the profile {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Return to the default profile</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Ask which profile is active</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Show the window</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Send the window to the system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimize the window</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Close PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Start the engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stop the engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Turn every virtual controller on</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Turn every virtual controller off</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Turn Virtual Controller {0} on</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Turn Virtual Controller {0} off</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Save a diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Start recording a problem</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Stop recording</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Mark the recording</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Ask for PadForge’s version</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Ask what is running</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Send a line PadForge does not know: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Works with OpenTrack and any tracker that sends its UDP output or writes FreeTrack 2.0 shared memory, and with an OpenXR runtime on this machine that can run a session in the background.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Read Logitech G-Keys</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Reads G-keys through the Logitech G-key SDK. Needs Logitech Gaming Software 8.55 or later running. In that software, drag the G-key command onto each key in the PadForge profile. Make that profile persistent, or the keys only reach PadForge while its window is in front. A G600 or G300 mouse also has to be out of on-board memory mode.</value></data>
@@ -2923,9 +2945,14 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>In front now: {0}, no profile set for it</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>In front now: {0}, which loads {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>In front now: {0}, and no profile has a game set yet</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Allow External Control by Launchers and Scripts</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Serves a local named pipe, PadForge.Control, so Playnite, LaunchBox, or a script can activate and deactivate profiles. A profile activated this way stays active until the script releases it or you switch profiles yourself. Local machine only.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>External Control</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>A launcher or a script can switch profiles through Automation. A profile switched this way stays until the program releases it or you switch profiles yourself.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automation is off</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automation is on: programs can switch profiles</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automation is on: programs can switch profiles and read devices and settings</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automation is on: programs can switch profiles, read devices and settings, and send inputs</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automation is on: programs can switch profiles, send inputs and change settings</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Open Automation</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Active profile:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>No controllers</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Drop to Import Profile</value></data>
@@ -2996,7 +3023,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Key Lights (*.json)|*.json</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge is already running.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Fatal Error</value></data>
   <data name="App_Error" xml:space="preserve"><value>PadForge: Error</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>An unexpected error occurred:

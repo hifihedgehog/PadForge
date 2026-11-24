@@ -561,6 +561,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Nakikinig sa :{0}. Nagpapadala ang {1} sa controller index {2}, at walang virtual controller na may DualSense o DualShock 4 na may index na iyon.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ginagamit na ng ibang program ang port {0}, gaya ng DSX. Isara ito o pumili ng ibang port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isang game mod</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>May ibang program na may hawak ng pangalan ng pipe na {0}. Isara ang program na iyon.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Tinanggihan ng Windows ang pipe na {0}, kaya hindi makakonekta ang mga program.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Lumipat sa profile na {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Bumalik sa default na profile</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Itanong kung aling profile ang aktibo</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Ipakita ang window</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ipadala ang window sa system tray</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>I-minimize ang window</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Isara ang PadForge</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Simulan ang engine</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ihinto ang engine</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>I-on ang bawat virtual controller</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>I-off ang bawat virtual controller</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>I-on ang Virtual controller {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>I-off ang Virtual controller {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>I-save ang diagnostics snapshot</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Simulan ang pag-record ng problema</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Ihinto ang pag-record</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Markahan ang recording</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Itanong ang bersyon ng PadForge</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Itanong kung ano ang tumatakbo</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Magpadala ng linyang hindi alam ng PadForge: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Gumagana sa OpenTrack at anumang tracker na nagpapadala ng UDP output nito o sumusulat sa FreeTrack 2.0 shared memory, at sa OpenXR runtime sa makinang ito na kayang magpatakbo ng session sa background.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Basahin ang mga Logitech G-key</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Binabasa ang mga G-key sa pamamagitan ng Logitech G-key SDK. Kailangang tumatakbo ang Logitech Gaming Software 8.55 o mas bago. Sa software na iyon, i-drag ang G-key command papunta sa bawat key sa profile ng PadForge. Gawing persistent ang profile na iyon, kung hindi ay aabot lang sa PadForge ang mga key habang nasa harapan ang window nito. Kailangan ding wala sa on-board memory mode ang mouse na G600 o G300.</value></data>
@@ -2630,9 +2652,14 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Nasa harap ngayon: {0}, walang profile na itinakda para rito</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Nasa harap ngayon: {0}, na naglo-load ng {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Nasa harap ngayon: {0}, at wala pang profile na may itinakdang laro</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Payagan ang Panlabas na Kontrol ng mga Launcher at Script</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Naghahatid ng lokal na named pipe, ang PadForge.Control, para makapag-activate at makapag-deactivate ng mga profile ang Playnite, LaunchBox, o isang script. Ang profile na na-activate sa ganitong paraan ay mananatiling aktibo hanggang bitawan ito ng script o ikaw mismo ang magpalit ng profile. Sa lokal na makina lamang.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Panlabas na Kontrol</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Maaaring magpalit ng profile sa pamamagitan ng Awtomasyon ang isang launcher o script. Nananatili ang profile na pinalitan nang ganito hanggang bitawan ito ng program o magpalit ka mismo ng profile.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Naka-off ang Awtomasyon</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Naka-on ang Awtomasyon: maaaring magpalit ng profile ang mga program</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Naka-on ang Awtomasyon: maaaring magpalit ng profile at magbasa ng mga device at setting ang mga program</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Naka-on ang Awtomasyon: maaaring magpalit ng profile, magbasa ng mga device at setting, at magpadala ng mga input ang mga program</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Naka-on ang Awtomasyon: maaaring magpalit ng profile, magpadala ng mga input at magbago ng mga setting ang mga program</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Buksan ang Awtomasyon</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktibong profile:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Walang controller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>I-drop para I-import ang Profile</value></data>
@@ -2676,7 +2703,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Mga Executable (*.exe)|*.exe|Lahat ng File (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>Tumatakbo na ang PadForge.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>PadForge: Malubhang Error</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Nagkaroon ng hindi inaasahang error:
 

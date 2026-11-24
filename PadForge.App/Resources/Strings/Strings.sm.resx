@@ -119,6 +119,8 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>O loʻo faʻalogo i le :{0}. O loʻo auina atu e {1} i le numera controller {2}, ae leai se controller faʻafoliga o loʻo i ai se DualSense po o se DualShock 4 e iai lena numera.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>O loʻo faʻaaogā le port {0} e se isi polokalame, e pei o DSX. Tapuni pe filifili se isi port.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Se mod o taʻaloga</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>O loʻo uʻu e se isi polokalame le igoa pipe {0}. Tapuni lena polokalame.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Na teena e Windows le pipe {0}, o lea e le mafai ai e polokalame ona fesoʻotaʻi.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Fesoʻotaʻi</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Ua fesoʻotaʻi</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Teʻena</value></data>

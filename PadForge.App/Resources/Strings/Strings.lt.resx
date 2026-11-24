@@ -555,6 +555,28 @@
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Klausomasi adresu :{0}. {1} siunčia į valdiklio indeksą {2}, bet nė vienas virtualus valdiklis su „DualSense“ ar „DualShock 4“ valdikliu tokio indekso neturi.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Prievadą {0} naudoja kita programa, pavyzdžiui, DSX. Uždarykite ją arba pasirinkite kitą prievadą.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Žaidimo modifikacija</value></data>
+  <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Kita programa naudoja kanalo pavadinimą {0}. Uždarykite tą programą.</value></data>
+  <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>„Windows“ atmetė kanalą {0}, todėl programos negali prisijungti.</value></data>
+  <data name="Automation_Asked_Activate_Format" xml:space="preserve"><value>Perjungti į profilį {0}</value></data>
+  <data name="Automation_Asked_Deactivate" xml:space="preserve"><value>Grįžti į numatytąjį profilį</value></data>
+  <data name="Automation_Asked_Query" xml:space="preserve"><value>Paklausti, kuris profilis aktyvus</value></data>
+  <data name="Automation_Asked_Show" xml:space="preserve"><value>Rodyti langą</value></data>
+  <data name="Automation_Asked_Hide" xml:space="preserve"><value>Siųsti langą į sistemos dėklą</value></data>
+  <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Sumažinti langą</value></data>
+  <data name="Automation_Asked_Exit" xml:space="preserve"><value>Uždaryti „PadForge“</value></data>
+  <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Paleisti variklį</value></data>
+  <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Sustabdyti variklį</value></data>
+  <data name="Automation_Asked_ControllersOn" xml:space="preserve"><value>Įjungti visus virtualius valdiklius</value></data>
+  <data name="Automation_Asked_ControllersOff" xml:space="preserve"><value>Išjungti visus virtualius valdiklius</value></data>
+  <data name="Automation_Asked_ControllerOn_Format" xml:space="preserve"><value>Įjungti virtualų valdiklį {0}</value></data>
+  <data name="Automation_Asked_ControllerOff_Format" xml:space="preserve"><value>Išjungti virtualų valdiklį {0}</value></data>
+  <data name="Automation_Asked_Snapshot" xml:space="preserve"><value>Išsaugoti diagnostikos momentinę kopiją</value></data>
+  <data name="Automation_Asked_RecordStart" xml:space="preserve"><value>Pradėti įrašyti problemą</value></data>
+  <data name="Automation_Asked_RecordStop" xml:space="preserve"><value>Nustoti įrašyti</value></data>
+  <data name="Automation_Asked_RecordMark" xml:space="preserve"><value>Pažymėti įrašą</value></data>
+  <data name="Automation_Asked_Version" xml:space="preserve"><value>Paklausti „PadForge“ versijos</value></data>
+  <data name="Automation_Asked_State" xml:space="preserve"><value>Paklausti, kas veikia</value></data>
+  <data name="Automation_Asked_Unknown_Format" xml:space="preserve"><value>Siųsti eilutę, kurios „PadForge“ nepažįsta: {0}</value></data>
   <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Veikia su „OpenTrack“ ir bet kuriuo sekikliu, kuris siunčia UDP išvestį arba rašo į FreeTrack 2.0 bendrąją atmintį, taip pat su šio kompiuterio OpenXR vykdymo aplinka, galinčia vykdyti seansą fone.</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Skaityti „Logitech“ G klavišus</value></data>
   <data name="Settings_GKeysTooltip" xml:space="preserve"><value>Skaito G klavišus per „Logitech“ G-key SDK. Reikia, kad veiktų „Logitech Gaming Software“ 8.55 ar naujesnė versija. Toje programoje nuvilkite komandą „G-key“ ant kiekvieno klavišo „PadForge“ profilyje. Nustatykite tą profilį kaip nuolatinį („Set as Persistent“), kitaip klavišai pasieks „PadForge“ tik tada, kai jos langas bus priekiniame plane. Pelė G600 arba G300 taip pat turi būti išjungta iš vidinės atminties režimo.</value></data>
@@ -2688,9 +2710,14 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Dabar priekyje: {0}, jam profilis nenustatytas</value></data>
   <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Dabar priekyje: {0}, tam skirtas profilis: {1}</value></data>
   <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Dabar priekyje: {0}, o joks profilis dar neturi nustatyto žaidimo</value></data>
-  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Leisti išorinį valdymą paleidimo programoms ir scenarijams</value></data>
-  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Sukuria vietinį pavadintąjį kanalą PadForge.Control, kad „Playnite“, „LaunchBox“ ar scenarijus galėtų aktyvinti ir išjungti profilius. Taip aktyvintas profilis lieka aktyvus, kol scenarijus jo neatleidžia arba kol patys neperjungiate profilio. Tik vietiniame kompiuteryje.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Išorinis valdymas</value></data>
+  <data name="Profiles_ExternalControlDescription" xml:space="preserve"><value>Paleidimo programa ar scenarijus gali perjungti profilius per Automatizavimą. Taip perjungtas profilis lieka, kol programa jį atlaisvina arba patys perjungiate profilius.</value></data>
+  <data name="Profiles_Automation_Off" xml:space="preserve"><value>Automatizavimas išjungtas</value></data>
+  <data name="Profiles_Automation_Commands" xml:space="preserve"><value>Automatizavimas įjungtas: programos gali perjungti profilius</value></data>
+  <data name="Profiles_Automation_Read" xml:space="preserve"><value>Automatizavimas įjungtas: programos gali perjungti profilius bei skaityti įrenginius ir nustatymus</value></data>
+  <data name="Profiles_Automation_SendInputs" xml:space="preserve"><value>Automatizavimas įjungtas: programos gali perjungti profilius, skaityti įrenginius ir nustatymus bei siųsti įvestis</value></data>
+  <data name="Profiles_Automation_ChangeSettings" xml:space="preserve"><value>Automatizavimas įjungtas: programos gali perjungti profilius, siųsti įvestis ir keisti nustatymus</value></data>
+  <data name="Profiles_OpenAutomation" xml:space="preserve"><value>Atidaryti Automatizavimą</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktyvus profilis:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Nėra valdiklių</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Numeskite, kad importuotumėte profilį</value></data>
@@ -2747,7 +2774,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Vykdomieji failai (*.exe)|*.exe|Visi failai (*.*)|*.*</value></data>
 
   <!-- ═══ App-Level Messages ═══ -->
-  <data name="App_AlreadyRunning" xml:space="preserve"><value>„PadForge“ jau veikia.</value></data>
   <data name="App_FatalError" xml:space="preserve"><value>„PadForge“: lemtinga klaida</value></data>
   <data name="App_Error" xml:space="preserve"><value>„PadForge“: klaida</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Įvyko netikėta klaida:

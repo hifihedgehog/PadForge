@@ -52,6 +52,32 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>A failed read (#600): the device goes offline in the
+        /// file at once, and a line says how many reads of it failed in this
+        /// recording and SDL's words for the failure. The words are read only
+        /// while something records.</summary>
+        private static void RecordReadFailed(UserDevice device, ISdlInputDevice live)
+        {
+            var rec = RecordingCapture.Active;
+            if (rec == null) return;
+            rec.InputLost(device, RecordingCodec.OfflineReason.ReadFailed);
+            if ((rec.Parts & PadForge.Engine.Recording.RecordingParts.Input) == 0) return;
+            int count = rec.ReadFailed(device);
+            string error = live is SdlDeviceWrapper ? SDL3.SDL.SDL_GetError() : null;
+            ProblemRecorder.Instance.TakeNote(RecordingCodec.LayerReader, -1, device,
+                "read failed, " + count.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                + (count == 1 ? " time" : " times") + " in this recording" + (string.IsNullOrEmpty(error) ? string.Empty : ": " + error));
+        }
+
+        /// <summary>A virtual controller that was not fed, and why: the
+        /// exception its hand-over threw (#600).</summary>
+        private static void RecordNotFed(RecordingCapture rec, int padIndex, Exception ex)
+        {
+            if (rec == null || (rec.Parts & PadForge.Engine.Recording.RecordingParts.Output) == 0) return;
+            ProblemRecorder.Instance.TakeRepeatedNote(RecordingCodec.LayerSent, padIndex, null, ex.GetType().Name,
+                () => "not fed: " + ex.GetType().Name + ": " + (ex.Message ?? string.Empty));
+        }
+
         private static void RecordInput(UserDevice device, CustomInputState state)
         {
             var rec = RecordingCapture.Active;

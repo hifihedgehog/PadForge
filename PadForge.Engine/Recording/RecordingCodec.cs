@@ -21,8 +21,18 @@ namespace PadForge.Engine.Recording
     /// </summary>
     public static class RecordingCodec
     {
-        public const int FormatVersion = 1;
-        public const string FirstLine = "PadForge problem recording, format 1";
+        /// <summary>Format 2 (#600) names controls (D1 A=1, D1 LeftX=32768)
+        /// where format 1 wrote index tokens (a0=, b3+). A reader takes
+        /// both.</summary>
+        public const int FormatVersion = 2;
+        public const string FirstLine = "PadForge problem recording, format 2";
+
+        /// <summary>What the first line of every format starts with.</summary>
+        public const string FirstLineStart = "PadForge problem recording";
+
+        /// <summary>The line under the status that says which parts the file
+        /// holds (#600).</summary>
+        public const string HoldsPrefix = "Holds: ";
         public const string StatusPrefix = "Status: ";
         public const string StatusRecording = "Status: recording";
         public const string StatusFinishedStart = "Status: finished";
@@ -38,6 +48,13 @@ namespace PadForge.Engine.Recording
 
         public const char LayerInput = 'I', LayerOutput = 'O', LayerSent = 'S', LayerFeedback = 'F',
             LayerTiming = 'T', LayerWindow = 'W', LayerError = 'E', LayerLine = 'L', LayerMarker = 'M';
+
+        /// <summary>Layers of format 2 (#600): what PadForge's readers say of
+        /// a device (how it is held, a failed read, a reader that lost it,
+        /// two readers that disagree), what a game reads back through XInput,
+        /// a program's calls on Activity, and a setting changed while
+        /// recording.</summary>
+        public const char LayerReader = 'R', LayerReadBack = 'X', LayerActivity = 'A', LayerSettingChange = 'C';
 
         /// <summary>The token that opens a full frame: every field of the
         /// subject follows, and what is not named is at rest.</summary>
@@ -140,7 +157,28 @@ namespace PadForge.Engine.Recording
             if (field <= RecordingField.OutAccel) return LayerOutput;
             if (field == RecordingField.Sent) return LayerSent;
             if (field <= RecordingField.DeviceRumble) return LayerFeedback;
+            if (field == RecordingField.ForceCounts) return LayerFeedback;
             return field == RecordingField.Marker ? LayerMarker : LayerTiming;
+        }
+
+        /// <summary>True for a field whose subject is a device though its
+        /// layer is no input layer: rumble written to it, a call to it that
+        /// took long, its force counts.</summary>
+        public static bool NamesDevice(RecordingField field)
+            => field is RecordingField.DeviceRumble or RecordingField.TimingCall or RecordingField.ForceCounts;
+
+        /// <summary>What a device call was (#600).</summary>
+        public static class CallKind
+        {
+            public const int Read = 1, Rumble = 2, Force = 3;
+
+            public static string Word(int kind) => kind switch
+            {
+                Read => "read",
+                Rumble => "rumble",
+                Force => "force",
+                _ => "call",
+            };
         }
 
         /// <summary>True for a field that holds the counts of one pass: each
@@ -258,6 +296,8 @@ namespace PadForge.Engine.Recording
             Set(RecordingField.TimingStall, "stall", Form.Special);
             Set(RecordingField.TimingGap, "gap", Form.Special);
             Set(RecordingField.TimingRest, "rest", Form.Special);
+            Set(RecordingField.TimingCall, "took", Form.Special);
+            Set(RecordingField.ForceCounts, "force", Form.Special);
             Set(RecordingField.Marker, "mark", Form.Special);
             return specs;
         }
@@ -507,6 +547,15 @@ namespace PadForge.Engine.Recording
                 case RecordingField.TimingRest:
                     sb.Append("rest=").Append(a == 1 ? "idle" : a == 2 ? "suspended" : "none");
                     break;
+                case RecordingField.TimingCall:
+                    sb.Append("took ms="); AppendInt(sb, a);
+                    sb.Append(" call=").Append(CallKind.Word(b));
+                    break;
+                case RecordingField.ForceCounts:
+                    sb.Append("force updates="); AppendInt(sb, a);
+                    sb.Append(" made="); AppendInt(sb, b);
+                    sb.Append(" started="); AppendInt(sb, c);
+                    break;
                 case RecordingField.Marker:
                     sb.Append("mark");
                     break;
@@ -672,6 +721,144 @@ namespace PadForge.Engine.Recording
             else if (name.SequenceEqual("ak")) index = Shape.AnalogKeys;
             else return false;
             return true;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Named tokens (format 2)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Appends one input change as format 2 writes it: a
+        /// control by its name (A=1, LeftX=32768, DPad=9000), a sensor by its
+        /// own word, and anything else as its format 1 token.</summary>
+        public static void AppendInputToken(StringBuilder sb, RecordingControlKind kind, RecordingField field, int index, int a, int b, int c)
+        {
+            switch (field)
+            {
+                case RecordingField.Axis:
+                case RecordingField.Slider:
+                case RecordingField.Hat:
+                    sb.Append(RecordingControlNames.Input(kind, field, index)).Append('=');
+                    AppendInt(sb, a);
+                    return;
+                case RecordingField.Button:
+                    sb.Append(RecordingControlNames.Input(kind, field, index)).Append('=').Append(a != 0 ? '1' : '0');
+                    return;
+                case RecordingField.Gyro: Named3(sb, "Gyro", a, b, c); return;
+                case RecordingField.Accel: Named3(sb, "Accel", a, b, c); return;
+                case RecordingField.GyroAux: Named3(sb, "GyroAux", a, b, c); return;
+                case RecordingField.AccelAux: Named3(sb, "AccelAux", a, b, c); return;
+                case RecordingField.Battery:
+                    sb.Append("Battery=");
+                    AppendInt(sb, a);
+                    if (b != 0) sb.Append(",charging");
+                    return;
+                default:
+                    AppendToken(sb, field, index, a, b, c);
+                    return;
+            }
+        }
+
+        private static void Named3(StringBuilder sb, string name, int a, int b, int c)
+        {
+            sb.Append(name).Append('=');
+            AppendFloat(sb, a); sb.Append(','); AppendFloat(sb, b); sb.Append(','); AppendFloat(sb, c);
+        }
+
+        private static readonly (string Name, RecordingField Field)[] OutputNames =
+        {
+            ("Buttons", RecordingField.GpButtons), ("LeftTrigger", RecordingField.GpLeftTrigger),
+            ("RightTrigger", RecordingField.GpRightTrigger), ("LeftX", RecordingField.GpLeftX),
+            ("LeftY", RecordingField.GpLeftY), ("RightX", RecordingField.GpRightX), ("RightY", RecordingField.GpRightY),
+            ("Extra", RecordingField.GpExtra),
+        };
+
+        /// <summary>Appends one output change as format 2 writes it: an
+        /// XInput frame's fields by their names (Buttons=A+Start,
+        /// LeftX=-1200), anything else as its format 1 token.</summary>
+        public static void AppendOutputToken(StringBuilder sb, RecordingField field, int index, int a, int b, int c)
+        {
+            foreach (var (name, named) in OutputNames)
+            {
+                if (named != field) continue;
+                sb.Append(name).Append('=');
+                if (field == RecordingField.GpButtons) RecordingControlNames.AppendXInputButtons(sb, a);
+                else AppendInt(sb, a);
+                return;
+            }
+            AppendToken(sb, field, index, a, b, c);
+        }
+
+        /// <summary>Appends a change of any layer: an input change named for
+        /// <paramref name="kind"/>, an output change by its name, and the
+        /// rest as their tokens.</summary>
+        public static void AppendNamedToken(StringBuilder sb, RecordingControlKind kind, RecordingField field, int index, int a, int b, int c)
+        {
+            char layer = LayerOf(field);
+            if (layer == LayerInput) AppendInputToken(sb, kind, field, index, a, b, c);
+            else if (layer == LayerOutput) AppendOutputToken(sb, field, index, a, b, c);
+            else AppendToken(sb, field, index, a, b, c);
+        }
+
+        /// <summary>A token of format 2's own: a word that starts with a
+        /// capital letter, then an equals sign and a value.</summary>
+        private static bool SplitNamed(ReadOnlySpan<char> token, out ReadOnlySpan<char> name, out ReadOnlySpan<char> value)
+        {
+            name = value = default;
+            if (token.IsEmpty || !char.IsAsciiLetterUpper(token[0])) return false;
+            int eq = token.IndexOf('=');
+            if (eq <= 0 || eq == token.Length - 1) return false;
+            name = token.Slice(0, eq);
+            value = token.Slice(eq + 1);
+            return true;
+        }
+
+        /// <summary>Reads one token of an input line, of either format.
+        /// False for a token this version does not know.</summary>
+        public static bool TryParseInputToken(ReadOnlySpan<char> token, out RecordingField field, out int index, out int a, out int b, out int c)
+        {
+            field = RecordingField.None;
+            index = a = b = c = 0;
+            if (!SplitNamed(token, out var name, out var value))
+                return TryParseToken(token, out field, out index, out a, out b, out c) && LayerOf(field) == LayerInput;
+            Span<Range> parts = stackalloc Range[4];
+            int count = value.Split(parts, ',');
+            if (name.SequenceEqual("Gyro")) { field = RecordingField.Gyro; return Floats3(value, parts, count, out a, out b, out c); }
+            if (name.SequenceEqual("Accel")) { field = RecordingField.Accel; return Floats3(value, parts, count, out a, out b, out c); }
+            if (name.SequenceEqual("GyroAux")) { field = RecordingField.GyroAux; return Floats3(value, parts, count, out a, out b, out c); }
+            if (name.SequenceEqual("AccelAux")) { field = RecordingField.AccelAux; return Floats3(value, parts, count, out a, out b, out c); }
+            if (name.SequenceEqual("Battery"))
+            {
+                field = RecordingField.Battery;
+                if (!TryParseInt(value[parts[0]], out a)) return false;
+                if (count == 1) return true;
+                b = 1;
+                return count == 2 && value[parts[1]].SequenceEqual("charging");
+            }
+            if (!RecordingControlNames.TryInput(name, out field, out index)) return false;
+            if (count != 1 || !TryParseInt(value, out a)) return false;
+            return field != RecordingField.Button || a is 0 or 1;
+        }
+
+        private static bool Floats3(ReadOnlySpan<char> value, Span<Range> parts, int count, out int a, out int b, out int c)
+        {
+            a = b = c = 0;
+            return count == 3 && TryParseFloat(value[parts[0]], out a) && TryParseFloat(value[parts[1]], out b) && TryParseFloat(value[parts[2]], out c);
+        }
+
+        /// <summary>Reads one token of an output line, of either format.</summary>
+        public static bool TryParseOutputToken(ReadOnlySpan<char> token, out RecordingField field, out int index, out int a, out int b, out int c)
+        {
+            field = RecordingField.None;
+            index = a = b = c = 0;
+            if (!SplitNamed(token, out var name, out var value))
+                return TryParseToken(token, out field, out index, out a, out b, out c) && LayerOf(field) == LayerOutput;
+            foreach (var (known, named) in OutputNames)
+            {
+                if (!name.SequenceEqual(known)) continue;
+                field = named;
+                return named == RecordingField.GpButtons ? RecordingControlNames.TryXInputButtons(value, out a) : TryParseInt(value, out a);
+            }
+            return false;
         }
 
         // ─────────────────────────────────────────────
@@ -883,20 +1070,25 @@ namespace PadForge.Engine.Recording
         /// before it: its shape, then every field that is not at rest. The
         /// counts of one pass are left out.</summary>
         public static void AppendFull(StringBuilder sb, CustomInputState s)
+            => AppendFull(sb, s, RecordingControlKind.Generic);
+
+        /// <summary>A device's whole state, its controls named for
+        /// <paramref name="kind"/>.</summary>
+        public static void AppendFull(StringBuilder sb, CustomInputState s, RecordingControlKind kind)
         {
             AppendShape(sb, s);
             for (int i = 0; i < CustomInputState.MaxAxis; i++)
-                if (s.Axis[i] != 0) Token(sb, RecordingField.Axis, i, s.Axis[i]);
+                if (s.Axis[i] != 0) InputToken(sb, kind, RecordingField.Axis, i, s.Axis[i]);
             for (int i = 0; i < CustomInputState.MaxSliders; i++)
-                if (s.Sliders[i] != 0) Token(sb, RecordingField.Slider, i, s.Sliders[i]);
+                if (s.Sliders[i] != 0) InputToken(sb, kind, RecordingField.Slider, i, s.Sliders[i]);
             for (int i = 0; i < CustomInputState.MaxPovs; i++)
-                if (s.Povs[i] != -1) Token(sb, RecordingField.Hat, i, s.Povs[i]);
+                if (s.Povs[i] != -1) InputToken(sb, kind, RecordingField.Hat, i, s.Povs[i]);
             for (int i = 0; i < CustomInputState.MaxButtons; i++)
-                if (s.Buttons[i]) Token(sb, RecordingField.Button, i, 1);
-            Full3(sb, RecordingField.Gyro, s.Gyro);
-            Full3(sb, RecordingField.Accel, s.Accel);
-            Full3(sb, RecordingField.GyroAux, s.GyroAux);
-            Full3(sb, RecordingField.AccelAux, s.AccelAux);
+                if (s.Buttons[i]) InputToken(sb, kind, RecordingField.Button, i, 1);
+            Full3Named(sb, kind, RecordingField.Gyro, s.Gyro);
+            Full3Named(sb, kind, RecordingField.Accel, s.Accel);
+            Full3Named(sb, kind, RecordingField.GyroAux, s.GyroAux);
+            Full3Named(sb, kind, RecordingField.AccelAux, s.AccelAux);
 
             if (s.Touchpads != null)
             {
@@ -944,7 +1136,25 @@ namespace PadForge.Engine.Recording
                 for (int i = 0; i < s.NfcTag.Length && i < MaxNfcTags; i++)
                     if (s.NfcTag[i]) Token(sb, RecordingField.NfcTag, i, 1);
             if (s.BatteryPercent != -1 || s.BatteryCharging)
-                Token(sb, RecordingField.Battery, 0, s.BatteryPercent, s.BatteryCharging ? 1 : 0);
+                InputToken(sb, kind, RecordingField.Battery, 0, s.BatteryPercent, s.BatteryCharging ? 1 : 0);
+        }
+
+        private static void InputToken(StringBuilder sb, RecordingControlKind kind, RecordingField field, int index, int a, int b = 0, int c = 0)
+        {
+            sb.Append(' ');
+            AppendInputToken(sb, kind, field, index, a, b, c);
+        }
+
+        private static void Full3Named(StringBuilder sb, RecordingControlKind kind, RecordingField field, float[] values)
+        {
+            int a = Bits(values[0]), b = Bits(values[1]), c = Bits(values[2]);
+            if ((a | b | c) != 0) InputToken(sb, kind, field, 0, a, b, c);
+        }
+
+        private static void OutputToken(StringBuilder sb, RecordingField field, int a)
+        {
+            sb.Append(' ');
+            AppendOutputToken(sb, field, 0, a, 0, 0);
         }
 
         private static void Full3(StringBuilder sb, RecordingField field, float[] values)
@@ -1021,14 +1231,14 @@ namespace PadForge.Engine.Recording
         public static void AppendFull(StringBuilder sb, RecordedOutputState s)
         {
             Token(sb, RecordingField.OutType, 0, s.Type);
-            if (s.Buttons != 0) Token(sb, RecordingField.GpButtons, 0, s.Buttons);
-            if (s.LeftTrigger != 0) Token(sb, RecordingField.GpLeftTrigger, 0, s.LeftTrigger);
-            if (s.RightTrigger != 0) Token(sb, RecordingField.GpRightTrigger, 0, s.RightTrigger);
-            if (s.LeftX != 0) Token(sb, RecordingField.GpLeftX, 0, s.LeftX);
-            if (s.LeftY != 0) Token(sb, RecordingField.GpLeftY, 0, s.LeftY);
-            if (s.RightX != 0) Token(sb, RecordingField.GpRightX, 0, s.RightX);
-            if (s.RightY != 0) Token(sb, RecordingField.GpRightY, 0, s.RightY);
-            if (s.Extra != 0) Token(sb, RecordingField.GpExtra, 0, s.Extra);
+            if (s.Buttons != 0) OutputToken(sb, RecordingField.GpButtons, s.Buttons);
+            if (s.LeftTrigger != 0) OutputToken(sb, RecordingField.GpLeftTrigger, s.LeftTrigger);
+            if (s.RightTrigger != 0) OutputToken(sb, RecordingField.GpRightTrigger, s.RightTrigger);
+            if (s.LeftX != 0) OutputToken(sb, RecordingField.GpLeftX, s.LeftX);
+            if (s.LeftY != 0) OutputToken(sb, RecordingField.GpLeftY, s.LeftY);
+            if (s.RightX != 0) OutputToken(sb, RecordingField.GpRightX, s.RightX);
+            if (s.RightY != 0) OutputToken(sb, RecordingField.GpRightY, s.RightY);
+            if (s.Extra != 0) OutputToken(sb, RecordingField.GpExtra, s.Extra);
             for (int i = 0; i < RecordedOutputState.RawAxisCount; i++)
                 if (s.RawAxes[i] != 0) Token(sb, RecordingField.RawAxis, i, s.RawAxes[i]);
             for (int i = 0; i < RecordedOutputState.RawButtonWords; i++)

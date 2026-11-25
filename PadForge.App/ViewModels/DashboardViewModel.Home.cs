@@ -13,6 +13,38 @@ namespace PadForge.ViewModels
     public partial class DashboardViewModel
     {
         // ─────────────────────────────────────────────
+        //  The waiting recording (#600)
+        // ─────────────────────────────────────────────
+
+        private string _waitingRecording;
+        private DateTime _waitingStarted;
+
+        /// <summary>The newest problem recording that waits for its review,
+        /// or null. The window sets it from the recordings' folder.</summary>
+        public string WaitingRecording => _waitingRecording;
+
+        /// <summary>Whether Home offers a waiting recording's review.</summary>
+        public bool HasWaitingRecording => _waitingRecording != null;
+
+        /// <summary>The card's sentence: when the recording started, its
+        /// clock time, or its date too when it is not today's.</summary>
+        public string WaitingRecordingText => _waitingRecording == null ? string.Empty
+            : string.Format(System.Globalization.CultureInfo.CurrentCulture, Strings.Instance.Home_RecordingWaiting_Format,
+                _waitingStarted.Date == DateTime.Today
+                    ? _waitingStarted.ToString("t", System.Globalization.CultureInfo.CurrentCulture)
+                    : _waitingStarted.ToString("g", System.Globalization.CultureInfo.CurrentCulture));
+
+        /// <summary>Sets the waiting recording, or clears it with null.</summary>
+        public void SetWaitingRecording(string path, DateTime started)
+        {
+            _waitingRecording = path;
+            _waitingStarted = started;
+            OnPropertyChanged(nameof(WaitingRecording));
+            OnPropertyChanged(nameof(HasWaitingRecording));
+            OnPropertyChanged(nameof(WaitingRecordingText));
+        }
+
+        // ─────────────────────────────────────────────
         //  The engine's words
         // ─────────────────────────────────────────────
 

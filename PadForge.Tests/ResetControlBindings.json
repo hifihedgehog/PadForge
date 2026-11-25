@@ -1806,6 +1806,12 @@
     "Property": "ProblemRecordingHideTypedKeys"
   },
   {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_ProblemRecordingLeaveOut_60001",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "ProblemRecordingLeaveOut"
+  },
+  {
     "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroAction_ProblemRecordingMode_59703",
     "Owner": "PadForge.ViewModels.MacroAction",

@@ -68,7 +68,7 @@ namespace PadForge.Tests
                 "1.000000 I D1 a0=51000",
                 "6.000000 I D1 a0=50500");
             var finding = Only(summary, FindingPlace.Device);
-            Assert.Equal("D1 Axis 0 never came to rest: it stayed between 50000 and 51000 for the whole recording. Look at the device or its driver.", finding.Text);
+            Assert.Equal("D1 Axis0 never came to rest: it stayed between 50000 and 51000 for the whole recording. Look at the device or its driver.", finding.Text);
             Assert.Equal("First place to look: the device or its driver.", summary.Lines()[1]);
         }
 
@@ -98,7 +98,7 @@ namespace PadForge.Tests
             var summary = Summarize(
                 "0.000000 I D1 full online a1=32768 b5+",
                 "6.000000 I D1 a1=33000");
-            Assert.Equal("D1 Button 5 was down for the whole recording. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
+            Assert.Equal("D1 Button5 was down for the whole recording. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
 
             var released = Summarize(
                 "0.000000 I D1 full online a1=32768 b5+",
@@ -113,7 +113,7 @@ namespace PadForge.Tests
             var summary = Summarize(
                 "0.000000 I D1 full online h0=9000",
                 "6.000000 I D1 a1=33000");
-            Assert.Equal("D1 POV 0 was off center for the whole recording. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
+            Assert.Equal("D1 Hat0 was off center for the whole recording. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
 
             None(Summarize(
                 "0.000000 I D1 full online h0=9000",
@@ -346,7 +346,7 @@ namespace PadForge.Tests
             Assert.Contains("about 1000 a second while moving", device);
             Assert.Contains("longest gap while moving 8.0 ms", device);
             string rest = lines[lines.IndexOf(device) + 1];
-            Assert.StartsWith("  Rest: a0 32768 (32768 to 37768), a1 32768", rest);
+            Assert.StartsWith("  Rest: Axis0 32768 (32768 to 37768), Axis1 32768", rest);
         }
 
         [Fact]

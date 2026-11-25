@@ -831,6 +831,9 @@
                 </controls:FlexLinePanel>
             </Border>
 
+            <!-- ═══ The waiting recording (#600) ═══ -->
+            <views:RecordingWaitingCard x:Name="RecordingWaitingCard"/>
+
             <!-- ═══ The shared folder ═══
                  PadForge runs with administrator rights from a folder other
                  programs can change (#597, Services/ExeFolderState.cs), so

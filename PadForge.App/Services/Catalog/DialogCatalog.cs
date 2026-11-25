@@ -55,7 +55,7 @@ namespace PadForge.Services.Catalog
         {
             "AddControllerView", "AutomationRequestCard", "BlissBoxPlayerDialog", "ConfirmDialog",
             "DreamcastScreenDialog", "FlydigiScreenDialog", "ImportConfigDialog", "KeepDriverDialog",
-            "KeyboardScreenDialog", "PairDeviceDialog", "PickSoundDialog", "ReleaseTestDialog", "ProfileDialog", "RemoteAssignmentsDialog", "RemoteLinkPairDialog",
+            "KeyboardScreenDialog", "PairDeviceDialog", "PickSoundDialog", "RecordingReviewView", "ReleaseTestDialog", "ProfileDialog", "RemoteAssignmentsDialog", "RemoteLinkPairDialog",
             "RemoteLinkPasswordDialog", "SearchPanel", "ThemeBuilderDialog", "TouchpadGestureRecorderDialog",
             "UninstallBthPS3Dialog", "UninstallHIDMaestroDialog",
         };

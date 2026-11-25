@@ -67,28 +67,25 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void RecordStart_NamesTheZip_MarkWritesTheMarker_AndStopNamesTheSameZip()
+        public void RecordStart_SaysItRecords_MarkWritesTheMarker_AndStopSaysItWaits_NeverWhere()
         {
             using var joined = new Joined();
             Assert.False(joined.StateRecording());
 
-            string start = joined.Line("record start");
-            Assert.StartsWith("ok PadForge-recording-", start);
-            Assert.EndsWith(".zip", start);
-            string zip = start.Substring(3);
-            // The name of the file the recording becomes, not the one it is
-            // written to while it runs.
-            Assert.Equal(Path.GetFileName(ProblemRecorder.ZipPathOf(joined.Recorder.State.File)), zip);
+            // A program is told that a recording runs, then that it waits for
+            // the user's review, and never its file (#600).
+            Assert.Equal("ok recording", joined.Line("record start"));
             Assert.True(joined.Recorder.State.Recording);
             Assert.True(joined.StateRecording());
 
-            Assert.Equal("ok " + zip, joined.Line("record mark lap three"));
-            Assert.Equal("ok " + zip, joined.Line("record mark"));
+            Assert.Equal("ok recording", joined.Line("record mark lap three"));
+            Assert.Equal("ok recording", joined.Line("record mark"));
 
-            Assert.Equal("ok " + zip, joined.Line("record stop"));
+            Assert.Equal("ok " + ProblemRecorder.WaitsWord, joined.Line("record stop"));
             string finished = joined.WaitFinished();
-            Assert.Equal(zip, Path.GetFileName(finished));
             Assert.True(File.Exists(finished));
+            using (var reader = PadForge.Engine.Recording.RecordingReader.Open(finished))
+                Assert.Equal("Status: finished. A program or --record stop stopped it.", reader.StatusLine);
             Assert.False(joined.Recorder.State.Recording);
             Assert.False(joined.StateRecording());
 
@@ -146,7 +143,7 @@ namespace PadForge.Tests
             // asks no level.
             joined.Host.Apply(false, AutomationLevel.Commands);
             string start = joined.Host.Commands.RunOwn("record start");
-            Assert.StartsWith("ok PadForge-recording-", start);
+            Assert.Equal("ok recording", start);
             Assert.True(joined.Recorder.State.Recording);
             Assert.StartsWith("ok ", joined.Host.Commands.RunOwn("record stop"));
             joined.WaitFinished();

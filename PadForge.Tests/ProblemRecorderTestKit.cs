@@ -64,6 +64,20 @@ namespace PadForge.Tests
         }
 
         protected override string MappingOf(ISdlInputDevice device) => null;
+        protected override int MotorAxes(ISdlInputDevice device) => -1;
+
+        // The watch's questions (#600), answered from the test's own lists,
+        // so nothing of the bench is read.
+        internal bool EngineRuns;
+        internal List<(UserDevice Device, bool Listed)> RawListing;
+        internal string Programs;
+        internal Dictionary<string, string> Settings;
+        internal string Activity = string.Empty;
+        public override string ActivityText() => Activity;
+        public override bool EngineRunning() => EngineRuns;
+        public override List<(UserDevice Device, bool Listed)> RawInputListing() => RawListing;
+        public override string ControllerProgramsNow() => Programs;
+        public override Dictionary<string, string> SettingsState() => Settings == null ? null : new Dictionary<string, string>(Settings);
 
         public void Dispose()
         {

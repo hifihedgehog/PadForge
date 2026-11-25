@@ -1,0 +1,44 @@
+<UserControl x:Class="PadForge.Views.RecordingWaitingCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             common:Reach.Class="UsersOwn">
+    <!-- The waiting recording (#600), on Home. A problem recording that
+         stopped while nobody was at the page, by its limit, a macro, a
+         program, the assistant tool, a record stop line or a snapshot, waits
+         here for its review until it is saved or deleted, and goes by itself
+         after seven days. It is the offer's band: a wait, in gold, with the
+         recorder's dot. Review opens Read Your Recording. The card is the
+         user's alone: no program reads or presses it. It has a file of its
+         own so Home's keyed templates keep Home's one class. -->
+    <Border x:Name="HomeRecordingWaiting" Margin="0,12,0,0" Padding="18,12,14,12" CornerRadius="12"
+            Background="{DynamicResource WaitWellBrush}"
+            BorderBrush="{DynamicResource WaitEdgeBrush}" BorderThickness="1"
+            Visibility="{Binding HasWaitingRecording, Converter={StaticResource BoolToVisibilityConverter}}"
+            AutomationProperties.AutomationId="HomeRecordingWaiting">
+        <controls:FlexLinePanel Gap="14" LineGap="10">
+            <Ellipse Width="14" Height="14" VerticalAlignment="Center" Margin="3,0,3,0"
+                     Stroke="{DynamicResource WaitEdgeBrush}" StrokeThickness="2" Fill="{DynamicResource WaitBrush}"/>
+            <TextBlock x:Name="HomeRecordingWaitingLine" common:LiveText.Polite="True"
+                       controls:FlexLinePanel.Basis="320" controls:FlexLinePanel.Grow="1"
+                       VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       Text="{Binding WaitingRecordingText, Mode=OneWay}"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <ui:Button x:Name="HomeRecordingReview" Padding="14,0"
+                           Style="{StaticResource EmberPrimaryButton}"
+                           Click="RecordingReview_Click"
+                           Content="{Binding Home_RecordingWaiting_Review, Source={x:Static strings:Strings.Instance}}"
+                           AutomationProperties.AutomationId="HomeRecordingReview"/>
+                <ui:Button x:Name="HomeRecordingDelete" Padding="14,0" Margin="4,0,0,0"
+                           Style="{StaticResource QuietButton}"
+                           Click="RecordingDelete_Click"
+                           Content="{Binding Review_Delete, Source={x:Static strings:Strings.Instance}}"
+                           AutomationProperties.AutomationId="HomeRecordingDelete"/>
+            </StackPanel>
+        </controls:FlexLinePanel>
+    </Border>
+</UserControl>

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using PadForge.Common.Recording;
 using PadForge.Resources.Strings;
 using PadForge.Services;
 using PadForge.Services.Automation;
@@ -13,17 +14,27 @@ namespace PadForge
     public partial class MainWindow
     {
         // ─────────────────────────────────────────────
-        //  Record a Problem (#597): the window's share
+        //  Record a Problem (#597, #600): the window's share
         //
         //  The recorder runs on its own thread and knows no window. This
-        //  keeps the Settings row in step with it, says on the message line
-        //  what became of a recording nobody watched, selects a file in
-        //  Explorer when the user asked for one from the page, and finishes
-        //  what a PadForge that closed left behind.
+        //  keeps the Settings row in step with it, opens Read Your
+        //  Recording when the user stopped a recording or took a snapshot
+        //  from the page, offers on Home a recording that stopped while
+        //  nobody was there, and finishes what a PadForge that closed left
+        //  behind.
         // ─────────────────────────────────────────────
 
         private bool _problemRecorderRefreshQueued;
-        private bool _selectFinishedRecording;
+        private bool _reviewFinishedRecording;
+        private RecordingReviewModel _review;
+
+        /// <summary>What the Settings row asks of the recorder.</summary>
+        internal enum RecorderAsk
+        {
+            StartOrStop,
+            SaveLastMinute,
+            Snapshot,
+        }
 
         /// <summary>Joins the recorder to the window. Called once, after the
         /// settings have loaded and the services exist.</summary>
@@ -31,7 +42,27 @@ namespace PadForge
         {
             var recorder = ProblemRecorder.Instance;
             RecorderHost.Main = _viewModel;
+            RecorderHost.ActivitySource = () => _automation?.Activity.ToText() ?? string.Empty;
+
+            // The window's thread, watched while something is captured
+            // (#600): whether it answers, how the window is shown, its
+            // display scale, and every exception thrown anywhere.
+            WindowWatch.Install(Dispatcher);
+            Activated += (_, _) => RecordWindowShown();
+            Deactivated += (_, _) => RecordWindowShown();
+            StateChanged += (_, _) => RecordWindowShown();
+            IsVisibleChanged += (_, _) => RecordWindowShown();
+            Closed += (_, _) => WindowWatch.SetShown("closed");
+            Loaded += (_, _) => RecordDisplayScale();
+            DpiChanged += (_, _) => RecordDisplayScale();
+            RecordWindowShown();
+            int windowThread = Environment.CurrentManagedThreadId;
+            AppDomain.CurrentDomain.FirstChanceException += (_, e) =>
+            {
+                if (recorder.IsCapturing) recorder.TakeException(e.Exception, Environment.CurrentManagedThreadId == windowThread);
+            };
             recorder.MaskTypedKeys = _viewModel.Settings.ProblemRecordingHideTypedKeys;
+            recorder.Parts = _viewModel.Settings.ProblemRecordingParts;
             recorder.KeepLastMinute = _viewModel.Settings.ProblemRecordingKeepLastMinute;
 
             recorder.Changed += () =>
@@ -48,34 +79,65 @@ namespace PadForge
                 if (!result.Ok) _viewModel.SetStatus(ProblemRecordingRefusal(result), persist: true);
             };
             Views.SettingsPage.ProblemRecordingAsked = OnProblemRecordingButton;
+            RecordingReviewView.CloseRequested += (s, e) => CloseRecordingReview();
+            RecordingReviewHost.CloseRequested += (s, e) => CloseRecordingReview();
+            HomePageView.RecordingWaitingCard.ReviewRequested += (s, path) => OpenRecordingReview(path);
+            HomePageView.RecordingWaitingCard.DeleteRequested += (s, path) =>
+            {
+                RecordingStore.Delete(path);
+                RefreshWaitingRecording();
+            };
 
             // A recording a PadForge that closed left unfinished gets its
-            // summary now, off the UI thread, and the message line says
-            // where it is.
+            // summary now, off the UI thread, and waits on Home for its
+            // review. One that waited seven days goes.
             Task.Run(() =>
             {
+                // A crash in native code at the last run leaves Windows' own
+                // record, which crash.log takes now (#600).
+                NativeCrashRecord.CopyNew(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"));
                 List<string> finished = recorder.FinishLeftOver();
-                if (finished.Count == 0) return;
-                Dispatcher.BeginInvoke(new Action(() => _viewModel.SetStatus(
-                    string.Format(Strings.Instance.Settings_RecordProblem_LeftOver_Format, Path.GetFileName(finished[^1])), persist: true)));
+                RecordingStore.Sweep(recorder.Host.Folder, DateTime.UtcNow, ProblemRecorder.KeptUnsaved);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    RefreshWaitingRecording();
+                    if (finished.Count == 0) return;
+                    var started = RecordingStore.StartedOf(finished[^1]);
+                    _viewModel.SetStatus(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Settings_RecordProblem_LeftOver_Format,
+                        started?.ToString("g", CultureInfo.CurrentCulture) ?? string.Empty), persist: true);
+                }));
             });
+
+            // A capture already armed (Keep the Last 60 Seconds on at
+            // launch) starts the window's beat now.
+            RefreshProblemRecorder();
         }
 
-        /// <summary>The page's two buttons: Start or Stop Recording, and
-        /// Save the Last 60 Seconds. A file asked for here is selected in
-        /// Explorer when it is finished, as Save Snapshot's is.</summary>
-        private void OnProblemRecordingButton(bool saveLastMinute)
+        /// <summary>The Settings row's buttons: Start or Stop Recording, Save
+        /// the Last 60 Seconds and Save a Snapshot…. What they make opens in
+        /// the review when it is finished.</summary>
+        private void OnProblemRecordingButton(RecorderAsk ask)
         {
             var recorder = ProblemRecorder.Instance;
             bool wasRecording = recorder.State.Recording;
-            var result = saveLastMinute ? recorder.SaveLastMinute() : recorder.Toggle();
+            // A program can press the row's buttons too (the catalog's
+            // press). The user is at the page only while the window is in
+            // front: then the stop is the user's and the review opens.
+            // Otherwise the stop is a program's and the file waits on Home.
+            bool userHere = IsActive;
+            var result = ask switch
+            {
+                RecorderAsk.SaveLastMinute => recorder.SaveLastMinute(),
+                RecorderAsk.Snapshot => recorder.Snapshot(),
+                _ => recorder.Toggle(userHere ? ProblemRecorder.HowUser : ProblemRecorder.HowCommand),
+            };
             if (!result.Ok)
             {
                 _viewModel.Settings.ProblemRecordingStatus = ProblemRecordingRefusal(result);
                 return;
             }
-            // Starting a recording asks for no file yet. Stopping one does.
-            _selectFinishedRecording = saveLastMinute || wasRecording;
+            // Starting a recording makes no file yet. The rest do.
+            _reviewFinishedRecording = userHere && (ask != RecorderAsk.StartOrStop || wasRecording);
             RefreshProblemRecorder();
         }
 
@@ -88,10 +150,16 @@ namespace PadForge
             => ConnectRecorder(_automation, ProblemRecorder.Instance,
                 result => _viewModel.SetStatus(ProblemRecordingRefusal(result), persist: true));
 
+        /// <summary>The word a program is told while a recording it started
+        /// runs (#600): that one runs, never its file.</summary>
+        internal const string RecordingWord = "recording";
+
         /// <summary>Sets the host's four recorder entries from
         /// <paramref name="recorder"/>. <paramref name="startRefused"/> is
         /// told of a start refused for the recorder's check or its file, the
-        /// two refusals the user has to act on.</summary>
+        /// two refusals the user has to act on. A program is told that a
+        /// recording runs or waits for the user's review, never where its
+        /// file is (#600).</summary>
         internal static void ConnectRecorder(AutomationHost host, ProblemRecorder recorder, Action<RecorderResult> startRefused)
         {
             host.RecordStart = () =>
@@ -99,26 +167,19 @@ namespace PadForge
                 var result = recorder.Start();
                 if (!result.Ok && result.Refusal is RecorderRefusal.Privacy or RecorderRefusal.File)
                     startRefused?.Invoke(result);
-                // Start names the file it writes as the recording runs. The
-                // caller is given the zip that file becomes at the stop.
-                return result.Ok
-                    ? AutomationRecordAnswer.Done(Path.GetFileName(ProblemRecorder.ZipPathOf(result.Path)))
-                    : RecordRefusal(result.Refusal);
+                return result.Ok ? AutomationRecordAnswer.Done(RecordingWord) : RecordRefusal(result.Refusal);
             };
             host.RecordStop = () =>
             {
-                var result = recorder.Stop();
-                return result.Ok ? AutomationRecordAnswer.Done(Path.GetFileName(result.Path)) : RecordRefusal(result.Refusal);
+                var result = recorder.Stop(how: ProblemRecorder.HowCommand);
+                return result.Ok ? AutomationRecordAnswer.Done(ProblemRecorder.WaitsWord) : RecordRefusal(result.Refusal);
             };
             host.RecordMark = text =>
             {
                 if (!recorder.Mark(string.IsNullOrEmpty(text) ? null : text)) return AutomationRecordAnswer.NotAvailable;
                 // A marker with no recording running is held by Keep the
                 // Last 60 Seconds, which has no file yet.
-                var state = recorder.State;
-                return AutomationRecordAnswer.Done(state.Recording && !string.IsNullOrEmpty(state.File)
-                    ? Path.GetFileName(ProblemRecorder.ZipPathOf(state.File))
-                    : string.Empty);
+                return AutomationRecordAnswer.Done(recorder.State.Recording ? RecordingWord : string.Empty);
             };
             host.Recording = () => recorder.State.Recording;
         }
@@ -140,9 +201,22 @@ namespace PadForge
             _ => Strings.Instance.Settings_RecordProblem_Busy,
         };
 
+        /// <summary>How the window is shown, for the recording's window part.</summary>
+        private void RecordWindowShown()
+            => WindowWatch.SetShown(!IsVisible ? "hidden in the tray"
+                : WindowState == System.Windows.WindowState.Minimized ? "minimized"
+                : IsActive ? "in front" : "behind another window");
+
+        private void RecordDisplayScale()
+        {
+            try { WindowWatch.DisplayScale = (int)Math.Round(System.Windows.Media.VisualTreeHelper.GetDpi(this).DpiScaleX * 100); }
+            catch (InvalidOperationException) { }
+        }
+
         private void RefreshProblemRecorder()
         {
             _problemRecorderRefreshQueued = false;
+            WindowWatch.Beat(ProblemRecorder.Instance.IsCapturing);
             var state = ProblemRecorder.Instance.State;
             var settings = _viewModel.Settings;
             settings.IsProblemRecording = state.Recording;
@@ -160,23 +234,128 @@ namespace PadForge
             }
         }
 
+        /// <summary>A recording or a snapshot is finished. One the user asked
+        /// for from the page opens in the review. Any other waits on Home,
+        /// and the row and the message line say so.</summary>
         private void OnProblemRecordingFinished(string path)
         {
-            string saved = string.Format(Strings.Instance.Settings_RecordProblem_Saved_Format, Path.GetFileName(path));
             _viewModel.Settings.IsProblemRecording = ProblemRecorder.Instance.State.Recording;
-            _viewModel.Settings.ProblemRecordingStatus = saved;
-            _viewModel.SetStatus(saved, persist: true);
-            if (!_selectFinishedRecording) return;
-            _selectFinishedRecording = false;
+            RefreshWaitingRecording();
+            bool review = _reviewFinishedRecording;
+            _reviewFinishedRecording = false;
+            if (review && path != null && path.EndsWith(ProblemRecorder.ZipSuffix, StringComparison.OrdinalIgnoreCase) && File.Exists(path))
+            {
+                _viewModel.Settings.ProblemRecordingStatus = string.Empty;
+                OpenRecordingReview(path);
+                return;
+            }
+            string waits = Strings.Instance.Settings_RecordProblem_Waiting;
+            _viewModel.Settings.ProblemRecordingStatus = waits;
+            _viewModel.SetStatus(waits, persist: true);
+        }
+
+        /// <summary>Home's card follows the newest recording that waits.</summary>
+        private void RefreshWaitingRecording()
+        {
+            string folder = ProblemRecorder.Instance.Host.Folder;
+            Task.Run(() => RecordingStore.Waiting(folder)).ContinueWith(t =>
+            {
+                var newest = t.IsCompletedSuccessfully && t.Result.Count > 0 ? t.Result[0] : null;
+                // The recording the review has open is not offered twice.
+                if (newest != null && _review != null && string.Equals(newest.Path, _review.Review.Path, StringComparison.OrdinalIgnoreCase))
+                    newest = t.Result.Count > 1 ? t.Result[1] : null;
+                _viewModel.Dashboard.SetWaitingRecording(newest?.Path, newest?.Started ?? default);
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        // ─────────────────────────────────────────────
+        //  Read Your Recording
+        // ─────────────────────────────────────────────
+
+        /// <summary>Opens the review of a waiting recording. It is read off
+        /// this thread, then shown over the page area.</summary>
+        private async void OpenRecordingReview(string path)
+        {
+            if (_review != null) CloseRecordingReview();
+            RecordingReview review;
             try
             {
-                PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{path}\"");
+                review = await Task.Run(() => RecordingReview.Open(path));
             }
-            catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException or IOException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException)
             {
-                // A broken shell association must not take the window down.
-                // The message line names the file.
+                _viewModel.SetStatus(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Review_SaveFailed_Format, ex.Message), persist: true);
+                RefreshWaitingRecording();
+                return;
             }
+            var recorder = ProblemRecorder.Instance;
+            var model = new RecordingReviewModel(review, recorder.CurrentLiveValues, recorder.Host.Environment())
+            {
+                SaveFolder = _viewModel.Settings.ProblemRecordingSaveFolder ?? RecordingFolder.Downloads(),
+                PickTarget = PickRecordingTarget,
+                ShowInExplorer = target =>
+                {
+                    try { PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{target}\""); }
+                    catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException or IOException)
+                    {
+                        // A broken shell association must not take the window
+                        // down. The message line names the file.
+                    }
+                },
+                CopyText = text =>
+                {
+                    try { PadForge.Common.ShellLaunch.SetClipboardText(text); }
+                    catch (System.Runtime.InteropServices.ExternalException) { }
+                },
+            };
+            model.Saved = target =>
+            {
+                _viewModel.Settings.ProblemRecordingSaveFolder = Path.GetDirectoryName(target);
+                _viewModel.SetStatus(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Settings_RecordProblem_Saved_Format, Path.GetFileName(target)), persist: true);
+            };
+            model.Closed = () => Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (!ReferenceEquals(_review, model)) return;
+                _review = null;
+                RecordingReviewView.DataContext = null;
+                RecordingReviewHost.Close(returnFocus: true);
+                SetPagesTabStop(true);
+                RefreshWaitingRecording();
+            }));
+            _review = model;
+            RecordingReviewView.DataContext = model;
+            RecordingReviewHost.Open(System.Windows.Input.Keyboard.FocusedElement);
+            // As Add a Controller and Search do: the pages leave the Tab
+            // order while the review stands over them, and the focus goes in.
+            SetPagesTabStop(false);
+            _ = Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input, new Action(RecordingReviewView.FocusFirstPart));
+            RefreshWaitingRecording();
+        }
+
+        /// <summary>Closes the review. The recording keeps waiting on Home.</summary>
+        private void CloseRecordingReview()
+        {
+            var model = _review;
+            if (model == null) return;
+            model.Close();
+        }
+
+        /// <summary>The save box: where the user last saved, or Downloads the
+        /// first time, with the recording's own name. The file picked, or
+        /// null.</summary>
+        private string PickRecordingTarget(string folder, string name)
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = Strings.Instance.Review_SaveTitle,
+                FileName = name,
+                DefaultExt = ProblemRecorder.ZipSuffix,
+                AddExtension = true,
+                OverwritePrompt = true,
+                Filter = Strings.Instance.Review_SaveFilter + " (*.zip)|*.zip",
+            };
+            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder)) dialog.InitialDirectory = folder;
+            return dialog.ShowDialog(this) == true ? dialog.FileName : null;
         }
     }
 }

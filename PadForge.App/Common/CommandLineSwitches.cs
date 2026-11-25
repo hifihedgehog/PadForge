@@ -149,8 +149,18 @@ namespace PadForge.Common
             /// <c>--describe</c>.</summary>
             public bool AssistantRun => Tools || CallTool != null || Skill != null || Describe != null;
 
+            /// <summary><c>--summarize &lt;file&gt;</c> (#600): the recording
+            /// whose summary is printed, or null. A client run of its own.</summary>
+            public string Summarize { get; set; }
+
+            /// <summary><c>--record save &lt;recording&gt; &lt;file&gt;</c>
+            /// (#600): the copy the review's Save… makes as the user, or null.
+            /// A client run of its own, never a line for the running copy.</summary>
+            public (string Source, string Target)? RecordSave { get; set; }
+
             /// <summary>Whether anything but the update marker was given.</summary>
-            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null && !AssistantRun && !Json;
+            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null && !AssistantRun && !Json
+                && Summarize == null && RecordSave == null;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -391,11 +401,32 @@ namespace PadForge.Common
                         break;
                     }
 
+                    case "--summarize":
+                    {
+                        // A recording's summary, printed (#600). No running
+                        // copy is needed.
+                        string file = inline ?? Next(args, ref i);
+                        if (string.IsNullOrWhiteSpace(file)) return Fail(r, "--summarize needs a recording's file.");
+                        if (r.Summarize != null) return Fail(r, "--summarize is given once.");
+                        r.Summarize = file.Trim();
+                        break;
+                    }
+
                     case "--record":
                     {
                         string what = (inline ?? Next(args, ref i) ?? string.Empty).Trim().ToLowerInvariant();
                         switch (what)
                         {
+                            case Recording.RecordingSave.Verb:
+                            {
+                                // The review's Save… as the user (#600): the
+                                // recording, then the file to write.
+                                string source = Next(args, ref i), target = Next(args, ref i);
+                                if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(target))
+                                    return Fail(r, "--record save needs the recording, then the file to write.");
+                                r.RecordSave = (source, target);
+                                break;
+                            }
                             case "start":
                                 r.Steps.Add(new Step("record start", true, StartPhase.AfterEngine));
                                 break;
@@ -483,6 +514,7 @@ namespace PadForge.Common
             "  --state                   Print PadForge's state as one line of JSON\r\n" +
             "  --snapshot                Save a diagnostics snapshot\r\n" +
             "  --record start|stop|mark  Record a problem\r\n" +
+            "  --summarize <file>        Print a recording's summary\r\n" +
             "  --wait                    Return when PadForge exits, with its exit code\r\n" +
             "  --mcp                     Serve an assistant over standard input and output,\r\n" +
             "                            starting PadForge when a call needs it\r\n" +

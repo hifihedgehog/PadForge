@@ -38,30 +38,36 @@ namespace PadForge.Common
             }
         }
 
-        /// <summary>Writes the in-memory ring (the last 4,000 engine events,
-        /// collected whether or not logging is on) to a timestamped file
-        /// and returns its path. Lets a user capture the moments around a
-        /// glitch after the fact without having had logging enabled.
+        /// <summary>
+        /// Save Snapshot (#600): the state as it stands now and the engine's
+        /// recent events, taken as a problem recording with no events of its
+        /// own, so it is scrubbed, summarized and read through the same review
+        /// before anything is saved. It waits in the user's own recordings
+        /// folder, and the window opens its review or offers it on Home. A
+        /// program that asked for it is told only that it waits
+        /// (<see cref="Services.ProblemRecorder.WaitsWord"/>), never where.
         ///
-        /// <para>The state at that moment goes into the history first, so the
-        /// snapshot ends with it and diagnostics.log carries it too
-        /// (#541): HidHide's list, the XInput interfaces Windows lists and
-        /// each virtual controller's node
+        /// <para>The state lines (#541) go into the history first, so
+        /// diagnostics.log carries them too, and the recording's system part
+        /// holds them: HidHide's list, the XInput interfaces Windows lists
+        /// and each virtual controller's node
         /// (<see cref="HidHideController.DescribeSnapshotState"/>).</para>
         ///
-        /// <para>A snapshot a program asked for (#597) passes its whole text
-        /// through <paramref name="scrub"/> before it is written, since the
-        /// file lands where that program can read it.</para></summary>
+        /// <para>Every recording is scrubbed, so <paramref name="scrub"/>,
+        /// which a program's snapshot once passed its whole text through, is
+        /// no longer needed and is kept only for its callers.</para>
+        /// </summary>
+        /// <exception cref="IOException">The recorder refused: its check, its
+        /// folder, or the last file still being finished.</exception>
         internal static string SaveSnapshot(Func<string, string> scrub = null)
         {
             foreach (string line in SnapshotStateLines())
                 Engine.SdlDiagLog.WriteLine(line);
-            string path = Path.Combine(Folder,
-                $"diag-snapshot-{DateTime.Now:yyyyMMdd-HHmmss}.log");
-            string text = Engine.SdlDiagLog.Snapshot();
-            if (scrub != null) text = scrub(text);
-            File.WriteAllText(path, text + Environment.NewLine);
-            return path;
+            var result = Services.ProblemRecorder.Instance.Snapshot();
+            if (!result.Ok)
+                throw new IOException("The snapshot was not taken: " + result.Refusal
+                    + (string.IsNullOrEmpty(result.Detail) ? "." : ", " + result.Detail));
+            return Services.ProblemRecorder.WaitsWord;
         }
 
         /// <summary>Test seam for the state lines, null in production, where

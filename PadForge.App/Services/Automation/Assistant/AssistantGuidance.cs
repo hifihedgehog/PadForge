@@ -84,7 +84,7 @@ Read before every change, and tell the user what you changed."),
 4. status, which at Read gives the system: are the drivers installed? Is HidHide installed, and does the game see both the physical and the virtual controller?
 5. Ask which controller type the game reads. Many games read only Xbox controllers.
 6. find with the words the user's problem suggests, and show the setting that bears on it, with a word on what it does.
-If nothing explains it, ask the user to show the problem while you call record_problem, and give them the file for a bug report."),
+If nothing explains it, ask the user to show the problem while you call record_problem. The recording waits in PadForge for the user to look over and save for a bug report."),
             new PromptText("bring_profile_over", "Automation_Prompt_Import_Title", "Automation_Prompt_Import_Description",
                 new[] { ("path", "The full path of the file, if the user gave one.", false) },
 @"Bring a profile over from another controller program into PadForge.

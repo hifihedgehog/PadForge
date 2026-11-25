@@ -599,6 +599,9 @@ namespace PadForge.Engine.Privacy
         {
             if (!Guid.TryParse(text, out var guid)) return text;
             if (IsDeviceTypeGuid(guid)) return text;
+            // A device of this file is named by its label, so a line that
+            // names it by its GUID can be tied to its other lines (#600).
+            if (_deviceAliases.TryGetValue(guid.ToString("D"), out string device)) return device;
             var known = KnowLocked(PrivateKind.Identifier, guid.ToString("D"), null);
             _places[(int)known.Kind]++;
             return known.StandIn;

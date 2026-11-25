@@ -614,11 +614,15 @@ namespace PadForge.Tests
                                 vm.IsProblemRecording = true;
                                 vm.ProblemRecordingElapsed = "1:42, 3.4 MB";
                             });
+                            // The board's card (#600): More open with What to
+                            // Record all on and Keep the Last 60 Seconds on, no
+                            // recording running.
+                            vm.IsProblemRecording = false;
+                            drawing.Picture(ground, "settings-data-diagnostics-board.png", width, 3600);
                             diagnostics.IsExpanded = false;
                             vm.ProblemRecordingKeepLastMinute = false;
-                            vm.IsProblemRecording = false;
-                            vm.ProblemRecordingStatus = "Saved PadForge-recording-20261123-151600.log";
-                            drawing.Picture(ground, "settings-data-diagnostics-saved.png", width, 3600);
+                            vm.ProblemRecordingStatus = PadForge.Resources.Strings.Strings.Instance.Settings_RecordProblem_Waiting;
+                            drawing.Picture(ground, "settings-data-diagnostics-waiting.png", width, 3600);
                             vm.ProblemRecordingStatus = string.Empty;
                         }
                     }
@@ -936,6 +940,57 @@ namespace PadForge.Tests
             }
             window.GetMethod("ShowEntries", own).Invoke(dialog, new object[] { rows });
             return dialog;
+        }
+
+        /// <summary>Read Your Recording (#600) as the Recorder board draws
+        /// it: a recording of a pad, its Settings and Devices part shown, and
+        /// again with Activity left out and Input shown. The dialog stands on
+        /// the frame the window's dialog ground gives it.</summary>
+        [Fact]
+        public void DrawRecordingReview()
+        {
+            Run("review", drawing =>
+            {
+                using var host = new RecorderTestHost();
+                var pad = RecorderTestKit.Pad("DualSense Wireless Controller");
+                host.DeviceList.Add(pad);
+                host.DeviceList.Add(RecorderTestKit.Pad("Xbox Series X Controller", 0x045E, 0x0B13));
+                host.System.Add("Windows build 26200.7171, version 25H2, Professional, display at 150 %");
+                host.Controllers.Add("C1 type=Xbox360 enabled=1 connected=1");
+                host.SettingsPart.Add("assign device=D1 controller=C1");
+                host.Lines.Add((System.Diagnostics.Stopwatch.GetTimestamp(), "HEARTBEAT poll=0.4% gen0=12"));
+                var recorder = new ProblemRecorder(host) { FrozenClock = System.Diagnostics.Stopwatch.GetTimestamp() };
+                Assert.True(recorder.Start().Ok);
+                var capture = recorder.CaptureForTest;
+                var state = RecorderTestKit.Rest();
+                for (int i = 0; i < 300; i++)
+                {
+                    state.Axis[0] = 32768 + (int)(20000 * Math.Sin(i / 20.0));
+                    state.Buttons[0] = i % 40 < 6;
+                    capture.Input(pad, state);
+                    capture.OutGamepad(0, new Gamepad { ThumbLX = (short)(20000 * Math.Sin(i / 20.0)), Buttons = (ushort)(i % 40 < 6 ? Gamepad.A : 0) });
+                    capture.Advance(0.4);
+                }
+                string zip = recorder.Stop(wait: true).Path;
+                var review = PadForge.Common.Recording.RecordingReview.Open(zip);
+                var model = new PadForge.Common.Recording.RecordingReviewModel(review,
+                    () => Array.Empty<(PadForge.Engine.Privacy.PrivateKind, string)>(), host.Environment());
+                try
+                {
+                    var view = new RecordingReviewView { DataContext = model };
+                    var frame = new Border { CornerRadius = new CornerRadius(12), BorderThickness = new Thickness(1), Child = view, Width = 1100 };
+                    frame.SetResourceReference(Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
+                    frame.SetResourceReference(Border.BorderBrushProperty, "SteelLineBrush");
+                    var ground = drawing.Ground(new Border { Padding = new Thickness(24), Child = frame });
+                    drawing.Picture(ground, "review.png", 1148, 980);
+                    drawing.Picture(ground, "review-input.png", 1148, 980, () =>
+                    {
+                        model.Parts.Single(p => p.Info.Part == PadForge.Engine.Recording.RecordingParts.Activity).Keep = false;
+                        model.Select(model.Parts.Single(p => p.Info.Part == PadForge.Engine.Recording.RecordingParts.Input));
+                    });
+                }
+                finally { model.Close(); }
+            });
         }
 
         /// <summary>Each dialog on the shared frame (#574), with the data

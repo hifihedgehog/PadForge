@@ -123,6 +123,10 @@ namespace PadForge.Engine.Recording
         public bool IsFinished => StatusLine.StartsWith(RecordingCodec.StatusFinishedStart, StringComparison.Ordinal);
         public bool IsRecordingFile => FirstLine.StartsWith("PadForge problem recording", StringComparison.Ordinal);
 
+        /// <summary>The parts the file says it holds. A format 1 file, which
+        /// has no Holds line, holds every part.</summary>
+        public RecordingParts Parts { get; private set; } = RecordingParts.All;
+
         public IReadOnlyList<string> Summary => _summary;
         public IReadOnlyList<string> ScrubCheck => _scrub;
         public IReadOnlyList<string> SystemPart => _system;
@@ -254,6 +258,11 @@ namespace PadForge.Engine.Recording
                 if (at == 0) FirstLine = line;
                 at++;
                 if (line.StartsWith(RecordingCodec.StatusPrefix, StringComparison.Ordinal)) { StatusLine = line; continue; }
+                if (part == null && line.StartsWith(RecordingCodec.HoldsPrefix, StringComparison.Ordinal))
+                {
+                    Parts = RecordingPartWords.ParseHolds(line.Substring(RecordingCodec.HoldsPrefix.Length));
+                    continue;
+                }
                 if (line == RecordingCodec.EventsHeader) { _inEvents = true; return; }
                 if (line.StartsWith("== ", StringComparison.Ordinal))
                 {
@@ -395,8 +404,7 @@ namespace PadForge.Engine.Recording
                     Device.HasFullFrame = true;
                     continue;
                 }
-                if (!RecordingCodec.TryParseToken(token, out var field, out int index, out int a, out int b, out int c)
-                    || RecordingCodec.LayerOf(field) != RecordingCodec.LayerInput)
+                if (!RecordingCodec.TryParseInputToken(token, out var field, out int index, out int a, out int b, out int c))
                 {
                     UnknownTokens++;
                     continue;
@@ -428,8 +436,7 @@ namespace PadForge.Engine.Recording
                     Controller.HasFullFrame = true;
                     continue;
                 }
-                if (!RecordingCodec.TryParseToken(token, out var field, out int index, out int a, out int b, out int c)
-                    || RecordingCodec.LayerOf(field) != RecordingCodec.LayerOutput)
+                if (!RecordingCodec.TryParseOutputToken(token, out var field, out int index, out int a, out int b, out int c))
                 {
                     UnknownTokens++;
                     continue;

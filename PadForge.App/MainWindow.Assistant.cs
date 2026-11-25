@@ -859,11 +859,11 @@ namespace PadForge
                 }
                 string zip = _lastRecording;
                 if (zip == null || !File.Exists(zip))
-                    throw new AssistantRefusal("internal", "The recording stopped by itself before its time. The file it wrote is beside PadForge.exe.");
+                    throw new AssistantRefusal("internal", "The recording stopped before its time. It waits in PadForge for the user to look over and save.");
                 string summary;
                 using (var reader = PadForge.Engine.Recording.RecordingReader.Open(zip))
                     summary = string.Join("\n", PadForge.Engine.Recording.RecordingSummary.Read(reader).Lines());
-                return new AssistantRecording { File = Path.GetFileName(zip), Summary = summary };
+                return new AssistantRecording { Summary = summary };
             }
 
             private string _lastRecording;

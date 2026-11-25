@@ -28,7 +28,7 @@ namespace PadForge.Services
     /// device is D1, a controller C1, and a name the user typed, a path, a
     /// serial number or an address is a stand-in.</para>
     /// </summary>
-    internal class RecorderHost
+    internal partial class RecorderHost
     {
         /// <summary>The engine whose slots, rate and macros the parts read,
         /// set by the service that owns it.</summary>
@@ -46,8 +46,10 @@ namespace PadForge.Services
         /// the start, to show what a failed check does.</summary>
         internal Func<string, string> CheckScrub;
 
-        /// <summary>Beside the exe, where Save Snapshot writes its file.</summary>
-        public virtual string Folder => DiagnosticsLogControl.Folder;
+        /// <summary>The signed-in user's own temp folder, where a recording
+        /// is written as it runs and waits for its review (#600). Null when
+        /// there is none to use.</summary>
+        public virtual string Folder => PadForge.Common.Recording.RecordingFolder.Get();
 
         /// <summary>Whether the capture is the one the engine writes to and
         /// the diagnostics ring hands its lines to. A test's is neither.</summary>
@@ -263,6 +265,14 @@ namespace PadForge.Services
             new VendorProgram("XOutput", "XOutput"),
             new VendorProgram("Handheld Companion", "HandheldCompanion"),
             new VendorProgram("Sunshine", "sunshine") { WholeNames = true },
+            // More mappers a problem can come from (#600).
+            new VendorProgram("JoyToKey", "JoyToKey"),
+            new VendorProgram("InputMapper", "InputMapper"),
+            new VendorProgram("BetterJoy", "BetterJoy"),
+            new VendorProgram("Xpadder", "Xpadder"),
+            new VendorProgram("Gopher360", "Gopher"),
+            new VendorProgram("JoyXoff", "JoyXoff"),
+            new VendorProgram("DS4Tool", "DS4Tool"),
         };
 
         /// <summary>Test seam: the image names of the running processes,
@@ -307,6 +317,7 @@ namespace PadForge.Services
                 into.Add("Engine: " + (engine.IsRunning ? "running" : "stopped") + ", " + engine.PollingRateHz.ToString(CultureInfo.InvariantCulture)
                     + " passes a second set, " + engine.CurrentFrequency.ToString("F0", CultureInfo.InvariantCulture) + " measured"
                     + (engine.IsIdle ? ", idle" : string.Empty));
+            FactLines(into);
 
             var images = Images();
             var controllers = RunningOf(images, ControllerPrograms);
@@ -368,6 +379,7 @@ namespace PadForge.Services
             RecordingCodec.AppendFact(sb, "vid", device.VendorId.ToString("X4", CultureInfo.InvariantCulture));
             RecordingCodec.AppendFact(sb, "pid", device.ProdId.ToString("X4", CultureInfo.InvariantCulture));
             RecordingCodec.AppendFact(sb, "type", TypeWord(device.CapType));
+            RecordingCodec.AppendFact(sb, "controls", PadForge.Common.Recording.RecordingKinds.Word(PadForge.Common.Recording.RecordingKinds.Of(device)));
             RecordingCodec.AppendFact(sb, "bus", BusOf(device.SdlGuid));
             string guid = device.SdlGuid ?? string.Empty;
             RecordingCodec.AppendFact(sb, "guid", guid.Length == 0 || PrivacyScrubber.IsSdlGuid(guid) ? guid : scrubber.Text(guid));
@@ -401,6 +413,7 @@ namespace PadForge.Services
             RecordingCodec.AppendFact(sb, "enabled", device.IsEnabled ? 1 : 0);
             RecordingCodec.AppendFact(sb, "hidden", device.HidHideEnabled ? 1 : 0);
             RecordingCodec.AppendFact(sb, "only", device.ConsumeInputEnabled ? 1 : 0);
+            AppendDeviceFacts(sb, device);
             if (!string.IsNullOrEmpty(device.DevicePath))
                 RecordingCodec.AppendFact(sb, "path", scrubber.DevicePath(device.DevicePath));
             if (!string.IsNullOrWhiteSpace(device.SerialNumber))
@@ -408,6 +421,26 @@ namespace PadForge.Services
 
             string mapping = MappingOf(live);
             if (!string.IsNullOrEmpty(mapping)) RecordingCodec.AppendFact(sb, "mapping", scrubber.Text(mapping));
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// A device's line when the file leaves out the settings and devices
+        /// part (#600): its type, how its controls are named and how many
+        /// there are, which a replay needs to stand the device up again. No
+        /// name, no IDs, no path.
+        /// </summary>
+        internal static string DescribeShape(UserDevice device)
+        {
+            var sb = new StringBuilder(96);
+            RecordingCodec.AppendFact(sb, "type", TypeWord(device.CapType));
+            RecordingCodec.AppendFact(sb, "controls", PadForge.Common.Recording.RecordingKinds.Word(PadForge.Common.Recording.RecordingKinds.Of(device)));
+            RecordingCodec.AppendFact(sb, "axes", device.CapAxeCount);
+            RecordingCodec.AppendFact(sb, "hats", device.CapPovCount);
+            RecordingCodec.AppendFact(sb, "buttons", device.CapButtonCount);
+            RecordingCodec.AppendFact(sb, "touchpads", device.CapTouchpadCount);
+            RecordingCodec.AppendFact(sb, "gyro", device.HasGyro ? 1 : 0);
+            RecordingCodec.AppendFact(sb, "accel", device.HasAccel ? 1 : 0);
             return sb.ToString();
         }
 
@@ -525,6 +558,7 @@ namespace PadForge.Services
                             if (source.Invert) RecordingCodec.AppendFact(sb, "invert" + n, 1);
                             if (source.HalfAxis) RecordingCodec.AppendFact(sb, "half" + n, 1);
                             RecordingCodec.AppendFact(sb, "dz" + n, source.DeadZone);
+                            AppendSourceTuning(sb, source, n, scrubber);
                         }
                         into.Add(sb.ToString());
                     }
@@ -548,6 +582,7 @@ namespace PadForge.Services
 
             var shortcuts = SettingsManager.GlobalMacros;
             if (shortcuts != null) into.Add("shortcuts count=" + shortcuts.Length.ToString(CultureInfo.InvariantCulture));
+            MoreSettingsLines(scrubber, into);
         }
 
         /// <summary>A macro's steps as their kinds. A step that types text

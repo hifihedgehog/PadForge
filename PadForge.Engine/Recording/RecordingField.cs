@@ -108,6 +108,16 @@ namespace PadForge.Engine.Recording
         TimingStall,
         TimingGap,
         TimingRest,
+        /// <summary>A device call that took long (#600): the device is the
+        /// subject, A the milliseconds, B what the call was
+        /// (<see cref="RecordingCodec.CallKind"/>).</summary>
+        TimingCall,
+
+        // ── F: force effects (#600) ──
+        /// <summary>What force updates asked of a device in the last second:
+        /// A the updates, B the effects made, C the effects started again.
+        /// Written when the counts change.</summary>
+        ForceCounts,
 
         // ── M: a marker ──
         /// <summary>A marker set from the poll thread, by a macro.</summary>

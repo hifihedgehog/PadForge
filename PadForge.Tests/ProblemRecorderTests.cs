@@ -85,9 +85,9 @@ namespace PadForge.Tests
             capture.Input(mouse, click);
             string path = recorder.Stop(wait: true).Path;
 
-            Assert.Equal(new[] { "b65+", "b65-", "b66+", "b66-", "b32+", "b32-", "b49+", "b49-", "b97+", "b97-" }, Tokens(path, "D1"));
-            Assert.Equal(new[] { "b0+", "mr=5,-3" }, Tokens(path, "D2"));
-            string notice = RecorderTestKit.Lines(path)[2];
+            Assert.Equal(new[] { "KeyA=1", "KeyA=0", "KeyB=1", "KeyB=0", "KeySpace=1", "KeySpace=0", "KeyDigit1=1", "KeyDigit1=0", "KeyNumpad1=1", "KeyNumpad1=0" }, Tokens(path, "D1"));
+            Assert.Equal(new[] { "MouseLeft=1", "mr=5,-3" }, Tokens(path, "D2"));
+            string notice = RecorderTestKit.Lines(path)[3];
             Assert.Contains("Every key and button pressed on every device while this recorded is in this file, keyboards and mice included.", notice);
             Assert.DoesNotContain("written as key", notice);
         }
@@ -116,16 +116,16 @@ namespace PadForge.Tests
             capture.Input(mouse, click);
             string path = recorder.Stop(wait: true).Path;
 
-            string one = "b" + RecordingCapture.TypedKey;
+            const string one = "KeyTyped";
             // A, 1 and the number pad's 1 are one key. B, which a mapping
             // reads, and the space bar, which is no letter or number, are
             // written as pressed. Each press and release keeps its time.
-            Assert.Equal(new[] { one + "+", one + "-", "b66+", "b66-", "b32+", "b32-", one + "+", one + "-", one + "+", one + "-" }, Tokens(path, "D1"));
+            Assert.Equal(new[] { one + "=1", one + "=0", "KeyB=1", "KeyB=0", "KeySpace=1", "KeySpace=0", one + "=1", one + "=0", one + "=1", one + "=0" }, Tokens(path, "D1"));
             var times = RecorderTestKit.Events(path).Where(e => e.Layer == 'I' && e.Subject == "D1" && e.Payload.StartsWith(one, StringComparison.Ordinal)).Select(e => e.Seconds).ToList();
             Assert.Equal(times.Distinct().Count(), times.Count);
-            Assert.Equal(new[] { "b0+" }, Tokens(path, "D2"));
-            Assert.Contains("Letter and number keys that no mapping or macro reads are written as key " + RecordingCapture.TypedKey,
-                RecorderTestKit.Lines(path)[2]);
+            Assert.Equal(new[] { "MouseLeft=1" }, Tokens(path, "D2"));
+            Assert.Contains("Letter and number keys that no mapping or macro reads are written as KeyTyped",
+                RecorderTestKit.Lines(path)[3]);
         }
 
         [Fact]
@@ -199,15 +199,15 @@ namespace PadForge.Tests
             // The minute opens with the state as it stood a minute back.
             var first = input[0];
             Assert.Equal(0, first.Seconds, 6);
-            Assert.StartsWith("full online a0=", first.Payload);
-            int opening = int.Parse(first.Payload.Split(' ')[2].Substring(3));
+            Assert.StartsWith("full online LeftX=", first.Payload);
+            int opening = int.Parse(first.Payload.Split(' ')[2].Substring("LeftX=".Length));
             var changes = input.Where(e => !e.Payload.StartsWith("full", StringComparison.Ordinal)).ToList();
             // The clock stands still but for the test's half seconds: the
             // minute holds the change at its first moment and the 119 after.
             Assert.Equal(120, changes.Count);
             Assert.Equal(1000 + 60 * 10, opening);
-            Assert.Equal("a0=" + (opening + 10), changes[0].Payload);
-            Assert.Equal("a0=" + (1000 + 180 * 10), changes[^1].Payload);
+            Assert.Equal("LeftX=" + (opening + 10), changes[0].Payload);
+            Assert.Equal("LeftX=" + (1000 + 180 * 10), changes[^1].Payload);
 
             using (var reader = RecordingReader.Open(path))
             {

@@ -108,8 +108,13 @@ namespace PadForge.Common.Input
                     }
                     else if (inputDevice != null)
                     {
-                        // SDL device — read via wrapper.
+                        // An SDL device, read through its wrapper. A problem recording
+                        // names a read that takes long, and one that does not
+                        // return while it hangs (#600).
+                        var callWatch = Recording.RecordingCapture.Active;
+                        callWatch?.BeginCall(ud, PadForge.Engine.Recording.RecordingCodec.CallKind.Read);
                         newState = inputDevice.GetCurrentState(ud.ForceRawJoystickMode);
+                        callWatch?.EndCall();
                         // A Bliss-Box port's pressure and native arrows ride
                         // its own state, ahead of the idle detector and every
                         // consumer after it (#469). The merge follows the
@@ -132,7 +137,7 @@ namespace PadForge.Common.Input
                     {
                         // Read failed — device may have been disconnected.
                         ud.IsOnline = false;
-                        Recording.RecordingCapture.Active?.InputLost(ud, PadForge.Engine.Recording.RecordingCodec.OfflineReason.ReadFailed);
+                        RecordReadFailed(ud, inputDevice);
                         InvalidateGyroTiltGravity(ud.InstanceGuid);
                         InvalidateGyroSimulation(ud.InstanceGuid);
                         continue;

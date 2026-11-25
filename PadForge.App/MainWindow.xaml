@@ -472,6 +472,14 @@
                                           AutomationProperties.Name="{Binding Search_Title, Source={x:Static strings:Strings.Instance}}">
                         <views:SearchPanel x:Name="SearchPanelView"/>
                     </controls:ShellDialog>
+                    <!-- Read Your Recording (#600): a finished problem recording,
+                         part by part, on the same dialog ground. OpenRecordingReview
+                         opens it at a stop the user asked for and from Home's card. -->
+                    <controls:ShellDialog x:Name="RecordingReviewHost" Panel.ZIndex="5" FrameMaxWidth="1100"
+                                          AutomationProperties.AutomationId="RecordingReviewDialog"
+                                          AutomationProperties.Name="{Binding Review_Title, Source={x:Static strings:Strings.Instance}}">
+                        <views:RecordingReviewView x:Name="RecordingReviewView" DataContext="{x:Null}"/>
+                    </controls:ShellDialog>
                 </Grid>
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>

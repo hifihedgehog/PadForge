@@ -169,6 +169,9 @@ namespace PadForge.Services.Catalog
         internal static readonly IReadOnlyList<TrayItem> Items = new[]
         {
             new TrayItem("Show", "Main_ShowPadForge", ReachClass.Free, Bold: true, SeparatorBefore: false),
+            // Puts a mark into the problem recording that runs, or the last
+            // minute kept (#600). Shown while one is being captured.
+            new TrayItem("Mark", "Tray_MarkRecording", ReachClass.Free, Bold: false, SeparatorBefore: true),
             new TrayItem("Exit", "Tray_Exit", ReachClass.Free, Bold: false, SeparatorBefore: true),
         };
 

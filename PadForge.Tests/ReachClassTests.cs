@@ -153,10 +153,13 @@ namespace PadForge.Tests
                 "Views/ExtrasPage.xaml <StackPanel PluginsPage>",         // Plugins' own controls and plugin approval
                 "Views/ExtrasPage.xaml <Button NewWebAccessCodeButton>",  // an access code
                 "Views/ExtrasPage.xaml <TextBox WebControllerAccessCodeBox>",
+                "Views/RecordingReviewView.xaml <UserControl>",           // the review of a recording
+                "Views/RecordingWaitingCard.xaml <UserControl>",          // a waiting recording, what was typed among it
                 "Views/RemoteLinkPairDialog.xaml <DialogWindow>",         // a pairing code
                 "Views/RemoteLinkPasswordDialog.xaml <DialogWindow>",     // an access code
                 "Views/SettingsPage.xaml <TextBlock SettingsFilePath>",   // the settings file's path
                 "MainWindow.xaml <Button ConnectedMark>",                 // the title bar's mark names other programs (#600 item 13)
+                "Views/SettingsPage.xaml <SettingItem WhatToRecord>",   // what a recording holds, Activity among it
             };
             var found = new List<string>();
             foreach (string file in ReachMarkup.Files())

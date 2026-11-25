@@ -2435,6 +2435,9 @@ namespace PadForge.Services
             vm.DiagnosticsLoggingEnabled = appSettings.DiagnosticsLoggingEnabled;
             vm.ProblemRecordingKeepLastMinute = appSettings.ProblemRecordingKeepLastMinute;
             vm.ProblemRecordingHideTypedKeys = appSettings.ProblemRecordingHideTypedKeys;
+            vm.ProblemRecordingLeaveOut = appSettings.ProblemRecordingLeaveOut;
+            vm.ProblemRecordingSaveFolder = appSettings.ProblemRecordingSaveFolder;
+            ProblemRecorder.Instance.Parts = vm.ProblemRecordingParts;
             // The recorder takes its two switches here too, as the mirror
             // below takes its own: a session that starts with one on has no
             // change to follow (#597).
@@ -5237,6 +5240,8 @@ namespace PadForge.Services
                 DiagnosticsLoggingEnabled = vm.DiagnosticsLoggingEnabled,
                 ProblemRecordingKeepLastMinute = vm.ProblemRecordingKeepLastMinute,
                 ProblemRecordingHideTypedKeys = vm.ProblemRecordingHideTypedKeys,
+                ProblemRecordingLeaveOut = vm.ProblemRecordingLeaveOut,
+                ProblemRecordingSaveFolder = vm.ProblemRecordingSaveFolder,
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateHz = vm.PollingRateHz,
@@ -7502,6 +7507,19 @@ namespace PadForge.Services
         [XmlElement]
         public bool ProblemRecordingHideTypedKeys { get; set; }
         public bool ShouldSerializeProblemRecordingHideTypedKeys() => ProblemRecordingHideTypedKeys;
+
+        /// <summary>What to Record (#600): the parts of a problem recording
+        /// the user leaves out, as RecordingParts bits. Written only when
+        /// some part is left out.</summary>
+        [XmlElement]
+        public int ProblemRecordingLeaveOut { get; set; }
+        public bool ShouldSerializeProblemRecordingLeaveOut() => ProblemRecordingLeaveOut != 0;
+
+        /// <summary>Where the review's Save… last wrote a recording, which it
+        /// offers next time (#600). Written only once a recording was saved.</summary>
+        [XmlElement]
+        public string ProblemRecordingSaveFolder { get; set; }
+        public bool ShouldSerializeProblemRecordingSaveFolder() => !string.IsNullOrEmpty(ProblemRecordingSaveFolder);
 
         [XmlElement]
         public bool StartAtLogin { get; set; }

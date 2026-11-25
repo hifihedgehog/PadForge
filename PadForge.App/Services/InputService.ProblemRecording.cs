@@ -19,7 +19,7 @@ namespace PadForge.Services
             var recorder = ProblemRecorder.Instance;
             int asked = Interlocked.Exchange(ref _inputManager.PendingProblemRecording, 0);
             if ((asked & InputManager.PendingRecordingToggle) != 0)
-                ProblemRecordingAsked?.Invoke(recorder.Toggle());
+                ProblemRecordingAsked?.Invoke(recorder.Toggle(ProblemRecorder.HowMacro));
             if ((asked & InputManager.PendingRecordingSave) != 0)
                 ProblemRecordingAsked?.Invoke(recorder.SaveLastMinute());
             recorder.UiTick();

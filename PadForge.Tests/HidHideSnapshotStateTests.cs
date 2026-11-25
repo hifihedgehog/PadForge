@@ -171,22 +171,25 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void SaveSnapshot_EndsWithTheStateLines_AndAFailedReadLeavesItsOwnLine()
+        public void ASnapshotsSystemPart_HoldsTheStateLines_AndAFailedReadLeavesItsOwnLine()
         {
+            // A snapshot is a problem recording with no events (#600), and
+            // its system part ends with the state lines.
             DiagnosticsLogControl.StateSeam = () => new[] { "STATE hidhide test-541-one", "STATE virtual test-541-two" };
-            string path = DiagnosticsLogControl.SaveSnapshot();
+            var images = PadForge.Services.RecorderHost.RunningImages;
+            PadForge.Services.RecorderHost.RunningImages = () => Array.Empty<string>();
             try
             {
-                string[] text = File.ReadAllLines(path);
-                int one = Array.FindLastIndex(text, l => l.EndsWith("STATE hidhide test-541-one", StringComparison.Ordinal));
-                int two = Array.FindLastIndex(text, l => l.EndsWith("STATE virtual test-541-two", StringComparison.Ordinal));
-                // Other tests write to the same history, so the two lines
-                // need not sit side by side, only in order.
+                var text = new System.Collections.Generic.List<string>();
+                new PadForge.Services.RecorderHost().SystemLines(
+                    new PadForge.Engine.Privacy.PrivacyScrubber(new PadForge.Engine.Privacy.PrivacyEnvironment()), text);
+                int one = text.FindLastIndex(l => l.EndsWith("STATE hidhide test-541-one", StringComparison.Ordinal));
+                int two = text.FindLastIndex(l => l.EndsWith("STATE virtual test-541-two", StringComparison.Ordinal));
                 Assert.True(one >= 0 && two > one, $"one={one} two={two}");
             }
             finally
             {
-                File.Delete(path);
+                PadForge.Services.RecorderHost.RunningImages = images;
             }
 
             DiagnosticsLogControl.StateSeam = () => throw new InvalidOperationException("no read");

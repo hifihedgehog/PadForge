@@ -1,0 +1,196 @@
+<UserControl xmlns:common="clr-namespace:PadForge.Common" common:Reach.Class="UsersOwn" x:Class="PadForge.Views.RecordingReviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:rec="clr-namespace:PadForge.Common.Recording">
+    <!-- Read Your Recording (#600): a finished problem recording, part by
+         part, before anything leaves the PC. It is the user's alone: it shows
+         what was typed, and no program reads or presses it. MainWindow hosts
+         it in a ShellDialog over the page area, as Add a Controller and
+         Search are hosted, and opens it at a stop the user asked for or from
+         Home's card. On the left each part has its switch, its name and its
+         size, and a press on a part shows it on the right, every line as it
+         will be shared, with its sticks and triggers in percent beside a
+         line in the quiet color (the file keeps exact values). Under them the
+         sizes, the scrub check of the parts kept, and Delete, Copy Summary and
+         Save…. -->
+    <UserControl.Resources>
+        <rec:RecordingPercentConverter x:Key="PercentOfLine"/>
+        <!-- A part's row: its switch, then its name and size as a button that
+             shows it, the raised fill while it is the part shown. -->
+        <DataTemplate x:Key="PartRowTemplate">
+            <Border x:Name="Row" CornerRadius="6" Padding="10,0,10,0" Margin="0,1" MinHeight="46">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                              IsChecked="{Binding Keep}" IsEnabled="{Binding IsRecorded}"
+                              Content="{Binding Name, Mode=OneTime}"
+                              AutomationProperties.AutomationId="{Binding AutomationKey, Mode=OneTime}"/>
+                    <Button Grid.Column="1" Margin="14,0,0,0" Padding="0" MinHeight="40" Background="Transparent" BorderThickness="0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch" Click="ShowPart_Click" Tag="{Binding}" Cursor="Hand"
+                            AutomationProperties.Name="{Binding ShowName, Mode=OneTime, TargetNullValue=''}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="Transparent">
+                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name, Mode=OneTime}" FontSize="15" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SizeText}" FontSize="13" VerticalAlignment="Center" Margin="12,0,0,0"
+                                       Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <!-- Head: the title, when it ran and why it stopped, the X. -->
+        <Grid Margin="24,22,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <WrapPanel>
+                    <TextBlock x:Name="ReviewTitle" AutomationProperties.HeadingLevel="Level1" Margin="0,0,14,0"
+                               Text="{Binding Review_Title, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <TextBlock Text="{Binding SpanText, Mode=OneWay}" FontSize="14" VerticalAlignment="Bottom" Margin="0,0,0,3"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </WrapPanel>
+                <TextBlock Text="{Binding Review_Lead, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,6,0,0" FontSize="14" TextWrapping="Wrap" LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+            <ui:Button x:Name="CloseButton" Grid.Column="1" Style="{StaticResource QuietButton}"
+                       Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0" CornerRadius="6"
+                       Margin="16,0,0,0" VerticalAlignment="Top" Click="Close_Click"
+                       ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.Name="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.AutomationId="Review_Close">
+                <controls:DecorativeStrokeIcon Data="{StaticResource CloseLineGeometry}" Size="16" StrokeWidth="1.8"/>
+            </ui:Button>
+        </Grid>
+
+        <!-- The parts, and the one shown. -->
+        <Grid Margin="24,18,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="330"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <ItemsControl x:Name="PartList" ItemsSource="{Binding Parts}" ItemTemplate="{StaticResource PartRowTemplate}"
+                              AutomationProperties.Name="{Binding Review_Title, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock Text="{Binding SizesText, Mode=OneWay}" Margin="10,16,0,0" FontSize="14" TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <TextBlock x:Name="ScrubLine" Text="{Binding ScrubText, Mode=OneWay}" Margin="10,10,0,0" FontSize="14" TextWrapping="Wrap"
+                           common:LiveText.Polite="True">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CheckFailed}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource DangerInkBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <Border Grid.Column="1" Margin="16,0,0,0" CornerRadius="10" BorderThickness="1" Padding="18,14,10,12"
+                    BorderBrush="{DynamicResource SteelLineBrush}" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Text="{Binding ShownHeading, Mode=OneWay}" FontSize="14" AutomationProperties.HeadingLevel="Level2"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="{Binding ShownSizes, Mode=OneWay}" FontSize="13" Margin="0,2,0,8"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="{Binding Review_Empty, Source={x:Static strings:Strings.Instance}}" FontSize="14"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Visibility="{Binding ShownEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </StackPanel>
+                    <ListBox x:Name="ShownLines" ItemsSource="{Binding ShownLines, Mode=OneWay}" Height="420"
+                             Background="Transparent" BorderThickness="0" Padding="0"
+                             VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+                             AutomationProperties.Name="{Binding ShownHeading, Mode=OneWay, TargetNullValue=''}">
+                        <!-- A line a line: no padding round it, so a part reads as
+                             its file does. -->
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0,1"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="MinHeight" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Mode=OneTime}" FontSize="13" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="{Binding Mode=OneTime, Converter={StaticResource PercentOfLine}}" FontSize="13" Margin="14,0,0,0"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <!-- Delete at the start, Copy Summary and Save… at the end. -->
+        <Grid Margin="24,18,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ui:Button x:Name="DeleteButton" Padding="18,0" MinHeight="40" Click="Delete_Click" IsEnabled="{Binding CanDelete}"
+                       Content="{Binding Review_Delete, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.AutomationId="Review_Delete"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <ui:Button x:Name="CopySummaryButton" Padding="18,0" MinHeight="40" Click="CopySummary_Click"
+                           Content="{Binding CopyWords, Mode=OneWay}"
+                           AutomationProperties.AutomationId="Review_CopySummary"
+                           AutomationProperties.Name="{Binding Review_CopySummary, Source={x:Static strings:Strings.Instance}}"/>
+                <ui:Button x:Name="SaveButton" Padding="18,0" MinHeight="40" Margin="12,0,0,0" Click="Save_Click" IsEnabled="{Binding CanSave}"
+                           Style="{StaticResource EmberPrimaryButton}"
+                           Content="{Binding Review_Save, Source={x:Static strings:Strings.Instance}}"
+                           AutomationProperties.AutomationId="Review_Save"/>
+            </StackPanel>
+        </Grid>
+        <TextBlock Text="{Binding Status, Mode=OneWay}" Margin="24,10,24,0" FontSize="14" TextWrapping="Wrap" common:LiveText.Polite="True"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                   Visibility="{Binding Status, Converter={StaticResource StringToVisibility}}"/>
+        <TextBlock Text="{Binding Review_Footnote, Source={x:Static strings:Strings.Instance}}" Margin="24,14,24,22"
+                   FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+    </StackPanel>
+</UserControl>

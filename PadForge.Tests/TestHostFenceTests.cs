@@ -223,6 +223,9 @@ namespace PadForge.Tests
         private const string ExeFolderFile = Services + "ExeFolder.cs";
         private const string UserFoldersFile = Services + "Install/UserFolders.cs";
         private const string UserInstallFile = Services + "Install/UserInstall.cs";
+        private const string RecordingFolderFile = "PadForge.App/Common/Recording/RecordingFolder.cs";
+        private const string NativeCrashFile = "PadForge.App/Common/Recording/NativeCrashRecord.cs";
+        private const string ReadBackFile = "PadForge.App/Common/Recording/XInputReadBack.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -273,6 +276,9 @@ namespace PadForge.Tests
             (ExeFolderFile, "ExeFolder"),
             (UserFoldersFile, "UserFolders"),
             (UserInstallFile, "UserInstall"),
+            (RecordingFolderFile, "RecordingFolder"),
+            (NativeCrashFile, "NativeCrashRecord"),
+            (ReadBackFile, "XInputReadBack"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -331,6 +337,9 @@ namespace PadForge.Tests
             Assert.True(ExeFolder.OffLimitsForTest);
             Assert.True(PadForge.Services.Install.UserFolders.OffLimitsForTest);
             Assert.True(PadForge.Services.Install.UserInstall.OffLimitsForTest);
+            Assert.True(PadForge.Common.Recording.RecordingFolder.OffLimitsForTest);
+            Assert.True(PadForge.Common.Recording.NativeCrashRecord.OffLimitsForTest);
+            Assert.True(PadForge.Common.Recording.XInputReadBack.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -389,6 +398,15 @@ namespace PadForge.Tests
             // An install for the user (#600): its folders, the programs it
             // runs, the Pythons it finds and the commands it looks for.
             new object[] { UserFoldersFile, "internal static string Of(UserFolder folder)", "if (OffLimitsForTest && Seam == null) return null;" },
+            // A problem recording's folder and the Downloads folder Save
+            // offers first (#600): the signed-in user's, read through the
+            // desktop shell.
+            new object[] { RecordingFolderFile, "internal static string Get()", "if (OffLimitsForTest && Seam == null) return null;" },
+            new object[] { RecordingFolderFile, "internal static string Downloads()", "if (OffLimitsForTest && DownloadsSeam == null) return null;" },
+            // Windows' Application log, read at a start for a native crash.
+            new object[] { NativeCrashFile, "internal static IReadOnlyList<NativeCrash> Records()", "if (OffLimitsForTest && RecordsSeam == null) return Array.Empty<NativeCrash>();" },
+            // What a game reads back through XInput, read while recording.
+            new object[] { ReadBackFile, "internal static XInputRead Read(int place)", "if (OffLimitsForTest && ReadSeam == null) return default;" },
             new object[] { UserInstallFile, "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)", "if (ToolSeam == null && OffLimitsForTest) return (-1, null);" },
             new object[] { UserInstallFile, "internal static IReadOnlyList<string> Pythons()", "if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();" },
             new object[] { UserInstallFile, "internal static string FindCommand(string name)", "if (FindSeam == null && OffLimitsForTest) return null;" },

@@ -274,33 +274,39 @@ namespace PadForge.Views
         private void TestBatteryNotify_Click(object sender, RoutedEventArgs e)
             => InputService?.TestBatteryNotification();
 
-        // Diagnostics (#303): dump the in-memory engine event ring to a
-        // timestamped file and reveal it in Explorer. Works whether or not
-        // continuous logging is on, so a user can capture the moments
-        // around a glitch after the fact.
+        // Diagnostics (#303, #600): Save a Snapshot… takes the state as it
+        // stands and the engine's recent events as a recording with no events
+        // of its own, which opens in Read Your Recording when it is finished.
+        // It works whether or not continuous logging is on, so a user can
+        // capture the moments around a glitch after the fact. The state lines
+        // go into the history first, so diagnostics.log carries them too.
         private void SaveDiagSnapshot_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string path = PadForge.Common.DiagnosticsLogControl.SaveSnapshot();
-                PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{path}\"");
-            }
-            catch
-            {
-                // A full disk or a broken shell association must not take
-                // the settings page down.
-            }
+            foreach (string line in PadForge.Common.DiagnosticsLogControl.SnapshotStateLines())
+                PadForge.Engine.SdlDiagLog.WriteLine(line);
+            ProblemRecordingAsked?.Invoke(MainWindow.RecorderAsk.Snapshot);
         }
 
-        /// <summary>What the page's two recording buttons ask the window for
-        /// (#597): false for Start or Stop Recording, true for Save the Last
-        /// 60 Seconds. The window owns the recorder's wiring and says here
-        /// what became of the request.</summary>
-        internal static Action<bool> ProblemRecordingAsked;
+        /// <summary>What the page's recording buttons ask the window for
+        /// (#597, #600): Start or Stop Recording, Save the Last 60 Seconds and
+        /// Save a Snapshot…. The window owns the recorder's wiring and says
+        /// here what became of the request.</summary>
+        internal static Action<MainWindow.RecorderAsk> ProblemRecordingAsked;
 
-        private void RecordProblem_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(false);
+        private void RecordProblem_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(MainWindow.RecorderAsk.StartOrStop);
 
-        private void SaveLastMinute_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(true);
+        private void SaveLastMinute_Click(object sender, RoutedEventArgs e) => ProblemRecordingAsked?.Invoke(MainWindow.RecorderAsk.SaveLastMinute);
+
+        /// <summary>A press on a part's word under What to Record turns its
+        /// switch, which the word's Tag holds (#600).</summary>
+        private void RecordPartWord_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: System.Windows.Controls.CheckBox box } && box.IsEnabled)
+            {
+                box.IsChecked = box.IsChecked != true;
+                box.Focus();
+            }
+        }
 
         private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
             => PadForge.Services.ExeFolderState.Instance.RequestMove();

@@ -711,6 +711,12 @@ namespace PadForge.Tests
                 Shoot(ground, dispatcher, dir, scale, file, width, height, show, step);
             Shot("home.png", PageWidth, 1068, null);
             Shot("home-narrow.png", 640, 2000, null);
+            // A problem recording that waits for its review (#600), Home's
+            // own card under the offer, as the Home-Marks board draws it.
+            Shot("home-recording-waiting.png", PageWidth, 1068, () =>
+                dash.SetWaitingRecording("C:/Temp/PadForge Recordings/PadForge-recording-20261124-123100.zip",
+                    DateTime.Today.AddHours(12).AddMinutes(31)));
+            dash.SetWaitingRecording(null, default);
             // PadForge with rights in a folder other programs can change
             // (#597): the shared folder's card, under the offer.
             try

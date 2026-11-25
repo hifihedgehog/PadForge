@@ -203,15 +203,15 @@ namespace PadForge.Tests
             var full = input.Where(e => e.Payload.StartsWith("full", StringComparison.Ordinal)).ToList();
             var changes = input.Where(e => !e.Payload.StartsWith("full", StringComparison.Ordinal)).ToList();
 
-            Assert.Equal(new[] { "a0=40000", "b3+", "b3-" }, changes.Select(e => e.Payload));
-            Assert.Equal("full online a0=32768 a1=32768 a2=32768 a3=32768", full[0].Payload);
+            Assert.Equal(new[] { "LeftX=40000", "Y=1", "Y=0" }, changes.Select(e => e.Payload));
+            Assert.Equal("full online LeftX=32768 LeftY=32768 LeftTrigger=32768 RightX=32768", full[0].Payload);
             Assert.Equal(4, full.Count);
             for (int i = 1; i < full.Count; i++)
                 Assert.Equal(RecordingCodec.KeyframeSeconds, full[i].Seconds - full[i - 1].Seconds, 6);
             // The frame due after the axis moved says so, and the one after
             // the button went down has it down.
-            Assert.Equal("full online a0=40000 a1=32768 a2=32768 a3=32768", full[1].Payload);
-            Assert.Equal("full online a0=40000 a1=32768 a2=32768 a3=32768 b3+", full[2].Payload);
+            Assert.Equal("full online LeftX=40000 LeftY=32768 LeftTrigger=32768 RightX=32768", full[1].Payload);
+            Assert.Equal("full online LeftX=40000 LeftY=32768 LeftTrigger=32768 RightX=32768 Y=1", full[2].Payload);
             // Lines stand in the order of their times.
             Assert.Equal(input.OrderBy(e => e.Seconds).Select(e => e.Payload), input.Select(e => e.Payload));
         }
@@ -257,7 +257,7 @@ namespace PadForge.Tests
                 foreach (string token in e.Payload.Split(' ', StringSplitOptions.RemoveEmptyEntries))
                 {
                     if (token is "full" or "online") continue;
-                    Assert.True(RecordingCodec.TryParseToken(token, out var field, out int index, out int a, out int b, out int c), token);
+                    Assert.True(RecordingCodec.TryParseInputToken(token, out var field, out int index, out int a, out int b, out int c), token);
                     RecordingCodec.Apply(into, field, index, a, b, c);
                 }
                 if (!full || checkedFrames++ == 0) { if (full) into.CopyInto(shadow); continue; }
@@ -308,9 +308,9 @@ namespace PadForge.Tests
             cut.RemoveAt(lines.Count / 2);
             Assert.False(ReadEnd(string.Join("\r\n", cut)).Matches);
             // One digit changed.
-            int at = whole.IndexOf("a1=30100", StringComparison.Ordinal);
+            int at = whole.IndexOf("LeftY=30100", StringComparison.Ordinal);
             Assert.True(at > 0);
-            Assert.False(ReadEnd(whole.Remove(at + 3, 1).Insert(at + 3, "4")).Matches);
+            Assert.False(ReadEnd(whole.Remove(at + 6, 1).Insert(at + 6, "4")).Matches);
             // The end gone: no hash, and no end line.
             var headOnly = ReadEnd(string.Join("\r\n", lines.Take(lines.Count - 8)));
             Assert.False(headOnly.HasHash);
@@ -379,14 +379,14 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheLimitsAreTenMinutesAndTwentyMegabytes()
+        public void TheLimitsAreThirtyMinutesAndTwentyMegabytes()
         {
             using var host = new RecorderTestHost();
             var recorder = new ProblemRecorder(host) { FrozenClock = System.Diagnostics.Stopwatch.GetTimestamp() };
-            Assert.Equal(TimeSpan.FromMinutes(10), recorder.MaxDuration);
+            Assert.Equal(TimeSpan.FromMinutes(30), recorder.MaxDuration);
             Assert.Equal(20L * 1024 * 1024, recorder.MaxBytes);
             Assert.Equal(TimeSpan.FromSeconds(60), recorder.Kept);
-            Assert.Equal("10 minutes", ProblemRecorder.Words(recorder.MaxDuration));
+            Assert.Equal("30 minutes", ProblemRecorder.Words(recorder.MaxDuration));
             Assert.Equal("20 MB", ProblemRecorder.Words(recorder.MaxBytes));
         }
 
@@ -421,7 +421,8 @@ namespace PadForge.Tests
             var lines = RecorderTestKit.Lines(path).ToList();
             Assert.Equal(RecordingCodec.FirstLine, lines[0]);
             Assert.Equal("Status: finished. The user stopped it.", lines[1]);
-            Assert.Contains("Every key and button pressed on every device while this recorded is in this file, keyboards and mice included.", lines[2]);
+            Assert.Equal("Holds: settings and devices, input, output, feedback, timing, window and errors, activity, diagnostics lines.", lines[2]);
+            Assert.Contains("Every key and button pressed on every device while this recorded is in this file, keyboards and mice included.", lines[3]);
             var parts = lines.Where(l => l.StartsWith("== ", StringComparison.Ordinal)).ToList();
             Assert.Equal(new[]
             {

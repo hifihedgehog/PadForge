@@ -100,6 +100,11 @@ namespace PadForge.Services
             /// <summary>Writes a file of <c>--describe</c> with the user's own
             /// rights, the run's own (#600).</summary>
             public Action<string, byte[]> WriteFile = (path, bytes) => File.WriteAllBytes(path, bytes);
+
+            /// <summary>Runs <c>--summarize</c> and <c>--record save</c>
+            /// (#600) and gives their exit codes.</summary>
+            public Func<string, Action<string>, Action<string>, int> Summarize = PadForge.Common.Recording.RecordingSummaryPrint.Run;
+            public Func<string, string, Action<string>, int> RecordSave = PadForge.Common.Recording.RecordingSave.RunForClient;
         }
 
         /// <summary>
@@ -137,6 +142,18 @@ namespace PadForge.Services
                 // An install is the user's own and needs no running copy:
                 // it writes the user's folders with the user's rights.
                 exitCode = seams.Install(request.Install, seams.Say, seams.SayError);
+                return true;
+            }
+            if (request.Summarize != null)
+            {
+                // A recording's summary needs no running copy (#600).
+                exitCode = seams.Summarize(request.Summarize, seams.Say, seams.SayError);
+                return true;
+            }
+            if (request.RecordSave is { } save)
+            {
+                // The review's Save…, run as the user (#600).
+                exitCode = seams.RecordSave(save.Source, save.Target, seams.SayError);
                 return true;
             }
             if (request.Mcp)

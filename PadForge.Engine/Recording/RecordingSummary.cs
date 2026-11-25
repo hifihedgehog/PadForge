@@ -344,9 +344,9 @@ namespace PadForge.Engine.Recording
             var state = device.State;
             bool changed = false;
             for (int i = 0; i < CustomInputState.MaxAxis; i++)
-                changed |= TakeAxis(ref stats.Axes[i], state.Axis[i], at, reader.IsFullFrame, device.Alias, "a", i);
+                changed |= TakeAxis(ref stats.Axes[i], state.Axis[i], at, reader.IsFullFrame, device.Alias, ControlName(device, RecordingField.Axis, i));
             for (int i = 0; i < CustomInputState.MaxSliders; i++)
-                changed |= TakeAxis(ref stats.Sliders[i], state.Sliders[i], at, reader.IsFullFrame, device.Alias, "s", i);
+                changed |= TakeAxis(ref stats.Sliders[i], state.Sliders[i], at, reader.IsFullFrame, device.Alias, ControlName(device, RecordingField.Slider, i));
             for (int i = 0; i < CustomInputState.MaxButtons; i++)
             {
                 bool down = state.Buttons[i];
@@ -357,7 +357,7 @@ namespace PadForge.Engine.Recording
                 {
                     stats.ButtonPresses[i]++;
                     stats.ButtonDownSince[i] = at;
-                    Window(at, device.Alias + " b" + i.ToString(CultureInfo.InvariantCulture), 1, false, 0, 0);
+                    Window(at, device.Alias + " " + ControlName(device, RecordingField.Button, i), 1, false, 0, 0);
                 }
                 else if (stats.ButtonDownSince[i] >= 0)
                 {
@@ -380,7 +380,7 @@ namespace PadForge.Engine.Recording
                 {
                     stats.HatOffSince[i] = at;
                     stats.HatDirections[i] |= HatBits(hat);
-                    Window(at, device.Alias + " h" + i.ToString(CultureInfo.InvariantCulture), 1, false, 0, 0);
+                    Window(at, device.Alias + " " + ControlName(device, RecordingField.Hat, i), 1, false, 0, 0);
                 }
             }
 
@@ -413,7 +413,7 @@ namespace PadForge.Engine.Recording
             stats.LastChange = at;
         }
 
-        private bool TakeAxis(ref AxisStat stat, int value, long at, bool full, string alias, string name, int index)
+        private bool TakeAxis(ref AxisStat stat, int value, long at, bool full, string alias, string name)
         {
             if (stat == null)
             {
@@ -432,7 +432,7 @@ namespace PadForge.Engine.Recording
             stat.Current = value;
             stat.Since = at;
             Range(stat, value);
-            Window(at, alias + " " + name + index.ToString(CultureInfo.InvariantCulture), 1, true, value, value);
+            Window(at, alias + " " + name, 1, true, value, value);
             return true;
         }
 
@@ -792,16 +792,16 @@ namespace PadForge.Engine.Recording
             {
                 if (stats.OnlineMicros < ShortestJudgedMicros) continue;
                 string alias = stats.Device.Alias;
-                for (int i = 0; i < stats.Axes.Length; i++) NeverRested(device, stats.Axes[i], alias, "Axis", i);
-                for (int i = 0; i < stats.Sliders.Length; i++) NeverRested(device, stats.Sliders[i], alias, "Slider", i);
+                for (int i = 0; i < stats.Axes.Length; i++) NeverRested(device, stats.Axes[i], alias, ControlName(stats.Device, RecordingField.Axis, i));
+                for (int i = 0; i < stats.Sliders.Length; i++) NeverRested(device, stats.Sliders[i], alias, ControlName(stats.Device, RecordingField.Slider, i));
                 for (int i = 0; i < stats.ButtonDownMicros.Length; i++)
                     if (stats.ButtonDownMicros[i] >= stats.OnlineMicros && stats.ButtonPresses[i] <= 1 && stats.ButtonDownMicros[i] > 0)
                         device.Add(new RecordingFinding(FindingPlace.Device, 0,
-                            alias + " Button " + i.ToString(CultureInfo.InvariantCulture) + " was down for the whole recording. Look at the device or its driver."));
+                            alias + " " + ControlName(stats.Device, RecordingField.Button, i) + " was down for the whole recording. Look at the device or its driver."));
                 for (int i = 0; i < stats.HatOffMicros.Length; i++)
                     if (stats.HatOffMicros[i] >= stats.OnlineMicros && stats.HatOffMicros[i] > 0)
                         device.Add(new RecordingFinding(FindingPlace.Device, 0,
-                            alias + " POV " + i.ToString(CultureInfo.InvariantCulture) + " was off center for the whole recording. Look at the device or its driver."));
+                            alias + " " + ControlName(stats.Device, RecordingField.Hat, i) + " was off center for the whole recording. Look at the device or its driver."));
             }
             // Controls first, then the offline lines the events already added.
             _findings.InsertRange(0, device);
@@ -843,11 +843,28 @@ namespace PadForge.Engine.Recording
             }
         }
 
-        private static void NeverRested(List<RecordingFinding> findings, AxisStat axis, string alias, string name, int index)
+        /// <summary>A control's name in the summary: the name the file's
+        /// events give it (#600), from how the device's line says its
+        /// controls are named.</summary>
+        private static string ControlName(RecordedDevice device, RecordingField field, int index)
+            => RecordingControlNames.Input(KindOf(device), field, index);
+
+        /// <summary>How a device's controls are named, from its line's
+        /// controls fact. A format 1 file has none, and names them by
+        /// number.</summary>
+        public static RecordingControlKind KindOf(RecordedDevice device) => device?.Fact("controls") switch
+        {
+            "gamepad" => RecordingControlKind.Gamepad,
+            "mouse" => RecordingControlKind.Mouse,
+            "keyboard" => RecordingControlKind.Keyboard,
+            _ => RecordingControlKind.Generic,
+        };
+
+        private static void NeverRested(List<RecordingFinding> findings, AxisStat axis, string alias, string name)
         {
             if (axis == null || !axis.Seen || axis.Rested) return;
             findings.Add(new RecordingFinding(FindingPlace.Device, 0,
-                alias + " " + name + " " + index.ToString(CultureInfo.InvariantCulture) + " never came to rest: it stayed between "
+                alias + " " + name + " never came to rest: it stayed between "
                 + axis.Min.ToString(CultureInfo.InvariantCulture) + " and " + axis.Max.ToString(CultureInfo.InvariantCulture)
                 + " for the whole recording. Look at the device or its driver."));
         }
@@ -1161,22 +1178,22 @@ namespace PadForge.Engine.Recording
         private static string RestText(DeviceStats stats)
         {
             var sb = new StringBuilder(120);
-            void Add(AxisStat[] axes, string name)
+            void Add(AxisStat[] axes, RecordingField field)
             {
                 for (int i = 0; i < axes.Length; i++)
                 {
                     var axis = axes[i];
                     if (axis == null || !axis.Seen) continue;
                     if (sb.Length > 0) sb.Append(", ");
-                    sb.Append(name).Append(i.ToString(CultureInfo.InvariantCulture)).Append(' ')
+                    sb.Append(ControlName(stats.Device, field, i)).Append(' ')
                       .Append(axis.RestValue.ToString(CultureInfo.InvariantCulture));
                     if (axis.Min != axis.Max)
                         sb.Append(" (").Append(axis.Min.ToString(CultureInfo.InvariantCulture)).Append(" to ")
                           .Append(axis.Max.ToString(CultureInfo.InvariantCulture)).Append(')');
                 }
             }
-            Add(stats.Axes, "a");
-            Add(stats.Sliders, "s");
+            Add(stats.Axes, RecordingField.Axis);
+            Add(stats.Sliders, RecordingField.Slider);
             return sb.ToString();
         }
 

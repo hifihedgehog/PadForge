@@ -180,7 +180,6 @@ namespace PadForge.Services.Automation
     /// <summary>A recording a program asked for.</summary>
     internal sealed class AssistantRecording
     {
-        public string File { get; init; }
         public string Summary { get; init; }
     }
 }

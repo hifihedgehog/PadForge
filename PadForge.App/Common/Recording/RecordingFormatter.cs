@@ -26,6 +26,10 @@ namespace PadForge.Common.Recording
         /// <summary>Rumble written to a device that has its own writer: the
         /// device's path and the two motors in A.</summary>
         DeviceWrite,
+        /// <summary>A line in the recorder's words with free text in it
+        /// (#600), on the layer it names, scrubbed when it is written: a
+        /// failed read with SDL's error, an exception, a setting changed.</summary>
+        Note,
     }
 
     /// <summary>One event from a thread other than the poll thread, queued
@@ -121,6 +125,8 @@ namespace PadForge.Common.Recording
         private sealed class DeviceLine
         {
             public string Alias;
+            /// <summary>How its controls are named (format 2).</summary>
+            public RecordingControlKind Kind;
             public readonly CustomInputState Mirror = new();
             public bool Online;
             public long NextFull = long.MaxValue;
@@ -153,6 +159,17 @@ namespace PadForge.Common.Recording
 
         /// <summary>The lines made since the caller last took them.</summary>
         internal readonly StringBuilder Out = new(1 << 15);
+
+        /// <summary>The parts this file holds (#600). A line of a part it
+        /// leaves out is not written. A device's own line and a marker are
+        /// written in every file.</summary>
+        internal RecordingParts Parts = RecordingParts.All;
+
+        private bool Holds(char layer)
+        {
+            var part = RecordingPartWords.PartOf(layer);
+            return part == RecordingParts.None || (Parts & part) != 0;
+        }
 
         /// <summary>The event lines written.</summary>
         internal long Lines { get; private set; }
@@ -216,7 +233,7 @@ namespace PadForge.Common.Recording
             if (line != null) return line;
             var device = _capture.Track(track).Device;
             if (device == null) return null;
-            line = _devices[track] = new DeviceLine();
+            line = _devices[track] = new DeviceLine { Kind = RecordingKinds.Of(device) };
             RecordingCodec.Reset(line.Mirror);
             line.Alias = Declare(device, ticks);
             return line;
@@ -244,9 +261,10 @@ namespace PadForge.Common.Recording
 
         internal void Entry(in RecordingEntry e)
         {
-            if (e.Ticks >= _nextFullAny) FullFramesDue(e.Ticks);
             char layer = RecordingCodec.LayerOf(e.Field);
-            int kind = layer == RecordingCodec.LayerInput || e.Field == RecordingField.DeviceRumble ? 1
+            if (!Holds(layer)) return;
+            if (e.Ticks >= _nextFullAny) FullFramesDue(e.Ticks);
+            int kind = layer == RecordingCodec.LayerInput || RecordingCodec.NamesDevice(e.Field) ? 1
                 : layer is RecordingCodec.LayerTiming or RecordingCodec.LayerMarker ? 0 : 2;
 
             DeviceLine device = null;
@@ -315,16 +333,20 @@ namespace PadForge.Common.Recording
             }
         }
 
+        /// <summary>How the line under way names its controls.</summary>
+        private RecordingControlKind KindOfLine
+            => _subjectKind == 1 && _devices[_subject] != null ? _devices[_subject].Kind : RecordingControlKind.Generic;
+
         private void Token(in RecordingEntry e)
         {
             _tokens.Append(' ');
-            RecordingCodec.AppendToken(_tokens, e.Field, e.Index, e.A, e.B, e.C);
+            RecordingCodec.AppendNamedToken(_tokens, KindOfLine, e.Field, e.Index, e.A, e.B, e.C);
         }
 
         private void PerPass(in RecordingEntry e)
         {
             _perPass.Append(' ');
-            RecordingCodec.AppendToken(_perPass, e.Field, e.Index, e.A, e.B, e.C);
+            RecordingCodec.AppendNamedToken(_perPass, KindOfLine, e.Field, e.Index, e.A, e.B, e.C);
         }
 
         /// <summary>Ends the line under way and writes it.</summary>
@@ -344,7 +366,7 @@ namespace PadForge.Common.Recording
                 if (_subjectKind == 1)
                 {
                     if (_online) Out.Append(" online");
-                    RecordingCodec.AppendFull(Out, _devices[_subject].Mirror);
+                    RecordingCodec.AppendFull(Out, _devices[_subject].Mirror, _devices[_subject].Kind);
                 }
                 else RecordingCodec.AppendFull(Out, _controllers[_subject].Mirror);
             }
@@ -365,16 +387,17 @@ namespace PadForge.Common.Recording
             if (upTo < _nextFullAny) return;
             Close();
             long next = long.MaxValue;
+            bool input = Holds(RecordingCodec.LayerInput), output = Holds(RecordingCodec.LayerOutput);
             for (int i = 0; i < _devices.Length; i++)
             {
                 var line = _devices[i];
-                if (line == null || !line.Online) continue;
+                if (line == null || !line.Online || !input) continue;
                 while (line.NextFull <= upTo)
                 {
                     RecordingCodec.AppendTime(Out, Micros(line.NextFull));
                     Out.Append(' ').Append(RecordingCodec.LayerInput).Append(' ').Append(line.Alias)
                        .Append(' ').Append(RecordingCodec.FullToken).Append(" online");
-                    RecordingCodec.AppendFull(Out, line.Mirror);
+                    RecordingCodec.AppendFull(Out, line.Mirror, line.Kind);
                     Out.Append(NewLine);
                     Lines++;
                     line.NextFull += FullEvery;
@@ -384,7 +407,7 @@ namespace PadForge.Common.Recording
             for (int i = 0; i < _controllers.Length; i++)
             {
                 var line = _controllers[i];
-                if (line == null || !line.Has) continue;
+                if (line == null || !line.Has || !output) continue;
                 while (line.NextFull <= upTo)
                 {
                     RecordingCodec.AppendTime(Out, Micros(line.NextFull));
@@ -441,6 +464,9 @@ namespace PadForge.Common.Recording
                     layer = IsErrorLine(e.Text ?? string.Empty) ? RecordingCodec.LayerError : RecordingCodec.LayerLine;
                     text = _scrubber.Text(e.Text ?? string.Empty);
                     break;
+                case SideKind.Note:
+                    text = _scrubber.Text(e.Text ?? string.Empty);
+                    break;
                 case SideKind.Marker:
                     layer = RecordingCodec.LayerMarker;
                     text = string.IsNullOrWhiteSpace(e.Text) ? "mark" : "mark " + _scrubber.Text(e.Text.Trim());
@@ -460,6 +486,7 @@ namespace PadForge.Common.Recording
                     text = e.Text ?? string.Empty;
                     break;
             }
+            if (!Holds(layer)) return;
 
             RecordingCodec.AppendTime(Out, Micros(e.Ticks));
             Out.Append(' ').Append(layer).Append(' ').Append(subject).Append(' ');
@@ -468,17 +495,16 @@ namespace PadForge.Common.Recording
             Lines++;
         }
 
-        /// <summary>The program in front. Its file name is written only when
-        /// a profile rule names it, which the user typed into PadForge for
-        /// that purpose. Any other program is a stand-in, the same one each
-        /// time it comes to the front.</summary>
+        /// <summary>The program in front, by its file name (#600), which
+        /// tells a game from a launcher: never its folder, and never a window
+        /// title. A file name that holds a private value, a user's name among
+        /// them, is scrubbed like any text.</summary>
         private string FrontText(string path, bool named, string profile)
         {
             if (string.IsNullOrEmpty(path)) return "front=none";
             string file = System.IO.Path.GetFileName(path);
             string front = string.Equals(path, Environment.ProcessPath, StringComparison.OrdinalIgnoreCase) ? "PadForge"
-                : named ? _scrubber.Text(file)
-                : _scrubber.Alias(PrivateKind.Program, path);
+                : _scrubber.Text(file);
             _tokens.Clear();
             RecordingCodec.AppendFact(_tokens, "front", front);
             if (named && !string.IsNullOrEmpty(profile))

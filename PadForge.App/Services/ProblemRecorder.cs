@@ -67,7 +67,7 @@ namespace PadForge.Services
     /// <para>Every method here is safe from any thread but the poll thread,
     /// which uses <see cref="RecordingCapture"/> alone.</para>
     /// </summary>
-    internal sealed class ProblemRecorder
+    internal sealed partial class ProblemRecorder
     {
         /// <summary>The recorder of the running app.</summary>
         internal static ProblemRecorder Instance { get; } = new(new RecorderHost());
@@ -81,6 +81,9 @@ namespace PadForge.Services
         /// PadForge that closes leaves it whole up to its last flush, and
         /// the next start finishes it.</summary>
         internal const string PartialSuffix = ".log.partial";
+
+        /// <summary>The end of a zip's name while it is being made.</summary>
+        internal const string TempSuffix = ".tmp";
 
         /// <summary>What a finished recording is: a zip of its one .log,
         /// which Explorer opens and GitHub takes as an attachment.</summary>
@@ -104,8 +107,13 @@ namespace PadForge.Services
 
         internal readonly RecorderHost Host;
 
-        /// <summary>A recording stops by itself at this length.</summary>
-        internal TimeSpan MaxDuration = TimeSpan.FromMinutes(10);
+        /// <summary>A recording stops by itself at this length, or at
+        /// <see cref="MaxBytes"/>, whichever comes first (#600).</summary>
+        internal TimeSpan MaxDuration = TimeSpan.FromMinutes(30);
+
+        /// <summary>How long a recording waits for its review before it is
+        /// deleted, since it holds what was typed (#600).</summary>
+        internal static readonly TimeSpan KeptUnsaved = TimeSpan.FromDays(7);
 
         /// <summary>A recording stops by itself when its zip would be this
         /// size, under the 25 MB GitHub takes as an attachment. The text
@@ -143,6 +151,7 @@ namespace PadForge.Services
 
         // Read from any thread.
         private volatile bool _recording, _finishing, _keep, _mask;
+        private volatile RecordingParts _parts = RecordingParts.All;
         private volatile string _currentFile, _lastFile;
         private long _epochTicks, _bytes;
         private string _frontPath;
@@ -277,6 +286,22 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>What to Record (#600): the parts the next recording
+        /// holds, all of them unless the user leaves some out. A recording
+        /// that runs keeps the parts it started with. The capture stops
+        /// taking what no part holds, so a part left out costs the poll
+        /// thread nothing.</summary>
+        internal RecordingParts Parts
+        {
+            get => _parts;
+            set
+            {
+                _parts = value & RecordingParts.All;
+                if (!_recording && Volatile.Read(ref _capture) is { } capture) capture.Parts = _parts;
+                Changed?.Invoke();
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Start, stop, mark, save
         // ─────────────────────────────────────────────
@@ -311,7 +336,7 @@ namespace PadForge.Services
         /// <summary>Stops the recording and finishes its file. With
         /// <paramref name="wait"/> it returns when the file is finished, and
         /// without it at once: <see cref="Finished"/> says when.</summary>
-        internal RecorderResult Stop(bool wait = false, string how = "the user stopped it")
+        internal RecorderResult Stop(bool wait = false, string how = HowUser)
         {
             string path;
             var done = new ManualResetEventSlim(false);
@@ -336,8 +361,81 @@ namespace PadForge.Services
             return RecorderResult.Done(path);
         }
 
-        /// <summary>Starts a recording, or stops the one that runs.</summary>
-        internal RecorderResult Toggle() => _recording ? Stop() : Start();
+        /// <summary>Starts a recording, or stops the one that runs, saying
+        /// who stopped it.</summary>
+        internal RecorderResult Toggle(string how = HowUser) => _recording ? Stop(how: how) : Start();
+
+        // What a file's status line says ended it (#600). The review names
+        // the stop from these words, so each caller says its own.
+        internal const string HowUser = "the user stopped it";
+        internal const string HowMacro = "a macro stopped it";
+        internal const string HowCommand = "a program or --record stop stopped it";
+        internal const string HowAssistant = "the program that started it stopped it";
+        internal const string HowClosed = "PadForge closed";
+        internal const string HowSnapshot = "a snapshot of how things stood";
+        internal const string HowTime = "it stopped by itself at ";
+        internal const string HowLastMinute = "saved the last ";
+
+        /// <summary>What a program is told of a recording it stopped or a
+        /// snapshot it asked for: that it waits for the user's review, never
+        /// where (#600).</summary>
+        internal const string WaitsWord = "waiting-for-review";
+
+        /// <summary>
+        /// Save Snapshot (#600): a recording with no events of its own, the
+        /// state as it stands now and the diagnostics ring's lines, through
+        /// the same scrub, summary and review as a recording. It runs beside a
+        /// recording that runs, as the last minute does. With
+        /// <paramref name="wait"/> it returns when the file is finished.
+        /// </summary>
+        internal RecorderResult Snapshot(bool wait = false)
+        {
+            RecorderResult result;
+            var done = new ManualResetEventSlim(false);
+            lock (_gate)
+            {
+                if (_finishing) return RecorderResult.No(RecorderRefusal.Busy);
+                var sink = Prepare(kept: true, out result);
+                if (sink == null) return result;
+                _finishing = true;
+                Post(() =>
+                {
+                    try { SaveSnapshot(sink); }
+                    finally { done.Set(); }
+                });
+                result = RecorderResult.Done(sink.ZipPath);
+            }
+            Changed?.Invoke();
+            if (wait) done.Wait(TimeSpan.FromMinutes(2));
+            return result;
+        }
+
+        private void SaveSnapshot(FileSink sink)
+        {
+            try
+            {
+                if (_capture == null || _live == null)
+                {
+                    sink.Stream.Dispose();
+                    sink.Deflate.Dispose();
+                    File.Delete(sink.Path);
+                    _finishing = false;
+                    Changed?.Invoke();
+                    return;
+                }
+                Flush();
+                long now = Ticks();
+                StartFormatter(sink, now, _live);
+                WriteOut(sink);
+                FinishFile(sink, HowSnapshot);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ObjectDisposedException)
+            {
+                SdlDiagLog.WriteLine("RECORDER snapshot " + ex.GetType().Name + ": " + ex.Message);
+                _finishing = false;
+                Changed?.Invoke();
+            }
+        }
 
         /// <summary>Puts a marker into what is being captured, with words or
         /// without. False when nothing is being captured.</summary>
@@ -380,7 +478,7 @@ namespace PadForge.Services
         /// is stopped and finished, and the capture ends.</summary>
         internal void Shutdown()
         {
-            if (_recording) Stop(wait: true, how: "PadForge closed");
+            if (_recording) Stop(wait: true, how: HowClosed);
             KeepLastMinute = false;
         }
 
@@ -443,6 +541,7 @@ namespace PadForge.Services
         internal void UiTick()
         {
             if (Volatile.Read(ref _capture) == null) return;
+            WatchSettings();
             long now = Environment.TickCount64;
             if (now - _frontChecked < 250) return;
             _frontChecked = now;
@@ -489,7 +588,7 @@ namespace PadForge.Services
         private void Arm()
         {
             if (_capture != null) return;
-            var capture = new RecordingCapture(RingCapacity) { MaskTypedKeys = _mask, Frozen = FrozenClock };
+            var capture = new RecordingCapture(RingCapacity) { MaskTypedKeys = _mask, Frozen = FrozenClock, Parts = _parts };
             // The devices of the list take their tracks in the list's order.
             foreach (var device in Host.Devices()) capture.Prepare(device);
             if (_mask) RefreshKeyMasks(capture);
@@ -501,12 +600,16 @@ namespace PadForge.Services
                 _lostSeen = _untrackedSeen = 0;
                 _lastFlushStart = Ticks();
             });
+            Post(ResetWatch);
             if (!Host.AttachesToEngine) return;
             RecordingTaps.Reset();
             RecordingCapture.Active = capture;
+            ForceTrace.Sink = _forceEar ??= new ForceEar(this);
             SdlDiagLog.Attach(_taker);
             Interlocked.Increment(ref _boundaries);
         }
+
+        private ForceEar _forceEar;
 
         /// <summary>Ends the capture when no recording runs and no minute is
         /// kept. The recorder's thread.</summary>
@@ -518,6 +621,7 @@ namespace PadForge.Services
                 if (Host.AttachesToEngine)
                 {
                     if (ReferenceEquals(RecordingCapture.Active, _capture)) RecordingCapture.Active = null;
+                    if (ReferenceEquals(ForceTrace.Sink, _forceEar)) ForceTrace.Sink = null;
                     SdlDiagLog.Detach(_taker);
                 }
                 Volatile.Write(ref _capture, null);
@@ -563,6 +667,8 @@ namespace PadForge.Services
             public long Epoch;
             public long Bytes;
             public bool Kept;
+            /// <summary>The parts the file holds.</summary>
+            public RecordingParts Parts = RecordingParts.All;
             public byte[] Buffer = new byte[1 << 16];
             public readonly Encoder Encoder = new UTF8Encoding(false).GetEncoder();
         }
@@ -595,6 +701,10 @@ namespace PadForge.Services
             live.RemoveAll(v => string.IsNullOrWhiteSpace(v.Item2));
             return live;
         }
+
+        /// <summary>This PC's own values as they are now, which the review's
+        /// scrub check searches the parts kept for (#600).</summary>
+        internal List<(PrivateKind Kind, string Value)> CurrentLiveValues() => LiveValues(Host.Environment(), Host.Devices());
 
         /// <summary>How a web controller's device path starts.</summary>
         internal const string WebDevicePrefix = "web://";
@@ -661,43 +771,60 @@ namespace PadForge.Services
             EnsureThread();
             Arm();
             var scrubber = new PrivacyScrubber(environment);
-            var sink = new FileSink { Scrubber = scrubber, Live = live, Kept = kept, Declared = new List<string>() };
+            var parts = _parts;
+            var sink = new FileSink { Scrubber = scrubber, Live = live, Kept = kept, Declared = new List<string>(), Parts = parts };
+            bool settings = (parts & RecordingParts.SettingsAndDevices) != 0;
+            if (_capture != null) _capture.Parts = parts;
 
             var text = new StringBuilder(1 << 14);
             text.Append(RecordingCodec.FirstLine).Append(RecordingFormatter.NewLine);
             text.Append(RecordingCodec.StatusRecording).Append(RecordingFormatter.NewLine);
-            text.Append("Started ").Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)).Append(". ");
+            text.Append(RecordingCodec.HoldsPrefix).Append(RecordingPartWords.Holds(parts)).Append('.').Append(RecordingFormatter.NewLine);
+            text.Append(StartedLine(DateTimeOffset.Now)).Append(' ');
             text.Append(Notice(_mask)).Append(RecordingFormatter.NewLine);
 
             var lines = new List<string>();
             text.Append(RecordingCodec.SystemHeader).Append(RecordingFormatter.NewLine);
             Guarded(() => Host.SystemLines(scrubber, lines), lines, "system");
+            // Without the settings and devices part, the system part says
+            // only which PadForge wrote the file.
+            if (!settings && lines.Count > 1) lines.RemoveRange(1, lines.Count - 1);
             Append(text, lines);
 
+            // The devices part stays in every file, since every other line
+            // names its device by it. Without the settings and devices part
+            // a device's line says only what its controls are.
             text.Append(RecordingCodec.DevicesHeader).Append(RecordingFormatter.NewLine);
             foreach (var device in devices)
             {
                 string alias = scrubber.DeviceAlias(device.InstanceGuidString);
                 if (sink.Declared.Contains(alias)) continue;
                 sink.Declared.Add(alias);
-                text.Append(alias).Append(Describe(scrubber, device, alias)).Append(RecordingFormatter.NewLine);
+                text.Append(alias).Append(settings ? Describe(scrubber, device, alias) : RecorderHost.DescribeShape(device))
+                    .Append(RecordingFormatter.NewLine);
             }
             // The typed fields are named first, so a serial number keeps the
             // stand-in that names its device. Then every other live value.
             foreach (var (kind, value) in live) scrubber.Know(kind, value);
 
             text.Append(RecordingCodec.ControllersHeader).Append(RecordingFormatter.NewLine);
-            Guarded(() => Host.ControllerLines(scrubber, lines), lines, "controllers");
+            if (settings) Guarded(() => Host.ControllerLines(scrubber, lines), lines, "controllers");
+            else { lines.Clear(); lines.Add(LeftOut); }
             Append(text, lines);
 
             text.Append(RecordingCodec.SettingsHeader).Append(RecordingFormatter.NewLine);
-            Guarded(() => Host.SettingsLines(scrubber, lines), lines, "settings");
+            if (settings) Guarded(() => Host.SettingsLines(scrubber, lines), lines, "settings");
+            else { lines.Clear(); lines.Add(LeftOut); }
             Append(text, lines);
             text.Append(RecordingCodec.EventsHeader).Append(RecordingFormatter.NewLine);
 
             try
             {
                 string folder = Host.Folder;
+                if (string.IsNullOrEmpty(folder))
+                    throw new IOException("PadForge found no temp folder of the signed-in user to write the recording into.");
+                if (RecordingFolder.IsLink(folder))
+                    throw new IOException("The recordings folder is a link to another place, which PadForge does not follow.");
                 string stamp = DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
                 string name = System.IO.Path.Combine(folder, FilePrefix + stamp);
                 for (int n = 2; File.Exists(name + PartialSuffix) || File.Exists(name + ZipSuffix); n++)
@@ -753,9 +880,29 @@ namespace PadForge.Services
         internal static string Notice(bool maskTypedKeys)
             => "Every key and button pressed on every device while this recorded is in this file, keyboards and mice included."
              + (maskTypedKeys
-                ? " Letter and number keys that no mapping or macro reads are written as key "
-                  + RecordingCapture.TypedKey.ToString(CultureInfo.InvariantCulture) + ", each press at its own time."
-                : string.Empty);
+                ? " Letter and number keys that no mapping or macro reads are written as "
+                  + RecordingControlNames.Input(RecordingControlKind.Keyboard, RecordingField.Button, RecordingCapture.TypedKey)
+                  + ", each press at its own time."
+                : string.Empty)
+             + " Read it before you share it.";
+
+        /// <summary>What a part left out of the file says in its place.</summary>
+        internal const string LeftOut = "Left out: What to Record leaves this part out.";
+
+        /// <summary>When a recording started, in UTC and in local time with
+        /// the time zone, so a reader in another zone reads it right
+        /// (#600).</summary>
+        internal static string StartedLine(DateTimeOffset now)
+        {
+            var zone = TimeZoneInfo.Local;
+            var offset = now.Offset;
+            string sign = offset < TimeSpan.Zero ? "-" : "+";
+            var magnitude = offset.Duration();
+            return "Started " + now.UtcDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) + " UTC, "
+                + now.ToString("HH:mm:ss", CultureInfo.InvariantCulture) + " local time ("
+                + (zone.IsDaylightSavingTime(now) ? zone.DaylightName : zone.StandardName) + ", UTC" + sign
+                + magnitude.Hours.ToString("00", CultureInfo.InvariantCulture) + ":" + magnitude.Minutes.ToString("00", CultureInfo.InvariantCulture) + ").";
+        }
 
         private static void Guarded(Action fill, List<string> lines, string part)
         {
@@ -788,9 +935,19 @@ namespace PadForge.Services
             {
                 try
                 {
-                    _wake.WaitOne(Volatile.Read(ref _capture) != null ? FlushMs : Timeout.Infinite);
+                    bool capturing = Volatile.Read(ref _capture) != null;
+                    long before = Stopwatch.GetTimestamp();
+                    bool woken = _wake.WaitOne(capturing ? FlushMs : Timeout.Infinite);
+                    // A wait that ran out long past its time is a PC that held
+                    // every program up (#600).
+                    if (capturing && !woken)
+                        Woke((Stopwatch.GetTimestamp() - before) * 1000 / Stopwatch.Frequency - FlushMs);
                     while (_commands.TryDequeue(out var command)) command();
-                    if (_capture != null && _live != null) Flush();
+                    if (_capture != null && _live != null)
+                    {
+                        Flush();
+                        Watch();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -826,6 +983,8 @@ namespace PadForge.Services
         {
             if (_capture == null || _live == null) return;
             Flush();
+            // The watch says what it sees anew for this file (#600).
+            ResetWatch();
             sink.Epoch = Ticks();
             StartFormatter(sink, sink.Epoch, _live);
             WriteOut(sink);
@@ -840,7 +999,12 @@ namespace PadForge.Services
         private void StartFormatter(FileSink sink, long epoch, RecordingState known)
         {
             var scrubber = sink.Scrubber;
-            var formatter = new RecordingFormatter(_capture, scrubber, epoch, (device, alias) => Describe(scrubber, device, alias));
+            bool settings = (sink.Parts & RecordingParts.SettingsAndDevices) != 0;
+            var formatter = new RecordingFormatter(_capture, scrubber, epoch,
+                (device, alias) => settings ? Describe(scrubber, device, alias) : RecorderHost.DescribeShape(device))
+            {
+                Parts = sink.Parts,
+            };
             foreach (string alias in sink.Declared) formatter.MarkDeclared(alias);
             sink.Formatter = formatter;
 
@@ -965,7 +1129,7 @@ namespace PadForge.Services
             if (full != null)
             {
                 Volatile.Write(ref _bytes, full.Bytes);
-                FinishFile(full, "it stopped by itself at " + Words(MaxBytes) + " compressed");
+                FinishFile(full, HowTime + Words(MaxBytes) + " compressed");
                 return;
             }
             if (file == null) return;
@@ -976,9 +1140,9 @@ namespace PadForge.Services
             Changed?.Invoke();
 
             if (Stopwatch.GetElapsedTime(file.Epoch, start) >= MaxDuration)
-                FinishFile(file, "it stopped by itself at " + Words(MaxDuration));
+                FinishFile(file, HowTime + Words(MaxDuration));
             else if (file.Bytes >= MaxBytes)
-                FinishFile(file, "it stopped by itself at " + Words(MaxBytes) + " compressed");
+                FinishFile(file, HowTime + Words(MaxBytes) + " compressed");
         }
 
         /// <summary>A length as the file says it: whole minutes past one in
@@ -1025,6 +1189,20 @@ namespace PadForge.Services
         {
             long now = Ticks();
             sink.Formatter.Close();
+            if (!sink.Kept) StillStalled(sink.Formatter, now);
+            // The Activity part (#600): every call programs made of PadForge
+            // this session, as Export Activity… writes it, scrubbed, at the
+            // end of the file.
+            if ((sink.Parts & RecordingParts.Activity) != 0)
+                foreach (string line in (Host.ActivityText() ?? string.Empty).Split('\n'))
+                {
+                    string text = line.TrimEnd('\r');
+                    if (text.Length > 0) sink.Formatter.Own(now, RecordingCodec.LayerActivity, sink.Scrubber.Text(text));
+                }
+            int leftOut = Interlocked.Exchange(ref _exceptionsLeftOut, 0);
+            if (leftOut > 0)
+                sink.Formatter.Own(now, RecordingCodec.LayerError, leftOut.ToString(CultureInfo.InvariantCulture)
+                    + " more exceptions past the first " + MostExceptions.ToString(CultureInfo.InvariantCulture) + " were left out");
             sink.Formatter.Own(now, RecordingCodec.LayerMarker, "stop " + how);
             sink.Formatter.Out.Append(RecordingCodec.EndHeader).Append(RecordingFormatter.NewLine);
             WriteOut(sink);
@@ -1036,18 +1214,23 @@ namespace PadForge.Services
             _finishing = true;
             Changed?.Invoke();
 
+            bool zipped = false;
             try
             {
                 // The search at the stop takes this PC's values as they are
                 // now, the devices that came while the file ran among them.
                 var liveNow = LiveValues(Host.Environment(), Host.Devices());
                 Finish(sink.Path, sink.ZipPath, sink.Scrubber, liveNow, Capitalize(how), sink.Live.Count);
+                zipped = true;
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException)
             {
                 SdlDiagLog.WriteLine("RECORDER finish " + ex.GetType().Name + ": " + ex.Message);
             }
-            _lastFile = File.Exists(sink.ZipPath) ? sink.ZipPath : sink.Path;
+            // A zip that could not take its name leaves the text, which the
+            // next start finishes. A file of that name is never the
+            // recording's.
+            _lastFile = zipped ? sink.ZipPath : sink.Path;
             if (!sink.Kept) _currentFile = null;
             _finishing = false;
             DisarmIfIdle();
@@ -1171,7 +1354,7 @@ namespace PadForge.Services
                     formatter.Own(now, RecordingCodec.LayerTiming, "lost=" + rolling.Lost.ToString(CultureInfo.InvariantCulture));
                 formatter.FullFramesDue(now);
 
-                string how = "saved the last " + Words(Kept)
+                string how = HowLastMinute + Words(Kept)
                     + (rolling.CutShort ? ", cut short because more changed than memory was kept for" : string.Empty);
                 FinishFile(sink, how);
             }
@@ -1189,17 +1372,27 @@ namespace PadForge.Services
 
         /// <summary>True for a line of a recording that the search of the
         /// finished file reads: every line above the events, and among the
-        /// events the lines that hold text. The lines of the layers I, O, S,
-        /// F and T hold only numbers and words the recorder wrote itself,
-        /// and a search of them would take a number for a code.</summary>
+        /// events the lines that hold text: the window, errors, diagnostics
+        /// lines, markers, Activity, settings changed, what a reader says of
+        /// a device, and a force effect's failure (#600). The lines of input,
+        /// output, whether it went out, what a game reads back, timing and
+        /// rumble hold only numbers and words the recorder wrote itself, and
+        /// a search of them would take a number for a code.</summary>
         internal static bool IsSearched(string line, bool inEvents)
         {
             if (!inEvents) return true;
             int space = line.IndexOf(' ');
             if (space <= 0 || space + 2 >= line.Length) return true;
             char layer = line[space + 1];
-            if (layer is RecordingCodec.LayerWindow or RecordingCodec.LayerError or RecordingCodec.LayerLine or RecordingCodec.LayerMarker)
+            if (layer is RecordingCodec.LayerWindow or RecordingCodec.LayerError or RecordingCodec.LayerLine or RecordingCodec.LayerMarker
+                or RecordingCodec.LayerActivity or RecordingCodec.LayerSettingChange or RecordingCodec.LayerReader)
                 return true;
+            // A force effect's failure carries SDL's words, and a virtual
+            // controller not fed its exception's.
+            if (layer == RecordingCodec.LayerFeedback)
+                return line.IndexOf(" force failed", space, StringComparison.Ordinal) > 0;
+            if (layer == RecordingCodec.LayerSent)
+                return line.IndexOf(" not fed", space, StringComparison.Ordinal) > 0;
             // A device that connected while the file ran says what it is on
             // an input line, and that line holds names.
             return layer == RecordingCodec.LayerInput && line.IndexOf(" device ", space, StringComparison.Ordinal) > 0
@@ -1221,8 +1414,14 @@ namespace PadForge.Services
         /// whose scrubber is gone.</param>
         /// <param name="startChecked">How many values the check at the
         /// start held, or -1 when that is not known.</param>
+        /// <param name="note">For a file the review writes again with parts
+        /// left out (#600): the scrub check's line that says so, in place of
+        /// the line a file PadForge did not finish gets.</param>
+        /// <param name="summary">False leaves the summary out.</param>
+        /// <param name="entryName">The .log's name in the zip, when it is not
+        /// the zip's own name.</param>
         internal static void Finish(string path, string zipPath, PrivacyScrubber scrubber, IReadOnlyList<(PrivateKind Kind, string Value)> live,
-            string ending, int startChecked, PrivacyEnvironment environment = null)
+            string ending, int startChecked, PrivacyEnvironment environment = null, string note = null, bool summary = true, string entryName = null)
         {
             bool own = scrubber != null;
             scrubber ??= new PrivacyScrubber(environment);
@@ -1244,9 +1443,9 @@ namespace PadForge.Services
                 }
             }
 
-            List<string> summary;
+            List<string> summaryLines;
             using (var reader = RecordingReader.Open(path))
-                summary = RecordingSummary.Read(reader).Lines();
+                summaryLines = RecordingSummary.Read(reader).Lines();
 
             var check = new List<string>
             {
@@ -1260,7 +1459,9 @@ namespace PadForge.Services
                 if (count.FoundLate > 0) sb.Append(", ").Append(count.FoundLate.ToString(CultureInfo.InvariantCulture)).Append(" more found by the search at the stop");
                 check.Add(sb.ToString());
             }
-            if (!own)
+            if (note != null)
+                check.Add(note);
+            else if (!own)
                 check.Add("PadForge closed while this recording ran, so the counts above are of the search alone.");
             else if (startChecked >= 0)
                 check.Add("At the start, " + startChecked.ToString(CultureInfo.InvariantCulture)
@@ -1268,19 +1469,25 @@ namespace PadForge.Services
             int found = scrubber.FoundLate;
             check.Add("At the stop, the file was searched for " + live.Count.ToString(CultureInfo.InvariantCulture) + " of this PC's own values: "
                 + (found == 0 ? "none found." : found.ToString(CultureInfo.InvariantCulture) + (found == 1 ? " place" : " places") + " found and replaced."));
-            check.Add("The event lines of the layers I, O, S, F and T hold only numbers the recorder wrote and were not searched.");
+            check.Add("The event lines of the layers I, O, S, X and T, and the rumble lines of F, hold only numbers the recorder wrote and were not searched.");
             if (scrubber.TooShort > 0)
                 check.Add(scrubber.TooShort.ToString(CultureInfo.InvariantCulture) + " of the values are one character long, which no search can tell from the text around it.");
             if (scrubber.LinesLeftOut > 0)
                 check.Add(scrubber.LinesLeftOut.ToString(CultureInfo.InvariantCulture) + " lines could not be checked in time and were left out whole.");
 
-            string temp = zipPath + ".tmp";
-            string entryName = System.IO.Path.GetFileName(zipPath);
-            entryName = entryName.Substring(0, entryName.Length - ZipSuffix.Length) + FileSuffix;
+            // The zip is made under a name of its own that nothing can hold
+            // yet, and takes its name without writing over anything: the
+            // folder is the user's, and a file planted there is left alone.
+            string temp = zipPath + "." + Guid.NewGuid().ToString("N") + TempSuffix;
+            if (entryName == null)
+            {
+                entryName = System.IO.Path.GetFileName(zipPath);
+                entryName = entryName.Substring(0, entryName.Length - ZipSuffix.Length) + FileSuffix;
+            }
             using (var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256))
             {
                 using (var source = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), Encoding.UTF8))
-                using (var archive = new ZipArchive(new FileStream(temp, FileMode.Create, FileAccess.Write, FileShare.None, 1 << 16), ZipArchiveMode.Create))
+                using (var archive = new ZipArchive(new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1 << 16), ZipArchiveMode.Create))
                 using (var target = new StreamWriter(archive.CreateEntry(entryName, Packing).Open(), new UTF8Encoding(false), 1 << 16))
                 {
                     target.NewLine = RecordingFormatter.NewLine;
@@ -1311,8 +1518,11 @@ namespace PadForge.Services
                             if (!headDone)
                             {
                                 headDone = true;
-                                Write(RecordingCodec.SummaryHeader);
-                                foreach (string s in summary) Write(s);
+                                if (summary)
+                                {
+                                    Write(RecordingCodec.SummaryHeader);
+                                    foreach (string s in summaryLines) Write(s);
+                                }
                                 Write(RecordingCodec.ScrubHeader);
                                 foreach (string s in check) Write(s);
                             }
@@ -1336,8 +1546,13 @@ namespace PadForge.Services
                     target.WriteLine(RecordingCodec.HashPrefix + Convert.ToHexString(hash.GetCurrentHash()).ToLowerInvariant());
                 }
             }
-            File.Move(temp, zipPath, overwrite: true);
-            File.Delete(path);
+            try { File.Move(temp, zipPath, overwrite: false); }
+            catch (IOException)
+            {
+                File.Delete(temp);
+                throw;
+            }
+            if (!RecordingFolder.IsLink(path)) File.Delete(path);
         }
 
         /// <summary>
@@ -1385,10 +1600,9 @@ namespace PadForge.Services
         internal static bool IsUnfinished(string path)
         {
             using var reader = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), Encoding.UTF8);
-            string first = reader.ReadLine();
-            string second = reader.ReadLine();
-            return first != null && first.StartsWith("PadForge problem recording", StringComparison.Ordinal)
-                && second != null && second.StartsWith(RecordingCodec.StatusRecording, StringComparison.Ordinal);
+            var lines = RecordingStore.FirstLines(reader, 2);
+            return lines.Count == 2 && lines[0].StartsWith(RecordingCodec.FirstLineStart, StringComparison.Ordinal)
+                && lines[1].StartsWith(RecordingCodec.StatusRecording, StringComparison.Ordinal);
         }
     }
 }

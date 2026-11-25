@@ -1165,28 +1165,85 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Version information, plus engine event logging for troubleshooting.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Keep a Diagnostics Log</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Continuously writes engine events to diagnostics.log in the log folder, which Open Log Folder opens. Stays enabled across restarts. When the file reaches 8 MB it rolls over to diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Save Snapshot</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Saves the most recent engine events to a new file. Works even when the diagnostics log is off.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Save a Snapshot…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Takes the app, Windows, your devices and settings as they are now, with the most recent engine events, and opens them for you to read before you save them. Works even when the diagnostics log is off.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Open Log Folder</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Record a Problem</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Start Recording</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stop Recording ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Records until Stop Recording, 10 minutes or a 20 MB zip, then selects the zip in Explorer, ready to attach to a report.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, make the problem happen, then stop. One file beside PadForge holds everything PadForge read, sent and logged, with a summary of what went wrong. Every key and button pressed on every device while it records is in the file, keyboards and mice included. User names, serial numbers, addresses and typed names are replaced before anything is written.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Records until Stop Recording, 30 minutes or a 20 MB zip, then opens the recording for you to read before you save it.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, make the problem happen, then stop. Then read what it holds, part by part, and save it where you like. Every key pressed on every device while it records is in it, keyboards and mice included. User names, serial numbers, addresses and typed names are replaced before anything is written.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Writing the summary…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Saved {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Recording did not start. A check found a private value of this PC that would not be kept out of the file.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Recording did not start. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>The last recording is still being finished.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Keep the Last 60 Seconds is off, so there is nothing to save.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Finished a recording PadForge had not stopped: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>A recording PadForge had not stopped waits for you to read it on Home: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Keep the Last 60 Seconds</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>While the engine runs, holds in memory the last minute of what a recording holds, for a problem that comes once an evening. Save the Last 60 Seconds writes it as a file.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>While the engine runs, holds in memory the last minute of what a recording holds, for a problem that comes once an evening. Save the Last 60 Seconds opens it for you to read before you save it.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Save the Last 60 Seconds</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Write Typed Letters and Numbers as One Key</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>A recording writes the letter and number keys that no mapping or macro reads as one key, each press at its own time. Every other key, and every key a mapping or macro reads, is written as pressed.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Keep the Last 60 Seconds, Write Typed Letters and Numbers as One Key</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>What to record, the last 60 seconds, typed letters</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Save a Snapshot</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, your devices and settings as they are now, through the same review.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log beside PadForge.exe, which you can read there.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>What to Record</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>All on. A part turned off is left out of the next recording, and the file says which parts it holds.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>For a problem that comes once an evening.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>The recording waits for you to read it on Home.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Settings and Devices</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Feedback</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Timing</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Window and Errors</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Activity</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Diagnostics Lines</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Read Your Recording</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} to {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>A snapshot at {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minute</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minutes</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 second</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} seconds</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Stopped by you.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Stopped by itself at {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Stopped by itself at {0} in the zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Stopped by a macro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Stopped by a program or --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Stopped by the assistant that started it.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Stopped as PadForge closed.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>The last 60 seconds, kept in memory.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Read what you will share. Turn off a part to leave it out, then save. Nothing leaves this PC unless you post it.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, as it will be shared</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Show {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>left out</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>not recorded</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} as text, {1} in the zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} as text, {1} in the zip you share. A recording stops at {2} in the zip or after {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Scrub check: PadForge replaced {0} of {1}. None of this PC’s names, serials or addresses is in the parts you keep.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} values</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 value</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} private kinds</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 private kind</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Scrub check: {0} of this PC’s own values are still in the parts you keep. Turn those parts off or delete the recording. Save stays off until then.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Scrub check: one of this PC’s own values is still in the parts you keep. Turn those parts off or delete the recording. Save stays off until then.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Nothing of this part happened while it recorded.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Copy Summary</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Save…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Save the Recording</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip files</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Not saved. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Saved as you, to your Downloads folder the first time, then where you last saved, and shown in Explorer. A recording that stops while nobody is at the page (its limit, a macro, a program, the assistant tool or --record stop) waits for this review on Home, and is deleted after 7 days unless saved. A program is told it waits, never where.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>A problem recording from {0} is waiting for you to read it.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Review</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Mark the Recording</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App Version</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL Version</value></data>

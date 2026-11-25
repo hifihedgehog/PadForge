@@ -1483,6 +1483,57 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _problemRecordingHideTypedKeys, value);
         }
 
+        private int _problemRecordingLeaveOut;
+
+        /// <summary>What to Record (#600): the parts of
+        /// <see cref="PadForge.Engine.Recording.RecordingParts"/> the next
+        /// recording leaves out, none unless the user turns some off. Saved
+        /// as this number.</summary>
+        public int ProblemRecordingLeaveOut
+        {
+            get => _problemRecordingLeaveOut;
+            set
+            {
+                int clean = value & (int)PadForge.Engine.Recording.RecordingParts.All;
+                if (!SetProperty(ref _problemRecordingLeaveOut, clean)) return;
+                foreach (string name in RecordPartNames) OnPropertyChanged(name);
+            }
+        }
+
+        private static readonly string[] RecordPartNames =
+        {
+            nameof(RecordSettingsAndDevices), nameof(RecordInput), nameof(RecordOutput), nameof(RecordFeedback),
+            nameof(RecordTiming), nameof(RecordWindowAndErrors), nameof(RecordActivity), nameof(RecordDiagnosticsLines),
+        };
+
+        private bool Records(PadForge.Engine.Recording.RecordingParts part) => (_problemRecordingLeaveOut & (int)part) == 0;
+
+        private void SetRecords(PadForge.Engine.Recording.RecordingParts part, bool on)
+            => ProblemRecordingLeaveOut = on ? _problemRecordingLeaveOut & ~(int)part : _problemRecordingLeaveOut | (int)part;
+
+        /// <summary>The parts the next recording holds.</summary>
+        public PadForge.Engine.Recording.RecordingParts ProblemRecordingParts
+            => PadForge.Engine.Recording.RecordingParts.All & ~(PadForge.Engine.Recording.RecordingParts)_problemRecordingLeaveOut;
+
+        public bool RecordSettingsAndDevices { get => Records(PadForge.Engine.Recording.RecordingParts.SettingsAndDevices); set => SetRecords(PadForge.Engine.Recording.RecordingParts.SettingsAndDevices, value); }
+        public bool RecordInput { get => Records(PadForge.Engine.Recording.RecordingParts.Input); set => SetRecords(PadForge.Engine.Recording.RecordingParts.Input, value); }
+        public bool RecordOutput { get => Records(PadForge.Engine.Recording.RecordingParts.Output); set => SetRecords(PadForge.Engine.Recording.RecordingParts.Output, value); }
+        public bool RecordFeedback { get => Records(PadForge.Engine.Recording.RecordingParts.Feedback); set => SetRecords(PadForge.Engine.Recording.RecordingParts.Feedback, value); }
+        public bool RecordTiming { get => Records(PadForge.Engine.Recording.RecordingParts.Timing); set => SetRecords(PadForge.Engine.Recording.RecordingParts.Timing, value); }
+        public bool RecordWindowAndErrors { get => Records(PadForge.Engine.Recording.RecordingParts.WindowAndErrors); set => SetRecords(PadForge.Engine.Recording.RecordingParts.WindowAndErrors, value); }
+        public bool RecordActivity { get => Records(PadForge.Engine.Recording.RecordingParts.Activity); set => SetRecords(PadForge.Engine.Recording.RecordingParts.Activity, value); }
+        public bool RecordDiagnosticsLines { get => Records(PadForge.Engine.Recording.RecordingParts.DiagnosticsLines); set => SetRecords(PadForge.Engine.Recording.RecordingParts.DiagnosticsLines, value); }
+
+        private string _problemRecordingSaveFolder;
+
+        /// <summary>Where the review's Save… last wrote a recording (#600),
+        /// or null before the first, when it offers Downloads.</summary>
+        public string ProblemRecordingSaveFolder
+        {
+            get => _problemRecordingSaveFolder;
+            set => SetProperty(ref _problemRecordingSaveFolder, string.IsNullOrWhiteSpace(value) ? null : value);
+        }
+
         private bool _isProblemRecording;
 
         /// <summary>True while a problem recording runs. Follows the
@@ -1490,8 +1541,15 @@ namespace PadForge.ViewModels
         public bool IsProblemRecording
         {
             get => _isProblemRecording;
-            set => SetProperty(ref _isProblemRecording, value);
+            set
+            {
+                if (SetProperty(ref _isProblemRecording, value)) OnPropertyChanged(nameof(CanChooseRecordingParts));
+            }
         }
+
+        /// <summary>What to Record's switches take a change only while no
+        /// recording runs: one that runs keeps the parts it started with.</summary>
+        public bool CanChooseRecordingParts => !_isProblemRecording;
 
         private string _problemRecordingElapsed = string.Empty;
 

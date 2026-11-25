@@ -613,6 +613,8 @@ namespace PadForge
                     Services.ProblemRecorder.Instance.KeepLastMinute = _viewModel.Settings.ProblemRecordingKeepLastMinute;
                 if (e.PropertyName == nameof(SettingsViewModel.ProblemRecordingHideTypedKeys))
                     Services.ProblemRecorder.Instance.MaskTypedKeys = _viewModel.Settings.ProblemRecordingHideTypedKeys;
+                if (e.PropertyName == nameof(SettingsViewModel.ProblemRecordingLeaveOut))
+                    Services.ProblemRecorder.Instance.Parts = _viewModel.Settings.ProblemRecordingParts;
 
                 if (e.PropertyName == nameof(SettingsViewModel.FlydigiEnhancedProtocol))
                     Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(_viewModel.Settings.FlydigiEnhancedProtocol);
@@ -646,6 +648,8 @@ namespace PadForge
                      or nameof(SettingsViewModel.DiagnosticsLoggingEnabled)
                      or nameof(SettingsViewModel.ProblemRecordingKeepLastMinute)
                      or nameof(SettingsViewModel.ProblemRecordingHideTypedKeys)
+                     or nameof(SettingsViewModel.ProblemRecordingLeaveOut)
+                     or nameof(SettingsViewModel.ProblemRecordingSaveFolder)
                      or nameof(SettingsViewModel.StartAtLogin)
                      or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
                      or nameof(SettingsViewModel.PollingRateHz)
@@ -7979,6 +7983,9 @@ namespace PadForge
             // One list for the menu and the catalog's entries (#600).
             foreach (var item in PadForge.Services.Catalog.TrayMenu.Items)
             {
+                // Mark the Recording shows only while a problem recording
+                // runs or the last minute is kept (#600).
+                if (item.Key == "Mark" && !Services.ProblemRecorder.Instance.IsCapturing) continue;
                 if (item.SeparatorBefore) menu.Items.Add(new System.Windows.Controls.Separator());
                 var menuItem = new System.Windows.Controls.MenuItem
                 {
@@ -7991,6 +7998,7 @@ namespace PadForge
                 {
                     "Show" => (s, e) => RestoreFromTray(),
                     "Exit" => (s, e) => ExitFromTray(),
+                    "Mark" => (s, e) => Services.ProblemRecorder.Instance.Mark(),
                     _ => throw new InvalidOperationException("The tray menu has no work for " + item.Key + "."),
                 };
                 menu.Items.Add(menuItem);

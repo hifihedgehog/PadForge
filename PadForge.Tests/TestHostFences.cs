@@ -417,5 +417,31 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Services.Install.UserInstall.OffLimitsForTest = true;
     }
 
+    /// <summary>No recording is written into the bench's own temp folder
+    /// and no Downloads folder is read (#600): a test's recorder has a host
+    /// with its own folder, and a seam names one for anything else.</summary>
+    internal static class RecordingFolderOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Recording.RecordingFolder.OffLimitsForTest = true;
+    }
+
+    /// <summary>The bench's own Application log is never read for crashes
+    /// (#600): records come from a test's seam or not at all.</summary>
+    internal static class NativeCrashOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Recording.NativeCrashRecord.OffLimitsForTest = true;
+    }
+
+    /// <summary>No controller of the bench is read through XInput while a
+    /// test records (#600): a place's state comes from a test's seam or not
+    /// at all.</summary>
+    internal static class XInputReadBackOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Recording.XInputReadBack.OffLimitsForTest = true;
+    }
+
 #pragma warning restore CA2255
 }

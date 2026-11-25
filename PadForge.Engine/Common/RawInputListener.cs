@@ -467,10 +467,19 @@ namespace PadForge.Engine
         //  Public API — Lifecycle
         // ─────────────────────────────────────────────
 
+        /// <summary>What a problem recording says of the reader (#600):
+        /// reading, or not started and why.</summary>
+        public static string Status => _hwnd != IntPtr.Zero ? "reading"
+            : _startFailure != null ? "not started: " + _startFailure
+            : _running ? "starting" : "not started";
+
+        private static volatile string _startFailure;
+
         public static void Start()
         {
             if (_running) return;
             _running = true;
+            _startFailure = null;
 
             _thread = new Thread(MessagePumpThread)
             {
@@ -1323,6 +1332,7 @@ namespace PadForge.Engine
 
                 if (_hwnd == IntPtr.Zero)
                 {
+                    _startFailure = "Windows did not make its message window";
                     _running = false;
                     return;
                 }
@@ -1384,6 +1394,7 @@ namespace PadForge.Engine
 
                 if (!RegisterRawInputDevices(devices, (uint)devices.Length, (uint)Marshal.SizeOf<RAWINPUTDEVICE>()))
                 {
+                    _startFailure = "Windows refused its keyboards, mice and consumer controls";
                     DestroyWindow(_hwnd);
                     _hwnd = IntPtr.Zero;
                     _running = false;

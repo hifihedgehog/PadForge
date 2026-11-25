@@ -114,7 +114,7 @@ namespace PadForge.Tests
         public AssistantUndoState TakeUndoState() => new AssistantUndoState { Profile = State, Taken = DateTimeOffset.Now };
         public string RestoreUndoState(AssistantUndoState state) { State = (int)state.Profile; return "Put back."; }
         public Task<AssistantRecording> RecordAsync(int seconds, string note, CancellationToken stopping)
-            => Task.FromResult(new AssistantRecording { File = "PadForge-recording.zip", Summary = "Nothing stood out. " + Planted });
+            => Task.FromResult(new AssistantRecording { Summary = "Nothing stood out. " + Planted });
         public PrivacyScrubber MakeScrubber() => AutomationReadScrub.Make(Environment);
     }
 

@@ -156,6 +156,14 @@ namespace PadForge.Common.Recording
         public bool BatteryCharging;
         public int RumbleA, RumbleB;
 
+        /// <summary>What force updates asked of the device this second, and
+        /// what the last second's line said (#600). Poll thread.</summary>
+        public int ForceUpdates, ForceMade, ForceStarts;
+        public int ForceUpdatesSaid, ForceMadeSaid, ForceStartsSaid;
+
+        /// <summary>How many reads of the device failed in this recording.</summary>
+        public int ReadFailures;
+
         public InputTrack() => Reset();
 
         /// <summary>Back to a state with nothing in it and no optional part:
@@ -249,12 +257,12 @@ namespace PadForge.Common.Recording
     {
         /// <summary>The most devices one capture follows. A device past
         /// this is counted and left out.</summary>
-        internal const int MaxDevices = 96;
+        internal const int MaxDevices = 256;
 
         /// <summary>The key index a typed letter or number is written as
         /// while <see cref="MaskTypedKeys"/> is on: one Windows gives to no
         /// key.</summary>
-        internal const int TypedKey = 0xE8;
+        internal const int TypedKey = RecordingControlNames.TypedKeyCode;
 
         /// <summary>The capture the poll thread writes to, or null while
         /// nothing records. Set and cleared by the recorder.</summary>
@@ -274,9 +282,135 @@ namespace PadForge.Common.Recording
         private long _timedTicks;
         private int _timedPasses;
 
+        /// <summary>The parts the capture takes (#600). A part no recording
+        /// holds costs the poll thread one volatile read a tap.</summary>
+        internal volatile RecordingParts Parts = RecordingParts.All;
+
         /// <summary>Whether a keyboard's letter and number keys that nothing
         /// reads are written as <see cref="TypedKey"/>.</summary>
         internal volatile bool MaskTypedKeys;
+
+        /// <summary>When the last pass ended, on the capture's clock, for the
+        /// recorder's watch on an engine that stops running passes (#600).
+        /// Zero before the first.</summary>
+        internal long LastPass => Volatile.Read(ref _lastPass);
+        private long _lastPass;
+
+        /// <summary>Whether the engine rests (<see cref="Rest"/>), for the
+        /// same watch: a suspended engine runs no pass by design.</summary>
+        internal int RestState => Volatile.Read(ref _restSeen);
+        private int _restSeen;
+
+        // The device call under way (#600): which track, what call and since
+        // when. The poll thread writes them, the recorder's thread reads
+        // them to say a call that does not return while it hangs.
+        private int _callTrack = -1, _callKind;
+        private long _callStart;
+
+        /// <summary>The device call under way: its track, its kind and when it
+        /// began, or a track of -1.</summary>
+        internal (int Track, int Kind, long Start) CallUnderWay
+        {
+            get
+            {
+                long start = Volatile.Read(ref _callStart);
+                int track = Volatile.Read(ref _callTrack);
+                return (track, Volatile.Read(ref _callKind), start);
+            }
+        }
+
+        /// <summary>A device call that took longer than this is written
+        /// with its device.</summary>
+        internal const int SlowCallMs = 20;
+
+        /// <summary>A call to a device begins. Poll thread only.</summary>
+        internal void BeginCall(UserDevice device, int kind)
+        {
+            int index = TrackOf(device);
+            Volatile.Write(ref _callKind, kind);
+            Volatile.Write(ref _callStart, Ticks());
+            Volatile.Write(ref _callTrack, index);
+        }
+
+        /// <summary>The call ends: one that took long is written with its
+        /// device and how long it took. Poll thread only.</summary>
+        internal void EndCall()
+        {
+            int index = _callTrack;
+            Volatile.Write(ref _callTrack, -1);
+            if (index < 0 || (Parts & RecordingParts.Timing) == 0) return;
+            long now = Ticks();
+            long ms = (now - _callStart) * 1000 / Stopwatch.Frequency;
+            if (ms < SlowCallMs) return;
+            Ring.Push(now, RecordingField.TimingCall, index, 0, (int)Math.Min(ms, int.MaxValue), _callKind);
+            Ring.Commit();
+        }
+
+        /// <summary>The track of a device the engine drives through
+        /// <paramref name="live"/>, or -1. Poll thread.</summary>
+        internal int TrackOfLive(ISdlInputDevice live)
+        {
+            if (live == null) return -1;
+            int last = _lastForceTrack;
+            int count = _count;
+            if ((uint)last < (uint)count && ReferenceEquals(_tracks[last].Device?.Device, live)) return last;
+            for (int i = 0; i < count; i++)
+            {
+                if (!ReferenceEquals(_tracks[i].Device?.Device, live)) continue;
+                _lastForceTrack = i;
+                return i;
+            }
+            return -1;
+        }
+        private int _lastForceTrack = -1;
+
+        /// <summary>The device a track follows, or null.</summary>
+        internal UserDevice DeviceOfTrack(int track) => (uint)track < (uint)DeviceCount ? _tracks[track].Device : null;
+
+        /// <summary>Counts what a force update asked of a device (#600): an
+        /// update, an effect made, an effect started again. Poll thread.</summary>
+        internal void CountForce(ISdlInputDevice live, bool made, bool started)
+        {
+            if ((Parts & RecordingParts.Feedback) == 0) return;
+            int index = TrackOfLive(live);
+            if (index < 0) return;
+            var t = _tracks[index];
+            t.ForceUpdates++;
+            if (made) t.ForceMade++;
+            if (started) t.ForceStarts++;
+        }
+
+        /// <summary>Writes each device's force counts of the second that
+        /// ended, when they differ from the second before. Poll thread.</summary>
+        private void ForceSecond(long now)
+        {
+            if ((Parts & RecordingParts.Feedback) == 0) return;
+            int count = _count;
+            bool any = false;
+            for (int i = 0; i < count; i++)
+            {
+                var t = _tracks[i];
+                if (t.ForceUpdates != t.ForceUpdatesSaid || t.ForceMade != t.ForceMadeSaid || t.ForceStarts != t.ForceStartsSaid)
+                {
+                    Ring.Push(now, RecordingField.ForceCounts, i, 0, t.ForceUpdates, t.ForceMade, t.ForceStarts);
+                    t.ForceUpdatesSaid = t.ForceUpdates;
+                    t.ForceMadeSaid = t.ForceMade;
+                    t.ForceStartsSaid = t.ForceStarts;
+                    any = true;
+                }
+                t.ForceUpdates = t.ForceMade = t.ForceStarts = 0;
+            }
+            if (any) Ring.Commit();
+        }
+
+        /// <summary>A failed read of a device: its count in this recording.
+        /// Poll thread.</summary>
+        internal int ReadFailed(UserDevice device)
+        {
+            int index = TrackOf(device);
+            if (index < 0) return 0;
+            return ++_tracks[index].ReadFailures;
+        }
 
         /// <summary>True on the passes whose cost is measured: one in
         /// sixty-four, so the measuring costs next to nothing.</summary>
@@ -364,6 +498,7 @@ namespace PadForge.Common.Recording
         /// Poll thread only.</summary>
         internal void Input(UserDevice device, CustomInputState s)
         {
+            if ((Parts & RecordingParts.Input) == 0) return;
             int index = TrackOf(device);
             if (index < 0) return;
             var t = _tracks[index];
@@ -672,6 +807,7 @@ namespace PadForge.Common.Recording
         /// lost, at once and with the reason. Poll thread only.</summary>
         internal void InputLost(UserDevice device, int reason)
         {
+            if ((Parts & RecordingParts.Input) == 0) return;
             int index = TrackOf(device);
             if (index < 0) return;
             var t = _tracks[index];
@@ -689,6 +825,7 @@ namespace PadForge.Common.Recording
         /// and the slot's type with it.</summary>
         internal void Sent(int slot, int state, int type)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var t = _outputs[slot];
             if (t.Sent == state && t.SentType == type) return;
             t.Sent = state;
@@ -705,6 +842,7 @@ namespace PadForge.Common.Recording
 
         internal void OutGamepad(int slot, in Gamepad gp)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var last = _outputs[slot].Last;
             var ring = Ring;
             long now = 0;
@@ -755,6 +893,7 @@ namespace PadForge.Common.Recording
 
         internal void OutRaw(int slot, in RawHidState raw)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var last = _outputs[slot].Last;
             var ring = Ring;
             long now = 0;
@@ -787,6 +926,7 @@ namespace PadForge.Common.Recording
 
         internal void OutKbm(int slot, in KbmRawState k)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var track = _outputs[slot];
             var last = track.Last;
             var ring = Ring;
@@ -858,6 +998,7 @@ namespace PadForge.Common.Recording
 
         internal void OutMidi(int slot, in MidiRawState midi)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var last = _outputs[slot].Last;
             var ring = Ring;
             long now = 0;
@@ -882,6 +1023,7 @@ namespace PadForge.Common.Recording
 
         internal void OutVr(int slot, in VrRawState vr)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var last = _outputs[slot].Last;
             long now = 0;
             Hand(Ring, ref now, slot, 0, in vr.Left, ref last.Left);
@@ -908,6 +1050,7 @@ namespace PadForge.Common.Recording
 
         internal void OutTouch(int slot, in TouchpadState touch)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var last = _outputs[slot].Last;
             var ring = Ring;
             long now = 0;
@@ -935,6 +1078,7 @@ namespace PadForge.Common.Recording
 
         internal void OutMotion(int slot, in MotionSnapshot motion)
         {
+            if ((Parts & RecordingParts.Output) == 0) return;
             var last = _outputs[slot].Last;
             long now = 0;
             int gx = Bits(motion.GyroPitch), gy = Bits(motion.GyroYaw), gz = Bits(motion.GyroRoll);
@@ -966,6 +1110,7 @@ namespace PadForge.Common.Recording
         /// changes.</summary>
         internal void GameRumble(int slot, Vibration v)
         {
+            if ((Parts & RecordingParts.Feedback) == 0) return;
             if (v == null) return;
             var t = _outputs[slot];
             int a = Pack(v.LeftMotorSpeed, v.RightMotorSpeed), b = Pack(v.LeftTriggerMotorSpeed, v.RightTriggerMotorSpeed);
@@ -983,19 +1128,26 @@ namespace PadForge.Common.Recording
         {
             int count = _count;
             long now = 0;
+            bool feedback = (Parts & RecordingParts.Feedback) != 0;
             for (int i = 0; i < count; i++)
             {
                 var t = _tracks[i];
-                if (t.Online != 1) continue;
                 var device = t.Device;
-                if (t.SeenPass != _pass && !device.IsOnline)
+                if (t.Online != 1)
+                {
+                    // With the input part left out no device is marked
+                    // online here, and the rumble written to one that is
+                    // online still belongs to the feedback part (#600).
+                    if ((Parts & RecordingParts.Input) != 0 || device == null || !device.IsOnline) continue;
+                }
+                else if (t.SeenPass != _pass && !device.IsOnline)
                 {
                     t.Online = 0;
                     Ring.Push(Now(ref now), RecordingField.Online, i, 0, 0, RecordingCodec.OfflineReason.Gone);
                     continue;
                 }
                 var force = device.ForceFeedbackState;
-                if (force == null) continue;
+                if (force == null || !feedback) continue;
                 int a = Pack(force.LeftMotorSpeed, force.RightMotorSpeed), b = Pack(force.LeftTriggerMotorSpeed, force.RightTriggerMotorSpeed);
                 if (a == t.RumbleA && b == t.RumbleB) continue;
                 t.RumbleA = a;
@@ -1004,6 +1156,7 @@ namespace PadForge.Common.Recording
             }
             Ring.Commit();
             _pass++;
+            Volatile.Write(ref _lastPass, Ticks());
         }
 
         /// <summary>Adds what one tap of a measured pass spent in the
@@ -1038,6 +1191,8 @@ namespace PadForge.Common.Recording
         /// when it changes.</summary>
         internal void Rest(int rest)
         {
+            Volatile.Write(ref _restSeen, rest);
+            if ((Parts & RecordingParts.Timing) == 0) return;
             if (rest == _rest) return;
             _rest = rest;
             Ring.Push(Ticks(), RecordingField.TimingRest, 0, 0, rest);
@@ -1048,6 +1203,7 @@ namespace PadForge.Common.Recording
         /// whole pass, in milliseconds.</summary>
         internal void Stall(long sdlMs, long sweepMs, long passMs)
         {
+            if ((Parts & RecordingParts.Timing) == 0) return;
             Ring.Push(Ticks(), RecordingField.TimingStall, 0, 0,
                 (int)Math.Min(sdlMs, int.MaxValue), (int)Math.Min(sweepMs, int.MaxValue), (int)Math.Min(passMs, int.MaxValue));
             Ring.Commit();
@@ -1058,6 +1214,7 @@ namespace PadForge.Common.Recording
         /// microseconds.</summary>
         internal void Gap(long gapTicks, int rateHz)
         {
+            if ((Parts & RecordingParts.Timing) == 0) return;
             Ring.Push(Ticks(), RecordingField.TimingGap, 0, 0,
                 (int)Math.Min(gapTicks * 1_000_000 / Stopwatch.Frequency, int.MaxValue), 1_000_000 / Math.Max(1, rateHz));
             Ring.Commit();
@@ -1089,7 +1246,8 @@ namespace PadForge.Common.Recording
         {
             long span = now - _secondStart;
             _secondStart = now;
-            if (passes <= 0 || span <= 0) return;
+            ForceSecond(now);
+            if (passes <= 0 || span <= 0 || (Parts & RecordingParts.Timing) == 0) return;
             var ring = Ring;
             double perPass = 1e7 / Stopwatch.Frequency / passes;   // tenths of a microsecond a pass, per tick
             int rateMilli = (int)Math.Min(passes * 1000.0 * Stopwatch.Frequency / span, int.MaxValue);

@@ -78,6 +78,7 @@ namespace PadForge.ViewModels
             nameof(DiagnosticsLoggingEnabled) or
             nameof(ProblemRecordingKeepLastMinute) or
             nameof(ProblemRecordingHideTypedKeys) or
+            nameof(ProblemRecordingLeaveOut) or
             nameof(EnableAutoProfileSwitching) or
             nameof(IdentityProtectionModeIndex);
 
@@ -284,6 +285,12 @@ namespace PadForge.ViewModels
                 case nameof(ProblemRecordingHideTypedKeys):
                 {
                     ProblemRecordingHideTypedKeys = false;
+                    break;
+                }
+                case nameof(ProblemRecordingLeaveOut):
+                {
+                    // What to Record: every part on.
+                    ProblemRecordingLeaveOut = 0;
                     break;
                 }
                 case nameof(EnableAutoProfileSwitching):

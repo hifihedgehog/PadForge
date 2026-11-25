@@ -2661,6 +2661,7 @@ namespace PadForge.Common.Input
                 catch (Exception ex)
                 {
                     rec?.Sent(padIndex, PadForge.Engine.Recording.RecordingCodec.SentState.Failed, (int)SlotControllerTypes[padIndex]);
+                    RecordNotFed(rec, padIndex, ex);
                     RaiseSlotError(padIndex, $"Error updating virtual controller for pad {padIndex}", ex);
                 }
             }

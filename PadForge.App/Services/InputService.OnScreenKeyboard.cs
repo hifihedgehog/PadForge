@@ -142,10 +142,9 @@ namespace PadForge.Services
             int slot = view.Slot;
             _oskWindow ??= new Views.OnScreenKeyboardWindow(
                 c => _inputManager?.PostOnScreenKeyboardCommand(c),
-                (cx, cy) =>
+                (x, y) =>
                 {
                     if (_oskOwnerMenu == null) return;
-                    var (x, y) = Views.OnScreenKeyboardWindow.PercentOf(cx, cy);
                     SetKeyboardPlace(_oskOwnerSlot, _oskOwnerMenu, x, y);
                 },
                 scale =>

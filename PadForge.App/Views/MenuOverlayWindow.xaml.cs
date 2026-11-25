@@ -15,10 +15,12 @@ namespace PadForge.Views
     /// never-activated HUD window (ShiftLayerFlyout's exact ex-style set:
     /// WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT plus the
     /// WM_MOUSEACTIVATE refusal) that renders the engaged menu's cells and
-    /// highlights the hovered one. Owned by InputService, which pulls
-    /// InputManager.ActiveMenuOverlay on the ~30 Hz UI timer and calls
-    /// <see cref="UpdateFromSnapshot"/>. Menu or appearance changes rebuild
-    /// the visuals. Other ticks update the hover style.
+    /// highlights the hovered one, on the monitor of the window in front, as
+    /// the flyouts show (<see cref="FlyoutPlacement"/>). Owned by
+    /// InputService, which pulls InputManager.ActiveMenuOverlay on the ~30 Hz
+    /// UI timer and calls <see cref="UpdateFromSnapshot"/>. Menu or
+    /// appearance changes rebuild the visuals. Other ticks update the hover
+    /// style.
     /// </summary>
     public partial class MenuOverlayWindow : Window
     {
@@ -50,6 +52,10 @@ namespace PadForge.Views
 
         private MenuDefinitionEntry _menu;
         private string _geometrySig;
+        /// <summary>The work area of the monitor that held the window in
+        /// front when the overlay came up. It stays while the menu is
+        /// up.</summary>
+        private FlyoutPlacement.WorkArea? _area;
         private (Wpf.Ui.Appearance.ApplicationTheme Theme, Brush Accent, Color? Color, double Opacity) _appearance;
         private int _hovered = int.MinValue;
         private readonly Dictionary<int, Shape> _cellShapes = new();
@@ -68,6 +74,10 @@ namespace PadForge.Views
             // so it does not mirror in a right-to-left language (#505).
             PadForge.Common.UiLanguage.KeepLeftToRight(this);
             Loaded += OnLoaded;
+            // Through a change of scale, at its Screen Position on the monitor
+            // it came up on.
+            FlyoutPlacement.KeepPlace(this, (width, height, _) => _area is { } area && _menu is { } menu
+                ? FlyoutPlacement.AtInPixels(area, width, height, menu.PosXPercent, menu.PosYPercent) : null);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -99,6 +109,9 @@ namespace PadForge.Views
             }
 
             var menu = snap.Menu;
+            // The monitor of the window in front, the game's (#600 item 42),
+            // read once as the overlay comes up, before it shows.
+            if (Visibility != Visibility.Visible) _area = FlyoutPlacement.Front();
             var accent = Application.Current?.TryFindResource("SystemAccentColorPrimaryBrush") as Brush;
             var appearance = (Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme(),
                 accent, (accent as SolidColorBrush)?.Color, accent?.Opacity ?? 1);
@@ -560,16 +573,14 @@ namespace PadForge.Views
 
         /// <summary>Centers the overlay at the menu's configured work-area
         /// position (Steam's touch_menu_position_x/_y percents; 50/50 =
-        /// centered), clamped fully on screen.</summary>
+        /// centered) on the monitor the window in front was on when the
+        /// overlay came up, in that monitor's pixels, clamped fully on
+        /// it.</summary>
         private void PositionOnWorkArea(MenuDefinitionEntry menu)
         {
             UpdateLayout();
-            var wa = SystemParameters.WorkArea;
-            double w = MenuCanvas.Width, h = MenuCanvas.Height;
-            double cx = wa.Left + wa.Width * Math.Clamp(menu.PosXPercent, 0, 100) / 100.0;
-            double cy = wa.Top + wa.Height * Math.Clamp(menu.PosYPercent, 0, 100) / 100.0;
-            Left = Math.Clamp(cx - w / 2, wa.Left, Math.Max(wa.Left, wa.Right - w));
-            Top = Math.Clamp(cy - h / 2, wa.Top, Math.Max(wa.Top, wa.Bottom - h));
+            if (_area is { } area)
+                FlyoutPlacement.PlaceAt(this, area, MenuCanvas.Width, MenuCanvas.Height, menu.PosXPercent, menu.PosYPercent);
         }
     }
 }

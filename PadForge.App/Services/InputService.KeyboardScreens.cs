@@ -149,6 +149,12 @@ namespace PadForge.Services
                 if (!window.InGesture) PlaceScreenOverlay(window, item);
                 if (!window.IsVisible)
                 {
+                    // With no saved place, which is one the user never placed or
+                    // one whose Reset Position came while it was hidden, it is
+                    // centered on the monitor of the window in front (#600 item
+                    // 42), read before it shows.
+                    Views.FlyoutPlacement.WorkArea? front = Views.OverlayPlacement.HasPlace(item.Left, item.Top)
+                        ? null : Views.FlyoutPlacement.Front();
                     window.SetArranging(IsPadForgeForeground());
                     var shown = window;
                     int shownNumber = item.Number;
@@ -158,6 +164,7 @@ namespace PadForge.Services
                         if (_mainVm.Dashboard.FindScreenOverlay(shownNumber) is { } showing) showing.Blank = content.Blank;
                     }, () => new System.Windows.Size(shown.ActualWidth, shown.ActualHeight));
                     window.Show();
+                    if (front is { } area) Views.FlyoutPlacement.CenterOn(window, area, (item.Number - 1) * ScreenOverlayStep);
                 }
                 // Self-heal a saved place no monitor shows, e.g. a now-detached
                 // display.
@@ -175,18 +182,18 @@ namespace PadForge.Services
                 overlay.Left = item.Left;
                 overlay.Top = item.Top;
             }
-            else if (!overlay.IsVisible) CenterScreenOverlay(overlay, item);
         }
 
-        /// <summary>Centered on its monitor, and stepped down and across by its number,
-        /// so a new overlay does not open exactly over the one before it.</summary>
+        /// <summary>How far each overlay after the first opens down and across from
+        /// the center, in DIPs, so a new overlay does not open exactly over the one
+        /// before it.</summary>
+        private const double ScreenOverlayStep = 32;
+
+        /// <summary>Centered on the monitor it is on, which for one the user never
+        /// placed is the monitor it opened on, and stepped down and across by its
+        /// number. Reset Position does this for an overlay that is up.</summary>
         private static void CenterScreenOverlay(Views.ScreenOverlay overlay, ScreenOverlayItem item)
-        {
-            const double step = 32;
-            Views.OverlayPlacement.MoveToMonitor(overlay, item.Monitor);
-            overlay.Left += (item.Number - 1) * step;
-            overlay.Top += (item.Number - 1) * step;
-        }
+            => Views.FlyoutPlacement.CenterOn(overlay, Views.FlyoutPlacement.Of(overlay), (item.Number - 1) * ScreenOverlayStep);
 
         private void CloseScreenOverlay(int number)
         {
@@ -248,7 +255,8 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    // No saved place: the next show centers on the monitor.
+                    // No saved place: the next show centers it on the monitor of
+                    // the window in front (SyncScreenOverlays).
                     item.Left = Views.OverlayPlacement.NoPlace;
                     item.Top = Views.OverlayPlacement.NoPlace;
                 }

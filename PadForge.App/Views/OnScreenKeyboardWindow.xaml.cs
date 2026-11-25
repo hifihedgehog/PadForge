@@ -46,7 +46,9 @@ namespace PadForge.Views
         private const double EdgeMargin = 12;
 
         private readonly Action<OskCommand> _post;
-        private readonly Action<double, double> _moved;
+        /// <summary>The menu's Screen Position a drag left the keyboard
+        /// at.</summary>
+        private readonly Action<int, int> _moved;
         private readonly Action<int> _resized;
 
         private sealed class KeyVisual
@@ -64,11 +66,15 @@ namespace PadForge.Views
         private string _shape;
         private (bool Dark, Brush Accent) _theme;
         private string _hintsKey;
-        private (int X, int Y, double W, double H, Rect WorkArea) _placed;
+        private (int X, int Y, double W, double H, FlyoutPlacement.WorkArea Area) _placed;
+        /// <summary>The work area of the monitor that held the window in
+        /// front when the keyboard opened, or of the monitor a drag left it
+        /// on.</summary>
+        private FlyoutPlacement.WorkArea? _area;
 
         private Brush _fill, _stroke, _text, _muted, _accent, _accentRight, _latch, _onAccent;
 
-        internal OnScreenKeyboardWindow(Action<OskCommand> post, Action<double, double> moved, Action<int> resized)
+        internal OnScreenKeyboardWindow(Action<OskCommand> post, Action<int, int> moved, Action<int> resized)
         {
             _post = post;
             _moved = moved;
@@ -78,6 +84,12 @@ namespace PadForge.Views
             // The keys keep a keyboard's physical order in every language.
             PadForge.Common.UiLanguage.KeepLeftToRight(this);
             Loaded += OnLoaded;
+            // Through a change of scale, at its Screen Position with its margin
+            // at the new scale, unless the user is dragging or sizing it: then
+            // Windows' rectangle stands, which keeps it under the pointer.
+            FlyoutPlacement.KeepPlace(this, (width, height, scale) => !_dragging && !_resizing && _area is { } area && _placed.Area == area
+                ? FlyoutPlacement.AtInPixels(area, width, height, _placed.X, _placed.Y, (int)Math.Round(EdgeMargin * scale, MidpointRounding.AwayFromZero))
+                : null);
             Grip.MouseLeftButtonDown += DragStart;
             TitleText.MouseLeftButtonDown += DragStart;
             MouseMove += OnDragMove;
@@ -156,7 +168,15 @@ namespace PadForge.Views
                 double scale = Math.Clamp(menu.ScalePercent, MinScalePercent, MaxScalePercent) / 100.0;
                 Scale.ScaleX = Scale.ScaleY = scale;
             }
-            if (Visibility != Visibility.Visible) Show();
+            if (Visibility != Visibility.Visible)
+            {
+                // The monitor of the window in front, which the keys type
+                // into (#600 item 42), read once as the keyboard opens,
+                // before it shows.
+                _area = FlyoutPlacement.Front();
+                _placed = default;
+                Show();
+            }
             Place(menu);
         }
 
@@ -704,15 +724,19 @@ namespace PadForge.Views
 
         /// <summary>Puts the window's center at the menu's Screen Position, in
         /// percent of the work area, where MenuOverlayWindow puts a menu, and
-        /// keeps it a margin inside the work area. A keyboard larger than the
-        /// work area shrinks to fit, so its close button stays on screen.</summary>
+        /// keeps it a margin inside the work area. The work area is that of
+        /// the monitor in front when the keyboard opened, or of the one a
+        /// drag left it on, in that monitor's pixels. A keyboard larger than
+        /// the work area shrinks to fit, so its close button stays on
+        /// screen.</summary>
         private void Place(MenuDefinitionEntry menu)
         {
-            if (_dragging || _resizing) return;
-            var wa = SystemParameters.WorkArea;
+            if (_dragging || _resizing || _area is not { } area) return;
             UpdateLayout();
             double w = ActualWidth, h = ActualHeight;
-            double room = Math.Min((wa.Width - 2 * EdgeMargin) / Math.Max(1, w), (wa.Height - 2 * EdgeMargin) / Math.Max(1, h));
+            // The work area in DIPs, at its monitor's scale.
+            double roomW = area.Width / area.Scale - 2 * EdgeMargin, roomH = area.Height / area.Scale - 2 * EdgeMargin;
+            double room = Math.Min(roomW / Math.Max(1, w), roomH / Math.Max(1, h));
             if (room > 0 && room < 1)
             {
                 double fit = Math.Max(MinScalePercent / 100.0, Scale.ScaleX * room);
@@ -721,29 +745,11 @@ namespace PadForge.Views
                 w = ActualWidth;
                 h = ActualHeight;
             }
-            var key = (menu.PosXPercent, menu.PosYPercent, w, h, wa);
+            var key = (menu.PosXPercent, menu.PosYPercent, w, h, area);
             if (key == _placed) return;
             _placed = key;
-            double cx = wa.Left + wa.Width * Math.Clamp(menu.PosXPercent, 0, 100) / 100.0;
-            double cy = wa.Top + wa.Height * Math.Clamp(menu.PosYPercent, 0, 100) / 100.0;
-            double minL = wa.Left + EdgeMargin, minT = wa.Top + EdgeMargin;
-            Left = Math.Clamp(cx - w / 2, minL, Math.Max(minL, wa.Right - EdgeMargin - w));
-            Top = Math.Clamp(cy - h / 2, minT, Math.Max(minT, wa.Bottom - EdgeMargin - h));
+            FlyoutPlacement.PlaceAt(this, area, w, h, menu.PosXPercent, menu.PosYPercent, EdgeMargin);
         }
-
-        /// <summary>A center in screen DIPs as the Screen Position percents of
-        /// the work area, the inverse of <see cref="Place"/>.</summary>
-        internal static (int X, int Y) PercentOf(double cx, double cy)
-        {
-            var wa = SystemParameters.WorkArea;
-            int x = (int)Math.Round(Math.Clamp((cx - wa.Left) / Math.Max(1, wa.Width) * 100, 0, 100));
-            int y = (int)Math.Round(Math.Clamp((cy - wa.Top) / Math.Max(1, wa.Height) * 100, 0, 100));
-            return (x, y);
-        }
-
-        /// <summary>The window's center in screen DIPs, for a controller's
-        /// hold-to-move to start from where it is.</summary>
-        internal (double X, double Y) Center() => (Left + ActualWidth / 2, Top + ActualHeight / 2);
 
         private void DragStart(object sender, MouseButtonEventArgs e)
         {
@@ -761,14 +767,18 @@ namespace PadForge.Views
             Top += p.Y - _grab.Y;
         }
 
+        /// <summary>A drag ended: the keyboard keeps the monitor it was
+        /// dropped on, and its center there is the menu's new Screen
+        /// Position.</summary>
         private void DragEnd(object sender, MouseButtonEventArgs e)
         {
             if (!_dragging) return;
             _dragging = false;
             ReleaseMouseCapture();
             _placed = default;
-            var (cx, cy) = Center();
-            _moved(cx, cy);
+            if (FlyoutPlacement.PositionOf(this) is not { } dropped) return;
+            _area = dropped.Area;
+            _moved(dropped.X, dropped.Y);
         }
 
         // ── Size (the grip in the bottom-right corner) ─────────

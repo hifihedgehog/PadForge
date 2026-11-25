@@ -129,8 +129,11 @@ namespace PadForge.Views
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            // A long list scrolls inside the body rather than running off the screen.
-            double cap = SystemParameters.WorkArea.Height - 64;
+            // A long list scrolls inside the body rather than running off the
+            // screen of the monitor the dialog opens on: its owner's, which it
+            // opens over, or its own with no owner.
+            IntPtr on = Owner != null ? new WindowInteropHelper(Owner).Handle : new WindowInteropHelper(this).Handle;
+            double cap = FlyoutPlacement.DipsOf(on).Height - 64;
             if (cap > 200 && MaxHeight > cap) MaxHeight = cap;
             ApplyEdge();
             // The theme is followed from here, where the window has come to

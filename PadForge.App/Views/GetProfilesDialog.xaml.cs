@@ -140,12 +140,12 @@ namespace PadForge.Views
         }
 
         /// <summary>Gives the window the tab's size, held inside 95% of the
-        /// work area. Once shown, a change of size re-centers the window on
-        /// its owner, inside the work area.</summary>
+        /// work area of the monitor it is on. Once shown, a change of size
+        /// re-centers the window on its owner, inside that work area.</summary>
         private void ApplySize(GetProfilesTab tab, bool recenter)
         {
             var size = SizeFor(tab);
-            Rect area = SystemParameters.WorkArea;
+            Rect area = WorkArea();
             double width = Math.Min(size.Width, area.Width * 0.95);
             double height = Math.Min(size.Height, area.Height * 0.95);
             MinWidth = Math.Min(size.MinWidth, width);
@@ -163,6 +163,17 @@ namespace PadForge.Views
             double top = over.Top + (over.Height - height) / 2;
             Left = Math.Max(area.Left, Math.Min(left, area.Right - width));
             Top = Math.Max(area.Top, Math.Min(top, area.Bottom - height));
+        }
+
+        /// <summary>The work area of the monitor the window is on, in its
+        /// DIPs: its owner's before it has a handle of its own, the primary
+        /// monitor's with neither. A window that has not loaded sizes itself
+        /// again from its own monitor when it loads (ShowTab).</summary>
+        private Rect WorkArea()
+        {
+            IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            if (hwnd == IntPtr.Zero && Owner != null) hwnd = new System.Windows.Interop.WindowInteropHelper(Owner).Handle;
+            return FlyoutPlacement.DipsOf(hwnd);
         }
 
         private void Close_Click(object sender, RoutedEventArgs e) => Close();

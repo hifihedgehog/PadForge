@@ -14525,22 +14525,27 @@ namespace PadForge.Services
                 _touchpadOverlay.Width = dash.TouchpadOverlayWidth;
                 _touchpadOverlay.Height = dash.TouchpadOverlayHeight;
 
-                // Restore persisted position or center on monitor. Only (-1, -1)
-                // means no saved place: a monitor left of or above the primary
-                // has negative coordinates, and EnsureOnScreen below heals one
-                // that no monitor shows.
+                // Restore persisted position. Only (-1, -1) means no saved
+                // place: a monitor left of or above the primary has negative
+                // coordinates, and EnsureOnScreen below heals one that no
+                // monitor shows. With no saved place, which is one the user
+                // never placed or one whose Reset Position came while it was
+                // hidden, it is centered on the monitor of the window in front
+                // (#600 item 42), read before it shows.
+                Views.FlyoutPlacement.WorkArea? front = null;
                 if (dash.TouchpadOverlayLeft != -1 || dash.TouchpadOverlayTop != -1)
                 {
                     _touchpadOverlay.Left = dash.TouchpadOverlayLeft;
                     _touchpadOverlay.Top = dash.TouchpadOverlayTop;
                 }
-                else
+                else if (!_touchpadOverlay.IsVisible)
                 {
-                    _touchpadOverlay.MoveToMonitor(dash.TouchpadOverlayMonitor);
+                    front = Views.FlyoutPlacement.Front();
                 }
 
                 _touchpadOverlay.SetSurfaceOpacity(dash.TouchpadOverlayOpacity);
                 _touchpadOverlay.Show();
+                if (front is { } area) Views.FlyoutPlacement.CenterOn(_touchpadOverlay, area);
                 // Self-heal stale off-screen saves (e.g. from older builds
                 // where centering on a scaled monitor pushed the window past
                 // the physical edge, or a now-detached display).
@@ -14612,14 +14617,16 @@ namespace PadForge.Services
                 var dash = _mainVm.Dashboard;
                 if (_touchpadOverlay != null && _touchpadOverlay.IsVisible)
                 {
-                    // Recenter live, then capture the new DIPs into settings.
-                    _touchpadOverlay.MoveToMonitor(dash.TouchpadOverlayMonitor);
+                    // Recenter live on the monitor it is on, which for one the
+                    // user never placed is the monitor it opened on, then
+                    // capture the new DIPs into settings.
+                    Views.FlyoutPlacement.CenterOn(_touchpadOverlay, Views.FlyoutPlacement.Of(_touchpadOverlay));
                     OnTouchpadOverlayPositionChanged();
                 }
                 else
                 {
-                    // Clear the saved coords so the next Show() takes the
-                    // MoveToMonitor branch in ShowTouchpadOverlay.
+                    // Clear the saved coords so the next Show() centers it on
+                    // the monitor of the window in front (ShowTouchpadOverlay).
                     dash.TouchpadOverlayLeft = -1;
                     dash.TouchpadOverlayTop = -1;
                 }

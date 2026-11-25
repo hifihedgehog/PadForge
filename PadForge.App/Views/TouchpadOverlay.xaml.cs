@@ -350,9 +350,6 @@ namespace PadForge.Views
         //  Monitor
         // ─────────────────────────────────────────────
 
-        /// <summary>Moves the overlay to the specified monitor index.</summary>
-        public void MoveToMonitor(int monitorIndex) => OverlayPlacement.MoveToMonitor(this, monitorIndex);
-
         /// <summary>Re-centers on the requested monitor when no monitor shows the overlay.</summary>
         public void EnsureOnScreen(int preferredMonitor) => OverlayPlacement.EnsureOnScreen(this, preferredMonitor);
 

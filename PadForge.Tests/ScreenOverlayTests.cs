@@ -2049,6 +2049,12 @@ namespace PadForge.Tests
                 one.Opacity = 0.5;
                 one.Width = 200;
                 one.Height = 120;
+                // An overlay with no saved place opens on the monitor of the
+                // window in front. No window in front makes that the primary
+                // monitor, which the steps below compare with monitor 0,
+                // wherever the test host's own window is.
+                var savedFront = FlyoutPlacement.ForegroundSeam;
+                FlyoutPlacement.ForegroundSeam = () => IntPtr.Zero;
                 try
                 {
                     // Off: no window.
@@ -2222,6 +2228,7 @@ namespace PadForge.Tests
                 }
                 finally
                 {
+                    FlyoutPlacement.ForegroundSeam = savedFront;
                     Invoke<object>(input, "CloseScreenOverlays");
                 }
                 Assert.Empty(windows);

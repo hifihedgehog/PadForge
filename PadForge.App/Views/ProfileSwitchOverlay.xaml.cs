@@ -94,6 +94,9 @@ namespace PadForge.Views
             {
                 if (IsVisible && _placedOn is { } area) FlyoutPlacement.Place(this, area);
             };
+            // Through a change of scale, at the bottom center of the monitor
+            // it was put on.
+            FlyoutPlacement.KeepPlace(this, (width, height, _) => _placedOn is { } area ? FlyoutPlacement.BottomCenterInPixels(area, width, height) : null);
 
             _dismissTimer = new DispatcherTimer { Interval = NoteTime };
             _initMonitorTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };

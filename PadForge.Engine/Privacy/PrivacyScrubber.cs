@@ -498,8 +498,9 @@ namespace PadForge.Engine.Privacy
             name = ReplaceKnownLocked(name, Counting.Place);
             if (cut < 0) return name;
 
-            _places[(int)PrivateKind.Folder]++;
             string folder = TrimFolder(normal.Substring(0, cut));
+            // A folder the known-value pass replaced was counted there.
+            if (!folder.StartsWith(FolderStandIn, StringComparison.Ordinal)) _places[(int)PrivateKind.Folder]++;
             bool own = _appFolder.Length > 0 && string.Equals(folder, _appFolder, StringComparison.OrdinalIgnoreCase);
             return (own ? AppFolderStandIn : FolderStandIn) + "\\" + name;
         }
@@ -660,12 +661,14 @@ namespace PadForge.Engine.Privacy
         // known-value pass wrote into a name.
         private const string NameAtom = "(?:" + StandInShape + @"|[^\\/:*?""|<>\r\n\s])";
 
-        // A web address, then a path on a drive or a share. A folder's name
+        // A web address, then a path on a drive or a share, or under a folder
+        // the known-value pass already replaced (the user's profile folder,
+        // known whole), whose folders after it go too (#600). A folder's name
         // can hold one space between two runs, as Program Files does, and a
         // file's name ends at the first space.
         private static readonly Regex UrlOrPath = new(
             @"(?<url>(?<![A-Za-z0-9])[A-Za-z][A-Za-z0-9+.\-]{1,15}://(?:" + StandInShape + @"|[^\s""'|<>])+)"
-            + @"|(?<path>(?:(?<![A-Za-z0-9])[A-Za-z]:|\\\\[A-Za-z0-9._$\-]+)[\\/](?:" + NameAtom + "+(?: " + NameAtom + @"+)*[\\/])*" + NameAtom + "*)",
+            + @"|(?<path>(?:(?<![A-Za-z0-9])[A-Za-z]:|\\\\[A-Za-z0-9._$\-]+|" + FolderStandIn + @")[\\/](?:" + NameAtom + "+(?: " + NameAtom + @"+)*[\\/])*" + NameAtom + "*)",
             RegexOptions.CultureInvariant | RegexOptions.Compiled, SearchLimit);
 
         // Everything that is one run with a telling shape. A stand-in comes

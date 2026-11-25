@@ -526,6 +526,19 @@ namespace PadForge.Common.Recording
             return null;
         }
 
+        /// <summary>Writes a line the recorder makes itself about one
+        /// device, at a time of the file, its text scrubbed: what it says of
+        /// a device as the file ends (#600).</summary>
+        internal void Own(long ticks, char layer, UserDevice device, string text)
+        {
+            Close();
+            string alias = Declare(device, ticks);
+            if (!Holds(layer)) return;
+            RecordingCodec.AppendTime(Out, Micros(ticks));
+            Out.Append(' ').Append(layer).Append(' ').Append(alias).Append(' ').Append(_scrubber.Text(text ?? string.Empty)).Append(NewLine);
+            Lines++;
+        }
+
         /// <summary>Writes a line the recorder makes itself, at a time of
         /// the file: its start, its stop, the changes it had no room for.</summary>
         internal void Own(long ticks, char layer, string text)

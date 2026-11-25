@@ -343,6 +343,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Recording.RecordingFolder.OffLimitsForTest);
             Assert.True(PadForge.Common.Recording.NativeCrashRecord.OffLimitsForTest);
             Assert.True(PadForge.Common.Recording.XInputReadBack.OffLimitsForTest);
+            Assert.True(PadForge.Common.Recording.ForceActuators.OffLimitsForTest);
             Assert.True(PadForge.Services.Automation.Web.WebTunnels.OffLimitsForTest);
         }
 

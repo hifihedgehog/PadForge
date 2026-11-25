@@ -321,11 +321,22 @@ namespace PadForge.Common.Input
             packet[77] = (byte)((crc >> 24) & 0xFF);
         }
 
+        /// <summary>Writes one report to the pad. A problem recording names
+        /// the write with its pad, so one that takes long is written and one
+        /// that does not return is said while it hangs (#600).</summary>
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
             // The test host opens no device (DirectDeviceAccess).
             if (DirectDeviceAccess.Refuses(devicePath)) return false;
+            var call = Recording.RecordingTaps.BeginWrite(devicePath);
+            try { return WriteReport(devicePath, buf); }
+            finally { Recording.RecordingTaps.EndWrite(call); }
+        }
 
+        /// <summary>The report's write itself, past the test host's guard in
+        /// <see cref="WriteRaw"/>.</summary>
+        private static bool WriteReport(string devicePath, byte[] buf)
+        {
             // Open-per-write, the pre-2026-07-20 shape, RESTORED after a
             // field regression: a held-open Bluetooth HID handle made
             // DualSense rumble discontinuous (regression confirmed on

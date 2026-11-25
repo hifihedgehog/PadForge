@@ -74,6 +74,30 @@ namespace PadForge.Services
             TakeNote(layer, slot, device, text() + (since > 0 ? " (and " + since.ToString(CultureInfo.InvariantCulture) + " times more since it was last said)" : string.Empty));
         }
 
+        /// <summary>Whether a failed read that makes a run
+        /// <paramref name="inARow"/> long is written: the first of a run and
+        /// each time its count doubles, so a device that fails every pass
+        /// writes a line a doubling, never one a pass (#600).</summary>
+        internal static bool WritesReadFailure(int inARow) => inARow > 0 && (inARow & (inARow - 1)) == 0;
+
+        /// <summary>A failed read (#600): how many reads of the device have
+        /// failed in a row, and the error's own text.</summary>
+        internal void TakeReadFailed(UserDevice device, int inARow, string error)
+        {
+            if (!WritesReadFailure(inARow)) return;
+            TakeNote(RecordingCodec.LayerReader, -1, device, "read failed " + inARow.ToString(CultureInfo.InvariantCulture)
+                + (inARow == 1 ? " time" : " times") + " in a row" + (string.IsNullOrEmpty(error) ? string.Empty : ": " + error));
+        }
+
+        /// <summary>A good read that ends a run of failed ones (#600), with
+        /// the run's length.</summary>
+        internal void TakeReadsAgain(UserDevice device, int after)
+        {
+            if (after <= 0) return;
+            TakeNote(RecordingCodec.LayerReader, -1, device, "reads again after " + after.ToString(CultureInfo.InvariantCulture)
+                + (after == 1 ? " failed read" : " failed reads"));
+        }
+
         /// <summary>The most exceptions one recording writes. Past it they
         /// are counted.</summary>
         internal const int MostExceptions = 40;
@@ -124,8 +148,16 @@ namespace PadForge.Services
             private readonly ProblemRecorder _owner;
             public ForceEar(ProblemRecorder owner) => _owner = owner;
 
-            public void Update(ISdlInputDevice device, bool made, bool started)
-                => RecordingCapture.Active?.CountForce(device, made, started);
+            public void Update(ISdlInputDevice device, uint effectType, bool made, bool started)
+            {
+                var capture = RecordingCapture.Active;
+                if (capture == null) return;
+                capture.CountForce(device, made, started);
+                capture.ForceKind(device, effectType, refused: false);
+            }
+
+            public void Forcing(ISdlInputDevice device)
+                => RecordingCapture.Active?.CallIs(RecordingCodec.CallKind.Force);
 
             public void Stopped(ISdlInputDevice device)
             {
@@ -139,6 +171,9 @@ namespace PadForge.Services
             {
                 var capture = RecordingCapture.Active;
                 if (capture == null || (capture.Parts & RecordingParts.Feedback) == 0) return;
+                // A kind the device would not make is one it refused. One it
+                // made and could not start is a failure only.
+                if (what == ForceTrace.Making) capture.ForceKind(device, effectType, refused: true);
                 _owner.TakeRepeatedNote(RecordingCodec.LayerFeedback, -1, capture.DeviceOfTrack(capture.TrackOfLive(device)),
                     "failed " + what + " " + effectType.ToString(CultureInfo.InvariantCulture), () =>
                     {
@@ -171,7 +206,8 @@ namespace PadForge.Services
         /// Input's list come. A test shortens it.</summary>
         internal TimeSpan HealthEvery = TimeSpan.FromSeconds(10);
 
-        private long _stallSince, _stallSaid, _callSaid, _callSaidFor, _noPassSince, _noPassSaid, _healthAt;
+        private long _stallSince, _stallSaid, _noPassSince, _noPassSaid, _healthAt;
+        private readonly long[] _callSaid = new long[RecordingCapture.CallSlots], _callSaidFor = new long[RecordingCapture.CallSlots];
         private string _shownSaid, _programsSaid;
         private readonly XInputRead[] _reads = new XInputRead[XInputReadBack.Places];
         private readonly bool[] _readKnown = new bool[XInputReadBack.Places];
@@ -190,11 +226,15 @@ namespace PadForge.Services
         /// <summary>Forgets what the watch said, for a new capture.</summary>
         private void ResetWatch()
         {
-            _stallSaid = _callSaid = _callSaidFor = _noPassSince = _noPassSaid = 0;
+            _stallSaid = _noPassSince = _noPassSaid = 0;
+            Array.Clear(_callSaid);
+            Array.Clear(_callSaidFor);
             _healthAt = 0;
             _shownSaid = null;
             _programsSaid = null;
             Array.Clear(_readKnown);
+            Array.Clear(_refusedSaid);
+            _motorsNamed.Clear();
             Array.Clear(_placeCheckedAt);
             Array.Fill(_placeOf, -1);
             _rawListed.Clear();
@@ -243,6 +283,11 @@ namespace PadForge.Services
                 WatchPasses(capture);
             }
             if ((parts & RecordingParts.Output) != 0 || (parts & RecordingParts.Input) != 0) WatchXInput(capture, parts);
+            if ((parts & RecordingParts.Feedback) != 0)
+            {
+                WatchForceKinds(capture);
+                WatchMotors(capture);
+            }
             if (_healthAt == 0 || now - _healthAt >= Seconds(HealthEvery))
             {
                 bool first = _healthAt == 0;
@@ -298,17 +343,35 @@ namespace PadForge.Services
             formatter.Own(now, RecordingCodec.LayerWindow, "window still not answering as the recording ends");
         }
 
+        /// <summary>Says each device call that has not returned after
+        /// <see cref="SilentFor"/>, on this thread, never the one in the call:
+        /// the poll thread's and every other thread's, again each
+        /// <see cref="SaidAgainEvery"/> while it hangs.</summary>
         private void WatchCall(RecordingCapture capture)
         {
-            var (track, kind, start) = capture.CallUnderWay;
-            if (track < 0 || start == 0) return;
-            long age = capture.Ticks() - start;
-            if (age < Seconds(SilentFor)) return;
-            if (_callSaidFor == start && capture.Ticks() - _callSaid < Seconds(SaidAgainEvery)) return;
-            _callSaidFor = start;
-            _callSaid = capture.Ticks();
-            Line(RecordingCodec.LayerTiming, "has been in its " + RecordingCodec.CallKind.Word(kind) + " for " + S((double)age / Stopwatch.Frequency),
-                capture.DeviceOfTrack(track));
+            long now = capture.Ticks();
+            for (int slot = 0; slot < RecordingCapture.CallSlots; slot++)
+            {
+                var (track, kind, start) = capture.CallIn(slot);
+                if (track < 0 || start == 0) continue;
+                long age = now - start;
+                if (age < Seconds(SilentFor)) continue;
+                if (_callSaidFor[slot] == start && now - _callSaid[slot] < Seconds(SaidAgainEvery)) continue;
+                _callSaidFor[slot] = start;
+                _callSaid[slot] = now;
+                Line(RecordingCodec.LayerTiming, "has been in its " + RecordingCodec.CallKind.Phrase(kind) + " for " + S((double)age / Stopwatch.Frequency),
+                    capture.DeviceOfTrack(track));
+            }
+        }
+
+        /// <summary>A call made on a thread other than the poll thread that
+        /// took long (#600), written as the poll thread's are: with its
+        /// device, how long it took and what it was.</summary>
+        internal void TakeSlowCall(UserDevice device, int kind, long ms)
+        {
+            if (device == null || ms < RecordingCapture.SlowCallMs) return;
+            TakeNote(RecordingCodec.LayerTiming, -1, device, "took ms=" + ms.ToString(CultureInfo.InvariantCulture)
+                + " call=" + RecordingCodec.CallKind.Word(kind));
         }
 
         private void WatchPasses(RecordingCapture capture)
@@ -339,13 +402,114 @@ namespace PadForge.Services
         }
 
         // ─────────────────────────────────────────────
+        //  The effect kinds each device refused
+        // ─────────────────────────────────────────────
+
+        private readonly uint[] _refusedSaid = new uint[RecordingCapture.MaxDevices];
+
+        /// <summary>Says when the effect kinds a device refuses change: the
+        /// kinds it refuses now, or that it takes every effect asked of it
+        /// once it takes the last kind it refused (#600).</summary>
+        private void WatchForceKinds(RecordingCapture capture)
+        {
+            int count = capture.DeviceCount;
+            for (int i = 0; i < count; i++)
+            {
+                uint refused = capture.ForceKinds(i).Refused;
+                if (refused == _refusedSaid[i]) continue;
+                _refusedSaid[i] = refused;
+                Line(RecordingCodec.LayerFeedback, refused != 0 ? "refused effects: " + KindWords(refused) : "takes every effect asked of it",
+                    capture.DeviceOfTrack(i));
+            }
+        }
+
+        /// <summary>Each device asked for an effect, as the file ends: the
+        /// kinds asked, and the kinds it refused or that it takes every
+        /// effect asked of it (#600).</summary>
+        private void ForceKindsAtEnd(RecordingFormatter formatter, long now)
+        {
+            var capture = _capture;
+            if (capture == null) return;
+            int count = capture.DeviceCount;
+            for (int i = 0; i < count; i++)
+            {
+                var (asked, refused) = capture.ForceKinds(i);
+                var device = capture.DeviceOfTrack(i);
+                if (asked == 0 || device == null) continue;
+                formatter.Own(now, RecordingCodec.LayerFeedback, device, "effects asked: " + KindWords(asked)
+                    + (refused != 0 ? ". Refused: " + KindWords(refused) + "." : ". Takes every effect asked of it."));
+            }
+        }
+
+        private readonly HashSet<UserDevice> _motorsNamed = new();
+
+        /// <summary>Names the axes each force-feedback device's motors act on
+        /// that this file has not named yet, once a read made on a thread of
+        /// its own kept them: a device the header could not name, and one
+        /// first connected while recording (#600). A product not yet read is
+        /// asked for, and one DirectInput did not list is let be.</summary>
+        private void WatchMotors(RecordingCapture capture)
+        {
+            int count = capture.DeviceCount;
+            for (int i = 0; i < count; i++)
+            {
+                var device = capture.DeviceOfTrack(i);
+                if (device == null || !device.IsOnline || _motorsNamed.Contains(device) || !RecorderHost.HasMotors(device)) continue;
+                var names = Host.KeptMotorAxisNames(device);
+                if (names != null && names.Count > 0)
+                {
+                    _motorsNamed.Add(device);
+                    Line(RecordingCodec.LayerFeedback, "motors act on " + ForceActuators.Join(names), device);
+                }
+                else if (!ForceActuators.Missed(device.VendorId, device.ProdId))
+                {
+                    ForceActuators.ReadSoon();
+                }
+            }
+        }
+
+        /// <summary>Effect kinds as their words, in SDL's order.</summary>
+        internal static string KindWords(uint kinds)
+        {
+            var sb = new StringBuilder();
+            for (int bit = 0; bit < 32; bit++)
+            {
+                uint kind = 1u << bit;
+                if ((kinds & kind) == 0) continue;
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append(ForceTrace.KindWord(kind));
+            }
+            return sb.ToString();
+        }
+
+        // ─────────────────────────────────────────────
         //  XInput: what a game reads back, and a second reader of a pad
         // ─────────────────────────────────────────────
 
-        /// <summary>How far two readers of one stick may differ, and how long
-        /// a difference must last, before the file says they disagree.</summary>
-        internal const int DisagreeAxis = 4096;
-        internal static readonly TimeSpan DisagreeFor = TimeSpan.FromMilliseconds(300);
+        /// <summary>How far two readers of one stick may differ, and of one
+        /// trigger in XInput's bytes, a sixteenth of the travel each, before
+        /// the file says they disagree.</summary>
+        internal const int DisagreeAxis = 4096, DisagreeTrigger = 16;
+
+        /// <summary>
+        /// How long a difference must last before the file says the two
+        /// readers disagree. The watch looks once a flush, every 100 ms, so
+        /// this is the same difference at two looks running.
+        ///
+        /// <para>Measured on 2026-11-25 on a 32-processor PC: both readers of a
+        /// pad at XInput place 1 fed from the Test Controller's fastest sweep
+        /// (Move Time 0.5 s, no rest, every button pressed for 50 ms, the
+        /// D-pad turning), PadForge's reader at 1,000 passes a second through
+        /// the real capture, flush and watch. No line in 60 s of the sweep,
+        /// 60 s of the circle, or 60 s of the sweep with every processor
+        /// busy, while XInput holding Back down was said 9 to 10 times in the
+        /// 10 s after each (RecorderReaderComparisonTests).</para>
+        /// </summary>
+        internal static readonly TimeSpan DisagreeFor = TimeSpan.FromMilliseconds(100);
+
+        /// <summary>How long the engine may run no pass before PadForge's
+        /// reader's last state is too old to compare with XInput's.</summary>
+        internal static readonly TimeSpan ReaderStaleAfter = TimeSpan.FromMilliseconds(200);
 
         private void WatchXInput(RecordingCapture capture, RecordingParts parts)
         {
@@ -388,6 +552,11 @@ namespace PadForge.Services
                 }
             }
             if ((parts & RecordingParts.Input) == 0 || live == null) return;
+            // PadForge's reader is read on the poll thread. Suspended behind
+            // another window, or with no pass for a while, its last state is
+            // old, and a difference from XInput's read now is no
+            // disagreement. An idle engine still reads, 20 passes a second.
+            if (capture.RestState == 2 || capture.Ticks() - capture.LastPass > Seconds(ReaderStaleAfter)) return;
             for (int i = 0; i < count; i++)
             {
                 var device = capture.DeviceOfTrack(i);
@@ -428,8 +597,9 @@ namespace PadForge.Services
 
         /// <summary>How XInput's reading of a pad differs from PadForge's own
         /// reader's (the gamepad layout SDL gives), or null when they agree:
-        /// a button either side has and the other has not, or a stick more
-        /// than <see cref="DisagreeAxis"/> apart.</summary>
+        /// a button either side has and the other has not, the D-pad at
+        /// another angle, a stick more than <see cref="DisagreeAxis"/> apart,
+        /// or a trigger more than <see cref="DisagreeTrigger"/>.</summary>
         internal static string Difference(CustomInputState state, XInputRead read)
         {
             if (!read.Connected) return null;
@@ -440,6 +610,17 @@ namespace PadForge.Services
                 if (x == own) continue;
                 if (sb.Length > 0) sb.Append(", ");
                 sb.Append(RecordingControlNames.GamepadButtons[button]).Append(x ? " down" : " up").Append(" while PadForge's reader reads it ").Append(own ? "down" : "up");
+            }
+            // XInput's four D-pad bits as SDL turns them into an angle
+            // (SdlDeviceWrapper.DpadToCentidegrees), in hundredths of a
+            // degree or -1, as the reader's hat is written.
+            int hat = SdlDeviceWrapper.DpadToCentidegrees((read.Buttons & Gamepad.DPAD_UP) != 0, (read.Buttons & Gamepad.DPAD_DOWN) != 0,
+                (read.Buttons & Gamepad.DPAD_LEFT) != 0, (read.Buttons & Gamepad.DPAD_RIGHT) != 0);
+            if (hat != state.Povs[0])
+            {
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append("DPad ").Append(hat.ToString(CultureInfo.InvariantCulture))
+                  .Append(" while PadForge's reader reads ").Append(state.Povs[0].ToString(CultureInfo.InvariantCulture));
             }
             void Stick(string name, int own, int x)
             {
@@ -453,6 +634,16 @@ namespace PadForge.Services
             Stick("LeftY", 32767 - state.Axis[1], read.LeftY);
             Stick("RightX", state.Axis[3] - 32768, read.RightX);
             Stick("RightY", 32767 - state.Axis[4], read.RightY);
+            // XInput's triggers are bytes, the reader's run 0 to 65535.
+            void Trigger(string name, int own, int x)
+            {
+                if (Math.Abs(own - x) <= DisagreeTrigger) return;
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append(name).Append(' ').Append(x.ToString(CultureInfo.InvariantCulture))
+                  .Append(" while PadForge's reader reads ").Append(own.ToString(CultureInfo.InvariantCulture));
+            }
+            Trigger("LeftTrigger", state.Axis[2] >> 8, read.LeftTrigger);
+            Trigger("RightTrigger", state.Axis[5] >> 8, read.RightTrigger);
             return sb.Length == 0 ? null : sb.ToString();
         }
 
@@ -582,7 +773,7 @@ namespace PadForge.Services
 
         /// <summary>Once a second on the window's thread, where the settings
         /// live: every setting changed since the last look, and a device whose
-        /// hold changed (shared, only PadForge, hidden).</summary>
+        /// hold changed (shared, exclusive, hidden).</summary>
         private void WatchSettings()
         {
             var capture = _capture;

@@ -93,10 +93,13 @@ body:
       description: >-
         Required. Reports without a log file are closed automatically. In PadForge, open Settings and find
         the Diagnostics card. Click Start Recording on the Record a Problem row, make the problem happen,
-        then click Stop Recording. PadForge selects the recording in Explorer. Drag that one file,
-        PadForge-recording-(date).zip, into this box as it is, and crash.log too if PadForge crashed. For a problem
-        you cannot make happen on demand, turn on Keep a Diagnostics Log instead, and when it happens click
-        Save Snapshot and drag diagnostics.log and the snapshot file here.
+        then click Stop Recording. PadForge opens the recording for you to review, part by part. Click
+        Save…, pick where it goes, and drag that one file, PadForge-recording-(date).zip, into this box as
+        it is. If PadForge crashed, add crash.log from PadForge's own folder. Copy Summary puts the
+        recording's summary on the clipboard for the Description box above. For a problem you cannot make
+        happen on demand, turn on Keep the Last 60 Seconds under the card's More, then click Save the Last
+        60 Seconds when the problem comes. Save a Snapshot takes PadForge, Windows, your devices and
+        settings as they are now and opens them in the same review.
         See https://padforge.org/docs/troubleshooting/#logs-and-diagnostics
       placeholder: Drag the recording here.
     validations:

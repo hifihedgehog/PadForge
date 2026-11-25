@@ -109,6 +109,40 @@ namespace PadForge.Common.Recording
         /// <summary>The rumble PadForge's own writer just sent a DualSense or
         /// a DualShock 4, which SDL does not write for. Written when the two
         /// motors differ from the last write to that pad.</summary>
+        /// <summary>A write to a device on a thread of its own, watched for
+        /// a recording (#600): the capture it began in and its slot, or a slot
+        /// of 0 for a write that is not watched.</summary>
+        internal readonly record struct WriteCall(RecordingCapture Capture, int Slot);
+
+        /// <summary>A Sony pad's report write begins (#600). The report
+        /// carries the pad's rumble, so the write is a rumble write, named
+        /// with its pad: one that takes long is written, and one that does
+        /// not return is said while it hangs. Nothing while nothing records.</summary>
+        internal static WriteCall BeginWrite(string devicePath) => BeginWrite(RecordingCapture.Active, devicePath);
+
+        internal static WriteCall BeginWrite(RecordingCapture capture, string devicePath)
+        {
+            if (capture == null) return default;
+            int slot = capture.BeginOtherCall(capture.TrackOfPath(devicePath), RecordingCodec.CallKind.Rumble);
+            return slot > 0 ? new WriteCall(capture, slot) : default;
+        }
+
+        /// <summary>The write ends: one that took long is written with its
+        /// pad.</summary>
+        internal static void EndWrite(WriteCall call)
+        {
+            if (call.Capture != null) EndWrite(call, ProblemRecorder.Instance);
+        }
+
+        internal static void EndWrite(WriteCall call, ProblemRecorder recorder)
+        {
+            var capture = call.Capture;
+            if (capture == null || call.Slot <= 0) return;
+            var (track, kind, _) = capture.CallIn(call.Slot);
+            long ms = capture.EndOtherCall(call.Slot);
+            if (track >= 0) recorder.TakeSlowCall(capture.DeviceOfTrack(track), kind, ms);
+        }
+
         internal static void SonyWrite(string devicePath, IReadOnlyDictionary<string, object> fields)
         {
             if (RecordingCapture.Active == null || string.IsNullOrEmpty(devicePath) || fields == null) return;

@@ -1442,13 +1442,14 @@ namespace PadForge.Engine
                 return false;
 
             // A problem recording hears each update, effect made or started,
-            // and failure (#600).
+            // and failure, and names the write a force write (#600).
             var trace = Recording.ForceTrace.Sink;
+            trace?.Forcing(device);
             if (slot.Created)
             {
                 if (UpdateEffect(haptic, slot.Id, ref effect))
                 {
-                    trace?.Update(device, false, false);
+                    trace?.Update(device, effect.type, false, false);
                     return true;
                 }
                 // Recreate after a rejected update, including type changes.
@@ -1458,17 +1459,17 @@ namespace PadForge.Engine
             slot.Id = CreateEffect(haptic, ref effect);
             if (slot.Id < 0)
             {
-                trace?.Failed(device, "making", effect.type);
+                trace?.Failed(device, Recording.ForceTrace.Making, effect.type);
                 return false;
             }
             slot.Created = true;
 
             if (RunEffect(haptic, slot.Id, SDL_HAPTIC_INFINITY))
             {
-                trace?.Update(device, true, true);
+                trace?.Update(device, effect.type, true, true);
                 return true;
             }
-            trace?.Failed(device, "starting", effect.type);
+            trace?.Failed(device, Recording.ForceTrace.Starting, effect.type);
             Release(device, slot);
             return false;
         }
@@ -1506,6 +1507,7 @@ namespace PadForge.Engine
                 IntPtr haptic = device.HapticHandle;
                 if (haptic != IntPtr.Zero)
                 {
+                    Recording.ForceTrace.Sink?.Forcing(device);
                     StopEffect(haptic, slot.Id);
                     DestroyEffect(haptic, slot.Id);
                     Recording.ForceTrace.Sink?.Stopped(device);

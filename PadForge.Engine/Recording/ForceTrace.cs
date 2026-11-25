@@ -4,11 +4,16 @@ namespace PadForge.Engine.Recording
     /// engine's force writer calls it on the poll thread.</summary>
     public interface IForceTrace
     {
-        /// <summary>An effect was updated, made, or made and started.</summary>
-        void Update(ISdlInputDevice device, bool made, bool started);
+        /// <summary>An effect of a kind (an SDL_HAPTIC_ bit) was updated,
+        /// made, or made and started.</summary>
+        void Update(ISdlInputDevice device, uint effectType, bool made, bool started);
 
         /// <summary>The device's effects were stopped and let go.</summary>
         void Stopped(ISdlInputDevice device);
+
+        /// <summary>The writer is about to call the device's force effects:
+        /// a feedback write under way is a force write.</summary>
+        void Forcing(ISdlInputDevice device);
 
         /// <summary>Making or starting an effect failed: what failed and the
         /// effect's kind (an SDL_HAPTIC_ bit). SDL's error is still the
@@ -26,6 +31,9 @@ namespace PadForge.Engine.Recording
     {
         /// <summary>The recording's ear, or null.</summary>
         public static volatile IForceTrace Sink;
+
+        /// <summary>What failed: making an effect, or starting one made.</summary>
+        public const string Making = "making", Starting = "starting";
 
         /// <summary>An SDL effect kind as its word.</summary>
         public static string KindWord(uint type) => type switch

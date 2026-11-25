@@ -10,6 +10,7 @@ using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Engine.Privacy;
 using PadForge.Engine.Recording;
+using PadForge.ViewModels;
 
 namespace PadForge.Services
 {
@@ -26,9 +27,8 @@ namespace PadForge.Services
     internal partial class RecorderHost
     {
         /// <summary>The app settings a recording writes: each simple setting
-        /// PadForge.xml holds (AppSettingsData) whose name says nothing
-        /// private, read from the window's settings by the same name. Read
-        /// once.</summary>
+        /// PadForge.xml holds (AppSettingsData), but text whose name says it
+        /// holds something private. Read once.</summary>
         internal static IReadOnlyList<string> AppSettingNames => _appSettingNames ??= BuildAppSettingNames();
         private static IReadOnlyList<string> _appSettingNames;
 
@@ -39,34 +39,82 @@ namespace PadForge.Services
             return names;
         }
 
-        /// <summary>The app settings as they stand now, by name, from the
-        /// window's view model: no settings file is built for it, so a look
-        /// costs reads alone.</summary>
-        internal static IEnumerable<(string Name, string Value)> AppValues()
+        /// <summary>The app settings whose holder gives them a name of its
+        /// own, or keeps them outside the Settings page's view model and the
+        /// Dashboard's: the theme, the language, Remote Link's reconnect, the
+        /// chat's claim approval, voice macros and the OpenXR runtime, read
+        /// where SettingsService reads them to save PadForge.xml.</summary>
+        private static readonly Dictionary<string, Func<MainViewModel, object>> Renamed = new(StringComparer.Ordinal)
         {
-            var vm = Main?.Settings;
-            if (vm == null) yield break;
-            var type = vm.GetType();
+            ["ThemeIndex"] = m => m.Settings.SelectedThemeIndex,
+            ["ThemeId"] = m => m.Settings.SelectedThemeId,
+            ["Language"] = m => m.Settings.LanguageCode,
+            ["RemoteLinkAutoReconnect"] = m => m.Dashboard.AutoReconnect,
+            ["TwitchChatClaimApproval"] = m => m.Dashboard.TwitchChatClaimApprovalIndex,
+            ["VoiceMacrosEnabled"] = _ => VoiceMacroService.Enabled,
+            ["VoiceMinConfidence"] = _ => VoiceMacroService.MinConfidence,
+            ["VoiceListeningMode"] = _ => VoiceMacroService.ListeningMode,
+            ["HeadTrackingOpenXrRuntime"] = _ => HeadTrackingRuntime.OpenXrRuntimeManifest,
+        };
+
+        /// <summary>Where each app setting is read while PadForge runs: a
+        /// holder of <see cref="Renamed"/>, else the Settings page's view
+        /// model by the same name, else the Dashboard's. A setting no running
+        /// holder keeps has none: one read once from an older file, or one
+        /// written fixed.</summary>
+        private static IReadOnlyList<(string Name, Func<MainViewModel, object> Read)> AppHolders => _appHolders ??= BuildAppHolders();
+        private static IReadOnlyList<(string Name, Func<MainViewModel, object> Read)> _appHolders;
+
+        private static IReadOnlyList<(string Name, Func<MainViewModel, object> Read)> BuildAppHolders()
+        {
+            var holders = new List<(string, Func<MainViewModel, object>)>();
             foreach (string name in AppSettingNames)
             {
-                var p = type.GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
-                if (p == null || !p.CanRead || p.GetIndexParameters().Length != 0) continue;
+                if (Renamed.TryGetValue(name, out var renamed)) holders.Add((name, renamed));
+                else if (PropertyOf(typeof(SettingsViewModel), name) is { } setting) holders.Add((name, m => setting.GetValue(m.Settings)));
+                else if (PropertyOf(typeof(DashboardViewModel), name) is { } dashboard) holders.Add((name, m => dashboard.GetValue(m.Dashboard)));
+            }
+            return holders;
+        }
+
+        private static PropertyInfo PropertyOf(Type type, string name)
+        {
+            var p = type.GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            return p != null && p.CanRead && p.GetIndexParameters().Length == 0 ? p : null;
+        }
+
+        /// <summary>The app settings as they stand now, by name, from the
+        /// view models and services that hold them: no settings file is
+        /// built for it, so a look costs reads alone.</summary>
+        internal static IEnumerable<(string Name, string Value)> AppValues()
+        {
+            var main = Main;
+            if (main?.Settings == null || main.Dashboard == null) yield break;
+            foreach (var (name, read) in AppHolders)
+            {
                 object value;
-                try { value = p.GetValue(vm); }
+                try { value = read(main); }
                 catch (TargetInvocationException) { continue; }
                 yield return (name, TextOf(value));
             }
         }
 
-        private static string TextOf(object value)
+        /// <summary>A setting's value as text, whole: a switch as 1 or 0,
+        /// a number in invariant form.</summary>
+        private static string TextOf(object value) => value switch
         {
-            string text = value switch
-            {
-                null => string.Empty,
-                bool b => b ? "1" : "0",
-                IFormattable f => f.ToString(null, CultureInfo.InvariantCulture),
-                _ => value.ToString(),
-            };
+            null => string.Empty,
+            bool b => b ? "1" : "0",
+            IFormattable f => f.ToString(null, CultureInfo.InvariantCulture),
+            _ => value.ToString(),
+        };
+
+        /// <summary>A value as a settings line writes it: scrubbed whole, then
+        /// cut at 100 characters. Cut first, a path could end inside a
+        /// folder's name, which the scrubber would keep as the file's.</summary>
+        internal static string Written(PrivacyScrubber scrubber, string value)
+        {
+            string text = scrubber.Text(value ?? string.Empty);
             return text.Length > 100 ? text.Substring(0, 100) : text;
         }
 
@@ -142,10 +190,10 @@ namespace PadForge.Services
         //  Devices
         // ─────────────────────────────────────────────
 
-        /// <summary>How a device is held: for PadForge alone (Use Only in
-        /// PadForge), hidden by HidHide, or shared with every program.</summary>
+        /// <summary>How a device is held: hidden by HidHide, exclusive to
+        /// PadForge (Use Only in PadForge), or shared with every program.</summary>
         internal static string HeldWord(UserDevice device)
-            => device.HidHideEnabled ? "hidden" : device.ConsumeInputEnabled ? "only" : "shared";
+            => device.HidHideEnabled ? "hidden" : device.ConsumeInputEnabled ? "exclusive" : "shared";
 
         /// <summary>The XInput place a device read through XInput holds,
         /// counted from 1, or 0.</summary>
@@ -190,6 +238,13 @@ namespace PadForge.Services
             catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException) { return -1; }
         }
 
+        /// <summary>Whether a device has motors SDL drives through a haptic
+        /// device, the ones whose axes have names: the condition under which
+        /// its motor axes are counted (MotorAxes). A pad's plain rumble has
+        /// none.</summary>
+        internal static bool HasMotors(UserDevice device)
+            => device?.Device is { } live && live.HapticHandle != IntPtr.Zero;
+
         /// <summary>A device's facts beyond its first build's line: how it is
         /// held, its XInput place, and for a force-feedback device its driver
         /// file and motor axes.</summary>
@@ -203,14 +258,28 @@ namespace PadForge.Services
             if (driver != null) RecordingCodec.AppendFact(sb, "ffdriver", driver);
             int axes = MotorAxes(device.Device);
             if (axes >= 0) RecordingCodec.AppendFact(sb, "ffaxes", axes);
+            // The axes the motors act on, when a read already gave them. The
+            // recorder says them among the events otherwise.
+            var motors = KeptMotorAxisNames(device);
+            if (motors != null && motors.Count > 0) RecordingCodec.AppendFact(sb, "ffmotors", ForceActuators.Join(motors));
         }
+
+        /// <summary>The axes a force-feedback device's motors act on, as a
+        /// read already gave them, or null. It never waits: a product not yet
+        /// read is asked for (ForceActuators.ReadSoon).</summary>
+        public virtual IReadOnlyList<string> KeptMotorAxisNames(UserDevice device)
+            => HasMotors(device) ? ForceActuators.Kept(device.VendorId, device.ProdId) : null;
 
         // ─────────────────────────────────────────────
         //  Settings, as lines and as a state to compare
         // ─────────────────────────────────────────────
 
-        /// <summary>The words in a setting's name that say it holds something
-        /// private, which is never written.</summary>
+        /// <summary>The words of a setting's name that say its text holds
+        /// something private, which is not written unless
+        /// <see cref="WrittenThoughPrivate"/> names it: Token to Etag, and the
+        /// words PadForge's own settings need besides (an identity's keys, an
+        /// access code, a host, a chat channel, a name the user typed, a file
+        /// or a folder).</summary>
         private static readonly string[] Private =
         {
             "Token", "Key", "Password", "Secret", "Mail", "Url", "Uri", "Path", "Folder", "Directory", "User", "Login",
@@ -219,12 +288,46 @@ namespace PadForge.Services
             "Location", "Install", "Hash", "Clsid", "Ssid", "Wifi", "Pin",
         };
 
+        /// <summary>The words of a PascalCase name: GKeysEnabled is G, Keys
+        /// and Enabled, URLPath is URL and Path.</summary>
+        private static readonly System.Text.RegularExpressions.Regex Words = new(@"[A-Z]+(?![a-z])|[A-Z]?[a-z]+|[0-9]+",
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        /// <summary>True when a whole word of the name, or its plural, is one
+        /// of <see cref="Private"/>: ProblemRecordingSaveFolder and
+        /// HeadsetTrackerAddresses are, CenteringDamping and
+        /// KeyboardScreenPicture are not.</summary>
         internal static bool IsPrivateName(string name)
         {
-            foreach (string word in Private)
-                if (name.Contains(word, StringComparison.OrdinalIgnoreCase)) return true;
+            foreach (System.Text.RegularExpressions.Match match in Words.Matches(name))
+            {
+                string word = match.Value;
+                foreach (string p in Private)
+                {
+                    if (!word.StartsWith(p, StringComparison.OrdinalIgnoreCase)) continue;
+                    string tail = word.Substring(p.Length);
+                    if (tail.Length == 0 || tail.Equals("s", StringComparison.OrdinalIgnoreCase) || tail.Equals("es", StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+            }
             return false;
         }
+
+        /// <summary>Whether a setting of this type holds text. A switch, a
+        /// number or a choice holds nothing private and is written whatever
+        /// its name. A setting kept as text is text, even when it holds a
+        /// number, so a code typed into a private one stays out.</summary>
+        private static bool HoldsText(Type type) => type == typeof(string) || type == typeof(Guid) || type == typeof(char);
+
+        /// <summary>Text written though a word of its name is private,
+        /// scrubbed like every value: the profile's name and the programs
+        /// that switch to it, which show a wrong profile or a missed
+        /// switch.</summary>
+        private static readonly HashSet<(Type Type, string Name)> WrittenThoughPrivate = new()
+        {
+            (typeof(ProfileData), nameof(ProfileData.Name)),
+            (typeof(ProfileData), nameof(ProfileData.ExecutableNames)),
+        };
 
         private static readonly Dictionary<Type, PropertyInfo[]> Simple = new();
 
@@ -236,10 +339,12 @@ namespace PadForge.Services
                 var list = new List<PropertyInfo>();
                 foreach (var p in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
-                    if (!p.CanRead || p.GetIndexParameters().Length != 0 || IsPrivateName(p.Name)) continue;
+                    if (!p.CanRead || p.GetIndexParameters().Length != 0) continue;
                     if (p.GetCustomAttribute<System.Xml.Serialization.XmlIgnoreAttribute>() != null) continue;
                     var t = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType;
-                    if (t.IsPrimitive || t.IsEnum || t == typeof(string) || t == typeof(decimal) || t == typeof(Guid)) list.Add(p);
+                    if (!(t.IsPrimitive || t.IsEnum || t == typeof(string) || t == typeof(decimal) || t == typeof(Guid))) continue;
+                    if (HoldsText(t) && IsPrivateName(p.Name) && !WrittenThoughPrivate.Contains((type, p.Name))) continue;
+                    list.Add(p);
                 }
                 list.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
                 return Simple[type] = list.ToArray();
@@ -247,7 +352,7 @@ namespace PadForge.Services
         }
 
         /// <summary>Every simple value of an object that is not private, as
-        /// name and text, each cut at 100 characters.</summary>
+        /// name and text, whole. A line cuts it once scrubbed.</summary>
         internal static IEnumerable<(string Name, string Value)> SimpleValues(object data)
         {
             if (data == null) yield break;
@@ -268,7 +373,7 @@ namespace PadForge.Services
         {
             {
                 var sb = new StringBuilder("app");
-                foreach (var (name, value) in AppValues()) RecordingCodec.AppendFact(sb, name, scrubber.Text(value));
+                foreach (var (name, value) in AppValues()) RecordingCodec.AppendFact(sb, name, Written(scrubber, value));
                 if (sb.Length > 3) into.Add(sb.ToString());
             }
             string activeId = SettingsManager.ActiveProfileId;
@@ -276,7 +381,7 @@ namespace PadForge.Services
             {
                 if (profile == null || profile.Id != activeId) continue;
                 var sb = new StringBuilder("profile.settings");
-                foreach (var (name, value) in SimpleValues(profile)) RecordingCodec.AppendFact(sb, name, scrubber.Text(value));
+                foreach (var (name, value) in SimpleValues(profile)) RecordingCodec.AppendFact(sb, name, Written(scrubber, value));
                 into.Add(sb.ToString());
             }
             var settings = SettingsManager.UserSettings;
@@ -292,7 +397,7 @@ namespace PadForge.Services
                 RecordingCodec.AppendFact(sb, "device", scrubber.DeviceAlias(setting.InstanceGuid.ToString()));
                 RecordingCodec.AppendFact(sb, "controller", PrivacyScrubber.ControllerAlias(setting.MapTo));
                 foreach (var (name, value) in SimpleValues(pad))
-                    if (value.Length > 0 && value != "0") RecordingCodec.AppendFact(sb, name, scrubber.Text(value));
+                    if (value.Length > 0 && value != "0") RecordingCodec.AppendFact(sb, name, Written(scrubber, value));
                 into.Add(sb.ToString());
             }
         }
@@ -308,7 +413,7 @@ namespace PadForge.Services
             {
                 if (name is "Descriptor" or "Kind" or "Invert" or "HalfAxis" or "DeadZone") continue;
                 if (defaults.TryGetValue(name, out string d) && d == value) continue;
-                RecordingCodec.AppendFact(sb, name + n, scrubber.Text(value));
+                RecordingCodec.AppendFact(sb, name + n, Written(scrubber, value));
             }
         }
 

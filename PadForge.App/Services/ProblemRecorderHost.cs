@@ -273,6 +273,7 @@ namespace PadForge.Services
             new VendorProgram("Gopher360", "Gopher"),
             new VendorProgram("JoyXoff", "JoyXoff"),
             new VendorProgram("DS4Tool", "DS4Tool"),
+            new VendorProgram("PadRevive", "PadRevive"),
         };
 
         /// <summary>Test seam: the image names of the running processes,
@@ -309,7 +310,8 @@ namespace PadForge.Services
             var version = typeof(RecorderHost).Assembly.GetName().Version;
             into.Add("PadForge " + (version == null ? "?" : version.ToString()) + ", .NET " + System.Environment.Version
                 + ", " + (System.Environment.Is64BitProcess ? "64-bit" : "32-bit") + " " + System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture);
-            into.Add("Windows " + System.Environment.OSVersion.Version + ", " + System.Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture) + " processors");
+            // Windows and the processor count are on the build's line
+            // (FactLines), written once.
 
             var engine = Engine;
             if (engine == null) into.Add("Engine: none");

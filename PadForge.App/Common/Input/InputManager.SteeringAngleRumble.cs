@@ -44,7 +44,7 @@ namespace PadForge.Common.Input
             lock (devices.SyncRoot)
             {
                 foreach (var device in devices.Items)
-                    if (SupportsSteeringAngleRumble(device)) ApplyForceFeedback(device);
+                    if (SupportsSteeringAngleRumble(device)) WriteFeedback(device);
             }
         }
 

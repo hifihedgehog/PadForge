@@ -451,5 +451,14 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Common.Recording.XInputReadBack.OffLimitsForTest = true;
     }
 
+    /// <summary>No force-feedback device of the bench is asked through
+    /// DirectInput while a test records (#600): the axes its motors act on
+    /// come from a test's seam or not at all.</summary>
+    internal static class ForceActuatorsOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Recording.ForceActuators.OffLimitsForTest = true;
+    }
+
 #pragma warning restore CA2255
 }

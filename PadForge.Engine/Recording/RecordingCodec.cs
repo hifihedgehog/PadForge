@@ -179,6 +179,16 @@ namespace PadForge.Engine.Recording
                 Force => "force",
                 _ => "call",
             };
+
+            /// <summary>The words a line uses for a call that hangs: its
+            /// read, its rumble write, its force write.</summary>
+            public static string Phrase(int kind) => kind switch
+            {
+                Read => "read",
+                Rumble => "rumble write",
+                Force => "force write",
+                _ => "call",
+            };
         }
 
         /// <summary>True for a field that holds the counts of one pass: each

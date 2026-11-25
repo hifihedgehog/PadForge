@@ -590,7 +590,16 @@ namespace PadForge.Services
             if (_capture != null) return;
             var capture = new RecordingCapture(RingCapacity) { MaskTypedKeys = _mask, Frozen = FrozenClock, Parts = _parts };
             // The devices of the list take their tracks in the list's order.
-            foreach (var device in Host.Devices()) capture.Prepare(device);
+            // The motors of a force-feedback device no read has named are
+            // asked for now and read on a thread of their own, so a file made
+            // later names them in its header (#600).
+            bool ask = false;
+            foreach (var device in Host.Devices())
+            {
+                capture.Prepare(device);
+                if (device != null && device.IsOnline && RecorderHost.HasMotors(device)) ask |= Host.KeptMotorAxisNames(device) == null;
+            }
+            if (ask) ForceActuators.ReadSoon();
             if (_mask) RefreshKeyMasks(capture);
             Volatile.Write(ref _capture, capture);
             Post(() =>
@@ -661,6 +670,9 @@ namespace PadForge.Services
             public RecordingFormatter Formatter;
             public List<(PrivateKind Kind, string Value)> Live;
             public List<string> Declared;
+            /// <summary>The devices whose motors' axes the header named
+            /// (#600).</summary>
+            public readonly HashSet<UserDevice> MotorsNamed = new();
             public List<(long Ticks, string Line)> History;
             public int Boundary;
             public bool PastBoundary;
@@ -800,8 +812,9 @@ namespace PadForge.Services
                 string alias = scrubber.DeviceAlias(device.InstanceGuidString);
                 if (sink.Declared.Contains(alias)) continue;
                 sink.Declared.Add(alias);
-                text.Append(alias).Append(settings ? Describe(scrubber, device, alias) : RecorderHost.DescribeShape(device))
-                    .Append(RecordingFormatter.NewLine);
+                string described = settings ? Describe(scrubber, device, alias) : RecorderHost.DescribeShape(device);
+                if (described.Contains(" ffmotors=", StringComparison.Ordinal)) sink.MotorsNamed.Add(device);
+                text.Append(alias).Append(described).Append(RecordingFormatter.NewLine);
             }
             // The typed fields are named first, so a serial number keeps the
             // stand-in that names its device. Then every other live value.
@@ -989,6 +1002,9 @@ namespace PadForge.Services
             StartFormatter(sink, sink.Epoch, _live);
             WriteOut(sink);
             _file = sink;
+            // The devices whose motors the header named. The watch names the
+            // others once a read kept them (#600).
+            _motorsNamed.UnionWith(sink.MotorsNamed);
             Volatile.Write(ref _epochTicks, sink.Epoch);
             Volatile.Write(ref _bytes, sink.Bytes);
         }
@@ -1190,6 +1206,8 @@ namespace PadForge.Services
             long now = Ticks();
             sink.Formatter.Close();
             if (!sink.Kept) StillStalled(sink.Formatter, now);
+            // A snapshot holds no events of its own (#600 item 33).
+            if ((sink.Parts & RecordingParts.Feedback) != 0 && how != HowSnapshot) ForceKindsAtEnd(sink.Formatter, now);
             // The Activity part (#600): every call programs made of PadForge
             // this session, as Export Activity… writes it, scrubbed, at the
             // end of the file.

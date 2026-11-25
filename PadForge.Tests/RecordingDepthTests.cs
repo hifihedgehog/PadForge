@@ -267,9 +267,16 @@ namespace PadForge.Tests
             var names = RecorderHost.AppSettingNames;
             Assert.Contains("PollingRateHz", names);
             Assert.Contains("ProblemRecordingLeaveOut", names);
-            foreach (string kept in new[] { "SteamVrInstallDir", "ProblemRecordingSaveFolder", "RemoteLinkIdentityPrivate", "WebControllerAccessCode", "TwitchChatChannel" })
+            // A switch or a number is written whatever its name.
+            Assert.Contains("GKeysEnabled", names);
+            Assert.Contains("DsuMotionServerPort", names);
+            foreach (string kept in new[] { "SteamVrInstallDir", "ProblemRecordingSaveFolder", "RemoteLinkIdentityPrivate", "WebControllerAccessCode",
+                "WebControllerAccessCodeProtected", "TwitchChatChannel", "HandheldMachineKey", "HeadsetTrackerAddresses" })
                 Assert.DoesNotContain(kept, names);
-            Assert.All(names, n => Assert.DoesNotMatch("(?i)(path|folder|dir|file|key|token|password|secret|host|code|name|serial)", n));
+            // Text is written only when no whole word of its name is private.
+            foreach (var p in typeof(AppSettingsData).GetProperties())
+                if (names.Contains(p.Name) && (Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType) == typeof(string))
+                    Assert.False(RecorderHost.IsPrivateName(p.Name), p.Name);
         }
 
         // ── XInput read back, and a second reader ──
@@ -303,6 +310,10 @@ namespace PadForge.Tests
         {
             var state = RecorderTestKit.Rest();
             state.Axis[4] = 32768;
+            // A gamepad's left trigger is axis 2, out at rest, and its D-pad
+            // centered.
+            state.Axis[2] = 0;
+            state.Povs[0] = -1;
             state.Buttons[0] = true;
             Assert.Null(ProblemRecorder.Difference(state, new XInputRead(true, Gamepad.A, 0, 0, 0, -1, 0, -1)));
             string differs = ProblemRecorder.Difference(state, new XInputRead(true, 0, 0, 0, 20000, -1, 0, -1));
@@ -405,7 +416,7 @@ namespace PadForge.Tests
             pad.ConsumeInputEnabled = true;
             var sb = new StringBuilder();
             new RecorderTestHost().AppendDeviceFacts(sb, pad);
-            Assert.Equal(" held=only xinput=3", sb.ToString());
+            Assert.Equal(" held=exclusive xinput=3", sb.ToString());
         }
 
         [Fact]

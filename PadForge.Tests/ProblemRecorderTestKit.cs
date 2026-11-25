@@ -72,12 +72,16 @@ namespace PadForge.Tests
         internal List<(UserDevice Device, bool Listed)> RawListing;
         internal string Programs;
         internal Dictionary<string, string> Settings;
+        /// <summary>The watch reads the app's own settings state, from
+        /// <see cref="RecorderHost.Main"/>, instead of <see cref="Settings"/>.</summary>
+        internal bool RealSettings;
         internal string Activity = string.Empty;
         public override string ActivityText() => Activity;
         public override bool EngineRunning() => EngineRuns;
         public override List<(UserDevice Device, bool Listed)> RawInputListing() => RawListing;
         public override string ControllerProgramsNow() => Programs;
-        public override Dictionary<string, string> SettingsState() => Settings == null ? null : new Dictionary<string, string>(Settings);
+        public override Dictionary<string, string> SettingsState()
+            => RealSettings ? base.SettingsState() : Settings == null ? null : new Dictionary<string, string>(Settings);
 
         public void Dispose()
         {

@@ -161,7 +161,13 @@ namespace PadForge.Common.Recording
         public int ForceUpdates, ForceMade, ForceStarts;
         public int ForceUpdatesSaid, ForceMadeSaid, ForceStartsSaid;
 
-        /// <summary>How many reads of the device failed in this recording.</summary>
+        /// <summary>The effect kinds asked of the device and the kinds it
+        /// refused, as SDL_HAPTIC_ bits (#600). The poll thread writes them,
+        /// the recorder's thread reads them.</summary>
+        public uint ForceAsked, ForceRefused;
+
+        /// <summary>How many reads of the device failed in a row, up to the
+        /// read that works again (#600).</summary>
         public int ReadFailures;
 
         public InputTrack() => Reset();
@@ -301,49 +307,113 @@ namespace PadForge.Common.Recording
         internal int RestState => Volatile.Read(ref _restSeen);
         private int _restSeen;
 
-        // The device call under way (#600): which track, what call and since
-        // when. The poll thread writes them, the recorder's thread reads
-        // them to say a call that does not return while it hangs.
-        private int _callTrack = -1, _callKind;
-        private long _callStart;
+        // The device calls under way (#600), one a slot: which track, what
+        // call and since when. Slot 0 is the poll thread's. The others are
+        // taken for one call each by any other thread, as the Sony pads'
+        // effect reports are written. The calling thread writes its slot,
+        // and the recorder's thread reads every slot to say a call that does
+        // not return while it hangs.
+        internal const int CallSlots = 5;
+        private readonly int[] _callTrack = NewCallTracks(), _callKind = new int[CallSlots];
+        private readonly long[] _callStart = new long[CallSlots];
+        private int _callThread;
 
-        /// <summary>The device call under way: its track, its kind and when it
-        /// began, or a track of -1.</summary>
-        internal (int Track, int Kind, long Start) CallUnderWay
+        private static int[] NewCallTracks()
         {
-            get
-            {
-                long start = Volatile.Read(ref _callStart);
-                int track = Volatile.Read(ref _callTrack);
-                return (track, Volatile.Read(ref _callKind), start);
-            }
+            var tracks = new int[CallSlots];
+            Array.Fill(tracks, -1);
+            return tracks;
+        }
+
+        /// <summary>The device call under way in a slot: its track, its kind
+        /// and when it began, or a track of -1. The track is read first, and
+        /// a call writes it last, so the time read after it is the call's
+        /// own.</summary>
+        internal (int Track, int Kind, long Start) CallIn(int slot)
+        {
+            int track = Volatile.Read(ref _callTrack[slot]);
+            if (track < 0) return (-1, 0, 0);
+            return (track, Volatile.Read(ref _callKind[slot]), Volatile.Read(ref _callStart[slot]));
         }
 
         /// <summary>A device call that took longer than this is written
         /// with its device.</summary>
         internal const int SlowCallMs = 20;
 
-        /// <summary>A call to a device begins. Poll thread only.</summary>
+        /// <summary>A call to a device begins on the poll thread.</summary>
         internal void BeginCall(UserDevice device, int kind)
         {
             int index = TrackOf(device);
-            Volatile.Write(ref _callKind, kind);
-            Volatile.Write(ref _callStart, Ticks());
-            Volatile.Write(ref _callTrack, index);
+            _callThread = Environment.CurrentManagedThreadId;
+            Volatile.Write(ref _callKind[0], kind);
+            Volatile.Write(ref _callStart[0], Ticks());
+            Volatile.Write(ref _callTrack[0], index);
         }
 
-        /// <summary>The call ends: one that took long is written with its
-        /// device and how long it took. Poll thread only.</summary>
+        /// <summary>The poll thread's call ends: one that took long is
+        /// written with its device, how long it took and what it was. Poll
+        /// thread only.</summary>
         internal void EndCall()
         {
-            int index = _callTrack;
-            Volatile.Write(ref _callTrack, -1);
+            int index = _callTrack[0];
+            Volatile.Write(ref _callTrack[0], -1);
             if (index < 0 || (Parts & RecordingParts.Timing) == 0) return;
             long now = Ticks();
-            long ms = (now - _callStart) * 1000 / Stopwatch.Frequency;
+            long ms = (now - _callStart[0]) * 1000 / Stopwatch.Frequency;
             if (ms < SlowCallMs) return;
-            Ring.Push(now, RecordingField.TimingCall, index, 0, (int)Math.Min(ms, int.MaxValue), _callKind);
+            Ring.Push(now, RecordingField.TimingCall, index, 0, (int)Math.Min(ms, int.MaxValue), _callKind[0]);
             Ring.Commit();
+        }
+
+        /// <summary>The poll thread's call under way is of another kind than
+        /// it began as: a feedback write that reaches a device's force
+        /// effects or a wheel's force reports is a force write. Nothing from
+        /// another thread, or with no call under way.</summary>
+        internal void CallIs(int kind)
+        {
+            if (Volatile.Read(ref _callTrack[0]) < 0 || Environment.CurrentManagedThreadId != _callThread) return;
+            Volatile.Write(ref _callKind[0], kind);
+        }
+
+        /// <summary>A call to a device begins on a thread other than the poll
+        /// thread: the slot it takes, or 0 when the device has no track, the
+        /// file holds no timing or every slot is in use. Any thread.</summary>
+        internal int BeginOtherCall(int track, int kind)
+        {
+            if (track < 0 || (Parts & RecordingParts.Timing) == 0) return 0;
+            for (int slot = 1; slot < CallSlots; slot++)
+            {
+                // Taken first, then filled: the watch reads a slot whose
+                // track is below 0 as free.
+                if (Interlocked.CompareExchange(ref _callTrack[slot], -2, -1) != -1) continue;
+                Volatile.Write(ref _callKind[slot], kind);
+                Volatile.Write(ref _callStart[slot], Ticks());
+                Volatile.Write(ref _callTrack[slot], track);
+                return slot;
+            }
+            return 0;
+        }
+
+        /// <summary>The call of a slot <see cref="BeginOtherCall"/> gave
+        /// ends: how long it took in milliseconds, and the slot is free again.
+        /// Any thread.</summary>
+        internal long EndOtherCall(int slot)
+        {
+            if (slot <= 0 || slot >= CallSlots) return 0;
+            long ms = (Ticks() - Volatile.Read(ref _callStart[slot])) * 1000 / Stopwatch.Frequency;
+            Volatile.Write(ref _callTrack[slot], -1);
+            return ms;
+        }
+
+        /// <summary>The track of a device by its path, or -1. It makes no
+        /// track, so a thread other than the poll thread may ask.</summary>
+        internal int TrackOfPath(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return -1;
+            int count = DeviceCount;
+            for (int i = 0; i < count; i++)
+                if (string.Equals(_tracks[i].Device?.DevicePath, path, StringComparison.OrdinalIgnoreCase)) return i;
+            return -1;
         }
 
         /// <summary>The track of a device the engine drives through
@@ -380,6 +450,30 @@ namespace PadForge.Common.Recording
             if (started) t.ForceStarts++;
         }
 
+        /// <summary>An effect of one kind (an SDL_HAPTIC_ bit) asked of a
+        /// device (#600): taken, or refused when making it failed. A kind
+        /// the device takes later is no longer refused. Poll thread.</summary>
+        internal void ForceKind(ISdlInputDevice live, uint kind, bool refused)
+        {
+            if ((Parts & RecordingParts.Feedback) == 0 || kind == 0) return;
+            int index = TrackOfLive(live);
+            if (index < 0) return;
+            var t = _tracks[index];
+            if ((t.ForceAsked & kind) == 0) Volatile.Write(ref t.ForceAsked, t.ForceAsked | kind);
+            uint was = t.ForceRefused;
+            uint now = refused ? was | kind : was & ~kind;
+            if (now != was) Volatile.Write(ref t.ForceRefused, now);
+        }
+
+        /// <summary>The effect kinds asked of a track's device and the kinds
+        /// it refuses, for the recorder's thread.</summary>
+        internal (uint Asked, uint Refused) ForceKinds(int track)
+        {
+            if ((uint)track >= (uint)DeviceCount) return (0, 0);
+            var t = _tracks[track];
+            return (Volatile.Read(ref t.ForceAsked), Volatile.Read(ref t.ForceRefused));
+        }
+
         /// <summary>Writes each device's force counts of the second that
         /// ended, when they differ from the second before. Poll thread.</summary>
         private void ForceSecond(long now)
@@ -403,8 +497,8 @@ namespace PadForge.Common.Recording
             if (any) Ring.Commit();
         }
 
-        /// <summary>A failed read of a device: its count in this recording.
-        /// Poll thread.</summary>
+        /// <summary>A failed read of a device: how many of its reads have
+        /// failed in a row, this one included. Poll thread.</summary>
         internal int ReadFailed(UserDevice device)
         {
             int index = TrackOf(device);
@@ -494,14 +588,17 @@ namespace PadForge.Common.Recording
         internal static bool IsTypedKeyIndex(int index)
             => index is (>= 0x41 and <= 0x5A) or (>= 0x30 and <= 0x39) or (>= 0x60 and <= 0x69);
 
-        /// <summary>Records what changed in a device's state on this pass.
-        /// Poll thread only.</summary>
-        internal void Input(UserDevice device, CustomInputState s)
+        /// <summary>Records what changed in a device's state on this pass,
+        /// and answers how many failed reads in a row this good one ends, or
+        /// 0. Poll thread only.</summary>
+        internal int Input(UserDevice device, CustomInputState s)
         {
-            if ((Parts & RecordingParts.Input) == 0) return;
+            if ((Parts & RecordingParts.Input) == 0) return 0;
             int index = TrackOf(device);
-            if (index < 0) return;
+            if (index < 0) return 0;
             var t = _tracks[index];
+            int ended = t.ReadFailures;
+            t.ReadFailures = 0;
             t.SeenPass = _pass;
             var ring = Ring;
             long now = 0;
@@ -625,6 +722,7 @@ namespace PadForge.Common.Recording
                 ring.Push(Now(ref now), RecordingField.Battery, index, 0, s.BatteryPercent, s.BatteryCharging ? 1 : 0);
             }
             ring.Commit();
+            return ended;
         }
 
         private void Vector(RecordingRing ring, ref long now, int index, RecordingField field, float[] values, int[] last)

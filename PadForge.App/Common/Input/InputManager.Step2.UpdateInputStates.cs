@@ -116,9 +116,13 @@ namespace PadForge.Common.Input
                         // names a read that takes long, and one that does not
                         // return while it hangs (#600).
                         var callWatch = Recording.RecordingCapture.Active;
-                        callWatch?.BeginCall(ud, PadForge.Engine.Recording.RecordingCodec.CallKind.Read);
-                        newState = inputDevice.GetCurrentState(ud.ForceRawJoystickMode);
-                        callWatch?.EndCall();
+                        if (callWatch != null) BeginRecordedRead(callWatch, ud, inputDevice);
+                        try { newState = inputDevice.GetCurrentState(ud.ForceRawJoystickMode); }
+                        // A read that throws is a failed read in the
+                        // recording too. The filter answers false, so the
+                        // pass's own handler below takes the exception.
+                        catch (Exception ex) when (RecordReadThrew(callWatch, ud, ex)) { throw; }
+                        finally { callWatch?.EndCall(); }
                         // A Bliss-Box port's pressure and native arrows ride
                         // its own state, ahead of the idle detector and every
                         // consumer after it (#469). The merge follows the
@@ -219,7 +223,7 @@ namespace PadForge.Common.Input
                         UpdateMenuDirectPresses(ud, webMenus);
 
                     // Apply force feedback (rumble) if applicable.
-                    ApplyForceFeedback(ud);
+                    WriteFeedback(ud);
                 }
                 catch (Exception ex)
                 {
@@ -1501,6 +1505,9 @@ namespace PadForge.Common.Input
                 }
                 else // a wheel — Logitech / Fanatec / Thrustmaster
                 {
+                    // A wheel's force reports make this a force write in a
+                    // problem recording (#600).
+                    Recording.RecordingCapture.Active?.CallIs(PadForge.Engine.Recording.RecordingCodec.CallKind.Force);
                     var cv = _combinedVibration;
                     // Spring / damper / friction (game-driven condition effect) when
                     // present, else a constant force from the projected steering level.

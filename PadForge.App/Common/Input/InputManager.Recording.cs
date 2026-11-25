@@ -1,4 +1,8 @@
+using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Common.Recording;
 using PadForge.Engine;
@@ -52,21 +56,103 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Before a recorded read (#600): the call is named with its
+        /// device, and SDL's error and Windows' are cleared, so the text a
+        /// failed read leaves is its own. SDL keeps a thread's last error
+        /// until it is cleared (SDL_error.h, SDL_GetError).</summary>
+        private static void BeginRecordedRead(RecordingCapture rec, UserDevice device, ISdlInputDevice live)
+        {
+            rec.BeginCall(device, RecordingCodec.CallKind.Read);
+            if (live is SdlDeviceWrapper && !_noSdlClear)
+            {
+                try { SdlClearError(); }
+                catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException) { _noSdlClear = true; }
+            }
+            Marshal.SetLastPInvokeError(0);
+        }
+
+        private static bool _noSdlClear;
+
+        [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ClearError")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool SdlClearError();
+
         /// <summary>A failed read (#600): the device goes offline in the
-        /// file at once, and a line says how many reads of it failed in this
-        /// recording and SDL's words for the failure. The words are read only
-        /// while something records.</summary>
+        /// file at once, and a line says how many reads of it failed in a row
+        /// and the error's own text, made only when the line is written.</summary>
         private static void RecordReadFailed(UserDevice device, ISdlInputDevice live)
         {
             var rec = RecordingCapture.Active;
             if (rec == null) return;
             rec.InputLost(device, RecordingCodec.OfflineReason.ReadFailed);
             if ((rec.Parts & PadForge.Engine.Recording.RecordingParts.Input) == 0) return;
-            int count = rec.ReadFailed(device);
-            string error = live is SdlDeviceWrapper ? SDL3.SDL.SDL_GetError() : null;
-            ProblemRecorder.Instance.TakeNote(RecordingCodec.LayerReader, -1, device,
-                "read failed, " + count.ToString(System.Globalization.CultureInfo.InvariantCulture)
-                + (count == 1 ? " time" : " times") + " in this recording" + (string.IsNullOrEmpty(error) ? string.Empty : ": " + error));
+            int inARow = rec.ReadFailed(device);
+            if (ProblemRecorder.WritesReadFailure(inARow)) ProblemRecorder.Instance.TakeReadFailed(device, inARow, ReadError(live));
+        }
+
+        /// <summary>A read that threw (#600): a failed read in the recording
+        /// as one that gave no state is, with the exception as its error.
+        /// Always false, so the pass's own handler takes the exception.</summary>
+        private static bool RecordReadThrew(RecordingCapture rec, UserDevice device, Exception ex)
+        {
+            if (rec == null || (rec.Parts & PadForge.Engine.Recording.RecordingParts.Input) == 0) return false;
+            int inARow = rec.ReadFailed(device);
+            if (ProblemRecorder.WritesReadFailure(inARow)) ProblemRecorder.Instance.TakeReadFailed(device, inARow, ThrownReadError(ex));
+            return false;
+        }
+
+        /// <summary>
+        /// The error's own text for a read that gave no state (#600). For a
+        /// device SDL reads: SDL's text, with any code it carries, or why the
+        /// wrapper refused the read when SDL set none. For another reader:
+        /// the last Windows error its read left, by number and words, which
+        /// a call that worked may have left too, or that it gave no reason.
+        /// </summary>
+        internal static string ReadError(ISdlInputDevice live)
+        {
+            if (live is SdlDeviceWrapper sdl)
+            {
+                try
+                {
+                    string text = SDL3.SDL.SDL_GetError();
+                    if (!string.IsNullOrEmpty(text)) return text;
+                    if (sdl.Joystick == IntPtr.Zero) return "its SDL handle is closed";
+                    return SDL3.SDL.SDL_JoystickConnected(sdl.Joystick) ? "SDL gave no reason" : "SDL says it is no longer attached";
+                }
+                catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException)
+                {
+                    return "SDL could not be asked why";
+                }
+            }
+            int code = Marshal.GetLastPInvokeError();
+            if (code != 0)
+                return "the read's last Windows error, " + code.ToString(CultureInfo.InvariantCulture) + " (0x" + code.ToString("X8", CultureInfo.InvariantCulture) + "): "
+                    + new Win32Exception(code).Message;
+            return (live == null ? "its reader" : live.GetType().Name) + " gave no reason";
+        }
+
+        /// <summary>A read's exception as its error text: its type and its
+        /// message.</summary>
+        internal static string ThrownReadError(Exception ex) => ex.GetType().Name + ": " + (ex.Message ?? string.Empty);
+
+        /// <summary>
+        /// Hands a device its feedback for this pass. A problem recording
+        /// names the write with its device (#600): a rumble write, which is a
+        /// force write once it reaches the device's force effects or a
+        /// wheel's force reports, so one that takes long is written and one
+        /// that does not return is said while it hangs.
+        /// </summary>
+        private void WriteFeedback(UserDevice ud)
+        {
+            var callWatch = RecordingCapture.Active;
+            if (callWatch == null || ud == null)
+            {
+                ApplyForceFeedback(ud);
+                return;
+            }
+            callWatch.BeginCall(ud, RecordingCodec.CallKind.Rumble);
+            try { ApplyForceFeedback(ud); }
+            finally { callWatch.EndCall(); }
         }
 
         /// <summary>A virtual controller that was not fed, and why: the
@@ -82,14 +168,16 @@ namespace PadForge.Common.Input
         {
             var rec = RecordingCapture.Active;
             if (rec == null) return;
-            if (!rec.Timed)
+            int ended;
+            if (!rec.Timed) ended = rec.Input(device, state);
+            else
             {
-                rec.Input(device, state);
-                return;
+                long before = Stopwatch.GetTimestamp();
+                ended = rec.Input(device, state);
+                rec.AddCost(Stopwatch.GetTimestamp() - before);
             }
-            long before = Stopwatch.GetTimestamp();
-            rec.Input(device, state);
-            rec.AddCost(Stopwatch.GetTimestamp() - before);
+            // A good read that ends a run of failed ones (#600).
+            if (ended > 0) ProblemRecorder.Instance.TakeReadsAgain(device, ended);
         }
 
         /// <summary>What became of a slot's frame before any hand-over:

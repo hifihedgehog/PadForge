@@ -300,6 +300,499 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>
+        /// Before its device is found, one rule in every library (#600
+        /// items 21, 22 and 24): a hold, a hold of several and a set wait
+        /// under the control's name and apply when the device is found. A
+        /// tap or a sequence is refused with the not-connected error:
+        /// PadForge's own while PadForge does not run, and a read's of an
+        /// absent device while PadForge runs without the device. The
+        /// script's own controller is refused the same before PadForge
+        /// takes its declaration.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task BeforeItsDeviceIsFound_HoldsAndSetsWait_AndTapsAndSequencesAreRefused()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    pad = padforge.device("wireless")
+                    ctl = padforge.add_controller("early", "Early Pad", buttons=["Fire"])
+                    def attempt(what, fn):
+                        try:
+                            fn()
+                            log(what, "ok")
+                        except Exception as e:
+                            log(what, str(e))
+                    attempt("hold", lambda: pad.hold("X", True, "LeftX", 50))
+                    attempt("set", lambda: pad.set("B", True))
+                    # A set given back, and a set a hold takes the place of.
+                    pad.set("LeftShoulder", True)
+                    pad.release("LeftShoulder")
+                    pad.set("RightShoulder", True)
+                    pad.RightShoulder = False
+                    attempt("tap", lambda: pad.tap("A", 50))
+                    attempt("sequence", lambda: pad.sequence("A", 50, "B", 50))
+                    attempt("ctl tap", lambda: ctl.tap("Fire", 50))
+                    attempt("ctl sequence", lambda: ctl.sequence("Fire", 50))
+                    log("waiting")
+                    while not padforge.connected:
+                        time.sleep(0.02)
+                    # PadForge runs, and no device it has is the pad.
+                    attempt("absent tap", lambda: pad.tap("A", 50))
+                    attempt("absent sequence", lambda: pad.sequence("A", 50))
+                    attempt("absent set", lambda: pad.set("Y", True))
+                    log("absent done")
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                using var run = Start(script, pipe);
+                string closed = "PadForge is not connected: Nothing serves the pipe " + pipe + ".";
+                Assert.Equal("hold ok", run.Expect("hold "));
+                Assert.Equal("set ok", run.Expect("set "));
+                Assert.Equal("tap " + closed, run.Expect("tap "));
+                Assert.Equal("sequence " + closed, run.Expect("sequence "));
+                Assert.Equal("ctl tap " + closed, run.Expect("ctl tap "));
+                Assert.Equal("ctl sequence " + closed, run.Expect("ctl sequence "));
+                run.Expect("waiting");
+
+                // PadForge runs, without the pad.
+                using (new AutomationPipeRig(AutomationLevel.SendInputs, pipeName: pipe))
+                {
+                    Assert.Equal("absent tap PadForge refused tap: the device is not connected (offline).", run.Expect("absent tap ", 15000));
+                    Assert.Equal("absent sequence PadForge refused sequence: the device is not connected (offline).", run.Expect("absent sequence "));
+                    Assert.Equal("absent set ok", run.Expect("absent set "));
+                    run.Expect("absent done");
+                }
+
+                await ScriptAutoHotkeyTests.AfterTheDeviceIsFound(pipe, dir, run, Pad);
+                Assert.DoesNotContain("stderr: ", run.Seen);
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A tap or a sequence on a device PadForge has but that is not
+        /// connected is refused by PadForge as it handles the line, in a
+        /// read's words, and the library raises the refusal (#600 item 21).
+        /// The library does not judge the connection itself. A hold made
+        /// meanwhile waits for the device.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task ATapOnADeviceThatIsNotConnected_IsRefusedByPadForge()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pad = Pad(rig);
+                using var loop = new PassLoop(rig, 1000, pad);
+                string script = Script(dir, """
+                    pad = padforge.device("wireless")
+                    def attempt(what, fn):
+                        try:
+                            fn()
+                            log(what, "ok")
+                        except Exception as e:
+                            log(what, str(e))
+                    def hold_x():
+                        pad.X = True
+                    while not pad.connected:
+                        time.sleep(0.02)
+                    log("seen online")
+                    while pad.connected:
+                        time.sleep(0.02)
+                    # PadForge has the pad, and it is not connected.
+                    attempt("offline tap", lambda: pad.tap("A", 300))
+                    attempt("offline sequence", lambda: pad.sequence("A", 50, "B", 50))
+                    attempt("offline hold", hold_x)
+                    log("offline done")
+                    while not pad.connected:
+                        time.sleep(0.02)
+                    attempt("online tap", lambda: pad.tap("A", 300))
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                using var run = Start(script, rig.PipeName);
+                await ScriptAutoHotkeyTests.TapsWhileTheDeviceIsNotConnected(pad, run, dir);
+                Assert.DoesNotContain("stderr: ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// While PadForge restarts and the pipe is down, a found device's
+        /// set waits as a hold does and is sent once when the device is
+        /// found again, and a tap or a sequence, on the device or on the
+        /// script's own controller, raises PadForge's not-connected error
+        /// (#600 items 22 and 24).
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task WhilePadForgeRestarts_ASetWaits_AndATapOrASequenceIsRefused()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    pad = padforge.device("wireless")
+                    ctl = padforge.add_controller("gap", "Gap Pad", buttons=["Fire"])
+                    def attempt(what, fn):
+                        try:
+                            fn()
+                            log(what, "ok")
+                        except Exception as e:
+                            log(what, str(e))
+                    while not pad.connected:
+                        time.sleep(0.02)
+                    pad.X = True
+                    log("seen online")
+                    while padforge.connected:
+                        time.sleep(0.02)
+                    # PadForge restarts: the pipe is down.
+                    attempt("gap set", lambda: pad.set("B", True))
+                    attempt("gap tap", lambda: pad.tap("A", 50))
+                    attempt("gap sequence", lambda: pad.sequence("A", 50))
+                    attempt("gap ctl tap", lambda: ctl.tap("Fire", 50))
+                    attempt("gap ctl sequence", lambda: ctl.sequence("Fire", 50))
+                    log("gap done")
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                using var run = Start(script, pipe);
+                await ScriptAutoHotkeyTests.WhilePadForgeRestarts(pipe, dir, run, Pad);
+                Assert.DoesNotContain("stderr: ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from devices() is the same object as one from device()
+        /// (#600 item 21): its connection stays current while the script
+        /// only lists it, and on its first hold, set or tap it follows
+        /// itself, so the hold, the set and the tap reach the pad, its
+        /// controls are read, and its connection stays current after.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task ADeviceFromDevices_FollowsItselfOnItsFirstHold_AndStaysCurrent()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pad = Pad(rig);
+                using var loop = new PassLoop(rig, 1000, pad);
+                string script = Script(dir, """
+                    listed = next(d for d in padforge.devices() if "Wireless" in d.name)
+                    log("listed", s(listed.connected))
+                    while listed.connected:
+                        time.sleep(0.02)
+                    log("listed offline")
+                    while not listed.connected:
+                        time.sleep(0.02)
+                    log("listed online")
+                    listed.X = True
+                    listed.set("B", True)
+                    listed.tap("A", 300)
+                    log("same", s(padforge.device(listed.id) is listed), s(len(listed.controls) > 0))
+                    while listed.connected:
+                        time.sleep(0.02)
+                    log("followed offline")
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                using var run = Start(script, rig.PipeName);
+                await ScriptAutoHotkeyTests.ListedThenFollowed(pad, run, dir);
+                Assert.DoesNotContain("stderr: ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from devices() that the script has not used yet, while
+        /// PadForge restarts, does what a found device does (#600 items 21
+        /// and 24): its controls are not read yet, so hold and set wait under
+        /// the names given, and tap and sequence raise PadForge's
+        /// not-connected error. PadForge comes back with the same pad: it is
+        /// found again, and X and LeftX are held and B set.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task ADeviceFromDevices_WhilePadForgeRestarts_WaitsOrRefusesAsAFoundOneDoes()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    listed = next(d for d in padforge.devices() if "Wireless" in d.name)
+                    log("listed", listed.id)
+                    def attempt(what, fn):
+                        try:
+                            fn()
+                            log(what, "ok")
+                        except Exception as e:
+                            log(what, str(e))
+                    while padforge.connected:
+                        time.sleep(0.02)
+                    # PadForge restarts, and the script has not used the listed
+                    # device yet.
+                    attempt("gap hold", lambda: listed.hold("X", True, "LeftX", 50))
+                    attempt("gap set", lambda: listed.set("B", True))
+                    attempt("gap tap", lambda: listed.tap("A", 50))
+                    attempt("gap sequence", lambda: listed.sequence("A", 50))
+                    log("gap done")
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                await ScriptAutoHotkeyTests.ListedWhilePadForgeRestarts(pipe, dir, () => Start(script, pipe), Pad);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device the script found, missing from PadForge's list when
+        /// PadForge comes back, is found when it connects after (#600 items
+        /// 22 and 24), and what the script held on it is put back.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task AFoundDevice_MissingWhenPadForgeComesBack_IsFoundWhenItConnects()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    pad = padforge.device("wireless")
+                    while not pad.connected:
+                        time.sleep(0.02)
+                    pad.X = True
+                    log("found")
+                    while padforge.connected:
+                        time.sleep(0.02)
+                    log("gone")
+                    while not padforge.connected:
+                        time.sleep(0.02)
+                    log("back")
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                await ScriptAutoHotkeyTests.FoundAgainWhenItConnects(pipe, dir, () => Start(script, pipe), Pad);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from devices() the script never uses keeps its
+        /// connection true through a restart (#600 items 21 and 24): not
+        /// connected while PadForge is gone, connected again when PadForge
+        /// comes back with the pad.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task AnUnusedListedDevice_IsNotConnectedWhilePadForgeIsGone_AndIsAgainAfter()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    listed = next(d for d in padforge.devices() if "Wireless" in d.name)
+                    log("listed", s(listed.connected))
+                    while padforge.connected:
+                        time.sleep(0.02)
+                    log("gap", s(listed.connected))
+                    while not padforge.connected:
+                        time.sleep(0.02)
+                    end = time.monotonic() + 5
+                    while not listed.connected and time.monotonic() < end:
+                        time.sleep(0.02)
+                    log("back", s(listed.connected))
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                await ScriptAutoHotkeyTests.UnusedListedThroughARestart(pipe, dir, () => Start(script, pipe), Pad);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from devices() follows itself on its first use of any
+        /// kind (#600 item 21): a read, a hotkey, a change callback that
+        /// streams an axis, as well as a hold, set, tap or sequence. Three
+        /// listed pads, each first used one way: the read pad's A reads
+        /// live, the hotkey pad's B fires its hotkey, and the change pad's
+        /// LeftX calls its callback.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task ADeviceFromDevices_FollowsItselfOnARead_AHotkeyOrAChangeCallback()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pads = ScriptAutoHotkeyTests.ThreePads(rig);
+                using var loop = new PassLoop(rig, 1000, pads);
+                string script = Script(dir, """
+                    missing = padforge.device("no such pad")
+                    log("missing", "nothing" if missing.A is None else "something")
+                    listed = {d.name: d for d in padforge.devices()}
+                    read_pad, hotkey_pad, change_pad = listed["Read Pad"], listed["Hotkey Pad"], listed["Change Pad"]
+                    hotkey_pad.hotkey("B", lambda: log("hk B"))
+                    change_pad.on_change("LeftX", lambda value: log("change LeftX", s(value)))
+                    log("ready")
+                    while read_pad.A is not True:
+                        time.sleep(0.01)
+                    log("read A", s(read_pad.connected))
+                    while True:
+                        time.sleep(0.05)
+                    """);
+                using var run = Start(script, rig.PipeName);
+                await ScriptAutoHotkeyTests.FirstUsesOfThreeListedPads(loop, run, dir);
+                Assert.DoesNotContain("stderr: ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A hat's direction is set on its own (#600 items 3 and 21):
+        /// DPadUp and DPadRight held before PadForge runs read Up and Right
+        /// together once it does, and again after a restart. Given back,
+        /// Up leaves Right. The whole hat held is what Right goes over, and
+        /// release() gives everything back. On the script's own controller a
+        /// direction goes into the hat it set.
+        /// </summary>
+        [InterpreterFact("python")]
+        public async Task AHatsDirections_AreSetOnTheirOwn_AndComeBackAfterARestart()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    pad = padforge.device("wireless")
+                    ctl = padforge.add_controller("dirs", "Directions Pad", buttons=["Fire"], hats=["View"])
+                    # What is not held is given back with no error, before the
+                    # device is found and after.
+                    pad.DPadLeft = None
+                    pad.release("RightTrigger")
+                    pad.DPadUp = True
+                    pad.DPadRight = True
+                    ctl.ViewUp = True
+                    ctl.ViewRight = True
+                    ctl.ViewUp = False
+                    log("ctl", s(ctl.ViewUp), s(ctl.ViewRight), s(ctl.View))
+                    def give_up(n):
+                        pad.DPadUp = None
+                    def hat_down(n):
+                        pad.DPad = "Down"
+                    pad.hotkey("B", give_up)
+                    pad.hotkey("X", hat_down)
+                    pad.hotkey("Y", lambda n: pad.release())
+                    def give_back(n):
+                        pad.DPadLeft = None
+                        pad.release("RightTrigger")
+                        log("given back")
+                    pad.hotkey("LeftShoulder", give_back)
+                    # A direction through every way of setting: hold with None
+                    # giving back, set, tap and sequence, on the device and on
+                    # the script's own controller.
+                    def held(n):
+                        pad.hold("DPadDown", True, "LeftX", 50)
+                        ctl.hold("ViewDown", True)
+                        log("held")
+                    def released(n):
+                        pad.hold("DPadDown", None, "LeftX", None)
+                        ctl.hold("ViewDown", None)
+                        log("released")
+                    def set_up(n):
+                        pad.set("DPadUp", True)
+                        log("set")
+                    def tapped(n):
+                        pad.tap("DPadLeft", 400)
+                        ctl.tap("ViewUp", 400)
+                        log("tapped")
+                    def sequenced(n):
+                        pad.sequence("DPadUp", 300, "DPadRight", 300)
+                        ctl.sequence("ViewDown", 300)
+                        log("sequenced")
+                    pad.hotkey("Button5", held)
+                    pad.hotkey("Button6", released)
+                    pad.hotkey("Button7", set_up)
+                    pad.hotkey("Button8", tapped)
+                    pad.hotkey("Button9", sequenced)
+                    log("waiting")
+                    was = False
+                    while True:
+                        now = padforge.connected
+                        if now != was:
+                            was = now
+                            log("connected", 1 if now else 0)
+                        time.sleep(0.05)
+                    """);
+                using var run = Start(script, pipe);
+                Assert.Equal("ctl 0 1 90", run.Expect("ctl "));
+                run.Expect("waiting");
+                for (int round = 0; round < 2; round++)
+                {
+                    using var rig = new AutomationPipeRig(AutomationLevel.SendInputs, pipeName: pipe);
+                    var pad = Pad(rig);
+                    using var loop = new PassLoop(rig, 1000, pad);
+                    Assert.Equal("connected 1", run.Expect("connected ", 15000));
+                    await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == 4500, 10000);
+                    var mine = rig.Host.Sessions.Devices.All().Single(e => e.Key == "dirs");
+                    await AutomationPipeRig.Until(() => mine.Device.PeekState().Povs[0] == 9000, 5000);
+                    if (round == 1)
+                    {
+                        loop.Raw[0].Buttons[1] = true;
+                        await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == 9000);
+                        loop.Raw[0].Buttons[1] = false;
+                        loop.Raw[0].Buttons[2] = true;
+                        await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == 13500);
+                        loop.Raw[0].Buttons[2] = false;
+                        loop.Raw[0].Buttons[3] = true;
+                        await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == -1);
+                        loop.Raw[0].Buttons[4] = true;
+                        Assert.Equal("given back", run.Expect("given back"));
+                        loop.Raw[0].Buttons[4] = false;
+                        await ScriptAutoHotkeyTests.DirectionsEveryWay(loop, pad, mine, s => run.Expect(s), dir, run);
+                    }
+                    rig.Dispose();
+                    Assert.Equal("connected 0", run.Expect("connected "));
+                }
+                Assert.DoesNotContain("stderr: ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
         // ── A level too low ──
 
         [InterpreterFact("python")]

@@ -14,9 +14,11 @@ namespace PadForge.Services.Automation
     /// <para>A hold is a value over a control until let go (<c>own</c>), or
     /// until the device's own input moves it (<c>set</c>). A claim takes a
     /// control from games while a subscription that asked for it lives. A
-    /// session whose lease ran out lets go of both at once, and they come
-    /// back at its next line. Timed steps (<c>after=</c>) wait on the poll
-    /// thread's clock, each after the session's previous timed step.</para>
+    /// session whose lease ran out lets go of both at once, where the table
+    /// judges its lease (ControlHolds.Lease): a script's come back at its
+    /// next line, any other program's go for good. Timed steps
+    /// (<c>after=</c>) wait on the poll thread's clock, each after the
+    /// session's previous timed step.</para>
     /// </summary>
     internal sealed class AutomationHolds
     {
@@ -28,13 +30,35 @@ namespace PadForge.Services.Automation
         internal const int LongestAfterMs = 60000;
 
         /// <summary>The control another session holds among
-        /// <paramref name="keys"/>, as b3 or a0, or null.</summary>
+        /// <paramref name="keys"/>, as b3, a0 or h0Up, or null. A hat and its
+        /// directions overlap (#600 item 21): a whole hat is busy while
+        /// another session holds one of its directions, and a direction
+        /// while another holds the whole hat. Two directions do not.</summary>
         internal string Busy(AutomationSession session, Guid device, IEnumerable<(char Kind, int Index)> keys)
         {
             foreach (var (kind, index) in keys)
-                if (_holds.TryGetValue((device, kind, index), out var held) && held.Owner != session)
-                    return kind + index.ToString(CultureInfo.InvariantCulture);
+            {
+                string busy = HeldByAnother(session, device, kind, index);
+                if (busy == null && kind == ControlHolds.HoldHat)
+                    for (int d = 0; d < 4 && busy == null; d++)
+                        busy = HeldByAnother(session, device, ControlHolds.HoldDirection, index * 4 + d);
+                if (busy == null && kind == ControlHolds.HoldDirection)
+                    busy = HeldByAnother(session, device, ControlHolds.HoldHat, index / 4);
+                if (busy != null) return busy;
+            }
             return null;
+        }
+
+        private static readonly string[] DirectionWords = { "Up", "Right", "Down", "Left" };
+
+        /// <summary>The control, as <see cref="Busy"/> names it, when a
+        /// session other than <paramref name="session"/> holds it.</summary>
+        private string HeldByAnother(AutomationSession session, Guid device, char kind, int index)
+        {
+            if (!_holds.TryGetValue((device, kind, index), out var held) || held.Owner == session) return null;
+            return kind == ControlHolds.HoldDirection
+                ? "h" + (index / 4).ToString(CultureInfo.InvariantCulture) + DirectionWords[index % 4]
+                : kind + index.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>The clock tick a step of the session is due at: now, or
@@ -61,7 +85,7 @@ namespace PadForge.Services.Automation
             {
                 var hold = new ControlHolds.Hold(value, untilMoved);
                 _holds[(device, kind, index)] = (session, hold);
-                if (!session.Lapsed) ControlHolds.Send(session.Number, device, kind, index, hold, due);
+                ControlHolds.Send(session.Number, device, kind, index, hold, due);
             }
         }
 
@@ -73,7 +97,7 @@ namespace PadForge.Services.Automation
                 var key = (device, kind, index);
                 if (!_holds.TryGetValue(key, out var held) || held.Owner != session) continue;
                 _holds.Remove(key);
-                if (!session.Lapsed) ControlHolds.Send(session.Number, device, kind, index, null, due);
+                ControlHolds.Send(session.Number, device, kind, index, null, due);
             }
         }
 
@@ -91,7 +115,7 @@ namespace PadForge.Services.Automation
         {
             if (!_claims.TryGetValue(session, out var list)) _claims[session] = list = new();
             list.Add((device, kind, index, value));
-            if (!session.Lapsed) ControlHolds.Send(session.Number, device, kind, index, value);
+            ControlHolds.Send(session.Number, device, kind, index, value);
         }
 
         /// <summary>Gives a claimed control back, when no other subscription
@@ -104,15 +128,12 @@ namespace PadForge.Services.Automation
             list.RemoveAt(at);
             bool still = list.Exists(c => c.Device == device && c.Kind == kind && c.Index == index);
             if (list.Count == 0) _claims.Remove(session);
-            if (!session.Lapsed)
+            if (still)
             {
-                if (still)
-                {
-                    var other = list.Find(c => c.Device == device && c.Kind == kind && c.Index == index);
-                    ControlHolds.Send(session.Number, device, kind, index, other.Value);
-                }
-                else ControlHolds.Send(session.Number, device, kind, index, null);
+                var other = list.Find(c => c.Device == device && c.Kind == kind && c.Index == index);
+                ControlHolds.Send(session.Number, device, kind, index, other.Value);
             }
+            else ControlHolds.Send(session.Number, device, kind, index, null);
         }
 
         /// <summary>How many controls the session holds and claims.</summary>
@@ -149,31 +170,8 @@ namespace PadForge.Services.Automation
             }
             else
                 foreach (var (device, kind, index) in mine)
-                    if (!session.Lapsed) ControlHolds.Send(session.Number, device, kind, index, null);
+                    ControlHolds.Send(session.Number, device, kind, index, null);
             return any;
-        }
-
-        /// <summary>The lease ran out: everything the session holds and
-        /// claims lets go at once, and is kept for its next line.</summary>
-        internal void Lapse(AutomationSession session)
-        {
-            _lastDue.Remove(session);
-            ControlHolds.Drop(session.Number);
-        }
-
-        /// <summary>The session spoke again after its lease ran out: what it
-        /// held and claimed is back, all of it in one table, as the lapse let
-        /// go of all of it at once. Sent one by one, a pass between two sends
-        /// could give a game one read of a control still claimed.</summary>
-        internal void Resume(AutomationSession session)
-        {
-            var back = new List<(Guid, char, int, object)>();
-            foreach (var pair in _holds)
-                if (pair.Value.Owner == session && !pair.Value.Hold.Moved)
-                    back.Add((pair.Key.Device, pair.Key.Kind, pair.Key.Index, pair.Value.Hold));
-            if (_claims.TryGetValue(session, out var list))
-                foreach (var (device, kind, index, value) in list) back.Add((device, kind, index, value));
-            ControlHolds.SendAll(session.Number, back);
         }
 
         /// <summary>The sessions' clock: a set hold the device's own input
@@ -188,7 +186,7 @@ namespace PadForge.Services.Automation
             {
                 var owner = _holds[key].Owner;
                 _holds.Remove(key);
-                if (!owner.Lapsed) ControlHolds.Send(owner.Number, key.Item1, key.Item2, key.Item3, null);
+                ControlHolds.Send(owner.Number, key.Item1, key.Item2, key.Item3, null);
             }
         }
     }

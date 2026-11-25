@@ -3,8 +3,9 @@ PadForge Automation for PowerShell. Speaks protocol 1 of PadForge's
 Automation pipe, PadForge.Automation, in Windows PowerShell 5.1 and in
 PowerShell 7.
 
-Install it from PadForge (Extras, Automation, Scripts, Install for
-PowerShell), then a script anywhere starts with Import-Module PadForge.
+Install it from PadForge with Install on the PowerShell row of the
+Scripts card (Extras, Automation), then a script anywhere starts with
+Import-Module PadForge.
 Turn on Automation at the level the script needs: Read to follow devices,
 Send Inputs to hold controls, take them in hotkeys and add controllers.
 
@@ -44,6 +45,22 @@ moves the control. $pad.Tap('A', 50) presses A for 50 ms and
 $pad.Sequence('A', 50, 'B', 50) taps one after the other, timed on
 PadForge's own clock, and a tap sent between two of PadForge's passes is
 never lost.
+
+Before the device is found, and while PadForge is not running, a property
+set, Hold and Set wait under the control's name and apply when the device
+is found, a Set once. A Tap or a Sequence throws then, since a tap sent
+later is not the one the script asked for: "PadForge is not connected"
+while PadForge does not run, and "the device is not connected" while it
+runs and has no device that matches. PadForge refuses a Tap or a Sequence
+on a device it has that is not connected, in the same words, and the
+library throws its refusal. A Tap or a Sequence on the script's own
+controller throws the same way until PadForge has added it.
+
+A hat's direction is set as a button is: $pad.DPadUp = $true presses Up
+and $false holds it released, beside the hat's other directions. The hat
+itself, held or the device's own, is what the held directions go over, so
+$pad.DPad = 'Down' with DPadRight held reads Down and Right. Up and Down
+together cancel, as Left and Right do.
 
 Hotkeys take AutoHotkey's forms: $pad.Hotkey('A', { ... }) takes A from the
 game while the hotkey exists, '~A' leaves it to the game too, and 'A up',
@@ -347,6 +364,37 @@ namespace PadForgeAutomation
             }
         }
 
+        // Several requests written one after the other with no wait between
+        // them, then each one's final line: null for one the closed pipe
+        // ended.
+        public string[] Requests(IList<string> lines, int timeoutMs)
+        {
+            List<KeyValuePair<string, Pending>> sent = new List<KeyValuePair<string, Pending>>();
+            try
+            {
+                foreach (string line in lines)
+                {
+                    string tag = "@" + Interlocked.Increment(ref _nextTag).ToString(CultureInfo.InvariantCulture);
+                    Pending pending = new Pending();
+                    lock (_pendingLock) _pending[tag] = pending;
+                    sent.Add(new KeyValuePair<string, Pending>(tag, pending));
+                    Send(tag + " " + line);
+                }
+                string[] finals = new string[sent.Count];
+                for (int i = 0; i < sent.Count; i++)
+                {
+                    if (!sent[i].Value.Done.WaitOne(timeoutMs)) throw new TimeoutException("PadForge did not answer.");
+                    finals[i] = sent[i].Value.Final;
+                }
+                return finals;
+            }
+            finally
+            {
+                lock (_pendingLock)
+                    foreach (KeyValuePair<string, Pending> s in sent) _pending.Remove(s.Key);
+            }
+        }
+
         public void Send(string line)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(line + "\n");
@@ -476,12 +524,13 @@ namespace PadForgeAutomation
             return TryNumber(value, out number) && number != 0;
         }
 
-        // A value as the pipe takes it for a control of a kind (b, a or h),
-        // in plain units.
+        // A value as the pipe takes it for a control of a kind (b, a or h,
+        // or d for a hat's direction, which takes a button's), in plain
+        // units.
         internal static string Wire(char kind, object value)
         {
             value = Plain(value);
-            if (kind == 'b') return IsOn(value) ? "1" : "0";
+            if (kind == 'b' || kind == 'd') return IsOn(value) ? "1" : "0";
             string text = value as string;
             if (kind == 'a')
             {
@@ -513,6 +562,37 @@ namespace PadForgeAutomation
         internal static bool Holds(string directions, string direction)
         {
             return ("+" + directions + "+").IndexOf("+" + direction + "+", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        // The directions a hat value as the pipe takes it holds: "45deg",
+        // "Up+Right", or "-1" at rest.
+        internal static string HatWords(string wire)
+        {
+            if (string.IsNullOrEmpty(wire) || wire == "-1" || string.Equals(wire, "rest", StringComparison.OrdinalIgnoreCase)) return string.Empty;
+            if (Ends(wire, "deg")) return Directions(Real(wire.Substring(0, wire.Length - 3)));
+            return wire;
+        }
+
+        // The degrees a hat that holds these directions reads, -1 for none.
+        // Up and Down together cancel, as Left and Right do.
+        internal static double DirectionDegrees(string words)
+        {
+            bool up = Holds(words, "Up"), down = Holds(words, "Down"), right = Holds(words, "Right"), left = Holds(words, "Left");
+            if (up && down) up = down = false;
+            if (right && left) right = left = false;
+            if (up) return right ? 45 : left ? 315 : 0;
+            if (down) return right ? 135 : left ? 225 : 180;
+            return right ? 90 : left ? 270 : -1;
+        }
+
+        // words with one direction pressed or released.
+        internal static string Turn(string words, string bit, bool pressed)
+        {
+            List<string> held = new List<string>();
+            foreach (string w in (words ?? string.Empty).Split('+'))
+                if (w.Trim().Length > 0 && !string.Equals(w.Trim(), bit, StringComparison.OrdinalIgnoreCase)) held.Add(w.Trim());
+            if (pressed) held.Add(bit);
+            return string.Join("+", held);
         }
 
         internal static bool Ends(string text, string end)
@@ -756,6 +836,8 @@ namespace PadForgeAutomation
         internal readonly Dictionary<string, Control> _byIndex = new Dictionary<string, Control>(StringComparer.Ordinal);
         internal readonly Dictionary<string, object> _values = new Dictionary<string, object>(StringComparer.Ordinal);
         internal readonly Dictionary<string, object> _holds = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        // Sets made before the device was found, put once when it is.
+        internal readonly Dictionary<string, object> _sets = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         internal readonly Dictionary<string, HotkeyKey> _keys = new Dictionary<string, HotkeyKey>(StringComparer.OrdinalIgnoreCase);
         internal readonly Dictionary<int, HotkeyKey> _lines = new Dictionary<int, HotkeyKey>();
         internal readonly Dictionary<string, List<object>> _changes = new Dictionary<string, List<object>>(StringComparer.OrdinalIgnoreCase);
@@ -993,7 +1075,7 @@ namespace PadForgeAutomation
             List<KeyValuePair<string, object>> held = new List<KeyValuePair<string, object>>();
             foreach (KeyValuePair<string, object> hold in _holds)
             {
-                Control c = Lookup(hold.Key);
+                Control c = Target(hold.Key);
                 if (c == null)
                 {
                     _pf.Note("No such control: " + hold.Key);
@@ -1005,6 +1087,46 @@ namespace PadForgeAutomation
             _holds.Clear();
             foreach (KeyValuePair<string, object> hold in held) _holds[hold.Key] = hold.Value;
             if (line.Length > 0) _pf.Send("own " + _id + line);
+            // Sets made before the device was found are put once now. One
+            // whose name or value the device does not take is noted and
+            // goes.
+            StringBuilder sets = new StringBuilder();
+            foreach (KeyValuePair<string, object> set in _sets)
+            {
+                Control c = Target(set.Key);
+                if (c == null)
+                {
+                    _pf.Note("No such control: " + set.Key);
+                    continue;
+                }
+                string wire;
+                try { wire = Text.Wire(c.Kind, set.Value); }
+                catch (Exception e)
+                {
+                    _pf.Note(e.Message);
+                    continue;
+                }
+                sets.Append(' ').Append(c.Name).Append('=').Append(wire);
+            }
+            _sets.Clear();
+            if (sets.Length > 0) _pf.Send("set " + _id + sets);
+        }
+
+        // A device Devices() listed follows itself on its first use of any
+        // kind, a read, a hotkey, a change callback, a hold, Set, Tap or
+        // Sequence, as one Device() found does: its controls are read, its
+        // state and connection stay current, and PadForge finds it again
+        // after a restart. A device already wanted is found again by
+        // PadForge's restore and its device events.
+        internal void FollowSelf()
+        {
+            if (_followed || _id.Length == 0 || this is Controller) return;
+            string key = _what.ToLowerInvariant();
+            if (_pf.Wanting.ContainsKey(key)) return;
+            _pf.Wanting[key] = this;
+            if (!_pf.Connected) return;
+            try { Attach(); }
+            catch (Exception e) { _pf.Note(e.Message); }
         }
 
         internal void Caps()
@@ -1031,6 +1153,11 @@ namespace PadForgeAutomation
 
         internal void Lost()
         {
+            // PadForge closed the pipe: the device is followed again, and
+            // what the script holds put back, when PadForge has it again,
+            // at once or when it connects after.
+            _followed = false;
+            _online = false;
             if (_connected)
             {
                 _connected = false;
@@ -1130,6 +1257,20 @@ namespace PadForgeAutomation
             return new Control(stem + m.Groups[2].Value, k, index, stem == "Axis");
         }
 
+        // What a setting names: a control, or one direction of a hat, kind
+        // d, named by its hat's name and set as a button is. Null for
+        // neither.
+        internal Control Target(string name)
+        {
+            Control c = Lookup(name);
+            if (c != null) return c;
+            HotkeyItem d = Direction(name);
+            if (d == null) return null;
+            Control hat;
+            string hatName = _byIndex.TryGetValue("h" + d.Hat, out hat) ? hat.Name : "Hat" + d.Hat;
+            return new Control(hatName + d.Bit, 'd', d.Hat * 4 + Array.IndexOf(Ends, d.Bit), false);
+        }
+
         // A hat direction a name names: the hat's index and the direction,
         // or null.
         internal HotkeyItem Direction(string name)
@@ -1158,6 +1299,7 @@ namespace PadForgeAutomation
 
         internal virtual object Read(string name)
         {
+            FollowSelf();
             bool plus = Text.Ends(name, "Plus"), minus = Text.Ends(name, "Minus");
             if (plus || minus)
             {
@@ -1181,6 +1323,9 @@ namespace PadForgeAutomation
                 double deg = _values.TryGetValue("h" + direction.Hat, out hat) ? (double)hat : -1;
                 return Text.Holds(Text.Directions(deg), direction.Bit);
             }
+            // Not found yet: its controls are not known, and it reads
+            // nothing.
+            if (_controls.Count == 0) return null;
             throw new ArgumentException("No such control: " + name);
         }
 
@@ -1196,16 +1341,19 @@ namespace PadForgeAutomation
         // ── Holding ──
 
         // Sets a property: holds the control at the value, or gives it back
-        // for $null or "". Before the device is found its controls are not
-        // known yet: the hold waits under the name given.
+        // for $null or "". A hat's direction is held as a button is, over
+        // the hat's other directions: the hat itself, held or the device's
+        // own, with each held direction pressed or released over it. Before
+        // the device is found its controls are not known yet: the hold
+        // waits under the name given.
         internal virtual void Hold(string name, object value)
         {
-            Control c = Lookup(name);
-            if (c == null && _controls.Count > 0)
-                throw new ArgumentException(Direction(name) != null
-                    ? name + " is a hat's direction: set the hat, such as $pad.DPad = 'Up'."
-                    : "No such control: " + name);
+            FollowSelf();
+            Control c = Target(name);
+            if (c == null && _controls.Count > 0) throw new ArgumentException("No such control: " + name);
             string key = c == null ? name : c.Name;
+            // A hold or a give-back takes the place of a Set that waits.
+            _sets.Remove(key);
             if (Text.IsEmpty(value))
             {
                 _holds.Remove(key);
@@ -1217,75 +1365,127 @@ namespace PadForgeAutomation
         }
 
         // Holds several controls in one change: Hold('LeftX', 50, 'LeftY', -20).
+        // $null gives a control back, as setting it to $null does, and
+        // before the device is found each waits under the name given, as
+        // Set does.
         internal virtual void Hold(object[] a)
         {
-            StringBuilder line = new StringBuilder();
+            FollowSelf();
+            StringBuilder line = new StringBuilder(), back = new StringBuilder();
             foreach (KeyValuePair<string, object> pair in Pairs(a))
             {
-                Control c = Lookup(pair.Key);
-                if (c == null) throw new ArgumentException("No such control: " + pair.Key);
-                _holds[c.Name] = pair.Value;
-                line.Append(' ').Append(c.Name).Append('=').Append(Text.Wire(c.Kind, pair.Value));
+                Control c = Target(pair.Key);
+                if (c == null && _controls.Count > 0) throw new ArgumentException("No such control: " + pair.Key);
+                string key = c == null ? pair.Key : c.Name;
+                _sets.Remove(key);
+                if (Text.IsEmpty(pair.Value))
+                {
+                    _holds.Remove(key);
+                    if (c != null) back.Append(' ').Append(key);
+                    continue;
+                }
+                _holds[key] = pair.Value;
+                if (c != null) line.Append(' ').Append(key).Append('=').Append(Text.Wire(c.Kind, pair.Value));
             }
             if (_id.Length > 0 && line.Length > 0) _pf.Send("own " + _id + line);
+            if (_id.Length > 0 && back.Length > 0) _pf.Send("rel " + _id + back);
         }
 
         // Gives controls back: Release('A', 'LeftX'), or all of them.
         internal virtual void Release(object[] names)
         {
+            FollowSelf();
             if (names.Length == 0)
             {
                 _holds.Clear();
+                _sets.Clear();
                 if (_id.Length > 0) _pf.Send("rel " + _id + " all");
                 return;
             }
             StringBuilder line = new StringBuilder();
             foreach (object name in names)
             {
-                Control c = Lookup(Word(name));
-                if (c == null) throw new ArgumentException("No such control: " + Word(name));
-                _holds.Remove(c.Name);
-                line.Append(' ').Append(c.Name);
+                // Before the device is found its controls are not known: a
+                // hold or a Set that waits under the name given goes.
+                Control c = Target(Word(name));
+                if (c == null && _controls.Count > 0) throw new ArgumentException("No such control: " + Word(name));
+                string key = c == null ? Word(name) : c.Name;
+                _holds.Remove(key);
+                _sets.Remove(key);
+                if (c != null) line.Append(' ').Append(key);
             }
-            if (_id.Length > 0) _pf.Send("rel " + _id + line);
+            if (_id.Length > 0 && line.Length > 0) _pf.Send("rel " + _id + line);
         }
 
         // Puts a value once, until the device's own input moves the
-        // control.
+        // control. Before the device is found its controls are not known
+        // yet: the value waits under the name given, and is put when the
+        // device is found. While PadForge is not connected it waits the same
+        // way, as a hold does, and is put when the device is found again.
         internal virtual void Set(string name, object value)
         {
-            Control c = Lookup(name);
-            if (c == null) throw new ArgumentException("No such control: " + name);
-            if (_id.Length > 0) _pf.Send("set " + _id + " " + c.Name + "=" + Text.Wire(c.Kind, value));
+            FollowSelf();
+            Control c = Target(name);
+            if (c == null)
+            {
+                if (_controls.Count > 0) throw new ArgumentException("No such control: " + name);
+                _sets[name] = value;
+                return;
+            }
+            if (_id.Length == 0 || !_pf.Send("set " + _id + " " + c.Name + "=" + Text.Wire(c.Kind, value))) _sets[c.Name] = value;
+        }
+
+        // The refusal of a timed action before the device is found: a tap
+        // sent later, at a moment the script did not choose, is not the tap
+        // it asked for. PadForge's own error while PadForge is not
+        // connected, else a read's of a device that is not connected.
+        internal Exception Absent(string verb)
+        {
+            if (!_pf.Connected) return new InvalidOperationException("PadForge is not connected: " + _pf.Why);
+            return new InvalidOperationException("PadForge refused " + verb + ": the device is not connected (offline).");
         }
 
         // Presses a control for ms milliseconds on PadForge's clock: a
-        // button, or an axis to value (100 by default) and back.
+        // button or a hat's direction, or an axis to value (100 by default)
+        // and back. Refused before the device is found, and by PadForge
+        // while the device is not connected.
         internal virtual void Tap(string name, int ms, object value)
         {
-            Control c = Lookup(name);
+            if (_id.Length == 0) throw Absent("tap");
+            FollowSelf();
+            Control c = Target(name);
+            // Controls not read yet: PadForge is not connected, or has not
+            // given them.
+            if (c == null && _controls.Count == 0) throw Absent("tap");
             if (c == null) throw new ArgumentException("No such control: " + name);
-            if (_id.Length == 0) return;
-            if (Text.IsEmpty(value)) value = c.Kind == 'b' ? (object)true : c.Kind == 'h' ? 0.0 : 100.0;
-            _pf.Send("own " + _id + " " + c.Name + "=" + Text.Wire(c.Kind, value));
-            _pf.Send("rel " + _id + " " + c.Name + " in=" + ms.ToString(Text.Invariant));
+            if (Text.IsEmpty(value)) value = c.Kind == 'b' || c.Kind == 'd' ? (object)true : c.Kind == 'h' ? 0.0 : 100.0;
+            _pf.Timed("tap", new[]
+            {
+                "own " + _id + " " + c.Name + "=" + Text.Wire(c.Kind, value) + " in=0",
+                "rel " + _id + " " + c.Name + " in=" + ms.ToString(Text.Invariant),
+            });
         }
 
         // Taps controls one after the other, each held its ms:
         // Sequence('A', 50, 'B', 50). Each starts as the one before lets go.
+        // Refused before the device is found, and by PadForge while the
+        // device is not connected.
         internal virtual void Sequence(object[] steps)
         {
-            List<KeyValuePair<Control, int>> list = Steps(steps);
-            if (_id.Length == 0) return;
-            bool first = true;
-            foreach (KeyValuePair<Control, int> step in list)
+            if (_id.Length == 0) throw Absent("sequence");
+            FollowSelf();
+            if (_controls.Count == 0)
+                for (int i = 0; i + 1 < steps.Length; i += 2)
+                    if (Target(Word(steps[i])) == null) throw Absent("sequence");
+            List<string> lines = new List<string>();
+            foreach (KeyValuePair<Control, int> step in Steps(steps))
             {
                 Control c = step.Key;
-                string on = c.Kind == 'b' ? "1" : c.Kind == 'h' ? "0deg" : "100%";
-                _pf.Send("own " + _id + " " + c.Name + "=" + on + (first ? string.Empty : " after=0"));
-                _pf.Send("rel " + _id + " " + c.Name + " after=" + step.Value.ToString(Text.Invariant));
-                first = false;
+                string on = c.Kind == 'b' || c.Kind == 'd' ? "1" : c.Kind == 'h' ? "0deg" : "100%";
+                lines.Add("own " + _id + " " + c.Name + "=" + on + (lines.Count == 0 ? " in=0" : " after=0"));
+                lines.Add("rel " + _id + " " + c.Name + " after=" + step.Value.ToString(Text.Invariant));
             }
+            if (lines.Count > 0) _pf.Timed("sequence", lines);
         }
 
         internal List<KeyValuePair<Control, int>> Steps(object[] steps)
@@ -1293,7 +1493,7 @@ namespace PadForgeAutomation
             List<KeyValuePair<Control, int>> list = new List<KeyValuePair<Control, int>>();
             for (int i = 0; i + 1 < steps.Length; i += 2)
             {
-                Control c = Lookup(Word(steps[i]));
+                Control c = Target(Word(steps[i]));
                 if (c == null) throw new ArgumentException("No such control: " + Word(steps[i]));
                 list.Add(new KeyValuePair<Control, int>(c, Ms(steps[i + 1])));
             }
@@ -1306,6 +1506,7 @@ namespace PadForgeAutomation
         // $null removes it.
         internal virtual void Hotkey(string keyName, object callback)
         {
+            FollowSelf();
             HotkeyItem h = Parse(keyName);
             string id = h.Key;
             string word = callback as string;
@@ -1470,6 +1671,7 @@ namespace PadForgeAutomation
         internal void OnChange(string name, object callback)
         {
             callback = Client.Callable(callback, "OnChange needs a script block.");
+            FollowSelf();
             Control c = Lookup(name);
             string key = c == null ? name : c.Name;
             List<object> list;
@@ -1480,7 +1682,9 @@ namespace PadForgeAutomation
         // scriptBlock(connected) when the device connects or disconnects.
         internal void OnConnect(object callback)
         {
-            _onConnect.Add(Client.Callable(callback, "OnConnect needs a script block."));
+            callback = Client.Callable(callback, "OnConnect needs a script block.");
+            FollowSelf();
+            _onConnect.Add(callback);
         }
 
         internal void Fire(string[] w)
@@ -1781,7 +1985,10 @@ namespace PadForgeAutomation
             {
                 object extra;
                 if (Extra(name)) return _extras.TryGetValue(name, out extra) ? extra : null;
-                return base.Read(name);
+                HotkeyItem d = Direction(name);
+                if (d == null) return base.Read(name);
+                string set;
+                return Text.Holds(Text.HatWords(_set.TryGetValue(HatName(d), out set) ? set : string.Empty), d.Bit);
             }
             string wire;
             if (!_set.TryGetValue(c.Name, out wire)) wire = string.Empty;
@@ -1821,11 +2028,38 @@ namespace PadForgeAutomation
                 Send(word + "=" + sent);
                 return;
             }
-            if (c == null) throw new ArgumentException("No such control: " + name);
+            if (c == null)
+            {
+                HotkeyItem d = Direction(name);
+                if (d == null) throw new ArgumentException("No such control: " + name);
+                Send(Turn(d, value));
+                return;
+            }
             string wire = Text.IsEmpty(value) ? (c.Kind == 'b' ? "0" : c.Kind == 'h' ? "-1" : "0%") : Text.Wire(c.Kind, value);
             if (wire == "rest") wire = "0%";
             _set[c.Name] = wire;
             Send(c.Name + "=" + wire);
+        }
+
+        // The name of the hat a direction is of.
+        private string HatName(HotkeyItem d)
+        {
+            Control hat;
+            return _byIndex.TryGetValue("h" + d.Hat, out hat) ? hat.Name : "Hat" + d.Hat;
+        }
+
+        // A hat's direction pressed or released ($true, $false or $null):
+        // the hat the script set keeps it, for after a lapse or a restart,
+        // and the word that sends it, which PadForge puts into the hat as
+        // the change lands, beside the hat's other directions.
+        private string Turn(HotkeyItem d, object value)
+        {
+            string hat = HatName(d);
+            bool pressed = !Text.IsEmpty(value) && Text.IsOn(value);
+            string set;
+            string words = Text.Turn(Text.HatWords(_set.TryGetValue(hat, out set) ? set : string.Empty), d.Bit, pressed);
+            _set[hat] = Text.Wire('h', Text.DirectionDegrees(words));
+            return hat + d.Bit + "=" + (pressed ? "1" : "0");
         }
 
         private static string Three(object value, string what)
@@ -1848,8 +2082,16 @@ namespace PadForgeAutomation
             foreach (KeyValuePair<string, object> pair in Pairs(a))
             {
                 Control c = Lookup(pair.Key);
-                if (c == null) throw new ArgumentException("No such control: " + pair.Key);
-                string wire = Text.Wire(c.Kind, pair.Value);
+                if (c == null)
+                {
+                    HotkeyItem d = Direction(pair.Key);
+                    if (d == null) throw new ArgumentException("No such control: " + pair.Key);
+                    line.Add(Turn(d, pair.Value));
+                    continue;
+                }
+                // $null puts the control at rest, as setting it to $null
+                // does.
+                string wire = Text.IsEmpty(pair.Value) ? (c.Kind == 'b' ? "0" : c.Kind == 'h' ? "-1" : "0%") : Text.Wire(c.Kind, pair.Value);
                 if (wire == "rest") wire = "0%";
                 _set[c.Name] = wire;
                 line.Add(c.Name + "=" + wire);
@@ -1874,28 +2116,33 @@ namespace PadForgeAutomation
             Hold(name, value);
         }
 
+        // A tap before PadForge takes the declaration, or while PadForge is
+        // not connected, is refused, as one on a device not found yet is.
         internal override void Tap(string name, int ms, object value)
         {
-            Control c = Lookup(name);
+            if (_id.Length == 0 || !_pf.Connected) throw Absent("tap");
+            Control c = Target(name);
             if (c == null) throw new ArgumentException("No such control: " + name);
-            if (Text.IsEmpty(value)) value = c.Kind == 'b' ? (object)true : c.Kind == 'h' ? 0.0 : 100.0;
-            string rest = c.Kind == 'b' ? "0" : c.Kind == 'h' ? "-1" : "0%";
-            Send(c.Name + "=" + Text.Wire(c.Kind, value));
+            if (Text.IsEmpty(value)) value = c.Kind == 'b' || c.Kind == 'd' ? (object)true : c.Kind == 'h' ? 0.0 : 100.0;
+            string rest = c.Kind == 'b' || c.Kind == 'd' ? "0" : c.Kind == 'h' ? "-1" : "0%";
+            if (!_pf.Send("s " + _id + " " + c.Name + "=" + Text.Wire(c.Kind, value))) throw Absent("tap");
             Send(c.Name + "=" + rest + " in=" + ms.ToString(Text.Invariant));
         }
 
         internal override void Sequence(object[] steps)
         {
-            bool first = true;
+            if (_id.Length == 0 || !_pf.Connected) throw Absent("sequence");
+            List<string> lines = new List<string>();
             foreach (KeyValuePair<Control, int> step in Steps(steps))
             {
                 Control c = step.Key;
-                string on = c.Kind == 'b' ? "1" : c.Kind == 'h' ? "0deg" : "100%";
-                string off = c.Kind == 'b' ? "0" : c.Kind == 'h' ? "-1" : "0%";
-                Send(c.Name + "=" + on + (first ? string.Empty : " after=0"));
-                Send(c.Name + "=" + off + " after=" + step.Value.ToString(Text.Invariant));
-                first = false;
+                string on = c.Kind == 'b' || c.Kind == 'd' ? "1" : c.Kind == 'h' ? "0deg" : "100%";
+                string off = c.Kind == 'b' || c.Kind == 'd' ? "0" : c.Kind == 'h' ? "-1" : "0%";
+                lines.Add(c.Name + "=" + on + (lines.Count == 0 ? string.Empty : " after=0"));
+                lines.Add(c.Name + "=" + off + " after=" + step.Value.ToString(Text.Invariant));
             }
+            for (int i = 0; i < lines.Count; i++)
+                if (!_pf.Send("s " + _id + " " + lines[i]) && i == 0) throw Absent("sequence");
         }
 
         internal override void Hotkey(string keyName, object callback)
@@ -2168,12 +2415,26 @@ namespace PadForgeAutomation
             foreach (string kind in _follows.ToArray())
                 if (kind != "devices") Try(delegate { Ask("sub " + kind); });
             Try(delegate { Ask("sub devices"); });
+            Try(Relist);
             foreach (Controller controller in Mine.Values.ToArray())
                 Try(controller.Declare);
             foreach (KeyValuePair<string, string> value in _values.ToArray())
                 Send("var " + value.Key + "=" + value.Value);
             foreach (Device pad in Wanting.Values.ToArray())
                 Try(pad.Locate);
+        }
+
+        // Every device the script listed takes its connection from
+        // PadForge's list again, on a new connection.
+        private void Relist()
+        {
+            if (ById.Count == 0) return;
+            foreach (Answer row in Ask("devices").Rows)
+            {
+                if (row.Words.Length == 0 || row.Words[0] != "device") continue;
+                Device pad;
+                if (ById.TryGetValue(row.Get("id", string.Empty), out pad) && !(pad is Controller)) pad._online = row.Get("online", "0") == "1";
+            }
         }
 
         private void Try(Action step)
@@ -2255,20 +2516,40 @@ namespace PadForgeAutomation
             catch (IOException) { all = null; }
             if (all == null) throw new IOException("PadForge is not connected: the pipe closed.");
             string final = all[all.Length - 1];
-            if (final.StartsWith("err ", StringComparison.Ordinal))
-            {
-                string[] parts = final.Split(new[] { ' ' }, 3);
-                string code = parts.Length > 1 ? parts[1] : "internal";
-                string verb = line.Split(' ')[0];
-                if (code == "not-allowed")
-                    throw new InvalidOperationException("PadForge refused " + verb + ": Automation's level is " + Level + ", too low for it. Raise it in Extras, Automation.");
-                throw new InvalidOperationException("PadForge refused " + verb + ": " + (parts.Length > 2 ? parts[2] : string.Empty) + " (" + code + ").");
-            }
+            if (final.StartsWith("err ", StringComparison.Ordinal)) throw Refusal(line.Split(' ')[0], final);
             Answer answer = Text.Split(final.Length > 2 ? final.Substring(2) : string.Empty);
             Answer[] rows = new Answer[all.Length - 1];
             for (int i = 0; i < rows.Length; i++) rows[i] = Text.Split(all[i]);
             answer.Rows = rows;
             return answer;
+        }
+
+        // PadForge's refusal of a request, in words, the request named by
+        // verb.
+        private Exception Refusal(string verb, string final)
+        {
+            string[] parts = final.Split(new[] { ' ' }, 3);
+            string code = parts.Length > 1 ? parts[1] : "internal";
+            if (code == "not-allowed")
+                return new InvalidOperationException("PadForge refused " + verb + ": Automation's level is " + Level + ", too low for it. Raise it in Extras, Automation.");
+            return new InvalidOperationException("PadForge refused " + verb + ": " + (parts.Length > 2 ? parts[2] : string.Empty) + " (" + code + ").");
+        }
+
+        // A Tap's or a Sequence's lines, written one after the other with no
+        // wait between them, so their times on PadForge's clock stay as
+        // sent, and then each one's answer. PadForge refuses a timed step on
+        // a device that is not connected: the first refusal is thrown in
+        // words, named by verb, the call's name.
+        internal void Timed(string verb, IList<string> lines)
+        {
+            Connection link = _link;
+            if (_closed || link == null || !_ready) throw new InvalidOperationException("PadForge is not connected: " + Why);
+            string[] finals;
+            try { finals = link.Requests(lines, _waiting ? 150000 : 10000); }
+            catch (IOException) { finals = null; }
+            if (finals == null || Array.IndexOf(finals, null) >= 0) throw new IOException("PadForge is not connected: the pipe closed.");
+            foreach (string final in finals)
+                if (final.StartsWith("err ", StringComparison.Ordinal)) throw Refusal(verb, final);
         }
 
         // ── Events ──
@@ -2322,10 +2603,14 @@ namespace PadForgeAutomation
                 {
                     if (w.Length < 4) return;
                     bool online = w[3] == "online";
+                    // A device the script listed keeps its connection
+                    // current.
+                    Device listed;
+                    if (ById.TryGetValue(w[2], out listed)) listed._online = online;
                     Call("dev", w[2], online);
                     if (online)
                         foreach (Device wanted in Wanting.Values.ToArray())
-                            if (wanted.Id.Length == 0) Try(wanted.Locate);
+                            if (wanted.Id.Length == 0 || !wanted._followed) Try(wanted.Locate);
                     break;
                 }
                 case "profile": Call("profile", w.Length > 2 ? w[2] : "default"); break;
@@ -2432,6 +2717,14 @@ namespace PadForgeAutomation
                 string key = what.ToLowerInvariant();
                 Device pad;
                 if (Wanting.TryGetValue(key, out pad)) return pad;
+                // A device Devices() listed is the same object Device() gives
+                // for its script ID.
+                if (ById.TryGetValue(key, out pad) && !(pad is Controller) && pad._what.ToLowerInvariant() == key)
+                {
+                    Wanting[key] = pad;
+                    if (Connected && !pad._followed) pad.Locate();
+                    return pad;
+                }
                 pad = new Device(this, what);
                 Wanting[key] = pad;
                 if (Connected) pad.Locate();
@@ -2440,6 +2733,9 @@ namespace PadForgeAutomation
         }
 
         // Every device PadForge knows, connected or not, as device objects.
+        // A device listed here is the same object Device() gives for its
+        // script ID, and it follows itself on its first use of any kind: a
+        // read, a hotkey, a change callback, a hold, Set, Tap or Sequence.
         public Device[] Devices()
         {
             Pump();

@@ -138,6 +138,34 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>Each library's head names the button that installs it as
+        /// the Scripts card shows it: Install, on the library's own row, on
+        /// the Extras page's Automation page (#600 item 26). The card has no
+        /// button that reads "Install for".</summary>
+        [Fact]
+        public void EveryLibrarysHead_NamesInstallOnItsRowOfTheScriptsCard()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            foreach (var library in AutomationLibraries.All)
+            {
+                string text = Encoding.UTF8.GetString(AutomationLibraries.Read(library.Kind));
+                // The head as prose: comment marks gone, one space between
+                // words.
+                string head = System.Text.RegularExpressions.Regex.Replace(
+                    System.Text.RegularExpressions.Regex.Replace(text.Substring(0, Math.Min(text.Length, 1600)), @"(?m)^;[ ]?", string.Empty),
+                    @"\s+", " ");
+                Assert.Equal(library.Name, library.Kind switch
+                {
+                    AutomationLibraryKind.AutoHotkey => s.Automation_Library_AutoHotkey,
+                    AutomationLibraryKind.Python => s.Automation_Library_Python,
+                    _ => s.Automation_Library_PowerShell,
+                });
+                Assert.Contains("Install it from PadForge with " + s.Common_Install + " on the " + library.Name + " row of the "
+                    + s.Extras_Automation_Card_Scripts + " card (" + s.Extras_Title + ", " + s.Extras_Automation_Title + ")", head);
+                Assert.DoesNotContain("Install for", text);
+            }
+        }
+
         // Each library's runs against a real host are in ScriptAutoHotkeyTests,
         // ScriptPythonTests and ScriptPowerShellTests (#600 item 27).
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using PadForge.Common.Input;
 
 namespace PadForge.Services.Automation
 {
@@ -111,6 +112,11 @@ namespace PadForge.Services.Automation
 
         public int LeaseMs { get; private set; } = DefaultLeaseMs;
 
+        /// <summary>The session's lease as the holds table judges it, on the
+        /// clock that applies its holds (#600 item 24). Made when the
+        /// session opens, null before.</summary>
+        internal ControlHolds.Lease Lease { get; set; }
+
         /// <summary>When the program last sent a line.</summary>
         public long LastHeardMs { get; private set; }
 
@@ -179,8 +185,19 @@ namespace PadForge.Services.Automation
         internal void Heard()
         {
             LastHeardMs = _nowMs();
+            Lease?.Heard();
             Outbox.Heard();
-            if (Lapsed || Asleep) _hub.Woke(this);
+            Renewed();
+        }
+
+        /// <summary>The program spoke and its lease was stamped: a script's
+        /// holds and claims are back in the table first, whatever the
+        /// sessions saw of the lapse, and a session that lapsed or slept
+        /// wakes.</summary>
+        private void Renewed()
+        {
+            bool wasOut = ControlHolds.Renew(Number);
+            if (Lapsed || Asleep || wasOut) _hub.Woke(this);
         }
 
         /// <summary>Runs <paramref name="work"/> with the rights of the
@@ -365,8 +382,9 @@ namespace PadForge.Services.Automation
                 return;
             }
             LastHeardMs = _nowMs();
+            Lease?.Heard();
             Outbox.Heard();
-            if (Lapsed || Asleep) _hub.Woke(this);
+            Renewed();
 
             if (tooLong)
             {
@@ -396,7 +414,8 @@ namespace PadForge.Services.Automation
             // While a line runs the program waits on PadForge, and the lines
             // it sent behind it, its beats among them, wait in the pipe: the
             // lease does not run out meanwhile (#600 item 24).
-            Interlocked.Increment(ref _handling);
+            var lease = Lease;
+            lease?.Begin();
             try
             {
                 await _hub.RunAsync(this, request).ConfigureAwait(false);
@@ -404,14 +423,12 @@ namespace PadForge.Services.Automation
             finally
             {
                 LastHeardMs = _nowMs();
-                Interlocked.Decrement(ref _handling);
+                lease?.End();
             }
         }
 
-        private int _handling;
-
         /// <summary>Whether a line of the program's runs now.</summary>
-        internal bool Handling => Volatile.Read(ref _handling) > 0;
+        internal bool Handling => Lease?.Runs == true;
 
         private static string TagOf(string text)
         {

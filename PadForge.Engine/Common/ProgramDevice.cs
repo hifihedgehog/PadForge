@@ -87,6 +87,12 @@ namespace PadForge.Engine
         /// <summary>Axes 0 to 23 and sliders 24 to 31.</summary>
         public readonly List<(int Index, int Value)> Axes = new();
         public readonly List<(int Index, int Value)> Hats = new();
+
+        /// <summary>Hat directions set on their own (#600 item 21), each
+        /// pressed or released. They go into their hat as the change lands,
+        /// after the change's whole hats, beside the hat's other directions.
+        /// Up and Down together cancel, as Left and Right do.</summary>
+        public readonly List<(int Hat, HatDirections Direction, bool Down)> Directions = new();
         public float[] Gyro;
         public float[] Accel;
         public readonly List<(int Pad, int Finger, float X, float Y, bool Down, float Pressure)> Fingers = new();
@@ -99,8 +105,8 @@ namespace PadForge.Engine
         /// battery stays as it was.</summary>
         public bool Rest;
 
-        public bool IsEmpty => !Rest && Buttons.Count == 0 && Axes.Count == 0 && Hats.Count == 0 && Gyro == null
-            && Accel == null && Fingers.Count == 0 && Clicks.Count == 0 && Battery == null && Charging == null;
+        public bool IsEmpty => !Rest && Buttons.Count == 0 && Axes.Count == 0 && Hats.Count == 0 && Directions.Count == 0
+            && Gyro == null && Accel == null && Fingers.Count == 0 && Clicks.Count == 0 && Battery == null && Charging == null;
     }
 
     /// <summary>
@@ -289,6 +295,7 @@ namespace PadForge.Engine
             foreach (var (index, _) in change.Buttons) if ((uint)index < CustomInputState.MaxButtons) into.Add(index);
             foreach (var (index, _) in change.Axes) if ((uint)index < ProgramAxis.End) into.Add(KeyAxes + index);
             foreach (var (index, _) in change.Hats) if ((uint)index < CustomInputState.MaxPovs) into.Add(KeyHats + index);
+            foreach (var (hat, _, _) in change.Directions) if ((uint)hat < CustomInputState.MaxPovs) into.Add(KeyHats + hat);
             if (change.Gyro != null) into.Add(KeyGyro);
             if (change.Accel != null) into.Add(KeyAccel);
             if (change.Battery != null) into.Add(KeyBattery);
@@ -366,13 +373,17 @@ namespace PadForge.Engine
             if (later.Rest)
             {
                 into.Rest = true;
-                into.Buttons.Clear(); into.Axes.Clear(); into.Hats.Clear();
+                into.Buttons.Clear(); into.Axes.Clear(); into.Hats.Clear(); into.Directions.Clear();
                 into.Fingers.Clear(); into.Clicks.Clear();
                 into.Gyro = null; into.Accel = null;
             }
             into.Buttons.AddRange(later.Buttons);
             into.Axes.AddRange(later.Axes);
+            // A whole hat set later stands over the directions set before
+            // it, which would otherwise go in after it.
+            foreach (var (index, _) in later.Hats) into.Directions.RemoveAll(d => d.Hat == index);
             into.Hats.AddRange(later.Hats);
+            into.Directions.AddRange(later.Directions);
             into.Fingers.AddRange(later.Fingers);
             into.Clicks.AddRange(later.Clicks);
             if (later.Gyro != null) into.Gyro = later.Gyro;
@@ -477,6 +488,7 @@ namespace PadForge.Engine
             foreach (var (index, value) in change.Hats)
                 if (index >= 0 && index < shape.Hats.Count)
                     s.Povs[index] = value >= 0 && value < 36000 ? value : -1;
+            if (change.Directions.Count > 0) LandDirections(change, shape, s);
             if (change.Gyro != null && shape.Gyro)
                 for (int i = 0; i < 3; i++) s.Gyro[i] = Finite(change.Gyro[i]);
             if (change.Accel != null && shape.Accel)
@@ -508,6 +520,34 @@ namespace PadForge.Engine
                 if (change.Charging.HasValue) s.BatteryCharging = change.Charging.Value;
             }
             Volatile.Write(ref _state, s);
+        }
+
+        /// <summary>A change's hat directions into the state it lands on
+        /// (#600 item 21): each hat's directions together, over the hat as
+        /// the change's whole hats left it, a later word for the same
+        /// direction over an earlier one. A hat keeps its exact angle unless
+        /// they change which directions it holds.</summary>
+        private static void LandDirections(ProgramDeviceChange change, ProgramDeviceShape shape, CustomInputState s)
+        {
+            int hats = Math.Min(shape.Hats.Count, CustomInputState.MaxPovs);
+            Span<int> pressed = stackalloc int[CustomInputState.MaxPovs];
+            Span<int> released = stackalloc int[CustomInputState.MaxPovs];
+            pressed.Clear();
+            released.Clear();
+            foreach (var (hat, direction, down) in change.Directions)
+            {
+                if (hat < 0 || hat >= hats) continue;
+                int bit = (int)direction;
+                if (down) { pressed[hat] |= bit; released[hat] &= ~bit; }
+                else { released[hat] |= bit; pressed[hat] &= ~bit; }
+            }
+            for (int hat = 0; hat < hats; hat++)
+            {
+                if (pressed[hat] == 0 && released[hat] == 0) continue;
+                var was = PlainUnits.HatToDirections(s.Povs[hat]);
+                var now = (was | (HatDirections)pressed[hat]) & ~(HatDirections)released[hat];
+                if (now != was) s.Povs[hat] = PlainUnits.DirectionsToHat(now);
+            }
         }
 
         private int _nextContact = 1;

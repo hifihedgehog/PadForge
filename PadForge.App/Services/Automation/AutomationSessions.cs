@@ -30,11 +30,14 @@ namespace PadForge.Services.Automation
     /// keeps a lease: it sends a line at least every 250 ms for a script,
     /// 2,000 ms for any other program, or the span its hello asked for. A
     /// line that runs keeps it meanwhile. When it runs out, the holds and
-    /// claims let go and the devices rest: a script's come back at its next
-    /// line, any other program's go for good. A script silent for 5 s has
-    /// its devices taken offline until it speaks (#600 item 24). A session
-    /// that only reads has none. The pipe closing is the usual sign that a
-    /// program ended. The lease catches the one that hangs.</para>
+    /// claims let go at the first pass past the span, judged on the clock
+    /// that applies them (ControlHolds.Lease), and at the sessions' clock
+    /// while no pass runs. A script's come back at its next line, any other
+    /// program's go for good. The sessions' clock then rests the devices and
+    /// tells the program. A script silent for 5 s has its devices taken
+    /// offline until it speaks (#600 item 24). A session that only reads
+    /// has none. The pipe closing is the usual sign that a program ended.
+    /// The lease catches the one that hangs.</para>
     /// </summary>
     internal sealed class AutomationSessions : IDisposable
     {
@@ -201,6 +204,9 @@ namespace PadForge.Services.Automation
                 _waiting.Remove(session);
                 _sessions.Add(session);
                 _owned[session] = new Owned();
+                // The lease, judged where its holds and claims are applied.
+                session.Lease = new ControlHolds.Lease(session.LeaseMs, comesBack: session.Kind == AutomationClientKind.Script);
+                ControlHolds.Keep(session.Number, session.Lease);
                 EnsureClock();
             }
             error = null;
@@ -238,6 +244,7 @@ namespace PadForge.Services.Automation
                 // of everything.
                 _owned.Remove(session);
                 _held.ReleaseAll(session);
+                ControlHolds.Forget(session.Number);
                 PublishWatchLocked();
             }
             session.Close("ended");
@@ -279,6 +286,7 @@ namespace PadForge.Services.Automation
         private void TickOnce()
         {
             long now = _nowMs();
+            long ticks = ControlHolds.Now();
             List<AutomationSession> lapse = null, asleep = null;
             List<(AutomationSession, Owned)> runs = null;
             AutomationSession[] engineFollowers = null, profileFollowers = null;
@@ -287,7 +295,8 @@ namespace PadForge.Services.Automation
                 foreach (var session in _sessions)
                 {
                     if (!_owned.TryGetValue(session, out var owned)) continue;
-                    if (!session.Lapsed && !session.Handling && now - session.LastHeardMs > session.LeaseMs
+                    // The lease the holds table judges, on its clock.
+                    if (!session.Lapsed && session.Lease is { } lease && lease.Silent(ticks)
                         && (_held.Count(session) > 0 || Devices.OwnedBy(session).Count > 0))
                         (lapse ??= new()).Add(session);
                     // A script silent for ScriptOfflineMs has its devices
@@ -310,7 +319,16 @@ namespace PadForge.Services.Automation
                     try { _clock.Change(Timeout.Infinite, Timeout.Infinite); } catch (ObjectDisposedException) { }
                 }
             }
-            if (lapse != null) foreach (var session in lapse) Lapse(session);
+            // While no pass runs, a lapse lets go of the table here, before
+            // the program hears of it. With passes, the first one past the
+            // span did it already.
+            ControlHolds.LandDue();
+            if (lapse != null)
+                foreach (var session in lapse)
+                {
+                    // A line that came since the look above keeps the lease.
+                    if (session.Lease.Silent(ControlHolds.Now())) Lapse(session);
+                }
             if (asleep != null)
                 foreach (var session in asleep)
                 {
@@ -326,8 +344,6 @@ namespace PadForge.Services.Automation
                     }
                 }
             if (runs != null) foreach (var (session, owned) in runs) FlushRun(session, owned);
-            // Timed steps land on the clock while no pass runs.
-            ControlHolds.LandDue();
             Devices.Tick();
             FollowEngine(engineFollowers);
             FollowProfile(profileFollowers);
@@ -345,40 +361,49 @@ namespace PadForge.Services.Automation
         /// offline at rest (#600 item 24).</summary>
         internal int ScriptOfflineMs { get; set; } = 5000;
 
-        /// <summary>The lease ran out: the holds and claims let go at once
-        /// and the devices rest, until the program's next line puts the
-        /// holds and claims back (<see cref="Woke"/>). The program hears
-        /// <c>e lease lapsed</c>.</summary>
+        /// <summary>The lease ran out: the devices rest and the program
+        /// hears <c>e lease lapsed</c>. Its holds and claims let go where the
+        /// table judges the lease (ControlHolds.Lease): a script's stay in
+        /// the table's keeping and come back at its next line. Any other
+        /// program's go for good here.</summary>
         internal void Lapse(AutomationSession session)
         {
             lock (_sync)
             {
                 if (!_owned.ContainsKey(session)) return;
                 session.Lapsed = true;
-                // A script's holds and claims come back when it beats again
-                // (#600 item 24). Any other program's go for good: an
-                // assistant's helper speaks for it on every call, and a
-                // hold it let lapse is not pressed again by its next one.
-                if (session.Kind == AutomationClientKind.Script) _held.Lapse(session);
-                else _held.ReleaseAll(session);
+                // Any other program's holds go for good: an assistant's
+                // helper speaks for it on every call, and a hold it let
+                // lapse is not pressed again by its next one.
+                if (session.Kind != AutomationClientKind.Script) _held.ReleaseAll(session);
             }
             Devices.Rest(session);
             session.Outbox.Line("e lease lapsed");
         }
 
         /// <summary>A session whose lease ran out, or whose devices went
-        /// offline for its silence, spoke again: its holds and claims are
-        /// back, and so are its devices.</summary>
+        /// offline for its silence, spoke again, and its lease was renewed
+        /// first: a script's holds and claims are back (ControlHolds.Renew),
+        /// and so are its devices. Another program whose lease the table let
+        /// lapse before the sessions' clock looked lets go of its holds for
+        /// good now, before its line runs.</summary>
         internal void Woke(AutomationSession session)
         {
+            bool lapsedNow = false;
             lock (_sync)
             {
                 if (!_owned.ContainsKey(session)) return;
-                if (session.Lapsed)
+                if (!session.Lapsed && session.Kind != AutomationClientKind.Script && ControlHolds.IsOut(session.Number))
                 {
-                    session.Lapsed = false;
-                    _held.Resume(session);
+                    _held.ReleaseAll(session);
+                    lapsedNow = true;
                 }
+                session.Lapsed = false;
+            }
+            if (lapsedNow)
+            {
+                Devices.Rest(session);
+                session.Outbox.Line("e lease lapsed");
             }
             lock (session.SleepGate)
             {
@@ -899,6 +924,14 @@ namespace PadForge.Services.Automation
             return (null, entry);
         }
 
+        /// <summary>Whether a device PadForge has is not connected, as a
+        /// read finds it (Read): a row that is offline and is not a
+        /// program's own device, which a read takes from the program's
+        /// copy.</summary>
+        private static bool NotConnected(UserDevice ud, ProgramDevices.Entry entry)
+            => ud != null && !ud.IsOnline
+            && !(entry != null && (ud.Device == null || ReferenceEquals(ud.Device, entry.Device)));
+
         private void ListDevices(AutomationSession session, AutomationRequest r)
         {
             if (!Allows(session, AutomationLevel.Read)) { Refuse(session, r, AutomationAskKind.Devices); return; }
@@ -1073,6 +1106,10 @@ namespace PadForge.Services.Automation
             if (bare.Count == 1 && (bare[0] is "devices" or "profile" or "engine"))
             {
                 bool followed;
+                // The devices online as the program comes to follow them,
+                // read before the sessions' lock: PadForge's first look after
+                // tells what changed since (AutomationWatch.Baseline).
+                var arriving = bare[0] == "devices" ? AutomationWatch.OnlineNow() : null;
                 lock (_sync)
                 {
                     if (!_owned.TryGetValue(session, out var owned)) return;
@@ -1084,7 +1121,7 @@ namespace PadForge.Services.Automation
                         if (bare[0] == "devices") owned.Devices = true;
                         else if (bare[0] == "profile") owned.Profile = true;
                         else owned.Engine = true;
-                        PublishWatchLocked();
+                        PublishWatchLocked(arriving);
                     }
                 }
                 if (followed) Done(session, r, AutomationAskKind.Subscribe, what);
@@ -1330,7 +1367,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>Under the lock: what every session follows, put in force
         /// on the poll thread's side.</summary>
-        private void PublishWatchLocked()
+        private void PublishWatchLocked(AutomationWatch.Baseline arriving = null)
         {
             var entries = new List<AutomationWatch.Entry>();
             var followers = new List<AutomationSession>();
@@ -1340,7 +1377,7 @@ namespace PadForge.Services.Automation
                 entries.AddRange(owned.Subscriptions);
                 if (owned.Devices) followers.Add(session);
             }
-            Watch.Publish(entries.ToArray(), followers.ToArray());
+            Watch.Publish(entries.ToArray(), followers.ToArray(), arriving);
         }
 
         // ── Devices of a program's own ──
@@ -1527,8 +1564,15 @@ namespace PadForge.Services.Automation
                         change.Charging = value == "1";
                         continue;
                 }
-                if (ScriptNames.TryDirection(word.Key, controls, out int dirHat, out _))
-                    return word.Key + " is a hat's direction: set the hat itself, such as " + ScriptNames.NameOf(controls, 'h', dirHat) + "=Up";
+                if (ScriptNames.TryDirection(word.Key, controls, out int dirHat, out var direction))
+                {
+                    // A hat's direction on its own (#600 item 21): it goes
+                    // into the hat as the change lands, beside the hat's
+                    // other directions.
+                    if (!PlainUnits.TryReadButton(value, out bool pressed)) return key + " is 0 or 1";
+                    change.Directions.Add((dirHat, direction, pressed));
+                    continue;
+                }
                 if (key.StartsWith("tc", StringComparison.Ordinal) && AutomationLine.TryInt(key.Substring(2), out int clickPad)
                     && clickPad >= 0 && clickPad < ProgramDeviceDeclaration.MostTouchpads)
                 {
@@ -1587,7 +1631,11 @@ namespace PadForge.Services.Automation
         /// device's own input moves the control. <c>after=&lt;ms&gt;</c>
         /// waits that long after the session's previous timed step. A
         /// control another session holds refuses the whole line with
-        /// <c>err busy</c>.</summary>
+        /// <c>err busy</c>. A timed step, a tap's or a sequence's, on a
+        /// device that is not connected is refused as a read of it is, with
+        /// <c>err offline</c> (#600 item 21): fired later, at a moment the
+        /// program did not choose, it is not what the program asked for. A
+        /// hold waits for the device.</summary>
         private void Own(AutomationSession session, AutomationRequest r, bool untilMoved)
         {
             string id = FirstBare(r);
@@ -1598,6 +1646,7 @@ namespace PadForge.Services.Automation
             if (device == Guid.Empty) { Fail(session, r, AutomationAskKind.Own, id, "unknown-device"); return; }
             int after = AfterOf(r, out bool fromNow);
             if (after < 0) { Fail(session, r, AutomationAskKind.Own, id, "bad-argument", "after= or in= is 0 to 60000 ms, and one of them"); return; }
+            if ((r.Get("after") != null || r.Get("in") != null) && NotConnected(ud, entry)) { Fail(session, r, AutomationAskKind.Own, id, "offline"); return; }
             var wanted = new List<(char Kind, int Index, int Value)>();
             int[] rests = null;
             List<ScriptControl> controls = null;
@@ -1622,10 +1671,21 @@ namespace PadForge.Services.Automation
                     read = PlainUnits.ReadAxis(word.Value, rests[index], out v) == null;
                 }
                 else if (read) read = PlainUnits.ReadHat(word.Value, out v) == null;
+                else if (ScriptNames.TryDirection(word.Key, controls ??= ControlsOf(ud, entry), out int hat, out var direction))
+                {
+                    // A hat's direction, held as a button is (#600 item 21):
+                    // 1 presses it and 0 holds it released, over the hat's
+                    // other directions.
+                    kind = ControlHolds.HoldDirection;
+                    index = hat * 4 + DirectionIndex(direction);
+                    read = PlainUnits.TryReadButton(word.Value, out bool pressed);
+                    v = pressed ? 1 : 0;
+                }
                 if (!read)
                 {
                     Fail(session, r, AutomationAskKind.Own, id, "bad-argument",
-                        "own and set take a control's name or b<i>=0|1, a<i>=0..65535 or a percent, h<i>=-1..35999, degrees or directions: " + word.Raw);
+                        "own and set take a control's name or b<i>=0|1, a<i>=0..65535 or a percent, h<i>=-1..35999, degrees or directions,"
+                        + " or a hat's direction such as DPadUp=0|1: " + word.Raw);
                     return;
                 }
                 wanted.Add((kind, index, v));
@@ -1687,8 +1747,14 @@ namespace PadForge.Services.Automation
                     if (!TryControl(bare[i].ToLowerInvariant(), out char kind, out int index)
                         && !ScriptNames.TryResolve(bare[i], controls ??= ControlsOf(ud, entry), out kind, out index))
                     {
-                        Fail(session, r, AutomationAskKind.Release, id, "bad-argument", "rel takes a control's name, b<i>, a<i>, h<i> or all: " + bare[i]);
-                        return;
+                        if (!ScriptNames.TryDirection(bare[i], controls, out int hat, out var direction))
+                        {
+                            Fail(session, r, AutomationAskKind.Release, id, "bad-argument",
+                                "rel takes a control's name, b<i>, a<i>, h<i>, a hat's direction or all: " + bare[i]);
+                            return;
+                        }
+                        kind = ControlHolds.HoldDirection;
+                        index = hat * 4 + DirectionIndex(direction);
                     }
                     keys.Add((kind, index));
                 }
@@ -1929,7 +1995,11 @@ namespace PadForge.Services.Automation
             // What its own sessions hold and claim goes now, and nothing of
             // another host's.
             lock (_sync)
-                foreach (var session in new List<AutomationSession>(_owned.Keys)) _held.ReleaseAll(session);
+                foreach (var session in new List<AutomationSession>(_owned.Keys))
+                {
+                    _held.ReleaseAll(session);
+                    ControlHolds.Forget(session.Number);
+                }
             Devices.Dispose();
         }
     }

@@ -1,10 +1,11 @@
 """PadForge Automation for Python. Speaks protocol 1 of PadForge's
 Automation pipe, PadForge.Automation. Standard library only, on Windows.
 
-Install it from PadForge (Extras, Automation, Scripts, Install for
-Python), then a script anywhere starts with import padforge. Turn on
-Automation at the level the script needs: Read to follow devices, Send
-Inputs to hold controls, take them in hotkeys and add controllers.
+Install it from PadForge with Install on the Python row of the Scripts
+card (Extras, Automation), then a script anywhere starts with import
+padforge. Turn on Automation at the level the script needs: Read to
+follow devices, Send Inputs to hold controls, take them in hotkeys and
+add controllers.
 
 Example:
 
@@ -42,6 +43,22 @@ pad.set("LeftX", 40) puts a value once, until the device's own input moves
 the control. pad.tap("A", 50) presses A for 50 ms and pad.sequence("A", 50,
 "B", 50) taps one after the other, timed on PadForge's own clock, and a tap
 sent between two of PadForge's passes is never lost.
+
+Before the device is found, and while PadForge is not running, setting an
+attribute, hold and set wait under the control's name and apply when the
+device is found, a set once. A tap or a sequence raises PadForgeError then,
+since a tap sent later is not the one the script asked for: "PadForge is
+not connected" while PadForge does not run, and "the device is not
+connected" while it runs and has no device that matches. PadForge refuses a
+tap or a sequence on a device it has that is not connected, in the same
+words, and the library raises its refusal. A tap or a sequence on the
+script's own controller raises the same way until PadForge has added it.
+
+A hat's direction is set as a button is: pad.DPadUp = True presses Up and
+False holds it released, beside the hat's other directions. The hat
+itself, held or the device's own, is what the held directions go over, so
+pad.DPad = "Down" with DPadRight held reads Down and Right. Up and Down
+together cancel, as Left and Right do.
 
 Hotkeys take AutoHotkey's forms: pad.hotkey("A", fn) takes A from the game
 while the hotkey exists, "~A" leaves it to the game too, and "A up",
@@ -185,6 +202,40 @@ def directions(degrees):
     return ("Up", "Up+Right", "Right", "Right+Down", "Down", "Down+Left", "Left", "Up+Left")[point]
 
 
+def _hat_words(wire):
+    """The directions a hat value as the pipe takes it holds: "45deg",
+    "Up+Right", or "-1" at rest."""
+    if wire in ("", "-1", "rest"):
+        return ""
+    if wire.endswith("deg"):
+        return directions(_read(wire[:-3]))
+    return wire
+
+
+def _direction_degrees(words):
+    """The degrees a hat that holds these directions reads, -1 for none. Up
+    and Down together cancel, as Left and Right do."""
+    held = {w.strip().lower() for w in words.split("+") if w.strip()}
+    up, down, right, left = "up" in held, "down" in held, "right" in held, "left" in held
+    if up and down:
+        up = down = False
+    if right and left:
+        right = left = False
+    if up:
+        return 45 if right else 315 if left else 0
+    if down:
+        return 135 if right else 225 if left else 180
+    return 90 if right else 270 if left else -1
+
+
+def _turn(words, bit, pressed):
+    """words with one direction pressed or released."""
+    held = [w for w in words.split("+") if w.strip() and w.strip().lower() != bit.lower()]
+    if pressed:
+        held.append(bit)
+    return "+".join(held)
+
+
 def _number(value):
     """A number as the line takes it: whole when it is, else up to three
     places."""
@@ -208,9 +259,9 @@ def _read(text):
 
 
 def _wire(kind, value):
-    """A value as the pipe takes it for a control of a kind (b, a or h), in
-    plain units."""
-    if kind == "b":
+    """A value as the pipe takes it for a control of a kind (b, a or h, or d
+    for a hat's direction, which takes a button's), in plain units."""
+    if kind in ("b", "d"):
         if isinstance(value, str):
             return "1" if value.strip().lower() in ("1", "true") else "0"
         return "1" if value else "0"
@@ -684,12 +735,25 @@ class Connection:
         for kind in list(self._follows):
             self._step(lambda: self._ask("sub " + kind))
         self._step(lambda: self._ask("sub devices"))
+        self._step(self._relist)
         for ctl in list(self._mine.values()):
             self._step(ctl._declare)
         for name, value in list(self._values.items()):
             self._send("var %s=%s" % (name, _value(value)))
         for pad in list(self._wanting.values()):
             pad._find()
+
+    def _relist(self):
+        """Every device the script listed takes its connection from
+        PadForge's list again, on a new connection."""
+        if not self._by_id:
+            return
+        for row in self._ask("devices").rows:
+            if not row.words or row.words[0] != "device":
+                continue
+            pad = self._by_id.get(row.pairs.get("id", ""))
+            if pad is not None and not isinstance(pad, Controller):
+                pad._online = row.pairs.get("online") == "1"
 
     def _step(self, fn):
         try:
@@ -845,6 +909,39 @@ class Connection:
             raise PadForgeError(code, text % (verb, self.level or "unknown"))
         raise PadForgeError(code, "PadForge refused %s: %s (%s)." % (verb, parts[2] if len(parts) > 2 else "", code))
 
+    def _timed(self, verb, lines):
+        """A tap's or a sequence's lines, written one after the other with no
+        wait between them, so their times on PadForge's clock stay as sent,
+        and then each one's answer. PadForge refuses a timed step on a device
+        that is not connected: the first refusal is raised in words, named by
+        verb, the call's name."""
+        pipe = self._pipe
+        if pipe is None:
+            raise PadForgeError("closed", "PadForge is not connected: " + self.why)
+        entries = []
+        try:
+            for line in lines:
+                tag = "@%d" % next(self._tags)
+                entry = _Entry(pipe)
+                with self._answers_lock:
+                    self._answers[tag] = entry
+                entries.append((tag, entry))
+                self._write(tag + " " + line, pipe)
+            timeout = 150.0 if self._waiting else 10.0
+            for _, entry in entries:
+                if not entry.done.wait(timeout):
+                    raise PadForgeError("timeout", "PadForge did not answer.")
+        finally:
+            with self._answers_lock:
+                for tag, _ in entries:
+                    self._answers.pop(tag, None)
+        self._waiting = False
+        for _, entry in entries:
+            if entry.final is None:
+                raise PadForgeError("closed", "PadForge is not connected: the pipe closed.")
+            if entry.final.startswith("err "):
+                self._raise(verb, entry.final)
+
     def request(self, line):
         """Sends a line and waits for its answer: the ok line's pairs as a
         dict, an Answer with rows, words and json. Raises PadForgeError with
@@ -898,6 +995,10 @@ class Connection:
                 pad._fire(words, extra)
         elif kind == "dev":
             online = len(words) > 3 and words[3] == "online"
+            # A device the script listed keeps its connection current.
+            listed = self._by_id.get(words[2]) if len(words) > 2 else None
+            if listed is not None:
+                listed._online = online
             self._call("dev", words[2] if len(words) > 2 else "", online)
             if online:
                 with self._lock:
@@ -977,6 +1078,15 @@ class Connection:
         with self._lock:
             pad = self._wanting.get(key)
             if pad is None:
+                # A device devices() listed is the same object device() gives
+                # for its script ID.
+                listed = self._by_id.get(key)
+                if listed is not None and not isinstance(listed, Controller) and listed._what.lower() == key:
+                    pad = listed
+                    self._wanting[key] = pad
+                    if self._open and listed._generation < 0:
+                        pad._find()
+                    return pad
                 pad = Device(self, what)
                 self._wanting[key] = pad
                 if self._open:
@@ -985,7 +1095,9 @@ class Connection:
 
     def devices(self):
         """Every device PadForge knows, connected or not, as device
-        objects."""
+        objects. A device listed here is the same object device() gives for
+        its script ID, and it follows itself on its first use of any kind: a
+        read, a hotkey, a change callback, a hold, set, tap or sequence."""
         with self._lock:
             out = []
             for row in self._ask("devices").rows:
@@ -1140,6 +1252,8 @@ class Device:
         self._connected = False
         self._generation = -1
         self._holds = {}
+        # Sets made before the device was found, put once when it is.
+        self._sets = {}
         self._keys = {}
         self._lines = {}
         self._changes = {}
@@ -1285,7 +1399,7 @@ class Device:
         self._changes = changes
         held, parts = {}, []
         for name, value in self._holds.values():
-            c = self._control(name)
+            c = self._target(name)
             if c is None:
                 pf.errors.append("No such control: " + name)
                 continue
@@ -1294,6 +1408,43 @@ class Device:
         self._holds = held
         if parts:
             pf._send("own %s %s" % (self._id, " ".join(parts)))
+        # Sets made before the device was found are put once now. One whose
+        # name or value the device does not take goes to errors.
+        sets, parts = self._sets, []
+        self._sets = {}
+        for name, value in sets.values():
+            c = self._target(name)
+            if c is None:
+                pf.errors.append("No such control: " + name)
+                continue
+            try:
+                parts.append("%s=%s" % (c.name, _wire(c.kind, value)))
+            except (TypeError, ValueError) as e:
+                pf.errors.append(str(e))
+        if parts:
+            pf._send("set %s %s" % (self._id, " ".join(parts)))
+
+    def _follow_self(self):
+        """A device devices() listed follows itself on its first use of any
+        kind, a read, a hotkey, a change callback, a hold, set, tap or
+        sequence, as one device() found does: its controls are read, its
+        state and connection stay current, and PadForge finds it again after
+        a restart. A device already wanted is found again by PadForge's
+        restore and its device events."""
+        if self._generation >= 0 or not self._id or isinstance(self, Controller):
+            return
+        pf = self._pf
+        with pf._lock:
+            key = self._what.lower()
+            if self._generation >= 0 or key in pf._wanting:
+                return
+            pf._wanting[key] = self
+            if not pf._open:
+                return
+            try:
+                self._attach()
+            except PadForgeError as e:
+                pf.errors.append(str(e))
 
     def _caps(self):
         controls, by_index = {}, {}
@@ -1313,7 +1464,9 @@ class Device:
 
     def _lost(self):
         """The pipe closed. Runs on the reader, so the callbacks wait for
-        the dispatcher."""
+        the dispatcher. A device the script listed is not connected until
+        PadForge's list says it is again."""
+        self._online = False
         if self._connected:
             self._connected = False
             self._pf._queue.put(("call", self._fire_connect, (False,)))
@@ -1385,6 +1538,19 @@ class Device:
             return self._by_index.get((k, index)) or _Control(_numbered_name(k, index), k, index, k == "a" and index < 24)
         return None
 
+    def _target(self, name):
+        """What a setting names: a control, or one direction of a hat, kind
+        d, named by its hat's name and set as a button is. None for
+        neither."""
+        c = self._control(name)
+        if c is not None:
+            return c
+        d = self._direction(name)
+        if d is None:
+            return None
+        hat = self._by_index.get(("h", d.hat))
+        return _Control((hat.name if hat else "Hat%d" % d.hat) + d.bit, "d", d.hat * 4 + _ENDS.index(d.bit), False)
+
     def _direction(self, name):
         """The hat direction a name names, or None."""
         name = str(name)
@@ -1406,6 +1572,7 @@ class Device:
         return self._values.get((c.kind, c.index), False if c.kind == "b" else -1 if c.kind == "h" else 0)
 
     def _read(self, name):
+        self._follow_self()
         name = str(name)
         lower = name.lower()
         for half in ("plus", "minus"):
@@ -1435,15 +1602,19 @@ class Device:
 
     def _hold(self, name, value):
         """Sets a control: holds it at the value, or gives it back for None.
-        Before the device is found its controls are not known yet, and the
-        hold waits under the name given."""
+        A hat's direction is held as a button is, over the hat's other
+        directions: the hat itself, held or the device's own, with each held
+        direction pressed or released over it. Before the device is found its
+        controls are not known yet, and the hold waits under the name
+        given."""
+        self._follow_self()
         with self._pf._lock:
-            c = self._control(name)
+            c = self._target(name)
             if c is None and self._controls:
-                if self._direction(name) is not None:
-                    raise AttributeError('%s is a hat\'s direction: set the hat, such as DPad = "Up".' % name)
                 raise AttributeError("No such control: " + name)
             key = c.name if c is not None else str(name)
+            # A hold or a give-back takes the place of a set that waits.
+            self._sets.pop(key.lower(), None)
             if _gone(value):
                 self._holds.pop(key.lower(), None)
                 if self._id and c is not None:
@@ -1458,7 +1629,7 @@ class Device:
             raise ValueError("%s takes names and values in pairs." % what)
         out = []
         for i in range(0, len(pairs), 2):
-            c = self._control(pairs[i])
+            c = self._target(pairs[i])
             if c is None and self._controls:
                 raise ValueError("No such control: %s" % pairs[i])
             out.append((c, str(pairs[i]), pairs[i + 1]))
@@ -1467,10 +1638,12 @@ class Device:
     def hold(self, *pairs):
         """Holds several controls in one change: hold("LeftX", 50, "LeftY",
         -20). None for a value gives that control back."""
+        self._follow_self()
         with self._pf._lock:
             own, rel = [], []
             for c, name, value in self._pairs(pairs, "hold"):
                 key = c.name if c is not None else name
+                self._sets.pop(key.lower(), None)
                 if _gone(value):
                     self._holds.pop(key.lower(), None)
                     if c is not None:
@@ -1486,62 +1659,96 @@ class Device:
 
     def release(self, *names):
         """Gives controls back: release("A", "LeftX"), or all of them."""
+        self._follow_self()
         with self._pf._lock:
             if not names:
                 self._holds.clear()
+                self._sets.clear()
                 if self._id:
                     self._pf._send("rel %s all" % self._id)
                 return
             rel = []
             for name in names:
-                c = self._control(name)
+                c = self._target(name)
                 if c is None and self._controls:
                     raise ValueError("No such control: %s" % name)
                 key = c.name if c is not None else str(name)
                 self._holds.pop(key.lower(), None)
+                self._sets.pop(key.lower(), None)
                 if c is not None:
                     rel.append(key)
             if self._id and rel:
                 self._pf._send("rel %s %s" % (self._id, " ".join(rel)))
 
     def _known(self, name):
-        """The control a method names. None before the device is found."""
-        c = self._control(name)
+        """The control or hat direction a method names. None before the
+        device is found."""
+        c = self._target(name)
         if c is None and self._controls:
             raise ValueError("No such control: %s" % name)
         return c
 
     def set(self, name, value):
         """Puts a value once, until the device's own input moves the
-        control."""
-        c = self._known(name)
-        if c is not None and self._id:
-            self._pf._send("set %s %s=%s" % (self._id, c.name, _wire(c.kind, value)))
+        control. Before the device is found its controls are not known yet:
+        the value waits under the name given, and is put when the device is
+        found. While PadForge is not connected it waits the same way, as a
+        hold does, and is put when the device is found again."""
+        self._follow_self()
+        with self._pf._lock:
+            c = self._known(name)
+            if c is None:
+                self._sets[str(name).lower()] = (str(name), value)
+                return
+            if not self._id or not self._pf._send("set %s %s=%s" % (self._id, c.name, _wire(c.kind, value))):
+                self._sets[c.name.lower()] = (c.name, value)
+
+    def _absent(self, verb):
+        """The refusal of a timed action before the device is found: a tap
+        sent later, at a moment the script did not choose, is not the tap it
+        asked for. PadForge's own error while PadForge is not connected, else
+        a read's of a device that is not connected."""
+        pf = self._pf
+        if not pf._open:
+            return PadForgeError("closed", "PadForge is not connected: " + pf.why)
+        return PadForgeError("offline", "PadForge refused %s: the device is not connected (offline)." % verb)
 
     def tap(self, name, ms=50, value=None):
         """Presses a control for ms milliseconds on PadForge's clock: a
-        button, or an axis to value (100 by default) and back."""
+        button or a hat's direction, or an axis to value (100 by default) and
+        back. Refused before the device is found, and by PadForge while the
+        device is not connected."""
+        if not self._id:
+            raise self._absent("tap")
+        self._follow_self()
         c = self._known(name)
-        if c is None or not self._id:
-            return
+        if c is None:
+            # Its controls are not read yet: PadForge is not connected, or
+            # has not given them.
+            raise self._absent("tap")
         if value is None:
-            value = True if c.kind == "b" else 0 if c.kind == "h" else 100
-        self._pf._send("own %s %s=%s" % (self._id, c.name, _wire(c.kind, value)))
-        self._pf._send("rel %s %s in=%d" % (self._id, c.name, round(ms)))
+            value = True if c.kind in ("b", "d") else 0 if c.kind == "h" else 100
+        self._pf._timed("tap", ["own %s %s=%s in=0" % (self._id, c.name, _wire(c.kind, value)),
+                                "rel %s %s in=%d" % (self._id, c.name, round(ms))])
 
     def sequence(self, *steps):
         """Taps controls one after the other, each held its ms:
         sequence("A", 50, "B", 50). Each starts as the one before lets
-        go."""
+        go. Refused before the device is found, and by PadForge while the
+        device is not connected."""
+        self._follow_self()
         steps = self._pairs(steps, "sequence")
-        if not self._id or any(c is None for c, _, _ in steps):
-            return
-        first = True
-        for c, _, ms in steps:
-            on = "1" if c.kind == "b" else "0deg" if c.kind == "h" else "100%"
-            self._pf._send("own %s %s=%s%s" % (self._id, c.name, on, "" if first else " after=0"))
-            self._pf._send("rel %s %s after=%d" % (self._id, c.name, round(ms)))
-            first = False
+        if not self._id:
+            raise self._absent("sequence")
+        if any(c is None for c, _, _ in steps):
+            raise self._absent("sequence")
+        lines = []
+        for i, (c, _, ms) in enumerate(steps):
+            on = "1" if c.kind in ("b", "d") else "0deg" if c.kind == "h" else "100%"
+            lines.append("own %s %s=%s %s" % (self._id, c.name, on, "in=0" if i == 0 else "after=0"))
+            lines.append("rel %s %s after=%d" % (self._id, c.name, round(ms)))
+        if lines:
+            self._pf._timed("sequence", lines)
 
     # ── Hotkeys ──
 
@@ -1549,6 +1756,7 @@ class Device:
         """hotkey(key_name, fn): see the top of this file. fn gets the
         hotkey's name when it takes an argument. hotkey(key_name, "Off"), or
         None, removes it."""
+        self._follow_self()
         with self._pf._lock:
             h = self._parse(key_name)
             kid = h.key.lower()
@@ -1671,6 +1879,7 @@ class Device:
         an axis as it moves, up to 100 times a second."""
         if not callable(fn):
             raise ValueError("A callback is a function.")
+        self._follow_self()
         with self._pf._lock:
             c = self._control(name)
             key = (c.name if c is not None else str(name)).lower()
@@ -1680,6 +1889,7 @@ class Device:
         """fn(connected) when the device connects or disconnects."""
         if not callable(fn):
             raise ValueError("A callback is a function.")
+        self._follow_self()
         self._on_connect.append(fn)
 
     def _fire(self, w, extra):
@@ -1958,7 +2168,11 @@ class Controller(Device):
             return self._extra.get(name.lower())
         c = self._control(name)
         if c is None:
-            return super()._read(name)
+            d = self._direction(name)
+            if d is None:
+                return super()._read(name)
+            entry = self._set.get(self._hat_name(d).lower())
+            return d.bit.lower() in [w.lower() for w in _hat_words(entry[1] if entry else "").split("+")]
         entry = self._set.get(c.name.lower())
         wire = entry[1] if entry else ""
         if c.kind == "b":
@@ -1970,7 +2184,24 @@ class Controller(Device):
         return 0 if wire == "" else _read(wire.rstrip("%"))
 
     def _rest_wire(self, c):
-        return "0" if c.kind == "b" else "-1" if c.kind == "h" else "0%"
+        return "0" if c.kind in ("b", "d") else "-1" if c.kind == "h" else "0%"
+
+    def _hat_name(self, d):
+        """The name of the hat a direction is of."""
+        hat = self._by_index.get(("h", d.hat))
+        return hat.name if hat else "Hat%d" % d.hat
+
+    def _turn(self, d, value):
+        """A hat's direction pressed or released (True, False or None): the
+        hat the script set keeps it, for after a lapse or a restart, and the
+        word that sends it, which PadForge puts into the hat as the change
+        lands, beside the hat's other directions."""
+        hat = self._hat_name(d)
+        pressed = not _gone(value) and _wire("b", value) == "1"
+        entry = self._set.get(hat.lower())
+        words = _turn(_hat_words(entry[1] if entry else ""), d.bit, pressed)
+        self._set[hat.lower()] = (hat, _wire("h", _direction_degrees(words)))
+        return "%s%s=%s" % (hat, d.bit, "1" if pressed else "0")
 
     def _control_wire(self, name, value):
         c = self._control(name)
@@ -1993,6 +2224,9 @@ class Controller(Device):
                 self._extra[lower] = value
                 self._send(self._special(lower, value))
                 return
+            if self._control(name) is None and self._direction(name) is not None:
+                self._send(self._turn(self._direction(name), value))
+                return
             c, wire = self._control_wire(name, value)
             self._set[c.name.lower()] = (c.name, wire)
             self._send("%s=%s" % (c.name, wire))
@@ -2008,6 +2242,9 @@ class Controller(Device):
         with self._pf._lock:
             parts = []
             for i in range(0, len(pairs), 2):
+                if self._control(pairs[i]) is None and self._direction(pairs[i]) is not None:
+                    parts.append(self._turn(self._direction(pairs[i]), pairs[i + 1]))
+                    continue
                 c, wire = self._control_wire(pairs[i], pairs[i + 1])
                 self._set[c.name.lower()] = (c.name, wire)
                 parts.append("%s=%s" % (c.name, wire))
@@ -2029,26 +2266,35 @@ class Controller(Device):
         self._hold(name, value)
 
     def tap(self, name, ms=50, value=None):
-        c = self._control(name)
+        """Refused before PadForge has the declaration, or while PadForge is
+        not connected, as a tap on a device not found yet is."""
+        if not self._id or not self._pf._open:
+            raise self._absent("tap")
+        c = self._target(name)
         if c is None:
             raise ValueError("No such control: %s" % name)
         if value is None:
-            value = True if c.kind == "b" else 0 if c.kind == "h" else 100
-        self._send("%s=%s" % (c.name, _wire(c.kind, value)))
+            value = True if c.kind in ("b", "d") else 0 if c.kind == "h" else 100
+        if not self._pf._send("s %s %s=%s" % (self._id, c.name, _wire(c.kind, value))):
+            raise self._absent("tap")
         self._send("%s=%s in=%d" % (c.name, self._rest_wire(c), round(ms)))
 
     def sequence(self, *steps):
         if len(steps) % 2:
             raise ValueError("sequence takes names and times in pairs.")
-        first = True
+        if not self._id or not self._pf._open:
+            raise self._absent("sequence")
+        lines = []
         for i in range(0, len(steps), 2):
-            c = self._control(steps[i])
+            c = self._target(steps[i])
             if c is None:
                 raise ValueError("No such control: %s" % steps[i])
-            on = "1" if c.kind == "b" else "0deg" if c.kind == "h" else "100%"
-            self._send("%s=%s%s" % (c.name, on, "" if first else " after=0"))
-            self._send("%s=%s after=%d" % (c.name, self._rest_wire(c), round(steps[i + 1])))
-            first = False
+            on = "1" if c.kind in ("b", "d") else "0deg" if c.kind == "h" else "100%"
+            lines.append("%s=%s%s" % (c.name, on, "" if i == 0 else " after=0"))
+            lines.append("%s=%s after=%d" % (c.name, self._rest_wire(c), round(steps[i + 1])))
+        for i, line in enumerate(lines):
+            if not self._pf._send("s %s %s" % (self._id, line)) and i == 0:
+                raise self._absent("sequence")
 
     def touch(self, pad, finger, x, y, down=True, pressure=1):
         """A finger on touchpad pad: x and y from 0 to 1."""

@@ -16,8 +16,13 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// The Automation page's Scripts card joined to the libraries PadForge
-    /// carries (#597): the card shows once the host has the libraries, and
-    /// Save a Library through the host writes the embedded file as it is.
+    /// carries (#597, #600 item 26): the card shows with Automation off,
+    /// checks each library as the user, installs, and opens a library's
+    /// folder. The test answers every run itself (RunSeam), so it writes no
+    /// library and sets none of the install's statics, which the install
+    /// tests of another collection set and clear. Save a Library through
+    /// the host, which runs the install, is
+    /// <see cref="ScriptLibraryCheckTests"/>'s, in that collection.
     /// </summary>
     [Collection("WpfApplicationSingleton")]
     public class AutomationLibraryCardTests
@@ -34,48 +39,8 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>The run as the user, in this process: the test host
-        /// starts no install of its own (UserInstall.RunAsUserAsync's
-        /// fence), so the page's Save runs the words it would hand
-        /// PadForge.exe here.</summary>
-        private sealed class InProcessLauncher : IPluginLauncher
-        {
-            public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
-            {
-                var words = Regex.Matches(command.CommandLine, "\"([^\"]*)\"|(\\S+)")
-                    .Select(m => m.Groups[1].Success ? m.Groups[1].Value : m.Groups[2].Value).Skip(1).ToList();
-                int i = words.IndexOf("--install");
-                int code = UserInstall.Parse(words, ref i, out var request) == null
-                    ? UserInstall.Run(request, _ => { }, _ => { })
-                    : UserInstall.WrongCommandLine;
-                return new PluginLaunch { Process = new DoneProcess(code) };
-            }
-        }
-
-        private sealed class DoneProcess : IPluginProcess
-        {
-            private readonly int _code;
-            public DoneProcess(int code) => _code = code;
-            public int Id => 4244;
-            public bool Owns(int processId) => processId == Id;
-            public event Action<int> Exited
-            {
-                add => Task.Run(() => value(_code));
-                remove { }
-            }
-            public void Stop() { }
-            public void Dispose() { }
-        }
-
         [Fact]
-        public void TheScriptsCard_ShowsWithAutomationOff_ChecksEachLibraryAsTheUser_AndSaveWritesTheEmbeddedFile()
-        {
-            UserInstall.Launcher = new InProcessLauncher();
-            try { ShowAndSave(); }
-            finally { UserInstall.Launcher = null; }
-        }
-
-        private static void ShowAndSave()
+        public void TheScriptsCard_ShowsWithAutomationOff_ChecksEachLibraryAsTheUser_InstallsAndOpensAFolder()
         {
             PageRenderDumpPages.WithApp((app, dispatcher) =>
             {
@@ -153,22 +118,6 @@ namespace PadForge.Tests
                     rows[0].PressCommand.Execute(null);
                     PageRenderDump.Settle(dispatcher);
                     Assert.Equal(dir, opened);
-
-                    // Save a Library… writes the embedded file as it is.
-                    IAutomationLibraries libraries = AutomationLibraries.Instance;
-                    foreach (var library in libraries.All)
-                    {
-                        string path = Path.Combine(dir, library.FileName);
-                        // A file already there is replaced.
-                        File.WriteAllText(path, "old");
-                        libraries.Save(library.Kind, path);
-                        using var embedded = typeof(AutomationLibraries).Assembly.GetManifestResourceStream(library.ResourceName);
-                        Assert.NotNull(embedded);
-                        using var copy = new MemoryStream();
-                        embedded.CopyTo(copy);
-                        Assert.True(copy.Length > 0, library.FileName + " is empty");
-                        Assert.Equal(copy.ToArray(), File.ReadAllBytes(path));
-                    }
                 }
                 finally
                 {
@@ -176,14 +125,82 @@ namespace PadForge.Tests
                 }
             }, TimeSpan.FromMinutes(2), "The Scripts card test timed out.");
         }
-
     }
 
     /// <summary>A library's check names each place and its state, which
-    /// the Scripts card reads (#600 item 26).</summary>
+    /// the Scripts card reads (#600 item 26), and Save a Library through the
+    /// host runs the install as the user and writes the embedded file. Both
+    /// set the install's statics, so they run in that collection, never
+    /// beside an install test that sets them too.</summary>
     [Collection("UserInstallStatics")]
     public class ScriptLibraryCheckTests
     {
+        /// <summary>The run as the user, in this process: the test host
+        /// starts no install of its own (UserInstall.RunAsUserAsync's
+        /// fence), so the page's Save runs the words it would hand
+        /// PadForge.exe here.</summary>
+        private sealed class InProcessLauncher : IPluginLauncher
+        {
+            public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
+            {
+                var words = Regex.Matches(command.CommandLine, "\"([^\"]*)\"|(\\S+)")
+                    .Select(m => m.Groups[1].Success ? m.Groups[1].Value : m.Groups[2].Value).Skip(1).ToList();
+                int i = words.IndexOf("--install");
+                int code = UserInstall.Parse(words, ref i, out var request) == null
+                    ? UserInstall.Run(request, _ => { }, _ => { })
+                    : UserInstall.WrongCommandLine;
+                return new PluginLaunch { Process = new DoneProcess(code) };
+            }
+        }
+
+        private sealed class DoneProcess : IPluginProcess
+        {
+            private readonly int _code;
+            public DoneProcess(int code) => _code = code;
+            public int Id => 4244;
+            public bool Owns(int processId) => processId == Id;
+            public event Action<int> Exited
+            {
+                add => Task.Run(() => value(_code));
+                remove { }
+            }
+            public void Stop() { }
+            public void Dispose() { }
+        }
+
+        /// <summary>Save a Library… through the host runs the install as the
+        /// user and writes the embedded file as it is, over a file already
+        /// there.</summary>
+        [Fact]
+        public void SaveALibrary_ThroughTheHost_RunsTheInstallAsTheUser_AndWritesTheEmbeddedFile()
+        {
+            UserInstall.Launcher = new InProcessLauncher();
+            string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.LibrarySave." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                IAutomationLibraries libraries = AutomationLibraries.Instance;
+                foreach (var library in libraries.All)
+                {
+                    string path = Path.Combine(dir, library.FileName);
+                    // A file already there is replaced.
+                    File.WriteAllText(path, "old");
+                    libraries.Save(library.Kind, path);
+                    using var embedded = typeof(AutomationLibraries).Assembly.GetManifestResourceStream(library.ResourceName);
+                    Assert.NotNull(embedded);
+                    using var copy = new MemoryStream();
+                    embedded.CopyTo(copy);
+                    Assert.True(copy.Length > 0, library.FileName + " is empty");
+                    Assert.Equal(copy.ToArray(), File.ReadAllBytes(path));
+                }
+            }
+            finally
+            {
+                UserInstall.Launcher = null;
+                Directory.Delete(dir, recursive: true);
+            }
+        }
+
         [Fact]
         public void ALibrarysCheck_NamesEachPlace_AndItsState()
         {

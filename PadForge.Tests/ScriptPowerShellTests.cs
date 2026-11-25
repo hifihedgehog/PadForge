@@ -306,6 +306,511 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>
+        /// Before its device is found, one rule in every library (#600
+        /// items 21, 22 and 24): a hold, a Hold of several and a Set wait
+        /// under the control's name and apply when the device is found. A
+        /// Tap or a Sequence is refused with the not-connected error:
+        /// PadForge's own while PadForge does not run, and a read's of an
+        /// absent device while PadForge runs without the device. The
+        /// script's own controller is refused the same before PadForge
+        /// takes its declaration.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task BeforeItsDeviceIsFound_HoldsAndSetsWait_AndTapsAndSequencesAreRefused()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $pad = Get-PadForgeDevice 'wireless'
+                    $ctl = Add-PadForgeController early 'Early Pad' -Buttons Fire
+                    function Attempt([string]$What, [scriptblock]$Do) {
+                        try {
+                            & $Do
+                            Log "$What ok"
+                        } catch {
+                            Log "$What $($_.Exception.Message)"
+                        }
+                    }
+                    Attempt 'hold' { $pad.Hold('X', $true, 'LeftX', 50) }
+                    Attempt 'set' { $pad.Set('B', $true) }
+                    # A Set given back, and a Set a hold takes the place of.
+                    $pad.Set('LeftShoulder', $true)
+                    $pad.Release('LeftShoulder')
+                    $pad.Set('RightShoulder', $true)
+                    $pad.RightShoulder = $false
+                    Attempt 'tap' { $pad.Tap('A', 50) }
+                    Attempt 'sequence' { $pad.Sequence('A', 50, 'B', 50) }
+                    Attempt 'ctl tap' { $ctl.Tap('Fire', 50) }
+                    Attempt 'ctl sequence' { $ctl.Sequence('Fire', 50) }
+                    $pf = Get-PadForgeConnection
+                    Log 'waiting'
+                    while (-not $pf.Connected) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    # PadForge runs, and no device it has is the pad.
+                    Attempt 'absent tap' { $pad.Tap('A', 50) }
+                    Attempt 'absent sequence' { $pad.Sequence('A', 50) }
+                    Attempt 'absent set' { $pad.Set('Y', $true) }
+                    Log 'absent done'
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                using var run = Start(dir, script, pipe);
+                ExpectModule(run, dir);
+                string closed = "PadForge is not connected: Nothing serves the pipe " + pipe + ".";
+                Assert.Equal("hold ok", run.Expect("hold "));
+                Assert.Equal("set ok", run.Expect("set "));
+                Assert.Equal("tap " + closed, run.Expect("tap "));
+                Assert.Equal("sequence " + closed, run.Expect("sequence "));
+                Assert.Equal("ctl tap " + closed, run.Expect("ctl tap "));
+                Assert.Equal("ctl sequence " + closed, run.Expect("ctl sequence "));
+                run.Expect("waiting");
+
+                // PadForge runs, without the pad.
+                using (new AutomationPipeRig(AutomationLevel.SendInputs, pipeName: pipe))
+                {
+                    Assert.Equal("absent tap PadForge refused tap: the device is not connected (offline).", run.Expect("absent tap ", 15000));
+                    Assert.Equal("absent sequence PadForge refused sequence: the device is not connected (offline).", run.Expect("absent sequence "));
+                    Assert.Equal("absent set ok", run.Expect("absent set "));
+                    run.Expect("absent done");
+                }
+
+                await ScriptAutoHotkeyTests.AfterTheDeviceIsFound(pipe, dir, run, Pad);
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A Tap or a Sequence on a device PadForge has but that is not
+        /// connected is refused by PadForge as it handles the line, in a
+        /// read's words, and the library raises the refusal (#600 item 21).
+        /// The library does not judge the connection itself. A hold made
+        /// meanwhile waits for the device.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task ATapOnADeviceThatIsNotConnected_IsRefusedByPadForge()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pad = Pad(rig);
+                using var loop = new PassLoop(rig, 1000, pad);
+                string script = Script(dir, """
+                    $pad = Get-PadForgeDevice 'wireless'
+                    function Attempt([string]$What, [scriptblock]$Do) {
+                        try {
+                            & $Do
+                            Log "$What ok"
+                        } catch {
+                            Log "$What $($_.Exception.Message)"
+                        }
+                    }
+                    while (-not $pad.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log 'seen online'
+                    while ($pad.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    # PadForge has the pad, and it is not connected.
+                    Attempt 'offline tap' { $pad.Tap('A', 300) }
+                    Attempt 'offline sequence' { $pad.Sequence('A', 50, 'B', 50) }
+                    Attempt 'offline hold' { $pad.X = $true }
+                    Log 'offline done'
+                    while (-not $pad.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Attempt 'online tap' { $pad.Tap('A', 300) }
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                using var run = Start(dir, script, rig.PipeName);
+                ExpectModule(run, dir);
+                await ScriptAutoHotkeyTests.TapsWhileTheDeviceIsNotConnected(pad, run, dir);
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// While PadForge restarts and the pipe is down, a found device's
+        /// Set waits as a hold does and is sent once when the device is
+        /// found again, and a Tap or a Sequence, on the device or on the
+        /// script's own controller, throws PadForge's not-connected error
+        /// (#600 items 22 and 24).
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task WhilePadForgeRestarts_ASetWaits_AndATapOrASequenceIsRefused()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $pad = Get-PadForgeDevice 'wireless'
+                    $ctl = Add-PadForgeController gap 'Gap Pad' -Buttons Fire
+                    $pf = Get-PadForgeConnection
+                    function Attempt([string]$What, [scriptblock]$Do) {
+                        try {
+                            & $Do
+                            Log "$What ok"
+                        } catch {
+                            Log "$What $($_.Exception.Message)"
+                        }
+                    }
+                    while (-not $pad.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    $pad.X = $true
+                    Log 'seen online'
+                    while ($pf.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    # PadForge restarts: the pipe is down.
+                    Attempt 'gap set' { $pad.Set('B', $true) }
+                    Attempt 'gap tap' { $pad.Tap('A', 50) }
+                    Attempt 'gap sequence' { $pad.Sequence('A', 50) }
+                    Attempt 'gap ctl tap' { $ctl.Tap('Fire', 50) }
+                    Attempt 'gap ctl sequence' { $ctl.Sequence('Fire', 50) }
+                    Log 'gap done'
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                using var run = Start(dir, script, pipe);
+                ExpectModule(run, dir);
+                await ScriptAutoHotkeyTests.WhilePadForgeRestarts(pipe, dir, run, Pad);
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from Get-PadForgeDevice with no name, a Devices() list,
+        /// is the same object as one from Get-PadForgeDevice by its ID
+        /// (#600 item 21): its connection stays current while the script
+        /// only lists it, and on its first hold, Set or Tap it follows
+        /// itself, so the hold, the Set and the Tap reach the pad, its
+        /// controls are read, and its connection stays current after.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task ADeviceFromDevices_FollowsItselfOnItsFirstHold_AndStaysCurrent()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pad = Pad(rig);
+                using var loop = new PassLoop(rig, 1000, pad);
+                string script = Script(dir, """
+                    $listed = Get-PadForgeDevice | Where-Object { $_.Name -like '*Wireless*' } | Select-Object -First 1
+                    Log "listed $([int]$listed.Connected)"
+                    while ($listed.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log 'listed offline'
+                    while (-not $listed.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log 'listed online'
+                    $listed.X = $true
+                    $listed.Set('B', $true)
+                    $listed.Tap('A', 300)
+                    $same = [object]::ReferenceEquals((Get-PadForgeDevice $listed.Id), $listed)
+                    Log "same $([int]$same) $([int]($listed.Controls.Count -gt 0))"
+                    while ($listed.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log 'followed offline'
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                using var run = Start(dir, script, rig.PipeName);
+                ExpectModule(run, dir);
+                await ScriptAutoHotkeyTests.ListedThenFollowed(pad, run, dir);
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from Get-PadForgeDevice's list that the script has not
+        /// used yet, while PadForge restarts, does what a found device does
+        /// (#600 items 21 and 24): its controls are not read yet, so Hold and
+        /// Set wait under the names given, and Tap and Sequence throw
+        /// PadForge's not-connected error. PadForge comes back with the same
+        /// pad: it is found again, and X and LeftX are held and B set.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task ADeviceFromDevices_WhilePadForgeRestarts_WaitsOrRefusesAsAFoundOneDoes()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $listed = Get-PadForgeDevice | Where-Object { $_.Name -like '*Wireless*' } | Select-Object -First 1
+                    Log "listed $($listed.Id)"
+                    $pf = Get-PadForgeConnection
+                    function Attempt([string]$What, [scriptblock]$Do) {
+                        try {
+                            & $Do
+                            Log "$What ok"
+                        } catch {
+                            Log "$What $($_.Exception.Message)"
+                        }
+                    }
+                    while ($pf.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    # PadForge restarts, and the script has not used the listed
+                    # device yet.
+                    Attempt 'gap hold' { $listed.Hold('X', $true, 'LeftX', 50) }
+                    Attempt 'gap set' { $listed.Set('B', $true) }
+                    Attempt 'gap tap' { $listed.Tap('A', 50) }
+                    Attempt 'gap sequence' { $listed.Sequence('A', 50) }
+                    Log 'gap done'
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                await ScriptAutoHotkeyTests.ListedWhilePadForgeRestarts(pipe, dir, () =>
+                {
+                    var run = Start(dir, script, pipe);
+                    ExpectModule(run, dir);
+                    return run;
+                }, Pad);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device the script found, missing from PadForge's list when
+        /// PadForge comes back, is found when it connects after (#600 items
+        /// 22 and 24), and what the script held on it is put back.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task AFoundDevice_MissingWhenPadForgeComesBack_IsFoundWhenItConnects()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $pad = Get-PadForgeDevice 'wireless'
+                    $pf = Get-PadForgeConnection
+                    while (-not $pad.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    $pad.X = $true
+                    Log 'found'
+                    while ($pf.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log 'gone'
+                    while (-not $pf.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log 'back'
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                await ScriptAutoHotkeyTests.FoundAgainWhenItConnects(pipe, dir, () =>
+                {
+                    var run = Start(dir, script, pipe);
+                    ExpectModule(run, dir);
+                    return run;
+                }, Pad);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from Get-PadForgeDevice's list the script never uses
+        /// keeps its connection true through a restart (#600 items 21 and
+        /// 24): not connected while PadForge is gone, connected again when
+        /// PadForge comes back with the pad.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task AnUnusedListedDevice_IsNotConnectedWhilePadForgeIsGone_AndIsAgainAfter()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $listed = Get-PadForgeDevice | Where-Object { $_.Name -like '*Wireless*' } | Select-Object -First 1
+                    $pf = Get-PadForgeConnection
+                    Log "listed $([int]$listed.Connected)"
+                    while ($pf.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log "gap $([int]$listed.Connected)"
+                    while (-not $pf.Connected) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    $end = (Get-Date).AddSeconds(5)
+                    while (-not $listed.Connected -and (Get-Date) -lt $end) { Start-Sleep -Milliseconds 20; Wait-PadForge -Seconds 0.01 }
+                    Log "back $([int]$listed.Connected)"
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                await ScriptAutoHotkeyTests.UnusedListedThroughARestart(pipe, dir, () =>
+                {
+                    var run = Start(dir, script, pipe);
+                    ExpectModule(run, dir);
+                    return run;
+                }, Pad);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A device from Get-PadForgeDevice's list follows itself on its
+        /// first use of any kind (#600 item 21): a read, a hotkey, a change
+        /// callback that streams an axis, as well as a hold, Set, Tap or
+        /// Sequence. Three listed pads, each first used one way: the read
+        /// pad's A reads live, the hotkey pad's B fires its hotkey, and the
+        /// change pad's LeftX calls its callback.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task ADeviceFromDevices_FollowsItselfOnARead_AHotkeyOrAChangeCallback()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pads = ScriptAutoHotkeyTests.ThreePads(rig);
+                using var loop = new PassLoop(rig, 1000, pads);
+                string script = Script(dir, """
+                    $missing = Get-PadForgeDevice 'no such pad'
+                    Log "missing $(if ($null -eq $missing.A) { 'nothing' } else { 'something' })"
+                    $all = Get-PadForgeDevice
+                    $readPad = $all | Where-Object { $_.Name -eq 'Read Pad' } | Select-Object -First 1
+                    $hotkeyPad = $all | Where-Object { $_.Name -eq 'Hotkey Pad' } | Select-Object -First 1
+                    $changePad = $all | Where-Object { $_.Name -eq 'Change Pad' } | Select-Object -First 1
+                    $hotkeyPad.Hotkey('B', { Log 'hk B' })
+                    $changePad.OnChange('LeftX', { param($value) Log "change LeftX $value" })
+                    Log 'ready'
+                    while ($readPad.A -ne $true) { Start-Sleep -Milliseconds 10; Wait-PadForge -Seconds 0.01 }
+                    Log "read A $([int]$readPad.Connected)"
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                    }
+                    """);
+                using var run = Start(dir, script, rig.PipeName);
+                ExpectModule(run, dir);
+                await ScriptAutoHotkeyTests.FirstUsesOfThreeListedPads(loop, run, dir);
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
+        /// <summary>
+        /// A hat's direction is set on its own (#600 items 3 and 21):
+        /// DPadUp and DPadRight held before PadForge runs read Up and Right
+        /// together once it does, and again after a restart. Given back,
+        /// Up leaves Right. The whole hat held is what Right goes over, and
+        /// Release() gives everything back. On the script's own controller a
+        /// direction goes into the hat it set.
+        /// </summary>
+        [InterpreterFact("powershell")]
+        public async Task AHatsDirections_AreSetOnTheirOwn_AndComeBackAfterARestart()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $pad = Get-PadForgeDevice 'wireless'
+                    $ctl = Add-PadForgeController dirs 'Directions Pad' -Buttons Fire -Hats View
+                    # What is not held is given back with no error, before the
+                    # device is found and after.
+                    $pad.DPadLeft = $null
+                    $pad.Release('RightTrigger')
+                    $pad.DPadUp = $true
+                    $pad.DPadRight = $true
+                    $ctl.ViewUp = $true
+                    $ctl.ViewRight = $true
+                    $ctl.ViewUp = $false
+                    Log "ctl $([int]$ctl.ViewUp) $([int]$ctl.ViewRight) $($ctl.View)"
+                    $pad.Hotkey('B', { $pad.DPadUp = $null })
+                    $pad.Hotkey('X', { $pad.DPad = 'Down' })
+                    $pad.Hotkey('Y', { $pad.Release() })
+                    $pad.Hotkey('LeftShoulder', { $pad.DPadLeft = $null; $pad.Release('RightTrigger'); Log 'given back' })
+                    # A direction through every way of setting: Hold with
+                    # $null giving back, Set, Tap and Sequence, on the device
+                    # and on the script's own controller.
+                    $pad.Hotkey('Button5', { $pad.Hold('DPadDown', $true, 'LeftX', 50); $ctl.Hold('ViewDown', $true); Log 'held' })
+                    $pad.Hotkey('Button6', { $pad.Hold('DPadDown', $null, 'LeftX', $null); $ctl.Hold('ViewDown', $null); Log 'released' })
+                    $pad.Hotkey('Button7', { $pad.Set('DPadUp', $true); Log 'set' })
+                    $pad.Hotkey('Button8', { $pad.Tap('DPadLeft', 400); $ctl.Tap('ViewUp', 400); Log 'tapped' })
+                    $pad.Hotkey('Button9', { $pad.Sequence('DPadUp', 300, 'DPadRight', 300); $ctl.Sequence('ViewDown', 300); Log 'sequenced' })
+                    $pf = Get-PadForgeConnection
+                    Log 'waiting'
+                    $was = $false
+                    while ($true) {
+                        Start-Sleep -Milliseconds 30
+                        Wait-PadForge -Seconds 0.02
+                        if ($pf.Connected -ne $was) {
+                            $was = $pf.Connected
+                            Log "connected $([int]$was)"
+                        }
+                    }
+                    """);
+                using var run = Start(dir, script, pipe);
+                ExpectModule(run, dir);
+                Assert.Equal("ctl 0 1 90", run.Expect("ctl "));
+                run.Expect("waiting");
+                for (int round = 0; round < 2; round++)
+                {
+                    using var rig = new AutomationPipeRig(AutomationLevel.SendInputs, pipeName: pipe);
+                    var pad = Pad(rig);
+                    using var loop = new PassLoop(rig, 1000, pad);
+                    Assert.Equal("connected 1", run.Expect("connected ", 15000));
+                    await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == 4500, 10000);
+                    var mine = rig.Host.Sessions.Devices.All().Single(e => e.Key == "dirs");
+                    await AutomationPipeRig.Until(() => mine.Device.PeekState().Povs[0] == 9000, 5000);
+                    if (round == 1)
+                    {
+                        loop.Raw[0].Buttons[1] = true;
+                        await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == 9000);
+                        loop.Raw[0].Buttons[1] = false;
+                        loop.Raw[0].Buttons[2] = true;
+                        await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == 13500);
+                        loop.Raw[0].Buttons[2] = false;
+                        loop.Raw[0].Buttons[3] = true;
+                        await AutomationPipeRig.Until(() => pad.InputState.Povs[0] == -1);
+                        loop.Raw[0].Buttons[4] = true;
+                        Assert.Equal("given back", run.Expect("given back"));
+                        loop.Raw[0].Buttons[4] = false;
+                        await ScriptAutoHotkeyTests.DirectionsEveryWay(loop, pad, mine, s => run.Expect(s), dir, run);
+                    }
+                    rig.Dispose();
+                    Assert.Equal("connected 0", run.Expect("connected "));
+                }
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
         [InterpreterFact("powershell")]
         public void ARequestPastTheLevel_IsRefused_InTheLibrarysWords()
         {

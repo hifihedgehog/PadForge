@@ -84,7 +84,17 @@ namespace PadForge.Tests
             Assert.Equal(49152, state.Axis[0]);
             Assert.Equal(65535, state.Axis[2]);
             Assert.Equal(9000, state.Povs[0]);
-            Assert.StartsWith("@2 err bad-argument ", client.Final("@2 s " + own + " ViewUp=1"));
+            // A hat's direction on its own (#600 item 21): it goes into the
+            // hat as the change lands, beside the hat's other directions.
+            // In one change the whole hat comes first and its directions
+            // over it, whatever order the words came in.
+            Assert.Equal("@2 ok", client.Final("@2 s " + own + " ViewUp=1"));
+            Assert.Equal(4500, rig.Host.Sessions.Devices.Find(own).Device.PeekState().Povs[0]);
+            Assert.Equal("@3 ok", client.Final("@3 s " + own + " ViewRight=0"));
+            Assert.Equal(0, rig.Host.Sessions.Devices.Find(own).Device.PeekState().Povs[0]);
+            Assert.Equal("@4 ok", client.Final("@4 s " + own + " ViewLeft=true View=Down"));
+            Assert.Equal(22500, rig.Host.Sessions.Devices.Find(own).Device.PeekState().Povs[0]);
+            Assert.StartsWith("@5 err bad-argument ", client.Final("@5 s " + own + " ViewUp=maybe"));
         }
 
         [Fact]
@@ -115,42 +125,120 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "Button0", "Button1", "Button2", "Fire", "Button4", "Button5", "Axis0" }, names);
         }
 
+        /// <summary>A press and its release sent between two passes land on
+        /// two passes, on a program's own device and on a hold. The clocks
+        /// stand still between the test's passes, as a running engine's 1 ms
+        /// passes leave no time for a device to count as unread. On the real
+        /// clock, a busy PC that slowed the lines past 100 ms had the device
+        /// count as unread, and it took both changes at once.</summary>
         [Fact]
         public void ATapSentBetweenTwoPasses_LandsOnTwoPasses_OnAProgramsDevice_AndOnAHold()
         {
-            using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
-            using var client = rig.Open("Taps", " lease=10000");
-            string own = client.Final("declare key=t name=\"Taps\" " + Pad).Substring(6);
-            var device = rig.Host.Sessions.Devices.Find(own).Device;
-            var row = RowOf(device.InstanceGuid);
-            var pad = rig.AddDevice(InputDeviceType.Gamepad);
-            string id = AutomationPipeRig.IdOf(pad);
+            long now = Stopwatch.GetTimestamp();
+            ControlHolds.ClockForTest = () => now;
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                using var client = rig.Open("Taps", " lease=10000");
+                string own = client.Final("declare key=t name=\"Taps\" " + Pad).Substring(6);
+                var device = rig.Host.Sessions.Devices.Find(own).Device;
+                device.ClockForTest = () => now;
+                var row = RowOf(device.InstanceGuid);
+                var pad = rig.AddDevice(InputDeviceType.Gamepad);
+                string id = AutomationPipeRig.IdOf(pad);
 
-            // The engine polls: a first pass.
-            Pass(rig, row, pad);
-            // A press and its release, both before the next pass.
-            Assert.Equal("@1 ok", client.Final("@1 s " + own + " A=1"));
-            Assert.Equal("@2 ok", client.Final("@2 s " + own + " A=0"));
-            Assert.Equal("ok", client.Final("own " + id + " B=1"));
-            Assert.Equal("ok", client.Final("rel " + id + " B"));
-            Pass(rig, row, pad);
-            Assert.True(row.ReadInputState.Buttons[0], "the press lands on the first pass");
-            Assert.True(pad.InputState.Buttons[1], "the hold lands on the first pass");
-            Pass(rig, row, pad);
-            Assert.False(row.ReadInputState.Buttons[0], "the release lands on the next");
-            Assert.False(pad.InputState.Buttons[1]);
+                // The engine polls: a first pass.
+                Pass(rig, row, pad);
+                // A press and its release, both before the next pass.
+                Assert.Equal("@1 ok", client.Final("@1 s " + own + " A=1"));
+                Assert.Equal("@2 ok", client.Final("@2 s " + own + " A=0"));
+                Assert.Equal("ok", client.Final("own " + id + " B=1"));
+                Assert.Equal("ok", client.Final("rel " + id + " B"));
+                Pass(rig, row, pad);
+                Assert.True(row.ReadInputState.Buttons[0], "the press lands on the first pass");
+                Assert.True(pad.InputState.Buttons[1], "the hold lands on the first pass");
+                Pass(rig, row, pad);
+                Assert.False(row.ReadInputState.Buttons[0], "the release lands on the next");
+                Assert.False(pad.InputState.Buttons[1]);
 
-            // A stick's two axes in one line land together.
-            Assert.Equal("@3 ok", client.Final("@3 s " + own + " LeftX=100% Gas=50%"));
-            Pass(rig, row, pad);
-            Assert.Equal(65535, row.ReadInputState.Axis[0]);
-            Assert.Equal(32768, row.ReadInputState.Axis[2]);
+                // A stick's two axes in one line land together.
+                Assert.Equal("@3 ok", client.Final("@3 s " + own + " LeftX=100% Gas=50%"));
+                Pass(rig, row, pad);
+                Assert.Equal(65535, row.ReadInputState.Axis[0]);
+                Assert.Equal(32768, row.ReadInputState.Axis[2]);
+            }
+            finally
+            {
+                ControlHolds.ClockForTest = null;
+            }
         }
 
+        /// <summary>A tap or a sequence on a device PadForge has but that is
+        /// not connected is refused when PadForge handles its line, in a
+        /// read's words and code (#600 item 21): a timed step, an own or a
+        /// set with in= or after=, answers <c>err offline</c>. A hold waits
+        /// for the device, and a release is never refused, so a tap whose
+        /// press was refused leaves nothing held. Connected again, the same
+        /// tap is taken.</summary>
+        [Fact]
+        public void ATimedStep_OnADeviceThatIsNotConnected_IsRefused_AndAHoldOrAReleaseIsNot()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad, online: false);
+            string id = AutomationPipeRig.IdOf(pad);
+            using var client = rig.Open("Offline", " units=plain lease=10000");
+            const string refused = "err offline the device is not connected";
+            Assert.Equal(refused, client.Final("own " + id + " A=1 in=0"));
+            Assert.Equal(refused, client.Final("own " + id + " A=1 after=0"));
+            Assert.Equal(refused, client.Final("set " + id + " A=1 in=0"));
+            Assert.Equal("ok", client.Final("rel " + id + " A in=50"));
+            Assert.Equal("ok", client.Final("own " + id + " B=1"));
+            Assert.Equal("ok", client.Final("set " + id + " X=1"));
+            Pass(rig, pad);
+            Assert.False(pad.InputState.Buttons[0], "a refused press holds nothing");
+            Assert.True(pad.InputState.Buttons[1], "a hold waits for the device");
+            Assert.True(pad.InputState.Buttons[2], "a set waits for the device");
+
+            pad.IsOnline = true;
+            Assert.Equal("ok", client.Final("own " + id + " A=1 in=0"));
+            Assert.Equal("ok", client.Final("rel " + id + " A in=50"));
+            Pass(rig, pad);
+            Assert.True(pad.InputState.Buttons[0], "connected, the tap's press is taken");
+        }
+
+        /// <summary>A device that goes in the moment after a program comes to
+        /// follow devices, before PadForge's next pass, is told gone at that
+        /// pass, and one that comes in that moment is told come (#600 item
+        /// 21): PadForge's first look at which devices are online starts from
+        /// those online when the program came, so no change in between is
+        /// lost.</summary>
+        [Fact]
+        public void ADeviceThatGoesBeforeTheFirstPassAfterASubscription_IsToldGone()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            var mouse = rig.AddDevice(InputDeviceType.Mouse, online: false);
+            using var client = rig.Open();
+            Assert.Equal("ok", client.Final("sub devices"));
+            pad.IsOnline = false;
+            mouse.IsOnline = true;
+            rig.Pass(mouse);
+            Assert.Equal("e dev " + AutomationPipeRig.IdOf(pad) + " offline", client.Event(2000));
+            Assert.Equal("e dev " + AutomationPipeRig.IdOf(mouse) + " online", client.Event(2000));
+            rig.Pass(mouse);
+            Assert.Empty(client.Drain());
+        }
+
+        /// <summary>Timed steps land on PadForge's clock in their order. The clock
+        /// is the whole process's. It starts at the real one's reading, so the
+        /// leases stamped meanwhile stay near real times, and a step ages
+        /// every live lease by its length. No test outside this collection
+        /// keeps a session that holds a control or owns a device, which is all
+        /// a lease lets go of.</summary>
         [Fact]
         public void TimedSteps_LandOnPadForgesClock_InTheirOrder()
         {
-            long now = 1_000_000;
+            long now = Stopwatch.GetTimestamp();
             ControlHolds.ClockForTest = () => now;
             try
             {
@@ -235,6 +323,118 @@ namespace PadForge.Tests
             Assert.Equal(32768, pad.InputState.Axis[0]);
             rig.Host.Sessions.Tick();
             Assert.Equal(0, rig.Host.Sessions.HoldsOf(rig.Host.Sessions.Snapshot().Single()));
+        }
+
+        /// <summary>
+        /// A hat's direction is held on its own, as a button is (#600 items 3
+        /// and 21): 1 presses it and 0 holds it released, whatever the device
+        /// does, and the hat's other directions stay as they are, held where
+        /// a program holds them and the device's own where none does. The
+        /// whole hat, held or the device's own, is what the held directions go
+        /// over, so the order the holds came in changes nothing, and each is
+        /// given back on its own. Up and Down together cancel, as Left and
+        /// Right do. A hat keeps its exact angle until a held direction
+        /// changes which directions it holds.
+        /// </summary>
+        [Fact]
+        public void AHatsDirection_IsHeldOnItsOwn_OverTheHatsOtherDirections()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string id = AutomationPipeRig.IdOf(pad);
+            pad.ReadInputState.Povs[0] = -1;
+            using var client = rig.Open("Directions", " units=plain lease=10000");
+            Pass(rig, pad);
+
+            // Up alone, then the device's own Right beside it.
+            Assert.Equal("ok", client.Final("own " + id + " DPadUp=1"));
+            Pass(rig, pad);
+            Assert.Equal(0, pad.InputState.Povs[0]);
+            pad.ReadInputState.Povs[0] = 9000;
+            Pass(rig, pad);
+            Assert.Equal(4500, pad.InputState.Povs[0]);
+            // Right held released, under its first hat's other name: the
+            // device's Right is left out.
+            Assert.Equal("ok", client.Final("own " + id + " HatRight=false"));
+            Pass(rig, pad);
+            Assert.Equal(0, pad.InputState.Povs[0]);
+            // Up held and the device's Down cancel.
+            pad.ReadInputState.Povs[0] = 18000;
+            Pass(rig, pad);
+            Assert.Equal(-1, pad.InputState.Povs[0]);
+            // Given back, each by its own name: the device's own again.
+            Assert.Equal("ok", client.Final("rel " + id + " DPadUp DPadRight"));
+            Pass(rig, pad);
+            Assert.Equal(18000, pad.InputState.Povs[0]);
+
+            // The whole hat held, and a direction over it, in either order.
+            Assert.Equal("ok", client.Final("own " + id + " DPadRight=1"));
+            Assert.Equal("ok", client.Final("own " + id + " DPad=Up"));
+            Pass(rig, pad);
+            Assert.Equal(4500, pad.InputState.Povs[0]);
+            Assert.Equal("ok", client.Final("rel " + id + " all"));
+            Pass(rig, pad);
+            Assert.Equal(18000, pad.InputState.Povs[0]);
+            Assert.Equal("ok", client.Final("own " + id + " DPadRight=1 DPad=Up"));
+            Pass(rig, pad);
+            Assert.Equal(4500, pad.InputState.Povs[0]);
+            // The whole hat given back alone: the device's own Down, and
+            // Right still held over it.
+            Assert.Equal("ok", client.Final("rel " + id + " DPad"));
+            Pass(rig, pad);
+            Assert.Equal(13500, pad.InputState.Povs[0]);
+            Assert.Equal("ok", client.Final("rel " + id + " all"));
+            Pass(rig, pad);
+
+            // A hat at 30 degrees keeps its angle while the held directions
+            // change nothing of it: it holds Up and Right already, and Left
+            // is not pressed.
+            pad.ReadInputState.Povs[0] = 3000;
+            Assert.Equal("ok", client.Final("own " + id + " DPadUp=1 DPadLeft=0"));
+            Pass(rig, pad);
+            Assert.Equal(3000, pad.InputState.Povs[0]);
+            Assert.Equal("ok", client.Final("own " + id + " DPadRight=0"));
+            Pass(rig, pad);
+            Assert.Equal(0, pad.InputState.Povs[0]);
+            Assert.Equal("ok", client.Final("rel " + id + " all"));
+            Pass(rig, pad);
+
+            // set: Up stays until the device's own Up changes. The device's
+            // Right does not change Up, so Up stays beside it.
+            pad.ReadInputState.Povs[0] = -1;
+            Pass(rig, pad);
+            Assert.Equal("ok", client.Final("set " + id + " DPadUp=1"));
+            Pass(rig, pad);
+            Assert.Equal(0, pad.InputState.Povs[0]);
+            pad.ReadInputState.Povs[0] = 9000;
+            Pass(rig, pad);
+            Assert.Equal(4500, pad.InputState.Povs[0]);
+            pad.ReadInputState.Povs[0] = 0;
+            Pass(rig, pad);
+            pad.ReadInputState.Povs[0] = -1;
+            Pass(rig, pad);
+            Assert.Equal(-1, pad.InputState.Povs[0]);
+            rig.Host.Sessions.Tick();
+            Assert.Equal(0, rig.Host.Sessions.HoldsOf(rig.Host.Sessions.Snapshot().Single()));
+            // The let-go lands at a pass, before the holds below, which a
+            // second change of the same direction in one pass would wait a
+            // pass for.
+            Pass(rig, pad);
+
+            // Another program: a hat and its directions overlap, two
+            // directions do not.
+            Assert.Equal("ok", client.Final("own " + id + " DPadRight=1"));
+            using var other = rig.Open("Other", " units=plain lease=10000");
+            Assert.StartsWith("err busy ", other.Final("own " + id + " DPad=Up"));
+            Assert.StartsWith("err busy ", other.Final("own " + id + " HatRight=0"));
+            Assert.Equal("ok", other.Final("own " + id + " DPadUp=1"));
+            Pass(rig, pad);
+            Assert.Equal(4500, pad.InputState.Povs[0]);
+            Assert.Equal("ok", other.Final("rel " + id + " all"));
+            Assert.Equal("ok", client.Final("own " + id + " DPad=Down"));
+            Assert.StartsWith("err busy ", other.Final("own " + id + " DPadUp=1"));
+            Assert.StartsWith("err bad-argument ", client.Final("own " + id + " DPadUp=maybe"));
+            Assert.StartsWith("err bad-argument ", client.Final("rel " + id + " DPadNowhere"));
         }
 
         [Fact]
@@ -395,6 +595,95 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>
+        /// A script's holds and claims let go 250 ms after its last line,
+        /// decided in the pass that applies them, on the clock that times
+        /// that pass (#600 item 24): in force at the pass 249 ms after the
+        /// last line, let go at the pass 251 ms after it, and back at the
+        /// first pass after its next line. The test steps that clock and runs
+        /// the passes itself. The sessions' own clock never moves the lease:
+        /// it reads the same clock, which stands still here between steps.
+        /// The clock is the whole process's. It starts at the real one's
+        /// reading, so the leases stamped meanwhile stay near real times, and
+        /// a step ages every live lease by its length. No test outside this
+        /// collection keeps a session that holds a control or owns a device,
+        /// which is all a lease lets go of.
+        /// </summary>
+        [Fact]
+        public void AScriptsLease_IsDecidedInThePass_OnTheClockThatAppliesItsHolds()
+        {
+            long now = Stopwatch.GetTimestamp();
+            ControlHolds.ClockForTest = () => Volatile.Read(ref now);
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pad = rig.AddDevice(InputDeviceType.Gamepad);
+                string id = AutomationPipeRig.IdOf(pad);
+                long ms = Stopwatch.Frequency / 1000;
+                using var client = rig.Open("Lease");
+                Assert.Equal(AutomationSession.ScriptLeaseMs, rig.Host.Sessions.Snapshot().Single().LeaseMs);
+                Assert.Equal("ok", client.Final("own " + id + " B=1"));
+                Assert.Equal("ok", client.Final("sub " + id + " A claim"));
+                pad.ReadInputState.Buttons[0] = true;
+                Pass(rig, pad);
+                Assert.True(pad.InputState.Buttons[1], "B is held");
+                Assert.False(pad.InputState.Buttons[0], "A is claimed");
+
+                Interlocked.Add(ref now, 249 * ms);
+                Pass(rig, pad);
+                Assert.True(pad.InputState.Buttons[1], "B is held 249 ms after the last line");
+                Assert.False(pad.InputState.Buttons[0], "A is claimed 249 ms after the last line");
+
+                Interlocked.Add(ref now, 2 * ms);
+                Pass(rig, pad);
+                Assert.False(pad.InputState.Buttons[1], "B lets go at the pass 251 ms after the last line");
+                Assert.True(pad.InputState.Buttons[0], "A is the game's at the pass 251 ms after the last line");
+                Assert.Null(ControlHolds.Current);
+
+                // The script's next line: both are back at the next pass.
+                Assert.StartsWith("ok", client.Final("devices"));
+                Pass(rig, pad);
+                Assert.True(pad.InputState.Buttons[1], "B is held again");
+                Assert.False(pad.InputState.Buttons[0], "A is claimed again");
+            }
+            finally
+            {
+                ControlHolds.ClockForTest = null;
+            }
+        }
+
+        /// <summary>Every pass judges the leases (#600 item 24), and a pass
+        /// with a program's holds and its lease in force makes nothing: a
+        /// read of each lease, and the holds over the device from the
+        /// table's own buffer.</summary>
+        [Fact]
+        public void APassThatJudgesTheLeases_AllocatesNothing()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string id = AutomationPipeRig.IdOf(pad);
+            using var client = rig.Open("Quiet", " lease=10000");
+            Assert.Equal("ok", client.Final("own " + id + " B=1 DPadUp=1"));
+            Assert.Equal("ok", client.Final("sub " + id + " A claim"));
+            var state = new CustomInputState();
+            state.Povs[0] = -1;
+            for (int i = 0; i < 50; i++)
+            {
+                ControlHolds.BeginPass();
+                ControlHolds.Apply(pad.InstanceGuid, state);
+            }
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            for (int i = 0; i < 1000; i++)
+            {
+                ControlHolds.BeginPass();
+                ControlHolds.Apply(pad.InstanceGuid, state);
+            }
+            Assert.Equal(0, GC.GetAllocatedBytesForCurrentThread() - before);
+            var read = ControlHolds.Apply(pad.InstanceGuid, state);
+            Assert.True(read.Buttons[1]);
+            Assert.Equal(0, read.Povs[0]);
+        }
+
         /// <summary>The holds and claims are one table for the whole
         /// process, so a host's sessions own theirs alone: another host's
         /// session, numbered first as this one is, ends, and that host goes,
@@ -452,6 +741,90 @@ namespace PadForge.Tests
             session.Heard();
             Assert.Equal(0, rig.Host.Sessions.HoldsOf(session));
             Assert.Null(ControlHolds.Current);
+        }
+
+        /// <summary>A script the sessions' clock let lapse, while no pass
+        /// runs, has its holds and claims back before its next line is
+        /// answered: the line puts them back itself, with no pass and no
+        /// clock after it. The test steps the passes' clock. The clock
+        /// is the whole process's. It starts at the real one's reading, so the
+        /// leases stamped meanwhile stay near real times, and a step ages
+        /// every live lease by its length. No test outside this collection
+        /// keeps a session that holds a control or owns a device, which is all
+        /// a lease lets go of.</summary>
+        [Fact]
+        public void AScriptTheClockLetLapse_HasItsHoldsAndClaimsBack_BeforeItsNextLineIsAnswered()
+        {
+            long now = Stopwatch.GetTimestamp();
+            ControlHolds.ClockForTest = () => Volatile.Read(ref now);
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                var pad = rig.AddDevice(InputDeviceType.Gamepad);
+                string id = AutomationPipeRig.IdOf(pad);
+                using var client = rig.Open("Back");
+                Assert.Equal("ok", client.Final("own " + id + " B=1"));
+                Assert.Equal("ok", client.Final("sub " + id + " A claim"));
+                Interlocked.Add(ref now, 251 * (Stopwatch.Frequency / 1000));
+                rig.Host.Sessions.Tick();
+                Assert.Equal("e lease lapsed", client.Event(3000));
+                Assert.Null(ControlHolds.Current);
+
+                // A beat, which sends nothing to the table and is answered at
+                // once.
+                Assert.Equal("@1 ok", client.Final("@1 beat"));
+                var holds = ControlHolds.Current?[pad.InstanceGuid];
+                Assert.NotNull(holds);
+                Assert.Single(holds.Buttons);
+                Assert.Single(holds.ClaimedButtons);
+            }
+            finally
+            {
+                ControlHolds.ClockForTest = null;
+            }
+        }
+
+        /// <summary>An assistant's hold lets go in the pass at its lease, as
+        /// a script's does, and goes for good: its next call, which comes
+        /// before the sessions' clock looks, does not bring it back. The
+        /// test steps the passes' clock. The clock
+        /// is the whole process's. It starts at the real one's reading, so the
+        /// leases stamped meanwhile stay near real times, and a step ages
+        /// every live lease by its length. No test outside this collection
+        /// keeps a session that holds a control or owns a device, which is all
+        /// a lease lets go of.</summary>
+        [Fact]
+        public async Task AnAssistantsHold_LetsGoInThePassAtItsLease_AndItsNextCallDoesNotBringItBack()
+        {
+            long now = Stopwatch.GetTimestamp();
+            ControlHolds.ClockForTest = () => Volatile.Read(ref now);
+            try
+            {
+                using var rig = new AssistantRig(AutomationLevel.SendInputs);
+                var pad = new UserDevice { InstanceGuid = Guid.NewGuid(), ProductName = "Pad", IsOnline = true };
+                pad.LoadCapabilities(6, 16, 1, InputDeviceType.Gamepad);
+                pad.InputState = pad.ReadInputState = new CustomInputState();
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(pad);
+                var client = await rig.ConnectAsync();
+                var held = await client.CallToolAsync("hold_control", new System.Collections.Generic.Dictionary<string, object>
+                    { ["device"] = AutomationDevices.IdOf(pad.InstanceGuid), ["control"] = "b3", ["value"] = true });
+                Assert.False(held.IsError == true, AssistantRig.Text(held));
+                var session = rig.Host.Sessions.Snapshot().Single(s => s.Kind == AutomationClientKind.Assistant);
+                ControlHolds.BeginPass();
+                Assert.True(ControlHolds.Apply(pad.InstanceGuid, new CustomInputState()).Buttons[3]);
+
+                Interlocked.Add(ref now, (session.LeaseMs + 1) * (Stopwatch.Frequency / 1000));
+                ControlHolds.BeginPass();
+                Assert.False(ControlHolds.Apply(pad.InstanceGuid, new CustomInputState()).Buttons[3], "the pass lets it go at the lease");
+                session.Heard();
+                ControlHolds.BeginPass();
+                Assert.False(ControlHolds.Apply(pad.InstanceGuid, new CustomInputState()).Buttons[3], "the next call does not press it again");
+                Assert.Equal(0, rig.Host.Sessions.HoldsOf(session));
+            }
+            finally
+            {
+                ControlHolds.ClockForTest = null;
+            }
         }
 
         [Fact]

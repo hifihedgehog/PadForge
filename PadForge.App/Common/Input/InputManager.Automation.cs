@@ -96,7 +96,8 @@ namespace PadForge.Common.Input
     /// The values programs hold controls of devices at (#597), and the
     /// controls their hotkeys take from games (#600 item 23), as the poll
     /// thread reads them. A program's <c>own</c> line puts a value over a
-    /// button, an axis, a slider or a hat of any device, a <c>set</c> line
+    /// button, an axis, a slider, a hat or one direction of a hat of any
+    /// device, a <c>set</c> line
     /// puts one there until the device's own input moves, and a claim takes
     /// a button, a hat's direction or an axis past a line away from what
     /// mappings read. Step 2 applies them where the On-Screen Keyboard filter
@@ -171,10 +172,11 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The kinds a step's key names: a held button, axis or
-        /// hat, a claimed button, a claimed hat direction (index = hat * 4 +
-        /// 0 for Up, 1 Right, 2 Down, 3 Left), and a claimed line (index =
-        /// the line's own number).</summary>
-        internal const char HoldButton = 'b', HoldAxis = 'a', HoldHat = 'h', ClaimButton = 'B', ClaimDirection = 'D', ClaimLine = 'L';
+        /// hat, a held hat direction (index = hat * 4 + 0 for Up, 1 Right, 2
+        /// Down, 3 Left), a claimed button, a claimed hat direction (the same
+        /// index), and a claimed line (index = the line's own number).</summary>
+        internal const char HoldButton = 'b', HoldAxis = 'a', HoldHat = 'h', HoldDirection = 'd',
+            ClaimButton = 'B', ClaimDirection = 'D', ClaimLine = 'L';
 
         private readonly struct Step
         {
@@ -224,11 +226,13 @@ namespace PadForge.Common.Input
             }
 
             internal DeviceHolds((int, Hold)[] buttons, (int, Hold)[] axes, (int, Hold)[] hats,
+                (int Hat, (HatDirections Direction, Hold Hold)[] Holds)[] directions,
                 int[] claimedButtons, (int Hat, HatDirections Directions)[] claimedDirections, Line[] lines)
             {
                 Buttons = buttons;
                 Axes = axes;
                 Hats = hats;
+                Directions = directions;
                 ClaimedButtons = claimedButtons;
                 ClaimedDirections = claimedDirections;
                 Lines = lines;
@@ -243,6 +247,13 @@ namespace PadForge.Common.Input
 
             /// <summary>Hats 0 to 3, in hundredths of a degree or -1.</summary>
             public readonly (int Index, Hold Hold)[] Hats;
+
+            /// <summary>Hat directions held on their own (#600 item 21), by
+            /// hat: each pressed (1) or held released (0) over the hat's
+            /// whole hold, or over the device's own hat when it has none,
+            /// beside the hat's other directions.</summary>
+            public readonly (int Hat, (HatDirections Direction, Hold Hold)[] Holds)[] Directions
+                = Array.Empty<(int, (HatDirections, Hold)[])>();
 
             public readonly int[] ClaimedButtons = Array.Empty<int>();
             public readonly (int Hat, HatDirections Directions)[] ClaimedDirections = Array.Empty<(int, HatDirections)>();
@@ -298,7 +309,188 @@ namespace PadForge.Common.Input
                     if ((uint)index < (uint)ProgramAxis.End && InForce(hold, AxisOf(read, index))) SetAxis(s, index, hold.Value);
                 foreach (var (index, hold) in Hats)
                     if ((uint)index < (uint)s.Povs.Length && InForce(hold, read.Povs[index])) s.Povs[index] = hold.Value;
+                // A hat's held directions go in together, over the hat as it
+                // stands now. Up and Down together cancel, as Left and Right
+                // do, and a hat keeps its exact angle until a held direction
+                // changes which directions it holds.
+                foreach (var (hat, holds) in Directions)
+                {
+                    if ((uint)hat >= (uint)s.Povs.Length) continue;
+                    var own = PlainUnits.HatToDirections(read.Povs[hat]);
+                    var was = PlainUnits.HatToDirections(s.Povs[hat]);
+                    var now = was;
+                    foreach (var (direction, hold) in holds)
+                        if (InForce(hold, (own & direction) != 0 ? 1 : 0))
+                            now = hold.Value != 0 ? now | direction : now & ~direction;
+                    if (now != was) s.Povs[hat] = PlainUnits.DirectionsToHat(now);
+                }
                 return s;
+            }
+        }
+
+        /// <summary>
+        /// A program's lease (#600 item 24), judged on this table's clock,
+        /// where its holds and claims are applied. While the program has said
+        /// nothing for <see cref="Span"/> and runs no line, its holds and
+        /// claims are left out of the table: the first pass past the span
+        /// lets them go, and the sessions' clock does it while no pass runs.
+        /// A script's come back at its next line, all at once. Any other
+        /// program's stay out until its session lets go of them for good.
+        /// </summary>
+        internal sealed class Lease
+        {
+            public Lease(int ms, bool comesBack)
+            {
+                Span = ms * Stopwatch.Frequency / 1000;
+                ComesBack = comesBack;
+                _heard = Now();
+            }
+
+            /// <summary>How long the program may say nothing, in clock
+            /// ticks.</summary>
+            public readonly long Span;
+
+            /// <summary>Whether what the program holds and claims comes
+            /// back at its next line: a script's does.</summary>
+            public readonly bool ComesBack;
+
+            private long _heard;
+            private int _running;
+
+            /// <summary>The program sent a line.</summary>
+            public void Heard() => Volatile.Write(ref _heard, Now());
+
+            /// <summary>A line of the program's runs: the program waits on
+            /// PadForge meanwhile, and its lines behind it, its beats
+            /// among them, wait in the pipe.</summary>
+            public void Begin() => Interlocked.Increment(ref _running);
+
+            /// <summary>The line that ran is done, and counts as
+            /// heard.</summary>
+            public void End()
+            {
+                Volatile.Write(ref _heard, Now());
+                Interlocked.Decrement(ref _running);
+            }
+
+            /// <summary>Whether a line of the program's runs now.</summary>
+            public bool Runs => Volatile.Read(ref _running) > 0;
+
+            /// <summary>Whether the program said nothing for its span at
+            /// <paramref name="now"/>, with no line of its running.</summary>
+            public bool Silent(long now) => Volatile.Read(ref _running) == 0 && now - Volatile.Read(ref _heard) > Span;
+        }
+
+        /// <summary>An owner's lease and what the table did with it: whether
+        /// the owner holds or claims anything, and whether the table leaves
+        /// it out. Both are written under the pass lock and read by the pass
+        /// without it.</summary>
+        private sealed class Leased
+        {
+            public Leased(int owner, Lease lease)
+            {
+                Owner = owner;
+                Lease = lease;
+            }
+
+            public readonly int Owner;
+            public readonly Lease Lease;
+            public volatile bool Holds;
+            public volatile bool Out;
+
+            /// <summary>Whether the table leaves the owner out at
+            /// <paramref name="now"/>: a script's while its lease is
+            /// silent, any other program's from then on.</summary>
+            public bool OutAt(long now) => Holds && ((Out && !Lease.ComesBack) || Lease.Silent(now));
+        }
+
+        // The leases, copied on each change, so a pass reads them with one
+        // read and no lock.
+        private static Leased[] _leased = Array.Empty<Leased>();
+
+        /// <summary>Judges an owner's holds and claims by its lease from now
+        /// on, in place of any lease it had.</summary>
+        internal static void Keep(int owner, Lease lease)
+        {
+            lock (_passLock)
+            {
+                var list = new List<Leased>(_leased.Length + 1);
+                foreach (var e in _leased) if (e.Owner != owner) list.Add(e);
+                list.Add(new Leased(owner, lease) { Holds = _owners.ContainsKey(owner) });
+                Volatile.Write(ref _leased, list.ToArray());
+            }
+        }
+
+        /// <summary>Forgets an owner's lease: its session ended.</summary>
+        internal static void Forget(int owner)
+        {
+            lock (_passLock)
+            {
+                var list = new List<Leased>(_leased.Length);
+                foreach (var e in _leased) if (e.Owner != owner) list.Add(e);
+                if (list.Count == _leased.Length) return;
+                Volatile.Write(ref _leased, list.ToArray());
+                if (_owners.ContainsKey(owner))
+                {
+                    _dirty = true;
+                    Rebuild();
+                }
+            }
+        }
+
+        /// <summary>Whether the table leaves the owner's holds and claims
+        /// out now, its lease having lapsed.</summary>
+        internal static bool IsOut(int owner)
+        {
+            foreach (var e in Volatile.Read(ref _leased))
+                if (e.Owner == owner) return e.Out;
+            return false;
+        }
+
+        /// <summary>The owner sent a line (its lease's
+        /// <see cref="Lease.Heard"/> is called first): a script whose lease
+        /// had lapsed has everything it holds and claims back in the table,
+        /// at once. True when the owner's holds and claims were out, which
+        /// for any other program they stay until its session lets go of
+        /// them. Costs one read when the lease stands.</summary>
+        internal static bool Renew(int owner)
+        {
+            foreach (var e in Volatile.Read(ref _leased))
+            {
+                if (e.Owner != owner) continue;
+                if (!e.Out) return false;
+                if (e.Lease.ComesBack)
+                {
+                    long now = Now();
+                    lock (_passLock) Advance(now, inPass: false);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Whether a lease turned since the table was built: one
+        /// the table keeps that ran out, or one it leaves out that a line
+        /// renewed. Reads each lease, takes no lock and makes
+        /// nothing.</summary>
+        private static bool LeaseTurns(long now)
+        {
+            foreach (var e in Volatile.Read(ref _leased))
+                if (e.Holds && e.OutAt(now) != e.Out) return true;
+            return false;
+        }
+
+        /// <summary>Under the lock: each lease as the table stands now,
+        /// and the table to rebuild when one turned.</summary>
+        private static void JudgeLeases(long now)
+        {
+            foreach (var e in _leased)
+            {
+                e.Holds = _owners.ContainsKey(e.Owner);
+                bool left = e.OutAt(now);
+                if (left == e.Out) continue;
+                e.Out = left;
+                _dirty = true;
             }
         }
 
@@ -344,9 +536,9 @@ namespace PadForge.Common.Input
         internal static bool Pending => Volatile.Read(ref _sentCount) > 0 || Volatile.Read(ref _waitingCount) > 0;
 
         /// <summary>With null, lets go of every hold and claim at once and
-        /// forgets the steps that wait. With a table, puts that table in
-        /// force alone. Tests use it. A host that goes lets go of its own
-        /// sessions' alone (AutomationSessions.Dispose).</summary>
+        /// forgets the steps that wait and the leases. With a table, puts
+        /// that table in force alone. Tests use it. A host that goes lets go
+        /// of its own sessions' alone (AutomationSessions.Dispose).</summary>
         internal static void Publish(Dictionary<Guid, DeviceHolds> table)
         {
             lock (_passLock)
@@ -356,6 +548,7 @@ namespace PadForge.Common.Input
                 _waiting.Clear();
                 Volatile.Write(ref _waitingCount, 0);
                 _owners.Clear();
+                Volatile.Write(ref _leased, Array.Empty<Leased>());
                 _dirty = false;
                 _seen.Clear();
                 Volatile.Write(ref _current, table == null || table.Count == 0 ? null : table);
@@ -372,25 +565,6 @@ namespace PadForge.Common.Input
             Sent.Enqueue(new Step(owner, device, kind, index, value, due, drop: false));
             Interlocked.Increment(ref _sentCount);
             LandDue();
-        }
-
-        /// <summary>Sends steps of one owner, due now, that land together:
-        /// they go into the queue under the lock every landing takes, so no
-        /// pass and no landing finds some of them sent and not the rest, and
-        /// the table is rebuilt once for them all.</summary>
-        internal static void SendAll(int owner, List<(Guid Device, char Kind, int Index, object Value)> steps)
-        {
-            if (steps.Count == 0) return;
-            long now = Now();
-            lock (_passLock)
-            {
-                foreach (var (device, kind, index, value) in steps)
-                {
-                    Sent.Enqueue(new Step(owner, device, kind, index, value, 0, drop: false));
-                    Interlocked.Increment(ref _sentCount);
-                }
-                Advance(now, inPass: false);
-            }
         }
 
         /// <summary>Lets go of everything an owner holds and claims, at once,
@@ -411,7 +585,9 @@ namespace PadForge.Common.Input
 
         /// <summary>The steps of devices no pass reads land here when they
         /// are due: at a send, and at the sessions' clock for a timed
-        /// step. A device a pass reads waits for the pass.</summary>
+        /// step. A device a pass reads waits for the pass. Leases are
+        /// judged here too, so while no pass runs a lapse lets go at the
+        /// sessions' clock, within its 100 ms step of the span.</summary>
         internal static void LandDue()
         {
             long now = Now();
@@ -423,19 +599,23 @@ namespace PadForge.Common.Input
 
         /// <summary>The start of a pass, on the poll thread, before any
         /// device is read: the steps that are due land, one change per
-        /// control. Costs one read when nothing waits.</summary>
+        /// control, and a lease that ran out since the last pass lets go of
+        /// its holds and claims (#600 item 24), on the clock that times the
+        /// pass. Costs a read when nothing waits and a read for each lease,
+        /// and makes nothing.</summary>
         internal static void BeginPass()
         {
             long now = Now();
             Volatile.Write(ref _lastPass, now);
-            if (!Pending) return;
+            if (!Pending && !LeaseTurns(now)) return;
             lock (_passLock) Advance(now, inPass: true);
         }
 
         /// <summary>Under the lock: takes what was sent and lands what is
         /// due, in order. In a pass (<paramref name="inPass"/>) each control
         /// changes once. Out of one, only the steps of devices no pass reads
-        /// land. The table is rebuilt when anything landed.</summary>
+        /// land. Then each lease is judged. The table is rebuilt when
+        /// anything landed or a lease turned.</summary>
         private static void Advance(long now, bool inPass)
         {
             while (Sent.TryDequeue(out var step))
@@ -482,17 +662,28 @@ namespace PadForge.Common.Input
                 _kept.Clear();
             }
             Volatile.Write(ref _waitingCount, _waiting.Count);
+            JudgeLeases(now);
             if (_dirty) Rebuild();
         }
 
+        /// <summary>Under the lock: whether the table leaves an owner out,
+        /// its lease having lapsed.</summary>
+        private static bool LeftOut(int owner)
+        {
+            foreach (var e in _leased)
+                if (e.Owner == owner) return e.Out;
+            return false;
+        }
+
         /// <summary>Under the lock: the table mappings read, from what every
-        /// owner holds and claims.</summary>
+        /// owner holds and claims, but an owner whose lease lapsed.</summary>
         private static void Rebuild()
         {
             _dirty = false;
             var byDevice = new Dictionary<Guid, Parts>();
-            foreach (var held in _owners.Values)
+            foreach (var (owner, held) in _owners)
             {
+                if (LeftOut(owner)) continue;
                 foreach (var ((device, kind, index), value) in held)
                 {
                     if (!byDevice.TryGetValue(device, out var parts)) byDevice[device] = parts = new Parts();
@@ -501,6 +692,7 @@ namespace PadForge.Common.Input
                         case HoldButton: parts.Buttons.Add((index, (Hold)value)); break;
                         case HoldAxis: parts.Axes.Add((index, (Hold)value)); break;
                         case HoldHat: parts.Hats.Add((index, (Hold)value)); break;
+                        case HoldDirection: parts.HeldDirections.Add((index, (Hold)value)); break;
                         case ClaimButton: parts.Claimed.Add(index); break;
                         case ClaimDirection:
                         {
@@ -519,14 +711,30 @@ namespace PadForge.Common.Input
                 var directions = new List<(int, HatDirections)>();
                 foreach (var (hat, d) in parts.Directions) directions.Add((hat, d));
                 table[device] = new DeviceHolds(parts.Buttons.ToArray(), parts.Axes.ToArray(), parts.Hats.ToArray(),
-                    parts.Claimed.ToArray(), directions.ToArray(), parts.Lines.ToArray());
+                    HeldByHat(parts.HeldDirections), parts.Claimed.ToArray(), directions.ToArray(), parts.Lines.ToArray());
             }
             Volatile.Write(ref _current, table.Count == 0 ? null : table);
         }
 
+        /// <summary>Held directions, by key, as the table keeps them: each
+        /// hat once, with its directions.</summary>
+        private static (int Hat, (HatDirections Direction, Hold Hold)[] Holds)[] HeldByHat(List<(int Index, Hold Hold)> held)
+        {
+            if (held.Count == 0) return Array.Empty<(int, (HatDirections, Hold)[])>();
+            var byHat = new SortedDictionary<int, List<(HatDirections, Hold)>>();
+            foreach (var (index, hold) in held)
+            {
+                if (!byHat.TryGetValue(index / 4, out var list)) byHat[index / 4] = list = new();
+                list.Add(((HatDirections)(1 << (index % 4)), hold));
+            }
+            var hats = new List<(int, (HatDirections, Hold)[])>(byHat.Count);
+            foreach (var (hat, list) in byHat) hats.Add((hat, list.ToArray()));
+            return hats.ToArray();
+        }
+
         private sealed class Parts
         {
-            public readonly List<(int, Hold)> Buttons = new(), Axes = new(), Hats = new();
+            public readonly List<(int, Hold)> Buttons = new(), Axes = new(), Hats = new(), HeldDirections = new();
             public readonly List<int> Claimed = new();
             public readonly Dictionary<int, HatDirections> Directions = new();
             public readonly List<Line> Lines = new();

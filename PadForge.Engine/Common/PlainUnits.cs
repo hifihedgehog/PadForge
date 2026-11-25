@@ -137,11 +137,14 @@ namespace PadForge.Engine
         }
 
         /// <summary>Directions as a raw hat. Up and Down together cancel,
-        /// as Left and Right do, and none is the rest.</summary>
+        /// as Left and Right do, and none is the rest. The poll thread calls
+        /// it for a held or claimed direction on every pass, so it tests the
+        /// bits: Enum.HasFlag boxes both of its values until the JIT
+        /// optimizes the caller.</summary>
         public static int DirectionsToHat(HatDirections directions)
         {
-            bool up = directions.HasFlag(HatDirections.Up), down = directions.HasFlag(HatDirections.Down);
-            bool right = directions.HasFlag(HatDirections.Right), left = directions.HasFlag(HatDirections.Left);
+            bool up = (directions & HatDirections.Up) != 0, down = (directions & HatDirections.Down) != 0;
+            bool right = (directions & HatDirections.Right) != 0, left = (directions & HatDirections.Left) != 0;
             if (up && down) up = down = false;
             if (left && right) left = right = false;
             if (up) return right ? 4500 : left ? 31500 : 0;

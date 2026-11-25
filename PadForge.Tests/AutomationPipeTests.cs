@@ -926,6 +926,47 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void WhenTheEngineStartsAgain_EveryFollowerHearsEachDeviceOnlineComeBack()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            var mouse = rig.AddDevice(InputDeviceType.Mouse);
+            var keys = rig.AddDevice(InputDeviceType.Keyboard, "Keys", online: false);
+            string padId = AutomationPipeRig.IdOf(pad), mouseId = AutomationPipeRig.IdOf(mouse), keysId = AutomationPipeRig.IdOf(keys);
+            using var first = rig.Open("First Script");
+            using var second = rig.Open("Second Script");
+            Assert.Equal("ok", first.Final("sub devices"));
+            Assert.Equal("ok", second.Final("sub devices"));
+            rig.Pass(pad, mouse, keys);
+            Assert.Empty(first.Drain());
+            Assert.Empty(second.Drain());
+
+            // The engine stops: each follower hears the pad and the mouse go
+            // offline, and the stop takes every device offline.
+            rig.Host.DetachEngine();
+            string[] gone = { "e dev " + mouseId + " offline", "e dev " + padId + " offline" };
+            Assert.Equal(gone.OrderBy(s => s), first.Drain(300).OrderBy(s => s));
+            Assert.Equal(gone.OrderBy(s => s), second.Drain().OrderBy(s => s));
+            pad.IsOnline = mouse.IsOnline = false;
+
+            // It starts again with the pad and the keyboard online and the
+            // mouse unplugged: each follower hears the two online come back,
+            // and nothing of the mouse.
+            using var manager = new InputManager();
+            rig.Host.AttachEngine(new AutomationTestEngine(manager));
+            pad.IsOnline = keys.IsOnline = true;
+            rig.Pass(pad, mouse, keys);
+            string[] back = { "e dev " + keysId + " online", "e dev " + padId + " online" };
+            Assert.Equal(back.OrderBy(s => s), first.Drain(300).OrderBy(s => s));
+            Assert.Equal(back.OrderBy(s => s), second.Drain().OrderBy(s => s));
+
+            // Told once: the next pass tells nothing.
+            rig.Pass(pad, mouse, keys);
+            Assert.Empty(first.Drain());
+            Assert.Empty(second.Drain());
+        }
+
+        [Fact]
         public async Task TheEngineAndTheProfile_AreEventsForTheirFollowers()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.Read);

@@ -352,12 +352,23 @@ namespace PadForge.Services.Automation
         {
             public Entry[] Entries = Array.Empty<Entry>();
             public AutomationSession[] DeviceFollowers = Array.Empty<AutomationSession>();
+            public Baseline Online;
+        }
+
+        /// <summary>The devices online as the first program came to follow
+        /// devices. The first pass after tells what changed since, so a
+        /// device that came or went in between is not lost.</summary>
+        internal sealed class Baseline
+        {
+            public UserDevice[] Devices = Array.Empty<UserDevice>();
+            public readonly HashSet<Guid> Ids = new();
         }
 
         private Table _table = new Table();
         private readonly Dictionary<Guid, UserDevice> _byGuid = new(64);
         private HashSet<Guid> _online = new(), _next = new();
         private bool _onlinePrimed;
+        private Baseline _baselineTold;
         private readonly Action<UserDevice[], int> _hook;
 
         public AutomationWatch()
@@ -373,20 +384,42 @@ namespace PadForge.Services.Automation
         /// Puts what sessions follow in force. The entries are the same
         /// objects from one table to the next while their subscription
         /// lasts, so they keep what they last saw. Called under the
-        /// sessions' lock.
+        /// sessions' lock. <paramref name="arriving"/> is the devices online
+        /// as a session came to follow devices: kept from the first such
+        /// session until none follows them.
         /// </summary>
-        internal void Publish(Entry[] entries, AutomationSession[] deviceFollowers)
+        internal void Publish(Entry[] entries, AutomationSession[] deviceFollowers, Baseline arriving = null)
         {
+            var before = Volatile.Read(ref _table);
             var table = new Table
             {
                 Entries = entries ?? Array.Empty<Entry>(),
                 DeviceFollowers = deviceFollowers ?? Array.Empty<AutomationSession>(),
             };
+            if (table.DeviceFollowers.Length > 0)
+                table.Online = before.DeviceFollowers.Length > 0 ? before.Online : arriving;
             Volatile.Write(ref _table, table);
             if (table.Entries.Length > 0 || table.DeviceFollowers.Length > 0)
                 InputManager.AutomationPass = _hook;
             else if (ReferenceEquals(InputManager.AutomationPass, _hook))
                 InputManager.AutomationPass = null;
+        }
+
+        /// <summary>The devices online now, read under the device list's
+        /// lock. Called outside the sessions' lock.</summary>
+        internal static Baseline OnlineNow()
+        {
+            var baseline = new Baseline();
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return baseline;
+            var online = new List<UserDevice>();
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                    if (ud != null && ud.IsOnline && baseline.Ids.Add(ud.InstanceGuid)) online.Add(ud);
+            }
+            baseline.Devices = online.ToArray();
+            return baseline;
         }
 
         /// <summary>Lets go of the engine's hook for good.</summary>
@@ -434,14 +467,18 @@ namespace PadForge.Services.Automation
                 _onlinePrimed = false;
                 return;
             }
-            FollowOnline(devices, count, followers);
+            FollowOnline(devices, count, followers, table.Online);
         }
 
         /// <summary>Connects and disconnects, for the sessions that follow
         /// devices. Nothing is made unless the set of online devices
-        /// changed.</summary>
-        private void FollowOnline(UserDevice[] devices, int count, AutomationSession[] followers)
+        /// changed, or the followers' baseline is not told yet.</summary>
+        private void FollowOnline(UserDevice[] devices, int count, AutomationSession[] followers, Baseline arrived)
         {
+            // The first look since the first of these followers came: what
+            // they know is the baseline, whatever the last followers were
+            // told.
+            bool first = arrived != null && !ReferenceEquals(arrived, _baselineTold);
             int online = 0;
             bool changed = false;
             for (int i = 0; i < count; i++)
@@ -451,7 +488,7 @@ namespace PadForge.Services.Automation
                 online++;
                 if (!_online.Contains(ud.InstanceGuid)) changed = true;
             }
-            if (!changed && online == _online.Count && _onlinePrimed) return;
+            if (!changed && online == _online.Count && _onlinePrimed && !first) return;
 
             _next.Clear();
             for (int i = 0; i < count; i++)
@@ -459,7 +496,17 @@ namespace PadForge.Services.Automation
                 var ud = devices[i];
                 if (ud != null && ud.IsOnline) _next.Add(ud.InstanceGuid);
             }
-            if (_onlinePrimed)
+            if (first)
+            {
+                // A device online then that is not now went, and one online
+                // now that was not then came.
+                _baselineTold = arrived;
+                foreach (var ud in arrived.Devices)
+                    if (!ud.IsOnline) Tell(followers, "e dev " + AutomationDevices.IdOf(ud.InstanceGuid) + " offline");
+                foreach (var g in _next)
+                    if (!arrived.Ids.Contains(g)) Tell(followers, "e dev " + AutomationDevices.IdOf(g) + " online");
+            }
+            else if (_onlinePrimed)
             {
                 foreach (var g in _next)
                     if (!_online.Contains(g)) Tell(followers, "e dev " + AutomationDevices.IdOf(g) + " online");
@@ -477,16 +524,23 @@ namespace PadForge.Services.Automation
 
         /// <summary>The engine stopped: no pass runs, so the devices a
         /// follower saw online are told offline here, and every entry starts
-        /// again from the next pass. Called by the sessions, never by the
-        /// poll thread.</summary>
+        /// again from the next pass. The followers then know of no device
+        /// online, so the first pass of the next start tells each device
+        /// online then as come back (#600). Called by the sessions, never by
+        /// the poll thread.</summary>
         internal void EngineStopped()
         {
             var table = Volatile.Read(ref _table);
             var followers = table.DeviceFollowers;
-            var online = _online;
+            // What the followers saw online: as of the last pass, or as they
+            // came if no pass has looked since.
+            var seen = table.Online != null && !ReferenceEquals(table.Online, _baselineTold)
+                ? table.Online.Ids
+                : _online;
+            if (table.Online != null) _baselineTold = table.Online;
             _online = new HashSet<Guid>();
-            _onlinePrimed = false;
-            foreach (var g in online) Tell(followers, "e dev " + AutomationDevices.IdOf(g) + " offline");
+            _onlinePrimed = followers.Length > 0;
+            foreach (var g in seen) Tell(followers, "e dev " + AutomationDevices.IdOf(g) + " offline");
             foreach (var entry in table.Entries)
             {
                 if (entry.Primed) entry.Gone();

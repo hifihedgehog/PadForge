@@ -55,7 +55,7 @@ A value sent is PadForge's raw number (axes 0 to 65535, a stick at rest on 32768
 | `devices`, `caps <id>`, `read <id>`, `outputs <n>` | Lists, a device's named controls, its state, what a virtual controller sends. |
 | `sub <id> state`, `sub <id> A`, `sub <id> A claim`, `sub <id> HatUp claim`, `sub <id> LeftX above=80%`, `sub <id> LeftX below=-80% claim`, `sub devices`, `unsub <id> A`, `unsub <id> line=<n>` | Events, starting with the whole state. `claim` takes the control from the game while the subscription lives: a button reads up, a hat's direction is left out, an axis past its line reads at its rest. A line's answer gives its number, `ok line=<n>`. |
 | `own <id> A=1`, `set <id> LeftX=40%`, `rel <id> A`, `var name=value` | Holds a control of any device, puts a value once until the device's own input moves it, lets go, sets a named value for Custom Expression triggers. |
-| `in=<ms>`, `after=<ms>` | On `s`, `own`, `set` and `rel`: the step waits that long from now (`in=`), or after the session's previous timed step (`after=`), on PadForge's clock. |
+| `in=<ms>`, `after=<ms>` | On `s`, `own`, `set` and `rel`: the step waits that long from now (`in=`), or after the session's previous timed step (`after=`), on PadForge's clock. A timed `own` or `set` on a device that is not connected answers `err offline the device is not connected`. |
 | `call <tool> {json}` | Runs any assistant tool at its own level. |
 
 ### Events PadForge sends
